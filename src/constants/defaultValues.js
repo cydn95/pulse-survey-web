@@ -20,7 +20,6 @@ export const firebaseConfig = {
 };
 
 export const apiUrl ="http://3.15.16.117"
-// export const apiUrl = "https://gft6ixgrq7.execute-api.us-east-2.amazonaws.com/default/PulseLambda-NeptuneLambdaFunction-QI9VKCO1VXK1"
 
 export const searchPath = "/app/survey/start"
 

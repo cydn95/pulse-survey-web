@@ -148,3 +148,47 @@ video {
     margin-bottom: 20px;
     opacity: .5;
 }
+
+.smart-list-section {
+  background: #000;
+}
+
+.smart-list-section .header {
+  background: #222;
+  color: #fff;
+  padding: 15px 10px;
+  text-align: right;
+}
+
+.smart-list-section .header a {
+  color: #aaa;
+}
+
+.smart-list-section .body {
+  color: #999;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  cursor: default;
+}
+.smart-list-section .body .row,
+.smart-list-section .body .col {
+  margin: 0px !important;
+}
+
+.smart-row {
+  padding-left: 15px;
+}
+
+.smart-col, .smart-col2 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.smart-col:hover {
+  background: #2F3F92;
+}
+
+.row-container:hover {
+  background: #44539D;
+  color: #fff;
+}

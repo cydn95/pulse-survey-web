@@ -25,7 +25,7 @@ class Start extends Component {
   render() {
 
     const {pageIndex, surveyList} = this.props;
-    console.log(surveyList);
+    // console.log(surveyList);
     return (
       <Fragment>
         <StageBar pages={surveyList} pageIndex={pageIndex} />

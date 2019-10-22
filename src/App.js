@@ -5,6 +5,11 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import App from 'Containers/App';
 import { configureStore } from 'Redux/store';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faTimesCircle);
+
 const MainApp = () => (
 	<Provider store={configureStore()}>
 			<Router>

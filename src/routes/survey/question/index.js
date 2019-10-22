@@ -7,7 +7,9 @@ import {
   MultipleOptions,
   TwoOptions,
   FreeText,
-  Welcome
+  Welcome,
+  SmartText,
+  RangeSlider
 } from "Components/Survey";
 
 class Question extends Component {
@@ -28,10 +30,10 @@ class Question extends Component {
       let controlList = question.pages.ampagesetting.map( (control, index) => {
         switch (control.controlType) {
           case controlType.TEXT:
-            return <TwoOptions key={index} question={control}/>
+            return <FreeText key={index} question={control}/>
 
           case controlType.SLIDER:
-            return <div>slider</div>
+            return <RangeSlider key={index} question={control} />
           
             case controlType.TWO_OPTIONS:
             return <TwoOptions key={index} question={control} />
@@ -40,7 +42,7 @@ class Question extends Component {
             return <TwoOptions key={index} question={control} />
 
           case controlType.SMART_TEXT:
-            return <div>smart text</div>
+            return <SmartText key={index} question={control} />
 
           default:
             return <div key={index} ></div>
