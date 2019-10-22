@@ -24,23 +24,7 @@ class TwoOptions extends Component {
   }
   render() {
 
-    // const { question } = this.props;
-    const question = {
-      "id": 5,
-      "subdriver": "s",
-      "questionText": "Second Question",
-      "sliderTextLeft": "Left",
-      "sliderTextRight": "Right",
-      "skipOptionYN": true,
-      "skipResponses": "res",
-      "questionSequence": 5,
-      "topicPrompt": "topic",
-      "commentPrompt": "comment",
-      "survey": 1,
-      "driver": 1,
-      "controlType": 3,
-      "PageSetting": 6
-    };
+    const { question } = this.props;
 
     let firstAnswerActive = this.state.answer === 1 ? ' active' : '';
     let secondAnswerActive = this.state.answer === 2 ? ' active' : '';

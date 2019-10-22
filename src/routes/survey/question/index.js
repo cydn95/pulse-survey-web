@@ -26,10 +26,9 @@ class Question extends Component {
       let controlList = question.pages.ampagesetting.map( (control, index) => {
         switch (control.controlType) {
           case 1:
-            console.log('ok');
-            return <TwoOptions key={index}/>
+            return <TwoOptions key={index} question={control}/>
           case 3:
-            return <FreeText key={index} />
+            return <FreeText key={index} question={control}/>
           default:
             return <div key={index} ></div>
         }

@@ -23,22 +23,8 @@ class FreeText extends Component {
     });
   }
   render() {
-    const question = {
-      "id": 4,
-      "subdriver": "sub",
-      "questionText": "First Question?",
-      "sliderTextLeft": "Row",
-      "sliderTextRight": "High",
-      "skipOptionYN": true,
-      "skipResponses": "Skip",
-      "questionSequence": 10,
-      "topicPrompt": "topic",
-      "commentPrompt": "comment",
-      "survey": 1,
-      "driver": 1,
-      "controlType": 1,
-      "PageSetting": 6
-    }
+    const { question } = this.props;
+      
     return (
       <Row>
         <Colxx xs="12">

@@ -18,21 +18,22 @@ import {
 
 class Start extends Component {
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.getPageList();
   }
 
   render() {
 
     const {pageIndex, surveyList} = this.props;
-
+    console.log(surveyList);
     return (
       <Fragment>
         <StageBar pages={surveyList} pageIndex={pageIndex} />
         <Row>
           <Colxx xs="12" md="6" className="survey-content">
             <Title title="Alfa Project" />
-            <Question />
+            {surveyList.length > 0 && <Question />}
+            {surveyList.length ===0 && <h1>Loading...</h1>}
             <Continue />
           </Colxx>
           <Colxx xs="12" md="6" className="survey-image type-survey">

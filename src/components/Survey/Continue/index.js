@@ -14,7 +14,6 @@ class Continue extends Component {
     
     e.preventDefault();
 
-    console.log('ddd');
     const {surveyList, pageIndex} = this.props;
 
     if (pageIndex < (surveyList.length - 1)) {
