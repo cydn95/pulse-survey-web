@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from "react";
 import { connect } from 'react-redux';
 
+import { controlType } from 'Constants/defaultValues'
+
 import {
   MultipleOptions,
   TwoOptions,
@@ -25,10 +27,21 @@ class Question extends Component {
     } else {
       let controlList = question.pages.ampagesetting.map( (control, index) => {
         switch (control.controlType) {
-          case 1:
+          case controlType.TEXT:
             return <TwoOptions key={index} question={control}/>
-          case 3:
-            return <FreeText key={index} question={control}/>
+
+          case controlType.SLIDER:
+            return <div>slider</div>
+          
+            case controlType.TWO_OPTIONS:
+            return <TwoOptions key={index} question={control} />
+
+          case controlType.MULTI_OPTIONS:
+            return <TwoOptions key={index} question={control} />
+
+          case controlType.SMART_TEXT:
+            return <div>smart text</div>
+
           default:
             return <div key={index} ></div>
         }
