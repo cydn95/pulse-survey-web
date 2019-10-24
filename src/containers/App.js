@@ -11,11 +11,13 @@ import MainRoute from 'Routes';
 import login from 'Routes/login'
 import register from 'Routes/register'
 import error from 'Routes/error'
+import coming from 'Routes/coming'
 import forgotPassword from 'Routes/forgot-password'
 
 import 'Assets/css/vendor/bootstrap.min.css'
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import 'Assets/css/sass/themes/gogo.light.purple.scss';
+import { cps } from 'redux-saga/effects';
 /*
 color options : 
 	 'light.purple'		'dark.purple'
@@ -63,6 +65,7 @@ class App extends Component {
 							<Route path={`/login`} component={login} />
 							<Route path={`/register`} component={register} />
 							<Route path={`/forgot-password`} component={forgotPassword} />
+							<Route path={`/coming-soon`} component={coming} />
 							<Route path={`/error`} component={error} />
 							<Redirect to="/error" />
 						</Switch>

@@ -27,14 +27,12 @@ class RangeSlider extends Component {
   }
   render() {
     const { question } = this.props;
-    console.log(question);
+    
     return (
       <div>
         <Row>
           <Colxx xs="12">
             <h1 className="mt-s">{question.questionText}</h1>
-            
-            
           </Colxx>
         </Row>
         <Row>
@@ -46,10 +44,10 @@ class RangeSlider extends Component {
               tipFormatter={null}
               className="mb-5" />
           </Colxx>
-          <Colxx xs="6" className="text-left">
+          <Colxx xs="6" className="slider-text-left">
             {question.sliderTextLeft}
           </Colxx>
-          <Colxx xs="6" className="text-right">
+          <Colxx xs="6" className="slider-text-right">
             {question.sliderTextRight}
           </Colxx>
         </Row>

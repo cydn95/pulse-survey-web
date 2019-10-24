@@ -1,7 +1,8 @@
 import {
   PAGE_LIST,
   PAGE_LIST_SUCCESS,
-  SELECT_PAGE
+  SELECT_PAGE,
+  CONTINUE_SURVEY
 } from "Constants/actionTypes";
 
 // const INIT_STATE = {
@@ -129,6 +130,8 @@ import {
 
 const INIT_STATE = {
   pageList: [],
+  answerList: [],
+  percentage: 0,
   pageIndex: 0,
   loading: false
 };
@@ -141,6 +144,8 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loading: false, pageIndex: 0, pageList: action.payload };
     case SELECT_PAGE:
       return { ...state, pageIndex: action.payload.pageIndex };
+    case CONTINUE_SURVEY:
+        return { ...state, pageIndex: action.payload.pageIndex, percentage: action.payload.percentage };
     default:
       return { ...state };
   }

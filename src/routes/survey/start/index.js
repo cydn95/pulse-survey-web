@@ -37,7 +37,7 @@ class Start extends Component {
             <Continue />
           </Colxx>
           <Colxx xs="12" md="6" className="survey-image type-survey">
-
+              <div className="project-ai-logo"> </div>
           </Colxx>
         </Row>
         

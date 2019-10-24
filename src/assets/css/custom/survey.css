@@ -1,8 +1,23 @@
+.stage-progress-container {
+  margin-top: -80px !important;
+}
+
+.previous-link {
+  display: inline-block;
+  margin-top: 20px !important;
+}
 /* top stage progress bar */
+.menu-icon {
+  color: #922c88;
+  margin-bottom: 5px;
+}
+
 .stage-progress {
   display: flex;
   align-items: center;
   justify-content: center;
+  align-content: center;
+  /* background: #fff; */
 }
 
 .stage-progress ul {
@@ -39,7 +54,7 @@
 
 }
 .survey-image {
-  min-height: 400px !important;
+  height: 400px !important;
 } 
 
 .project-ai-logo {
@@ -84,8 +99,21 @@
   margin-top: 80px;
 }
 
+.pulse {
+  color: #3b4658;
+  font-size: 17px;
+  font-weight: bold;
+}
+.word-separator {
+  display: inline-block;
+  color: #515a6a;
+  font-size: 23px;
+  font-weight: bold;
+  padding-left: 5px;
+  padding-right: 5px;
+}
 .project-name {
-  color: #2F3F92;
+  color: #297fd5;
   font-size: 17px;
 }
 
@@ -192,3 +220,53 @@ video {
   background: #44539D;
   color: #fff;
 }
+
+.coming-box {
+  text-align: center;
+}
+.coming-box span{
+  display: inline-block;
+  width: 80%;
+  font-size: 3.2em;
+  line-height: 2em;
+  text-align: center;
+  border: 2px solid #222;
+  padding: 20px;
+}
+
+/*-----Override Slider CSS ------------------------------------------------*/
+.rc-slider-handle { 
+  background: #fff url(/assets/img/survey/other/slider_handler.png) center center no-repeat !important;
+  width: 30px !important;
+  height: 30px !important;
+  margin-top: -10px !important;
+  cursor: pointer !important;
+}
+.rc-slider-track, .rc-slider-rail, .rc-slider-step {
+  height: 10px !important;
+  background: #109558;
+  background: -moz-linear-gradient(left, #109558 0%, #999999 50%, #999999 50%, #999999 50%, #e81919 100%);
+  background: -webkit-linear-gradient(left, #109558 0%,#999999 50%,#999999 50%,#999999 50%,#e81919 100%);
+  background: linear-gradient(to right, #109558 0%,#999999 50%,#999999 50%,#999999 50%,#e81919 100%);
+  border-radius: 100px;
+}
+
+.slider-text-left {
+  color: #109558;
+  text-align: left;
+}
+
+.slider-text-right {
+  color: #e81919;
+  text-align: right;
+}
+/* ------------------------------------------------------------------------*/
+
+/* ----------------------------------------------------------------------- */
+.CircularProgressbar .CircularProgressbar-path {
+}
+.stage-progress-circle {
+  width: 60px !important;
+  height: 60px !important;
+}
+/* ----------------------------------------------------------------------- */

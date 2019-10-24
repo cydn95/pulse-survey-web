@@ -167,7 +167,7 @@ class Sidebar extends Component {
         });
       }else if (this.state.selectedParentMenu == "") {
         this.setState({
-          selectedParentMenu: "survey"
+          selectedParentMenu: "about-me"
         });
       }
 
@@ -254,19 +254,79 @@ class Sidebar extends Component {
               option={{ suppressScrollX: true, wheelPropagation: false }}
             >
               <Nav vertical className="list-unstyled">
+                {/* Welcome */}
                 <NavItem
                   className={classnames({
-                    active: ((this.state.selectedParentMenu == "survey" && this.state.viewingParentMenu == "") || this.state.viewingParentMenu == "survey")
+                    active: ((this.state.selectedParentMenu == "welcome" && this.state.viewingParentMenu == "") || this.state.viewingParentMenu == "welcome")
                   })}
                 >
                   <NavLink
-                    to="/app/survey/start"
-                    onClick={() => this.changeViewingParentMenu('survey')}
+                    to="/app/welcome"
+                    onClick={() => this.changeViewingParentMenu('welcome')}
                     data-flag="survey">
-                    <i className="iconsmind-Air-Balloon" />{" "}
-                    <IntlMessages id="menu.survey" />
+                    <img className="menu-icon" src="/assets/img/survey/icon/menu-welcome.png" width="30" height="30" />
+                    <IntlMessages id="menu.welcome" />
                   </NavLink>
+                </NavItem>
+                
+                {/* About Me */}
+                <NavItem
+                  className={classnames({
+                    active: ((this.state.selectedParentMenu == "about-me" && this.state.viewingParentMenu == "") || this.state.viewingParentMenu == "about-me")
+                  })}
+                >
+                  <NavLink
+                    to="/app/about-me"
+                    onClick={() => this.changeViewingParentMenu('about-me')}
+                    data-flag="survey">
+                    <img className="menu-icon" src="/assets/img/survey/icon/menu-aboutme.png" width="30" height="30" />
+                    <IntlMessages id="menu.aboutme" />
+                  </NavLink>
+                </NavItem>
+                
+                {/* My Map */}
+                <NavItem
+                  className={classnames({
+                    active: ((this.state.selectedParentMenu == "my-map" && this.state.viewingParentMenu == "") || this.state.viewingParentMenu == "my-map")
+                  })}
+                >
+                  <NavLink
+                    to="/app/my-map"
+                    onClick={() => this.changeViewingParentMenu('my-app')}
+                    data-flag="survey">
+                    <img className="menu-icon" src="/assets/img/survey/icon/menu-mymap.png" width="30" height="30" />
+                    <IntlMessages id="menu.mymap" />
+                  </NavLink>
+                </NavItem>
+                
+                {/* Projet Map */}
+                <NavItem
+                  className={classnames({
+                    active: ((this.state.selectedParentMenu == "project-map" && this.state.viewingParentMenu == "") || this.state.viewingParentMenu == "project-map")
+                  })}
+                >
+                  <NavLink
+                    to="/app/project-map"
+                    onClick={() => this.changeViewingParentMenu('project-map')}
+                    data-flag="survey">
+                    <img className="menu-icon" src="/assets/img/survey/icon/menu-projmap.png" width="30" height="30" />
+                    <IntlMessages id="menu.projectmap" />
+                  </NavLink>
+                </NavItem>
 
+                {/* Dashboard */}
+                <NavItem
+                  className={classnames({
+                    active: ((this.state.selectedParentMenu == "dashboard" && this.state.viewingParentMenu == "") || this.state.viewingParentMenu == "dashboard")
+                  })}
+                >
+                  <NavLink
+                    to="/app/dashboard"
+                    onClick={() => this.changeViewingParentMenu('dashboard')}
+                    data-flag="survey">
+                    <img className="menu-icon" src="/assets/img/survey/icon/menu-dashboard.png" width="30" height="30" />
+                    <IntlMessages id="menu.dashboard" />
+                  </NavLink>
                 </NavItem>
 
               </Nav>

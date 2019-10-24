@@ -37,8 +37,8 @@ class TwoOptions extends Component {
             <form>
               <section className="form">
                 <div className="input-field anwser-select2">
-                  <a className={"waves-effect waves-light btn-large select2-btn " + firstAnswerActive} onClick={e => this.onSelectAnswer(e, 1)}>Option1</a>
-                  <a className={"waves-effect waves-light btn-large select2-btn " + secondAnswerActive} onClick={e => this.onSelectAnswer(e, 2)}>Option2</a>
+                  <a className={"waves-effect waves-light btn select2-btn " + firstAnswerActive} onClick={e => this.onSelectAnswer(e, 1)}>Option1</a>
+                  <a className={"waves-effect waves-light btn select2-btn " + secondAnswerActive} onClick={e => this.onSelectAnswer(e, 2)}>Option2</a>
                 </div>
               </section>
             </form>

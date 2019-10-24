@@ -5,6 +5,7 @@ import TopNav from 'Containers/TopNav'
 import Sidebar from 'Containers/Sidebar';
 
 import Survey from './survey';
+import Dashboard from './dashboard';
 
 import { connect } from 'react-redux';
 
@@ -12,6 +13,7 @@ class MainApp extends Component {
 
 	render() {
 		const { match, containerClassnames} = this.props;
+		console.log(match.url);
 		return (
 			<div id="app-container" className={containerClassnames}>
 				<TopNav history={this.props.history} />
@@ -19,7 +21,21 @@ class MainApp extends Component {
 				<main>
 					<div className="container-fluid">
 						<Switch>
-							<Route path={`${match.url}/survey`} component={Survey} />
+							{/* <Route path={`${match.url}/survey`} component={Survey} /> */}
+							<Route path={`${match.url}/about-me`} component={Survey} />
+
+							<Route path={`${match.url}/welcome`}>
+								<Redirect to="/coming-soon" />
+							</Route>
+							<Route path={`${match.url}/my-map`}>
+								<Redirect to="/coming-soon" />
+							</Route>
+							<Route path={`${match.url}/project-map`}>
+								<Redirect to="/coming-soon" />
+							</Route>
+							
+							<Route path={`${match.url}/dashboard`} component={Dashboard} />
+								
 							<Redirect to="/error" />
 						</Switch>
 					</div>

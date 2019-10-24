@@ -35,6 +35,7 @@ function* getPageList() {
       let orderedPageList = validPageList.sort(
         (a, b) => (a.page_order.order > b.page_order.order) ? 1 : -1);
       
+      console.log(orderedPageList);
       yield put(pageListSuccess(orderedPageList));
         
     } else {

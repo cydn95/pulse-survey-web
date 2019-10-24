@@ -9,6 +9,7 @@ import SmartText from "./SmartText";
 import RangeSlider from "./RangeSlider";
 import SkipQuestion from "./SkipQuestion";
 import Continue from "./Continue";
+import NewStakeholder from "./NewStakeholder";
 
 export {
   Title,
@@ -21,5 +22,6 @@ export {
   SmartText,
   RangeSlider,
   SkipQuestion,
+  NewStakeholder,
   Continue
 }

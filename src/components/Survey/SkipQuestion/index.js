@@ -48,11 +48,11 @@ class SkipQuestion extends Component {
                   Why are you skiping this question? <a href="/" onClick={(e) => this.onSkipQuestion(e)}>Cancel skip</a>
                 </p>
                 <div className="anwser-select2">
-                  <a className={"waves-effect waves-light btn-large select2-btn" + firstAnswerActive} onClick={e => this.onSelectSkipReason(e, 1)}>I doesn't apply to me</a>
-                  <a className={"waves-effect waves-light btn-large select2-btn" + secondAnswerActive} onClick={e => this.onSelectSkipReason(e, 2)}>I don't understand it</a>
-                  <a className={"waves-effect waves-light btn-large select2-btn" + thirdAnswerActive} onClick={e => this.onSelectSkipReason(e, 3)}>I don't have an option</a>
-                  <a className={"waves-effect waves-light btn-large select2-btn" + fourthAnswerActive} onClick={e => this.onSelectSkipReason(e, 4)}>Other</a>
-                </div>Name
+                  <a className={"waves-effect waves-light btn select2-btn" + firstAnswerActive} onClick={e => this.onSelectSkipReason(e, 1)}>I doesn't apply to me</a>
+                  <a className={"waves-effect waves-light btn select2-btn" + secondAnswerActive} onClick={e => this.onSelectSkipReason(e, 2)}>I don't understand it</a>
+                  <a className={"waves-effect waves-light btn select2-btn" + thirdAnswerActive} onClick={e => this.onSelectSkipReason(e, 3)}>I don't have an option</a>
+                  <a className={"waves-effect waves-light btn select2-btn" + fourthAnswerActive} onClick={e => this.onSelectSkipReason(e, 4)}>Other</a>
+                </div>
               </div>
             }
         </Colxx>

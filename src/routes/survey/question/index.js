@@ -9,7 +9,8 @@ import {
   FreeText,
   Welcome,
   SmartText,
-  RangeSlider
+  RangeSlider,
+  NewStakeholder
 } from "Components/Survey";
 
 class Question extends Component {
@@ -24,6 +25,12 @@ class Question extends Component {
       return (
         <div>
           <Welcome/>
+        </div>
+      )
+    } else if (question.pages.pageType === "PG_NEW_STAKEHOLDER") {  
+      return (
+        <div>
+          <NewStakeholder />          
         </div>
       )
     } else {

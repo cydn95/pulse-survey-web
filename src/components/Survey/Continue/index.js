@@ -5,7 +5,7 @@ import { Colxx } from "Components/CustomBootstrap";
 import { connect } from 'react-redux';
 
 import {
-  selectPage,
+  continueSurvey,
 } from "Redux/actions";
 
 class Continue extends Component {
@@ -15,9 +15,37 @@ class Continue extends Component {
     e.preventDefault();
 
     const {surveyList, pageIndex} = this.props;
+    let percentage = 0;
 
+    if (pageIndex === (surveyList.length - 1)) {
+      percentage = 100;
+    } else {
+      let totalQuestions = 0;
+      let answeredQuestions = 0;
+      
+      for (let i = 0; i < surveyList.length; i++) {
+        if (surveyList[i].pages.pageType === "PG_NEW_STAKEHOLDER" || surveyList[i].pages.pageType === "PG_WELCOME1") {
+          totalQuestions++;
+          if (pageIndex >= i) {
+            answeredQuestions++;
+          }
+        } else {
+          totalQuestions += surveyList[i].pages.ampagesetting.length + surveyList[i].pages.aopagesetting.length;
+          if (pageIndex >= i) {
+            answeredQuestions += surveyList[i].pages.ampagesetting.length + surveyList[i].pages.aopagesetting.length;
+          }
+        }
+
+        percentage = Math.round(answeredQuestions / totalQuestions * 100);
+      }
+
+      console.log(totalQuestions, answeredQuestions);
+    }
+  
     if (pageIndex < (surveyList.length - 1)) {
-      this.props.setSurveyPage(pageIndex + 1);
+      this.props.continueSurvey(pageIndex + 1, percentage);
+    } else {
+      this.props.continueSurvey(pageIndex, percentage);
     }
   }
 
@@ -51,6 +79,6 @@ const mapStateToProps = ({ survey, settings }) => {
 export default connect(
   mapStateToProps,
   {
-    setSurveyPage: selectPage
+    continueSurvey
   }
 )(Continue);

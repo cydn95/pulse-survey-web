@@ -8,4 +8,10 @@ h1 {
 
 .navbar {
   padding: 0 60px 0 0 !important;
+  height: 60px !important;
+}
+
+.main-menu, .sub-menu {
+  top: 60px !important;
+  height: calc(100% - 60px) !important;
 }

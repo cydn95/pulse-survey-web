@@ -37,10 +37,16 @@ module.exports = {
   "menu.survey": "Survey",
   "menu.todo": "Todo",
   "menu.search": "Search",
+  "menu.welcome": "Welcome",
+  "menu.aboutme": "About Me",
+  "menu.mymap": "My Map",
+  "menu.projectmap": "Project Map",
+  "menu.dashboard": "Dashboard",
 
   /* 04.Error Page */
   "layouts.error-title": "Ooops... looks like an error occurred!",
   "layouts.error-code": "Error code",
   "layouts.go-back-home": "GO BACK HOME",
-
+  "layouts.coming-soon-title": "COMING SOON",
+  "layouts.coming-soon-message": "This page is under construction. we are working very hard to give you the best experience with this one",
 };

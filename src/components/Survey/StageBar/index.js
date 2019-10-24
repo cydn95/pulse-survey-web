@@ -9,6 +9,9 @@ import {
   selectPage,
 } from "Redux/actions";
 
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+
 // const Previous = (props) => {
 //   return (
 //     <div>
@@ -41,12 +44,13 @@ class StageBar extends React.Component {
 
   render() {
 
-    const { pages, pageIndex } = this.props;
+    const { pages, pageIndex, percentage } = this.props;
+    
     return (
-      <div>
+      <div className="stage-progress-container">
         <Row>
           <Colxx xxs="2">
-            <a href="/" onClick={e => this.onPrevPage(e, pageIndex)}><i className="iconsmind-Arrow-Back"></i>Previous</a>
+            <a href="/" onClick={e => this.onPrevPage(e, pageIndex)}><i className="previous-link iconsmind-Arrow-Back"></i>Previous</a>
           </Colxx>
           <Colxx xxs="8" className="stage-progress">
             <ul className="state-nav">
@@ -63,7 +67,15 @@ class StageBar extends React.Component {
             </ul>
           </Colxx>
           <Colxx xxs="2">
-            <DropDownMennu />
+            <CircularProgressbar 
+                className="stage-progress-circle"
+                value={percentage} 
+                text={`${percentage}%`} 
+                styles={buildStyles({
+                  trailColor: '#ccc',
+                  pathColor: '#89CBC1',
+                  textSize: '20px',
+                })}/>
           </Colxx>
         </Row>
         <Separator />
@@ -72,11 +84,13 @@ class StageBar extends React.Component {
   }
 }
 
-const mapStateToProps = ({ settings }) => {
+const mapStateToProps = ({ survey, settings }) => {
 
   const { locale } = settings;
+  const { percentage } = survey;
 
   return {
+    percentage,
     locale
   };
 };

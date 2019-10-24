@@ -243,6 +243,11 @@ class TopNav extends Component {
           </span>
         </div> */}
 
+        <div className="d-inline-block">
+          <h1 className="pulse">PULSE</h1>
+          <span className="word-separator">|</span>
+          <h1 className="project-name">ALFA PROJECT</h1>
+        </div>
         {/*<div className="d-inline-block">
           <UncontrolledDropdown className="ml-2">
             <DropdownToggle
