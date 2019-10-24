@@ -39,8 +39,8 @@ class LoginLayout extends Component {
             <Row className="h-100">
               <Colxx xxs="12" md="10" className="mx-auto my-auto">
                 <Card className="auth-card">
-                  <div className="position-relative image-side ">
-                    <p className="text-white h2">PULSE</p>
+                  <div className="position-relative image-side projectai-logo">
+                    <img src="/assets/img/survey/icon/site-logo.png" width="360"/>
                     {/* <p className="white">
                       Please use your credentials to login.
                       <br />

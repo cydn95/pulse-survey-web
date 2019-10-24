@@ -15,3 +15,7 @@ h1 {
   top: 60px !important;
   height: calc(100% - 60px) !important;
 }
+
+.projectai-logo {
+  background: #f6f6f6 !important;
+}
