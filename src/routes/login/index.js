@@ -8,8 +8,6 @@ import { Colxx } from "Components/CustomBootstrap";
 import { connect } from "react-redux";
 import { loginUser } from "Redux/actions";
 
-import './login.module.scss';
-
 class LoginLayout extends Component {
   constructor(props) {
     super(props);
@@ -37,18 +35,15 @@ class LoginLayout extends Component {
         <main>
           <div className="container">
             <Row className="h-100">
-              <Colxx xxs="12" md="10" className="mx-auto my-auto">
+              <Colxx xxs="9" md="7" className="mx-auto my-auto">
                 <Card className="auth-card">
                   <div className="position-relative image-side projectai-logo">
-                    <img src="/assets/img/survey/icon/site-logo.png" width="330"/>
-                    {/* <p className="white">
-                      Please use your credentials to login.
-                      <br />
-                      If you are not a member, please{" "}
-                      <NavLink to={`/register`} className="white">
-                        register
-                      </NavLink>
-                    </p> */}
+                    <img src="/assets/img/survey/login-logo.png"/>
+                    <CardTitle className="mt-4">
+                      <strong>PULSE</strong>
+                    </CardTitle>
+                    <img src="/assets/img/survey/poweredby.png" className="mt-5" width="60%"/>
+                    <img src="/assets/img/survey/site-logo.png" className="mt-2" width="85%"/>
                   </div>
                   <div className="form-side">
                     {/*<NavLink to={`/`} className="white">
@@ -76,7 +71,7 @@ class LoginLayout extends Component {
                         <Button
                           color="primary"
                           className="btn-shadow"
-                          size="lg"
+                          size="sm"
                           onClick={() => this.onUserLogin()}
                         >
                           <IntlMessages id="user.login-button" />

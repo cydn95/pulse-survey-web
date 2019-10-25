@@ -44,11 +44,17 @@ Table of Contents
 /* 00.Variables and Imports */
 @import url("https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700");
 
-$main-menu-item-height: 110px;
-$main-menu-width: 120px;
-$main-menu-width-lg: 110px;
-$main-menu-width-md: 100px;
-$main-menu-width-xs: 90px;
+// $main-menu-item-height: 110px;
+// $main-menu-width: 120px;
+// $main-menu-width-lg: 110px;
+// $main-menu-width-md: 100px;
+// $main-menu-width-xs: 90px;
+
+$main-menu-item-height: 55px;
+$main-menu-width: 63px;
+$main-menu-width-lg: 63px;
+$main-menu-width-md: 57px;
+$main-menu-width-xs: 51px;
 
 $sub-menu-width: 230px;
 $sub-menu-width-lg: 220px;
@@ -60,10 +66,15 @@ $navbar-height-xs: 70px;
 $navbar-height-md: 80px;
 $navbar-height-lg: 90px;
 
-$main-margin: 60px;
-$main-margin-lg: 50px;
-$main-margin-md: 40px;
-$main-margin-xs: 15px;
+// $main-margin: 60px;
+// $main-margin-lg: 50px;
+// $main-margin-md: 40px;
+// $main-margin-xs: 15px;
+
+$main-margin: 21px;
+$main-margin-lg: 21px;
+$main-margin-md: 21px;
+$main-margin-xs: 0px;
 
 $app-menu-width: 280px;
 
@@ -2020,17 +2031,17 @@ button {
         color: $theme-color-1;
       }
 
-      &.active:after {
-        content: " ";
-        background: $theme-color-1;
-        border-radius: 10px;
-        position: absolute;
-        width: 6px;
-        height: 90px;
-        top: 50%;
-        transform: translateY(-50%);
-        left: 0;
-      }
+      // &.active:after {
+      //   content: " ";
+      //   background: $theme-color-1;
+      //   border-radius: 10px;
+      //   position: absolute;
+      //   width: 6px;
+      //   height: 90px;
+      //   top: 50%;
+      //   transform: translateY(-50%);
+      //   left: 0;
+      // }
     }
 
     @include respond-below(xl) {

@@ -1,5 +1,5 @@
 .stage-progress-container {
-  margin-top: -60px !important;
+  /* margin-top: 10px !important; */
 }
 
 .previous-link {
@@ -236,7 +236,7 @@ video {
 
 /*-----Override Slider CSS ------------------------------------------------*/
 .rc-slider-handle { 
-  background: #fff url(/assets/img/survey/other/slider_handler.png) center center no-repeat !important;
+  background: #fff url(/assets/img/survey/slider_handler.png) center center no-repeat !important;
   width: 30px !important;
   height: 30px !important;
   margin-top: -10px !important;

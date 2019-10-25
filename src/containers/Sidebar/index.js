@@ -264,8 +264,7 @@ class Sidebar extends Component {
                     to="/app/welcome"
                     onClick={() => this.changeViewingParentMenu('welcome')}
                     data-flag="survey">
-                    <img className="menu-icon" src="/assets/img/survey/icon/menu-welcome.png" width="30" height="30" />
-                    <IntlMessages id="menu.welcome" />
+                    <img className="menu-icon" src="/assets/img/survey/menu-welcome.png" />
                   </NavLink>
                 </NavItem>
                 
@@ -279,8 +278,7 @@ class Sidebar extends Component {
                     to="/app/about-me"
                     onClick={() => this.changeViewingParentMenu('about-me')}
                     data-flag="survey">
-                    <img className="menu-icon" src="/assets/img/survey/icon/menu-aboutme.png" width="30" height="30" />
-                    <IntlMessages id="menu.aboutme" />
+                    <img className="menu-icon" src="/assets/img/survey/menu-aboutme.png" />
                   </NavLink>
                 </NavItem>
                 
@@ -294,8 +292,7 @@ class Sidebar extends Component {
                     to="/app/my-map"
                     onClick={() => this.changeViewingParentMenu('my-app')}
                     data-flag="survey">
-                    <img className="menu-icon" src="/assets/img/survey/icon/menu-mymap.png" width="30" height="30" />
-                    <IntlMessages id="menu.mymap" />
+                    <img className="menu-icon" src="/assets/img/survey/menu-mymap.png" />
                   </NavLink>
                 </NavItem>
                 
@@ -309,8 +306,7 @@ class Sidebar extends Component {
                     to="/app/project-map"
                     onClick={() => this.changeViewingParentMenu('project-map')}
                     data-flag="survey">
-                    <img className="menu-icon" src="/assets/img/survey/icon/menu-projmap.png" width="30" height="30" />
-                    <IntlMessages id="menu.projectmap" />
+                    <img className="menu-icon" src="/assets/img/survey/menu-projmap.png" />
                   </NavLink>
                 </NavItem>
 
@@ -324,8 +320,7 @@ class Sidebar extends Component {
                     to="/app/dashboard"
                     onClick={() => this.changeViewingParentMenu('dashboard')}
                     data-flag="survey">
-                    <img className="menu-icon" src="/assets/img/survey/icon/menu-dashboard.png" width="30" height="30" />
-                    <IntlMessages id="menu.dashboard" />
+                    <img className="menu-icon" src="/assets/img/survey/menu-dashboard.png" />
                   </NavLink>
                 </NavItem>
 

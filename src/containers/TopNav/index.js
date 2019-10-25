@@ -191,7 +191,7 @@ class TopNav extends Component {
 
     return (
       <nav className="navbar fixed-top">
-        <NavLink
+        {/* <NavLink
           to="#"
           className="menu-button d-none d-md-block"
           onClick={e =>
@@ -216,8 +216,8 @@ class TopNav extends Component {
             <rect x="1.56" y="7.5" width="16" height="1" />
             <rect x="1.56" y="15.5" width="16" height="1" />
           </svg>
-        </NavLink>
-        <NavLink
+        </NavLink> */}
+        {/* <NavLink
           to="#"
           className="menu-button-mobile d-xs-block d-sm-block d-md-none"
           onClick={e => this.mobileMenuButtonClick(e, containerClassnames)}
@@ -227,7 +227,7 @@ class TopNav extends Component {
             <rect x="0.5" y="7.5" width="25" height="1" />
             <rect x="0.5" y="15.5" width="25" height="1" />
           </svg>
-        </NavLink>
+        </NavLink> */}
 
         {/* <div className="search" >
           <Input
