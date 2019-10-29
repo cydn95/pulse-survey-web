@@ -13,7 +13,12 @@ import {
   NewStakeholder
 } from "Components/Survey";
 
+
 class Question extends Component {
+  
+  handleAnswer = answer => {
+    console.log(answer);
+  }
 
   render() {
     
@@ -37,19 +42,19 @@ class Question extends Component {
       let controlList = question.pages.ampagesetting.map( (control, index) => {
         switch (control.controlType) {
           case controlType.TEXT:
-            return <FreeText key={index} question={control}/>
+            return <FreeText key={index} question={control} onAnswer={answer => this.handleAnswer(answer)}/>
 
           case controlType.SLIDER:
-            return <RangeSlider key={index} question={control} />
+            return <RangeSlider key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
           
             case controlType.TWO_OPTIONS:
-            return <TwoOptions key={index} question={control} />
+            return <TwoOptions key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
 
           case controlType.MULTI_OPTIONS:
-            return <TwoOptions key={index} question={control} />
+            return <MultipleOptions key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
 
           case controlType.SMART_TEXT:
-            return <SmartText key={index} question={control} />
+            return <SmartText key={index} question={control}  onAnswer={answer => this.handleAnswer(answer)}/>
 
           default:
             return <div key={index} ></div>

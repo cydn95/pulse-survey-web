@@ -25,7 +25,6 @@ function* getPageList() {
 
     if (result.status === 200) {
 
-      console.log(result);
       // get only page which have page_order
       let validPageList = result.data.results.filter(item => {
         return item.page_order && item.pages
@@ -35,7 +34,46 @@ function* getPageList() {
       let orderedPageList = validPageList.sort(
         (a, b) => (a.page_order.order > b.page_order.order) ? 1 : -1);
       
+      for (let i = 0; i < orderedPageList.length; i++) {
+        
+        for (let j = 0; j < orderedPageList[i].pages.ampagesetting.length; j++) {
+          orderedPageList[i].pages.ampagesetting[j] = {
+            ...orderedPageList[i].pages.ampagesetting[j],
+            answer: {
+              answer: '',
+              skip: false,
+              skipeReason: 0,
+              comment: false,
+              commentText: '',
+              status: false,
+              pageNum: -1,
+              questionNum: -1,
+              type: 'me'
+            }
+          }
+        }
+
+
+        for (let j = 0; j < orderedPageList[i].pages.aopagesetting.length; j++) {
+          orderedPageList[i].pages.aopagesetting[j] = {
+            ...orderedPageList[i].pages.aopagesetting[j],
+            answer: {
+              answer: '',
+              skip: false,
+              skipeReason: 0,
+              comment: false,
+              commentText: '',
+              status: false,
+              pageNum: -1,
+              questionNum: -1,
+              type: 'other'
+            }
+          }
+        }
+      }
+
       console.log(orderedPageList);
+      
       yield put(pageListSuccess(orderedPageList));
         
     } else {

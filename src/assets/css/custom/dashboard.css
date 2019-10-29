@@ -1,0 +1,63 @@
+.dashboard-sidebar {
+    position: fixed;
+    top: 170px;
+    left: 65px;
+    height: calc(100% - 330px);
+    width: 60px;
+    background: #fff !important;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    -moz-box-shadow: 0 4px 2px -2px rgba(0, 0, 0, .05);
+    -webkit-box-shadow: 0 4px 2px -2px rgba(0, 0, 0, .05);
+    box-shadow: 0 4px 2px -2px rgba(0, 0, 0, .05);
+}
+
+.dashboard-main {
+    position:fixed;
+    left: 126px;
+    top: 90px;
+    height: calc(100% - 160px);
+    width: calc(100% - 140px);
+    background-color: #fff;
+    border-radius: 25px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 50px;
+    padding-top: 10px;
+    -moz-box-shadow: 4px 4px 4px rgba(0, 0, 0, .05);
+    -webkit-box-shadow: 4px 4px 4px rgba(0, 0, 0, .05);
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, .05); 
+    z-index: 300;
+}
+
+.dashboard-logo {
+    position: fixed;
+    bottom:5px;
+    right: 10px;
+    width: 200px;
+}
+
+.dashboard-sidebar ul {
+    padding: 20px 13px;
+}
+
+.dashboard-sidebar ul a {
+    display: block;
+    text-align: center;
+    padding: 3px;
+    border-radius: 20px;
+    margin-bottom:5px;
+}
+
+.dashboard-sidebar ul a:hover {
+    background: #4262b1;
+}
+
+.dashboard-sidebar ul a.active {
+    background: #4262b1;
+}
+
+.dashboard-sidebar ul a img {
+    width: 25px;
+    height:25px;
+}

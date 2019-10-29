@@ -52,7 +52,9 @@ class RangeSlider extends Component {
           </Colxx>
         </Row>
         <Row>
-        <SkipQuestion /> 
+          <Colxx xs="12">
+            <SkipQuestion /> 
+          </Colxx>
         </Row>
       </div>
     );

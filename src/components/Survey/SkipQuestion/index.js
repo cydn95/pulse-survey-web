@@ -57,10 +57,10 @@ class SkipQuestion extends Component {
       <Row>
         <Colxx xs="12">
           {!this.state.commentToggle &&
-            <a href="/" class="comment-button" onClick={(e) => this.onShowCommentText(e)}><FontAwesomeIcon icon="plus-circle"/> Add Comment</a>
+            <a href="/" className="comment-button" onClick={(e) => this.onShowCommentText(e)}><FontAwesomeIcon icon="plus-circle"/> Add Comment</a>
           }
           {this.state.commentToggle &&
-            <a href="/" class="comment-button" onClick={(e) => this.onShowCommentText(e)}><FontAwesomeIcon icon="minus-circle"/> Hide Comment</a>
+            <a href="/" className="comment-button" onClick={(e) => this.onShowCommentText(e)}><FontAwesomeIcon icon="minus-circle"/> Hide Comment</a>
           }
           {this.state.commentToggle &&
             <div className="input-field">
