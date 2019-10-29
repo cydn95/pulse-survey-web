@@ -31,7 +31,7 @@ class Start extends Component {
         <StageBar pages={surveyList} pageIndex={pageIndex} />
         <Row>
           <Colxx xs="12" md="6" className="survey-content">
-            <Title title="Alfa Project" />
+            {/* <Title title="Alfa Project" /> */}
             {surveyList.length > 0 && <Question />}
             {surveyList.length ===0 && <h1>Loading...</h1>}
             <Continue />

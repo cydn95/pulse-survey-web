@@ -126,7 +126,6 @@ video {
 /* Component */
 .anwser-select2 .select2-btn,
 .anwser-select-n .select2-btn {
-  width: 48%;
   display: inline-block !important;
   margin-bottom: 5px;
   margin-right: 5px;
@@ -198,6 +197,7 @@ video {
   padding-bottom: 5px;
   cursor: default;
 }
+
 .smart-list-section .body .row,
 .smart-list-section .body .col {
   margin: 0px !important;
@@ -234,6 +234,12 @@ video {
   padding: 20px;
 }
 
+/* Add Comment */
+.comment-button {
+  position: absolute;
+  right: 15px;
+  top: 0px;
+}
 /*-----Override Slider CSS ------------------------------------------------*/
 .rc-slider-handle { 
   background: #fff url(/assets/img/survey/slider_handler.png) center center no-repeat !important;

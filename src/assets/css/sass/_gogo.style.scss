@@ -2031,17 +2031,18 @@ button {
         color: $theme-color-1;
       }
 
-      // &.active:after {
-      //   content: " ";
-      //   background: $theme-color-1;
-      //   border-radius: 10px;
-      //   position: absolute;
-      //   width: 6px;
-      //   height: 90px;
-      //   top: 50%;
-      //   transform: translateY(-50%);
-      //   left: 0;
-      // }
+      &.active:after {
+        content: " ";
+        background: $theme-color-1;
+        border-radius: 10px;
+        position: absolute;
+        width: 6px;
+        // height: 90px;
+        height: 55px;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 0;
+      }
     }
 
     @include respond-below(xl) {

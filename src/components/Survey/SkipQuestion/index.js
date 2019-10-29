@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Row } from "reactstrap";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { Colxx } from "Components/CustomBootstrap";
 
 class SkipQuestion extends Component {
@@ -10,7 +12,9 @@ class SkipQuestion extends Component {
 
     this.state = {
       skipToogle: false,
-      reason: 0
+      commentToggle: false,
+      reason: 0,
+      comment: ''
     }
   }
 
@@ -29,6 +33,19 @@ class SkipQuestion extends Component {
       reason: answer
     });
   }
+
+  onShowCommentText = (e) => {
+    e.preventDefault();
+    this.setState({
+      commentToggle: !this.state.commentToggle
+    });
+  }
+
+  onInputComment = e => {
+    this.setState({
+      comment: e.target.value
+    })
+  }
   render() {
 
     let firstAnswerActive = this.state.reason === 1 ? ' active' : '';
@@ -39,22 +56,33 @@ class SkipQuestion extends Component {
     return (
       <Row>
         <Colxx xs="12">
-            {!this.state.skipToogle &&
-              <a href="/" onClick={(e) => this.onSkipQuestion(e)}>Skip this question</a>
-            }
-            {this.state.skipToogle &&
+          {!this.state.commentToggle &&
+            <a href="/" class="comment-button" onClick={(e) => this.onShowCommentText(e)}><FontAwesomeIcon icon="plus-circle"/> Add Comment</a>
+          }
+          {this.state.commentToggle &&
+            <a href="/" class="comment-button" onClick={(e) => this.onShowCommentText(e)}><FontAwesomeIcon icon="minus-circle"/> Hide Comment</a>
+          }
+          {this.state.commentToggle &&
+            <div className="input-field">
+              <input id="comment" type="text" className="" value={this.state.comment} onChange={e => this.onInputComment(e)} placeholder="Comment"/>
+            </div>
+          }
+          {!this.state.skipToogle &&
+            <a href="/" onClick={(e) => this.onSkipQuestion(e)}>Skip this question</a>
+          }
+          {this.state.skipToogle &&
+            <div>
               <div>
-                <p>
-                  Why are you skiping this question? <a href="/" onClick={(e) => this.onSkipQuestion(e)}>Cancel skip</a>
-                </p>
-                <div className="anwser-select2">
-                  <a className={"waves-effect waves-light btn select2-btn" + firstAnswerActive} onClick={e => this.onSelectSkipReason(e, 1)}>I doesn't apply to me</a>
-                  <a className={"waves-effect waves-light btn select2-btn" + secondAnswerActive} onClick={e => this.onSelectSkipReason(e, 2)}>I don't understand it</a>
-                  <a className={"waves-effect waves-light btn select2-btn" + thirdAnswerActive} onClick={e => this.onSelectSkipReason(e, 3)}>I don't have an option</a>
-                  <a className={"waves-effect waves-light btn select2-btn" + fourthAnswerActive} onClick={e => this.onSelectSkipReason(e, 4)}>Other</a>
-                </div>
+                Why are you skiping this question? <a href="/" onClick={(e) => this.onSkipQuestion(e)}>Cancel skip</a>
               </div>
-            }
+              <div className="anwser-select2">
+                <a className={"waves-effect waves-light btn select2-btn" + firstAnswerActive} onClick={e => this.onSelectSkipReason(e, 1)}>It doesn't apply to me</a>
+                <a className={"waves-effect waves-light btn select2-btn" + secondAnswerActive} onClick={e => this.onSelectSkipReason(e, 2)}>I don't understand it</a>
+                <a className={"waves-effect waves-light btn select2-btn" + thirdAnswerActive} onClick={e => this.onSelectSkipReason(e, 3)}>I don't have an option</a>
+                <a className={"waves-effect waves-light btn select2-btn" + fourthAnswerActive} onClick={e => this.onSelectSkipReason(e, 4)}>Other</a>
+              </div>
+            </div>
+          }
         </Colxx>
       </Row>
     );

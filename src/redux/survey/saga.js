@@ -25,7 +25,7 @@ function* getPageList() {
 
     if (result.status === 200) {
 
-      // console.log(result);
+      console.log(result);
       // get only page which have page_order
       let validPageList = result.data.results.filter(item => {
         return item.page_order && item.pages

@@ -6,9 +6,9 @@ import App from 'Containers/App';
 import { configureStore } from 'Redux/store';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faTimesCircle, faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
 
-library.add(faTimesCircle);
+library.add(faTimesCircle, faPlusCircle, faMinusCircle);
 
 const MainApp = () => (
 	<Provider store={configureStore()}>
