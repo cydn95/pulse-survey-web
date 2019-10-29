@@ -263,7 +263,7 @@ class Sidebar extends Component {
                   <NavLink
                     to="/app/welcome"
                     onClick={() => this.changeViewingParentMenu('welcome')}
-                    data-flag="survey">
+                    data-flag="welcome">
                     <img className="menu-icon" src="/assets/img/survey/menu-welcome.png" />
                   </NavLink>
                 </NavItem>
@@ -277,7 +277,7 @@ class Sidebar extends Component {
                   <NavLink
                     to="/app/about-me"
                     onClick={() => this.changeViewingParentMenu('about-me')}
-                    data-flag="survey">
+                    data-flag="about-me">
                     <img className="menu-icon" src="/assets/img/survey/menu-aboutme.png" />
                   </NavLink>
                 </NavItem>
@@ -291,7 +291,7 @@ class Sidebar extends Component {
                   <NavLink
                     to="/app/my-map"
                     onClick={() => this.changeViewingParentMenu('my-app')}
-                    data-flag="survey">
+                    data-flag="my-map">
                     <img className="menu-icon" src="/assets/img/survey/menu-mymap.png" />
                   </NavLink>
                 </NavItem>
@@ -305,7 +305,7 @@ class Sidebar extends Component {
                   <NavLink
                     to="/app/project-map"
                     onClick={() => this.changeViewingParentMenu('project-map')}
-                    data-flag="survey">
+                    data-flag="project-map">
                     <img className="menu-icon" src="/assets/img/survey/menu-projmap.png" />
                   </NavLink>
                 </NavItem>
@@ -319,7 +319,7 @@ class Sidebar extends Component {
                   <NavLink
                     to="/app/dashboard"
                     onClick={() => this.changeViewingParentMenu('dashboard')}
-                    data-flag="survey">
+                    data-flag="dashboard">
                     <img className="menu-icon" src="/assets/img/survey/menu-dashboard.png" />
                   </NavLink>
                 </NavItem>

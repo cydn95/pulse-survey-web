@@ -78,7 +78,6 @@ class StageBar extends React.Component {
                 })}/>
           </Colxx>
         </Row>
-        <Separator />
       </div>
     )
   }

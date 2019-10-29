@@ -3,10 +3,6 @@ import React, { Component, Fragment } from "react";
 import { Row } from "reactstrap";
 import { Colxx } from "Components/CustomBootstrap";
 
-import { Title } from "Components/Survey";
-
-import "Assets/css/custom/dashboard.css";
-
 class Dashboard extends Component {
 
   constructor(props) {

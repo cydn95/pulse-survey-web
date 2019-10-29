@@ -1,12 +1,12 @@
-.stage-progress-container {
-  /* margin-top: 10px !important; */
-}
-
 .previous-link {
   display: inline-block;
   margin-top: 20px !important;
 }
+
 /* top stage progress bar */
+.stage-progress-container {
+  padding-top: 10px;
+}
 .menu-icon {
   color: #922c88;
   margin-bottom: 5px;
@@ -49,34 +49,12 @@
   border: 1px solid #89CBC1;
 }
 
-/* Survey */
-.survey-content {
-
-}
-.survey-image {
-  height: 400px !important;
-} 
-
-.project-ai-logo {
-  background: url("/assets/img/survey/logo.png") center center no-repeat;
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 243px;
-  height: 63px;
-  color: transparent;
+.stage-progress-circle {
+  width: 50px !important;
+  height: 50px !important;
 }
 
-.type-survey {
-  background: url("/assets/img/survey/survey.png") center center no-repeat;
-  background-size: 35%;
-}
-
-.type-aboutme {
-  background: url("/assets/img/survey/about_me.png") center center no-repeat;
-  background-size: 35%;
-}
-
+/***************************************************/
 
 .mt-xs {
   margin-top: 10px;
@@ -267,12 +245,3 @@ video {
   text-align: right;
 }
 /* ------------------------------------------------------------------------*/
-
-/* ----------------------------------------------------------------------- */
-.CircularProgressbar .CircularProgressbar-path {
-}
-.stage-progress-circle {
-  width: 60px !important;
-  height: 60px !important;
-}
-/* ----------------------------------------------------------------------- */

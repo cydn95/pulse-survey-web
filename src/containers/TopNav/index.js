@@ -365,7 +365,7 @@ class TopNav extends Component {
               </UncontrolledDropdown>
                   </div>*/}
 
-            <button
+            {/* <button
               className="header-icon btn btn-empty d-none d-sm-inline-block"
               type="button"
               id="fullScreenButton"
@@ -376,7 +376,7 @@ class TopNav extends Component {
               ) : (
                 <i className="simple-icon-size-fullscreen d-block" />
               )}
-            </button>
+            </button> */}
           </div>
           <div className="user d-inline-block">
             <UncontrolledDropdown className="dropdown-menu-right">
