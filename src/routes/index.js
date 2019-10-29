@@ -9,6 +9,10 @@ import Dashboard from './dashboard';
 
 import { connect } from 'react-redux';
 
+import "Assets/css/custom/main.css";
+import 'Assets/css/custom/survey.css';
+import "Assets/css/custom/dashboard.css";
+
 class MainApp extends Component {
 
 	render() {
@@ -24,7 +28,7 @@ class MainApp extends Component {
 							{/* <Route path={`${match.url}/survey`} component={Survey} /> */}
 							<Route path={`${match.url}/about-me`} component={Survey} />
 
-							<Route path={`${match.url}/welcome`}>
+							{/* <Route path={`${match.url}/welcome`}>
 								<Redirect to="/coming-soon" />
 							</Route>
 							<Route path={`${match.url}/my-map`}>
@@ -32,7 +36,7 @@ class MainApp extends Component {
 							</Route>
 							<Route path={`${match.url}/project-map`}>
 								<Redirect to="/coming-soon" />
-							</Route>
+							</Route> */}
 							
 							<Route path={`${match.url}/dashboard`} component={Dashboard} />
 								

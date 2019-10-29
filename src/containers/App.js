@@ -65,10 +65,10 @@ class App extends Component {
 							<Route path={`/login`} component={login} />
 							<Route path={`/register`} component={register} />
 							<Route path={`/forgot-password`} component={forgotPassword} />
-							<Route path={`/coming-soon`} component={coming} />
 							<Route path={`/error`} component={error} />
+							<Route path={`/coming-soon`} component={coming} />
 							<Redirect to="/error" />
-						</Switch>
+						</Switch>	
 						</Fragment>
 					</IntlProvider>
 				</Fragment>

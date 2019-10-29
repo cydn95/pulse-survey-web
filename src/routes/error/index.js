@@ -34,12 +34,12 @@ class Error404 extends Component {
                       {/* <span className="logo-single" /> */}
                     </NavLink>
                     <CardTitle className="mb-4">
-                      <IntlMessages id="layouts.error-title" />
+                      <IntlMessages id="layouts.coming-soon-title" />
                     </CardTitle>
                     <p className="mb-0 text-muted text-small mb-0">
-                      <IntlMessages id="layouts.error-code" />
+                      <IntlMessages id="layouts.coming-soon-message" />
                     </p>
-                    <p className="display-1 font-weight-bold mb-5">404</p>
+                    <p className="display-1 font-weight-bold mb-5"> </p>
                     <Button
                       href="/app"
                       color="primary"

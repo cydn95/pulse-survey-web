@@ -2227,14 +2227,14 @@ button {
     }
   }
 
-  //Mobile
+  //Mobile   // Changed by XXX
   &.menu-mobile {
     .main-menu {
-      transform: translateX(-$main-menu-width-xs);
+      // transform: translateX(-$main-menu-width-xs);
     }
 
     .sub-menu {
-      transform: translateX(-$sub-menu-width-xs - $main-menu-width-xs - 50);
+      // transform: translateX(-$sub-menu-width-xs - $main-menu-width-xs - 50);
     }
   }
 

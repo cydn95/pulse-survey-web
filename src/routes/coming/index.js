@@ -17,7 +17,6 @@ class ComingSoon extends Component {
     
   }
   render() {
-    console.log("dhfkjashfjkfhjaksdfsdafasdfasdf");
     return (
       <Fragment>
         <div className="fixed-background" />

@@ -12,14 +12,6 @@ import {
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-// const Previous = (props) => {
-//   return (
-//     <div>
-      
-//     </div>
-//   );
-// };
-
 const DropDownMennu = (props) => {
   return (
     <div>
@@ -47,38 +39,40 @@ class StageBar extends React.Component {
     const { pages, pageIndex, percentage } = this.props;
     
     return (
-      <div className="stage-progress-container">
-        <Row>
-          <Colxx xxs="2">
-            <a href="/" onClick={e => this.onPrevPage(e, pageIndex)}><i className="previous-link iconsmind-Arrow-Back"></i>Previous</a>
-          </Colxx>
-          <Colxx xxs="8" className="stage-progress">
-            <ul className="state-nav">
-              {
-                pages.map((page, index) => {
-                  let active = index === pageIndex ? 'active' : '';
-                  return (
-                    <li key={index}>
-                      <a href="/" onClick={e=>this.onClickPage(e, index)} className={active} title={"Question" + index}>1</a>
-                    </li>
-                  )
-                })
-              }
-            </ul>
-          </Colxx>
-          <Colxx xxs="2">
-            <CircularProgressbar 
-                className="stage-progress-circle"
-                value={percentage} 
-                text={`${percentage}%`} 
-                styles={buildStyles({
-                  trailColor: '#ccc',
-                  pathColor: '#89CBC1',
-                  textSize: '20px',
-                })}/>
-          </Colxx>
-        </Row>
-      </div>
+      <Row>
+        <Colxx xxs="12">
+          <div className="stage-progress-container">
+            <div>
+              <a href="/" onClick={e => this.onPrevPage(e, pageIndex)}><i className="previous-link iconsmind-Arrow-Back"></i>Previous</a>
+            </div>
+            <div className="stage-progress">
+              <ul className="state-nav">
+                {
+                  pages.map((page, index) => {
+                    let active = index === pageIndex ? 'active' : '';
+                    return (
+                      <li key={index}>
+                        <a href="/" onClick={e=>this.onClickPage(e, index)} className={active} title={"Question" + index}>1</a>
+                      </li>
+                    )
+                  })
+                }
+              </ul>
+            </div>
+            <div>
+              <CircularProgressbar 
+                  className="stage-progress-circle"
+                  value={percentage} 
+                  text={`${percentage}%`} 
+                  styles={buildStyles({
+                    trailColor: '#ccc',
+                    pathColor: '#89CBC1',
+                    textSize: '20px',
+                  })}/>
+            </div>
+          </div>
+        </Colxx>
+      </Row>
     )
   }
 }
