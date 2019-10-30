@@ -49,4 +49,12 @@ module.exports = {
   "layouts.go-back-home": "GO BACK HOME",
   "layouts.coming-soon-title": "COMING SOON",
   "layouts.coming-soon-message": "This page is under construction. we are working very hard to give you the best experience with this one",
+
+  /* 05.Survey Page */
+  "survey.engagement": "ENGAGEMENT",
+  "survey.influence": "INFLUENCE",
+  "survey.interest": "INTEREST",
+  "survey.sentiment": "SENTIMENT",
+  "survey.confidence": "CONFIDENCE",
+  "survey.culture": "CULTURE"
 };

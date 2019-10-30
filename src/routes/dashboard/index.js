@@ -3,13 +3,18 @@ import React, { Component, Fragment } from "react";
 import { Row } from "reactstrap";
 import { Colxx } from "Components/CustomBootstrap";
 
+import { connect } from 'react-redux';
+
+import classnames from 'classnames';
+
 class Dashboard extends Component {
 
   constructor(props) {
     super(props);
     
     this.state = {
-      menu_state: 'menu-1'
+      menu_state: 'menu-1',
+      menu_bar_width: 'dashboard-container-width-1'
     }
 
   }
@@ -22,11 +27,23 @@ class Dashboard extends Component {
     });
   }
   
+  componentWillReceiveProps(props) {
+      const { menuClickCount } = props;
+      this.setState({
+        menu_bar_width: menuClickCount % 2 === 0 ? 'dashboard-container-width-1' : 'dashboard-container-width-2'
+      });
+  }
+
   render() {
 
+    // var containerClass = classNames({
+    //   'dashboard-container': true,
+    //   this.state.da
+    // });
+    
     return (
-      <div>
-        <div class="dashboard-sidebar">
+      <div className={"dashboard-container " + this.state.menu_bar_width}>
+        <div className="dashboard-sidebar">
           <ul>
             <li>
               <a href="/" onClick={e => this.clickSubMenu(e, 'menu-1')} 
@@ -107,4 +124,22 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard
+const mapStateToProps = ({ menu, survey, settings }) => {
+
+  const { pageList, pageIndex } = survey;
+  const { locale } = settings;
+  const { menuClickCount } = menu; 
+
+  return {
+    menuClickCount
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  {
+  }
+)(Dashboard);
+
+
+// export default Dashboard

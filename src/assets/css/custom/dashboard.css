@@ -1,8 +1,28 @@
+.dashboard-container {
+    position: absolute;
+    height: calc(100% - 60px);
+    display: flex;
+    flex-flow: row;
+}
+
+.dashboard-container-width-1 {
+    width: calc(100% - 140px);
+}
+
+.dashboard-container-width-2 {
+    width: calc(100% - 40px);
+}
+
+@media screen and (max-width: 767px) {
+    .dashboard-container {
+        width: calc(100% - 10px);
+    }
+}
 .dashboard-sidebar {
-    position: fixed;
-    top: 170px;
-    left: 65px;
-    height: calc(100% - 330px);
+    margin-top: 110px;
+    margin-left: 10px;
+    /* left: 115px; */
+    height: calc(100% - 270px);
     width: 60px;
     background: #fff !important;
     border-top-left-radius: 25px;
@@ -13,11 +33,10 @@
 }
 
 .dashboard-main {
-    position:fixed;
-    left: 126px;
-    top: 90px;
-    height: calc(100% - 160px);
-    width: calc(100% - 140px);
+    margin-top: 30px;
+    margin-left: 5px;
+    height: calc(100% - 100px);
+    flex-grow: 1;
     background-color: #fff;
     border-radius: 25px;
     padding-left: 25px;
@@ -27,7 +46,6 @@
     -moz-box-shadow: 4px 4px 4px rgba(0, 0, 0, .05);
     -webkit-box-shadow: 4px 4px 4px rgba(0, 0, 0, .05);
     box-shadow: 4px 4px 4px rgba(0, 0, 0, .05); 
-    z-index: 300;
 }
 
 .dashboard-logo {

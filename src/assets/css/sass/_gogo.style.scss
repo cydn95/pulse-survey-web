@@ -50,11 +50,11 @@ Table of Contents
 // $main-menu-width-md: 100px;
 // $main-menu-width-xs: 90px;
 
-$main-menu-item-height: 55px;
-$main-menu-width: 63px;
-$main-menu-width-lg: 63px;
-$main-menu-width-md: 57px;
-$main-menu-width-xs: 51px;
+$main-menu-item-height: 75px;
+$main-menu-width: 110px;
+$main-menu-width-lg: 110px;
+$main-menu-width-md: 99px;
+$main-menu-width-xs: 99px;
 
 $sub-menu-width: 230px;
 $sub-menu-width-lg: 220px;
@@ -2038,7 +2038,7 @@ button {
         position: absolute;
         width: 6px;
         // height: 90px;
-        height: 55px;
+        height: 75px;
         top: 50%;
         transform: translateY(-50%);
         left: 0;
@@ -2070,7 +2070,7 @@ button {
 
       ul li.active:after {
         width: 3px;
-        height: 60px;
+        height: 85px;
       }
     }
   }
@@ -2230,11 +2230,11 @@ button {
   //Mobile   // Changed by XXX
   &.menu-mobile {
     .main-menu {
-      // transform: translateX(-$main-menu-width-xs);
+      transform: translateX(-$main-menu-width-xs);
     }
 
     .sub-menu {
-      // transform: translateX(-$sub-menu-width-xs - $main-menu-width-xs - 50);
+      transform: translateX(-$sub-menu-width-xs - $main-menu-width-xs - 50);
     }
   }
 

@@ -265,6 +265,7 @@ class Sidebar extends Component {
                     onClick={() => this.changeViewingParentMenu('welcome')}
                     data-flag="welcome">
                     <img className="menu-icon" src="/assets/img/survey/menu-welcome.png" />
+                    <IntlMessages id="menu.welcome" />
                   </NavLink>
                 </NavItem>
                 
@@ -279,6 +280,7 @@ class Sidebar extends Component {
                     onClick={() => this.changeViewingParentMenu('about-me')}
                     data-flag="about-me">
                     <img className="menu-icon" src="/assets/img/survey/menu-aboutme.png" />
+                    <IntlMessages id="menu.aboutme" />
                   </NavLink>
                 </NavItem>
                 
@@ -293,6 +295,7 @@ class Sidebar extends Component {
                     onClick={() => this.changeViewingParentMenu('my-app')}
                     data-flag="my-map">
                     <img className="menu-icon" src="/assets/img/survey/menu-mymap.png" />
+                    <IntlMessages id="menu.mymap" />
                   </NavLink>
                 </NavItem>
                 
@@ -307,6 +310,7 @@ class Sidebar extends Component {
                     onClick={() => this.changeViewingParentMenu('project-map')}
                     data-flag="project-map">
                     <img className="menu-icon" src="/assets/img/survey/menu-projmap.png" />
+                    <IntlMessages id="menu.projectmap" />
                   </NavLink>
                 </NavItem>
 
@@ -321,6 +325,7 @@ class Sidebar extends Component {
                     onClick={() => this.changeViewingParentMenu('dashboard')}
                     data-flag="dashboard">
                     <img className="menu-icon" src="/assets/img/survey/menu-dashboard.png" />
+                    <IntlMessages id="menu.dashboard" />
                   </NavLink>
                 </NavItem>
 

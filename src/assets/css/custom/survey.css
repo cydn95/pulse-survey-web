@@ -1,31 +1,42 @@
-.previous-link {
-  display: inline-block;
-  margin-top: 20px !important;
-}
-
 /* top stage progress bar */
 .stage-progress-container {
   padding-top: 10px;
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
 }
+.survey-previous-link {
+  margin-right: 20px;
+}
+
+.stage-progress-container > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-flow: row wrap;
+  margin-bottom: 2px;
+}
+
+.previous-link {
+  margin-right: 5px;  
+}
+
+.survey-category {
+  font-size: 0.8em;
+}
+.survey-category * {
+  margin-right: 5px;
+}
+
 .menu-icon {
   color: #922c88;
   margin-bottom: 5px;
 }
 
-.stage-progress {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-content: center;
-  flex-grow: 1;
-  /* background: #fff; */
-}
-
 .stage-progress ul {
   list-style-type: none;
+  margin-bottom: 0px !important;
 }
 
 .stage-progress ul li {

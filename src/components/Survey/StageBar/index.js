@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { Row } from "reactstrap";
 import { Colxx, Separator } from "Components/CustomBootstrap";
-
+import IntlMessages from "Util/IntlMessages";
 import { connect } from 'react-redux';
 
 import {
@@ -11,6 +11,8 @@ import {
 
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const DropDownMennu = (props) => {
   return (
@@ -42,8 +44,23 @@ class StageBar extends React.Component {
       <Row>
         <Colxx xxs="12">
           <div className="stage-progress-container">
-            <div>
+            <div className="survey-previous-link">
               <a href="/" onClick={e => this.onPrevPage(e, pageIndex)}><i className="previous-link iconsmind-Arrow-Back"></i>Previous</a>
+            </div>
+            <div className="survey-category">
+              <a href="/"><IntlMessages id="survey.engagement" /></a>
+              <FontAwesomeIcon icon="play" />
+              <a href="/"><IntlMessages id="survey.influence" /></a>
+              <FontAwesomeIcon icon="play" />
+              <a href="/"><IntlMessages id="survey.interest" /></a>
+              <FontAwesomeIcon icon="play" />
+              <a href="/"><IntlMessages id="survey.sentiment" /></a>
+              <FontAwesomeIcon icon="play" />
+              <a href="/"><IntlMessages id="survey.engagement" /></a>
+              <FontAwesomeIcon icon="play" />
+              <a href="/"><IntlMessages id="survey.confidence" /></a>
+              <FontAwesomeIcon icon="play" />
+              <a href="/"><IntlMessages id="survey.culture" /></a>
             </div>
             <div className="stage-progress">
               <ul className="state-nav">
@@ -58,8 +75,6 @@ class StageBar extends React.Component {
                   })
                 }
               </ul>
-            </div>
-            <div>
               <CircularProgressbar 
                   className="stage-progress-circle"
                   value={percentage} 
