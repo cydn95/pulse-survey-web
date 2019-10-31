@@ -19,3 +19,7 @@ export const PAGE_LIST = 'PAGE_LIST';
 export const PAGE_LIST_SUCCESS = 'PAGE_LIST_SUCCESS';
 export const SELECT_PAGE = 'SELECT_PAGE';
 export const CONTINUE_SURVEY = 'CONTINUE_SURVEY';
+
+/* Notification */
+export const SHOW_NOTIFICATION = 'SHOW_NOTIFICATION';
+export const CLOSE_NOTIFICATION = 'CLOSE_NOTIFICATION';

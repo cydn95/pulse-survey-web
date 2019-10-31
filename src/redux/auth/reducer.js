@@ -7,7 +7,9 @@ import {
 } from "Constants/actionTypes";
 
 const INIT_STATE = {
-  user: localStorage.getItem("user_id"),
+  user: {
+    accessToken: localStorage.getItem("accessToken")
+  },
   loading: false
 };
 
@@ -24,7 +26,7 @@ export default (state = INIT_STATE, action) => {
       //notify.success('Register User Success');
       return { ...state, loading: false, user: action.payload.uid };
     case LOGOUT_USER:
-      return { ...state, user: null };
+      return { ...state, user: { accessToken: '' } };
     default:
       return { ...state };
   }

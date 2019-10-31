@@ -18,6 +18,7 @@ import 'Assets/css/vendor/bootstrap.min.css'
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import 'Assets/css/sass/themes/gogo.light.purple.scss';
 import { cps } from 'redux-saga/effects';
+import { auth } from 'firebase';
 /*
 color options : 
 	 'light.purple'		'dark.purple'
@@ -31,7 +32,7 @@ const InitialPath = ({ component: Component, ...rest, authUser }) =>
 	<Route
 		{...rest}
 		render={props =>
-			authUser 
+			(authUser && authUser.accessToken !== '' && authUser.accessToken !== null)
 				? <Component {...props} />
 				: <Redirect
 					to={{

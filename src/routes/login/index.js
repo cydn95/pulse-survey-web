@@ -12,12 +12,13 @@ class LoginLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "demo@gogo.com",
-      password: "gogo123"
+      username: "",
+      password: ""
     };
   }
   onUserLogin() {
-    if (this.state.email !== "" && this.state.password !== "") {
+    
+    if (this.state.username !== "" && this.state.password !== "") {
       this.props.loginUser(this.state, this.props.history);
     }
   }
@@ -28,6 +29,13 @@ class LoginLayout extends Component {
   componentWillUnmount() {
     document.body.classList.remove("background");
   }
+
+  inputChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
   render() {
     return (
       <Fragment>
@@ -54,15 +62,12 @@ class LoginLayout extends Component {
                     </CardTitle>
                     <Form>
                       <Label className="form-group has-float-label mb-4">
-                        <Input type="email" defaultValue={this.state.email} />
-                        <IntlMessages id="user.email" />
+                        <Input type="text" name="username" value={this.state.username} onChange={e => this.inputChange(e)}/>
+                        <IntlMessages id="user.username" />
                       </Label>
                       <Label className="form-group has-float-label mb-4">
-                        <Input type="password" />
-                        <IntlMessages
-                          id="user.password"
-                          defaultValue={this.state.password}
-                        />
+                        <Input type="password" name="password" value={this.state.password} onChange={e => this.inputChange(e)} />
+                        <IntlMessages id="user.password"/>
                       </Label>
                       <div className="d-flex justify-content-between align-items-center">
                         <NavLink to={`/forgot-password`}>
