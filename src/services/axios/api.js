@@ -1,7 +1,7 @@
 import { getClient } from './apiConfig'
 
 const loginAPI = (username, password) => {
-  return getClient(false).post("/rest-auth/login/", {
+  return getClient(false).post("api-token-auth/", {
     username: username,
     password: password
   })

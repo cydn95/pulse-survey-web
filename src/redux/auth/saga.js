@@ -27,23 +27,27 @@ function* loginWithUsernamePassword({ payload }) {
 	
 	try {
 			const loginUser = yield call(loginWithUsernamePasswordAsync, username, password);
-			
+            
 			if (loginUser.data) {
-					let accessToken = loginUser.data.key;
-					if (accessToken !== '') {
-							
-						// Save admin info to localStorage
-						localStorage.setItem('accessToken', accessToken);
 
-						let authData = {
-							accessToken
-						};
+        let userId = loginUser.data.id;
+        let accessToken = loginUser.data.token;
+        if (accessToken !== '') {
+            
+          // Save admin info to localStorage
+          localStorage.setItem('userId', userId);
+          localStorage.setItem('accessToken', accessToken);
 
-						yield put(loginUserSuccess(authData));
-						history.push('/');
+          let authData = {
+            userId,
+            accessToken
+          };
 
-						return;
-					}
+          yield put(loginUserSuccess(authData));
+          history.push('/');
+
+          return;
+        }
 			}
 			
 			console.log('login failed')
@@ -88,10 +92,10 @@ const logoutAsync = async (history) => {
 function* logout({payload}) {
     const { history } = payload
     try {
-				// yield call(logoutAsync, history);
-				localStorage.removeItem('accessToken');
-				yield call(logoutUser, history);
-				history.push('/')
+            // yield call(logoutAsync, history);
+            localStorage.removeItem('accessToken');
+            yield call(logoutUser, history);
+            history.push('/')
     } catch (error) {
     }
 }

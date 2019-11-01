@@ -38,7 +38,7 @@ function* getPageList() {
         
         for (let j = 0; j < orderedPageList[i].pages.ampagesetting.length; j++) {
           orderedPageList[i].pages.ampagesetting[j] = {
-            ...orderedPageList[i].pages.ampagesetting[j],
+            ...orderedPageList[i].pages.ampagesetting[j].amQuestion,
             answer: {
               pageIndex: i,
               questionIndex: j,
@@ -50,8 +50,8 @@ function* getPageList() {
               commentTags: "",
               user: 0,
               subjectUser: 0,
-              survey: orderedPageList[i].pages.ampagesetting[j].survey,
-              amQuestion: orderedPageList[i].pages.ampagesetting[j].id,
+              survey: orderedPageList[i].pages.ampagesetting[j].amQuestion.survey,
+              amQuestion: orderedPageList[i].pages.ampagesetting[j].amQuestion.id,
               type: 'me'
             }
           }
@@ -59,7 +59,7 @@ function* getPageList() {
 
         for (let j = 0; j < orderedPageList[i].pages.aopagesetting.length; j++) {
           orderedPageList[i].pages.aopagesetting[j] = {
-            ...orderedPageList[i].pages.aopagesetting[j],
+            ...orderedPageList[i].pages.aopagesetting[j].aoQuestion,
             answer: {
               pageIndex: i,
               questionIndex: j,
@@ -79,8 +79,6 @@ function* getPageList() {
         }
       }
 
-      // console.log(orderedPageList);
-      
       yield put(pageListSuccess(orderedPageList));
         
     } else {

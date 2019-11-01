@@ -8,6 +8,7 @@ import {
 
 const INIT_STATE = {
   user: {
+    userId: localStorage.getItem("userId"),
     accessToken: localStorage.getItem("accessToken")
   },
   loading: false
