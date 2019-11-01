@@ -13,11 +13,14 @@ import {
   NewStakeholder
 } from "Components/Survey";
 
+import {
+  inputAnswer,
+} from "Redux/actions";
 
 class Question extends Component {
   
   handleAnswer = answer => {
-    console.log(answer);
+    this.props.inputAnswer(answer);
   }
 
   render() {
@@ -82,5 +85,5 @@ const mapStateToProps = ({ survey, settings }) => {
 
 export default connect(
   mapStateToProps,
-  {}
+  { inputAnswer }
 )(Question);

@@ -65,7 +65,10 @@ class FreeText extends Component {
         <Colxx xs="12">
           <h1 className="mt-s">{question.questionText}</h1>
           <textarea className="materialize-textarea" rows="1" value={this.state.answer.topicValue} onChange={e => this.onInputAnswer(e)}></textarea>
-          <SkipQuestion answer={this.state.answer.topicValue} onSkip={skipAnswer => this.handleSkip(skipAnswer)} onComment={commentAnswer => this.handleComment(commentAnswer)}/>
+          <SkipQuestion 
+              answer={this.state.answer.topicValue} 
+              onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
+              onComment={commentAnswer => this.handleComment(commentAnswer)}/>
         </Colxx>
       </Row>
     );

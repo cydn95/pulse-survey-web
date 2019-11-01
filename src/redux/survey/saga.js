@@ -40,6 +40,8 @@ function* getPageList() {
           orderedPageList[i].pages.ampagesetting[j] = {
             ...orderedPageList[i].pages.ampagesetting[j],
             answer: {
+              pageIndex: i,
+              questionIndex: j,
               integerValue: 0,
               topicValue: "",
               commentValue: "",
@@ -55,11 +57,12 @@ function* getPageList() {
           }
         }
 
-
         for (let j = 0; j < orderedPageList[i].pages.aopagesetting.length; j++) {
           orderedPageList[i].pages.aopagesetting[j] = {
             ...orderedPageList[i].pages.aopagesetting[j],
             answer: {
+              pageIndex: i,
+              questionIndex: j,
               integerValue: 3,
               topicValue: "",
               commentValue: "",
