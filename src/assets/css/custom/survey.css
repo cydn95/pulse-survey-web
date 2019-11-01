@@ -117,6 +117,14 @@ video {
 
 
 /* Component */
+.anwser-select2 {
+  display: flex;
+  flex-flow: row wrap;
+}
+.anwser-select2 .select2-btn {
+  flex-grow: 1;
+}
+
 .anwser-select2 .select2-btn,
 .anwser-select-n .select2-btn {
   display: inline-block !important;
@@ -138,8 +146,7 @@ video {
   background: #2F3F92;
 }
 
-.anwser-select-n .select2-btn,
-.anwser-select-n .select2-btn.active {
+.anwser-select-n .select2-btn {
   width: 100% !important;
 }
 

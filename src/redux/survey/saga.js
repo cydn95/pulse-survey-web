@@ -40,14 +40,16 @@ function* getPageList() {
           orderedPageList[i].pages.ampagesetting[j] = {
             ...orderedPageList[i].pages.ampagesetting[j],
             answer: {
-              answer: '',
-              skip: false,
-              skipeReason: 0,
-              comment: false,
-              commentText: '',
-              status: false,
-              pageNum: -1,
-              questionNum: -1,
+              integerValue: 0,
+              topicValue: "",
+              commentValue: "",
+              skipValue: "",
+              topicTags: "",
+              commentTags: "",
+              user: 0,
+              subjectUser: 0,
+              survey: orderedPageList[i].pages.ampagesetting[j].survey,
+              amQuestion: orderedPageList[i].pages.ampagesetting[j].id,
               type: 'me'
             }
           }
@@ -58,21 +60,23 @@ function* getPageList() {
           orderedPageList[i].pages.aopagesetting[j] = {
             ...orderedPageList[i].pages.aopagesetting[j],
             answer: {
-              answer: '',
-              skip: false,
-              skipeReason: 0,
-              comment: false,
-              commentText: '',
-              status: false,
-              pageNum: -1,
-              questionNum: -1,
-              type: 'other'
+              integerValue: 3,
+              topicValue: "",
+              commentValue: "",
+              skipValue: "",
+              topicTags: "",
+              commentTags: "",
+              user: 9,
+              subjectUser: 0,
+              survey:  orderedPageList[i].pages.aopagesetting[j].survey,
+              amQuestion: orderedPageList[i].pages.aopagesetting[j].id,
+              type: 'me'
             }
           }
         }
       }
 
-      console.log(orderedPageList);
+      // console.log(orderedPageList);
       
       yield put(pageListSuccess(orderedPageList));
         

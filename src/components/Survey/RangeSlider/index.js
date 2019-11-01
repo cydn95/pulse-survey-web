@@ -13,18 +13,52 @@ class RangeSlider extends Component {
   constructor(props) {
     super(props);
 
+    const { question } = this.props
+    
     this.state = {
-      skipToogle: false
-    }
+      answer: {
+        ...question.answer
+      }
+    };
   }
 
-  onSkipQuestion = (e) => {
-    e.preventDefault();
+  onChangeSlide = value => {
+    const percent = value;
 
-    this.setState({
-      skipToogle: !this.state.skipToogle
+    this.setState( (state) => ({
+      answer: {
+        ...state.answer,
+        'integerValue': percent,
+        'skipValue': ''
+      }
+    }), () => {
+      this.props.onAnswer(this.state.answer);
     });
   }
+
+  handleSkip = skipAnswer => {
+    this.setState( (state) => ({
+      answer: {
+        ...state.answer,
+        'skipValue': skipAnswer,
+        'integerValue': 0
+      }
+    }), () => {
+      this.props.onAnswer(this.state.answer);
+    });
+  }
+
+  handleComment = commentAnswer => {
+    this.setState( (state) => ({
+      answer: {
+        ...state.answer,
+        'commentValue': commentAnswer
+      }
+    }), () => {
+      this.props.onAnswer(this.state.answer);
+    });
+  }
+
   render() {
     const { question } = this.props;
     
@@ -38,11 +72,12 @@ class RangeSlider extends Component {
         <Row>
           <Colxx xs="12">
             <SliderTooltip
-              min={500}
-              max={1500}
-              defaultValue={1000}
+              min={0}
+              max={100}
+              value={this.state.answer.integerValue}
               tipFormatter={null}
-              className="mb-5" />
+              className="mb-5"
+              onChange={value => this.onChangeSlide(value)}/>
           </Colxx>
           <Colxx xs="6" className="slider-text-left">
             {question.sliderTextLeft}
@@ -53,7 +88,9 @@ class RangeSlider extends Component {
         </Row>
         <Row>
           <Colxx xs="12">
-            <SkipQuestion /> 
+          <SkipQuestion answer={this.state.answer.integerValue} 
+              onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
+              onComment={commentAnswer => this.handleComment(commentAnswer)}/>
           </Colxx>
         </Row>
       </div>

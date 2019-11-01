@@ -101,7 +101,7 @@ class Dashboard extends Component {
             </li>
           </ul>
         </div>
-        <div class="dashboard-main">
+        <div className="dashboard-main">
           <Row>
             <Colxx xs="12" className="text-center mt-5">
               <img src="/assets/img/survey/results.png" width="150"/>
@@ -118,7 +118,7 @@ class Dashboard extends Component {
             </Colxx>
           </Row>
         </div>
-        <img class="dashboard-logo" src="/assets/img/survey/site-logo.png"/>
+        <img className="dashboard-logo" src="/assets/img/survey/site-logo.png"/>
       </div>
     );
   }

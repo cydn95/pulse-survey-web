@@ -16,9 +16,13 @@ class NewStakeholder extends Component {
   constructor(props) {
     super(props);
 
+    const { question } = this.props
+    
     this.state = {
-      answer: 0
-    }
+      answer: {
+        ...question.answer
+      }
+    };
   }
 
   onSelectAnswer = (e, answer) => {

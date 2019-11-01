@@ -43,7 +43,7 @@ export const clickOnMobileMenu = (strCurrentClasses) => {
 export const setContainerClassnames = (clickIndex, strCurrentClasses) => {
     const currentClasses = strCurrentClasses ? strCurrentClasses.split(' ').filter(x => x != '') : '';
     let nextClasses = '';
-    console.log("Click Index=", clickIndex);
+    
     if (clickIndex % 2 == 0) {
         if (currentClasses.includes('menu-default') && currentClasses.includes('menu-sub-hidden')) {
             nextClasses = 'menu-default menu-sub-hidden';

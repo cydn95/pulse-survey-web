@@ -5,6 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Colxx } from "Components/CustomBootstrap";
 
+const skipChoices = [
+  "It doesn't apply to me",
+  "I don't understand it",
+  "I don't have an option",
+  "Other"
+]
 class SkipQuestion extends Component {
 
   constructor(props) {
@@ -18,6 +24,15 @@ class SkipQuestion extends Component {
     }
   }
 
+  componentWillReceiveProps(props) {
+    const { answer } = props;
+    if (answer !== '' && answer !== 0) {
+      this.setState({
+        reason: 0,
+        skipToogle: false
+      });
+    }
+  }
   onSkipQuestion = e => {
     e.preventDefault();
 
@@ -31,6 +46,8 @@ class SkipQuestion extends Component {
 
     this.setState({
       reason: answer
+    }, () => {
+      this.props.onSkip(skipChoices[answer - 1]);
     });
   }
 
@@ -42,16 +59,17 @@ class SkipQuestion extends Component {
   }
 
   onInputComment = e => {
+
+    const comment = e.target.value;
+
     this.setState({
-      comment: e.target.value
+      'comment': comment
+    }, () => {
+      this.props.onComment(comment);
     })
   }
+  
   render() {
-
-    let firstAnswerActive = this.state.reason === 1 ? ' active' : '';
-    let secondAnswerActive = this.state.reason === 2 ? ' active' : '';
-    let thirdAnswerActive = this.state.reason === 3 ? ' active' : '';
-    let fourthAnswerActive = this.state.reason === 4 ? ' active' : '';
 
     return (
       <Row>
@@ -75,11 +93,18 @@ class SkipQuestion extends Component {
               <div>
                 Why are you skiping this question? <a href="/" onClick={(e) => this.onSkipQuestion(e)}>Cancel skip</a>
               </div>
-              <div className="anwser-select2">
-                <a className={"waves-effect waves-light btn select2-btn" + firstAnswerActive} onClick={e => this.onSelectSkipReason(e, 1)}>It doesn't apply to me</a>
-                <a className={"waves-effect waves-light btn select2-btn" + secondAnswerActive} onClick={e => this.onSelectSkipReason(e, 2)}>I don't understand it</a>
-                <a className={"waves-effect waves-light btn select2-btn" + thirdAnswerActive} onClick={e => this.onSelectSkipReason(e, 3)}>I don't have an option</a>
-                <a className={"waves-effect waves-light btn select2-btn" + fourthAnswerActive} onClick={e => this.onSelectSkipReason(e, 4)}>Other</a>
+              <div className="anwser-select-n mt-3">
+              {
+                skipChoices.map((item, index) => {
+                  let active = (index + 1) === this.state.reason ? 'active' : '';
+                  return (
+                    <a key={index}  className={"waves-effect waves-light btn select2-btn " + active}
+                      onClick={e => this.onSelectSkipReason(e, index + 1)}>
+                      {item}
+                    </a>
+                  )
+                })
+              }
               </div>
             </div>
           }

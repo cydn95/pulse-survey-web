@@ -5,63 +5,94 @@ import { Colxx } from "Components/CustomBootstrap";
 
 import SkipQuestion from "../SkipQuestion";
 
+const optionChoices = [
+  "Option 1",
+  "Option 2",
+  "Option 3"
+];
+
 class MultipleOptions extends Component {
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      answer: 0
-    }
-  }
-
-  onSelectAnswer = (e, answer) => {
-    e.preventDefault();
+    const { question } = this.props
     
-    this.setState({
-      "answer": answer
-    });
-  }
-  render() {
-
-    // const { question } = this.props;
-    const question = {
-      "id": 5,
-      "subdriver": "s",
-      "questionText": "Second Question",
-      "sliderTextLeft": "Left",
-      "sliderTextRight": "Right",
-      "skipOptionYN": true,
-      "skipResponses": "res",
-      "questionSequence": 5,
-      "topicPrompt": "topic",
-      "commentPrompt": "comment",
-      "survey": 1,
-      "driver": 1,
-      "controlType": 3,
-      "PageSetting": 6
+    this.state = {
+      answer: {
+        ...question.answer
+      }
     };
 
-    let firstAnswerActive = this.state.answer === 1 ? ' active' : '';
-    let secondAnswerActive = this.state.answer === 2 ? ' active' : '';
-    let thirdAnswerActive = this.state.answer === 3 ? ' active' : '';
+  }
+
+  onSelectAnswer = (e, answerIndex) => {
+
+    e.preventDefault();
+
+    const topicValue = e.target.value;
+
+    this.setState( (state) => ({
+      answer: {
+        ...state.answer,
+        'integerValue': answerIndex,
+        'skipValue': ''
+      }
+    }), () => {
+      this.props.onAnswer(this.state.answer);
+    });
+  }
+
+  handleSkip = skipAnswer => {
+    this.setState( (state) => ({
+      answer: {
+        ...state.answer,
+        'skipValue': skipAnswer,
+        'integerValue': 0
+      }
+    }), () => {
+      this.props.onAnswer(this.state.answer);
+    });
+  }
+
+  handleComment = commentAnswer => {
+    this.setState( (state) => ({
+      answer: {
+        ...state.answer,
+        'commentValue': commentAnswer
+      }
+    }), () => {
+      this.props.onAnswer(this.state.answer);
+    });
+  }
+
+  render() {
+
+    const { question } = this.props;
 
     return (
       <Row>
         <Colxx xs="12">
           <h1 className="mt-s">{question.questionText}</h1>
-          <div className="mt-xs">
-            <form>
-              <section className="form">
-                <div className="input-field anwser-select-n">
-                  <a className={"waves-effect waves-light btn select2-btn " + firstAnswerActive} onClick={e => this.onSelectAnswer(e, 1)}>Option1</a>
-                  <a className={"waves-effect waves-light btn select2-btn " + secondAnswerActive} onClick={e => this.onSelectAnswer(e, 2)}>Option2</a>
-                  <a className={"waves-effect waves-light btn select2-btn " + thirdAnswerActive} onClick={e => this.onSelectAnswer(e, 3)}>Option3</a>
-                </div>
-              </section>
-            </form>
+          <div className="anwser-select-n mt-3">
+              
+              </div>
+          <div className="mt-xs input-field anwser-select-n">
+            {
+              optionChoices.map((item, index) => {
+                let active = (index + 1) === this.state.answer.integerValue ? 'active' : '';
+                return (
+                  <a key={index}  className={"waves-effect waves-light btn select2-btn " + active}
+                    onClick={e => this.onSelectAnswer(e, index + 1)}>
+                    {item}
+                  </a>
+                )
+              })
+            }
           </div>
-          <SkipQuestion />
+          <SkipQuestion answer={this.state.answer.integerValue} 
+                onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
+                onComment={commentAnswer => this.handleComment(commentAnswer)}/>
         </Colxx>
       </Row>
     );

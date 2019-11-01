@@ -29,8 +29,8 @@ class Start extends Component {
         <div className="survey-progress-bar">
           <StageBar pages={surveyList} pageIndex={pageIndex} />
         </div>
-        <div class="main-content">
-          <div class="survey-content">
+        <div className="main-content">
+          <div className="survey-content">
             <Row>
               <Colxx xs="12">
                 {/* <Title title="Alfa Project" /> */}
@@ -40,7 +40,7 @@ class Start extends Component {
               </Colxx>
             </Row>
           </div>
-          <div class="survey-image">
+          <div className="survey-image">
             <img className="img-survey-description" src="/assets/img/survey/survey.png"/>
             <img className="img-site-logo" src="/assets/img/survey/site-logo.png"/>
           </div>
