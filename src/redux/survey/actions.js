@@ -3,7 +3,9 @@ import {
   PAGE_LIST_SUCCESS,
   SELECT_PAGE,
   CONTINUE_SURVEY,
-  INPUT_ANSWER
+  INPUT_ANSWER,
+  SUBMIT_SURVEY,
+  SUBMIT_SURVEY_SUCCESS
 } from 'Constants/actionTypes';
 
 export const pageList = () => ({
@@ -29,4 +31,13 @@ export const continueSurvey = (pageIndex, percentage) => ({
 export const inputAnswer = (answer) => ({
   type: INPUT_ANSWER,
   payload: { answer }
+})
+
+export const submitSurvey = (surveyList) => ( {
+  type: SUBMIT_SURVEY,
+  payload: { surveyList }
+})
+
+export const submitSurveySuccess = () => ( {
+  type: SUBMIT_SURVEY_SUCCESS
 })

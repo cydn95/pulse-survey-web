@@ -3,7 +3,9 @@ import {
   PAGE_LIST_SUCCESS,
   SELECT_PAGE,
   CONTINUE_SURVEY,
-  INPUT_ANSWER
+  INPUT_ANSWER,
+  SUBMIT_SURVEY,
+  SUBMIT_SURVEY_SUCCESS
 } from "Constants/actionTypes";
 
 const INIT_STATE = {
@@ -25,7 +27,7 @@ export default (state = INIT_STATE, action) => {
       return { ...state, pageIndex: action.payload.pageIndex, percentage: action.payload.percentage };
     case INPUT_ANSWER:
       const { answer } = action.payload;
-        
+
       if (answer.type === 'me') {
         state.pageList[answer.pageIndex].pages.ampagesetting[answer.questionIndex].answer = {
           ...answer
@@ -35,7 +37,12 @@ export default (state = INIT_STATE, action) => {
           ...answer
         };
       }
+
       return { ...state };
+    case SUBMIT_SURVEY:
+      return { ...state, loading: false };
+    case SUBMIT_SURVEY_SUCCESS:
+      return { ...state, loading: true };
     default:
       return { ...state };
   }

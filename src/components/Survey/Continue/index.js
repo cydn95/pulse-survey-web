@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 import {
   continueSurvey,
+  submitSurvey
 } from "Redux/actions";
 
 class Continue extends Component {
@@ -19,12 +20,17 @@ class Continue extends Component {
 
     if (pageIndex === (surveyList.length - 1)) {
       percentage = 100;
+
+      this.props.submitSurvey(surveyList);
+
     } else {
       let totalQuestions = 0;
       let answeredQuestions = 0;
       
       for (let i = 0; i < surveyList.length; i++) {
-        if (surveyList[i].pages.pageType === "PG_NEW_STAKEHOLDER" || surveyList[i].pages.pageType === "PG_WELCOME1") {
+        if (surveyList[i].pages.pageType === "PG_NEW_STAKEHOLDER" 
+        || surveyList[i].pages.pageType === "PG_WELCOME1" 
+        || surveyList[i].pages.pageType === "PG_ABOUT_ME") {
           totalQuestions++;
           if (pageIndex >= i) {
             answeredQuestions++;
@@ -39,7 +45,6 @@ class Continue extends Component {
         percentage = Math.round(answeredQuestions / totalQuestions * 100);
       }
 
-      console.log(totalQuestions, answeredQuestions);
     }
   
     if (pageIndex < (surveyList.length - 1)) {
@@ -50,13 +55,15 @@ class Continue extends Component {
   }
 
   render() {
+    
+    const { title } = this.props;
 
     return (
       <Row>
         <Colxx xs="12">
           <div className="mt-xs">
             <a href='/' onClick={e=>this.onNextQuestion(e)} 
-            className="waves-effect waves-light btn black btn-continue right">Continue</a>
+            className="waves-effect waves-light btn black btn-continue right">{title}</a>
           </div>
         </Colxx>
       </Row>
@@ -79,6 +86,7 @@ const mapStateToProps = ({ survey, settings }) => {
 export default connect(
   mapStateToProps,
   {
-    continueSurvey
+    continueSurvey,
+    submitSurvey
   }
 )(Continue);

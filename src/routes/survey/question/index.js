@@ -10,7 +10,9 @@ import {
   Welcome,
   SmartText,
   RangeSlider,
-  NewStakeholder
+  NewStakeholder,
+  AboutMe,
+  Continue
 } from "Components/Survey";
 
 import {
@@ -29,20 +31,24 @@ class Question extends Component {
     
     const question = surveyList[pageIndex];
 
+    let questionControl;
+    let continueText = 'Continue';
+
     if (question.pages.pageType === "PG_WELCOME1") {
-      return (
-        <div>
-          <Welcome/>
-        </div>
-      )
+
+      questionControl = <Welcome/>;
+      
     } else if (question.pages.pageType === "PG_NEW_STAKEHOLDER") {  
-      return (
-        <div>
-          <NewStakeholder />          
-        </div>
-      )
+      
+      questionControl = <NewStakeholder />;
+
+    } else if (question.pages.pageType === "PG_ABOUT_ME") {  
+      
+      questionControl = <AboutMe />;
+      continueText = "Add Stakeholder";
+
     } else {
-      let controlList = question.pages.ampagesetting.map( (control, index) => {
+        questionControl = question.pages.ampagesetting.map( (control, index) => {
         switch (control.controlType) {
           case controlType.TEXT:
             return <FreeText key={index} question={control} onAnswer={answer => this.handleAnswer(answer)}/>
@@ -63,11 +69,18 @@ class Question extends Component {
             return <div key={index} ></div>
         }
       });
-      
-      return (
-        <div>{controlList}</div>
-      )
     }
+
+    if (pageIndex === (surveyList.length - 1)) {
+      continueText = "Submit";
+    }
+
+    return (
+      <div>
+        {questionControl}
+        <Continue title={continueText} />
+      </div>
+    )
   }
 }
 

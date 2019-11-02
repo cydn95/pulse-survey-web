@@ -22,6 +22,15 @@ class RangeSlider extends Component {
     };
   }
 
+  componentWillReceiveProps(props) {
+    const { question } = props;
+    this.setState({
+      answer: {
+        ...question.answer
+      }
+    })
+  }
+
   onChangeSlide = value => {
     const percent = value;
 

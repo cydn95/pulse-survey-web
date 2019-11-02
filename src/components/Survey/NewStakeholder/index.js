@@ -25,6 +25,15 @@ class NewStakeholder extends Component {
     };
   }
 
+  componentWillReceiveProps(props) {
+    const { question } = props;
+    this.setState({
+      answer: {
+        ...question.answer
+      }
+    })
+  }
+  
   onSelectAnswer = (e, answer) => {
     e.preventDefault();
     

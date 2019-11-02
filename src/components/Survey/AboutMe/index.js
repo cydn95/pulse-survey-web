@@ -30,40 +30,36 @@ class AboutMe extends Component {
     return (
       <div>
         <Row>
-          <Colxx xs="12" md="6" className="survey-content">
-            <div>Project</div>
-            <div className="mt-xs">
-              <h1 className="project-name">Alfa Project</h1>
-            </div>
-            <div className="mt-h">
+          <Colxx xs="12" className="survey-content">
+            <div className="mt-1">
               <h1>About Me</h1>
             </div>
             <div className="mt-xs">
               <form>
                 <section className="form">
                   <div className="input-field">
-                    <input id="first_name" type="text" className="validate"/>
-                    <label for="first_name">First Name</label>
+                    <input id="first_name" type="text" className="validate" value=""/>
+                    <label htmlFor="first_name">First Name</label>
                   </div>
                   <div className="input-field">
-                    <input id="last_name" type="text" className="validate"/>
-                    <label for="last_name">Last Name</label>
+                    <input id="last_name" type="text" className="validate" value=""/>
+                    <label htmlFor="last_name">Last Name</label>
                   </div>
                   <div className="input-field">
-                    <input id="role" type="text" className="validate"/>
-                    <label for="role">Role</label>
+                    <input id="role" type="text" className="validate" value=""/>
+                    <label htmlFor="role">Role</label>
                   </div>
                   <div className="input-field">
-                    <select>
+                    <select value="1">
                       <option value="1">Team 1</option>
                       <option value="2">Team 2</option>
-                      <option value="3" selected="selected">Team 3</option>
+                      <option value="3">Team 3</option>
                     </select>
                     <label>Team</label>
                   </div>
-                  <div className="input-field">
-                    <input id="new_team" type="text" className="validate" />
-                    <label for="new_team">Team - No Team</label>
+                  <div className="input-field hide">
+                    <input id="new_team" type="text" className="validate" value="" />
+                    <label htmlFor="new_team">Team - No Team</label>
                     <div className="no-results">
                       <span className="no-results-header">
                         <i className="iconsmind-Magnifi-Glass"></i> No teams found
@@ -72,10 +68,10 @@ class AboutMe extends Component {
                     </div>
                   </div>
                   <div className="input-field">
-                    <select>
+                    <select value="1">
                       <option value="1">Group 1</option>
                       <option value="2">Group 2</option>
-                      <option value="3" selected="selected">Group3</option>
+                      <option value="3">Group3</option>
                     </select>
                     <label>Stackholder Group</label>
                   </div>
@@ -89,15 +85,9 @@ class AboutMe extends Component {
                       <a className="waves-effect waves-light btn-large select2-btn">External</a>
                     </div>
                   </div>
-                  <div className="input-field mt-xs">
-                    <button className="waves-effect waves-light btn black btn-continue right">Add Stackholder</button>
-                  </div>
                 </section>
               </form>
             </div>
-          </Colxx>
-          <Colxx xs="12" md="6" className="survey-image type-aboutme">
-            <div className="project-ai-logo">project-ai-logo</div>
           </Colxx>
         </Row>
       </div>

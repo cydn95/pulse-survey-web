@@ -1,18 +1,15 @@
 
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { auth } from '../../firebase';
 import { loginAPI } from '../../services/axios/api';
 
 import {
     LOGIN_USER,
-    REGISTER_USER,
     LOGOUT_USER
 } from 'Constants/actionTypes';
 
 import {
     loginUserSuccess,
-		registerUserSuccess,
-		logoutUser
+	logoutUser
 } from './actions';
 
 const loginWithUsernamePasswordAsync = async (username, password) =>
@@ -30,24 +27,24 @@ function* loginWithUsernamePassword({ payload }) {
             
 			if (loginUser.data) {
 
-        let userId = loginUser.data.id;
-        let accessToken = loginUser.data.token;
-        if (accessToken !== '') {
-            
-          // Save admin info to localStorage
-          localStorage.setItem('userId', userId);
-          localStorage.setItem('accessToken', accessToken);
+                let userId = loginUser.data.id;
+                let accessToken = loginUser.data.token;
+                if (accessToken !== '') {
+                    
+                // Save admin info to localStorage
+                localStorage.setItem('userId', userId);
+                localStorage.setItem('accessToken', accessToken);
 
-          let authData = {
-            userId,
-            accessToken
-          };
+                let authData = {
+                    userId,
+                    accessToken
+                };
 
-          yield put(loginUserSuccess(authData));
-          history.push('/');
+                yield put(loginUserSuccess(authData));
+                history.push('/');
 
-          return;
-        }
+                return;
+                }
 			}
 			
 			console.log('login failed')
@@ -56,37 +53,6 @@ function* loginWithUsernamePassword({ payload }) {
 			// catch throw
 			console.log('login error : ', error)
 	}
-}
-
-const registerWithEmailPasswordAsync = async (email, password) =>
-    await auth.createUserWithEmailAndPassword(email, password)
-        .then(authUser => authUser)
-        .catch(error => error);
-
-function* registerWithEmailPassword({ payload }) {
-    const { email, password } = payload.user;
-    const { history } = payload
-    try {
-        const registerUser = yield call(registerWithEmailPasswordAsync, email, password);
-        if (!registerUser.message) {
-            localStorage.setItem('user_id', registerUser.user.uid);
-            yield put(registerUserSuccess(registerUser));
-            history.push('/')
-        } else {
-            // catch throw
-            console.log('register failed :', registerUser.message)
-        }
-    } catch (error) {
-        // catch throw
-        console.log('register error : ', error)
-    }
-}
-
-
-
-const logoutAsync = async (history) => {
-    await auth.signOut().then(authUser => authUser).catch(error => error);
-    history.push('/')
 }
 
 function* logout({payload}) {
@@ -100,10 +66,6 @@ function* logout({payload}) {
     }
 }
 
-export function* watchRegisterUser() {
-    yield takeEvery(REGISTER_USER, registerWithEmailPassword);
-}
-
 export function* watchLoginUser() {
     yield takeEvery(LOGIN_USER, loginWithUsernamePassword);
 }
@@ -112,11 +74,9 @@ export function* watchLogoutUser() {
     yield takeEvery(LOGOUT_USER, logout);
 }
 
-
 export default function* rootSaga() {
     yield all([
         fork(watchLoginUser),
-        fork(watchLogoutUser),
-        fork(watchRegisterUser)
+        fork(watchLogoutUser)
     ]);
 }

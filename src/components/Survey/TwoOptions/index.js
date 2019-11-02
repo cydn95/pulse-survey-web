@@ -25,6 +25,15 @@ class TwoOptions extends Component {
 
   }
 
+  componentWillReceiveProps(props) {
+    const { question } = props;
+    this.setState({
+      answer: {
+        ...question.answer
+      }
+    })
+  }
+  
   onSelectAnswer = (e, answerIndex) => {
 
     e.preventDefault();

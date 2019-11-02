@@ -5,9 +5,7 @@ import { Row } from "reactstrap";
 import { Colxx } from "Components/CustomBootstrap";
 
 import {
-  Title,
-  StageBar,
-  Continue
+  StageBar
 } from "Components/Survey";
 
 import Question from "../question";
@@ -36,7 +34,6 @@ class Start extends Component {
                 {/* <Title title="Alfa Project" /> */}
                 {surveyList.length > 0 && <Question />}
                 {surveyList.length ===0 && <h1>Loading...</h1>}
-                <Continue />
               </Colxx>
             </Row>
           </div>

@@ -22,6 +22,15 @@ class SmartText extends Component {
     };
   }
 
+  componentWillReceiveProps(props) {
+    const { question } = props;
+    this.setState({
+      answer: {
+        ...question.answer
+      }
+    })
+  }
+  
   onShowSmartList = () => {
     this.setState({
       smartListToggle: true

@@ -1,16 +1,25 @@
 
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
+import { controlType } from 'Constants/defaultValues'
+
 import {
-    pageListAPI
+  getToken
+} from '../../services/axios/utility';
+
+import {
+    pageListAPI,
+    submitSurveyAPI
 } from '../../services/axios/api';
 
 import {
-  PAGE_LIST
+  PAGE_LIST,
+  SUBMIT_SURVEY
 } from 'Constants/actionTypes';
 
 import {
-  pageListSuccess
+  pageListSuccess,
+  submitSurveySuccess
 } from './actions';
 
 const getPageListAsync = async () =>
@@ -63,22 +72,23 @@ function* getPageList() {
             answer: {
               pageIndex: i,
               questionIndex: j,
-              integerValue: 3,
+              integerValue: 0,
               topicValue: "",
               commentValue: "",
               skipValue: "",
               topicTags: "",
               commentTags: "",
-              user: 9,
+              user: 0,
               subjectUser: 0,
               survey:  orderedPageList[i].pages.aopagesetting[j].survey,
               amQuestion: orderedPageList[i].pages.aopagesetting[j].id,
-              type: 'me'
+              type: 'other'
             }
           }
         }
       }
 
+      // console.log(orderedPageList);
       yield put(pageListSuccess(orderedPageList));
         
     } else {
@@ -93,8 +103,98 @@ export function* watchPageList() {
   yield takeEvery(PAGE_LIST, getPageList);
 }
 
+const submitSurveyAsync = async (answerData) =>
+    await submitSurveyAPI(answerData)
+      .then(result => result)
+      .catch(error => error);
+
+/** 
+  [{
+    "integerValue": null,
+    "topicValue": "",
+    "commentValue": "",
+    "skipValue": "",
+    "topicTags": "",
+    "commentTags": "",
+    "user": null,
+    "subjectUser": null,
+    "survey": null,
+    "amQuestion": null
+  }]
+*/
+function* submitSurvey( {payload }) {
+  
+  const { surveyList } = payload;
+  let answerList = [];
+  console.log(surveyList);
+  for (let i = 0; i < surveyList.length; i++) {
+
+    if (surveyList[i].pages.pageType !== "PG_SURVEY") continue;
+    
+    let ampagesettings = surveyList[i].pages.ampagesetting;
+    let aopagesettings = surveyList[i].pages.aopagesetting;
+
+    let answer = {};
+
+    for (let j = 0; j < ampagesettings.length; j++) {
+      answer = {
+        "integerValue": ampagesettings[j].answer.integerValue,
+        "topicValue": ampagesettings[j].answer.topicValue,
+        "commentValue": ampagesettings[j].answer.commentValue,
+        "skipValue": ampagesettings[j].answer.skipValue,
+        "topicTags": ampagesettings[j].answer.topicTags,
+        "commentTags": ampagesettings[j].answer.commentTags,
+        "user": getToken().userId,
+        "subjectUser": getToken().userId,
+        "survey": ampagesettings[j].answer.survey,
+        "amQuestion": ampagesettings[j].answer.amQuestion
+      }
+
+      answerList.push(answer);
+    }
+
+    for (let j = 0; j < aopagesettings.length; j++) {
+      answer = {
+        "integerValue": aopagesettings[j].answer.integerValue,
+        "topicValue": aopagesettings[j].answer.topicValue,
+        "commentValue": aopagesettings[j].answer.commentValue,
+        "skipValue": aopagesettings[j].answer.skipValue,
+        "topicTags": aopagesettings[j].answer.topicTags,
+        "commentTags": aopagesettings[j].answer.commentTags,
+        "user": getToken().userId,
+        "subjectUser": getToken().userId,
+        "survey": aopagesettings[j].answer.survey,
+        "aoQuestion": aopagesettings[j].answer.amQuestion
+      }
+
+      answerList.push(answer);
+    }
+  }
+
+  console.log(answerList);
+  return;
+  try {
+    const result = yield call(submitSurveyAsync);
+
+    if (result.status === 200) {
+
+      yield put(submitSurveySuccess());
+        
+    } else {
+      console.log('submit failed')
+    }
+  } catch (error) {
+    console.log('survey error : ', error)
+  }
+}
+
+export function* watchSubmitSurvey() {
+  yield takeEvery(SUBMIT_SURVEY, submitSurvey);
+}
+
 export default function* rootSaga() {
   yield all([
-    fork(watchPageList)
+    fork(watchPageList),
+    fork(watchSubmitSurvey)
   ]);
 }

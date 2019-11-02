@@ -19,6 +19,15 @@ class FreeText extends Component {
     };
   }
 
+  componentWillReceiveProps(props) {
+    const { question } = props;
+    this.setState({
+      answer: {
+        ...question.answer
+      }
+    })
+  }
+  
   onInputAnswer = e => {
 
     const topicValue = e.target.value;
