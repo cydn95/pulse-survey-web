@@ -13,20 +13,17 @@ class StakeholderList extends React.Component {
 
     super(props);
 
-    const { projectUserList, userList } = props;
-
+    const { projectUserList } = props;
     this.state = {
-      projectUserList,
-      userList,
+      'projectUserList': projectUserList
     };
   }
 
   componentWillReceiveProps(props) {
-    const { projectUserList, userList } = props;
+    const { projectUserList } = props;
     
     this.setState({
-      projectUserList,
-      userList
+      'projectUserList': projectUserList
     });
   }
 
@@ -39,21 +36,12 @@ class StakeholderList extends React.Component {
           {
             this.state.projectUserList.map((statkeholder, index) => {
               
-              const user = this.state.userList.find(element => {
-                return element.id === statkeholder.user
-              });
-
-              // if (user.is_superuser === true) return;
-              if (user.first_name === '' && user.last_name === '') return;
-
-              // const user = findObjectByKey(this.state.userList, 'id', statkeholder.user);
-
               return (
-                <Draggable key={index} type="stakeholder" data={statkeholder.id} >
+                <Draggable key={index} type="stakeholder" data={statkeholder.projectId} >
                   <li className="stakeholder-item">
                     <FontAwesomeIcon icon="user" />
-                    <span>{user.first_name + " " + user.last_name}</span>
-                    <a href="/"><FontAwesomeIcon icon="plus"/></a>
+                    <span>{statkeholder.firstName + " " + statkeholder.lastName}</span>
+                    <a href=""><FontAwesomeIcon icon="plus"/></a>
                   </li>
                 </Draggable>
               )}

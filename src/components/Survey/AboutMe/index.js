@@ -102,7 +102,7 @@ class AboutMe extends Component {
                   </div>
                   <div className="input-field">
                     <p>
-                      Stackholder Type
+                      Stakeholder Type
                     </p>
                     <div className="anwser-select2">
                       <a className="waves-effect waves-light btn-large select2-btn active">Team Member</a>

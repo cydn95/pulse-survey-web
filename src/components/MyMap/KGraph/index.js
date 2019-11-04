@@ -18,14 +18,17 @@ class KGraph extends React.Component {
         width: '100%',
         height: '100%'
       },
-      data: { 
-        node: { 
-          label: { 
-            text: 'Me' 
-          }
-        },
-      }
+      data: chart
     }
+  }
+
+  componentWillReceiveProps(props) {
+    const { chart } = props;
+    console.log('ddddd');
+    console.log(chart);
+    this.setState({
+      data: chart
+    });
   }
 
   render() {

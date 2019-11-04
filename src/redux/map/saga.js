@@ -56,13 +56,15 @@ const getKMapDataAysnc = async () =>
         .catch(error => error);
 
 function* getKMapData() {
-    console.log('dddd');
+    
 	try {
 		const result = yield call(getKMapDataAysnc);
-        console.log(result); 
-        // if (result.status === 200) {
-        //     yield put(projectUserListSuccess(result.data.results)); 
-        // }
+        console.log(result.data);
+        // return;
+        
+        if (result.status === 200) {
+            yield put(kMapDataSuccess(result.data)); 
+        }
 				
 	} catch (error) {
 		console.log('error : ', error)

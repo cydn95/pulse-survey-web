@@ -15,14 +15,16 @@ class NewStakeholder extends Component {
     this.state = {
       answer: 0,
       stakeholder: {
-        first_name: '',
-        last_name: '',
+        firstName: '',
+        lastName: '',
         shType: 0,
         email: '',
         phone: '',
         organization: 0,
         team: '',
-        show: true
+        show: true,
+        projectId: 0,
+        userId: 0
       }
     };
   }
@@ -82,14 +84,14 @@ class NewStakeholder extends Component {
         <Colxx xs="12">
           <h1 className="mt-s">Add New StakeHolder</h1>  
           <div className="input-field">
-            <input id="first_name" type="text" className="validate" 
-              name="first_name" value={this.state.stakeholder.first_name} onChange={e => this.handleInputChange(e)} />
-            <label htmlFor="first_name">First Name</label>
+            <input id="firstName" type="text" className="validate" 
+              name="firstName" value={this.state.stakeholder.firstName} onChange={e => this.handleInputChange(e)} />
+            <label htmlFor="firstName">First Name</label>
           </div>
           <div className="input-field">
-            <input id="last_name" type="text" className="validate"
-                name="last_name" value={this.state.stakeholder.last_name} onChange={e => this.handleInputChange(e)} />
-            <label htmlFor="last_name">Last Name</label>
+            <input id="lastName" type="text" className="validate"
+                name="lastName" value={this.state.stakeholder.lastName} onChange={e => this.handleInputChange(e)} />
+            <label htmlFor="lastName">Last Name</label>
           </div>
           <div className="input-field">
             <select value={this.state.stakeholder.shType} name="shType" onChange={e => this.handleInputChange(e)} >
