@@ -35,9 +35,9 @@ class StakeholderList extends React.Component {
           <ul>
           {
             this.state.projectUserList.map((statkeholder, index) => {
-              
+              if (statkeholder.show === false) return;
               return (
-                <Draggable key={index} type="stakeholder" data={statkeholder.projectId} >
+                <Draggable key={index} type="stakeholder" data={index} >
                   <li className="stakeholder-item">
                     <FontAwesomeIcon icon="user" />
                     <span>{statkeholder.firstName + " " + statkeholder.lastName}</span>

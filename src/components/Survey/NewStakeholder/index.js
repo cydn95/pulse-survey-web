@@ -15,16 +15,9 @@ class NewStakeholder extends Component {
     this.state = {
       answer: 0,
       stakeholder: {
-        firstName: '',
-        lastName: '',
-        shType: 0,
-        email: '',
-        phone: '',
-        organization: 0,
-        team: '',
-        show: true,
-        projectId: 0,
-        userId: 0
+        ...props.stakeholder,
+        projectId: Date.now(),
+	      userId: Date.now()  
       }
     };
   }

@@ -59,9 +59,7 @@ function* getKMapData() {
     
 	try {
 		const result = yield call(getKMapDataAysnc);
-        console.log(result.data);
-        // return;
-        
+                
         if (result.status === 200) {
             yield put(kMapDataSuccess(result.data)); 
         }

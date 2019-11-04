@@ -67,13 +67,22 @@ class MyMap extends React.Component {
 	}
 
 	handleAddStackholderToGraph = (data) => {
-		const stakeholder = this.state.stakeholderList[data];
+		
+		const stakeholder = this.state.stakeholderList[data.stakeholder];
+		
+		var chart = {
+			type: 'node',
+			id: 'node-' + stakeholder.projectId,
+			label: { 
+				text: stakeholder.firstName + " " + stakeholder.lastName
+			}
+		}
 		
 		this.setState({
-			'chart': [
+			'chart': {
 				...this.state.chart,
-				stakeholder
-			]
+				['node-' + stakeholder.projectId] : chart
+			}
 		});
 	}
 
@@ -168,6 +177,30 @@ class MyMap extends React.Component {
 		}
 	}
 
+	handleFilter = (search) => {
+
+		const filter = search;
+
+		this.setState( (state) => {
+			
+			for (let i = 0; i < state.stakeholderList.length; i++) {
+				if (search == '') {
+						state.stakeholderList[i].show = true;
+						continue;
+				}
+				const fullName = state.stakeholderList[i].firstName + ' ' + state.stakeholderList[i].lastName;
+				const index = fullName.indexOf(filter);
+
+				if (index < 0) {
+					state.stakeholderList[i].show = false;
+				}
+			}
+			return {
+				stakeholderList: state.stakeholderList
+			}
+		});
+	}
+
 	render() {
 
 		const { shgroupList } = this.props;
@@ -181,7 +214,7 @@ class MyMap extends React.Component {
 						<KGraph chart={this.state.chart} />
 				</Droppable>
 				<div className="map-tool">
-					<SearchBox />
+					<SearchBox onFilter={search => this.handleFilter(search)}/>
 					<Row>
 						<Colxx xs="12">
 							<Button onClick={e => this.handleShowAddPage() }

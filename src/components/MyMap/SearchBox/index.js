@@ -16,6 +16,8 @@ class SearchBox extends React.Component {
 	changeSearchBox = e => {
 		this.setState({
 			search: e.target.value
+		}, () => {
+			this.props.onFilter(this.state.search)
 		});
 	}
 					

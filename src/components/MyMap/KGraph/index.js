@@ -24,8 +24,7 @@ class KGraph extends React.Component {
 
   componentWillReceiveProps(props) {
     const { chart } = props;
-    console.log('ddddd');
-    console.log(chart);
+    
     this.setState({
       data: chart
     });
