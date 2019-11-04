@@ -40,7 +40,7 @@ const getProjectUserListAysnc = async () =>
 function* getProjectUserList() {
 	try {
 		const result = yield call(getProjectUserListAysnc);
-        console.log(result);
+        
         if (result.status === 200) {
             yield put(projectUserListSuccess(result.data.results)); 
         }

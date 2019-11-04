@@ -95,12 +95,13 @@ class MyMap extends React.Component {
 
 	componentWillReceiveProps(props) {
 	
-		const { projectUserList, userList, kMapData } = props;
+		const { projectUserList, userList, kMapData, surveyId } = props;
 		
 		if (projectUserList.length > 0 && userList.length > 0) {
 			var stakeholderList = [];
 
-			for (let i = 0; i < projectUserList.length; i++) {
+			// for (let i = 0; i < projectUserList.length; i++) {
+			for (let i = projectUserList.length - 1; i >= 0; i--) {
 				const project = projectUserList[i]
 				for (let j = 0; j < userList.length; j++) {
 					const user = userList[j];
@@ -124,8 +125,17 @@ class MyMap extends React.Component {
 							userId: project.user
 						};
 						
-						stakeholderList.push(stakeholder);
-						matchUser = true;
+						let bDuplicate = false;
+						for (let k = 0; k < stakeholderList.length; k++) {
+							if (stakeholderList[k].userId === project.user) {
+								bDuplicate = true;
+								break;
+							}
+						}
+						if (bDuplicate === false) {
+							stakeholderList.push(stakeholder);
+							matchUser = true;
+						}
 					}
 
 					if (matchUser) {
@@ -140,9 +150,22 @@ class MyMap extends React.Component {
 		}
 		
 		try{
+			
 			if (kMapData.vertex !== 'undefined' && kMapData.edge != 'undefined') {
+				
+				
+
 				var data = {};
 				Array.prototype.forEach.call(kMapData.vertex.result.data['@value'], function (object) {
+					
+					if ( (object['@value']['id'].indexOf('user') < 0) && (object['@value']['id'].indexOf('category') < 0) &&  (object['@value']['id'].indexOf('stakeholder') < 0)) {
+						return;
+					}
+
+					if (object['@value']['id'].indexOf('user') >= 0) {
+						if (object['@value']['id'] !== ('user-' + surveyId)) return;
+					}
+
 					data = {
 						...data,
 						['node-' + object['@value']['id']]: { 
@@ -236,17 +259,16 @@ class MyMap extends React.Component {
 
 const mapStateToProps = ({ survey, kmap, common, settings }) => {
 
-  const { pageList, pageIndex } = survey;
+  const { surveyId } = survey;
 	const { locale } = settings;
 	const { userList, projectUserList, kMapData } = kmap
 	const { shgroupList } = common;
 
   return {
-		surveyList : pageList,
 		userList,
 		projectUserList,
 		shgroupList,
-		pageIndex,
+		surveyId,		
 		kMapData,
     locale
   };

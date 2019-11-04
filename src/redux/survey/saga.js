@@ -8,7 +8,8 @@ import {
 import {
     pageListAPI,
     submitSurveyAPI,
-    submitAboutMeAPI
+    submitAboutMeAPI,
+    projectUserListAPI
 } from '../../services/axios/api';
 
 import {
@@ -111,6 +112,11 @@ const submitAboutMeAsync = async (aboutMe) =>
   await submitAboutMeAPI(aboutMe)
     .then(result => result)
     .catch(error => error);
+
+const getProjectUserListAysnc = async () =>
+  await projectUserListAPI()
+    .then(data => data)
+    .catch(error => error);
 /** 
   [{
     "integerValue": null,
@@ -181,10 +187,26 @@ function* submitSurvey( {payload }) {
     if (result.status === 201) {
       
       result = yield call(submitSurveyAsync, answerList);
+      console.log(result);
       
       if (result.status === 201) {
-        yield put(submitSurveySuccess());
-        history.push('/app/dashboard');
+        var surveyId = 0;
+        
+        result = yield call(getProjectUserListAysnc);
+        
+        if (result.status === 200) {
+          // yield put(projectUserListSuccess(result.data.results)); 
+          var projectUserList = result.data.results;
+          for (let i = projectUserList.length - 1; i >= 0; i--) {
+            if (projectUserList[i].user == localStorage.getItem("userId")) {
+              surveyId = projectUserList[i].id;
+              localStorage.setItem('surveyId', surveyId);
+              yield put(submitSurveySuccess(surveyId));
+              history.push('/app/dashboard');
+              break;
+            }
+          }
+        }
       } else {
         console.log('submit failed')
       }

@@ -20,7 +20,8 @@ const INIT_STATE = {
     "userPermission": 1,
     "team": 0,
     "shGroup": 0
-  }
+  },
+  "surveyId": localStorage.getItem("surveyId")
 };
 
 export default (state = INIT_STATE, action) => {
@@ -50,7 +51,7 @@ export default (state = INIT_STATE, action) => {
     case SUBMIT_SURVEY:
       return { ...state, loading: false };
     case SUBMIT_SURVEY_SUCCESS:
-      return { ...state, loading: true };
+      return { ...state, loading: true, surveyId: action.payload.surveyId };
     case ABOUTME:
       return { ...state, aboutMe: action.payload.data }
     default:
