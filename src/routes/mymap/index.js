@@ -149,7 +149,7 @@ class MyMap extends React.Component {
 							type: 'node',
 							id: 'node-' + object['@value']['id'],
 							label: { 
-								text: object['@value']['label']
+								text: object['@value']['properties']['text'][0]['@value']['value']
 							}
 						},
 					}
