@@ -1,15 +1,14 @@
 
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { controlType } from 'Constants/defaultValues'
-
 import {
   getToken
 } from '../../services/axios/utility';
 
 import {
     pageListAPI,
-    submitSurveyAPI
+    submitSurveyAPI,
+    submitAboutMeAPI
 } from '../../services/axios/api';
 
 import {
@@ -108,6 +107,10 @@ const submitSurveyAsync = async (answerData) =>
       .then(result => result)
       .catch(error => error);
 
+const submitAboutMeAsync = async (aboutMe) =>
+  await submitAboutMeAPI(aboutMe)
+    .then(result => result)
+    .catch(error => error);
 /** 
   [{
     "integerValue": null,
@@ -123,10 +126,10 @@ const submitSurveyAsync = async (answerData) =>
   }]
 */
 function* submitSurvey( {payload }) {
-  
-  const { surveyList } = payload;
+
+  const { surveyList, aboutMe, history } = payload;
   let answerList = [];
-  console.log(surveyList);
+  
   for (let i = 0; i < surveyList.length; i++) {
 
     if (surveyList[i].pages.pageType !== "PG_SURVEY") continue;
@@ -171,17 +174,20 @@ function* submitSurvey( {payload }) {
     }
   }
 
-  console.log(answerList);
-  return;
   try {
-    const result = yield call(submitSurveyAsync);
-
-    if (result.status === 200) {
-
-      yield put(submitSurveySuccess());
-        
-    } else {
-      console.log('submit failed')
+    
+    let result = yield call(submitAboutMeAsync, aboutMe);
+    
+    if (result.status === 201) {
+      
+      result = yield call(submitSurveyAsync, answerList);
+      
+      if (result.status === 201) {
+        yield put(submitSurveySuccess());
+        history.push('/app/dashboard');
+      } else {
+        console.log('submit failed')
+      }
     }
   } catch (error) {
     console.log('survey error : ', error)

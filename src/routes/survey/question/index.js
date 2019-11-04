@@ -78,7 +78,7 @@ class Question extends Component {
     return (
       <div>
         {questionControl}
-        <Continue title={continueText} />
+        <Continue history={this.props.history} title={continueText} />
       </div>
     )
   }

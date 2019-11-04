@@ -14,4 +14,9 @@ const getClient = auth => {
   return client;
 };
 
-export { getClient }
+const getLambdaClient = () => {
+  const client = axios.create();
+  return client;
+};
+
+export { getClient, getLambdaClient }

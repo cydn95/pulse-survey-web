@@ -6674,6 +6674,11 @@ react-dom@^16.4.1:
     prop-types "^15.6.2"
     scheduler "^0.17.0"
 
+react-drag-and-drop@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-drag-and-drop/-/react-drag-and-drop-3.0.0.tgz#8adfe14994b4c36969aa7e104776acd566e4a000"
+  integrity sha512-NO/BVF8LxinZSJlm3DpWWgIndCy6gu/gHwORPE+I3YINBLi+EF3WlYmho8ooKkHRfefz1Fd1cfoVASKJ1bOhbg==
+
 react-hot-loader@^4.1.3:
   version "4.12.15"
   resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.12.15.tgz#6bf3984e52edbdf02ea8952777f53da1b3c68c95"
@@ -6992,6 +6997,13 @@ regjsparser@^0.1.4:
   integrity sha1-fuj4Tcb6eS0/0K4ijSS9lJ6tIFw=
   dependencies:
     jsesc "~0.5.0"
+
+"regraph@file:regraph-1.6.0.tgz":
+  version "1.6.0"
+  resolved "file:regraph-1.6.0.tgz#2ba9cbd7e6a3ebbc0aef2440bc4addf74cac05e4"
+  dependencies:
+    lodash "^4.0.0"
+    webfontloader "^1.6.28"
 
 relateurl@0.2.x:
   version "0.2.7"
@@ -8376,6 +8388,11 @@ wbuf@^1.1.0, wbuf@^1.7.3:
   integrity sha512-O84QOnr0icsbFGLS0O3bI5FswxzRr8/gHwWkDlQFskhSPryQXvrTMxjxGP4+iWYoauLoBvfDpkrOauZ+0iZpDA==
   dependencies:
     minimalistic-assert "^1.0.0"
+
+webfontloader@^1.6.28:
+  version "1.6.28"
+  resolved "https://registry.yarnpkg.com/webfontloader/-/webfontloader-1.6.28.tgz#db786129253cb6e8eae54c2fb05f870af6675bae"
+  integrity sha1-23hhKSU8tujq5UwvsF+HCvZnW64=
 
 webpack-bundle-analyzer@^2.11.1:
   version "2.13.1"

@@ -5,14 +5,22 @@ import {
   CONTINUE_SURVEY,
   INPUT_ANSWER,
   SUBMIT_SURVEY,
-  SUBMIT_SURVEY_SUCCESS
+  SUBMIT_SURVEY_SUCCESS,
+  ABOUTME
 } from "Constants/actionTypes";
 
 const INIT_STATE = {
   pageList: [],
   percentage: 0,
   pageIndex: 0,
-  loading: false
+  loading: false,
+  aboutMe: {
+    "project": 1,
+    "user": localStorage.getItem("userId"),
+    "userPermission": 1,
+    "team": 0,
+    "shGroup": 0
+  }
 };
 
 export default (state = INIT_STATE, action) => {
@@ -43,6 +51,8 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loading: false };
     case SUBMIT_SURVEY_SUCCESS:
       return { ...state, loading: true };
+    case ABOUTME:
+      return { ...state, aboutMe: action.payload.data }
     default:
       return { ...state };
   }

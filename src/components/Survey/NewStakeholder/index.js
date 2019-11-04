@@ -1,69 +1,102 @@
 import React, { Component } from "react";
 import { Row } from "reactstrap";
-
 import { Colxx } from "Components/CustomBootstrap";
+
 import M from "materialize-css";
 
+import { Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class NewStakeholder extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      answer: 0,
+      stakeholder: {
+        first_name: '',
+        last_name: '',
+        shType: 0,
+        email: '',
+        phone: '',
+        organization: 0,
+        team: '',
+        show: true
+      }
+    };
+  }
 
   componentDidMount() {
     // Auto initialize all the things!
     M.AutoInit();
   }
 
-  constructor(props) {
-    super(props);
-
-    const { question } = this.props
-    
-    this.state = {
-      answer: {
-        ...question.answer
-      }
-    };
-  }
-
   componentWillReceiveProps(props) {
-    const { question } = props;
+    const { stakeholder } = props;
     this.setState({
-      answer: {
-        ...question.answer
+      'stakeholder': {
+        ...stakeholder
       }
-    })
+    });
   }
-  
+
   onSelectAnswer = (e, answer) => {
     e.preventDefault();
     
+    const organization = answer;
+
     this.setState({
-      "answer": answer
+      stakeholder: {
+        ...this.state.stakeholder,
+        'organization': organization
+      }
     });
+  }
+
+  handleInputChange = e => {
+    this.setState({
+      stakeholder: {
+        ...this.state.stakeholder,
+        [e.target.name]: e.target.value
+      }
+    });
+  }
+
+  handleAddStakeholder = () => {
+    const stakeholder = { 
+      ...this.state.stakeholder,
+      show: true
+    };
+
+    this.props.onAddStakeholder(stakeholder);
   }
 
   render() {
     
-    let firstAnswerActive = this.state.answer === 1 ? ' active' : '';
-    let secondAnswerActive = this.state.answer === 2 ? ' active' : '';
+    let firstAnswerActive = this.state.stakeholder.organization === 1 ? ' active' : '';
+    let secondAnswerActive = this.state.stakeholder.organization === 2 ? ' active' : '';
 
     return (
       <Row>
         <Colxx xs="12">
           <h1 className="mt-s">Add New StakeHolder</h1>  
           <div className="input-field">
-            <input id="first_name" type="text" className="validate"/>
+            <input id="first_name" type="text" className="validate" 
+              name="first_name" value={this.state.stakeholder.first_name} onChange={e => this.handleInputChange(e)} />
             <label htmlFor="first_name">First Name</label>
           </div>
           <div className="input-field">
-            <input id="last_name" type="text" className="validate"/>
+            <input id="last_name" type="text" className="validate"
+                name="last_name" value={this.state.stakeholder.last_name} onChange={e => this.handleInputChange(e)} />
             <label htmlFor="last_name">Last Name</label>
           </div>
           <div className="input-field">
-            <select>
+            <select value={this.state.stakeholder.shType} name="shType" onChange={e => this.handleInputChange(e)} >
+              <option value="0">--Select--</option>
               <option value="1">Option 1</option>
               <option value="2">Option 2</option>
-              <option value="3" selected="selected">Option 3</option>
+              <option value="3">Option 3</option>
               <option value="4">Option 4</option>
               <option value="5">Option 5</option>
               <option value="6">Option 6</option>
@@ -82,25 +115,31 @@ class NewStakeholder extends Component {
             <label>SH Type</label>
           </div>
           <div className="input-field">
-            <input id="email" type="email" className="validate"/>
+            <input id="email" type="email" className="validate"
+              name="email" value={this.state.stakeholder.email} onChange={e => this.handleInputChange(e)} />
             <label htmlFor="email">Email</label>
           </div>
           <div className="input-field">
-            <input id="phone" type="tel" className="validate"/>
+            <input id="phone" type="tel" className="validate"
+              name="phone" value={this.state.stakeholder.phone} onChange={e => this.handleInputChange(e)} />
             <label htmlFor="phone">Phone</label>
           </div>
           <div className="input-field">
             <h2 className="label">Organisation</h2>
             <div className="input-field anwser-select2">
               <a className={"waves-effect waves-light btn select2-btn " + firstAnswerActive} onClick={e => this.onSelectAnswer(e, 1)}>
-                Answer1</a>
+                He/she you works for us?</a>
               <a className={"waves-effect waves-light btn select2-btn " + secondAnswerActive} onClick={e => this.onSelectAnswer(e, 2)}>
-                Answer2</a>
+                He/she you works for someone else</a>
             </div>
           </div>
           <div className="input-field">
-            <input type="text" id="autocomplete-input" className="autocomplete" />
+            <input type="text" id="autocomplete-input" className="autocomplete" 
+              name="team" value={this.state.stakeholder.team} onChange={e => this.handleInputChange(e)} />
             <label htmlFor="autocomplete-input"><i className="fas fa-search"></i> What team he/she is on? (type M to test it)</label>
+          </div>
+          <div className="input-field">
+            <Button className="waves-effect waves-light btn-xs right" onClick={e => this.handleAddStakeholder()}>Add stakeholder</Button>
           </div>
         </Colxx>
       </Row>

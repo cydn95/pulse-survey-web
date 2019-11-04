@@ -5,7 +5,9 @@ import {
   CONTINUE_SURVEY,
   INPUT_ANSWER,
   SUBMIT_SURVEY,
-  SUBMIT_SURVEY_SUCCESS
+  SUBMIT_SURVEY_SUCCESS,
+  ABOUTME,
+  SUBMIT_ABOUTME
 } from 'Constants/actionTypes';
 
 export const pageList = () => ({
@@ -33,11 +35,21 @@ export const inputAnswer = (answer) => ({
   payload: { answer }
 })
 
-export const submitSurvey = (surveyList) => ( {
+export const submitSurvey = (surveyList, aboutMe, history) => ( {
   type: SUBMIT_SURVEY,
-  payload: { surveyList }
+  payload: { surveyList, aboutMe, history }
 })
 
 export const submitSurveySuccess = () => ( {
   type: SUBMIT_SURVEY_SUCCESS
+})
+
+export const aboutMe = (data) => ( {
+  type: ABOUTME,
+  payload: { data }
+})
+
+export const submitAboutMe = (data, aboutMe) => ({
+  type: SUBMIT_ABOUTME,
+  payload: { data, aboutMe }
 })

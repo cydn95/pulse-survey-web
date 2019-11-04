@@ -5,6 +5,7 @@ import TopNav from 'Containers/TopNav'
 import Sidebar from 'Containers/Sidebar';
 
 import Survey from './survey';
+import MyMap from './mymap';
 import Dashboard from './dashboard';
 
 import { connect } from 'react-redux';
@@ -27,12 +28,12 @@ class MainApp extends Component {
 						<Switch>
 							{/* <Route path={`${match.url}/survey`} component={Survey} /> */}
 							<Route path={`${match.url}/about-me`} component={Survey} />
-
+							<Route path={`${match.url}/my-map`} component={MyMap} />
+								
 							{/* <Route path={`${match.url}/welcome`}>
 								<Redirect to="/coming-soon" />
 							</Route>
-							<Route path={`${match.url}/my-map`}>
-								<Redirect to="/coming-soon" />
+							
 							</Route>
 							<Route path={`${match.url}/project-map`}>
 								<Redirect to="/coming-soon" />

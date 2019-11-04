@@ -5,13 +5,20 @@ import { Colxx } from "Components/CustomBootstrap";
 
 import M from 'materialize-css';
 
+import { connect } from 'react-redux';
+
+import {
+  aboutMe
+} from "Redux/actions";
+
 class AboutMe extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      skipToogle: false
+      skipToogle: false,
+      aboutme: this.props.aboutMe
     }
   }
 
@@ -26,7 +33,23 @@ class AboutMe extends Component {
       skipToogle: !this.state.skipToogle
     });
   }
+
+  inputChange = e => {
+    this.setState({
+      aboutme: {
+        ...this.state.aboutme,
+        [e.target.name] : e.target.value
+      }
+    }, () => {
+      console.log(this.state.aboutme);
+      this.props.onInputAboutMe(this.state.aboutme);
+    });
+  }
+
   render() {
+
+    const { teamData, shgroupData } = this.props;
+    
     return (
       <div>
         <Row>
@@ -38,27 +61,28 @@ class AboutMe extends Component {
               <form>
                 <section className="form">
                   <div className="input-field">
-                    <input id="first_name" type="text" className="validate" value=""/>
+                    <input id="first_name" type="text" className="validate" defaultValue=""/>
                     <label htmlFor="first_name">First Name</label>
                   </div>
                   <div className="input-field">
-                    <input id="last_name" type="text" className="validate" value=""/>
+                    <input id="last_name" type="text" className="validate" defaultValue=""/>
                     <label htmlFor="last_name">Last Name</label>
                   </div>
                   <div className="input-field">
-                    <input id="role" type="text" className="validate" value=""/>
+                    <input id="role" type="text" className="validate" defaultValue=""/>
                     <label htmlFor="role">Role</label>
                   </div>
                   <div className="input-field">
-                    <select value="1">
-                      <option value="1">Team 1</option>
-                      <option value="2">Team 2</option>
-                      <option value="3">Team 3</option>
+                    <select value={this.state.aboutme.team} name="team" onChange={(e) => this.inputChange(e)}>
+                      <option value="0">Select</option>
+                       {teamData.map((team, index) =>
+                          <option key={index} value={team.id}>{team.name}</option>
+                        )}
                     </select>
                     <label>Team</label>
                   </div>
                   <div className="input-field hide">
-                    <input id="new_team" type="text" className="validate" value="" />
+                    <input id="new_team" type="text" className="validate" defaultValue="" />
                     <label htmlFor="new_team">Team - No Team</label>
                     <div className="no-results">
                       <span className="no-results-header">
@@ -68,10 +92,11 @@ class AboutMe extends Component {
                     </div>
                   </div>
                   <div className="input-field">
-                    <select value="1">
-                      <option value="1">Group 1</option>
-                      <option value="2">Group 2</option>
-                      <option value="3">Group3</option>
+                    <select value={this.state.aboutme.shGroup} name="shGroup" onChange={(e) => this.inputChange(e)}>
+                      <option value="0">Select</option>
+                      {shgroupData.map((sh, index) =>
+                          <option key={index} value={sh.id}>{sh.SHGroupName}</option>
+                        )}
                     </select>
                     <label>Stackholder Group</label>
                   </div>
@@ -95,4 +120,23 @@ class AboutMe extends Component {
   }
 }
 
-export default AboutMe
+const mapStateToProps = ({ common, settings, survey }) => {
+
+  const { locale } = settings;
+  const { teamList, shgroupList } = common;
+  const { aboutMe } = survey
+
+  return {
+    teamData : teamList,
+    shgroupData: shgroupList,
+    aboutMe,
+    locale
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  {
+    onInputAboutMe: aboutMe
+  }
+)(AboutMe);

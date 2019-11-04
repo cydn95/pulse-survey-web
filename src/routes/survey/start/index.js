@@ -12,16 +12,21 @@ import Question from "../question";
 
 import {
   pageList,
+  teamList,
+  shgroupList
 } from "Redux/actions";
 
 class Start extends Component {
 
   componentWillMount() {
     this.props.getPageList();
+    this.props.getTeamList();
+    this.props.getShgroupList();
   }
 
   render() {
     const {pageIndex, surveyList} = this.props;
+
     return (
       <div className="survey-container">
         <div className="survey-progress-bar">
@@ -32,7 +37,7 @@ class Start extends Component {
             <Row>
               <Colxx xs="12">
                 {/* <Title title="Alfa Project" /> */}
-                {surveyList.length > 0 && <Question />}
+                {surveyList.length > 0 && <Question history={this.props.history}/>}
                 {surveyList.length ===0 && <h1>Loading...</h1>}
               </Colxx>
             </Row>
@@ -62,6 +67,8 @@ const mapStateToProps = ({ survey, settings }) => {
 export default connect(
   mapStateToProps,
   {
-    getPageList: pageList
+    getPageList: pageList,
+    getTeamList: teamList,
+    getShgroupList: shgroupList
   }
 )(Start);
