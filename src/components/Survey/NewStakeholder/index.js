@@ -131,7 +131,7 @@ class NewStakeholder extends Component {
           <div className="input-field">
             <input type="text" id="autocomplete-input" className="autocomplete" 
               name="team" value={this.state.stakeholder.team} onChange={e => this.handleInputChange(e)} />
-            <label htmlFor="autocomplete-input"><i className="fas fa-search"></i> What team he/she is on? (type M to test it)</label>
+            <label htmlFor="autocomplete-input"><i className="fas fa-search"></i> What team he/she is on?</label>
           </div>
           <div className="input-field">
             <Button className="waves-effect waves-light btn-xs right" onClick={e => this.handleAddStakeholder()}>Add stakeholder</Button>

@@ -253,7 +253,8 @@ video {
   background: #109558;
   background: -moz-linear-gradient(left, #109558 0%, #999999 50%, #999999 50%, #999999 50%, #e81919 100%);
   background: -webkit-linear-gradient(left, #109558 0%,#999999 50%,#999999 50%,#999999 50%,#e81919 100%);
-  background: linear-gradient(to right, #109558 0%,#999999 50%,#999999 50%,#999999 50%,#e81919 100%);
+  /* background: linear-gradient(to right, #109558 0%,#999999 50%,#999999 50%,#999999 50%,#e81919 100%); */
+  background: linear-gradient(to right, #e81919 0%,#999999 40%,#999999 60%,#999999 60%,#109558 100%);
   border-radius: 100px;
 }
 

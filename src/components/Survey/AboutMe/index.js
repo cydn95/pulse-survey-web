@@ -98,7 +98,7 @@ class AboutMe extends Component {
                           <option key={index} value={sh.id}>{sh.SHGroupName}</option>
                         )}
                     </select>
-                    <label>Stackholder Group</label>
+                    <label>Stakeholder Group</label>
                   </div>
                   <div className="input-field">
                     <p>
