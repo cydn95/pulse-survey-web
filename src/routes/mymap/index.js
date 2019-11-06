@@ -153,8 +153,6 @@ class MyMap extends React.Component {
 			
 			if (kMapData.vertex !== 'undefined' && kMapData.edge != 'undefined') {
 				
-				
-
 				var data = {};
 				Array.prototype.forEach.call(kMapData.vertex.result.data['@value'], function (object) {
 					
@@ -172,8 +170,19 @@ class MyMap extends React.Component {
 							type: 'node',
 							id: 'node-' + object['@value']['id'],
 							label: { 
-								text: object['@value']['properties']['text'][0]['@value']['value']
-							}
+								text: object['@value']['properties']['text'][0]['@value']['value'],
+								center: false
+							},
+							"glyphs": [
+								{
+									"color": "rgba(96, 57, 189, 0.6)",
+									"label": {
+										"text": "+"
+									},
+									"angle": 30,
+									"size": 1.5
+								}
+							]
 						},
 					}
 				});
