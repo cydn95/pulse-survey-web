@@ -75,7 +75,20 @@ class MyMap extends React.Component {
 			id: 'node-' + stakeholder.projectId,
 			label: { 
 				text: stakeholder.firstName + " " + stakeholder.lastName
-			}
+			},
+			data: {
+				group: stakeholder.team
+			},
+			glyphs: [
+				{
+					"color": "rgba(96, 57, 189, 0.6)",
+					"label": {
+						"text": "+"
+					},
+					"angle": 30,
+					"size": 1.5
+				}
+			]
 		}
 		
 		this.setState({
@@ -153,6 +166,10 @@ class MyMap extends React.Component {
 			
 			if (kMapData.vertex !== 'undefined' && kMapData.edge != 'undefined') {
 				
+				// console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+				// console.log(kMapData.vertex.resultsd);
+				// console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+
 				var data = {};
 				Array.prototype.forEach.call(kMapData.vertex.result.data['@value'], function (object) {
 					
@@ -173,6 +190,11 @@ class MyMap extends React.Component {
 								text: object['@value']['properties']['text'][0]['@value']['value'],
 								center: false
 							},
+							fontIcon: {
+								text: 'fa-user',
+								color: 'teal',
+								fontFamily: 'Font Awesome 5 Free'
+							}, 
 							"glyphs": [
 								{
 									"color": "rgba(96, 57, 189, 0.6)",
@@ -224,6 +246,7 @@ class MyMap extends React.Component {
 				const index = fullName.indexOf(filter);
 
 				if (index < 0) {
+					
 					state.stakeholderList[i].show = false;
 				}
 			}
@@ -258,7 +281,7 @@ class MyMap extends React.Component {
 						<NewStakeholder shgroup={shgroupList} onAddStakeholder={stakeholder => this.handleAddNewStakeholder(stakeholder)} stakeholder={defaultStakeholder} />
 					}		
 					{this.state.screen === 'list' && this.state.stakeholderList.length > 0 &&
-						<StakeholderList projectUserList={this.state.stakeholderList} />
+						<StakeholderList projectUserList={this.state.stakeholderList} onAddStakeHolder={ stakeholder => this.handleAddStackholderToGraph(stakeholder) }/>
 					}			
 				</div>
 			</div>

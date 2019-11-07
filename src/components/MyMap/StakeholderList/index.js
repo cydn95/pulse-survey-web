@@ -27,6 +27,15 @@ class StakeholderList extends React.Component {
     });
   }
 
+  AddStakeHolderToGraph = (e, index) => {
+    e.preventDefault();
+
+    const data = {
+      "stakeholder": index
+    }
+    this.props.onAddStakeHolder(data);
+  }
+
   render() {
     
     return (
@@ -41,7 +50,7 @@ class StakeholderList extends React.Component {
                   <li className="stakeholder-item">
                     <FontAwesomeIcon icon="user" />
                     <span>{statkeholder.firstName + " " + statkeholder.lastName}</span>
-                    <a href=""><FontAwesomeIcon icon="plus"/></a>
+                    <a href="/" onClick={e => this.AddStakeHolderToGraph(e, index)}><FontAwesomeIcon icon="plus"/></a>
                   </li>
                 </Draggable>
               )}

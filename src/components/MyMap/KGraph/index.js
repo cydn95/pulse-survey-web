@@ -1,6 +1,9 @@
 import React from "react";
 
-import { Chart } from 'regraph';
+import '@fortawesome/fontawesome-free/css/fontawesome.css';
+// import '@fortawesome/fontawesome-free/css/solid.css';
+
+import { Chart, FontLoader } from 'regraph';
 import { neighbors } from 'regraph/analysis';
 
 let nodeIdCounter = 0;
@@ -21,7 +24,9 @@ class KGraph extends React.Component {
         height: '100%'
       },
       items: chart,
-      options: {},
+      options: {
+        iconFontFamily: 'Font Awesome 5 Free'
+      },
       layout: {
           name: 'organic'
       },
@@ -29,7 +34,8 @@ class KGraph extends React.Component {
       selection: {},
       animation: {
           animate: false
-      }
+      },
+      openCombos: {},
     }
   }
 
@@ -120,6 +126,32 @@ class KGraph extends React.Component {
     });
   }
 
+  combineNodesHandler = ({ id, nodes, combo }) => {
+    console.log(combo);
+    const { openCombos } = this.state;
+    return {
+      open: !!openCombos[id],
+      label: { text: "Team " + combo.group },
+    };
+  };
+
+  doubleClickHandler = id => {
+    /*
+      Toggle the value on the openCombos object,
+      this value is used to set the open state of the combo node.
+
+      Also create a new 'combine' object. This forces ReGraph to
+      do a re-render. Once that happens, the 'onCombineNodes' function
+      is called and we can set the open value of the combo node.
+    */
+    const { openCombos, combine } = this.state;
+    this.setState({
+      openCombos: { ...openCombos, [id]: !openCombos[id] },
+      combine: { ...combine },
+    });
+  };
+
+
   dragComplete = (type, id, x, y) => {
 
     if (this.dragging === true) {
@@ -172,15 +204,23 @@ class KGraph extends React.Component {
 
     return (
       <div className="div-regraph">
+        <FontLoader config={{ custom: { families: ['Font Awesome 5 Free'] } }}>
         <Chart
           style={this.state.style}
           options={options}
           {...{ animation, items, positions, selection, layout }}
+          combine={{
+            properties: ['group'],
+            level: 1,
+          }}
           onChartDragComplete={this.dragComplete}
           onChartChange={this.handleChange}
           onChartDragOver={this.setTarget}
           onChartDragStart={this.startLinkCreation}
-          onChartMouseDown={this.checkGlyphDown} />
+          onChartMouseDown={this.checkGlyphDown}
+          onChartDoubleClick={this.doubleClickHandler}
+          onCombineNodes={this.combineNodesHandler} />
+        </FontLoader>
       </div>
     )
   }
