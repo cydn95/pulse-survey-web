@@ -1,7 +1,7 @@
 import React from "react";
 
 import '@fortawesome/fontawesome-free/css/fontawesome.css';
-import '@fortawesome/fontawesome-free/css/solid.css';
+// import '@fortawesome/fontawesome-free/css/solid.css';
 
 import { Chart, FontLoader } from 'regraph';
 import { neighbors } from 'regraph/analysis';
@@ -15,6 +15,9 @@ class KGraph extends React.Component {
   constructor(props) {
     super(props);
 
+    this.nextComboId = 0;
+    this.comboLookup = {};
+    
     const { chart } = props;
 
     this.state = {

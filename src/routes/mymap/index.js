@@ -74,19 +74,27 @@ class MyMap extends React.Component {
 			type: 'node',
 			id: 'node-' + stakeholder.projectId,
 			label: { 
-				text: stakeholder.firstName + " " + stakeholder.lastName
+				text: stakeholder.firstName + " " + stakeholder.lastName.firstName,
+				center: false
+			},
+			color: 'transparent',
+			'fontIcon': {
+				text: 'fa-user', 
+				color: 'rgb(0, 0, 0)',
+				fontFamily: 'Font Awesome 5 Free'
 			},
 			data: {
 				group: stakeholder.team
 			},
-			glyphs: [
+			"glyphs": [
 				{
-					"color": "rgba(96, 57, 189, 0.6)",
-					"label": {
-						"text": "+"
+					fontIcon: { 
+						text: 'fa-plus-circle', 
+						color: 'rgb(0, 0, 0)' 
 					},
+					color: 'transparent',
 					"angle": 30,
-					"size": 1.5
+					"size": 2
 				}
 			]
 		}
@@ -180,6 +188,24 @@ class MyMap extends React.Component {
 					if (object['@value']['id'].indexOf('user') >= 0) {
 						if (object['@value']['id'] !== ('user-' + surveyId)) return;
 					}
+					
+					let fontIcon =  {};
+					if (object['@value']['id'].indexOf('user') >= 0) {
+						fontIcon = {
+							text: 'fa-user',
+							color: 'rgb(255, 0, 0)'
+						}
+					} else if (object['@value']['id'].indexOf('category') >= 0) {
+						fontIcon = {
+							text: 'fa-university',
+							color: 'rgb(0, 153, 255)'
+						}
+					} else if (object['@value']['id'].indexOf('stakeholder') >= 0) {
+						fontIcon = {
+							text: 'fa-user',
+							color: 'rgb(0, 0, 0)'
+						}
+					}
 
 					data = {
 						...data,
@@ -190,19 +216,20 @@ class MyMap extends React.Component {
 								text: object['@value']['properties']['text'][0]['@value']['value'],
 								center: false
 							},
-							fontIcon: {
-								text: 'fa-user',
-								color: 'teal',
+							'fontIcon': {
+								...fontIcon,
 								fontFamily: 'Font Awesome 5 Free'
-							}, 
+							},
+							color: 'transparent',
 							"glyphs": [
 								{
-									"color": "rgba(96, 57, 189, 0.6)",
-									"label": {
-										"text": "+"
+									fontIcon: { 
+										text: 'fa-plus-circle', 
+										color: 'rgb(0, 0, 0)' 
 									},
+									color: 'transparent',
 									"angle": 30,
-									"size": 1.5
+									"size": 2
 								}
 							]
 						},
