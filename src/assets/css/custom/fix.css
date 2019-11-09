@@ -11,10 +11,11 @@ h1 {
   height: 60px !important;
 }
 
-/* .main-menu, .sub-menu {
-  top: 60px !important;
-  height: calc(100% - 60px) !important;
-} */
+@media screen and (max-width: 767px) {
+  .navbar {
+    padding: 0 60px 0 20px !important;
+  }
+}
 
 .projectai-logo {
   background: #f6f6f6 !important;

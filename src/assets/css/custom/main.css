@@ -107,6 +107,7 @@ body {
         flex-direction: column;
         height: auto;
         width: 100%;
+        padding-right: 6%;
         /* margin-left: 70px; */
     }
     .survey-content {

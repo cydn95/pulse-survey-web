@@ -43,7 +43,7 @@ class LoginLayout extends Component {
         <main>
           <div className="container">
             <Row className="h-100">
-              <Colxx xxs="9" md="7" className="mx-auto my-auto">
+              <Colxx xxs="9" className="mx-auto my-auto col-xs-12 col-md-7">
                 <Card className="auth-card">
                   <div className="position-relative image-side projectai-logo">
                     <img src="/assets/img/survey/login-logo.png"/>

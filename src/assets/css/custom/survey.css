@@ -4,27 +4,48 @@
   width: 100%;
   display: flex;
   flex-flow: row wrap;
+  padding-right: 3%;
 }
+
 .survey-previous-link {
   margin-right: 20px;
 }
 
+.survey-category {
+  font-size: 0.8em;
+  flex-grow: 1;
+}
+
+.offset {
+  width: 0%;
+}
+
+@media screen and (max-width: 1023px) {
+  .survey-previous-link {
+    order: 1;
+  }
+  .offset {
+    order: 2;
+    flex-grow: 1;
+  }
+  .stage-progress {
+    order: 3;
+    flex-flow: row wrap;
+  }
+  .survey-category {
+    order: 4;
+    width: 100%;
+  }
+}
 .stage-progress-container > div {
   display: flex;
   justify-content: center;
   align-items: center;
-  align-content: center;
+  /* align-content: center; */
   flex-flow: row wrap;
   margin-bottom: 2px;
 }
 
-.previous-link {
-  margin-right: 5px;  
-}
-
-.survey-category {
-  font-size: 0.8em;
-}
 .survey-category * {
   margin-right: 5px;
 }

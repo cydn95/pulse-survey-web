@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'Assets/css/custom/fix.css';
 
-import 'materialize-css/dist/css/materialize.min.css'
+import 'Assets/css/custom/fix.css';
+import 'materialize-css/dist/css/materialize.min.css';
 
 const rootEl = document.getElementById("root");
 

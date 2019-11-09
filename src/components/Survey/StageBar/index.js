@@ -47,19 +47,14 @@ class StageBar extends React.Component {
             <div className="survey-previous-link">
               <a href="/" onClick={e => this.onPrevPage(e, pageIndex)}><i className="previous-link iconsmind-Arrow-Back"></i>Previous</a>
             </div>
+            <div className="offset"></div>
             <div className="survey-category">
-              <a href="/"><IntlMessages id="survey.engagement" /></a>
-              <FontAwesomeIcon icon="play" />
-              <a href="/"><IntlMessages id="survey.influence" /></a>
-              <FontAwesomeIcon icon="play" />
-              <a href="/"><IntlMessages id="survey.interest" /></a>
-              <FontAwesomeIcon icon="play" />
-              <a href="/"><IntlMessages id="survey.sentiment" /></a>
-              <FontAwesomeIcon icon="play" />
-              <a href="/"><IntlMessages id="survey.engagement" /></a>
-              <FontAwesomeIcon icon="play" />
-              <a href="/"><IntlMessages id="survey.confidence" /></a>
-              <FontAwesomeIcon icon="play" />
+              <a href="/"><IntlMessages id="survey.engagement" /> <FontAwesomeIcon icon="play" /></a>
+              <a href="/"><IntlMessages id="survey.influence" /><FontAwesomeIcon icon="play" /></a>
+              <a href="/"><IntlMessages id="survey.interest" /><FontAwesomeIcon icon="play" /></a>
+              <a href="/"><IntlMessages id="survey.sentiment" /><FontAwesomeIcon icon="play" /></a>
+              <a href="/"><IntlMessages id="survey.engagement" /><FontAwesomeIcon icon="play" /></a>
+              <a href="/"><IntlMessages id="survey.confidence" /><FontAwesomeIcon icon="play" /></a>
               <a href="/"><IntlMessages id="survey.culture" /></a>
             </div>
             <div className="stage-progress">

@@ -5,7 +5,6 @@ import { Colxx } from "Components/CustomBootstrap";
 import M from "materialize-css";
 
 import { Button } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class NewStakeholder extends Component {
 
@@ -18,8 +17,10 @@ class NewStakeholder extends Component {
         ...props.stakeholder,
         projectId: Date.now(),
 	      userId: Date.now()  
-      }
+      },
+      shgroupList: props.shgroup
     };
+
   }
 
   componentDidMount() {
@@ -28,11 +29,15 @@ class NewStakeholder extends Component {
   }
 
   componentWillReceiveProps(props) {
-    const { stakeholder } = props;
+    const { stakeholder, shgroup } = props;
+
+    console.log(shgroup);
+
     this.setState({
       'stakeholder': {
         ...stakeholder
-      }
+      },
+      shgroupList: shgroup
     });
   }
 
@@ -89,23 +94,9 @@ class NewStakeholder extends Component {
           <div className="input-field">
             <select value={this.state.stakeholder.shType} name="shType" onChange={e => this.handleInputChange(e)} >
               <option value="0">--Select--</option>
-              <option value="1">Option 1</option>
-              <option value="2">Option 2</option>
-              <option value="3">Option 3</option>
-              <option value="4">Option 4</option>
-              <option value="5">Option 5</option>
-              <option value="6">Option 6</option>
-              <option value="7">Option 7</option>
-              <option value="8">Option 8</option>
-              <option value="9">Option 9</option>
-              <option value="10">Option 10</option>
-              <option value="11">Option 11</option>
-              <option value="12">Option 12</option>
-              <option value="13">Option 13</option>
-              <option value="14">Option 14</option>
-              <option value="15">Option 15</option>
-              <option value="16">Option 16</option>
-              <option value="17">Option 17</option>
+              {this.state.shgroupList.map((sh, index) =>
+                <option key={index} value={sh.id}>{sh.SHGroupName}</option>
+              )}
             </select>
             <label>SH Type</label>
           </div>

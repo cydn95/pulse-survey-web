@@ -74,7 +74,7 @@ class MyMap extends React.Component {
 			type: 'node',
 			id: 'node-' + stakeholder.projectId,
 			label: { 
-				text: stakeholder.firstName + " " + stakeholder.lastName.firstName,
+				text: stakeholder.firstName + " " + stakeholder.lastName,
 				center: false
 			},
 			color: 'transparent',
@@ -174,9 +174,9 @@ class MyMap extends React.Component {
 			
 			if (kMapData.vertex !== 'undefined' && kMapData.edge != 'undefined') {
 				
-				// console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-				// console.log(kMapData.vertex.resultsd);
-				// console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+				console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+				console.log(kMapData.vertex.result);
+				console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 
 				var data = {};
 				Array.prototype.forEach.call(kMapData.vertex.result.data['@value'], function (object) {
@@ -286,7 +286,7 @@ class MyMap extends React.Component {
 	render() {
 
 		const { shgroupList } = this.props;
-		
+
 		return (
 			<div className="map-container">
 				<Droppable
@@ -298,13 +298,13 @@ class MyMap extends React.Component {
 				<div className="map-tool">
 					<SearchBox onFilter={search => this.handleFilter(search)}/>
 					<Row>
-						<Colxx xs="12">
+						{shgroupList.length > 0 && <Colxx xs="12">
 							<Button onClick={e => this.handleShowAddPage() }
 									className="waves-effect waves-light btn-xs right col-6">Add New</Button>
-						</Colxx>
+						</Colxx>}
 					</Row>
 					
-					{this.state.screen === 'add' &&
+					{this.state.screen === 'add' && shgroupList.length > 0 && 
 						<NewStakeholder shgroup={shgroupList} onAddStakeholder={stakeholder => this.handleAddNewStakeholder(stakeholder)} stakeholder={defaultStakeholder} />
 					}		
 					{this.state.screen === 'list' && this.state.stakeholderList.length > 0 &&

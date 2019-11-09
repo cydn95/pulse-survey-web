@@ -1,13 +1,19 @@
 .fixed-background {
-    background: url('/assets/img/survey/bg-login.jpg') no-repeat center center fixed !important;
-    background-size: 100% 100% !important;
+  background: url('/assets/img/survey/bg-login.jpg') no-repeat center center fixed !important;
+  background-size: cover !important;
+}
+.auth-card {
+    .form-side  {
+      padding: 50px 30px !important;
+    }
+    .image-side {
+      padding: 20px !important;
+      text-align: center;
+    }
+}
+
+.h-100 {
+  &.row {
+    margin-bottom: 0px !important;
   }
-  .auth-card {
-      .form-side  {
-        padding: 50px 30px !important;
-      }
-      .image-side {
-        padding: 20px !important;
-        text-align: center;
-      }
-  }
+}
