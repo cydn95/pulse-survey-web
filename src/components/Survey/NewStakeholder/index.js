@@ -82,6 +82,11 @@ class NewStakeholder extends Component {
         <Colxx xs="12">
           <h1 className="mt-s">Add New StakeHolder</h1>  
           <div className="input-field">
+            <input id="organization" type="text" className="validate" 
+              name="organization" value={this.state.stakeholder.organization} onChange={e => this.handleInputChange(e)} />
+            <label htmlFor="organization">Organization</label>
+          </div>
+          <div className="input-field">
             <input id="firstName" type="text" className="validate" 
               name="firstName" value={this.state.stakeholder.firstName} onChange={e => this.handleInputChange(e)} />
             <label htmlFor="firstName">First Name</label>

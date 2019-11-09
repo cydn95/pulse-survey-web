@@ -121,17 +121,18 @@ class KGraph extends React.Component {
   componentWillReceiveProps(props) {
     const { chart } = props;
     
+    console.log(chart);
+    
     this.setState({
       items: chart
     });
   }
 
   combineNodesHandler = ({ id, nodes, combo }) => {
-    console.log(combo);
     const { openCombos } = this.state;
     return {
-      open: !!openCombos[id],
-      label: { text: "Team " + combo.group },
+      open: !openCombos[id],
+      // label: { text: combo.group },
     };
   };
 
@@ -186,7 +187,6 @@ class KGraph extends React.Component {
   checkGlyphDown = (id, x, y, b, sub) => {
     
     if (sub !== null && sub !== 't') {
-      console.log("plus");
       this.dragging = false;
     } else {
       this.dragging = true;
@@ -210,8 +210,8 @@ class KGraph extends React.Component {
           options={options}
           {...{ animation, items, positions, selection, layout }}
           combine={{
-            properties: ['group'],
-            level: 1,
+            properties: ['subgroup', 'group'],
+            level: 2,
           }}
           onChartDragComplete={this.dragComplete}
           onChartChange={this.handleChange}

@@ -34,7 +34,8 @@ const defaultStakeholder = {
 	team: '',
 	show: true,
 	projectId: Date.now(),
-	userId: Date.now()
+	userId: Date.now(),
+	organization: ''
 };
 
 class MyMap extends React.Component {
@@ -84,7 +85,6 @@ class MyMap extends React.Component {
 				fontFamily: 'Font Awesome 5 Free'
 			},
 			data: {
-				group: stakeholder.team
 			},
 			"glyphs": [
 				{
@@ -99,10 +99,35 @@ class MyMap extends React.Component {
 			]
 		}
 		
+		if (stakeholder.organization !== '') {
+			chart.data = {
+				...chart.data,
+				group: stakeholder.organization
+			};
+
+			if (stakeholder.team != '') {
+				chart.data = {
+					...chart.data,
+					subgroup: stakeholder.team
+				};
+			}
+		} else {
+			if (stakeholder.team != '') {
+				chart.data = {
+					...chart.data,
+					group: stakeholder.team
+				};
+			}
+		}
+
 		this.setState({
 			'chart': {
 				...this.state.chart,
-				['node-' + stakeholder.projectId] : chart
+				['node-' + stakeholder.projectId] : chart,
+				['link-' + stakeholder.projectId + '-' + 'stakeholder-' + stakeholder.shType]: {
+					id1: 'node-' + stakeholder.projectId,
+					id2: 'node-stakeholder-' + stakeholder.shType
+				}
 			}
 		});
 	}
@@ -119,6 +144,7 @@ class MyMap extends React.Component {
 		const { projectUserList, userList, kMapData, surveyId } = props;
 		
 		if (projectUserList.length > 0 && userList.length > 0) {
+	
 			var stakeholderList = [];
 
 			// for (let i = 0; i < projectUserList.length; i++) {
@@ -143,7 +169,8 @@ class MyMap extends React.Component {
 							team: project.team,
 							show: true,
 							projectId: project.id,
-							userId: project.user
+							userId: project.user,
+							organization: ''
 						};
 						
 						let bDuplicate = false;
@@ -174,10 +201,6 @@ class MyMap extends React.Component {
 			
 			if (kMapData.vertex !== 'undefined' && kMapData.edge != 'undefined') {
 				
-				console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-				console.log(kMapData.vertex.result);
-				console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-
 				var data = {};
 				Array.prototype.forEach.call(kMapData.vertex.result.data['@value'], function (object) {
 					
