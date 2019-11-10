@@ -5,29 +5,36 @@ import { Colxx } from "Components/CustomBootstrap";
 
 import SkipQuestion from "../SkipQuestion";
 
-const optionChoices = [
-  "Option 1",
-  "Option 2",
-  "Option 3"
-];
-
 class MultipleOptions extends Component {
 
   constructor(props) {
     super(props);
 
-    const { question } = this.props
-    
+    const { question, options } = this.props
+
+    let optionList = [];
+
+    for (let i = 0 ; i < question.option.length; i++) {
+      for (let j = 0; j < options.length; j++) {
+        if (question.option[i] === options[j].id) {
+          optionList.push(options[i]);
+          break;
+        }
+      }
+    }
+
     this.state = {
       answer: {
-        ...question.answer
-      }
+        ...question.answer,
+      },
+      optionList
     };
 
   }
 
   componentWillReceiveProps(props) {
     const { question } = props;
+    
     this.setState({
       answer: {
         ...question.answer
@@ -38,8 +45,6 @@ class MultipleOptions extends Component {
   onSelectAnswer = (e, answerIndex) => {
 
     e.preventDefault();
-
-    const topicValue = e.target.value;
 
     this.setState( (state) => ({
       answer: {
@@ -78,6 +83,7 @@ class MultipleOptions extends Component {
   render() {
 
     const { question } = this.props;
+    const { optionList } = this.state
 
     return (
       <Row>
@@ -88,12 +94,12 @@ class MultipleOptions extends Component {
               </div>
           <div className="mt-xs input-field anwser-select-n">
             {
-              optionChoices.map((item, index) => {
-                let active = (index + 1) === this.state.answer.integerValue ? 'active' : '';
+              optionList.map((item, index) => {
+                let active = item.id === this.state.answer.integerValue ? 'active' : '';
                 return (
                   <a key={index}  className={"waves-effect waves-light btn select2-btn " + active}
-                    onClick={e => this.onSelectAnswer(e, index + 1)}>
-                    {item}
+                    onClick={e => this.onSelectAnswer(e, item.id)}>
+                    {item.optionName}
                   </a>
                 )
               })

@@ -14,6 +14,7 @@ const INIT_STATE = {
   percentage: 0,
   pageIndex: 0,
   loading: false,
+  optionList: [],
   aboutMe: {
     "project": 1,
     "user": localStorage.getItem("userId"),
@@ -29,7 +30,7 @@ export default (state = INIT_STATE, action) => {
     case PAGE_LIST:
       return { ...state, loading: true };
     case PAGE_LIST_SUCCESS:
-      return { ...state, loading: false, pageIndex: 0, pageList: action.payload };
+      return { ...state, loading: false, pageIndex: 0, pageList: action.payload.pageList, optionList: action.payload.optionList };
     case SELECT_PAGE:
       return { ...state, pageIndex: action.payload.pageIndex };
     case CONTINUE_SURVEY:

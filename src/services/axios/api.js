@@ -7,8 +7,12 @@ const loginAPI = (username, password) => {
   })
 }
 
-const pageListAPI = (rd) => {
+const pageListAPI = () => {
   return getClient(true).get("/pages/?format=json")
+}
+
+const optionListAPI = () => {
+  return getClient(true).get("/option/?format=json")
 }
 
 const submitSurveyAPI = (answerData) => {
@@ -42,6 +46,7 @@ const getKeyDataFromLambda = () => {
 export {
   loginAPI,
   pageListAPI,
+  optionListAPI,
   submitSurveyAPI,
   teamListAPI,
   shgroupListAPI,

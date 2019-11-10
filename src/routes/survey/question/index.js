@@ -27,7 +27,7 @@ class Question extends Component {
 
   render() {
     
-    const { surveyList, pageIndex } = this.props;
+    const { surveyList, optionList, pageIndex } = this.props;
     
     const question = surveyList[pageIndex];
 
@@ -57,10 +57,10 @@ class Question extends Component {
             return <RangeSlider key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
           
             case controlType.TWO_OPTIONS:
-            return <TwoOptions key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+            return <TwoOptions key={index} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} />
 
           case controlType.MULTI_OPTIONS:
-            return <MultipleOptions key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+            return <MultipleOptions key={index} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} />
 
           case controlType.SMART_TEXT:
             return <SmartText key={index} question={control}  onAnswer={answer => this.handleAnswer(answer)}/>
@@ -86,11 +86,12 @@ class Question extends Component {
 
 const mapStateToProps = ({ survey, settings }) => {
 
-  const { pageList, pageIndex } = survey;
+  const { pageList, optionList, pageIndex } = survey;
   const { locale } = settings;
 
   return {
     surveyList: pageList,
+    optionList,
     pageIndex,
     locale
   };

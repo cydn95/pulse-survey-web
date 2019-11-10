@@ -9,7 +9,8 @@ import {
     pageListAPI,
     submitSurveyAPI,
     submitAboutMeAPI,
-    projectUserListAPI
+    projectUserListAPI,
+    optionListAPI
 } from '../../services/axios/api';
 
 import {
@@ -24,6 +25,11 @@ import {
 
 const getPageListAsync = async () =>
     await pageListAPI()
+      .then(result => result)
+      .catch(error => error);
+
+const getOptionListAsync = async () =>
+    await optionListAPI()
       .then(result => result)
       .catch(error => error);
 
@@ -88,8 +94,12 @@ function* getPageList() {
         }
       }
 
-      // console.log(orderedPageList);
-      yield put(pageListSuccess(orderedPageList));
+      const result_option = yield call(getOptionListAsync);
+
+      if (result_option.status === 200) {
+        const optionList = result_option.data.results;
+        yield put(pageListSuccess(orderedPageList, optionList));
+      }
         
     } else {
       console.log('login failed :', result.statusText)

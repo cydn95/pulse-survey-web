@@ -15,9 +15,9 @@ export const pageList = () => ({
   payload: { }
 });
 
-export const pageListSuccess = (pageList) => ({
+export const pageListSuccess = (pageList, optionList) => ({
   type: PAGE_LIST_SUCCESS,
-  payload: pageList
+  payload: { pageList, optionList }
 });
 
 export const selectPage = pageIndex => ({
