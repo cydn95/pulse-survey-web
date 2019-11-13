@@ -11,6 +11,12 @@ import {
   aboutMe
 } from "Redux/actions";
 
+const choice = [
+  'Team Member',
+  'Internal',
+  'External'
+];
+
 class AboutMe extends Component {
 
   constructor(props) {
@@ -18,7 +24,8 @@ class AboutMe extends Component {
 
     this.state = {
       skipToogle: false,
-      aboutme: this.props.aboutMe
+      aboutme: this.props.aboutMe,
+      shType: -1
     }
   }
 
@@ -46,6 +53,12 @@ class AboutMe extends Component {
     });
   }
 
+  onSelectAnswer = (e, answer) => {
+    e.preventDefault();
+    this.setState({
+      shType: answer
+    });
+  }
   render() {
 
     const { teamData, shgroupData } = this.props;
@@ -105,9 +118,17 @@ class AboutMe extends Component {
                       Stakeholder Type
                     </p>
                     <div className="anwser-select2">
-                      <a className="waves-effect waves-light btn-large select2-btn active">Team Member</a>
-                      <a className="waves-effect waves-light btn-large select2-btn">Internal</a>
-                      <a className="waves-effect waves-light btn-large select2-btn">External</a>
+                      {
+                        choice.map((item, index) => {
+                          let active = index === this.state.shType ? 'active' : '';
+                          return (
+                            <button key={index}  className={"waves-effect waves-light btn-large select2-btn " + active}
+                              onClick={e => this.onSelectAnswer(e, index)}>
+                              {item}
+                            </button>
+                          )
+                        })
+                      }
                     </div>
                   </div>
                 </section>
