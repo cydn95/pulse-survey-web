@@ -16,6 +16,9 @@ class KGraph extends React.Component {
     super(props);
 
     const { chart } = props;
+    
+    const myNode = localStorage.getItem("userId");
+    console.log("111111");
 
     this.state = {
       style: {
@@ -28,7 +31,8 @@ class KGraph extends React.Component {
         iconFontFamily: 'Font Awesome 5 Free'
       },
       layout: {
-          name: 'organic'
+          name: 'radial',
+          top: `user-node-${myNode}`
       },
       positions: {},
       selection: {},
@@ -112,15 +116,15 @@ class KGraph extends React.Component {
   }
 
   handleChange = (changes) => {
-      this.setState({
-          positions: changes.positions || this.state.positions,
-          selection: changes.selection || this.state.selection
-      })
+    this.setState({
+      positions: changes.positions || this.state.positions,
+      selection: changes.selection || this.state.selection
+    })
   }
 
   componentWillReceiveProps(props) {
     const { chart } = props;
-    
+    console.log(chart);
     this.setState({
       items: chart
     });
@@ -189,6 +193,8 @@ class KGraph extends React.Component {
     } else {
       this.dragging = true;
     }
+
+    this.props.onClickNode(id);
   }
 
   setTarget = (id, x, y) => {

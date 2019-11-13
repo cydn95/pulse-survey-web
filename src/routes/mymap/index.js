@@ -15,7 +15,8 @@ import {
 import {
 	SearchBox,
 	StakeholderList,
-	KGraph
+	KGraph,
+	AoSurvey
 } from "Components/MyMap";
 
 import {
@@ -306,45 +307,65 @@ class MyMap extends React.Component {
 		});
 	}
 
+	handleStartOtherSurvey = id => {
+		this.setState({
+			screen: 'aosurvey'
+		})
+	}
+
+	handleCancelSurvey = e => {
+		this.setState({
+			screen: 'list'
+		})
+	}
+
 	render() {
 
-		const { shgroupList } = this.props;
+		const { shgroupList, aoQuestionList } = this.props;
 
+		console.log(aoQuestionList);
 		return (
 			<div className="map-container">
 				<Droppable
 						className="map-content"
 						types={['stakeholder']} // <= allowed drop types
 						onDrop={data => this.handleAddStackholderToGraph(data)}>
-						<KGraph chart={this.state.chart} />
+						<KGraph chart={this.state.chart} onClickNode={id => this.handleStartOtherSurvey(id)} />
 				</Droppable>
 				<div className="map-tool">
-					<SearchBox onFilter={search => this.handleFilter(search)}/>
-					<Row>
-						{shgroupList.length > 0 && <Colxx xs="12">
-							<Button onClick={e => this.handleShowAddPage() }
-									className="waves-effect waves-light btn-xs right col-6">Add New</Button>
-						</Colxx>}
-					</Row>
-					
+				  { this.state.screen !== 'aosurvey' && 
+						<SearchBox onFilter={search => this.handleFilter(search)}/>
+					}
+					{ this.state.screen !== 'aosurvey' && shgroupList.length > 0 &&
+						<Row>
+							<Colxx xs="12">
+								<Button onClick={e => this.handleShowAddPage() }
+										className="waves-effect waves-light btn-xs right col-6">Add New</Button>
+							</Colxx>
+						</Row>
+					}		
 					{this.state.screen === 'add' && shgroupList.length > 0 && 
 						<NewStakeholder shgroup={shgroupList} onAddStakeholder={stakeholder => this.handleAddNewStakeholder(stakeholder)} stakeholder={defaultStakeholder} />
 					}		
 					{this.state.screen === 'list' && this.state.stakeholderList.length > 0 &&
 						<StakeholderList projectUserList={this.state.stakeholderList} onAddStakeHolder={ stakeholder => this.handleAddStackholderToGraph(stakeholder) }/>
 					}			
+					{ this.state.screen === 'aosurvey' && 
+						<AoSurvey questions={aoQuestionList} onCancel={e=>this.handleCancelSurvey()}/>
+					}
 				</div>
 			</div>
 		)
 	}
 }
 
-const mapStateToProps = ({ survey, kmap, common, settings }) => {
+const mapStateToProps = ({ survey, kmap, common, settings, aosurvey }) => {
 
   const { surveyId } = survey;
 	const { locale } = settings;
 	const { userList, projectUserList, kMapData } = kmap
 	const { shgroupList } = common;
+	const { questionList } = aosurvey;
 
   return {
 		userList,
@@ -352,6 +373,7 @@ const mapStateToProps = ({ survey, kmap, common, settings }) => {
 		shgroupList,
 		surveyId,		
 		kMapData,
+		aoQuestionList: questionList,
     locale
   };
 };
