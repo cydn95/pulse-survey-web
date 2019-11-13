@@ -280,12 +280,12 @@ video {
 }
 
 .slider-text-left {
-  color: #109558;
+  color: #e81919;
   text-align: left;
 }
 
 .slider-text-right {
-  color: #e81919;
+  color: #109558;
   text-align: right;
 }
 /*------------------------------------------------------------------------*/
