@@ -18,7 +18,7 @@ class KGraph extends React.Component {
     const { chart } = props;
     
     const myNode = localStorage.getItem("userId");
-    console.log("111111");
+    // console.log("111111");
 
     this.state = {
       style: {
@@ -124,7 +124,7 @@ class KGraph extends React.Component {
 
   componentWillReceiveProps(props) {
     const { chart } = props;
-    console.log(chart);
+    // console.log(chart);
     this.setState({
       items: chart
     });
@@ -193,8 +193,9 @@ class KGraph extends React.Component {
     } else {
       this.dragging = true;
     }
-
-    this.props.onClickNode(id);
+    if (id !== null) {
+      this.props.onClickNode(id);
+    }
   }
 
   setTarget = (id, x, y) => {

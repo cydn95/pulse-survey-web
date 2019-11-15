@@ -43,6 +43,14 @@ const getKeyDataFromLambda = () => {
   return getLambdaClient().get("https://gft6ixgrq7.execute-api.us-east-2.amazonaws.com/default/PulseLambda-NeptuneLambdaFunction-QI9VKCO1VXK1")
 }
 
+const aoQuestionListAPI = () => {
+  return getClient(true).get("/aoquestion/?format=json")
+}
+
+const submitAoQuestionAPI = (answerData) => {
+  return getClient(true).post("/aoresponse/", answerData)
+}
+
 export {
   loginAPI,
   pageListAPI,
@@ -53,5 +61,7 @@ export {
   submitAboutMeAPI,
   userListAPI,
   projectUserListAPI,
-  getKeyDataFromLambda
+  getKeyDataFromLambda,
+  aoQuestionListAPI,
+  submitAoQuestionAPI
 }

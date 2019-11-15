@@ -48,7 +48,7 @@ function* getPageList() {
       // Order by PageOrder Asscend
       let orderedPageList = validPageList.sort(
         (a, b) => (a.page_order.order > b.page_order.order) ? 1 : -1);
-      
+    
       for (let i = 0; i < orderedPageList.length; i++) {
         
         for (let j = 0; j < orderedPageList[i].pages.ampagesetting.length; j++) {
@@ -95,7 +95,6 @@ function* getPageList() {
       }
 
       const result_option = yield call(getOptionListAsync);
-
       if (result_option.status === 200) {
         const optionList = result_option.data.results;
         yield put(pageListSuccess(orderedPageList, optionList));

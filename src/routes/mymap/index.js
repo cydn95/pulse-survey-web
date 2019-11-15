@@ -9,7 +9,8 @@ import {
   userList,
 	projectUserList,
 	kMapData,
-	shgroupList
+	shgroupList,
+	aoQuestionList
 } from "Redux/actions";
 
 import {
@@ -138,6 +139,7 @@ class MyMap extends React.Component {
 		this.props.getProjectUserList();
 		this.props.getKMapData();
 		this.props.getShgroupList();
+		this.props.getAoQuestionList();
   }
 
 	componentWillReceiveProps(props) {
@@ -321,9 +323,8 @@ class MyMap extends React.Component {
 
 	render() {
 
-		const { shgroupList, aoQuestionList } = this.props;
+		const { shgroupList, aoQuestionList, optionList } = this.props;
 
-		console.log(aoQuestionList);
 		return (
 			<div className="map-container">
 				<Droppable
@@ -350,8 +351,9 @@ class MyMap extends React.Component {
 					{this.state.screen === 'list' && this.state.stakeholderList.length > 0 &&
 						<StakeholderList projectUserList={this.state.stakeholderList} onAddStakeHolder={ stakeholder => this.handleAddStackholderToGraph(stakeholder) }/>
 					}			
-					{ this.state.screen === 'aosurvey' && 
-						<AoSurvey questions={aoQuestionList} onCancel={e=>this.handleCancelSurvey()}/>
+					{ this.state.screen === 'aosurvey' && aoQuestionList.length > 0 && optionList.length > 0 &&
+						<AoSurvey questions={aoQuestionList} options={optionList} 
+							onSubmit={e=>this.handleCancelSurvey()} onCancel={e=>this.handleCancelSurvey()}/>
 					}
 				</div>
 			</div>
@@ -365,7 +367,7 @@ const mapStateToProps = ({ survey, kmap, common, settings, aosurvey }) => {
 	const { locale } = settings;
 	const { userList, projectUserList, kMapData } = kmap
 	const { shgroupList } = common;
-	const { questionList } = aosurvey;
+	const { aoQuestionList, optionList } = aosurvey;
 
   return {
 		userList,
@@ -373,7 +375,8 @@ const mapStateToProps = ({ survey, kmap, common, settings, aosurvey }) => {
 		shgroupList,
 		surveyId,		
 		kMapData,
-		aoQuestionList: questionList,
+		aoQuestionList,
+		optionList,
     locale
   };
 };
@@ -384,6 +387,7 @@ export default connect(
 		getUserList: userList,
 		getProjectUserList: projectUserList,
 		getKMapData: kMapData,
-		getShgroupList: shgroupList
+		getShgroupList: shgroupList,
+		getAoQuestionList: aoQuestionList
   }
 )(MyMap);
