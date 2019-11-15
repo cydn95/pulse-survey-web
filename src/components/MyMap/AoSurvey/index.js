@@ -61,7 +61,7 @@ class AoSurvey extends React.Component {
 
   render() {
     const { questions, options } = this.props;
-    console.log(questions);
+    
     return (
       <Fragment>
         <Row className="aosurvey-section">

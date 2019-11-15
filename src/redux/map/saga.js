@@ -24,7 +24,7 @@ function* getUserList() {
 		const result = yield call(getUserListAysnc);
         
         if (result.status === 200) {
-            yield put(userListSuccess(result.data.results)); 
+            yield put(userListSuccess(result.data)); 
         }
 				
 	} catch (error) {
@@ -42,7 +42,7 @@ function* getProjectUserList() {
 		const result = yield call(getProjectUserListAysnc);
         
         if (result.status === 200) {
-            yield put(projectUserListSuccess(result.data.results)); 
+            yield put(projectUserListSuccess(result.data)); 
         }
 				
 	} catch (error) {

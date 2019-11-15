@@ -41,7 +41,7 @@ function* getPageList() {
     if (result.status === 200) {
 
       // get only page which have page_order
-      let validPageList = result.data.results.filter(item => {
+      let validPageList = result.data.filter(item => {
         return item.page_order && item.pages
       });
 
@@ -96,7 +96,7 @@ function* getPageList() {
 
       const result_option = yield call(getOptionListAsync);
       if (result_option.status === 200) {
-        const optionList = result_option.data.results;
+        const optionList = result_option.data;
         yield put(pageListSuccess(orderedPageList, optionList));
       }
         
@@ -196,7 +196,6 @@ function* submitSurvey( {payload }) {
     if (result.status === 201) {
       
       result = yield call(submitSurveyAsync, answerList);
-      console.log(result);
       
       if (result.status === 201) {
         var surveyId = 0;
@@ -204,8 +203,8 @@ function* submitSurvey( {payload }) {
         result = yield call(getProjectUserListAysnc);
         
         if (result.status === 200) {
-          // yield put(projectUserListSuccess(result.data.results)); 
-          var projectUserList = result.data.results;
+          // yield put(projectUserListSuccess(result.data)); 
+          var projectUserList = result.data;
           for (let i = projectUserList.length - 1; i >= 0; i--) {
             if (projectUserList[i].user == localStorage.getItem("userId")) {
               surveyId = projectUserList[i].id;

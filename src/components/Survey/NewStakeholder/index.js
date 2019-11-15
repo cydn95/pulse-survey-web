@@ -31,8 +31,6 @@ class NewStakeholder extends Component {
   componentWillReceiveProps(props) {
     const { stakeholder, shgroup } = props;
 
-    console.log(shgroup);
-
     this.setState({
       'stakeholder': {
         ...stakeholder

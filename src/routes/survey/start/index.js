@@ -26,7 +26,7 @@ class Start extends Component {
 
   render() {
     const {pageIndex, surveyList} = this.props;
-    console.log(surveyList);
+    
     return (
       <div className="survey-container">
         <div className="survey-progress-bar">

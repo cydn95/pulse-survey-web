@@ -22,7 +22,7 @@ function* getTeamList() {
 		const result = yield call(getTeamListAysnc);
         
         if (result.status === 200) {
-            yield put(teamListSuccess(result.data.results)); 
+            yield put(teamListSuccess(result.data)); 
         }
 				
 	} catch (error) {
@@ -40,7 +40,7 @@ function* getShgroupList() {
 		const result = yield call(getShgroupListAysnc);
         
         if (result.status === 200) {
-            yield put(shgroupListSuccess(result.data.results)); 
+            yield put(shgroupListSuccess(result.data)); 
         }
 				
 	} catch (error) {

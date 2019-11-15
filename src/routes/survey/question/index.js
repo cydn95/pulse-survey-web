@@ -48,7 +48,7 @@ class Question extends Component {
       continueText = "Add Stakeholder";
 
     } else {
-        questionControl = question.pages.ampagesetting.map( (control, index) => {
+      questionControl = question.pages.ampagesetting.map( (control, index) => {
         switch (control.controlType) {
           case controlType.TEXT:
             return <FreeText key={index} question={control} onAnswer={answer => this.handleAnswer(answer)}/>

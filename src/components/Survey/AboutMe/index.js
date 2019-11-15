@@ -48,7 +48,7 @@ class AboutMe extends Component {
         [e.target.name] : e.target.value
       }
     }, () => {
-      console.log(this.state.aboutme);
+      
       this.props.onInputAboutMe(this.state.aboutme);
     });
   }

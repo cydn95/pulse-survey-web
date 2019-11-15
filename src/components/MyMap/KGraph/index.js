@@ -18,7 +18,6 @@ class KGraph extends React.Component {
     const { chart } = props;
     
     const myNode = localStorage.getItem("userId");
-    // console.log("111111");
 
     this.state = {
       style: {
@@ -124,7 +123,6 @@ class KGraph extends React.Component {
 
   componentWillReceiveProps(props) {
     const { chart } = props;
-    // console.log(chart);
     this.setState({
       items: chart
     });

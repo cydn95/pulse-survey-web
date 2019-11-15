@@ -5,18 +5,13 @@ import { Colxx } from "Components/CustomBootstrap";
 
 import SkipQuestion from "../SkipQuestion";
 
-const optionChoices = [
-  "Option 1",
-  "Option 2"
-];
-
 class TwoOptions extends Component {
 
   constructor(props) {
     super(props);
 
     const { question, options } = this.props
-
+    
     let optionList = [];
 
     for (let i = 0 ; i < question.option.length; i++) {

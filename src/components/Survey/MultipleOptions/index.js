@@ -10,14 +10,14 @@ class MultipleOptions extends Component {
   constructor(props) {
     super(props);
 
-    const { question, options } = this.props
+    const { question, options } = props
 
     let optionList = [];
-
+    
     for (let i = 0 ; i < question.option.length; i++) {
       for (let j = 0; j < options.length; j++) {
         if (question.option[i] === options[j].id) {
-          optionList.push(options[i]);
+          optionList.push(options[j]);
           break;
         }
       }
@@ -84,7 +84,7 @@ class MultipleOptions extends Component {
 
     const { question } = this.props;
     const { optionList } = this.state
-
+    
     return (
       <Row>
         <Colxx xs="12">
