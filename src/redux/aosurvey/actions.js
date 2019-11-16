@@ -1,7 +1,8 @@
 import {
   AOQUESTION_LIST,
   AOQUESTION_LIST_SUCCESS,
-  SUBMIT_AOQUSTION
+  SUBMIT_AOQUESTION,
+  SUBMIT_AOQUESTION_SUCCESS
 } from 'Constants/actionTypes';
 
 export const aoQuestionList = () => ({
@@ -14,7 +15,11 @@ export const aoQuestionListSuccess = (aoQuestionList, optionList) => ({
   payload: { aoQuestionList, optionList }
 });
 
-export const submitAoQuestion = (data) => ({
-  type: SUBMIT_AOQUSTION,
-  payload: { data }
+export const submitAoQuestion = (questionList, history, surveyUserId) => ({
+  type: SUBMIT_AOQUESTION,
+  payload: { questionList, history, surveyUserId }
+})
+
+export const submitAoQuestionSuccess = () => ({
+  type: SUBMIT_AOQUESTION_SUCCESS
 })

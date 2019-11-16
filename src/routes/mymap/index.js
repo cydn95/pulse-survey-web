@@ -10,7 +10,9 @@ import {
 	projectUserList,
 	kMapData,
 	shgroupList,
-	aoQuestionList
+	aoQuestionList,
+	driverList,
+	submitAoQuestion
 } from "Redux/actions";
 
 import {
@@ -48,7 +50,8 @@ class MyMap extends React.Component {
 		this.state = {
 			screen: 'list',
 			stakeholderList: [],
-			chart: []
+			chart: [],
+			currentSurveyUserId: 0
 		}
 	}
 
@@ -140,12 +143,13 @@ class MyMap extends React.Component {
 		this.props.getKMapData();
 		this.props.getShgroupList();
 		this.props.getAoQuestionList();
+		this.props.getDriverList();
   }
 
 	componentWillReceiveProps(props) {
 	
-		const { projectUserList, userList, kMapData, surveyId } = props;
-		
+		const { projectUserList, userList, kMapData, surveyId, driverList } = props;
+
 		if (projectUserList.length > 0 && userList.length > 0) {
 	
 			var stakeholderList = [];
@@ -311,19 +315,26 @@ class MyMap extends React.Component {
 
 	handleStartOtherSurvey = id => {
 		this.setState({
-			screen: 'aosurvey'
+			screen: 'aosurvey',
+			currentSurveyUserId: id
 		})
 	}
 
 	handleCancelSurvey = e => {
 		this.setState({
-			screen: 'list'
+			screen: 'list',
+			currentSurveyUserId : 0
 		})
+	}
+
+	handleSubmitSurvey = (e, answerData) => {
+		
+		this.props.submitAoQuestion(answerData, this.props.history, this.state.currentSurveyUserId);
 	}
 
 	render() {
 
-		const { shgroupList, aoQuestionList, optionList } = this.props;
+		const { shgroupList, aoQuestionList, optionList, driverList } = this.props;
 
 		return (
 			<div className="map-container">
@@ -351,9 +362,9 @@ class MyMap extends React.Component {
 					{this.state.screen === 'list' && this.state.stakeholderList.length > 0 &&
 						<StakeholderList projectUserList={this.state.stakeholderList} onAddStakeHolder={ stakeholder => this.handleAddStackholderToGraph(stakeholder) }/>
 					}			
-					{ this.state.screen === 'aosurvey' && aoQuestionList.length > 0 && optionList.length > 0 &&
-						<AoSurvey questions={aoQuestionList} options={optionList} 
-							onSubmit={e=>this.handleCancelSurvey()} onCancel={e=>this.handleCancelSurvey()}/>
+					{ this.state.screen === 'aosurvey' && aoQuestionList.length > 0 && optionList.length > 0 && driverList.length > 0 &&
+						<AoSurvey questions={aoQuestionList} options={optionList} drivers={driverList}
+							onSubmit={(e, answerData)=>this.handleSubmitSurvey(e, answerData)} onCancel={e=>this.handleCancelSurvey()}/>
 					}
 				</div>
 			</div>
@@ -366,7 +377,7 @@ const mapStateToProps = ({ survey, kmap, common, settings, aosurvey }) => {
   const { surveyId } = survey;
 	const { locale } = settings;
 	const { userList, projectUserList, kMapData } = kmap
-	const { shgroupList } = common;
+	const { shgroupList, driverList } = common;
 	const { aoQuestionList, optionList } = aosurvey;
 
   return {
@@ -377,6 +388,7 @@ const mapStateToProps = ({ survey, kmap, common, settings, aosurvey }) => {
 		kMapData,
 		aoQuestionList,
 		optionList,
+		driverList,
     locale
   };
 };
@@ -388,6 +400,8 @@ export default connect(
 		getProjectUserList: projectUserList,
 		getKMapData: kMapData,
 		getShgroupList: shgroupList,
-		getAoQuestionList: aoQuestionList
+		getAoQuestionList: aoQuestionList,
+		getDriverList: driverList,
+		submitAoQuestion
   }
 )(MyMap);

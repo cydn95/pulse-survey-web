@@ -1,9 +1,8 @@
-
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-
 import {
   getToken
 } from '../../services/axios/utility';
+
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import {
     aoQuestionListAPI,
@@ -17,7 +16,8 @@ import {
 } from 'Constants/actionTypes';
 
 import {
-  aoQuestionListSuccess
+  aoQuestionListSuccess,
+  submitAoQuestionSuccess
 } from './actions';
 
 const getAoQuestionListAsync = async () =>
@@ -73,12 +73,67 @@ function* getAoQuestionList() {
   }
 }
 
+const submitAoQuestionAsync = async (answerData) =>
+    await submitAoQuestionAPI(answerData)
+      .then(result => result)
+      .catch(error => error);
+
+function* submitAoQuestion({ payload }) {
+
+  const { questionList, history, surveyUserId } = payload;
+
+  let answerList = [];
+
+  for (let i = 0; i < questionList.length; i++) {
+
+    if (surveyUserId.split('-').length !== 3) {
+      continue;
+    }
+
+    let answer = {
+      "integerValue": questionList[i].answer.integerValue,
+      "topicValue": questionList[i].answer.topicValue,
+      "commentValue": questionList[i].answer.commentValue,
+      "skipValue": questionList[i].answer.skipValue,
+      "topicTags": questionList[i].answer.topicTags,
+      "commentTags": questionList[i].answer.commentTags,
+      "user": getToken().userId,
+      "subjectUser": surveyUserId.split('-')[2],
+      "survey": questionList[i].answer.survey,
+      "aoQuestion": questionList[i].answer.amQuestion
+    }
+
+    answerList.push(answer);
+  }
+  console.log(answerList);
+  try {
+    
+    let result = yield call(submitAoQuestionAsync, answerList);
+    
+    if (result.status === 201) {
+      
+      yield put(submitAoQuestionSuccess());
+      history.push('/app/dashboard');
+    } else {
+      console.log('submit failed')
+    }
+  } catch (error) {
+    console.log('survey error : ', error)
+  }
+
+}
+
 export function* watchAoQuestionList() {
   yield takeEvery(AOQUESTION_LIST, getAoQuestionList);
 }
 
+export function* watchAoQuestionSubmit() {
+  yield takeEvery(SUBMIT_AOQUESTION, submitAoQuestion);
+}
+
 export default function* rootSaga() {
   yield all([
-    fork(watchAoQuestionList)
+    fork(watchAoQuestionList),
+    fork(watchAoQuestionSubmit)
   ]);
 }

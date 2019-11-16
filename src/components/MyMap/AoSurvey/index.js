@@ -16,31 +16,56 @@ import {
   MultipleOptions,
   TwoOptions,
   FreeText,
-  Welcome,
   SmartText,
   RangeSlider,
-  NewStakeholder,
-  AboutMe,
-  Continue
 } from "Components/Survey";
 
 import { Colxx } from "Components/CustomBootstrap";
 
-import IntlMessages from "Util/IntlMessages";
-
-const drivers = [
-  'Pulse', 'Sentiment', 'Influence', 'Confidence', 'Engagement', 'Confidence', 'Culture'
-]
 class AoSurvey extends React.Component {
 
   constructor(props) {
 
     super(props);
     
+    const { questions, options, drivers } = this.props;
+
+    for (let i = 0; i < drivers.length; i++) {
+      drivers[i] = {
+        ...drivers[i],
+        questions: []
+      };
+    }
+
+    for (let i = 0; i < questions.length; i++) {
+      for (let j = 0; j < drivers.length; j++) {
+        if (questions[i].driver === drivers[j].id) {
+          drivers[j].questions.push(questions[i]);
+          break;
+        }
+      }
+    }
+
+    const orderedDrivers = drivers.filter(item => {
+      return item.questions.length > 0 ? true : false
+    });
+
+    let accordion = [];
+    for (let i = 0; i < orderedDrivers.length; i++) {
+      if (i === 0) 
+        accordion.push(true) 
+      else
+        accordion.push(false)
+    }
+
     this.state = {
       collapse: false,
-      accordion: [true, false, false]
+      accordion,
+      questions,
+      options,
+      drivers: orderedDrivers
     };
+
   }
 
   toggleAccordion = (tab)  => {
@@ -52,15 +77,25 @@ class AoSurvey extends React.Component {
   }
 
   handleAnswer = answer => {
-
+    this.setState( state => {
+      state.questions[answer.questionIndex].answer = {
+        ...answer
+      };
+      return state;
+    });
   }
 
   handleCancel = e => {
     this.props.onCancel(e);
   }
 
+  handleSubmit = e => {
+    this.props.onSubmit(e, this.state.questions);
+  }
+
   render() {
-    const { questions, options } = this.props;
+    
+    const { options, drivers, accordion } = this.state;
     
     return (
       <Fragment>
@@ -69,126 +104,48 @@ class AoSurvey extends React.Component {
             <Card>
               <CardBody>
                 <Fragment>
-                  <div className="border">
-                    <Button
-                      block
-                      color="link"
-                      className="text-left"
-                      onClick={() => this.toggleAccordion(0)}
-                      aria-expanded={this.state.accordion[0]}
-                    >
-                      Sentiment
-                    </Button>
-                    <Collapse isOpen={this.state.accordion[0]}>
-                      <div className="p-4">
-                        {
-                          questions.map( (control, index) => {
-                            if (index % 3 !== 0) return;
-                            switch (control.controlType) {
-                              case controlType.TEXT:
-                                return <FreeText key={index} question={control} onAnswer={answer => this.handleAnswer(answer)}/>
-                    
-                              case controlType.SLIDER:
-                                return <RangeSlider key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                              
-                                case controlType.TWO_OPTIONS:
-                                return <TwoOptions key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                    
-                              case controlType.MULTI_OPTIONS:
-                                return <MultipleOptions key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                    
-                              case controlType.SMART_TEXT:
-                                return <SmartText key={index} question={control}  onAnswer={answer => this.handleAnswer(answer)}/>
-                    
-                              default:
-                                return <div key={index} ></div>
+                  {
+                    drivers.map((driver, index2) => {
+                      return <div className="border" key={index2}>
+                        <Button
+                          block
+                          color="link"
+                          className="text-left"
+                          onClick={() => this.toggleAccordion(index2)}
+                          aria-expanded={this.state.accordion[index2]}
+                        >
+                          {driver.driverName}
+                        </Button>
+                        <Collapse isOpen={accordion[index2]}>
+                          <div className="p-4">
+                            { 
+                              driver.questions.map( (control, index) => {
+                                switch (control.controlType) {
+                                  case controlType.TEXT:
+                                    return <FreeText key={index} question={control} onAnswer={answer => this.handleAnswer(answer)}/>
+                        
+                                  case controlType.SLIDER:
+                                    return <RangeSlider key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+                                  
+                                    case controlType.TWO_OPTIONS:
+                                    return <TwoOptions key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+                        
+                                  case controlType.MULTI_OPTIONS:
+                                    return <MultipleOptions key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+                        
+                                  case controlType.SMART_TEXT:
+                                    return <SmartText key={index} question={control}  onAnswer={answer => this.handleAnswer(answer)}/>
+                        
+                                  default:
+                                    return <div key={index} ></div>
+                                }
+                              })
                             }
-                          })
-                        }
+                          </div>
+                        </Collapse>
                       </div>
-                    </Collapse>
-                  </div>
-
-                  <div className="border">
-                    <Button
-                      block
-                      color="link"
-                      className="text-left"
-                      onClick={() => this.toggleAccordion(1)}
-                      aria-expanded={this.state.accordion[1]}
-                    >
-                      Confidence
-                    </Button>
-                    <Collapse isOpen={this.state.accordion[1]}>
-                      <div className="p-4">
-                        {
-                          questions.map( (control, index) => {
-                            if (index % 3 !== 1) return;
-                            switch (control.controlType) {
-                              case controlType.TEXT:
-                                return <FreeText key={index} question={control} onAnswer={answer => this.handleAnswer(answer)}/>
-                    
-                              case controlType.SLIDER:
-                                return <RangeSlider key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                              
-                                case controlType.TWO_OPTIONS:
-                                return <TwoOptions key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                    
-                              case controlType.MULTI_OPTIONS:
-                                return <MultipleOptions key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                    
-                              case controlType.SMART_TEXT:
-                                return <SmartText key={index} question={control}  onAnswer={answer => this.handleAnswer(answer)}/>
-                    
-                              default:
-                                return <div key={index} ></div>
-                            }
-                          })
-                        }
-                      </div>
-                    </Collapse>
-                  </div>
-
-                  <div className="border">
-                    <Button
-                      block
-                      color="link"
-                      className="text-left"
-                      onClick={() => this.toggleAccordion(2)}
-                      aria-expanded={this.state.accordion[2]}
-                    >
-                      Influence
-                    </Button>
-                    <Collapse isOpen={this.state.accordion[2]}>
-                      <div className="p-4">
-                        {
-                          questions.map( (control, index) => {
-                            if (index % 3 !== 2) return;
-                            switch (control.controlType) {
-                              case controlType.TEXT:
-                                return <FreeText key={index} question={control} onAnswer={answer => this.handleAnswer(answer)}/>
-                    
-                              case controlType.SLIDER:
-                                return <RangeSlider key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                              
-                                case controlType.TWO_OPTIONS:
-                                return <TwoOptions key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                    
-                              case controlType.MULTI_OPTIONS:
-                                return <MultipleOptions key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                    
-                              case controlType.SMART_TEXT:
-                                return <SmartText key={index} question={control}  onAnswer={answer => this.handleAnswer(answer)}/>
-                    
-                              default:
-                                return <div key={index} ></div>
-                            }
-                          })
-                        }
-                      </div>
-                    </Collapse>
-                  </div>
-
+                    })
+                  }
                 </Fragment>
               </CardBody>
               <CardBody>
@@ -196,7 +153,7 @@ class AoSurvey extends React.Component {
                   <a className="waves-effect waves-light btn btn-danger active" 
                       onClick={e=>this.handleCancel(e)}>Back</a>&nbsp;&nbsp;
                   <a className="waves-effect waves-light btn btn-primary active" 
-                    onClick={e=>this.handleCancel(e)} >Submit</a>
+                    onClick={e=>this.handleSubmit(e)} >Submit</a>
                 </Fragment>
               </CardBody>
             </Card>

@@ -216,11 +216,11 @@ class KGraph extends React.Component {
             properties: ['subgroup', 'group'],
             level: 2,
           }}
+          onChartClick={this.checkGlyphDown}
           onChartDragComplete={this.dragComplete}
           onChartChange={this.handleChange}
           onChartDragOver={this.setTarget}
           onChartDragStart={this.startLinkCreation}
-          onChartMouseDown={this.checkGlyphDown}
           onChartDoubleClick={this.doubleClickHandler}
           onCombineNodes={this.combineNodesHandler} />
         </FontLoader>

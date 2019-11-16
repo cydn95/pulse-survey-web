@@ -15,6 +15,10 @@ const optionListAPI = () => {
   return getClient(true).get("/option/?format=json")
 }
 
+const driverListAPI = () => {
+  return getClient(true).get("/driver/?format=json")
+}
+
 const submitSurveyAPI = (answerData) => {
   return getClient(true).post("/amresponse/", answerData)
 }
@@ -53,15 +57,21 @@ const submitAoQuestionAPI = (answerData) => {
 
 export {
   loginAPI,
+  
   pageListAPI,
-  optionListAPI,
+  submitAboutMeAPI,
   submitSurveyAPI,
+
   teamListAPI,
   shgroupListAPI,
-  submitAboutMeAPI,
+  optionListAPI,
+  driverListAPI,
   userListAPI,
   projectUserListAPI,
+  
   getKeyDataFromLambda,
+
   aoQuestionListAPI,
-  submitAoQuestionAPI
+  submitAoQuestionAPI,
+  
 }
