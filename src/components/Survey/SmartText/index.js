@@ -95,7 +95,7 @@ class SmartText extends Component {
   }
 
   render() {
-    const { question } = this.props;
+    const { question, skipQuestionList } = this.props;
 
     return (
       <div>
@@ -138,6 +138,8 @@ class SmartText extends Component {
             <SkipQuestion 
                   answer={this.state.answer.topicValue} 
                   onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
+                  skipOption={question.skipOption}
+                  skipQuestionList={skipQuestionList}
                   onComment={commentAnswer => this.handleComment(commentAnswer)}/>
           </Colxx>
         </Row>

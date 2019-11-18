@@ -6,7 +6,9 @@ import {
   OPTION_LIST,
   OPTION_LIST_SUCCESS,
   DRIVER_LIST,
-  DRIVER_LIST_SUCCESS
+  DRIVER_LIST_SUCCESS,
+  SKIP_QUESTION_LIST,
+  SKIP_QUESTION_LIST_SUCCESS
 } from 'Constants/actionTypes';
 
 export const teamList = () => ({
@@ -43,4 +45,13 @@ export const driverList = () => ({
 export const driverListSuccess = (driverList) => ({
   type: DRIVER_LIST_SUCCESS,
   payload: { driverList }
+});
+
+export const skipQuestionList = () => ({
+  type: SKIP_QUESTION_LIST
+});
+
+export const skipQuestionListSuccess = (skipQuestionList) => ({
+  type: SKIP_QUESTION_LIST_SUCCESS,
+  payload: { skipQuestionList }
 });

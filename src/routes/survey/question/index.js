@@ -27,8 +27,7 @@ class Question extends Component {
 
   render() {
     
-    const { surveyList, optionList, pageIndex } = this.props;
-    
+    const { surveyList, optionList, pageIndex, skipQuestionList } = this.props;
     const question = surveyList[pageIndex];
 
     let questionControl;
@@ -51,19 +50,24 @@ class Question extends Component {
       questionControl = question.pages.ampagesetting.map( (control, index) => {
         switch (control.controlType) {
           case controlType.TEXT:
-            return <FreeText key={index} question={control} onAnswer={answer => this.handleAnswer(answer)}/>
+            return <FreeText key={index} question={control} onAnswer={answer => this.handleAnswer(answer)}
+              skipQuestionList={skipQuestionList} />
 
           case controlType.SLIDER:
-            return <RangeSlider key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+            return <RangeSlider key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} 
+              skipQuestionList={skipQuestionList} />
           
             case controlType.TWO_OPTIONS:
-            return <TwoOptions key={index} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+            return <TwoOptions key={index} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
+              skipQuestionList={skipQuestionList} />
 
           case controlType.MULTI_OPTIONS:
-            return <MultipleOptions key={index} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+            return <MultipleOptions key={index} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
+              skipQuestionList={skipQuestionList} />
 
           case controlType.SMART_TEXT:
-            return <SmartText key={index} question={control}  onAnswer={answer => this.handleAnswer(answer)}/>
+            return <SmartText key={index} question={control}  onAnswer={answer => this.handleAnswer(answer)} 
+              skipQuestionList={skipQuestionList} />
 
           default:
             return <div key={index} ></div>

@@ -1,19 +1,21 @@
 
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { teamListAPI, shgroupListAPI, optionListAPI, driverListAPI } from '../../services/axios/api';
+import { teamListAPI, shgroupListAPI, optionListAPI, driverListAPI, skipQuestionListAPI } from '../../services/axios/api';
 
 import {
     TEAM_LIST,
     SHGROUP_LIST,
     OPTION_LIST,
-    DRIVER_LIST
+    DRIVER_LIST,
+    SKIP_QUESTION_LIST
 } from 'Constants/actionTypes';
 
 import {
     teamListSuccess,
     shgroupListSuccess,
     optionListSuccess,
-    driverListSuccess
+    driverListSuccess,
+    skipQuestionListSuccess
 } from './actions';
 
 const getTeamListAysnc = async () =>
@@ -88,6 +90,24 @@ function* getDriverList() {
 	}
 }
 
+const getSkipQuestionListAysnc = async () =>
+    await skipQuestionListAPI()
+        .then(data => data)
+        .catch(error => error);
+
+function* getSkipQuestionList() {
+	try {
+		const result = yield call(getSkipQuestionListAysnc);
+        
+        if (result.status === 200) {
+            yield put(skipQuestionListSuccess(result.data)); 
+        }
+				
+	} catch (error) {
+		console.log('error : ', error)
+	}
+}
+
 export function* watchTeamList() {
     yield takeEvery(TEAM_LIST, getTeamList);
 }
@@ -104,11 +124,16 @@ export function* watchDriverList() {
     yield takeEvery(DRIVER_LIST, getDriverList);
 }
 
+export function* watchSkipQuestionList() {
+    yield takeEvery(SKIP_QUESTION_LIST, getSkipQuestionList);
+}
+
 export default function* rootSaga() {
     yield all([
         fork(watchTeamList),
         fork(watchShgroupList),
         fork(watchDriverList),
-        fork(watchOptionList)
+        fork(watchOptionList),
+        fork(watchSkipQuestionList)
     ]);
 }

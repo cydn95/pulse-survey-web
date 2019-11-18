@@ -6,7 +6,9 @@ import {
   OPTION_LIST,
   OPTION_LIST_SUCCESS,
   DRIVER_LIST,
-  DRIVER_LIST_SUCCESS
+  DRIVER_LIST_SUCCESS,
+  SKIP_QUESTION_LIST,
+  SKIP_QUESTION_LIST_SUCCESS
 } from "Constants/actionTypes";
 
 const INIT_STATE = {
@@ -14,6 +16,7 @@ const INIT_STATE = {
   shgroupList: [],
   optionList: [],
   driverList: [],
+  skipQuestionList: [],
   loading: false
 };
 
@@ -35,6 +38,10 @@ export default (state = INIT_STATE, action) => {
       return { ...state };
     case DRIVER_LIST_SUCCESS:
       return { ...state, driverList: action.payload.driverList };
+    case SKIP_QUESTION_LIST:
+      return { ...state };
+    case SKIP_QUESTION_LIST_SUCCESS:
+      return { ...state, skipQuestionList: action.payload.skipQuestionList };
     default:
       return { ...state };
   }

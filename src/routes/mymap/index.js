@@ -12,7 +12,8 @@ import {
 	shgroupList,
 	aoQuestionList,
 	driverList,
-	submitAoQuestion
+	submitAoQuestion,
+	skipQuestionList
 } from "Redux/actions";
 
 import {
@@ -144,6 +145,7 @@ class MyMap extends React.Component {
 		this.props.getShgroupList();
 		this.props.getAoQuestionList();
 		this.props.getDriverList();
+		this.props.getSkipQuestionList();
   }
 
 	componentWillReceiveProps(props) {
@@ -334,8 +336,8 @@ class MyMap extends React.Component {
 
 	render() {
 
-		const { shgroupList, aoQuestionList, optionList, driverList } = this.props;
-
+		const { shgroupList, aoQuestionList, optionList, driverList, skipQuestionList } = this.props;
+		
 		return (
 			<div className="map-container">
 				<Droppable
@@ -362,9 +364,15 @@ class MyMap extends React.Component {
 					{this.state.screen === 'list' && this.state.stakeholderList.length > 0 &&
 						<StakeholderList projectUserList={this.state.stakeholderList} onAddStakeHolder={ stakeholder => this.handleAddStackholderToGraph(stakeholder) }/>
 					}			
-					{ this.state.screen === 'aosurvey' && aoQuestionList.length > 0 && optionList.length > 0 && driverList.length > 0 &&
-						<AoSurvey questions={aoQuestionList} options={optionList} drivers={driverList}
-							onSubmit={(e, answerData)=>this.handleSubmitSurvey(e, answerData)} onCancel={e=>this.handleCancelSurvey()}/>
+					{ this.state.screen === 'aosurvey' && aoQuestionList.length > 0 && optionList.length > 0 && 
+						driverList.length > 0 && skipQuestionList.length > 0 &&
+						<AoSurvey 
+							questions={aoQuestionList} 
+							options={optionList} 
+							drivers={driverList}
+							skipQuestionList={skipQuestionList}
+							onSubmit={(e, answerData)=>this.handleSubmitSurvey(e, answerData)} 
+							onCancel={e=>this.handleCancelSurvey()}/>
 					}
 				</div>
 			</div>
@@ -377,13 +385,14 @@ const mapStateToProps = ({ survey, kmap, common, settings, aosurvey }) => {
   const { surveyId } = survey;
 	const { locale } = settings;
 	const { userList, projectUserList, kMapData } = kmap
-	const { shgroupList, driverList } = common;
+	const { shgroupList, driverList, skipQuestionList } = common;
 	const { aoQuestionList, optionList } = aosurvey;
 
   return {
 		userList,
 		projectUserList,
 		shgroupList,
+		skipQuestionList,
 		surveyId,		
 		kMapData,
 		aoQuestionList,
@@ -402,6 +411,7 @@ export default connect(
 		getShgroupList: shgroupList,
 		getAoQuestionList: aoQuestionList,
 		getDriverList: driverList,
+		getSkipQuestionList: skipQuestionList,
 		submitAoQuestion
   }
 )(MyMap);

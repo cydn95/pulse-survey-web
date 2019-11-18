@@ -82,7 +82,7 @@ class MultipleOptions extends Component {
 
   render() {
 
-    const { question } = this.props;
+    const { question, skipQuestionList } = this.props;
     const { optionList } = this.state
     
     return (
@@ -107,6 +107,8 @@ class MultipleOptions extends Component {
           </div>
           <SkipQuestion answer={this.state.answer.integerValue} 
                 onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
+                skipOption={question.skipOption}
+                skipQuestionList={skipQuestionList}
                 onComment={commentAnswer => this.handleComment(commentAnswer)}/>
         </Colxx>
       </Row>

@@ -31,6 +31,10 @@ const shgroupListAPI = () => {
   return getClient(true).get("/shgroup/?format=json")
 }
 
+const skipQuestionListAPI = () => {
+  return getClient(true).get("skipOption/?format=json")
+}
+
 const submitAboutMeAPI = (data) => {
   return getClient(true).post("/projectuser/", data)
 }
@@ -68,6 +72,7 @@ export {
   driverListAPI,
   userListAPI,
   projectUserListAPI,
+  skipQuestionListAPI,
   
   getKeyDataFromLambda,
 

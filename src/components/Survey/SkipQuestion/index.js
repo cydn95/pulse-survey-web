@@ -5,22 +5,30 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Colxx } from "Components/CustomBootstrap";
 
-const skipChoices = [
-  "It doesn't apply to me",
-  "I don't understand it",
-  "I don't have an option",
-  "Other"
-]
 class SkipQuestion extends Component {
 
   constructor(props) {
     super(props);
 
+    const { skipQuestionList, skipOption } = props;
+
+    let optionList = [];
+    
+    for (let i = 0 ; i < skipOption.length; i++) {
+      for (let j = 0; j < skipQuestionList.length; j++) {
+        if (skipOption[i] === skipQuestionList[j].id) {
+          optionList.push(skipQuestionList[j]);
+          break;
+        }
+      }
+    }    
+
     this.state = {
       skipToogle: false,
       commentToggle: false,
       reason: 0,
-      comment: ''
+      comment: '',
+      optionList
     }
   }
 
@@ -47,7 +55,7 @@ class SkipQuestion extends Component {
     this.setState({
       reason: answer
     }, () => {
-      this.props.onSkip(skipChoices[answer - 1]);
+      this.props.onSkip(answer);
     });
   }
 
@@ -71,6 +79,10 @@ class SkipQuestion extends Component {
   
   render() {
 
+    // const { skipQuestionList, skipOption } = this.props;
+
+    const { optionList } =  this.state;
+
     return (
       <Row>
         <Colxx xs="12">
@@ -85,22 +97,22 @@ class SkipQuestion extends Component {
               <input id="comment" type="text" className="" value={this.state.comment} onChange={e => this.onInputComment(e)} placeholder="Comment"/>
             </div>
           }
-          {!this.state.skipToogle &&
-            <a href="/" onClick={(e) => this.onSkipQuestion(e)}>Skip this question</a>
+          {!this.state.skipToogle && optionList.length > 0 && 
+            <a class="skip" href="/" onClick={(e) => this.onSkipQuestion(e)}>Skip this question</a>
           }
-          {this.state.skipToogle &&
-            <div>
+          {this.state.skipToogle && optionList.length > 0 && 
+            <div class="skip">
               <div>
                 Why are you skiping this question? <a href="/" onClick={(e) => this.onSkipQuestion(e)}>Cancel skip</a>
               </div>
               <div className="anwser-select-n mt-3">
               {
-                skipChoices.map((item, index) => {
-                  let active = (index + 1) === this.state.reason ? 'active' : '';
+                optionList.map((item, index) => {
+                  let active = (item.id) === this.state.reason ? 'active' : '';
                   return (
-                    <a key={index}  className={"waves-effect waves-light btn select2-btn " + active}
-                      onClick={e => this.onSelectSkipReason(e, index + 1)}>
-                      {item}
+                    <a key={item.id}  className={"waves-effect waves-light btn select2-btn " + active}
+                      onClick={e => this.onSelectSkipReason(e, item.id)}>
+                      {item.optionName}
                     </a>
                   )
                 })

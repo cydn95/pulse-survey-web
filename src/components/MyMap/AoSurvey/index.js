@@ -96,6 +96,7 @@ class AoSurvey extends React.Component {
   render() {
     
     const { options, drivers, accordion } = this.state;
+    const { skipQuestionList } = this.props;
     
     return (
       <Fragment>
@@ -122,19 +123,19 @@ class AoSurvey extends React.Component {
                               driver.questions.map( (control, index) => {
                                 switch (control.controlType) {
                                   case controlType.TEXT:
-                                    return <FreeText key={index} question={control} onAnswer={answer => this.handleAnswer(answer)}/>
+                                    return <FreeText skipQuestionList={skipQuestionList} key={index} question={control} onAnswer={answer => this.handleAnswer(answer)}/>
                         
                                   case controlType.SLIDER:
-                                    return <RangeSlider key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+                                    return <RangeSlider skipQuestionList={skipQuestionList} key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
                                   
                                     case controlType.TWO_OPTIONS:
-                                    return <TwoOptions key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+                                    return <TwoOptions skipQuestionList={skipQuestionList} key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
                         
                                   case controlType.MULTI_OPTIONS:
-                                    return <MultipleOptions key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+                                    return <MultipleOptions skipQuestionList={skipQuestionList} key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
                         
                                   case controlType.SMART_TEXT:
-                                    return <SmartText key={index} question={control}  onAnswer={answer => this.handleAnswer(answer)}/>
+                                    return <SmartText skipQuestionList={skipQuestionList} key={index} question={control}  onAnswer={answer => this.handleAnswer(answer)}/>
                         
                                   default:
                                     return <div key={index} ></div>

@@ -69,7 +69,7 @@ class RangeSlider extends Component {
   }
 
   render() {
-    const { question } = this.props;
+    const { question, skipQuestionList } = this.props;
     
     return (
       <div>
@@ -99,6 +99,8 @@ class RangeSlider extends Component {
           <Colxx xs="12">
           <SkipQuestion answer={this.state.answer.integerValue} 
               onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
+              skipOption={question.skipOption}
+              skipQuestionList={skipQuestionList}
               onComment={commentAnswer => this.handleComment(commentAnswer)}/>
           </Colxx>
         </Row>

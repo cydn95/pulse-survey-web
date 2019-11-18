@@ -13,7 +13,8 @@ import Question from "../question";
 import {
   pageList,
   teamList,
-  shgroupList
+  shgroupList,
+  skipQuestionList
 } from "Redux/actions";
 
 class Start extends Component {
@@ -22,10 +23,11 @@ class Start extends Component {
     this.props.getPageList();
     this.props.getTeamList();
     this.props.getShgroupList();
+    this.props.getSkipQuestionList();
   }
 
   render() {
-    const {pageIndex, surveyList} = this.props;
+    const {pageIndex, surveyList, skipQuestionList} = this.props;
     
     return (
       <div className="survey-container">
@@ -37,7 +39,8 @@ class Start extends Component {
             <Row>
               <Colxx xs="12">
                 {/* <Title title="Alfa Project" /> */}
-                {surveyList.length > 0 && <Question history={this.props.history}/>}
+                { surveyList.length > 0 && skipQuestionList.length > 0 && 
+                  <Question history={this.props.history} skipQuestionList={skipQuestionList} /> }
                 {surveyList.length ===0 && <h1>Loading...</h1>}
               </Colxx>
             </Row>
@@ -52,14 +55,16 @@ class Start extends Component {
   }
 }
 
-const mapStateToProps = ({ survey, settings }) => {
+const mapStateToProps = ({ survey, settings, common }) => {
 
   const { pageList, pageIndex } = survey;
   const { locale } = settings;
+  const { skipQuestionList } = common
 
   return {
     surveyList : pageList,
     pageIndex,
+    skipQuestionList,
     locale
   };
 };
@@ -69,6 +74,7 @@ export default connect(
   {
     getPageList: pageList,
     getTeamList: teamList,
-    getShgroupList: shgroupList
+    getShgroupList: shgroupList,
+    getSkipQuestionList: skipQuestionList
   }
 )(Start);

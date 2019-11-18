@@ -288,4 +288,30 @@ video {
   color: #109558;
   text-align: right;
 }
+
 /*------------------------------------------------------------------------*/
+/*  Ao Survey  */
+/**************************************************************************/
+.aosurvey-section h1 {
+  font-size: 14px !important;
+  font-weight: bold !important;
+}
+
+.aosurvey-section .comment-button {
+  position: relative;
+  right: 15px;
+  top: 0px;
+  margin-left: 15px;
+}
+
+.aosurvey-section .comment-button {
+  position: relative;
+  right: 15px;
+  top: 0px;
+  margin-left: 15px;
+}
+
+.aosurvey-section .skip {
+  display: block !important;
+  margin-top: 10px;
+}

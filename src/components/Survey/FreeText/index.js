@@ -67,8 +67,8 @@ class FreeText extends Component {
   }
 
   render() {
-    const { question } = this.props;
-      
+    const { question, skipQuestionList } = this.props;
+    
     return (
       <Row>
         <Colxx xs="12">
@@ -76,6 +76,8 @@ class FreeText extends Component {
           <textarea className="materialize-textarea" rows="1" value={this.state.answer.topicValue} onChange={e => this.onInputAnswer(e)}></textarea>
           <SkipQuestion 
               answer={this.state.answer.topicValue} 
+              skipQuestionList={skipQuestionList}
+              skipOption={question.skipOption}
               onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
               onComment={commentAnswer => this.handleComment(commentAnswer)}/>
         </Colxx>
