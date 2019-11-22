@@ -99,68 +99,56 @@ class AoSurvey extends React.Component {
     const { skipQuestionList } = this.props;
     
     return (
-      <Fragment>
-        <Row className="aosurvey-section">
-          <Colxx xxs="12" className="mb-4">
-            <Card>
-              <CardBody>
-                <Fragment>
-                  {
-                    drivers.map((driver, index2) => {
-                      return <div className="border" key={index2}>
-                        <Button
-                          block
-                          color="link"
-                          className="text-left"
-                          onClick={() => this.toggleAccordion(index2)}
-                          aria-expanded={this.state.accordion[index2]}
-                        >
-                          {driver.driverName}
-                        </Button>
-                        <Collapse isOpen={accordion[index2]}>
-                          <div className="p-4">
-                            { 
-                              driver.questions.map( (control, index) => {
-                                switch (control.controlType) {
-                                  case controlType.TEXT:
-                                    return <FreeText skipQuestionList={skipQuestionList} key={index} question={control} onAnswer={answer => this.handleAnswer(answer)}/>
-                        
-                                  case controlType.SLIDER:
-                                    return <RangeSlider skipQuestionList={skipQuestionList} key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                                  
-                                    case controlType.TWO_OPTIONS:
-                                    return <TwoOptions skipQuestionList={skipQuestionList} key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                        
-                                  case controlType.MULTI_OPTIONS:
-                                    return <MultipleOptions skipQuestionList={skipQuestionList} key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                        
-                                  case controlType.SMART_TEXT:
-                                    return <SmartText skipQuestionList={skipQuestionList} key={index} question={control}  onAnswer={answer => this.handleAnswer(answer)}/>
-                        
-                                  default:
-                                    return <div key={index} ></div>
-                                }
-                              })
-                            }
-                          </div>
-                        </Collapse>
-                      </div>
-                    })
-                  }
-                </Fragment>
-              </CardBody>
-              <CardBody>
-                <Fragment>
-                  <a className="waves-effect waves-light btn btn-danger active" 
-                      onClick={e=>this.handleCancel(e)}>Back</a>&nbsp;&nbsp;
-                  <a className="waves-effect waves-light btn btn-primary active" 
-                    onClick={e=>this.handleSubmit(e)} >Submit</a>
-                </Fragment>
-              </CardBody>
-            </Card>
-          </Colxx>
-        </Row>
-      </Fragment>
+      <div className="ao-survey-container">
+        { 
+          drivers.map((driver, index2) => {
+            let content = accordion[index2] === true ? 'show' : 'hide';
+            let indicator = accordion[index2] === true ? 'indicator-up' : 'indicator-down';
+            return <div className="aosurvey-section" key={index2}>
+              <div 
+                className="header"
+                onClick={() => this.toggleAccordion(index2)}>
+                <div className="icon">
+                  <img src="/assets/img/survey/menu-influence.png"/>
+                </div>
+                <h1>{driver.driverName}</h1>
+                <div className={indicator}></div>
+              </div>
+              <div className={"content " + content}>
+                { 
+                  driver.questions.map( (control, index) => {
+                    switch (control.controlType) {
+                      case controlType.TEXT:
+                        return <FreeText skipQuestionList={skipQuestionList} key={index} question={control} onAnswer={answer => this.handleAnswer(answer)}/>
+            
+                      case controlType.SLIDER:
+                        return <RangeSlider skipQuestionList={skipQuestionList} key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+                      
+                        case controlType.TWO_OPTIONS:
+                        return <TwoOptions skipQuestionList={skipQuestionList} key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+            
+                      case controlType.MULTI_OPTIONS:
+                        return <MultipleOptions skipQuestionList={skipQuestionList} key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+            
+                      case controlType.SMART_TEXT:
+                        return <SmartText skipQuestionList={skipQuestionList} key={index} question={control}  onAnswer={answer => this.handleAnswer(answer)}/>
+            
+                      default:
+                        return <div key={index} ></div>
+                    }
+                  })
+                }
+              </div>
+            </div>
+          })
+        }
+        <div className="footer">
+          <a className="waves-effect waves-light btn btn-danger active" 
+            onClick={e=>this.handleCancel(e)}>Back</a>&nbsp;&nbsp;
+          <a className="waves-effect waves-light btn btn-primary active" 
+            onClick={e=>this.handleSubmit(e)} >Submit</a>
+        </div>
+      </div>
     )
   }
 }

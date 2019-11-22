@@ -98,10 +98,10 @@ class SkipQuestion extends Component {
             </div>
           }
           {!this.state.skipToogle && optionList.length > 0 && 
-            <a class="skip" href="/" onClick={(e) => this.onSkipQuestion(e)}>Skip this question</a>
+            <a className="skip" href="/" onClick={(e) => this.onSkipQuestion(e)}>Skip this question</a>
           }
           {this.state.skipToogle && optionList.length > 0 && 
-            <div class="skip">
+            <div className="skip">
               <div>
                 Why are you skiping this question? <a href="/" onClick={(e) => this.onSkipQuestion(e)}>Cancel skip</a>
               </div>
