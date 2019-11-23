@@ -38,8 +38,10 @@ class KGraph extends React.Component {
       animation: {
           animate: false
       },
-      openCombos: {},
+      openCombos: {}
     }
+
+    this.dragging = false;
   }
 
   createLink = async (nodeId, newLinkId, positions) => {
@@ -104,14 +106,21 @@ class KGraph extends React.Component {
 
   startLinkCreation = async (type, id, x, y, sub) => {
     
-    if (type === 'move' && this.dragging === false) {
+    // if (type === 'move' && this.dragging === false) {
+    if (sub !== null) {
+        this.dragging = false;
         const linkId = `${id}-node${++nodeIdCounter}`;
         await this.createLink(id, linkId, this.state.positions);
         // return true in this case to prevent default behaviour
         return true;
+    } else {
+      this.dragging = true;
+      // otherwise just drag the node...
+      if (id !== null) {
+        this.props.onClickNode(id);
+      }
+      return false;
     }
-    // otherwise just drag the node...
-    return false;
   }
 
   handleChange = (changes) => {
@@ -137,14 +146,6 @@ class KGraph extends React.Component {
   };
 
   doubleClickHandler = id => {
-    /*
-      Toggle the value on the openCombos object,
-      this value is used to set the open state of the combo node.
-
-      Also create a new 'combine' object. This forces ReGraph to
-      do a re-render. Once that happens, the 'onCombineNodes' function
-      is called and we can set the open value of the combo node.
-    */
     const { openCombos, combine } = this.state;
     this.setState({
       openCombos: { ...openCombos, [id]: !openCombos[id] },
@@ -184,18 +185,6 @@ class KGraph extends React.Component {
     }
   }
 
-  checkGlyphDown = (id, x, y, b, sub) => {
-    
-    if (sub !== null && sub !== 't') {
-      this.dragging = false;
-    } else {
-      this.dragging = true;
-    }
-    if (id !== null) {
-      this.props.onClickNode(id);
-    }
-  }
-
   setTarget = (id, x, y) => {
     if (id) {
         targetId = id;
@@ -212,17 +201,16 @@ class KGraph extends React.Component {
           style={this.state.style}
           options={options}
           {...{ animation, items, positions, selection, layout }}
-          combine={{
-            properties: ['subgroup', 'group'],
-            level: 2,
-          }}
-          onChartClick={this.checkGlyphDown}
           onChartDragComplete={this.dragComplete}
           onChartChange={this.handleChange}
           onChartDragOver={this.setTarget}
           onChartDragStart={this.startLinkCreation}
           onChartDoubleClick={this.doubleClickHandler}
-          onCombineNodes={this.combineNodesHandler} />
+          onCombineNodes={this.combineNodesHandler} 
+          combine={{
+            properties: ['subgroup', 'group'],
+            level: 2,
+          }}/>
         </FontLoader>
       </div>
     )
@@ -230,3 +218,22 @@ class KGraph extends React.Component {
 }
 
 export default KGraph;
+
+// onChartMouseDown={this.checkGlyphDown}
+// onChartClick={this.checkGlyphDown}
+
+// checkGlyphDown = (id, x, y, b, sub) => {
+  
+//   if (id !== null) {
+//     this.props.onClickNode(id);
+//   }
+
+//   if (sub === null) {
+//     this.dragging = true;
+//   } else {
+//     this.dragging = false;
+//   }
+
+//   console.log('chat click = ', this.dragging);
+  
+// }
