@@ -51,9 +51,31 @@ class MyMap extends React.Component {
 		this.state = {
 			screen: 'list',
 			stakeholderList: [],
-			chart: [],
-			currentSurveyUserId: 0
+			currentSurveyUserId: 0,
+			graph: {
+				style: {
+					flex: 1, 
+					width: '100%',
+					height: '100%'
+				},
+				items: [],
+				options: {
+					iconFontFamily: 'Font Awesome 5 Free'
+				},
+				positions: {},
+				selection: {},
+				animation: {
+						animate: false
+				},
+				openCombos: {}
+			}
 		}
+	}
+
+	handleUpdateChart = graph => {
+		this.setState({
+			'graph': graph
+		});
 	}
 
 	handleAddNewStakeholder = stakeholder => {
@@ -79,6 +101,7 @@ class MyMap extends React.Component {
 		
 		var chart = {
 			type: 'node',
+			'origin' : 0,
 			id: 'node-' + stakeholder.projectId,
 			label: { 
 				text: stakeholder.firstName + " " + stakeholder.lastName,
@@ -126,16 +149,21 @@ class MyMap extends React.Component {
 			}
 		}
 
-		this.setState({
-			'chart': {
-				...this.state.chart,
-				['node-' + stakeholder.projectId] : chart,
-				['link-' + stakeholder.projectId + '-' + 'stakeholder-' + stakeholder.shType]: {
-					id1: 'node-' + stakeholder.projectId,
-					id2: 'node-stakeholder-' + stakeholder.shType
+		this.setState((state) => ({
+			graph: {
+				...state.graph,
+				items: {
+					...state.graph.items,
+					['node-' + stakeholder.projectId] : chart,
+					['link-' + stakeholder.projectId + '-' + 'stakeholder-' + stakeholder.shType]: {
+						type: 'link',
+						origin: 0,
+						id1: 'node-' + stakeholder.projectId,
+						id2: 'node-stakeholder-' + stakeholder.shType
+					}
 				}
 			}
-		});
+		}));
 	}
 
 	componentWillMount() {
@@ -243,6 +271,7 @@ class MyMap extends React.Component {
 						...data,
 						['node-' + object['@value']['id']]: { 
 							type: 'node',
+							origin: '1',
 							id: 'node-' + object['@value']['id'],
 							label: { 
 								text: object['@value']['properties']['text'][0]['@value']['value'],
@@ -274,6 +303,8 @@ class MyMap extends React.Component {
 						['link-' + object['@value']['objects']['@value'][1]['@value'][1]] : {
 								id1: 'node-' + object['@value']['objects']['@value'][0],
 								id2: 'node-' + object['@value']['objects']['@value'][2],
+								type: 'link',
+								origin: 1,
 								label: {
 									text: object['@value']['objects']['@value'][1]['@value'][7]
 								}
@@ -281,9 +312,12 @@ class MyMap extends React.Component {
 					};
 				});
 
-				this.setState({
-					chart: data
-				});
+				this.setState((state) => ({
+					graph: {
+						...state.graph,
+						items: data
+					}
+				}));
 			}
 		} catch (e) {
 
@@ -344,7 +378,8 @@ class MyMap extends React.Component {
 						className="map-content"
 						types={['stakeholder']} // <= allowed drop types
 						onDrop={data => this.handleAddStackholderToGraph(data)}>
-						<KGraph chart={this.state.chart} onClickNode={id => this.handleStartOtherSurvey(id)} />
+						<KGraph graph={this.state.graph} onClickNode={id => this.handleStartOtherSurvey(id)} 
+							updateGraph={graph => this.handleUpdateChart(graph) }/>
 				</Droppable>
 				<div className="map-tool">
 				  { this.state.screen !== 'aosurvey' && 

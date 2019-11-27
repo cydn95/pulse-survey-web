@@ -15,32 +15,18 @@ class KGraph extends React.Component {
   constructor(props) {
     super(props);
 
-    const { chart } = props;
+    const { graph } = props;
     
     const myNode = localStorage.getItem("userId");
 
     this.state = {
-      style: {
-        flex: 1, 
-        width: '100%',
-        height: '100%'
-      },
-      items: chart,
-      options: {
-        iconFontFamily: 'Font Awesome 5 Free'
-      },
       layout: {
           name: 'radial',
           top: `user-node-${myNode}`
       },
-      positions: {},
-      selection: {},
-      animation: {
-          animate: false
-      },
-      openCombos: {}
+      ...graph
     }
-
+    
     this.dragging = false;
   }
 
@@ -102,6 +88,7 @@ class KGraph extends React.Component {
         }
       }
       this.setState({ items: { ...newItems, ...newDummyNode, ...newLinkStyle }, positions: { ...positions, ...newNodePositions }, selection: { ...newDummyNode } });
+      this.props.updateGraph(this.state);
   }
 
   startLinkCreation = async (type, id, x, y, sub) => {
@@ -127,13 +114,42 @@ class KGraph extends React.Component {
     this.setState({
       positions: changes.positions || this.state.positions,
       selection: changes.selection || this.state.selection
+    }, () => {
+      this.props.updateGraph(this.state);
     })
   }
 
   componentWillReceiveProps(props) {
-    const { chart } = props;
+    const { graph } = props;
+    // console.log('ddd');
+    // let oldChart = this.state.items;
+    // let oldPosition = this.state.positions;
+
+    // let newChart = oldChart.length === 0 ? chart : oldChart;
+    
+    // for (let newKey in chart) {
+    //   let isNew = true;
+    //   for (let oldKey in oldChart) {  
+    //     if (newKey == oldKey) {
+    //       isNew = false;
+    //       break;
+    //     }
+    //   }
+    //   if (isNew === true && chart[newKey].origin == 0) {
+    //     newChart[newKey] = chart[newKey];
+    //     if (chart[newKey].type == "node") {
+    //       oldPosition[newKey] = {
+    //         x: 0,
+    //         y: 0
+    //       }
+    //     }
+    //     console.log(newChart);
+    //     console.log(oldPosition);
+    //   }
+    // }
+    
     this.setState({
-      items: chart
+      ...graph
     });
   }
 
@@ -150,6 +166,8 @@ class KGraph extends React.Component {
     this.setState({
       openCombos: { ...openCombos, [id]: !openCombos[id] },
       combine: { ...combine },
+    }, () => {
+      this.props.updateGraph(this.state);
     });
   };
 
@@ -181,7 +199,9 @@ class KGraph extends React.Component {
         })
         targetId = null;
         originId = null;
-        this.setState({ items: newItems });
+        this.setState({ items: newItems }, () => {
+          this.props.updateGraph(this.state);
+        });
     }
   }
 
@@ -193,7 +213,6 @@ class KGraph extends React.Component {
 
   render() {
     const { items, layout, options, positions, selection, animation } = this.state;
-
     return (
       <div className="div-regraph">
         <FontLoader config={{ custom: { families: ['Font Awesome 5 Free'] } }}>
