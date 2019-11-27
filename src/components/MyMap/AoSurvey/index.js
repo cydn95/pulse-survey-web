@@ -109,7 +109,7 @@ class AoSurvey extends React.Component {
                 className="header"
                 onClick={() => this.toggleAccordion(index2)}>
                 <div className="icon">
-                  <img src="/assets/img/survey/menu-influence.png"/>
+                  <img src={driver.iconPath}/>
                 </div>
                 <h1>{driver.driverName}</h1>
                 <div className={indicator}></div>
