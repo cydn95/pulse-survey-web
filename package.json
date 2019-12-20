@@ -60,7 +60,7 @@
     "express-favicon": "^2.0.1",
     "firebase": "^5.3.0",
     "icomoon-free-npm": "^0.0.0",
-    "keylines": "file:keylines-5.7.0-39549.zip",
+    "keylines": "file:keylines-5.7.0-39549.tar.gz",
     "materialize-css": "^1.0.0-rc.2",
     "package.json": "^2.0.1",
     "rc-slider": "^8.7.1",
