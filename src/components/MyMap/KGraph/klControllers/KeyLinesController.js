@@ -259,7 +259,7 @@ class BaseController {
             }
         });
         await this.chart.filter(() => true, { type: 'node', items: 'underlying', animate: false });
-        await this.chart.combo().uncombine(toUncombine, { full: true, select: false, animate: false });
+        await this.chart.combo().uncombine(toUncombine, { full: true, select: false, animate: true });
 
 
         const combineByProperty = async (property, level) => {

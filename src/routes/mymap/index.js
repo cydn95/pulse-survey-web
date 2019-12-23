@@ -309,7 +309,8 @@ class MyMap extends React.Component {
 
 	handleToggleLayoutDropdown = (e) => {
 		let currentSelection = e.target.parentNode.parentNode.childNodes[0].innerHTML;
-		this.setState({ layoutDropDownOpen: !this.state.layoutDropDownOpen, layoutUpdated: currentSelection!== this.state.layout})
+		let validUpdate = currentSelection.indexOf('Toggle Dropdown') === 22 || (currentSelection.indexOf('<')===-1 && currentSelection!== this.state.layout); 
+		this.setState({ layoutDropDownOpen: !this.state.layoutDropDownOpen, layoutUpdated: validUpdate})
 	}
 
 	setMapMode = (selection, option) => {
