@@ -30,7 +30,7 @@ bower_components
 .lock-wscript
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
-# build
+build/
 dist
 
 # Dependency directories
@@ -63,3 +63,5 @@ typings/
 
 #custom test file
 webpack.config.test.js
+
+.DS_Store

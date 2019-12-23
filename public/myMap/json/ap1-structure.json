@@ -1,0 +1,46 @@
+{
+    "main": {
+        "id": "ap1",
+        "name": "Alfa Project",
+        "icon": "fa-sitemap",
+        "color": "#776a7b",
+        "iconColor": "#fefefa"
+    },
+    "sh_categories": [
+        {
+            "id": "dm1",
+            "name": "Decision Makers",
+            "icon": "fa-users",
+            "color": "#235179",
+            "iconColor": "#fefefa"
+        },
+        {
+            "id": "i1",
+            "name": "Influencers",
+            "icon": "fa-users",
+            "color": "#4a7984",
+            "iconColor": "#fefefa"
+        },
+        {
+            "id": "s1",
+            "name": "Suppliers",
+            "icon": "fa-users",
+            "color": "#87afce",
+            "iconColor": "#fefefa"
+        },
+        {
+            "id": "is1",
+            "name": "Internal Stakeholders",
+            "icon": "fa-users",            
+            "color": "#87afce",
+            "iconColor": "#fefefa"
+        },
+        {
+            "id": "es1",
+            "name": "External Stakeholders",
+            "icon": "fa-users",
+            "color": "#282e51",
+            "iconColor": "#fefefa"
+        }
+    ]
+}

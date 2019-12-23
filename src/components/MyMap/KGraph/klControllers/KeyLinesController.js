@@ -2,7 +2,6 @@ import WebFont from 'webfontloader';
 import 'keylines';
 import DataStore from '../DataStore';
 import { nodeMoveStarted, nodeOverElement, combineByDrag, resetVariables, setValidDrag } from './DragDropFunctionality';
-import { runInThisContext } from 'vm';
 const fontsLoaded = new Promise(resolve => {
     WebFont.load({
         custom: {
@@ -61,10 +60,10 @@ class BaseController {
     }
 
     enableLayoutOptions = () => {
-        let enable = this.chart.selection().length>0;
+        let enable = this.chart.selection().length > 0;
         this.setContainerState({
             enableLayout: enable,
-            layoutUpdated:false
+            layoutUpdated: false
         });
     }
 
@@ -90,14 +89,14 @@ class BaseController {
             },
             t: node.name,
         }).then(() => {
-            if (this.overElem) {
+            // if (this.overElem) {
 
-                nodeMoveStarted.bind(this)('move', id, x, y);
-                nodeOverElement.bind(this)(null, this.overElem);
-                combineByDrag.bind(this)('move', id);
-                setValidDrag.bind(this)('move', id, x, y);
-                resetVariables.bind(this)(id);
-            }
+            //     nodeMoveStarted.bind(this)('move', id, x, y);
+            //     nodeOverElement.bind(this)(null, this.overElem);
+            //     combineByDrag.bind(this)('move', id);
+            //     setValidDrag.bind(this)('move', id, x, y);
+            //     resetVariables.bind(this)(id);
+            // }
         })
 
     }
@@ -116,11 +115,6 @@ class BaseController {
         if (mouseIsOverChart) {
             this.createNode(node, mouseViewCoords);
         }
-        // if((!this.overElem || this.chart.getItem(this.overElem).d.undraggable) || !(mouseIsOverChart && this.clone)){
-        //     this.revertDrag();
-        // } else {
-        //     this.createNode(mouseViewCoords);
-        // }
         this.chart.selection([]);
     }
 
@@ -148,7 +142,7 @@ class BaseController {
         combineByDrag.bind(this)(type, id);
     }
 
-    handleSelectionChange = () =>{
+    handleSelectionChange = () => {
         this.enableLayoutOptions();
     }
 
@@ -180,6 +174,30 @@ class BaseController {
         this.chart.setProperties(updateRe);
     }
 
+
+
+    constructDonuts = () => {
+        let props = [];
+        this.chart.each({ type: 'node', items: 'underlying' }, (item) => {
+            // console.log(item.d);
+            if (item.d.survey_completion) {
+                let percentage = item.d.survey_completion;
+                let segment = Math.abs(percentage - 50) * 2;
+                let segmentColor = percentage <= 50 ? 'red' : 'green';
+                props.push({
+                    id: item.id,
+                    donut: {
+                        v: [segment, 100 - segment],
+                        c: [segmentColor, 'white'],
+                        b: "#3b4f81"
+                    }
+
+                })
+            }
+        })
+        this.chart.setProperties(props)
+    }
+
     /**
      * Create chart and load data
      * @param {String|HTMLDivElement} chartContainer Container div element or id for KeyLines chart
@@ -204,6 +222,8 @@ class BaseController {
         let data = await this.dataStore.getEntityNetwork();
         this.chart = await KeyLines.create([{ container: chartContainer, options: chartOptions, type: 'chart' }]);
         this.chart.load({ type: 'LinkChart', items: data });
+        // add donuts in the underlying nodes
+        this.constructDonuts();
         this.chart.zoom('fit');
         this.runLayout();
         window.chart = this.chart;
@@ -211,7 +231,7 @@ class BaseController {
         this.propsToReset = [];
         this.isCombining = false;
         this.dragIcon = '';
-        this.highLevelNodes={};
+        this.highLevelNodes = {};
         this.setMode();
         this.setupUI();
     }
@@ -223,73 +243,93 @@ class BaseController {
     async runLayout(layoutName = "organic") {
         let options = {
             tightness: 3,
-            top: ['radial','sequential'].includes(layoutName) ? this.chart.selection(): []
+            top: ['radial', 'sequential'].includes(layoutName) ? this.chart.selection() : []
         }
-        this.chart.layout(layoutName,options);
+        this.chart.layout(layoutName, options);
     }
 
 
-    async updateVisualisationMode(visMode){
-        let toUncombine=[];
-        let newCombos = {};
-        let styles={};
-        let comboDefs=[];
-        let labels={};
-        this.chart.each({type:'node', items:'all'}, (node)=>{
-            if(this.chart.combo().isCombo(node.id)){
-                this.highLevelNodes[node.id]=this.highLevelNodes[node.id]||{...node.d};
+    async updateVisualisationMode(visMode) {
+        let toUncombine = [];
+
+        this.chart.each({ type: 'node', items: 'all' }, (node) => {
+            if (this.chart.combo().isCombo(node.id)) {
+                this.highLevelNodes[node.id] = this.highLevelNodes[node.id] || { ...node.d };
                 toUncombine.push(node.id)
             }
         });
-        await this.chart.filter(()=> true, {type:'node', items:'underlying', animate: false});
-        await this.chart.combo().uncombine(toUncombine,{full:true});
-        const combineByProperty = (propertyId,elemId) =>{
-            newCombos[propertyId]=newCombos[propertyId]||[];
-            newCombos[propertyId].push(elemId);
-            if(!styles[propertyId]){
-                labels[propertyId] = this.highLevelNodes[propertyId].name;
-                styles[propertyId]={
-                    fi:{
-                        t:KeyLines.getFontIcon(this.highLevelNodes[propertyId].icon),
-                        c:this.highLevelNodes[propertyId].iconColor || "#414b57"
-                    },
-                    c:this.highLevelNodes[propertyId].color || "#d8d8d8",
-                    b:this.highLevelNodes[propertyId].border || "#3b4f81",
-                    bw:1
+        await this.chart.filter(() => true, { type: 'node', items: 'underlying', animate: false });
+        await this.chart.combo().uncombine(toUncombine, { full: true, select: false, animate: false });
+
+
+        const combineByProperty = async (property, level) => {
+            let count = {};
+            let newCombos = {};
+            let data = {};
+            let comboDefs = [];
+            this.chart.each({ type: 'node', items: level }, (node) => {
+                if (node.d[property]) {
+                    let propertyId = node.d[property].current;
+                    newCombos[propertyId] = newCombos[propertyId] || [];
+                    newCombos[propertyId].push(node.id);
+                    count[propertyId] = count[propertyId] || 0;
+                    if (node.d.icon || node.d.name) {
+                        count[propertyId] += 1;
+                    }
+                    if (!data[propertyId]) {
+                        // store the d property for future reference
+                        data[propertyId] = { ...node.d };
+                    }
                 }
-            }
+            });
+
+            Object.keys(newCombos).forEach(id => {
+                let style = {
+                    fi: {
+                        t: KeyLines.getFontIcon(this.highLevelNodes[id].icon),
+                        c: this.highLevelNodes[id].iconColor || "#414b57"
+                    },
+                    c: this.highLevelNodes[id].color || "#d8d8d8",
+                    b: this.highLevelNodes[id].border || "#3b4f81",
+                    bw: 1,
+                    d: { ...data[id] },
+                    g: count[id] === 0 ? []
+                        : [{
+                            b: "#4a5c89",
+                            c: "#4966ac",
+                            e: 1.2,
+                            fc: "#f3f5f9",
+                            ff: "sans-serif",
+                            p: 45,
+                            r: 35,
+                            t: count[id],
+                            w: true
+                        }],
+                    donuts: {}
+                }
+                comboDefs.push({ ids: newCombos[id], style, label: this.highLevelNodes[id].name });
+            });
+            await this.chart.combo().combine(comboDefs, { select: false });
         }
 
-
-        if(visMode.length===0){
+        if (visMode.length === 0) {
             //remove the fakeNode
-            await this.chart.filter((node)=>{return node.d.name || node.d.icon}, {type:'node', items:'underlying', animate: false});
-        }else if( visMode.length===1){
-            if(visMode[0]=== 'Org'){
+            await this.chart.filter((node) => { return node.d.name || node.d.icon }, { type: 'node', items: 'underlying', animate: false });
+        } else if (visMode.length === 1) {
+            if (visMode[0] === 'Org') {
                 // group by organisation
-                this.chart.each({type:'node',items:'underlying'},(node)=>{
-                    if(node.d.organisation){
-                        combineByProperty(node.d.organisation.current,node.id);
-                    }
-                })
-            }else{
+                await combineByProperty('organisation', 'underlying');
+            } else {
                 // group by team
-                this.chart.each({type:'node',items:'underlying'},(node)=>{
-                    if(node.d.team){
-                        combineByProperty(node.d.team.current,node.id);
-                    }
-                })
+                await combineByProperty('team', 'underlying');
             }
-            
-        }else{
-            // group by both organisation and team
-        }
 
-        Object.keys(newCombos).forEach(id=>{
-            comboDefs.push({ids:newCombos[id], style:styles[id], label:labels[id]});
-        })
-        await this.chart.combo().combine(comboDefs);
-        await this.chart.layout();
+        } else {
+            // group by both organisation and team
+            await combineByProperty('team', 'underlying');
+            await combineByProperty('organisation', 'toplevel');
+        }
+        await this.runLayout();
     }
 }
 

@@ -60,23 +60,6 @@ class MyMap extends React.Component {
 			layout: 'Standard',
 			viewMode: 'Org/ Team/ SH',
 			layoutUpdated: false
-			// graph: {
-			// 	style: {
-			// 		flex: 1, 
-			// 		width: '100%',
-			// 		height: '100%'
-			// 	},
-			// 	items: [],
-			// 	options: {
-			// 		iconFontFamily: 'Font Awesome 5 Free'
-			// 	},
-			// 	positions: {},
-			// 	selection: {},
-			// 	animation: {
-			// 			animate: false
-			// 	},
-			// 	openCombos: {}
-			// }
 		}
 	}
 
@@ -282,7 +265,7 @@ class MyMap extends React.Component {
 		this.setState((state) => {
 
 			for (let i = 0; i < state.stakeholderList.length; i++) {
-				if (search == '') {
+				if (search === '') {
 					state.stakeholderList[i].show = true;
 					continue;
 				}
@@ -324,35 +307,36 @@ class MyMap extends React.Component {
 		this.setState({ viewDropDownOpen: !this.state.viewDropDownOpen, layoutUpdated: false })
 	}
 
-	handleToggleLayoutDropdown = () => {
-		this.setState({ layoutDropDownOpen: !this.state.layoutDropDownOpen, layoutUpdated: false  })
+	handleToggleLayoutDropdown = (e) => {
+		let currentSelection = e.target.parentNode.parentNode.childNodes[0].innerHTML;
+		this.setState({ layoutDropDownOpen: !this.state.layoutDropDownOpen, layoutUpdated: currentSelection!== this.state.layout})
 	}
 
 	setMapMode = (selection, option) => {
-		this.setState({ [option]: selection, layoutUpdated: option==='layout' ? true : false });
+		this.setState({ [option]: selection, layoutUpdated: option==='layout' ? true: false });
 	}
 
 	render() {
 
 		const { shgroupList, aoQuestionList, optionList, driverList, skipQuestionList } = this.props;
-		const {enableLayout} = this.state;
+		const {enableLayout,viewDropDownOpen,layoutDropDownOpen,layout,viewMode,newStakeholder,layoutUpdated,screen,stakeholderList} = this.state;
 		return (
 			<div className="map-container">
 				<Droppable
 					className="map-content"
 					types={['stakeholder']} // <= allowed drop types
 					onDrop={(data, e) => { this.handleAddStackholderToGraph(data, e) }}>
-					<KGraphNavControls enableLayout={enableLayout} viewDropDownOpen={this.state.viewDropDownOpen} layoutDropDownOpen={this.state.layoutDropDownOpen}
-						updateViewDisplay={this.handleToggleMapModeDropdown} updateLayoutDisplay={this.handleToggleLayoutDropdown} updateMap={this.setMapMode} selectedLayout={this.state.layout} selectedViewMode={this.state.viewMode} />
+					<KGraphNavControls enableLayout={enableLayout} viewDropDownOpen={viewDropDownOpen} layoutDropDownOpen={layoutDropDownOpen}
+						updateViewDisplay={this.handleToggleMapModeDropdown} updateLayoutDisplay={this.handleToggleLayoutDropdown} updateMap={this.setMapMode} selectedLayout={layout} selectedViewMode={viewMode} />
 					<KGraph
 					setParentState ={this.setState.bind(this)}
-					 newStakeholder={this.state.newStakeholder} onClickNode={id => this.handleStartOtherSurvey(id)} layout={this.state.layout.toLowerCase()} viewMode={this.state.viewMode} layoutUpdated={this.state.layoutUpdated}/>
+					 newStakeholder={newStakeholder} onClickNode={id => this.handleStartOtherSurvey(id)} layout={layout.toLowerCase()} viewMode={viewMode} layoutUpdated={layoutUpdated}/>
 				</Droppable>
 				<div className="map-tool">
-					{this.state.screen !== 'aosurvey' &&
+					{screen !== 'aosurvey' &&
 						<SearchBox onFilter={search => this.handleFilter(search)} />
 					}
-					{this.state.screen !== 'aosurvey' && shgroupList.length > 0 &&
+					{screen !== 'aosurvey' && shgroupList.length > 0 &&
 						<Row>
 							<Colxx xs="12">
 								<Button onClick={e => this.handleShowAddPage()}
@@ -360,13 +344,13 @@ class MyMap extends React.Component {
 							</Colxx>
 						</Row>
 					}
-					{this.state.screen === 'add' && shgroupList.length > 0 &&
+					{screen === 'add' && shgroupList.length > 0 &&
 						<NewStakeholder shgroup={shgroupList} onAddStakeholder={stakeholder => this.handleAddNewStakeholder(stakeholder)} stakeholder={defaultStakeholder} />
 					}
-					{this.state.screen === 'list' && this.state.stakeholderList.length > 0 &&
-						<StakeholderList projectUserList={this.state.stakeholderList} onAddStakeHolder={stakeholder => this.handleAddStackholderToGraph(stakeholder)} />
+					{screen === 'list' && stakeholderList.length > 0 &&
+						<StakeholderList projectUserList={stakeholderList} onAddStakeHolder={stakeholder => this.handleAddStackholderToGraph(stakeholder)} />
 					}
-					{this.state.screen === 'aosurvey' && aoQuestionList.length > 0 && optionList.length > 0 &&
+					{screen === 'aosurvey' && aoQuestionList.length > 0 && optionList.length > 0 &&
 						driverList.length > 0 && skipQuestionList.length > 0 &&
 						<AoSurvey
 							questions={aoQuestionList}

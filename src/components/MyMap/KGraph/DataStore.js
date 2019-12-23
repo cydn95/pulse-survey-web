@@ -30,6 +30,7 @@ export default class DataStore {
             }
         }
 
+
         const constructNode = (node) => {
             let id = node.id;
             entityNodes[id] = {

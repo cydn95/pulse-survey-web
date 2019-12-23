@@ -4748,6 +4748,9 @@ jsx-ast-utils@^2.2.1:
     array-includes "^3.0.3"
     object.assign "^4.1.0"
 
+"keylines@file:src/keylines-5.8.1-41455":
+  version "5.8.1"
+
 killable@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/killable/-/killable-1.0.1.tgz#4c8ce441187a061c7474fb87ca08e2a638194892"
@@ -7007,13 +7010,6 @@ regjsparser@^0.1.4:
   integrity sha1-fuj4Tcb6eS0/0K4ijSS9lJ6tIFw=
   dependencies:
     jsesc "~0.5.0"
-
-"regraph@file:regraph-1.6.0.tgz":
-  version "1.6.0"
-  resolved "file:regraph-1.6.0.tgz#2ba9cbd7e6a3ebbc0aef2440bc4addf74cac05e4"
-  dependencies:
-    lodash "^4.0.0"
-    webfontloader "^1.6.28"
 
 relateurl@0.2.x:
   version "0.2.7"

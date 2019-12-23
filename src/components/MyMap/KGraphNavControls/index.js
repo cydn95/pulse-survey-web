@@ -46,8 +46,8 @@ const KGraphNavControls = (props) => {
                 </Col>
                 <Col sm='4'>
                     <ButtonGroup>
-                        <Button onClick={(e) => { updateMap(selectedLayout, 'layout') }}>{selectedLayout}</Button>
-                        <ButtonDropdown isOpen={layoutDropDownOpen} toggle={() => updateLayoutDisplay()}>
+                        <Button onClick={(e) => { updateMap(selectedLayout, 'layout') }} disabled={['Radial','Sequential'].includes(selectedLayout) && !enableLayout}>{selectedLayout}</Button>
+                        <ButtonDropdown isOpen={layoutDropDownOpen} toggle={(e) => updateLayoutDisplay(e)}>
                             <DropdownToggle caret>
                             </DropdownToggle>
                             <DropdownMenu>
