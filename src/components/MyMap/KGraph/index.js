@@ -10,9 +10,8 @@ export default class KGraph extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.keyLinesController = new KeyLinesController((changes) => {
-            this.props.setParentState(changes);
-        });
+        // (changes) => { this.props.setParentState(changes);}
+        this.keyLinesController = new KeyLinesController((changes) => { this.props.setParentState(changes);});
     }
 
     /**

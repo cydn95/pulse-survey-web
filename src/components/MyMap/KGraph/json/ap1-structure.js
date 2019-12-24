@@ -12,35 +12,40 @@ export default {
             "name": "Decision Makers",
             "icon": "fa-project-diagram",
             "color": "#59a2ad",
-            "iconColor": "#fefefa"
+            "iconColor": "#fefefa",
+            "individualCount": 0
         },
         {
             "id": "i1",
             "name": "Influencers",
             "icon": "fa-project-diagram",
             "color": "#9d90a0",
-            "iconColor": "#fefefa"
+            "iconColor": "#fefefa",
+            "individualCount": 0
         },
         {
             "id": "s1",
             "name": "Key Suppliers",
             "icon": "fa-project-diagram",
             "color": "#629cd1",
-            "iconColor": "#fefefa"
+            "iconColor": "#fefefa",
+            "individualCount": 0
         },
         {
             "id": "is1",
             "name": "Internal Stakeholders",
             "icon": "fa-project-diagram",            
             "color": "#4966ac",
-            "iconColor": "#fefefa"
+            "iconColor": "#fefefa",
+            "individualCount": 0
         },
         {
             "id": "es1",
             "name": "External Stakeholders",
             "icon": "fa-project-diagram",
             "color": "#accbf9",
-            "iconColor": "#fefefa"
+            "iconColor": "#fefefa",
+            "individualCount": 8
         }
     ]
 }

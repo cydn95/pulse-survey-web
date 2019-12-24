@@ -1,12 +1,12 @@
 // import constants from './constants';
 import KeyLines from 'keylines';
 import structureData from './json/ap1-structure';
-import data from './json/ap1-data';
+import data from './json/es1-ap1-data';
 
 export default class DataStore {
     coreStructure = {};
     /** @private */
-    structurizeData(entities, entityId) {
+    structurizeData(entities, entityId, type) {
 
         const entityNodes = {};
         const entityLinks = {};
@@ -68,7 +68,11 @@ export default class DataStore {
             let { sh_categories, main } = core;
             let coreElements = [main].concat(sh_categories);
             coreElements.forEach(item => {
-                constructNode(item);
+                let coreElem = {...item, coreEntity: true};
+                constructNode(coreElem);
+                if(coreElem.individualCount && coreElem.individualCount>0){
+                    addGlyph(coreElem.id,coreElem.individualCount);
+                }
             });
             sh_categories.forEach(item => {
                 let link = {};
@@ -79,67 +83,72 @@ export default class DataStore {
 
         }
         // construnct the main visualisation core
-        constructCoreStructure(this.coreStructure[entityId]);
+        if (type === 'core') {
+            constructCoreStructure(this.coreStructure[entityId]);
+        } else {
+            // split the various fetched entities
+            let { individuals, teams, organisations } = entities;
 
-        // split the various fetched entities
-        let { individuals, teams, organisations } = entities;
-
-        // create high level organisation/team combo node and populate with dummy node
-        let highLevelNodes = [...teams, ...organisations];
-        highLevelNodes.forEach(node => {
-            constructNode(node);
-        })
-
-        // create the individual nodes and update the team and org nodes
-        individuals.forEach(individual => {
-            let individualNode = { ...individual, parentId: individual.team.current };
-            let currentOrganisation = individual.organisation.current;
-            let currentTeam = individual.team.current;
-            let currentSHCategory = individual.sh_category.current;
-            // let fakeOrganisationNode = `fake-${currentOrganisation}`;
-            orgTeamCount[currentOrganisation] = orgTeamCount[currentOrganisation] || {};
-            orgTeamCount[currentOrganisation][currentTeam] = orgTeamCount[currentOrganisation][currentTeam] || 0;
-            if (individual.icon || individual.name) {
-                orgTeamCount[currentOrganisation][currentTeam] += 1;
-            }
-            constructNode(individualNode);
-            // update the existing team and organisation nodes with new information
-            if (entityNodes[currentTeam].parentId === '') {
-                entityNodes[currentTeam].parentId = currentOrganisation;
-            }
-            // create the link between the organisation and the relevant sh category
-            // if (!entityLinks[`${currentSHCategory}-${fakeOrganisationNode}`]) {
-            let link = {};
-            link.id1 = currentSHCategory;
-            link.id2 = individual.id;
-            constructLink(link);
-            // }
-
-        });
-
-        Object.keys(orgTeamCount).forEach(orgId => {
-            let relevantTeams = Object.keys(orgTeamCount[orgId]);
-            addGlyph(orgId, relevantTeams.length);
-            relevantTeams.forEach(teamId => {
-                addGlyph(teamId, orgTeamCount[orgId][teamId]);
+            // create high level organisation/team combo node and populate with dummy node
+            let highLevelNodes = [...teams, ...organisations];
+            highLevelNodes.forEach(node => {
+                constructNode(node);
             })
-        })
 
+            // create the individual nodes and update the team and org nodes
+            individuals.forEach(individual => {
+                let individualNode = { ...individual, parentId: individual.team.current };
+                let currentOrganisation = individual.organisation.current;
+                let currentTeam = individual.team.current;
+                let currentSHCategory = individual.sh_category.current;
+                
+                // initialise the counter object
+                orgTeamCount[currentOrganisation] = orgTeamCount[currentOrganisation] || {};
+                orgTeamCount[currentOrganisation][currentTeam] = orgTeamCount[currentOrganisation][currentTeam] || 0;
+                
+                // add to the couter object
+                if (individual.icon || individual.name) {
+                    orgTeamCount[currentOrganisation][currentTeam] += 1;
+                }
+                constructNode(individualNode);
+                // update the existing team and organisation nodes with new information
+                if (entityNodes[currentTeam].parentId === '') {
+                    entityNodes[currentTeam].parentId = currentOrganisation;
+                }
+                // create the link between the organisation and the relevant sh category
+                // if (!entityLinks[`${currentSHCategory}-${fakeOrganisationNode}`]) {
+                let link = {};
+                link.id1 = currentSHCategory;
+                link.id2 = individual.id;
+                constructLink(link);
+                // }
+
+            });
+            Object.keys(orgTeamCount).forEach(orgId => {
+                let orgCount = 0;
+                Object.keys(orgTeamCount[orgId]).forEach(teamId => {
+                    addGlyph(teamId, orgTeamCount[orgId][teamId]);
+                    orgCount += orgTeamCount[orgId][teamId];
+                })
+                addGlyph(orgId,orgCount);
+            })
+        }
         return [...Object.values(entityNodes), ...Object.values(entityLinks)];
     }
 
     /** @public */
-    async getSchema(entityId = 'ap1') {
+    async getCoreStructure(entityId = 'ap1') {
         // this.coreStructure= await fetch(constants.dataEndpoints.structure(entityId)).then(response => response.json());
         // cache the fetched core structures;
         this.coreStructure[entityId] = this.coreStructure[entityId] || structureData;
+        return this.structurizeData({},entityId, 'core');
     }
 
     /** @public */
-    async getEntityNetwork(entityId = 'ap1') {
-        await this.getSchema(entityId);
+    async getEntityNetwork(sh_category,entityId = 'ap1') {
+        // await this.getSchema(entityId);
         // const entities = await fetch(constants.dataEndpoints.data(entityId)).then(response => response.json());
         const entities = data;
-        return this.structurizeData(entities, entityId);
+        return this.structurizeData(entities, entityId, 'entities');
     }
 }
