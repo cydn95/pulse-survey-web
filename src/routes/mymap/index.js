@@ -56,7 +56,7 @@ class MyMap extends React.Component {
 			newStakeholder: {},
 			viewDropDownOpen: false,
 			layoutDropDownOpen: false,
-			enableLayout: false,
+			enableLayout: true,
 			layout: 'Standard',
 			viewMode: 'Org/ Team/ SH',
 			layoutUpdated: false
@@ -89,8 +89,18 @@ class MyMap extends React.Component {
 			icon: 'fa-user',
 			iconColor: 'rgb(0, 0, 0)',
 			d: {
-				organization: stakeholder.organization || '',
-				team: stakeholder.team || ''
+				team: {
+					current: "PC1",
+					changeable: true
+				},
+				organisation: {
+					current: "DoH1",
+					changeable: true
+				},
+				sh_category: {
+					current: "es1",
+					changeable: true
+				}
 			},
 			viewCoordinates: Object.keys(e).length > 0 ? {
 				clientX: e.clientX,

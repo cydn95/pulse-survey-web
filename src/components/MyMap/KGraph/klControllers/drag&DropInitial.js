@@ -148,6 +148,7 @@ export function nodeOverElement(id, sub) {
         this.validDrag = true;
         this.chart.setProperties(this.propsToReset);
     } else {
+        this.chart.setProperties(this.propsToReset);
         const props = [];
         if (this.mode.transfer) {
             if (currentComboId && !isCombo.bind(this)(currentComboId) && (this.currentTargetCombo === null || this.currentTargetCombo !== currentComboId)) {
@@ -227,8 +228,6 @@ export async function combineByDrag(type, id) {
             transferOptions.arrange = this.mode.arrange ? 'none' : 'lens';
             transferOptions.resize = !this.mode.arrange;
             if (this.createComboWithId) {
-                // node transfered to sh
-                // combo transfered to sh
                 // create a combo
                 const idsToCombine = this.chart.selection().length > 0 ? this.chart.selection() : [id];
                 idsToCombine.push(this.createComboWithId);
@@ -240,8 +239,6 @@ export async function combineByDrag(type, id) {
                     await this.chart.combo().transfer(newCombo, idToTransferInto, transferOptions);
                 }
             } else {
-                // from combo to combo org -> org
-                // team -> team
                 // exclude nodes from being transferred
                 // if a combo that contains them is being transferred
                 let currentNodeSelection = this.chart.selection().length > 0 ? this.chart.selection() : [id];

@@ -31,7 +31,7 @@ const KGraphNavControls = (props) => {
         <div className='mapButtonGroup'>
             <Row>
                 <Col sm='5'> 
-                    <ButtonDropdown isOpen={viewDropDownOpen} toggle={() => updateViewDisplay()}>
+                    <ButtonDropdown isOpen={viewDropDownOpen} toggle={() => updateViewDisplay()} id='viewMode'>
                         <DropdownToggle caret>
                             {displayedViewMode}
                         </DropdownToggle>

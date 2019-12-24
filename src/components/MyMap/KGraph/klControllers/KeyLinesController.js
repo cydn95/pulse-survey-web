@@ -49,14 +49,10 @@ class BaseController {
         let isCombining;
         let overElem;
         let highLevelNodes;
+        let viewMode;
         this.dataStore = new DataStore();
         window.keyLinesController = this;
         this.setContainerState = setState;
-    }
-
-
-    addPlusIcon = (id) => {
-        this.overElem = id;
     }
 
     enableLayoutOptions = () => {
@@ -70,34 +66,37 @@ class BaseController {
 
     createNode = (node, mouseViewCoords) => {
         // mouseViewCoords gives the position of the
-        // mouseup event, relative to the top-left corner of the
-        // this.chart container.
         const x = (mouseViewCoords.x);
         const y = (mouseViewCoords.y);
         const pos = this.chart.worldCoordinates(x, y);
         let id = node.id;
-        // create the node
-        this.chart.setItem({
-            type: 'node',
-            id,
-            c: node.color,
-            x: pos.x,
-            y: pos.y,
-            fi: {
-                t: KeyLines.getFontIcon(node.icon),
-                c: node.iconColor
-            },
-            t: node.name,
-        }).then(() => {
-            // if (this.overElem) {
-
-            //     nodeMoveStarted.bind(this)('move', id, x, y);
-            //     nodeOverElement.bind(this)(null, this.overElem);
-            //     combineByDrag.bind(this)('move', id);
-            //     setValidDrag.bind(this)('move', id, x, y);
-            //     resetVariables.bind(this)(id);
-            // }
+        // find the element on top of which it has landed
+        this.chart.each({ type: 'node', items: 'all' }, (item) => {
+            if ((item.x <= pos.x + 15 && item.x > pos.x - 15) && (item.y <= pos.y + 15 && item.y > pos.y - 15)) {
+                this.overElem = item.id;
+            }
         })
+        // create the node
+        if (this.overElem) {
+            this.chart.setItem({
+                type: 'node',
+                id,
+                c: node.color,
+                x: pos.x,
+                y: pos.y,
+                fi: {
+                    t: KeyLines.getFontIcon(node.icon),
+                    c: node.iconColor
+                },
+                t: node.name,
+            }).then(() => {
+                nodeMoveStarted.bind(this)('move', id, x, y);
+                nodeOverElement.bind(this)(null, this.overElem);
+                combineByDrag.bind(this)('move', id);
+                setValidDrag.bind(this)('move', id, x, y);
+                resetVariables.bind(this)(id);
+            })
+        }
 
     }
 
@@ -119,7 +118,7 @@ class BaseController {
     }
 
     handleHover = (id) => {
-        this.addPlusIcon(id);
+        // need to find a way to implement addition with hover
     }
 
     handleMouseDown = (id, x, y, btn, sub) => {
@@ -150,8 +149,8 @@ class BaseController {
         this.container = document.getElementById('kl');
         this.chart.bind('hover', this.handleHover);
         this.chart.bind('mousedown,touchdown', this.handleMouseDown);
-        this.chart.bind('selectionchange', this.handleSelectionChange);
-        // combo drag events
+        // this.chart.bind('selectionchange', this.handleSelectionChange);
+        // // combo drag events
         this.chart.bind('dragstart', this.handleDragStart);
         this.chart.bind('dragover', this.handleDragOver);
         this.chart.bind('dragend', this.handleDragEnd);
@@ -163,7 +162,7 @@ class BaseController {
             arrange: false,
             transfer: true,
         };
-
+        this.viewMode = document.getElementById('viewMode').firstChild.innerHTML; 
         // update selected open combos
         const updateRe = this.chart.selection().filter(id => this.chart.combo().isOpen(id)).map(id => ({
             id,
@@ -179,7 +178,6 @@ class BaseController {
     constructDonuts = () => {
         let props = [];
         this.chart.each({ type: 'node', items: 'underlying' }, (item) => {
-            // console.log(item.d);
             if (item.d.survey_completion) {
                 let percentage = item.d.survey_completion;
                 let segment = Math.abs(percentage - 50) * 2;
@@ -333,28 +331,6 @@ class BaseController {
     }
 }
 
-/**
- * Helper function to normalize all values in an object between a given range
- * @param {Object} scores Object with key-value pairs where values need to be normalized
- * @param {Number} minOut Minimum normalized output value
- * @param {Number} maxOut Maximum normalized output value
- */
-function normalize(scores, minOut = 1, maxOut = 5) {
-    const values = Object.values(scores);
-    const minIn = Math.min(...values);
-    const maxIn = Math.max(...values);
-    const normalizeValue = (() => {
-        if (minIn === maxIn || maxIn === maxOut) {
-            return () => minOut;
-        }
-        const scale = (maxOut - minOut) / (maxIn - minIn);
-        return val => (val - minIn) * scale + minOut;
-    })();
-
-    const normalized = {};
-    Object.keys(scores).forEach(key => normalized[key] = normalizeValue(scores[key]));
-    return normalized;
-}
 
 
 export default class KeyLinesController extends BaseController { };
