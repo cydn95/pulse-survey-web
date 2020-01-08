@@ -4893,9 +4893,9 @@ jsx-ast-utils@^2.2.1:
     array-includes "^3.0.3"
     object.assign "^4.1.0"
 
-"keylines@file:keylines-5.8.1-41455.tar.gz":
-  version "5.8.1"
-  resolved "file:keylines-5.8.1-41455.tar.gz#07abf54fb3712ea5b49a1f3f7e274d31796531f5"
+"keylines@file:keylines-5.8.2-41698.tar.gz":
+  version "5.8.2"
+  resolved "file:keylines-5.8.2-41698.tar.gz#a92d0980aa0448dd4826da9db9452ce9b5249fe0"
 
 killable@^1.0.1:
   version "1.0.1"
