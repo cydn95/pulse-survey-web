@@ -19,7 +19,7 @@ export const firebaseConfig = {
     messagingSenderId: "216495999563"
 };
 
-export const apiUrl ="http://3.15.16.117"
+export const apiUrl ="http://3.15.16.117/api/v1"
 
 export const searchPath = "/app/about-me/start"
 
