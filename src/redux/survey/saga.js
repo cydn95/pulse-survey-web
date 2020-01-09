@@ -190,7 +190,11 @@ function* submitSurvey( {payload }) {
   }
 
   try {
-    
+    // temporarily
+    var permission = [];
+    permission.push(aboutMe.userPermission);
+    aboutMe.userPermission = permission
+
     let result = yield call(submitAboutMeAsync, aboutMe);
     
     if (result.status === 201) {
