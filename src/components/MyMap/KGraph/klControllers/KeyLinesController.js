@@ -67,12 +67,81 @@ class BaseController {
         };
     };
 
+
+    constructDonuts = async (data) => {
+        let props = [];
+        // create the donuts
+        this.chart.each({ type: 'node', items: 'underlying' }, (item) => {
+            if (item.d.survey_completion) {
+                let percentage = item.d.survey_completion;
+                let segment = Math.abs(percentage - 50) * 2;
+                let segmentColor = percentage <= 50 ? 'red' : 'green';
+                props.push({
+                    id: item.id,
+                    donut: {
+                        v: [segment, 100 - segment],
+                        c: [segmentColor, 'white'],
+                        b: "#3b4f81"
+                    }
+
+                })
+            }
+        })
+        await this.chart.setProperties(props)
+    }
+
+    recalculateGlyphs = async (baseId, newItems, action = 'add') => {
+
+        // if a new element has been added
+        let selectedSH = this.chart.getItem(baseId);
+        let propsToUpdate = [];
+        if (action === 'add') {
+            // increate the value of the glyph of the baseId node
+            let currentGlyph = selectedSH.g;
+            if (currentGlyph) {
+                propsToUpdate.push({
+                    id: baseId,
+                    g: [{ ...currentGlyph[0], t: parseInt(currentGlyph[0].t, 16) + 1 }]
+                });
+            } else {
+                propsToUpdate.push({
+                    id: baseId,
+                    g: [{
+                        b: "#4a5c89",
+                        c: "#4966ac",
+                        e: 1.2,
+                        fc: "#f3f5f9",
+                        ff: "sans-serif",
+                        p: 45,
+                        r: 35,
+                        t: 1,
+                        w: true
+                    }],
+                    d: {
+                        ...selectedSH.d,
+                        individualCount: 1,
+                        expanded: true
+                    }
+                })
+            }
+            await this.chart.animateProperties(propsToUpdate);
+        }
+        // if the chart has expanded or 
+        if (selectedSH.d.expanded) {
+            newItems.forEach(item => {
+                if (this.chart.combo().isCombo(item.id)) {
+                    let currentComboGlyph = this.chart.getItem(item.id).g;
+                    item.g[0].t = parseInt(currentComboGlyph[0].t, 16) + parseInt(item.g[0].t, 16);
+                }
+            })
+        }
+    }
+
     createNode = async (node, mouseViewCoords) => {
         // mouseViewCoords gives the position of the
         const x = (mouseViewCoords.x);
         const y = (mouseViewCoords.y);
         const pos = this.chart.worldCoordinates(x, y);
-        let id = node.id;
         // find the element on top of which it has landed
         this.chart.each({ type: 'node', items: 'all' }, (item) => {
             if ((item.x <= pos.x + 15 && item.x > pos.x - 15) && (item.y <= pos.y + 15 && item.y > pos.y - 15)) {
@@ -84,7 +153,8 @@ class BaseController {
             // the element should be created if it is over an sh category 
             // or its current organisation
             let currentOverElement = this.chart.getItem(this.overElem);
-            if (currentOverElement.d.coreEntity) {
+            let itemExists = this.chart.getItem(node.individuals[0].id);
+            if (currentOverElement.d.coreEntity && !itemExists) {
                 // check if this sh category already has the element's organisation
                 // check if there are already elements with that id in the vis 
                 node.individuals[0].sh_category = {
@@ -92,8 +162,17 @@ class BaseController {
                     changeable: false
                 }
 
-                let newElems = await this.dataStore.structurizeData(node, 'ap1', 'entities', this.viewMode);
-                await this.chart.expand(newElems, { layout: { fit: true } });
+                let { newItems, highLevelNodes } = await this.dataStore.structurizeData(node, 'ap1', 'entities', this.viewMode);
+                this.highLevelNodes = { ...this.highLevelNodes, ...highLevelNodes };
+                // ammend the glyph count of the existing elements
+                await this.recalculateGlyphs(this.overElem, newItems);
+                await this.chart.expand(newItems, { layout: { fit: true } });
+                // add donuts in the underlying nodes
+                await this.constructDonuts(newItems);
+                // rearrange the affected combos
+                await this.chart.combo().arrange(Object.keys(highLevelNodes),{animate: false, name:'concentric'});
+                // ping the newly added element
+                await this.chart.ping(node.individuals[0].id);
             }
         }
     }
@@ -101,7 +180,6 @@ class BaseController {
     endDrag = async (data) => {
         // check whether we have dropped the element within the this.chart area
         const klRect = this.container.getBoundingClientRect();
-        // let {individuals,...highLevelNodes} = data;
         let viewCoordinates = data.individuals[0].viewCoordinates;
         const mouseViewCoords = {
             x: viewCoordinates.clientX - klRect.left,
@@ -117,42 +195,20 @@ class BaseController {
     }
 
     expandChart = async (clickedId) => {
-        // if (this.viewMode.length <= 1) {
-        //     this.setContainerState({
-        //         viewMode: ['Org', 'Team'],
-        //         layoutUpdated: false
-        //     });
-        // }
-
-        let data = await this.dataStore.getEntityNetwork(clickedId, 'ap1', this.viewMode);
-        await this.chart.expand(data, { layout: { fit: true } });
+        let { newItems, highLevelNodes } = await this.dataStore.getEntityNetwork(clickedId, 'ap1', this.viewMode);
+        this.highLevelNodes = { ...this.highLevelNodes, ...highLevelNodes };
+        // ammend the glyph count of the existing elements
+        await this.recalculateGlyphs(clickedId, newItems, 'expand');
+        await this.chart.expand(newItems, { layout: { fit: true } });
         // add donuts in the underlying nodes
-        this.constructDonuts(data);
+        await this.constructDonuts(newItems);
+        // rearrange the affected combos
+        await this.chart.combo().arrange(Object.keys(highLevelNodes),{animate: false, name:'concentric'});    
     }
 
     handleHover = (id) => {
         // need to find a way to implement addition with hover
     }
-
-    // handleMouseDown = (id, x, y, btn, sub) => {
-    //     resetVariables.bind(this)(id);
-    // }
-
-    // handleDragStart = (type, id, x, y) => {
-    //     return nodeMoveStarted.bind(this)(type, id, x, y);
-    // }
-
-    // handleDragOver = (id, x, y, sub) => {
-    //     nodeOverElement.bind(this)(id);
-    // }
-
-    // handleDragEnd = (type, id, x, y) => {
-    //     setValidDrag.bind(this)(type, id, x, y);
-    // }
-
-    // handleDragComplete = (type, id) => {
-    //     combineByDrag.bind(this)(type, id);
-    // }
 
     handleSelectionChange = () => {
         this.enableLayoutOptions();
@@ -160,78 +216,30 @@ class BaseController {
 
     handleDblClick = (id) => {
         let clickedElement = this.chart.getItem(id);
-        if (clickedElement.d.coreEntity && clickedElement.d.individualCount > 0) {
+        if (clickedElement.d.coreEntity && !clickedElement.d.expanded && clickedElement.d.individualCount > 0) {
             this.expandChart(id);
             // the element has expanded so reset the count flag
             this.chart.setProperties({
                 id,
                 d: {
                     ...clickedElement.d,
-                    individualCount: 0
+                    expanded: true
                 }
             })
+        }
+
+        if (this.chart.combo().isCombo(id)) {
+            let elems = this.chart.combo().info(id);
+            if (elems.nodes.length === 1 && !elems.nodes[0].d.icon && !elems.nodes[0].d.name) {
+                return true;
+            }
         }
     }
 
     setupUI() {
         this.container = document.getElementById('kl');
         this.chart.bind('hover', this.handleHover);
-        // this.chart.bind('mousedown,touchdown', this.handleMouseDown);
         this.chart.bind('dblclick', this.handleDblClick);
-        // this.chart.bind('selectionchange', this.handleSelectionChange);
-        // // combo drag events
-        // this.chart.bind('dragstart', this.handleDragStart);
-        // this.chart.bind('dragover', this.handleDragOver);
-        // this.chart.bind('dragend', this.handleDragEnd);
-        // this.chart.bind('dragcomplete', this.handleDragComplete);
-    }
-
-    setMode() {
-        // this.mode = {
-        //     arrange: false,
-        //     transfer: true,
-        // };
-        this.viewMode = ['Org', 'Team'];
-        // update selected open combos
-        // const updateRe = this.chart.selection().filter(id => this.chart.combo().isOpen(id)).map(id => ({
-        //     id,
-        //     oc: {
-        //         re: this.mode.arrange,
-        //     },
-        // }));
-        // this.chart.setProperties(updateRe);
-    }
-
-
-
-    constructDonuts = (data) => {
-        let props = [];
-        let newIds = [];
-        // create an array of only the newly added ids
-        data.forEach(item => {
-            if (item.d.survey_completion) {
-                newIds.push(item.id);
-            }
-        })
-
-        // create the donuts
-        this.chart.each({ type: 'node', items: 'underlying' }, (item) => {
-            if (item.d.survey_completion && newIds.includes(item.id)) {
-                let percentage = item.d.survey_completion;
-                let segment = Math.abs(percentage - 50) * 2;
-                let segmentColor = percentage <= 50 ? 'red' : 'green';
-                props.push({
-                    id: item.id,
-                    donut: {
-                        v: [segment, 100 - segment],
-                        c: [segmentColor, 'white'],
-                        b: "#3b4f81"
-                    }
-
-                })
-            }
-        })
-        this.chart.setProperties(props)
     }
 
     /**
@@ -255,14 +263,15 @@ class BaseController {
             },
             imageAlignment
         };
-        let data = await this.dataStore.getCoreStructure();
+     
+        let { newItems, highLevelNodes } = await this.dataStore.getCoreStructure();
         this.chart = await KeyLines.create([{ container: chartContainer, options: chartOptions, type: 'chart' }]);
-        this.chart.load({ type: 'LinkChart', items: data });
+        this.chart.load({ type: 'LinkChart', items: newItems });
         this.chart.zoom('fit');
         this.runLayout();
         window.chart = this.chart;
         this.highLevelNodes = {};
-        this.setMode();
+        this.viewMode = ['Org', 'Team'];
         this.setupUI();
     }
 
@@ -284,14 +293,11 @@ class BaseController {
         this.viewMode = visMode;
         this.chart.each({ type: 'node', items: 'all' }, (node) => {
             if (this.chart.combo().isCombo(node.id)) {
-                this.highLevelNodes[node.id] = this.highLevelNodes[node.id] || { ...node.d };
                 toUncombine.push(node.id)
             }
         });
-        // await this.chart.filter(() => true, { type: 'node', items: 'underlying', animate: false });
         await this.chart.combo().uncombine(toUncombine, { full: true, select: false, animate: true });
-
-
+        
         const combineByProperty = async (property, level) => {
             let count = {};
             let newCombos = {};
@@ -299,8 +305,8 @@ class BaseController {
             let comboDefs = [];
             this.chart.each({ type: 'node', items: level }, (node) => {
                 if (node.d[property]) {
-                    let propertyId = visMode.length>1 && property==='team'? `${node.d.sh_category.current}_${node.d.organisation.current}_${node.d[property].current}`
-                                    :`${node.d.sh_category.current}_${node.d[property].current}`;
+                    let propertyId = visMode.length > 1 && property === 'team' ? `${node.d.sh_category.current}_${node.d.organisation.current}_${node.d[property].current}`
+                        : `${node.d.sh_category.current}_${node.d[property].current}`;
                     newCombos[propertyId] = newCombos[propertyId] || [];
                     newCombos[propertyId].push(node.id);
                     count[propertyId] = count[propertyId] || 0;
@@ -313,14 +319,12 @@ class BaseController {
                     }
                 }
             });
-            console.log(newCombos);
-            console.log(this.highLevelNodes);
             Object.keys(newCombos).forEach(id => {
                 if (this.highLevelNodes[id]) {
                     let style = {
                         fi: {
-                            t: this.highLevelNodes[id].icon ? KeyLines.getFontIcon(this.highLevelNodes[id].icon) : '',
-                            c: this.highLevelNodes[id].iconColor || "#414b57"
+                            t: this.highLevelNodes[id].d.icon ? KeyLines.getFontIcon(this.highLevelNodes[id].d.icon) : '',
+                            c: this.highLevelNodes[id].d.iconColor || "#414b57"
                         },
                         c: this.highLevelNodes[id].color || "#d8d8d8",
                         b: this.highLevelNodes[id].border || "#3b4f81",
@@ -340,17 +344,13 @@ class BaseController {
                             }],
                         donuts: {}
                     };
-                    comboDefs.push({ ids: newCombos[id], style, label: this.highLevelNodes[id].name });
+                    comboDefs.push({ ids: newCombos[id], style, label: this.highLevelNodes[id].d.name });
                 }
             });
-            await this.chart.combo().combine(comboDefs, { select: false });
+            await this.chart.combo().combine(comboDefs, { select: false, arrange: 'concentric'});
         }
 
-        if (visMode.length === 0) {
-            //remove the fakeNode
-            // await this.chart.filter((node) => { return node.d.name || node.d.icon }, { type: 'node', items: 'underlying', animate: false });
-
-        } else if (visMode.length === 1) {
+        if (visMode.length === 1) {
             if (visMode[0] === 'Org') {
                 await combineByProperty('organisation', 'underlying');
             } else {
@@ -358,7 +358,7 @@ class BaseController {
                 await combineByProperty('team', 'underlying');
             }
 
-        } else {
+        } else if (visMode.length > 1) {
             // group by both organisation and team
             await combineByProperty('team', 'underlying');
             await combineByProperty('organisation', 'toplevel');

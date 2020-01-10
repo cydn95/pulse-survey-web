@@ -11,6 +11,8 @@ export default class DataStore {
         const entityNodes = {};
         const entityLinks = {};
         const orgTeamCount = {};
+        const teamCount = {};
+        const highLevelNodes = {};
 
         const addGlyph = (id, count) => {
             entityNodes[id] = {
@@ -44,7 +46,7 @@ export default class DataStore {
                     t: KeyLines.getFontIcon(node.icon),
                     c: node.iconColor || "#414b57"
                 } : {},
-                // parentId: node.parentId || "",
+                fbc: 'transparent',
                 e: !node.icon && !node.name ? 0.1 : node.e || 1,
                 d: {
                     ...node
@@ -101,33 +103,37 @@ export default class DataStore {
                     let orgInfo = organisations.find(org => org.id === currentOrganisation);
                     constructNode(orgInfo, orgNodeId);
                     entityNodes[orgNodeId].hi = currentView.length>1 || currentView[0] === 'Org'? false : true;
+                    highLevelNodes[orgNodeId]  = entityNodes[orgNodeId];
                 }
 
                 // create the team nodes (for single and double combos) if they haven't 
                 // been created and depending on the selected view set  the hidden value
                 let teamNodeId = `${currentSHCategory}_${currentOrganisation}_${currentTeam}`;
-                let teamSelfId = `${currentSHCategory}_${currentTeam}`;
+                let teamSHId = `${currentSHCategory}_${currentTeam}`;
                 if(!entityNodes[teamNodeId]){
                     let teamInfo = teams.find(team => team.id === currentTeam);
                     constructNode(teamInfo, teamNodeId);
                     entityNodes[teamNodeId].parentId = orgNodeId;
                     entityNodes[teamNodeId].hi = currentView.length>1 ? false : true;
-                    constructNode(teamInfo, teamSelfId);
-                    entityNodes[teamSelfId].hi = currentView[0] === 'Team' ? false : true;
+                    highLevelNodes[teamNodeId]  = entityNodes[teamNodeId];
+                    constructNode(teamInfo, teamSHId);
+                    entityNodes[teamSHId].hi = currentView[0] === 'Team' ? false : true;
+                    highLevelNodes[teamSHId] = entityNodes[teamSHId];
                 }
 
                 // initialise the counter object
                 orgTeamCount[orgNodeId] = orgTeamCount[orgNodeId] || {};
                 orgTeamCount[orgNodeId][teamNodeId] = orgTeamCount[orgNodeId][teamNodeId] || 0;
-                
+                teamCount[teamSHId] = teamCount[teamSHId] || 0;
                 // add to the couter object
                 if (individual.icon || individual.name) {
                     orgTeamCount[orgNodeId][teamNodeId] += 1;
+                    teamCount[teamSHId] +=1;
                 }
 
                 // create the individual's node and set the parentId depending on the currently selected view
                 constructNode(individual);
-                entityNodes[individual.id].parentId = currentView.length === 0 ? '': currentView.length>1 ? teamNodeId : currentView[0]==='Team' ? teamSelfId: orgNodeId;
+                entityNodes[individual.id].parentId = currentView.length === 0 ? '': currentView.length>1 ? teamNodeId : currentView[0]=== 'Team' ? teamSHId :orgNodeId;
 
                 // create the link between the organisation and the relevant sh category
                 let link = {};
@@ -144,8 +150,12 @@ export default class DataStore {
                 })
                 addGlyph(orgId,orgCount);
             })
+
+            Object.keys(teamCount).forEach(teamSHId => {
+                addGlyph(teamSHId,teamCount[teamSHId]);
+            })
         }
-        return [...Object.values(entityNodes), ...Object.values(entityLinks)];
+        return {newItems: [...Object.values(entityNodes), ...Object.values(entityLinks)], highLevelNodes};
     }
 
     /** @public */

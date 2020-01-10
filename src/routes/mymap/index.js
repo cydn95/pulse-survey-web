@@ -89,6 +89,7 @@ class MyMap extends React.Component {
 					name: `${stakeholder.firstName} ${stakeholder.lastName}`,
 					color: 'transparent',
 					icon: 'fa-user',
+					survey_completion: 20,
 					iconColor: 'rgb(0, 0, 0)',
 					team: {
 						current: "PC1",

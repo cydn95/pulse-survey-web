@@ -13,7 +13,8 @@ export default {
             "icon": "fa-project-diagram",
             "color": "#59a2ad",
             "iconColor": "#fefefa",
-            "individualCount": 0
+            "individualCount": 0,
+            "expanded": false
         },
         {
             "id": "i1",
@@ -21,7 +22,8 @@ export default {
             "icon": "fa-project-diagram",
             "color": "#9d90a0",
             "iconColor": "#fefefa",
-            "individualCount": 0
+            "individualCount": 0,
+            "expanded": false
         },
         {
             "id": "s1",
@@ -29,7 +31,8 @@ export default {
             "icon": "fa-project-diagram",
             "color": "#629cd1",
             "iconColor": "#fefefa",
-            "individualCount": 0
+            "individualCount": 0,
+            "expanded": false
         },
         {
             "id": "is1",
@@ -37,7 +40,8 @@ export default {
             "icon": "fa-project-diagram",            
             "color": "#4966ac",
             "iconColor": "#fefefa",
-            "individualCount": 0
+            "individualCount": 0,
+            "expanded": false
         },
         {
             "id": "es1",
@@ -45,7 +49,8 @@ export default {
             "icon": "fa-project-diagram",
             "color": "#accbf9",
             "iconColor": "#fefefa",
-            "individualCount": 8
+            "individualCount": 8,
+            "expanded": false
         }
     ]
 }
