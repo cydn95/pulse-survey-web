@@ -97,11 +97,14 @@ class RangeSlider extends Component {
         </Row>
         <Row>
           <Colxx xs="12">
-          <SkipQuestion answer={this.state.answer.integerValue} 
-              onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
-              skipOption={question.skipOption}
-              skipQuestionList={skipQuestionList}
-              onComment={commentAnswer => this.handleComment(commentAnswer)}/>
+          <SkipQuestion
+            answer={this.state.answer.integerValue}
+            comment={this.state.answer.commentValue}
+            skipValue={this.state.answer.skipValue}
+            onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
+            skipOption={question.skipOption}
+            skipQuestionList={skipQuestionList}
+            onComment={commentAnswer => this.handleComment(commentAnswer)}/>
           </Colxx>
         </Row>
       </div>

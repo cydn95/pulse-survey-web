@@ -152,10 +152,8 @@ function* submitSurvey( {payload }) {
     let ampagesettings = surveyList[i].pages.ampagesetting;
     let aopagesettings = surveyList[i].pages.aopagesetting;
 
-    let answer = {};
-
     for (let j = 0; j < ampagesettings.length; j++) {
-      answer = {
+      let answer = Object.assign({}, {
         "integerValue": ampagesettings[j].answer.integerValue,
         "topicValue": ampagesettings[j].answer.topicValue,
         "commentValue": ampagesettings[j].answer.commentValue,
@@ -166,13 +164,13 @@ function* submitSurvey( {payload }) {
         "subjectUser": getToken().userId,
         "survey": ampagesettings[j].answer.survey,
         "amQuestion": ampagesettings[j].answer.amQuestion
-      }
+      });
 
       answerList.push(answer);
     }
 
     for (let j = 0; j < aopagesettings.length; j++) {
-      answer = {
+      let answer = Object.assign({}, {
         "integerValue": aopagesettings[j].answer.integerValue,
         "topicValue": aopagesettings[j].answer.topicValue,
         "commentValue": aopagesettings[j].answer.commentValue,
@@ -183,22 +181,17 @@ function* submitSurvey( {payload }) {
         "subjectUser": getToken().userId,
         "survey": aopagesettings[j].answer.survey,
         "aoQuestion": aopagesettings[j].answer.amQuestion
-      }
+      })
 
       answerList.push(answer);
     }
   }
 
   try {
-    // temporarily
-    var permission = [];
-    permission.push(aboutMe.userPermission);
-    aboutMe.userPermission = permission
-
     let result = yield call(submitAboutMeAsync, aboutMe);
     
     if (result.status === 201) {
-      
+      console.log(answerList);
       result = yield call(submitSurveyAsync, answerList);
       
       if (result.status === 201) {

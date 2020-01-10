@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from 'react-redux';
 
 import { Row } from "reactstrap";
@@ -46,8 +46,8 @@ class Start extends Component {
             </Row>
           </div>
           <div className="survey-image">
-            <img className="img-survey-description" src="/assets/img/survey/survey.png"/>
-            <img className="img-site-logo" src="/assets/img/survey/site-logo.png"/>
+            <img alt="survey-description" className="img-survey-description" src="/assets/img/survey/survey.png"/>
+            <img alt="site-logo" className="img-site-logo" src="/assets/img/survey/site-logo.png"/>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from 'react-redux';
 
 import { controlType } from 'Constants/defaultValues'
@@ -57,7 +57,7 @@ class Question extends Component {
             return <RangeSlider key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} 
               skipQuestionList={skipQuestionList} />
           
-            case controlType.TWO_OPTIONS:
+          case controlType.TWO_OPTIONS:
             return <TwoOptions key={index} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
               skipQuestionList={skipQuestionList} />
 

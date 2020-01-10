@@ -136,11 +136,13 @@ class SmartText extends Component {
         <Row>
           <Colxx xs="12">
             <SkipQuestion 
-                  answer={this.state.answer.topicValue} 
-                  onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
-                  skipOption={question.skipOption}
-                  skipQuestionList={skipQuestionList}
-                  onComment={commentAnswer => this.handleComment(commentAnswer)}/>
+              answer={this.state.answer.topicValue}  
+              comment={this.state.answer.commentValue}
+              skipValue={this.state.answer.skipValue}
+              onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
+              skipOption={question.skipOption}
+              skipQuestionList={skipQuestionList}
+              onComment={commentAnswer => this.handleComment(commentAnswer)}/>
           </Colxx>
         </Row>
       </div>

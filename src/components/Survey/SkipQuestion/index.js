@@ -10,10 +10,10 @@ class SkipQuestion extends Component {
   constructor(props) {
     super(props);
 
-    const { skipQuestionList, skipOption } = props;
+    const { skipQuestionList, skipOption, comment } = props;
 
     let optionList = [];
-    
+
     for (let i = 0 ; i < skipOption.length; i++) {
       for (let j = 0; j < skipQuestionList.length; j++) {
         if (skipOption[i] === skipQuestionList[j].id) {
@@ -27,20 +27,40 @@ class SkipQuestion extends Component {
       skipToogle: false,
       commentToggle: false,
       reason: 0,
-      comment: '',
+      comment,
       optionList
     }
   }
 
   componentWillReceiveProps(props) {
-    const { answer } = props;
-    if (answer !== '' && answer !== 0) {
+    const { comment, skipValue } = props;
+
+    if (skipValue === '') {
       this.setState({
-        reason: 0,
         skipToogle: false
-      });
+      })
+    } else {
+      this.setState({
+        skipToogle: true
+      })
     }
+
+    if (comment === '') {
+      this.setState({
+        commentToggle: false
+      })
+    } else {
+      this.setState({
+        commentToggle: true
+      })
+    }
+
+    this.setState({
+      'comment': comment,
+      reason: skipValue
+    });
   }
+
   onSkipQuestion = e => {
     e.preventDefault();
 

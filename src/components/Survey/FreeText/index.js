@@ -75,7 +75,9 @@ class FreeText extends Component {
           <h1 className="mt-s">{question.questionText}</h1>
           <textarea className="materialize-textarea" rows="1" value={this.state.answer.topicValue} onChange={e => this.onInputAnswer(e)}></textarea>
           <SkipQuestion 
-              answer={this.state.answer.topicValue} 
+              answer={this.state.answer.topicValue}
+              comment={this.state.answer.commentValue}
+              skipValue={this.state.answer.skipValue}
               skipQuestionList={skipQuestionList}
               skipOption={question.skipOption}
               onSkip={skipAnswer => this.handleSkip(skipAnswer)} 

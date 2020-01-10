@@ -104,11 +104,14 @@ class TwoOptions extends Component {
               })
             }
           </div>
-          <SkipQuestion answer={this.state.answer.integerValue} 
-                onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
-                skipOption={question.skipOption}
-                skipQuestionList={skipQuestionList}
-                onComment={commentAnswer => this.handleComment(commentAnswer)}/>
+          <SkipQuestion
+            answer={this.state.answer.integerValue}
+            comment={this.state.answer.commentValue}
+            skipValue={this.state.answer.skipValue}
+            onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
+            skipOption={question.skipOption}
+            skipQuestionList={skipQuestionList}
+            onComment={commentAnswer => this.handleComment(commentAnswer)}/>
         </Colxx>
       </Row>
     );
