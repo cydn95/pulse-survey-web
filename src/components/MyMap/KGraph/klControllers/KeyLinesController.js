@@ -166,11 +166,10 @@ class BaseController {
                 this.highLevelNodes = { ...this.highLevelNodes, ...highLevelNodes };
                 // ammend the glyph count of the existing elements
                 await this.recalculateGlyphs(this.overElem, newItems);
-                await this.chart.expand(newItems, { layout: { fit: true } });
+                await this.chart.expand(newItems, { layout: { fit: true }, arrange: { name:'concentric'} });
                 // add donuts in the underlying nodes
                 await this.constructDonuts(newItems);
                 // rearrange the affected combos
-                await this.chart.combo().arrange(Object.keys(highLevelNodes),{animate: false, name:'concentric'});
                 // ping the newly added element
                 await this.chart.ping(node.individuals[0].id);
             }
@@ -199,16 +198,11 @@ class BaseController {
         this.highLevelNodes = { ...this.highLevelNodes, ...highLevelNodes };
         // ammend the glyph count of the existing elements
         await this.recalculateGlyphs(clickedId, newItems, 'expand');
-        await this.chart.expand(newItems, { layout: { fit: true } });
+        await this.chart.expand(newItems, { layout: { fit: true },arrange: { name:'concentric'}  });
         // add donuts in the underlying nodes
         await this.constructDonuts(newItems);
-        // rearrange the affected combos
-        await this.chart.combo().arrange(Object.keys(highLevelNodes),{animate: false, name:'concentric'});    
     }
 
-    handleHover = (id) => {
-        // need to find a way to implement addition with hover
-    }
 
     handleSelectionChange = () => {
         this.enableLayoutOptions();
