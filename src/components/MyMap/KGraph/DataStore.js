@@ -5,8 +5,8 @@ import data from './json/es1-ap1-data';
 
 export default class DataStore {
     coreStructure = {};
-    /** @private */
-    structurizeData(entities, entityId, type) {
+    /** @public */
+    structurizeData(entities, entityId, type, currentView=null) {
 
         const entityNodes = {};
         const entityLinks = {};
@@ -31,10 +31,10 @@ export default class DataStore {
         }
 
 
-        const constructNode = (node) => {
-            let id = node.id;
+        const constructNode = (node, id2) => {
+            const id = id2 || node.id;
             entityNodes[id] = {
-                id: node.id,
+                id,
                 type: 'node',
                 c: node.color || "#d8d8d8",
                 b: node.border || "#3b4f81",
@@ -44,7 +44,7 @@ export default class DataStore {
                     t: KeyLines.getFontIcon(node.icon),
                     c: node.iconColor || "#414b57"
                 } : {},
-                parentId: node.parentId || "",
+                // parentId: node.parentId || "",
                 e: !node.icon && !node.name ? 0.1 : node.e || 1,
                 d: {
                     ...node
@@ -88,40 +88,52 @@ export default class DataStore {
         } else {
             // split the various fetched entities
             let { individuals, teams, organisations } = entities;
-
-            // create high level organisation/team combo node and populate with dummy node
-            let highLevelNodes = [...teams, ...organisations];
-            highLevelNodes.forEach(node => {
-                constructNode(node);
-            })
-
             // create the individual nodes and update the team and org nodes
             individuals.forEach(individual => {
-                let individualNode = { ...individual, parentId: individual.team.current };
                 let currentOrganisation = individual.organisation.current;
                 let currentTeam = individual.team.current;
                 let currentSHCategory = individual.sh_category.current;
                 
+                // create the org if it hasn't been created and depending on the selected view set 
+                // the hidden value
+                let orgNodeId = `${currentSHCategory}_${currentOrganisation}`;
+                if(!entityNodes[orgNodeId]){
+                    let orgInfo = organisations.find(org => org.id === currentOrganisation);
+                    constructNode(orgInfo, orgNodeId);
+                    entityNodes[orgNodeId].hi = currentView.length>1 || currentView[0] === 'Org'? false : true;
+                }
+
+                // create the team nodes (for single and double combos) if they haven't 
+                // been created and depending on the selected view set  the hidden value
+                let teamNodeId = `${currentSHCategory}_${currentOrganisation}_${currentTeam}`;
+                let teamSelfId = `${currentSHCategory}_${currentTeam}`;
+                if(!entityNodes[teamNodeId]){
+                    let teamInfo = teams.find(team => team.id === currentTeam);
+                    constructNode(teamInfo, teamNodeId);
+                    entityNodes[teamNodeId].parentId = orgNodeId;
+                    entityNodes[teamNodeId].hi = currentView.length>1 ? false : true;
+                    constructNode(teamInfo, teamSelfId);
+                    entityNodes[teamSelfId].hi = currentView[0] === 'Team' ? false : true;
+                }
+
                 // initialise the counter object
-                orgTeamCount[currentOrganisation] = orgTeamCount[currentOrganisation] || {};
-                orgTeamCount[currentOrganisation][currentTeam] = orgTeamCount[currentOrganisation][currentTeam] || 0;
+                orgTeamCount[orgNodeId] = orgTeamCount[orgNodeId] || {};
+                orgTeamCount[orgNodeId][teamNodeId] = orgTeamCount[orgNodeId][teamNodeId] || 0;
                 
                 // add to the couter object
                 if (individual.icon || individual.name) {
-                    orgTeamCount[currentOrganisation][currentTeam] += 1;
+                    orgTeamCount[orgNodeId][teamNodeId] += 1;
                 }
-                constructNode(individualNode);
-                // update the existing team and organisation nodes with new information
-                if (entityNodes[currentTeam].parentId === '') {
-                    entityNodes[currentTeam].parentId = currentOrganisation;
-                }
+
+                // create the individual's node and set the parentId depending on the currently selected view
+                constructNode(individual);
+                entityNodes[individual.id].parentId = currentView.length === 0 ? '': currentView.length>1 ? teamNodeId : currentView[0]==='Team' ? teamSelfId: orgNodeId;
+
                 // create the link between the organisation and the relevant sh category
-                // if (!entityLinks[`${currentSHCategory}-${fakeOrganisationNode}`]) {
                 let link = {};
                 link.id1 = currentSHCategory;
                 link.id2 = individual.id;
                 constructLink(link);
-                // }
 
             });
             Object.keys(orgTeamCount).forEach(orgId => {
@@ -145,10 +157,10 @@ export default class DataStore {
     }
 
     /** @public */
-    async getEntityNetwork(sh_category,entityId = 'ap1') {
+    async getEntityNetwork(sh_category,entityId = 'ap1',currentView) {
         // await this.getSchema(entityId);
         // const entities = await fetch(constants.dataEndpoints.data(entityId)).then(response => response.json());
         const entities = data;
-        return this.structurizeData(entities, entityId, 'entities');
+        return this.structurizeData(entities, entityId, 'entities',currentView);
     }
 }

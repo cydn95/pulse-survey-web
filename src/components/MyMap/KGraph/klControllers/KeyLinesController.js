@@ -1,7 +1,6 @@
 import WebFont from 'webfontloader';
 import 'keylines';
 import DataStore from '../DataStore';
-import { nodeMoveStarted, nodeOverElement, combineByDrag, resetVariables, setValidDrag } from './DragDropFunctionality';
 const fontsLoaded = new Promise(resolve => {
     WebFont.load({
         custom: {
@@ -31,22 +30,7 @@ class BaseController {
 
         // for access through console
         let chart;
-        let draggableArea;
         let container;
-        // used for item creation
-        let nodeIdCounter;
-        let dragIcon;
-        // let clone;
-        let dragStartCoords;
-        let mode;
-        let idBeingDragged;
-        let currentTargetCombo;
-        let createComboWithId;
-        let dragStartX;
-        let dragStartY;
-        let validDrag;
-        let propsToReset;
-        let isCombining;
         let overElem;
         let highLevelNodes;
         let viewMode;
@@ -63,8 +47,27 @@ class BaseController {
         });
     }
 
+    constructNode = (node) => {
+        return {
+            id: node.id,
+            type: 'node',
+            c: node.color || "#d8d8d8",
+            b: node.border || "#3b4f81",
+            bw: 1,
+            t: node.name || '',
+            fi: node.icon ? {
+                t: KeyLines.getFontIcon(node.icon),
+                c: node.iconColor || "#414b57"
+            } : {},
+            parentId: node.parentId || "",
+            e: !node.icon && !node.name ? 0.1 : node.e || 1,
+            d: {
+                ...node
+            }
+        };
+    };
 
-    createNode = (node, mouseViewCoords) => {
+    createNode = async (node, mouseViewCoords) => {
         // mouseViewCoords gives the position of the
         const x = (mouseViewCoords.x);
         const y = (mouseViewCoords.y);
@@ -78,32 +81,28 @@ class BaseController {
         })
         // create the node
         if (this.overElem) {
-            this.chart.setItem({
-                type: 'node',
-                id,
-                c: node.color,
-                x: pos.x,
-                y: pos.y,
-                fi: {
-                    t: KeyLines.getFontIcon(node.icon),
-                    c: node.iconColor
-                },
-                t: node.name,
-            }).then(() => {
-                nodeMoveStarted.bind(this)('move', id, x, y);
-                nodeOverElement.bind(this)(null, this.overElem);
-                combineByDrag.bind(this)('move', id);
-                setValidDrag.bind(this)('move', id, x, y);
-                resetVariables.bind(this)(id);
-            })
-        }
+            // the element should be created if it is over an sh category 
+            // or its current organisation
+            let currentOverElement = this.chart.getItem(this.overElem);
+            if (currentOverElement.d.coreEntity) {
+                // check if this sh category already has the element's organisation
+                // check if there are already elements with that id in the vis 
+                node.individuals[0].sh_category = {
+                    current: currentOverElement.id,
+                    changeable: false
+                }
 
+                let newElems = await this.dataStore.structurizeData(node, 'ap1', 'entities', this.viewMode);
+                await this.chart.expand(newElems, { layout: { fit: true } });
+            }
+        }
     }
 
-    endDrag = (data) => {
+    endDrag = async (data) => {
         // check whether we have dropped the element within the this.chart area
         const klRect = this.container.getBoundingClientRect();
-        let { viewCoordinates, ...node } = data;
+        // let {individuals,...highLevelNodes} = data;
+        let viewCoordinates = data.individuals[0].viewCoordinates;
         const mouseViewCoords = {
             x: viewCoordinates.clientX - klRect.left,
             y: viewCoordinates.clientY - klRect.top,
@@ -112,20 +111,20 @@ class BaseController {
         const withinChartY = mouseViewCoords.y >= 0 && mouseViewCoords.y <= klRect.height;
         const mouseIsOverChart = withinChartX && withinChartY;
         if (mouseIsOverChart) {
-            this.createNode(node, mouseViewCoords);
+            await this.createNode(data, mouseViewCoords);
         }
         this.chart.selection([]);
     }
 
     expandChart = async (clickedId) => {
-        if (this.viewMode.length <= 1) {
-            this.setContainerState({
-                viewMode: ['Org', 'Team'],
-                layoutUpdated: false
-            });
-        }
+        // if (this.viewMode.length <= 1) {
+        //     this.setContainerState({
+        //         viewMode: ['Org', 'Team'],
+        //         layoutUpdated: false
+        //     });
+        // }
 
-        let data = await this.dataStore.getEntityNetwork(clickedId, 'ap1');
+        let data = await this.dataStore.getEntityNetwork(clickedId, 'ap1', this.viewMode);
         await this.chart.expand(data, { layout: { fit: true } });
         // add donuts in the underlying nodes
         this.constructDonuts(data);
@@ -135,25 +134,25 @@ class BaseController {
         // need to find a way to implement addition with hover
     }
 
-    handleMouseDown = (id, x, y, btn, sub) => {
-        resetVariables.bind(this)(id);
-    }
+    // handleMouseDown = (id, x, y, btn, sub) => {
+    //     resetVariables.bind(this)(id);
+    // }
 
-    handleDragStart = (type, id, x, y) => {
-        return nodeMoveStarted.bind(this)(type, id, x, y);
-    }
+    // handleDragStart = (type, id, x, y) => {
+    //     return nodeMoveStarted.bind(this)(type, id, x, y);
+    // }
 
-    handleDragOver = (id, x, y, sub) => {
-        nodeOverElement.bind(this)(id);
-    }
+    // handleDragOver = (id, x, y, sub) => {
+    //     nodeOverElement.bind(this)(id);
+    // }
 
-    handleDragEnd = (type, id, x, y) => {
-        setValidDrag.bind(this)(type, id, x, y);
-    }
+    // handleDragEnd = (type, id, x, y) => {
+    //     setValidDrag.bind(this)(type, id, x, y);
+    // }
 
-    handleDragComplete = (type, id) => {
-        combineByDrag.bind(this)(type, id);
-    }
+    // handleDragComplete = (type, id) => {
+    //     combineByDrag.bind(this)(type, id);
+    // }
 
     handleSelectionChange = () => {
         this.enableLayoutOptions();
@@ -177,30 +176,30 @@ class BaseController {
     setupUI() {
         this.container = document.getElementById('kl');
         this.chart.bind('hover', this.handleHover);
-        this.chart.bind('mousedown,touchdown', this.handleMouseDown);
+        // this.chart.bind('mousedown,touchdown', this.handleMouseDown);
         this.chart.bind('dblclick', this.handleDblClick);
         // this.chart.bind('selectionchange', this.handleSelectionChange);
         // // combo drag events
-        this.chart.bind('dragstart', this.handleDragStart);
-        this.chart.bind('dragover', this.handleDragOver);
-        this.chart.bind('dragend', this.handleDragEnd);
-        this.chart.bind('dragcomplete', this.handleDragComplete);
+        // this.chart.bind('dragstart', this.handleDragStart);
+        // this.chart.bind('dragover', this.handleDragOver);
+        // this.chart.bind('dragend', this.handleDragEnd);
+        // this.chart.bind('dragcomplete', this.handleDragComplete);
     }
 
     setMode() {
-        this.mode = {
-            arrange: false,
-            transfer: true,
-        };
+        // this.mode = {
+        //     arrange: false,
+        //     transfer: true,
+        // };
         this.viewMode = ['Org', 'Team'];
         // update selected open combos
-        const updateRe = this.chart.selection().filter(id => this.chart.combo().isOpen(id)).map(id => ({
-            id,
-            oc: {
-                re: this.mode.arrange,
-            },
-        }));
-        this.chart.setProperties(updateRe);
+        // const updateRe = this.chart.selection().filter(id => this.chart.combo().isOpen(id)).map(id => ({
+        //     id,
+        //     oc: {
+        //         re: this.mode.arrange,
+        //     },
+        // }));
+        // this.chart.setProperties(updateRe);
     }
 
 
@@ -262,10 +261,6 @@ class BaseController {
         this.chart.zoom('fit');
         this.runLayout();
         window.chart = this.chart;
-        this.validDrag = true;
-        this.propsToReset = [];
-        this.isCombining = false;
-        this.dragIcon = '';
         this.highLevelNodes = {};
         this.setMode();
         this.setupUI();
@@ -293,7 +288,7 @@ class BaseController {
                 toUncombine.push(node.id)
             }
         });
-        await this.chart.filter(() => true, { type: 'node', items: 'underlying', animate: false });
+        // await this.chart.filter(() => true, { type: 'node', items: 'underlying', animate: false });
         await this.chart.combo().uncombine(toUncombine, { full: true, select: false, animate: true });
 
 
@@ -304,12 +299,13 @@ class BaseController {
             let comboDefs = [];
             this.chart.each({ type: 'node', items: level }, (node) => {
                 if (node.d[property]) {
-                    let propertyId = node.d[property].current;
+                    let propertyId = visMode.length>1 && property==='team'? `${node.d.sh_category.current}_${node.d.organisation.current}_${node.d[property].current}`
+                                    :`${node.d.sh_category.current}_${node.d[property].current}`;
                     newCombos[propertyId] = newCombos[propertyId] || [];
                     newCombos[propertyId].push(node.id);
                     count[propertyId] = count[propertyId] || 0;
                     if (node.d.icon || node.d.name) {
-                        count[propertyId] += level === 'toplevel'? parseInt(node.g[0].t,16) : 1;
+                        count[propertyId] += level === 'toplevel' ? parseInt(node.g[0].t, 16) : 1;
                     }
                     if (!data[propertyId]) {
                         // store the d property for future reference
@@ -317,7 +313,8 @@ class BaseController {
                     }
                 }
             });
-
+            console.log(newCombos);
+            console.log(this.highLevelNodes);
             Object.keys(newCombos).forEach(id => {
                 if (this.highLevelNodes[id]) {
                     let style = {
@@ -351,10 +348,10 @@ class BaseController {
 
         if (visMode.length === 0) {
             //remove the fakeNode
-            await this.chart.filter((node) => { return node.d.name || node.d.icon }, { type: 'node', items: 'underlying', animate: false });
+            // await this.chart.filter((node) => { return node.d.name || node.d.icon }, { type: 'node', items: 'underlying', animate: false });
+
         } else if (visMode.length === 1) {
             if (visMode[0] === 'Org') {
-                // group by organisation
                 await combineByProperty('organisation', 'underlying');
             } else {
                 // group by team
@@ -367,8 +364,8 @@ class BaseController {
             await combineByProperty('organisation', 'toplevel');
         }
 
-        // only run the layout for the viewUpdate and not when intiliasing/ fetching elements
-        if(Object.keys(this.highLevelNodes).length>0){
+        // only run the layout for the viewUpdate and not when intialising/ fetching elements
+        if (Object.keys(this.highLevelNodes).length > 0) {
             await this.runLayout();
         }
     }

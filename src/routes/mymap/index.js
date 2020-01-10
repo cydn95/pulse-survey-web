@@ -83,29 +83,40 @@ class MyMap extends React.Component {
 	handleAddStackholderToGraph = (data, e = {}) => {
 		const stakeholder = this.state.stakeholderList[data.stakeholder];
 		let newElem = {
-			id: 'node-' + stakeholder.projectId,
-			name: `${stakeholder.firstName} ${stakeholder.lastName}`,
-			color: 'transparent',
-			icon: 'fa-user',
-			iconColor: 'rgb(0, 0, 0)',
-			d: {
-				team: {
-					current: "PC1",
-					changeable: true
-				},
-				organisation: {
-					current: "DoH1",
-					changeable: true
-				},
-				sh_category: {
-					current: "es1",
-					changeable: true
+			individuals: [
+				{
+					id: stakeholder.userId,
+					name: `${stakeholder.firstName} ${stakeholder.lastName}`,
+					color: 'transparent',
+					icon: 'fa-user',
+					iconColor: 'rgb(0, 0, 0)',
+					team: {
+						current: "PC1",
+						changeable: true
+					},
+					organisation: {
+						current: "DoH1",
+						changeable: true
+					},
+					viewCoordinates: Object.keys(e).length > 0 ? {
+						clientX: e.clientX,
+						clientY: e.clientY
+					} : {}
+				}],
+			teams: [
+				{
+					id: "PC1",
+					name: "Planning Commission",
+					icon: "fa-users"
 				}
-			},
-			viewCoordinates: Object.keys(e).length > 0 ? {
-				clientX: e.clientX,
-				clientY: e.clientY
-			} : {}
+			],
+			organisations: [
+				{
+					id: "DoH1",
+					icon: "fa-building",
+					name: "Department of Health"
+				}
+			]
 		}
 		this.setState({ newStakeholder: newElem });
 	}
@@ -314,23 +325,23 @@ class MyMap extends React.Component {
 
 
 	handleToggleMapModeDropdown = () => {
-		this.setState({ viewDropDownOpen: !this.state.viewDropDownOpen, layoutUpdated: false })
+		this.setState({ viewDropDownOpen: !this.state.viewDropDownOpen, layoutUpdated: false, newStakeholder:[] })
 	}
 
 	handleToggleLayoutDropdown = (e) => {
 		let currentSelection = e.target.parentNode.parentNode.childNodes[0].innerHTML;
-		let validUpdate = currentSelection.indexOf('Toggle Dropdown') === 22 || (currentSelection.indexOf('<')===-1 && currentSelection!== this.state.layout); 
-		this.setState({ layoutDropDownOpen: !this.state.layoutDropDownOpen, layoutUpdated: validUpdate})
+		let validUpdate = currentSelection.indexOf('Toggle Dropdown') === 22 || (currentSelection.indexOf('<') === -1 && currentSelection !== this.state.layout);
+		this.setState({ layoutDropDownOpen: !this.state.layoutDropDownOpen, layoutUpdated: validUpdate,newStakeholder:[] })
 	}
 
 	setMapMode = (selection, option) => {
-		this.setState({ [option]: selection, layoutUpdated: option==='layout' ? true: false });
+		this.setState({ [option]: selection, layoutUpdated: option === 'layout' ? true : false,newStakeholder:[] });
 	}
 
 	render() {
 
 		const { shgroupList, aoQuestionList, optionList, driverList, skipQuestionList } = this.props;
-		const {enableLayout,viewDropDownOpen,layoutDropDownOpen,layout,viewMode,newStakeholder,layoutUpdated,screen,stakeholderList} = this.state;
+		const { enableLayout, viewDropDownOpen, layoutDropDownOpen, layout, viewMode, newStakeholder, layoutUpdated, screen, stakeholderList } = this.state;
 		return (
 			<div className="map-container">
 				<Droppable
@@ -340,8 +351,8 @@ class MyMap extends React.Component {
 					<KGraphNavControls enableLayout={enableLayout} viewDropDownOpen={viewDropDownOpen} layoutDropDownOpen={layoutDropDownOpen}
 						updateViewDisplay={this.handleToggleMapModeDropdown} updateLayoutDisplay={this.handleToggleLayoutDropdown} updateMap={this.setMapMode} selectedLayout={layout} selectedViewMode={viewMode} />
 					<KGraph
-					setParentState ={this.setState.bind(this)}
-					 newStakeholder={newStakeholder} onClickNode={id => this.handleStartOtherSurvey(id)} layout={layout.toLowerCase()} viewMode={viewMode} layoutUpdated={layoutUpdated}/>
+						setParentState={this.setState.bind(this)}
+						newStakeholder={newStakeholder} onClickNode={id => this.handleStartOtherSurvey(id)} layout={layout.toLowerCase()} viewMode={viewMode} layoutUpdated={layoutUpdated} />
 				</Droppable>
 				<div className="map-tool">
 					{screen !== 'aosurvey' &&
