@@ -191,7 +191,6 @@ function* submitSurvey( {payload }) {
     let result = yield call(submitAboutMeAsync, aboutMe);
     
     if (result.status === 201) {
-      console.log(answerList);
       result = yield call(submitSurveyAsync, answerList);
       
       if (result.status === 201) {

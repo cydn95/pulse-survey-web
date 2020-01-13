@@ -42,7 +42,7 @@ class MultipleOptions extends Component {
     })
   }
   
-  onSelectAnswer = (e, answerIndex) => {
+  onSelectAnswer = (e, answerIndex, answerText) => {
 
     e.preventDefault();
 
@@ -50,6 +50,7 @@ class MultipleOptions extends Component {
       answer: {
         ...state.answer,
         'integerValue': answerIndex,
+        'topicValue': answerText,
         'skipValue': ''
       }
     }), () => {
@@ -98,7 +99,7 @@ class MultipleOptions extends Component {
                 let active = item.id === this.state.answer.integerValue ? 'active' : '';
                 return (
                   <a key={index}  className={"waves-effect waves-light btn select2-btn " + active}
-                    onClick={e => this.onSelectAnswer(e, item.id)}>
+                    onClick={e => this.onSelectAnswer(e, item.id, item.optionName)}>
                     {item.optionName}
                   </a>
                 )

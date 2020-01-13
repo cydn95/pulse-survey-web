@@ -146,7 +146,6 @@ class MyMap extends React.Component {
 							shType: project.shGroup,
 							email: user.email,
 							phone: '',
-							organization: 1,
 							team: project.team,
 							show: true,
 							projectId: project.id,
