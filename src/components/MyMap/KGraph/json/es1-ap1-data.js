@@ -132,7 +132,7 @@ export default{
             "icon": "fa-user",
             "survey_completion": 100,
             "team": {
-                "current": "PC2",
+                "current": "PC1",
                 "changeable": false
             },
             "organisation": {
@@ -174,11 +174,6 @@ export default{
         {
             "id": "PMO1",
             "name": "PMO",
-            "icon": "fa-users"
-        },
-        {
-            "id": "PC2",
-            "name": "Planning Commission",
             "icon": "fa-users"
         }
     ],

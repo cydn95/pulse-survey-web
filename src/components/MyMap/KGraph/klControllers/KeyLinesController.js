@@ -1,7 +1,6 @@
 import WebFont from 'webfontloader';
 import 'keylines';
 import DataStore from '../DataStore';
-import { nodeMoveStarted, nodeOverElement, combineByDrag, resetVariables, setValidDrag } from './DragDropFunctionality';
 const fontsLoaded = new Promise(resolve => {
     WebFont.load({
         custom: {
@@ -31,22 +30,7 @@ class BaseController {
 
         // for access through console
         let chart;
-        let draggableArea;
         let container;
-        // used for item creation
-        let nodeIdCounter;
-        let dragIcon;
-        // let clone;
-        let dragStartCoords;
-        let mode;
-        let idBeingDragged;
-        let currentTargetCombo;
-        let createComboWithId;
-        let dragStartX;
-        let dragStartY;
-        let validDrag;
-        let propsToReset;
-        let isCombining;
         let overElem;
         let highLevelNodes;
         let viewMode;
@@ -63,161 +47,32 @@ class BaseController {
         });
     }
 
-
-    createNode = (node, mouseViewCoords) => {
-        // mouseViewCoords gives the position of the
-        const x = (mouseViewCoords.x);
-        const y = (mouseViewCoords.y);
-        const pos = this.chart.worldCoordinates(x, y);
-        let id = node.id;
-        // find the element on top of which it has landed
-        this.chart.each({ type: 'node', items: 'all' }, (item) => {
-            if ((item.x <= pos.x + 15 && item.x > pos.x - 15) && (item.y <= pos.y + 15 && item.y > pos.y - 15)) {
-                this.overElem = item.id;
+    constructNode = (node) => {
+        return {
+            id: node.id,
+            type: 'node',
+            c: node.color || "#d8d8d8",
+            b: node.border || "#3b4f81",
+            bw: 1,
+            t: node.name || '',
+            fi: node.icon ? {
+                t: KeyLines.getFontIcon(node.icon),
+                c: node.iconColor || "#414b57"
+            } : {},
+            parentId: node.parentId || "",
+            e: !node.icon && !node.name ? 0.1 : node.e || 1,
+            d: {
+                ...node
             }
-        })
-        // create the node
-        if (this.overElem) {
-            this.chart.setItem({
-                type: 'node',
-                id,
-                c: node.color,
-                x: pos.x,
-                y: pos.y,
-                fi: {
-                    t: KeyLines.getFontIcon(node.icon),
-                    c: node.iconColor
-                },
-                t: node.name,
-            }).then(() => {
-                nodeMoveStarted.bind(this)('move', id, x, y);
-                nodeOverElement.bind(this)(null, this.overElem);
-                combineByDrag.bind(this)('move', id);
-                setValidDrag.bind(this)('move', id, x, y);
-                resetVariables.bind(this)(id);
-            })
-        }
-
-    }
-
-    endDrag = (data) => {
-        // check whether we have dropped the element within the this.chart area
-        const klRect = this.container.getBoundingClientRect();
-        let { viewCoordinates, ...node } = data;
-        const mouseViewCoords = {
-            x: viewCoordinates.clientX - klRect.left,
-            y: viewCoordinates.clientY - klRect.top,
         };
-        const withinChartX = mouseViewCoords.x >= 0 && mouseViewCoords.x <= klRect.width;
-        const withinChartY = mouseViewCoords.y >= 0 && mouseViewCoords.y <= klRect.height;
-        const mouseIsOverChart = withinChartX && withinChartY;
-        if (mouseIsOverChart) {
-            this.createNode(node, mouseViewCoords);
-        }
-        this.chart.selection([]);
-    }
-
-    expandChart = async (clickedId) => {
-        if (this.viewMode.length <= 1) {
-            this.setContainerState({
-                viewMode: ['Org', 'Team'],
-                layoutUpdated: false
-            });
-        }
-
-        let data = await this.dataStore.getEntityNetwork(clickedId, 'ap1');
-        await this.chart.expand(data, { layout: { fit: true } });
-        // add donuts in the underlying nodes
-        this.constructDonuts(data);
-    }
-
-    handleHover = (id) => {
-        // need to find a way to implement addition with hover
-    }
-
-    handleMouseDown = (id, x, y, btn, sub) => {
-        resetVariables.bind(this)(id);
-    }
-
-    handleDragStart = (type, id, x, y) => {
-        return nodeMoveStarted.bind(this)(type, id, x, y);
-    }
-
-    handleDragOver = (id, x, y, sub) => {
-        nodeOverElement.bind(this)(id);
-    }
-
-    handleDragEnd = (type, id, x, y) => {
-        setValidDrag.bind(this)(type, id, x, y);
-    }
-
-    handleDragComplete = (type, id) => {
-        combineByDrag.bind(this)(type, id);
-    }
-
-    handleSelectionChange = () => {
-        this.enableLayoutOptions();
-    }
-
-    handleDblClick = (id) => {
-        let clickedElement = this.chart.getItem(id);
-        if (clickedElement.d.coreEntity && clickedElement.d.individualCount > 0) {
-            this.expandChart(id);
-            // the element has expanded so reset the count flag
-            this.chart.setProperties({
-                id,
-                d: {
-                    ...clickedElement.d,
-                    individualCount: 0
-                }
-            })
-        }
-    }
-
-    setupUI() {
-        this.container = document.getElementById('kl');
-        this.chart.bind('hover', this.handleHover);
-        this.chart.bind('mousedown,touchdown', this.handleMouseDown);
-        this.chart.bind('dblclick', this.handleDblClick);
-        // this.chart.bind('selectionchange', this.handleSelectionChange);
-        // // combo drag events
-        this.chart.bind('dragstart', this.handleDragStart);
-        this.chart.bind('dragover', this.handleDragOver);
-        this.chart.bind('dragend', this.handleDragEnd);
-        this.chart.bind('dragcomplete', this.handleDragComplete);
-    }
-
-    setMode() {
-        this.mode = {
-            arrange: false,
-            transfer: true,
-        };
-        this.viewMode = ['Org', 'Team'];
-        // update selected open combos
-        const updateRe = this.chart.selection().filter(id => this.chart.combo().isOpen(id)).map(id => ({
-            id,
-            oc: {
-                re: this.mode.arrange,
-            },
-        }));
-        this.chart.setProperties(updateRe);
-    }
+    };
 
 
-
-    constructDonuts = (data) => {
+    constructDonuts = async (data) => {
         let props = [];
-        let newIds = [];
-        // create an array of only the newly added ids
-        data.forEach(item => {
-            if (item.d.survey_completion) {
-                newIds.push(item.id);
-            }
-        })
-
         // create the donuts
         this.chart.each({ type: 'node', items: 'underlying' }, (item) => {
-            if (item.d.survey_completion && newIds.includes(item.id)) {
+            if (item.d.survey_completion) {
                 let percentage = item.d.survey_completion;
                 let segment = Math.abs(percentage - 50) * 2;
                 let segmentColor = percentage <= 50 ? 'red' : 'green';
@@ -232,7 +87,153 @@ class BaseController {
                 })
             }
         })
-        this.chart.setProperties(props)
+        await this.chart.setProperties(props)
+    }
+
+    recalculateGlyphs = async (baseId, newItems, action = 'add') => {
+
+        // if a new element has been added
+        let selectedSH = this.chart.getItem(baseId);
+        let propsToUpdate = [];
+        if (action === 'add') {
+            // increate the value of the glyph of the baseId node
+            let currentGlyph = selectedSH.g;
+            if (currentGlyph) {
+                propsToUpdate.push({
+                    id: baseId,
+                    g: [{ ...currentGlyph[0], t: parseInt(currentGlyph[0].t, 16) + 1 }]
+                });
+            } else {
+                propsToUpdate.push({
+                    id: baseId,
+                    g: [{
+                        b: "#4a5c89",
+                        c: "#4966ac",
+                        e: 1.2,
+                        fc: "#f3f5f9",
+                        ff: "sans-serif",
+                        p: 45,
+                        r: 35,
+                        t: 1,
+                        w: true
+                    }],
+                    d: {
+                        ...selectedSH.d,
+                        individualCount: 1,
+                        expanded: true
+                    }
+                })
+            }
+            await this.chart.animateProperties(propsToUpdate);
+        }
+        // if the chart has expanded or 
+        if (selectedSH.d.expanded) {
+            newItems.forEach(item => {
+                if (this.chart.combo().isCombo(item.id)) {
+                    let currentComboGlyph = this.chart.getItem(item.id).g;
+                    item.g[0].t = parseInt(currentComboGlyph[0].t, 16) + parseInt(item.g[0].t, 16);
+                }
+            })
+        }
+    }
+
+    createNode = async (node, mouseViewCoords) => {
+        // mouseViewCoords gives the position of the
+        const x = (mouseViewCoords.x);
+        const y = (mouseViewCoords.y);
+        const pos = this.chart.worldCoordinates(x, y);
+        // find the element on top of which it has landed
+        this.chart.each({ type: 'node', items: 'all' }, (item) => {
+            if ((item.x <= pos.x + 15 && item.x > pos.x - 15) && (item.y <= pos.y + 15 && item.y > pos.y - 15)) {
+                this.overElem = item.id;
+            }
+        })
+        // create the node
+        if (this.overElem) {
+            // the element should be created if it is over an sh category 
+            // or its current organisation
+            let currentOverElement = this.chart.getItem(this.overElem);
+            let itemExists = this.chart.getItem(node.individuals[0].id);
+            if (currentOverElement.d.coreEntity && !itemExists) {
+                // check if this sh category already has the element's organisation
+                // check if there are already elements with that id in the vis 
+                node.individuals[0].sh_category = {
+                    current: currentOverElement.id,
+                    changeable: false
+                }
+
+                let { newItems, highLevelNodes } = await this.dataStore.structurizeData(node, 'ap1', 'entities', this.viewMode);
+                this.highLevelNodes = { ...this.highLevelNodes, ...highLevelNodes };
+                // ammend the glyph count of the existing elements
+                await this.recalculateGlyphs(this.overElem, newItems);
+                await this.chart.expand(newItems, { layout: { fit: true }, arrange: { name:'concentric'} });
+                // add donuts in the underlying nodes
+                await this.constructDonuts(newItems);
+                // rearrange the affected combos
+                // ping the newly added element
+                await this.chart.ping(node.individuals[0].id);
+            }
+        }
+    }
+
+    endDrag = async (data) => {
+        // check whether we have dropped the element within the this.chart area
+        const klRect = this.container.getBoundingClientRect();
+        let viewCoordinates = data.individuals[0].viewCoordinates;
+        const mouseViewCoords = {
+            x: viewCoordinates.clientX - klRect.left,
+            y: viewCoordinates.clientY - klRect.top,
+        };
+        const withinChartX = mouseViewCoords.x >= 0 && mouseViewCoords.x <= klRect.width;
+        const withinChartY = mouseViewCoords.y >= 0 && mouseViewCoords.y <= klRect.height;
+        const mouseIsOverChart = withinChartX && withinChartY;
+        if (mouseIsOverChart) {
+            await this.createNode(data, mouseViewCoords);
+        }
+        this.chart.selection([]);
+    }
+
+    expandChart = async (clickedId) => {
+        let { newItems, highLevelNodes } = await this.dataStore.getEntityNetwork(clickedId, 'ap1', this.viewMode);
+        this.highLevelNodes = { ...this.highLevelNodes, ...highLevelNodes };
+        // ammend the glyph count of the existing elements
+        await this.recalculateGlyphs(clickedId, newItems, 'expand');
+        await this.chart.expand(newItems, { layout: { fit: true },arrange: { name:'concentric'}  });
+        // add donuts in the underlying nodes
+        await this.constructDonuts(newItems);
+    }
+
+
+    handleSelectionChange = () => {
+        this.enableLayoutOptions();
+    }
+
+    handleDblClick = (id) => {
+        let clickedElement = this.chart.getItem(id);
+        if (clickedElement.d.coreEntity && !clickedElement.d.expanded && clickedElement.d.individualCount > 0) {
+            this.expandChart(id);
+            // the element has expanded so reset the count flag
+            this.chart.setProperties({
+                id,
+                d: {
+                    ...clickedElement.d,
+                    expanded: true
+                }
+            })
+        }
+
+        if (this.chart.combo().isCombo(id)) {
+            let elems = this.chart.combo().info(id);
+            if (elems.nodes.length === 1 && !elems.nodes[0].d.icon && !elems.nodes[0].d.name) {
+                return true;
+            }
+        }
+    }
+
+    setupUI() {
+        this.container = document.getElementById('kl');
+        this.chart.bind('hover', this.handleHover);
+        this.chart.bind('dblclick', this.handleDblClick);
     }
 
     /**
@@ -256,18 +257,15 @@ class BaseController {
             },
             imageAlignment
         };
-        let data = await this.dataStore.getCoreStructure();
+     
+        let { newItems, highLevelNodes } = await this.dataStore.getCoreStructure();
         this.chart = await KeyLines.create([{ container: chartContainer, options: chartOptions, type: 'chart' }]);
-        this.chart.load({ type: 'LinkChart', items: data });
+        this.chart.load({ type: 'LinkChart', items: newItems });
         this.chart.zoom('fit');
         this.runLayout();
         window.chart = this.chart;
-        this.validDrag = true;
-        this.propsToReset = [];
-        this.isCombining = false;
-        this.dragIcon = '';
         this.highLevelNodes = {};
-        this.setMode();
+        this.viewMode = ['Org', 'Team'];
         this.setupUI();
     }
 
@@ -289,14 +287,11 @@ class BaseController {
         this.viewMode = visMode;
         this.chart.each({ type: 'node', items: 'all' }, (node) => {
             if (this.chart.combo().isCombo(node.id)) {
-                this.highLevelNodes[node.id] = this.highLevelNodes[node.id] || { ...node.d };
                 toUncombine.push(node.id)
             }
         });
-        await this.chart.filter(() => true, { type: 'node', items: 'underlying', animate: false });
         await this.chart.combo().uncombine(toUncombine, { full: true, select: false, animate: true });
-
-
+        
         const combineByProperty = async (property, level) => {
             let count = {};
             let newCombos = {};
@@ -304,12 +299,13 @@ class BaseController {
             let comboDefs = [];
             this.chart.each({ type: 'node', items: level }, (node) => {
                 if (node.d[property]) {
-                    let propertyId = node.d[property].current;
+                    let propertyId = visMode.length > 1 && property === 'team' ? `${node.d.sh_category.current}_${node.d.organisation.current}_${node.d[property].current}`
+                        : `${node.d.sh_category.current}_${node.d[property].current}`;
                     newCombos[propertyId] = newCombos[propertyId] || [];
                     newCombos[propertyId].push(node.id);
                     count[propertyId] = count[propertyId] || 0;
                     if (node.d.icon || node.d.name) {
-                        count[propertyId] += level === 'toplevel'? parseInt(node.g[0].t,16) : 1;
+                        count[propertyId] += level === 'toplevel' ? parseInt(node.g[0].t, 16) : 1;
                     }
                     if (!data[propertyId]) {
                         // store the d property for future reference
@@ -317,13 +313,12 @@ class BaseController {
                     }
                 }
             });
-
             Object.keys(newCombos).forEach(id => {
                 if (this.highLevelNodes[id]) {
                     let style = {
                         fi: {
-                            t: this.highLevelNodes[id].icon ? KeyLines.getFontIcon(this.highLevelNodes[id].icon) : '',
-                            c: this.highLevelNodes[id].iconColor || "#414b57"
+                            t: this.highLevelNodes[id].d.icon ? KeyLines.getFontIcon(this.highLevelNodes[id].d.icon) : '',
+                            c: this.highLevelNodes[id].d.iconColor || "#414b57"
                         },
                         c: this.highLevelNodes[id].color || "#d8d8d8",
                         b: this.highLevelNodes[id].border || "#3b4f81",
@@ -343,32 +338,28 @@ class BaseController {
                             }],
                         donuts: {}
                     };
-                    comboDefs.push({ ids: newCombos[id], style, label: this.highLevelNodes[id].name });
+                    comboDefs.push({ ids: newCombos[id], style, label: this.highLevelNodes[id].d.name });
                 }
             });
-            await this.chart.combo().combine(comboDefs, { select: false });
+            await this.chart.combo().combine(comboDefs, { select: false, arrange: 'concentric'});
         }
 
-        if (visMode.length === 0) {
-            //remove the fakeNode
-            await this.chart.filter((node) => { return node.d.name || node.d.icon }, { type: 'node', items: 'underlying', animate: false });
-        } else if (visMode.length === 1) {
+        if (visMode.length === 1) {
             if (visMode[0] === 'Org') {
-                // group by organisation
                 await combineByProperty('organisation', 'underlying');
             } else {
                 // group by team
                 await combineByProperty('team', 'underlying');
             }
 
-        } else {
+        } else if (visMode.length > 1) {
             // group by both organisation and team
             await combineByProperty('team', 'underlying');
             await combineByProperty('organisation', 'toplevel');
         }
 
-        // only run the layout for the viewUpdate and not when intiliasing/ fetching elements
-        if(Object.keys(this.highLevelNodes).length>0){
+        // only run the layout for the viewUpdate and not when intialising/ fetching elements
+        if (Object.keys(this.highLevelNodes).length > 0) {
             await this.runLayout();
         }
     }

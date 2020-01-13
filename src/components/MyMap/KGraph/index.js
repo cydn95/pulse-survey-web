@@ -33,16 +33,16 @@ export default class KGraph extends Component {
         } = this.props;
 
         if (Object.keys(newStakeholder).length > 0) {
-            this.keyLinesController.endDrag(newStakeholder);
+            await this.keyLinesController.endDrag(newStakeholder);
         }
 
         if (layoutUpdated) {
             layout = layout === 'standard' ? 'organic' : layout;
-            this.keyLinesController.runLayout(layout);
+            await this.keyLinesController.runLayout(layout);
         }
 
         if (viewMode !== prevProps.viewMode) {
-            this.keyLinesController.updateVisualisationMode(viewMode);
+            await this.keyLinesController.updateVisualisationMode(viewMode);
         }
     }
 
