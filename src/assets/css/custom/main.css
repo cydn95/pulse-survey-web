@@ -245,3 +245,7 @@ body {
     background-color: 'transparent' !important;
     color: #6c757d !important;
 }
+
+canvas {
+    user-select: none;
+}
