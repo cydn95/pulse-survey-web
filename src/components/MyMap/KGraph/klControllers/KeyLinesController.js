@@ -146,7 +146,7 @@ class BaseController {
         const pos = this.chart.worldCoordinates(x, y);
         // find the element on top of which it has landed
         this.chart.each({ type: 'node', items: 'all' }, (item) => {
-            if ((item.x <= pos.x + 15 && item.x > pos.x - 15) && (item.y <= pos.y + 15 && item.y > pos.y - 15)) {
+            if ((item.x <= pos.x + 15 && item.x > pos.x - 15) && (item.y <= pos.y + 15 && item.y > pos.y - 15) && !item.hi) {
                 this.overElem = item.id;
             }
         })
@@ -156,11 +156,18 @@ class BaseController {
             // or its current organisation
             let currentOverElement = this.chart.getItem(this.overElem);
             let itemExists = this.chart.getItem(node.individuals[0].id);
+            let animate = true;
             // check if there are already elements with that id in the vis and that you are over an sh category
             if (currentOverElement.d.coreEntity && !itemExists) {
-
+                
+                // if the sh category has not been expanded yet, expand it before adding the element
                 if (currentOverElement.d.individualCount > 0 && !currentOverElement.d.expanded) {
                     await this.expandChart(currentOverElement.id);
+                    animate= false;
+                } // if the sh category is shrunk, show it before adding
+                else if (currentOverElement.d.individualCount > 0 && currentOverElement.d.shrunk){
+                    await this.toggleChart(currentOverElement.id);
+                    animate= false;
                 }
 
                 node.individuals[0].sh_category = {
@@ -171,21 +178,15 @@ class BaseController {
                 let { newItems, highLevelNodes } = await this.dataStore.structurizeData(node, 'ap1', 'entities', this.viewMode);
                 this.highLevelNodes = { ...this.highLevelNodes, ...highLevelNodes };
                 // adjust the parentIds of the newly addded elements
-                // console.log(newItems);
-                console.log(this.comboMap);
-                // console.log();
                 if(Object.keys(this.comboMap).length>0){
                     newItems.forEach((item,index) => {
                         if(!item.hi){
                             // check if it is an underlying node or a combo
                             if(this.comboMap[item.id]){
                                 item.id = this.comboMap[item.id];
-                                // console.log('item.id', item.id, item);
                             } 
                             if(this.comboMap[item.parentId]){
-                                // console.log(this.chart.getItem(item.id));
                                 item.parentId = this.comboMap[item.parentId];
-                                // console.log('item.parentId', item.id, item, item.parentId);
                             }
                         }
                     })
@@ -194,17 +195,13 @@ class BaseController {
                 newItems.forEach((item, i) => {
                     if (newItemsExisting[i]) {
                         if (item.parentId !== newItemsExisting[i].parentId) {
-                            // console.log('CHANGING parentId of ' +  item.id + ' from ' +  item.parentId + ' to ' + newItemsExisting[i].parentId);
                             item.parentId = newItemsExisting[i].parentId;
                         }
                     }
                 });
-                console.log(newItems);
                 // ammend the glyph count of the existing elements
                 await this.recalculateGlyphs(this.overElem, newItems);
-                console.log('here');
-                await this.chart.expand(newItems, { layout: { fit: true }, arrange: { name: 'concentric' } });
-                console.log('here');
+                await this.chart.expand(newItems, {animate, layout:{ name: this.layoutName,fix: 'all',top: ['radial','sequential'].includes(this.layoutName) ? this.overElem : '', tightness: 3} ,arrange: { name: 'concentric' } });
                 // add donuts in the underlying nodes
                 await this.constructDonuts(newItems);
                 // ping the newly added element
@@ -235,7 +232,7 @@ class BaseController {
         this.highLevelNodes = { ...this.highLevelNodes, ...highLevelNodes };
         // ammend the glyph count of the existing elements
         await this.recalculateGlyphs(clickedId, newItems, 'expand');
-        await this.chart.expand(newItems, { layout: { fit: true, fix: 'all', tightness: 3, name: 'organic' }, arrange: { name: 'concentric' } });
+        await this.chart.expand(newItems, { layout:{ name: this.layoutName,fix: 'all',top: ['radial','sequential'].includes(this.layoutName) ? clickedId : '', tightness: 3} ,arrange: { name: 'concentric' } });
         // add donuts in the underlying nodes
         await this.constructDonuts(newItems);
         // the element has expanded so set the expanded flag
@@ -349,6 +346,7 @@ class BaseController {
             defaultStyles: {
                 comboGlyph: null,
             },
+            handMode: true,
             imageAlignment
         };
 
@@ -462,7 +460,13 @@ class BaseController {
 
         // only run the layout for the viewUpdate and not when intialising/ fetching elements
         if (Object.keys(this.highLevelNodes).length > 0) {
-            await this.runLayout();
+            let fixed = [];
+            this.chart.each({type:'node', items:'toplevel'}, (item)=>{
+                if(item.d.coreEntity && (!item.d.expanded || item.d.shrunk)){
+                    fixed.push(item.id);
+                }
+            })
+            await this.runLayout(this.layoutName,true,{fixed});
         }
     }
 }
