@@ -67,8 +67,7 @@ function* getPageList() {
               subjectUser: 0,
               survey: orderedPageList[i].pages.ampagesetting[j].amQuestion.survey,
               amQuestion: orderedPageList[i].pages.ampagesetting[j].amQuestion.id,
-              type: 'me',
-              controlType: 'SLIDER'
+              type: 'me'
             }
           }
         }
@@ -90,7 +89,7 @@ function* getPageList() {
               survey:  orderedPageList[i].pages.aopagesetting[j].survey,
               amQuestion: orderedPageList[i].pages.aopagesetting[j].id,
               type: 'other',
-              controlType: 'SLIDER'
+              controlType: ''
             }
           }
         }
@@ -167,7 +166,7 @@ function* submitSurvey( {payload }) {
         "survey": ampagesettings[j].answer.survey,
         "amQuestion": ampagesettings[j].answer.amQuestion,
         "project": projectId,
-        "controlType": ampagesettings[j].answer.controlType
+        "controlType": "SLIDER"
       });
 
       answerList.push(answer);
@@ -185,7 +184,7 @@ function* submitSurvey( {payload }) {
         "subjectUser": getToken().userId,
         "survey": aopagesettings[j].answer.survey,
         "aoQuestion": aopagesettings[j].answer.amQuestion,
-        "controlType": aopagesettings[j].answer.controlType
+        "controlType": "SLIDER"
       })
 
       answerList.push(answer);
@@ -199,23 +198,27 @@ function* submitSurvey( {payload }) {
       result = yield call(submitSurveyAsync, answerList);
       
       if (result.status === 201) {
-        var surveyId = 0;
+        var surveyId = projectId;
         
-        result = yield call(getProjectUserListAysnc);
+        localStorage.setItem('surveyId', surveyId);
+        yield put(submitSurveySuccess(surveyId));
+        history.push('/app/dashboard');
+
+        // result = yield call(getProjectUserListAysnc);
         
-        if (result.status === 200) {
-          // yield put(projectUserListSuccess(result.data)); 
-          var projectUserList = result.data;
-          for (let i = projectUserList.length - 1; i >= 0; i--) {
-            if (projectUserList[i].user == localStorage.getItem("userId")) {
-              surveyId = projectUserList[i].id;
-              localStorage.setItem('surveyId', surveyId);
-              yield put(submitSurveySuccess(surveyId));
-              history.push('/app/dashboard');
-              break;
-            }
-          }
-        }
+        // if (result.status === 200) {
+        //   // yield put(projectUserListSuccess(result.data)); 
+        //   var projectUserList = result.data;
+        //   for (let i = projectUserList.length - 1; i >= 0; i--) {
+        //     if (projectUserList[i].user == localStorage.getItem("userId")) {
+        //       surveyId = projectUserList[i].id;
+        //       localStorage.setItem('surveyId', surveyId);
+        //       yield put(submitSurveySuccess(surveyId));
+        //       history.push('/app/dashboard');
+        //       break;
+        //     }
+        //   }
+        // }
       } else {
         console.log('submit failed')
       }
