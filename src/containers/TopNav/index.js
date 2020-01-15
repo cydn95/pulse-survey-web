@@ -42,6 +42,11 @@ class TopNav extends Component {
       searchKeyword: ""
     };
   }
+
+  handleSetting = () => {
+    this.props.history.push('/app/settings');
+  }
+
   isInFullScreen = () => {
     return (
       (document.fullscreenElement && document.fullscreenElement !== null) ||
@@ -243,6 +248,10 @@ class TopNav extends Component {
                 </span>
               </DropdownToggle>
               <DropdownMenu className="mt-2" right>
+                <DropdownItem onClick={() => this.handleSetting()}>
+                  Settings
+                </DropdownItem>
+                <DropdownItem divider />
                 <DropdownItem onClick={() => this.handleLogout()}>
                   Sign out
                 </DropdownItem>

@@ -64,6 +64,7 @@
     "materialize-css": "^1.0.0-rc.2",
     "package.json": "^2.0.1",
     "rc-slider": "^8.7.1",
+    "rc-switch": "^1.9.0",
     "react": "^16.4.1",
     "react-circular-progressbar": "^2.0.2",
     "react-dom": "^16.4.1",

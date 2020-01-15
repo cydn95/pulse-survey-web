@@ -257,14 +257,14 @@ class Sidebar extends Component {
                 {/* Welcome */}
                 <NavItem
                   className={classnames({
-                    active: ((this.state.selectedParentMenu == "welcome" && this.state.viewingParentMenu == "") || this.state.viewingParentMenu == "welcome")
+                    active: ((this.state.selectedParentMenu === "welcome" && this.state.viewingParentMenu == "") || this.state.viewingParentMenu == "welcome")
                   })}
                 >
                   <NavLink
                     to="/app/welcome"
                     onClick={() => this.changeViewingParentMenu('welcome')}
                     data-flag="welcome">
-                    <img className="menu-icon" src="/assets/img/survey/menu-welcome.png" />
+                    <img className="menu-icon" src="/assets/img/survey/menu-welcome.png" alt="menu-welcome"/>
                     <IntlMessages id="menu.welcome" />
                   </NavLink>
                 </NavItem>
@@ -272,14 +272,14 @@ class Sidebar extends Component {
                 {/* About Me */}
                 <NavItem
                   className={classnames({
-                    active: ((this.state.selectedParentMenu == "about-me" && this.state.viewingParentMenu == "") || this.state.viewingParentMenu == "about-me")
+                    active: ((this.state.selectedParentMenu === "about-me" && this.state.viewingParentMenu == "") || this.state.viewingParentMenu == "about-me")
                   })}
                 >
                   <NavLink
                     to="/app/about-me"
                     onClick={() => this.changeViewingParentMenu('about-me')}
                     data-flag="about-me">
-                    <img className="menu-icon" src="/assets/img/survey/menu-aboutme.png" />
+                    <img className="menu-icon" src="/assets/img/survey/menu-aboutme.png" alt="menu-about-me" />
                     <IntlMessages id="menu.aboutme" />
                   </NavLink>
                 </NavItem>

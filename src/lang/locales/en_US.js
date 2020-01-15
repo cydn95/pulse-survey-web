@@ -57,5 +57,10 @@ module.exports = {
   "survey.interest": "INTEREST",
   "survey.sentiment": "SENTIMENT",
   "survey.confidence": "CONFIDENCE",
-  "survey.culture": "CULTURE"
+  "survey.culture": "CULTURE",
+
+  /* 06.Settings */
+  "settings.settings": "SETTINGS",
+  "settings.account": "ACCOUNT",
+  "settings.project": "PROJECTS"
 };

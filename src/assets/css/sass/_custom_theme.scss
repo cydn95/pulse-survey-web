@@ -5,6 +5,18 @@
     }
 }
 
+.dropdown-item {
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+    line-height: 40px !important;
+}
+
+.h-title {
+    display: inline-block;
+    padding: 35px 10px 15px 0px;
+    font-size: 1.75rem !important;
+}
+
 @media screen and (max-width: 430px) {
     .d-inline-block {
         font-size: 70%;

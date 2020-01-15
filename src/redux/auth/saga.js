@@ -24,7 +24,7 @@ function* loginWithUsernamePassword({ payload }) {
 	
 	try {
 			const loginUser = yield call(loginWithUsernamePasswordAsync, username, password);
-            
+
 			if (loginUser.data) {
 
                 let userId = loginUser.data.id;

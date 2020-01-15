@@ -5,7 +5,6 @@ import { IntlProvider } from 'react-intl';
 import { NotificationContainer } from "Components/ReactNotifications";
 import { defaultStartPath } from 'Constants/defaultValues'
 
-
 import AppLocale from '../lang';
 import MainRoute from 'Routes';
 import login from 'Routes/login'
@@ -17,8 +16,6 @@ import forgotPassword from 'Routes/forgot-password'
 import 'Assets/css/vendor/bootstrap.min.css'
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import 'Assets/css/sass/themes/gogo.light.purple.scss';
-import { cps } from 'redux-saga/effects';
-import { auth } from 'firebase';
 /*
 color options : 
 	 'light.purple'		'dark.purple'
