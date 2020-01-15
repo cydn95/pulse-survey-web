@@ -128,10 +128,10 @@ class SkipQuestion extends Component {
               <div className="anwser-select-n mt-3">
               {
                 optionList.map((item, index) => {
-                  let active = (item.id) === this.state.reason ? 'active' : '';
+                  let active = (item.optionName) === this.state.reason ? 'active' : '';
                   return (
                     <a key={item.id}  className={"waves-effect waves-light btn select2-btn " + active}
-                      onClick={e => this.onSelectSkipReason(e, item.id)}>
+                      onClick={e => this.onSelectSkipReason(e, item.optionName)}>
                       {item.optionName}
                     </a>
                   )

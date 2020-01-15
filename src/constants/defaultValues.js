@@ -30,3 +30,17 @@ export const controlType = {
     MULTI_OPTIONS: 4,
     SMART_TEXT: 5
 }
+
+export const controlTypeText = (type) => {
+    if (type === 1) {
+        return 'TEXT';
+    } else if (type === 2) {
+        return 'SLIDER'
+    } else if (type === 3) {
+        return 'TWO_OPTIONS';
+    } else if (type === 4) {
+        return 'MULTI_OPTIONS';
+    } else if (type === 5) {
+        return 'SMART_TEXT';
+    }
+}

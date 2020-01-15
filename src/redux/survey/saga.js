@@ -8,8 +8,6 @@ import {
 import {
     pageListAPI,
     submitSurveyAPI,
-    submitAboutMeAPI,
-    projectUserListAPI,
     optionListAPI
 } from '../../services/axios/api';
 
@@ -17,6 +15,8 @@ import {
   PAGE_LIST,
   SUBMIT_SURVEY
 } from 'Constants/actionTypes';
+
+import { controlTypeText } from 'Constants/defaultValues'
 
 import {
   pageListSuccess,
@@ -48,7 +48,7 @@ function* getPageList() {
       // Order by PageOrder Asscend
       let orderedPageList = validPageList.sort(
         (a, b) => (a.page_order.order > b.page_order.order) ? 1 : -1);
-    
+
       for (let i = 0; i < orderedPageList.length; i++) {
         
         for (let j = 0; j < orderedPageList[i].pages.ampagesetting.length; j++) {
@@ -67,7 +67,8 @@ function* getPageList() {
               subjectUser: 0,
               survey: orderedPageList[i].pages.ampagesetting[j].amQuestion.survey,
               amQuestion: orderedPageList[i].pages.ampagesetting[j].amQuestion.id,
-              type: 'me'
+              type: 'me',
+              controlType: controlTypeText(orderedPageList[i].pages.ampagesetting[j].amQuestion.controlType)
             }
           }
         }
@@ -89,7 +90,7 @@ function* getPageList() {
               survey:  orderedPageList[i].pages.aopagesetting[j].survey,
               amQuestion: orderedPageList[i].pages.aopagesetting[j].id,
               type: 'other',
-              controlType: ''
+              controlType: controlTypeText(orderedPageList[i].pages.ampagesetting[j].amQuestion.controlType)
             }
           }
         }
@@ -118,15 +119,6 @@ const submitSurveyAsync = async (answerData) =>
       .then(result => result)
       .catch(error => error);
 
-const submitAboutMeAsync = async (aboutMe) =>
-  await submitAboutMeAPI(aboutMe)
-    .then(result => result)
-    .catch(error => error);
-
-const getProjectUserListAysnc = async () =>
-  await projectUserListAPI()
-    .then(data => data)
-    .catch(error => error);
 /** 
   [{
     "integerValue": null,
@@ -143,7 +135,7 @@ const getProjectUserListAysnc = async () =>
 */
 function* submitSurvey( {payload }) {
 
-  const { surveyList, aboutMe, projectId, history } = payload;
+  const { surveyList, projectId, history } = payload;
   let answerList = [];
   
   for (let i = 0; i < surveyList.length; i++) {
@@ -166,7 +158,7 @@ function* submitSurvey( {payload }) {
         "survey": ampagesettings[j].answer.survey,
         "amQuestion": ampagesettings[j].answer.amQuestion,
         "project": projectId,
-        "controlType": "SLIDER"
+        "controlType": ampagesettings[j].answer.controlType
       });
 
       answerList.push(answer);
@@ -184,7 +176,7 @@ function* submitSurvey( {payload }) {
         "subjectUser": getToken().userId,
         "survey": aopagesettings[j].answer.survey,
         "aoQuestion": aopagesettings[j].answer.amQuestion,
-        "controlType": "SLIDER"
+        "controlType": ampagesettings[j].answer.controlType
       })
 
       answerList.push(answer);
@@ -192,36 +184,17 @@ function* submitSurvey( {payload }) {
   }
 
   try {
-    let result = yield call(submitAboutMeAsync, aboutMe);
-    
-    if (result.status === 201) {
-      result = yield call(submitSurveyAsync, answerList);
-      
-      if (result.status === 201) {
-        var surveyId = projectId;
-        
-        localStorage.setItem('surveyId', surveyId);
-        yield put(submitSurveySuccess(surveyId));
-        history.push('/app/dashboard');
+    let result = yield call(submitSurveyAsync, answerList);
 
-        // result = yield call(getProjectUserListAysnc);
-        
-        // if (result.status === 200) {
-        //   // yield put(projectUserListSuccess(result.data)); 
-        //   var projectUserList = result.data;
-        //   for (let i = projectUserList.length - 1; i >= 0; i--) {
-        //     if (projectUserList[i].user == localStorage.getItem("userId")) {
-        //       surveyId = projectUserList[i].id;
-        //       localStorage.setItem('surveyId', surveyId);
-        //       yield put(submitSurveySuccess(surveyId));
-        //       history.push('/app/dashboard');
-        //       break;
-        //     }
-        //   }
-        // }
-      } else {
-        console.log('submit failed')
-      }
+    if (result.status === 201) {
+      var surveyId = projectId;
+      
+      localStorage.setItem('surveyId', surveyId);
+      yield put(submitSurveySuccess(surveyId));
+      history.push('/app/dashboard');
+
+    } else {
+      console.log('submit failed')
     }
   } catch (error) {
     console.log('survey error : ', error)
