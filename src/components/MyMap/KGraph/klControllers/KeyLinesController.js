@@ -34,6 +34,8 @@ class BaseController {
         let overElem;
         let highLevelNodes;
         let viewMode;
+        let layoutName;
+        let comboMap;
         this.dataStore = new DataStore();
         window.keyLinesController = this;
         this.setContainerState = setState;
@@ -101,7 +103,7 @@ class BaseController {
             if (currentGlyph) {
                 propsToUpdate.push({
                     id: baseId,
-                    g: [{ ...currentGlyph[0], t: parseInt(currentGlyph[0].t, 16) + 1 }]
+                    g: [{ ...currentGlyph[0], t: parseInt(currentGlyph[0].t,10) + 1 }]
                 });
             } else {
                 propsToUpdate.push({
@@ -131,7 +133,7 @@ class BaseController {
             newItems.forEach(item => {
                 if (this.chart.combo().isCombo(item.id)) {
                     let currentComboGlyph = this.chart.getItem(item.id).g;
-                    item.g[0].t = parseInt(currentComboGlyph[0].t, 16) + parseInt(item.g[0].t, 16);
+                    item.g[0].t = parseInt(currentComboGlyph[0].t, 10) + parseInt(item.g[0].t, 10);
                 }
             })
         }
@@ -144,7 +146,7 @@ class BaseController {
         const pos = this.chart.worldCoordinates(x, y);
         // find the element on top of which it has landed
         this.chart.each({ type: 'node', items: 'all' }, (item) => {
-            if ((item.x <= pos.x + 15 && item.x > pos.x - 15) && (item.y <= pos.y + 15 && item.y > pos.y - 15)) {
+            if ((item.x <= pos.x + 15 && item.x > pos.x - 15) && (item.y <= pos.y + 15 && item.y > pos.y - 15) && !item.hi) {
                 this.overElem = item.id;
             }
         })
@@ -154,9 +156,20 @@ class BaseController {
             // or its current organisation
             let currentOverElement = this.chart.getItem(this.overElem);
             let itemExists = this.chart.getItem(node.individuals[0].id);
+            let animate = true;
+            // check if there are already elements with that id in the vis and that you are over an sh category
             if (currentOverElement.d.coreEntity && !itemExists) {
-                // check if this sh category already has the element's organisation
-                // check if there are already elements with that id in the vis 
+                
+                // if the sh category has not been expanded yet, expand it before adding the element
+                if (currentOverElement.d.individualCount > 0 && !currentOverElement.d.expanded) {
+                    await this.expandChart(currentOverElement.id);
+                    animate= false;
+                } // if the sh category is shrunk, show it before adding
+                else if (currentOverElement.d.individualCount > 0 && currentOverElement.d.shrunk){
+                    await this.toggleChart(currentOverElement.id);
+                    animate= false;
+                }
+
                 node.individuals[0].sh_category = {
                     current: currentOverElement.id,
                     changeable: false
@@ -164,12 +177,33 @@ class BaseController {
 
                 let { newItems, highLevelNodes } = await this.dataStore.structurizeData(node, 'ap1', 'entities', this.viewMode);
                 this.highLevelNodes = { ...this.highLevelNodes, ...highLevelNodes };
+                // adjust the parentIds of the newly addded elements
+                if(Object.keys(this.comboMap).length>0){
+                    newItems.forEach((item,index) => {
+                        if(!item.hi){
+                            // check if it is an underlying node or a combo
+                            if(this.comboMap[item.id]){
+                                item.id = this.comboMap[item.id];
+                            } 
+                            if(this.comboMap[item.parentId]){
+                                item.parentId = this.comboMap[item.parentId];
+                            }
+                        }
+                    })
+                }
+                const newItemsExisting = this.chart.getItem(newItems.map(({id}) => id));
+                newItems.forEach((item, i) => {
+                    if (newItemsExisting[i]) {
+                        if (item.parentId !== newItemsExisting[i].parentId) {
+                            item.parentId = newItemsExisting[i].parentId;
+                        }
+                    }
+                });
                 // ammend the glyph count of the existing elements
                 await this.recalculateGlyphs(this.overElem, newItems);
-                await this.chart.expand(newItems, { layout: { fit: true }, arrange: { name:'concentric'} });
+                await this.chart.expand(newItems, {animate, layout:{ name: this.layoutName,fix: 'all',top: ['radial','sequential'].includes(this.layoutName) ? this.overElem : '', tightness: 3} ,arrange: { name: 'concentric' } });
                 // add donuts in the underlying nodes
                 await this.constructDonuts(newItems);
-                // rearrange the affected combos
                 // ping the newly added element
                 await this.chart.ping(node.individuals[0].id);
             }
@@ -198,9 +232,73 @@ class BaseController {
         this.highLevelNodes = { ...this.highLevelNodes, ...highLevelNodes };
         // ammend the glyph count of the existing elements
         await this.recalculateGlyphs(clickedId, newItems, 'expand');
-        await this.chart.expand(newItems, { layout: { fit: true },arrange: { name:'concentric'}  });
+        await this.chart.expand(newItems, { layout:{ name: this.layoutName,fix: 'all',top: ['radial','sequential'].includes(this.layoutName) ? clickedId : '', tightness: 3} ,arrange: { name: 'concentric' } });
         // add donuts in the underlying nodes
         await this.constructDonuts(newItems);
+        // the element has expanded so set the expanded flag
+        let clickedElement = this.chart.getItem(clickedId);
+        await this.chart.setProperties({
+            id: clickedElement.id,
+            d: {
+                ...clickedElement.d,
+                expanded: true
+            }
+        })
+    }
+
+
+    toggleChart = async (clickedId) => {
+        let clickedElement = this.chart.getItem(clickedId);
+        let elementsToMove = [];
+        let props = [];
+        let neighbours = this.chart.graph().neighbours(clickedId,{all: true});
+        neighbours.nodes.forEach((nodeId)=>{
+            let node = this.chart.getItem(nodeId);
+            if(!node.d.coreEntity){
+                elementsToMove.push(nodeId);
+            }
+        })
+
+        // animate the elements to move to the position of the core entity
+        elementsToMove.forEach((id)=>{
+            props.push({id, x: clickedElement.x, y: clickedElement.y})
+        })
+
+        // shrink the element
+        if(!clickedElement.d.shrunk){  
+            await this.chart.animateProperties(props,{time: 400});
+            // hide the elements to move
+            await this.chart.hide(elementsToMove);
+            // set the shrunk flag to true
+            await this.chart.setProperties({id: clickedId, d: {...clickedElement.d, shrunk: true}});
+        }else {
+            // set the fixed nodes for the layout
+            const fixed = [];
+            const toArrange = [];
+            this.chart.each({ type: 'node', items: 'toplevel'}, ({id, hi}) => hi || fixed.push(id));
+            // set the new coordinates of the hidden elements to be those of their sh category
+            await this.chart.setProperties(props);
+            // show the previously shrunk elements
+            await this.chart.show(elementsToMove, true);
+            // arrange combo nodes included in elements to move
+            elementsToMove.forEach((nodeId) =>{
+                if(this.chart.combo().isCombo(nodeId)){
+                    toArrange.push(nodeId);
+                    const underlyingElems = this.chart.combo().info(nodeId).nodes;
+                    underlyingElems.forEach(({id}) =>{
+                        const parentComboId = this.chart.combo().find(id,{parent: 'first'});
+                        if(parentComboId && !toArrange.includes(parentComboId)){
+                            toArrange.push(parentComboId);
+                        }
+                    })
+                }
+            })
+            await this.chart.combo().arrange(toArrange,{name: 'concentric'});
+            // run the selected layout against the new visible nodes
+            await this.runLayout(this.layoutName, true, { fixed });
+            // set the shrunk flag to false
+            await this.chart.setProperties({id: clickedId, d: {...clickedElement.d, shrunk: false}});
+        }   
     }
 
 
@@ -212,14 +310,8 @@ class BaseController {
         let clickedElement = this.chart.getItem(id);
         if (clickedElement.d.coreEntity && !clickedElement.d.expanded && clickedElement.d.individualCount > 0) {
             this.expandChart(id);
-            // the element has expanded so reset the count flag
-            this.chart.setProperties({
-                id,
-                d: {
-                    ...clickedElement.d,
-                    expanded: true
-                }
-            })
+        } else if (clickedElement.d.coreEntity && clickedElement.d.expanded) {
+            this.toggleChart(id);
         }
 
         if (this.chart.combo().isCombo(id)) {
@@ -232,7 +324,6 @@ class BaseController {
 
     setupUI() {
         this.container = document.getElementById('kl');
-        this.chart.bind('hover', this.handleHover);
         this.chart.bind('dblclick', this.handleDblClick);
     }
 
@@ -255,9 +346,10 @@ class BaseController {
             defaultStyles: {
                 comboGlyph: null,
             },
+            handMode: true,
             imageAlignment
         };
-     
+
         let { newItems, highLevelNodes } = await this.dataStore.getCoreStructure();
         this.chart = await KeyLines.create([{ container: chartContainer, options: chartOptions, type: 'chart' }]);
         this.chart.load({ type: 'LinkChart', items: newItems });
@@ -265,6 +357,7 @@ class BaseController {
         this.runLayout();
         window.chart = this.chart;
         this.highLevelNodes = {};
+        this.comboMap = {};
         this.viewMode = ['Org', 'Team'];
         this.setupUI();
     }
@@ -273,10 +366,13 @@ class BaseController {
      * Positions nodes on the chart according to the given layout
      * @param {String} layoutName One of the KeyLines chart layouts
      */
-    async runLayout(layoutName = "organic") {
-        let options = {
+    async runLayout(layoutName = "organic", consistent= false, extra = {}) {
+        this.layoutName = layoutName;
+        const options = {
             tightness: 3,
-            top: ['radial', 'sequential'].includes(layoutName) ? this.chart.selection() : []
+            top: ['radial', 'sequential'].includes(layoutName) ? this.chart.selection() : [],
+            consistent,
+            ...extra
         }
         this.chart.layout(layoutName, options);
     }
@@ -285,13 +381,14 @@ class BaseController {
     async updateVisualisationMode(visMode) {
         let toUncombine = [];
         this.viewMode = visMode;
+        this.comboMap = {};
         this.chart.each({ type: 'node', items: 'all' }, (node) => {
             if (this.chart.combo().isCombo(node.id)) {
                 toUncombine.push(node.id)
             }
         });
         await this.chart.combo().uncombine(toUncombine, { full: true, select: false, animate: true });
-        
+
         const combineByProperty = async (property, level) => {
             let count = {};
             let newCombos = {};
@@ -305,11 +402,11 @@ class BaseController {
                     newCombos[propertyId].push(node.id);
                     count[propertyId] = count[propertyId] || 0;
                     if (node.d.icon || node.d.name) {
-                        count[propertyId] += level === 'toplevel' ? parseInt(node.g[0].t, 16) : 1;
+                        count[propertyId] += level === 'toplevel' ? parseInt(node.g[0].t, 10) : 1;
                     }
                     if (!data[propertyId]) {
                         // store the d property for future reference
-                        data[propertyId] = { ...node.d };
+                        data[propertyId] = {...node.d, comboProperty: propertyId};
                     }
                 }
             });
@@ -341,7 +438,10 @@ class BaseController {
                     comboDefs.push({ ids: newCombos[id], style, label: this.highLevelNodes[id].d.name });
                 }
             });
-            await this.chart.combo().combine(comboDefs, { select: false, arrange: 'concentric'});
+           const comboIds= await this.chart.combo().combine(comboDefs, { select: false, arrange: 'concentric' });
+           comboIds.forEach(comboId =>{
+               this.comboMap[this.chart.getItem(comboId).d.comboProperty] = comboId;
+           })
         }
 
         if (visMode.length === 1) {
@@ -360,7 +460,13 @@ class BaseController {
 
         // only run the layout for the viewUpdate and not when intialising/ fetching elements
         if (Object.keys(this.highLevelNodes).length > 0) {
-            await this.runLayout();
+            let fixed = [];
+            this.chart.each({type:'node', items:'toplevel'}, (item)=>{
+                if(item.d.coreEntity && (!item.d.expanded || item.d.shrunk)){
+                    fixed.push(item.id);
+                }
+            })
+            await this.runLayout(this.layoutName,true,{fixed});
         }
     }
 }
