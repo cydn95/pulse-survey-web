@@ -11,8 +11,7 @@ import {
 } from 'Constants/actionTypes';
 
 export const pageList = () => ({
-  type: PAGE_LIST,
-  payload: { }
+  type: PAGE_LIST
 });
 
 export const pageListSuccess = (pageList, optionList) => ({
@@ -35,9 +34,9 @@ export const inputAnswer = (answer) => ({
   payload: { answer }
 })
 
-export const submitSurvey = (surveyList, aboutMe, history) => ( {
+export const submitSurvey = (surveyList, aboutMe, projectId, history) => ( {
   type: SUBMIT_SURVEY,
-  payload: { surveyList, aboutMe, history }
+  payload: { surveyList, aboutMe, projectId, history }
 })
 
 export const submitSurveySuccess = (surveyId) => ( {

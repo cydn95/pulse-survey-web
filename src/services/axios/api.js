@@ -7,6 +7,9 @@ const loginAPI = (username, password) => {
   })
 }
 
+const projectListByUserAPI = (userId) => {
+  return getClient(true).get("/projectByUser/?format=json&user=" + userId)
+}
 const pageListAPI = () => {
   return getClient(true).get("/pages/?format=json")
 }
@@ -61,6 +64,8 @@ const submitAoQuestionAPI = (answerData) => {
 
 export {
   loginAPI,
+  
+  projectListByUserAPI,
   
   pageListAPI,
   submitAboutMeAPI,

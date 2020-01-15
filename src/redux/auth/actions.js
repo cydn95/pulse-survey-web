@@ -3,8 +3,14 @@ import {
   LOGIN_USER_SUCCESS,
   LOGOUT_USER,
   REGISTER_USER,
-  REGISTER_USER_SUCCESS
+  REGISTER_USER_SUCCESS,
+  PROJECT_ID
 } from 'Constants/actionTypes';
+
+export const setProjectID = (projectId) => ({
+  type: PROJECT_ID,
+  payload : { projectId }
+});
 
 export const loginUser = (user, history) => ({
   type: LOGIN_USER,

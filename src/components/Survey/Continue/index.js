@@ -15,13 +15,13 @@ class Continue extends Component {
     
     e.preventDefault();
 
-    const {surveyList, pageIndex, aboutMe} = this.props;
+    const {surveyList, pageIndex, projectId, aboutMe} = this.props;
     let percentage = 0;
 
     if (pageIndex === (surveyList.length - 1)) {
       percentage = 100;
 
-      this.props.submitSurvey(surveyList, aboutMe, this.props.history);
+      this.props.submitSurvey(surveyList, aboutMe, projectId, this.props.history);
 
     } else {
       let totalQuestions = 0;
@@ -71,12 +71,14 @@ class Continue extends Component {
   }
 }
 
-const mapStateToProps = ({ survey, settings }) => {
+const mapStateToProps = ({ survey, settings, authUser }) => {
 
   const { pageList, pageIndex, aboutMe } = survey;
   const { locale } = settings;
+  const { projectId } = authUser;
 
   return {
+    projectId,
     surveyList: pageList,
     aboutMe,
     pageIndex,

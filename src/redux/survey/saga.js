@@ -67,7 +67,8 @@ function* getPageList() {
               subjectUser: 0,
               survey: orderedPageList[i].pages.ampagesetting[j].amQuestion.survey,
               amQuestion: orderedPageList[i].pages.ampagesetting[j].amQuestion.id,
-              type: 'me'
+              type: 'me',
+              controlType: 'SLIDER'
             }
           }
         }
@@ -88,7 +89,8 @@ function* getPageList() {
               subjectUser: 0,
               survey:  orderedPageList[i].pages.aopagesetting[j].survey,
               amQuestion: orderedPageList[i].pages.aopagesetting[j].id,
-              type: 'other'
+              type: 'other',
+              controlType: 'SLIDER'
             }
           }
         }
@@ -142,7 +144,7 @@ const getProjectUserListAysnc = async () =>
 */
 function* submitSurvey( {payload }) {
 
-  const { surveyList, aboutMe, history } = payload;
+  const { surveyList, aboutMe, projectId, history } = payload;
   let answerList = [];
   
   for (let i = 0; i < surveyList.length; i++) {
@@ -163,7 +165,9 @@ function* submitSurvey( {payload }) {
         "user": getToken().userId,
         "subjectUser": getToken().userId,
         "survey": ampagesettings[j].answer.survey,
-        "amQuestion": ampagesettings[j].answer.amQuestion
+        "amQuestion": ampagesettings[j].answer.amQuestion,
+        "project": projectId,
+        "controlType": ampagesettings[j].answer.controlType
       });
 
       answerList.push(answer);
@@ -180,7 +184,8 @@ function* submitSurvey( {payload }) {
         "user": getToken().userId,
         "subjectUser": getToken().userId,
         "survey": aopagesettings[j].answer.survey,
-        "aoQuestion": aopagesettings[j].answer.amQuestion
+        "aoQuestion": aopagesettings[j].answer.amQuestion,
+        "controlType": aopagesettings[j].answer.controlType
       })
 
       answerList.push(answer);

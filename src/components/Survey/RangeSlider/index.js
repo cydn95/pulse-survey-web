@@ -26,7 +26,8 @@ class RangeSlider extends Component {
     const { question } = props;
     this.setState({
       answer: {
-        ...question.answer
+        ...question.answer,
+        controlType: 'SLIDER'
       }
     })
   }

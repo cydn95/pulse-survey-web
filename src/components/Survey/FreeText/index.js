@@ -23,7 +23,8 @@ class FreeText extends Component {
     const { question } = props;
     this.setState({
       answer: {
-        ...question.answer
+        ...question.answer,
+        controlType: 'TEXT'
       }
     })
   }

@@ -1,7 +1,8 @@
 import {
-    CHANGE_LOCALE
+    CHANGE_LOCALE,
+    PROJECT_LIST_BY_USER,
+    PROJECT_LIST_BY_USER_SUCCESS
 } from 'Constants/actionTypes';
-
 
 export const changeLocale = (locale) => {
     localStorage.setItem('currentLanguage', locale);
@@ -13,3 +14,12 @@ export const changeLocale = (locale) => {
     )
 }
 
+export const projectListByUser = (userId) => ({
+    type: PROJECT_LIST_BY_USER,
+    payload: { userId }
+});
+
+export const projectListByUserSuccess = (projectList) => ({
+    type: PROJECT_LIST_BY_USER_SUCCESS,
+    payload: { projectList }
+});

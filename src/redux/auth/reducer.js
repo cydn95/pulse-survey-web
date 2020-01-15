@@ -3,7 +3,8 @@ import {
   LOGIN_USER_SUCCESS,
   REGISTER_USER,
   REGISTER_USER_SUCCESS,
-  LOGOUT_USER
+  LOGOUT_USER,
+  PROJECT_ID
 } from "Constants/actionTypes";
 
 const INIT_STATE = {
@@ -11,11 +12,14 @@ const INIT_STATE = {
     userId: localStorage.getItem("userId"),
     accessToken: localStorage.getItem("accessToken")
   },
+  projectId: localStorage.getItem("projectId"),
   loading: false
 };
 
 export default (state = INIT_STATE, action) => {
   switch (action.type) {
+    case PROJECT_ID:
+      return { ...state, projectId: action.payload.projectId };
     case LOGIN_USER:
       return { ...state, loading: true };
     case LOGIN_USER_SUCCESS:

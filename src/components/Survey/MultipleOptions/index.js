@@ -37,7 +37,8 @@ class MultipleOptions extends Component {
     
     this.setState({
       answer: {
-        ...question.answer
+        ...question.answer,
+        controlType: 'MULTI_OPTIONS'
       }
     })
   }
