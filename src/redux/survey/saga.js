@@ -72,28 +72,6 @@ function* getPageList() {
             }
           }
         }
-
-        for (let j = 0; j < orderedPageList[i].pages.aopagesetting.length; j++) {
-          orderedPageList[i].pages.aopagesetting[j] = {
-            ...orderedPageList[i].pages.aopagesetting[j].aoQuestion,
-            answer: {
-              pageIndex: i,
-              questionIndex: j,
-              integerValue: 0,
-              topicValue: "",
-              commentValue: "",
-              skipValue: "",
-              topicTags: "",
-              commentTags: "",
-              user: 0,
-              subjectUser: 0,
-              survey:  orderedPageList[i].pages.aopagesetting[j].survey,
-              amQuestion: orderedPageList[i].pages.aopagesetting[j].id,
-              type: 'other',
-              controlType: controlTypeText(orderedPageList[i].pages.ampagesetting[j].amQuestion.controlType)
-            }
-          }
-        }
       }
 
       const result_option = yield call(getOptionListAsync);
@@ -143,9 +121,15 @@ function* submitSurvey( {payload }) {
     if (surveyList[i].pages.pageType !== "PG_SURVEY") continue;
     
     let ampagesettings = surveyList[i].pages.ampagesetting;
-    let aopagesettings = surveyList[i].pages.aopagesetting;
 
     for (let j = 0; j < ampagesettings.length; j++) {
+
+      if ((ampagesettings[j].answer.integerValue === '' || ampagesettings[j].answer.integerValue === 0) 
+        && ampagesettings[j].answer.topicValue === '' && ampagesettings[j].answer.commentValue === ''
+        && ampagesettings[j].answer.skipValue === '') {
+          continue;
+      }
+      
       let answer = Object.assign({}, {
         "integerValue": ampagesettings[j].answer.integerValue,
         "topicValue": ampagesettings[j].answer.topicValue,
@@ -163,26 +147,12 @@ function* submitSurvey( {payload }) {
 
       answerList.push(answer);
     }
-
-    for (let j = 0; j < aopagesettings.length; j++) {
-      let answer = Object.assign({}, {
-        "integerValue": aopagesettings[j].answer.integerValue,
-        "topicValue": aopagesettings[j].answer.topicValue,
-        "commentValue": aopagesettings[j].answer.commentValue,
-        "skipValue": aopagesettings[j].answer.skipValue,
-        "topicTags": aopagesettings[j].answer.topicTags,
-        "commentTags": aopagesettings[j].answer.commentTags,
-        "user": getToken().userId,
-        "subjectUser": getToken().userId,
-        "survey": aopagesettings[j].answer.survey,
-        "aoQuestion": aopagesettings[j].answer.amQuestion,
-        "controlType": ampagesettings[j].answer.controlType
-      })
-
-      answerList.push(answer);
-    }
   }
 
+  if (answerList.length === 0) {
+    return
+  }
+  
   try {
     let result = yield call(submitSurveyAsync, answerList);
 
