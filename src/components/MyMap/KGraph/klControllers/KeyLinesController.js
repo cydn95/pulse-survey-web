@@ -26,7 +26,7 @@ KeyLines.promisify();
 
 class BaseController {
 
-    constructor(setState) {
+    constructor(setState, clickNodeListener, apList, esList) {
 
         // for access through console
         let chart;
@@ -36,9 +36,10 @@ class BaseController {
         let viewMode;
         let layoutName;
         let comboMap;
-        this.dataStore = new DataStore();
+        this.dataStore = new DataStore(apList, esList);
         window.keyLinesController = this;
         this.setContainerState = setState;
+        this.clickNodeListener = clickNodeListener;
     }
 
     enableLayoutOptions = () => {
@@ -322,9 +323,14 @@ class BaseController {
         }
     }
 
+    handleClick = (id) => {
+        this.clickNodeListener(id);
+    };
+
     setupUI() {
         this.container = document.getElementById('kl');
         this.chart.bind('dblclick', this.handleDblClick);
+        this.chart.bind('click', this.handleClick);
     }
 
     /**

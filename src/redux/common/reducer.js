@@ -8,7 +8,11 @@ import {
   DRIVER_LIST,
   DRIVER_LIST_SUCCESS,
   SKIP_QUESTION_LIST,
-  SKIP_QUESTION_LIST_SUCCESS
+  SKIP_QUESTION_LIST_SUCCESS,
+  STAKEHOLDER_LIST,
+  STAKEHOLDER_LIST_SUCCESS,
+  SHCATEGORY_LIST,
+  SHCATEGORY_LIST_SUCCESS
 } from "Constants/actionTypes";
 
 const INIT_STATE = {
@@ -17,6 +21,9 @@ const INIT_STATE = {
   optionList: [],
   driverList: [],
   skipQuestionList: [],
+  stakeholderList: [],
+  shCategoryList: [],
+  userList: [],
   loading: false
 };
 
@@ -42,6 +49,14 @@ export default (state = INIT_STATE, action) => {
       return { ...state };
     case SKIP_QUESTION_LIST_SUCCESS:
       return { ...state, skipQuestionList: action.payload.skipQuestionList };
+    case STAKEHOLDER_LIST:
+      return { ...state };
+    case STAKEHOLDER_LIST_SUCCESS:
+      return { ...state, stakeholderList: action.payload.stakeholderList, userList: action.payload.userList };
+    case SHCATEGORY_LIST:
+      return { ...state };
+    case SHCATEGORY_LIST_SUCCESS:
+      return { ...state, shCategoryList: action.payload.shCategoryList };
     default:
       return { ...state };
   }

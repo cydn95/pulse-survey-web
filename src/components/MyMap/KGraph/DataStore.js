@@ -1,10 +1,16 @@
 // import constants from './constants';
 import KeyLines from 'keylines';
-import structureData from './json/ap1-structure';
-import data from './json/es1-ap1-data';
+// import structureData from './json/ap1-structure';
+// import data from './json/es1-ap1-data';
 
 export default class DataStore {
     coreStructure = {};
+
+    constructor(structureData, data) {
+        this.structureData = structureData;
+        this.data = data;
+    }
+
     /** @public */
     structurizeData(entities, entityId, type, currentView=null) {
 
@@ -162,15 +168,15 @@ export default class DataStore {
     async getCoreStructure(entityId = 'ap1') {
         // this.coreStructure= await fetch(constants.dataEndpoints.structure(entityId)).then(response => response.json());
         // cache the fetched core structures;
-        this.coreStructure[entityId] = this.coreStructure[entityId] || structureData;
+        this.coreStructure[entityId] = this.coreStructure[entityId] || this.structureData;
         return this.structurizeData({},entityId, 'core');
     }
 
     /** @public */
-    async getEntityNetwork(sh_category,entityId = 'ap1',currentView) {
+    async getEntityNetwork(sh_category, entityId = 'ap1',currentView) {
         // await this.getSchema(entityId);
         // const entities = await fetch(constants.dataEndpoints.data(entityId)).then(response => response.json());
-        const entities = data;
+        const entities = this.data;
         return this.structurizeData(entities, entityId, 'entities',currentView);
     }
 }

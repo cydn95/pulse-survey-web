@@ -105,7 +105,7 @@ function* submitAoQuestion({ payload }) {
 
     answerList.push(answer);
   }
-  console.log(answerList);
+
   try {
     
     let result = yield call(submitAoQuestionAsync, answerList);

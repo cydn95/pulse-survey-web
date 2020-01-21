@@ -46,12 +46,8 @@ const userListAPI = () => {
   return getClient(true).get("/users/")
 }
 
-const projectUserListAPI = () => {
-  return getClient(true).get("/projectuser/")
-}
-
-const getKeyDataFromLambda = () => {
-  return getLambdaClient().get("https://gft6ixgrq7.execute-api.us-east-2.amazonaws.com/default/PulseLambda-NeptuneLambdaFunction-QI9VKCO1VXK1")
+const myMapAPI = (userId, projectId) => {
+  return getClient(true).get("/mymaplayouts/?format=json&user=" + userId + "&project=" + projectId);
 }
 
 const aoQuestionListAPI = () => {
@@ -60,6 +56,27 @@ const aoQuestionListAPI = () => {
 
 const submitAoQuestionAPI = (answerData) => {
   return getClient(true).post("/aoresponse/", answerData)
+}
+
+// Get StakeholderList (get users by project id)
+const stakeholderListAPI = (projectId) => {
+  return getClient(true).get("/userByProject/?format=json&project=" + projectId);
+}
+
+// Get ShCategory
+const shCategoryListAPI = () => {
+  return getClient(true).get("/shcategory/?format=json");
+}
+
+/**
+ * deprecated...
+ */
+const projectUserListAPI = () => {
+  return getClient(true).get("/projectuser/")
+}
+
+const getKeyDataFromLambda = () => {
+  return getLambdaClient().get("https://gft6ixgrq7.execute-api.us-east-2.amazonaws.com/default/PulseLambda-NeptuneLambdaFunction-QI9VKCO1VXK1")
 }
 
 export {
@@ -78,7 +95,10 @@ export {
   userListAPI,
   projectUserListAPI,
   skipQuestionListAPI,
+  stakeholderListAPI,
+  shCategoryListAPI,
   
+  myMapAPI,
   getKeyDataFromLambda,
 
   aoQuestionListAPI,

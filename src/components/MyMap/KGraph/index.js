@@ -11,7 +11,12 @@ export default class KGraph extends Component {
         super(props);
         this.state = {};
         // (changes) => { this.props.setParentState(changes);}
-        this.keyLinesController = new KeyLinesController((changes) => { this.props.setParentState(changes);});
+        this.keyLinesController = new KeyLinesController(
+            (changes) => { this.props.setParentState(changes);},
+            (id) => { this.props.onClickNode(id) },
+            props.apList,
+            props.esList
+        );
     }
 
     /**

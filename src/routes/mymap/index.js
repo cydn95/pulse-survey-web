@@ -7,13 +7,14 @@ import { Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import {
 	userList,
-	projectUserList,
+	stakeholderList,
 	kMapData,
-	shgroupList,
 	aoQuestionList,
 	driverList,
 	submitAoQuestion,
-	skipQuestionList
+	skipQuestionList,
+	teamList,
+	shCategoryList
 } from "Redux/actions";
 
 import {
@@ -31,24 +32,20 @@ import {
 import { Droppable } from 'react-drag-and-drop'
 
 const defaultStakeholder = {
-	first_name: '',
-	last_name: '',
-	shType: 0,
-	email: '',
-	phone: '',
-	organization: 0,
+	projectuserId: '',
+	projectId: '',
+	userId: '',
+	fullNanme: '',
+	teamId: '',
 	team: '',
-	show: true,
-	projectId: Date.now(),
-	userId: Date.now(),
-	organization: ''
+	organization: '',
+	show: true
 };
 
 class MyMap extends React.Component {
 
 	constructor(props) {
 		super(props);
-
 		this.state = {
 			screen: 'list',
 			stakeholderList: [],
@@ -59,7 +56,12 @@ class MyMap extends React.Component {
 			enableLayout: true,
 			layout: 'Standard',
 			viewMode: 'Org/ Team/ SH',
-			layoutUpdated: false
+			layoutUpdated: false,
+			apList: null,
+			esList: null,
+			shCategoryList: [],
+			userList: [],
+			teamList: []
 		}
 	}
 
@@ -123,10 +125,13 @@ class MyMap extends React.Component {
 	}
 
 	componentWillMount() {
-		this.props.getUserList();
-		this.props.getProjectUserList();
-		this.props.getKMapData();
-		this.props.getShgroupList();
+		
+		const { projectId, userId } = this.props;
+		
+		this.props.getKMapData(userId, projectId);
+		this.props.getShCategoryList();
+		this.props.getStakeholderList(projectId);
+		this.props.getTeamList();
 		this.props.getAoQuestionList();
 		this.props.getDriverList();
 		this.props.getSkipQuestionList();
@@ -134,148 +139,153 @@ class MyMap extends React.Component {
 
 	componentWillReceiveProps(props) {
 
-		const { projectUserList, userList, kMapData, surveyId, driverList } = props;
+		const { stakeholderList, teamList, shCategoryList, userList, kMapData } = props;
 
-		if (projectUserList.length > 0 && userList.length > 0) {
+		let architecture = {
+			"main": {
+				"id": "ap1",
+				"name": "ME",
+				"icon": "fa-sitemap",
+				"color": "#7030a0",
+				"iconColor": "#fefefa"
+			},
+			"sh_categories": []
+		};
 
-			var stakeholderList = [];
-
-			// for (let i = 0; i < projectUserList.length; i++) {
-			for (let i = projectUserList.length - 1; i >= 0; i--) {
-				const project = projectUserList[i]
-				for (let j = 0; j < userList.length; j++) {
-					const user = userList[j];
-
-					if (user.first_name === '' && user.last_name === '') continue;
-					// if (user.is_superuser === true) continue;
-
-					let matchUser = false;
-					// if (project.user === user.id && user.is_superuser !== true) {
-					if (project.user === user.id) {
-						const stakeholder = {
-							firstName: user.first_name,
-							lastName: user.last_name,
-							shType: project.shGroup,
-							email: user.email,
-							phone: '',
-							team: project.team,
-							show: true,
-							projectId: project.id,
-							userId: project.user,
-							organization: ''
-						};
-
-						let bDuplicate = false;
-						for (let k = 0; k < stakeholderList.length; k++) {
-							if (stakeholderList[k].userId === project.user) {
-								bDuplicate = true;
-								break;
-							}
-						}
-						if (bDuplicate === false) {
-							stakeholderList.push(stakeholder);
-							matchUser = true;
-						}
-					}
-
-					if (matchUser) {
-						break;
-					}
-				}
-			}
-
-			this.setState({
-				stakeholderList,
-			});
+		let individual = {
+			"individuals": [],
+			"teams": [],
+			"organisations": []
 		}
 
-		try {
-			// console.log(kMapData);
-			// if (kMapData.vertex !== 'undefined' && kMapData.edge != 'undefined') {
+		if (teamList.length > 0 && userList.length > 0 && shCategoryList.length > 0) {
+			// Make Architecture
+			shCategoryList.forEach(shCategory => {
+				architecture.sh_categories.push({
+					"id": shCategory.id,
+					"name": shCategory.SHCategoryName,
+					"icon": "fa-project-diagram",
+					"color": "#59a2ad",
+					"iconColor": "#fefefa",
+					"individualCount": 0,
+					"expanded": false
+				})
+			});
 
-			// 	var data = {};
-			// 	Array.prototype.forEach.call(kMapData.vertex.result.data['@value'], function (object) {
+			// Individual -> Team List
+			teamList.forEach(team => {
+				individual.teams.push({
+					"id": team.id,
+					"name": team.name,
+					"icon": "fa-users"
+				})
+			});
 
-			// 		if ( (object['@value']['id'].indexOf('user') < 0) && (object['@value']['id'].indexOf('category') < 0) &&  (object['@value']['id'].indexOf('stakeholder') < 0)) {
-			// 			return;
-			// 		}
+			// Individual -> Organization
+			let organizationList = [];
+			userList.forEach(user => {
+				if (organizationList.length === 0) {
+					organizationList.push({
+						"id": user.user.organization.name,
+						"icon": "fa-building",
+						"name": "Department of Health"
+					});
+				} else {
+					let bExist = false;
+					organizationList.forEach(o => {
+						if (o.id === user.user.organization.name) {
+							bExist = true;
+						} 
+					});
+					if (bExist === false) {
+						organizationList.push({
+							"id": user.user.organization.name,
+							"icon": "fa-building",
+							"name": user.user.organization.name
+						});
+					}
+				}
+			});
 
-			// 		if (object['@value']['id'].indexOf('user') >= 0) {
-			// 			if (object['@value']['id'] !== ('user-' + surveyId)) return;
-			// 		}
+			individual.organisations = organizationList;
 
-			// 		let fontIcon =  {};
-			// 		if (object['@value']['id'].indexOf('user') >= 0) {
-			// 			fontIcon = {
-			// 				text: 'fa-user',
-			// 				color: 'rgb(255, 0, 0)'
-			// 			}
-			// 		} else if (object['@value']['id'].indexOf('category') >= 0) {
-			// 			fontIcon = {
-			// 				text: 'fa-university',
-			// 				color: 'rgb(0, 153, 255)'
-			// 			}
-			// 		} else if (object['@value']['id'].indexOf('stakeholder') >= 0) {
-			// 			fontIcon = {
-			// 				text: 'fa-user',
-			// 				color: 'rgb(0, 0, 0)'
-			// 			}
-			// 		}
+			// Individual -> individuals
+			/**
+			 * {
+							"id": "MJ1",
+							"name": "Mick Jagger",
+							"icon": "fa-user",
+							"survey_completion": 100,
+							"team": {
+									"current": "PC1",
+									"changeable": false
+							},
+							"organisation": {
+									"current": "DoH1",
+									"changeable": false
+							},
+							"sh_category": {
+									"current": "es1",
+									"changeable": false
+							}
+					},
+			*/
+			let individualList = [];
+			if (kMapData.length > 0) {
+				let mapUserList = kMapData[0].projectUser;
+				
+				mapUserList.forEach(mapUser => {
+					let individualUser = {
+						"id": "",
+						"name": "",
+						"icon": "fa-user",
+						"survey_completion": 100,
+						"team": {
+								"current": "",
+								"changeable": false
+						},
+						"organisation": {
+								"current": "",
+								"changeable": false
+						},
+						"sh_category": {
+								"current": "",
+								"changeable": false
+						}
+					};
+					let bAdd = false;
+					for (let i = 0; i < userList.length; i++) {
+						if (userList[i].id === mapUser) {
+							individualUser.id = userList[i].user.id;
+							individualUser.name = userList[i].user.first_name + ' ' + userList[i].user.last_name;
+							individualUser.team.current = userList[i].team.id;
+							individualUser.organisation.current = userList[i].team.organization;
+							individualUser.sh_category.current = userList[i].shCategory.id;
 
-			// 		data = {
-			// 			...data,
-			// 			['node-' + object['@value']['id']]: { 
-			// 				type: 'node',
-			// 				origin: '1',
-			// 				id: 'node-' + object['@value']['id'],
-			// 				label: { 
-			// 					text: object['@value']['properties']['text'][0]['@value']['value'],
-			// 					center: false
-			// 				},
-			// 				'fontIcon': {
-			// 					...fontIcon,
-			// 					fontFamily: 'Font Awesome 5 Free'
-			// 				},
-			// 				color: 'transparent',
-			// 				"glyphs": [
-			// 					{
-			// 						fontIcon: { 
-			// 							text: 'fa-plus-circle', 
-			// 							color: 'rgb(0, 0, 0)' 
-			// 						},
-			// 						color: 'transparent',
-			// 						"angle": 30,
-			// 						"size": 2
-			// 					}
-			// 				]
-			// 			},
-			// 		}
-			// 	});
+							bAdd = true;
 
-			// 	Array.prototype.forEach.call(kMapData.edge.result.data['@value'], function (object) {
-			// 		data = {
-			// 			...data,
-			// 			['link-' + object['@value']['objects']['@value'][1]['@value'][1]] : {
-			// 					id1: 'node-' + object['@value']['objects']['@value'][0],
-			// 					id2: 'node-' + object['@value']['objects']['@value'][2],
-			// 					type: 'link',
-			// 					origin: 1,
-			// 					label: {
-			// 						text: object['@value']['objects']['@value'][1]['@value'][7]
-			// 					}
-			// 			}
-			// 		};
-			// 	});
+							break;
+						}
+					}
+					if (bAdd) {
+						individualList.push(individualUser);
+					}
+				});
+			}
 
-			// 	this.setState((state) => ({
-			// 		graph: {
-			// 			...state.graph,
-			// 			items: data
-			// 		}
-			// 	}));
-			// }
-		} catch (e) {
-
+			individual.individuals = individualList;
+// console.log("*******************");
+// console.log(architecture);
+// console.log(individual);
+// console.log("*******************");
+			this.setState({
+				stakeholderList,
+				apList: architecture,
+				esList: individual,
+				shCategoryList,
+				userList,
+				teamList
+			});
 		}
 	}
 
@@ -290,8 +300,7 @@ class MyMap extends React.Component {
 					state.stakeholderList[i].show = true;
 					continue;
 				}
-				const fullName = state.stakeholderList[i].firstName + ' ' + state.stakeholderList[i].lastName;
-				const index = fullName.indexOf(filter);
+				const index = state.stakeholderList[i].fullName.indexOf(filter);
 
 				if (index < 0) {
 
@@ -340,8 +349,9 @@ class MyMap extends React.Component {
 
 	render() {
 
-		const { shgroupList, aoQuestionList, optionList, driverList, skipQuestionList } = this.props;
-		const { enableLayout, viewDropDownOpen, layoutDropDownOpen, layout, viewMode, newStakeholder, layoutUpdated, screen, stakeholderList } = this.state;
+		const { aoQuestionList, optionList, driverList, skipQuestionList } = this.props;
+		const { enableLayout, viewDropDownOpen, layoutDropDownOpen, layout, viewMode, newStakeholder, layoutUpdated, screen, stakeholderList, apList, esList, userList, teamList, shCategoryList } = this.state;
+		
 		return (
 			<div className="map-container">
 				<Droppable
@@ -350,15 +360,17 @@ class MyMap extends React.Component {
 					onDrop={(data, e) => { this.handleAddStackholderToGraph(data, e) }}>
 					<KGraphNavControls enableLayout={enableLayout} viewDropDownOpen={viewDropDownOpen} layoutDropDownOpen={layoutDropDownOpen}
 						updateViewDisplay={this.handleToggleMapModeDropdown} updateLayoutDisplay={this.handleToggleLayoutDropdown} updateMap={this.setMapMode} selectedLayout={layout} selectedViewMode={viewMode} />
+					{ (userList.length > 0 && teamList.length > 0 && shCategoryList.length > 0) && 
 					<KGraph
-						setParentState={this.setState.bind(this)}
+						setParentState={this.setState.bind(this)} apList={apList} esList={esList}
 						newStakeholder={newStakeholder} onClickNode={id => this.handleStartOtherSurvey(id)} layout={layout.toLowerCase()} viewMode={viewMode} layoutUpdated={layoutUpdated} />
+					}
 				</Droppable>
 				<div className="map-tool">
 					{screen !== 'aosurvey' &&
 						<SearchBox onFilter={search => this.handleFilter(search)} />
 					}
-					{screen !== 'aosurvey' && shgroupList.length > 0 &&
+					{screen !== 'aosurvey' && shCategoryList.length > 0 &&
 						<Row>
 							<Colxx xs="12">
 								<Button onClick={e => this.handleShowAddPage()}
@@ -366,11 +378,11 @@ class MyMap extends React.Component {
 							</Colxx>
 						</Row>
 					}
-					{screen === 'add' && shgroupList.length > 0 &&
-						<NewStakeholder shgroup={shgroupList} onAddStakeholder={stakeholder => this.handleAddNewStakeholder(stakeholder)} stakeholder={defaultStakeholder} />
+					{screen === 'add' && shCategoryList.length > 0 &&
+						<NewStakeholder shCategoryList={shCategoryList} onAddStakeholder={stakeholder => this.handleAddNewStakeholder(stakeholder)} stakeholder={defaultStakeholder} />
 					}
 					{screen === 'list' && stakeholderList.length > 0 &&
-						<StakeholderList projectUserList={stakeholderList} onAddStakeHolder={stakeholder => this.handleAddStackholderToGraph(stakeholder)} />
+						<StakeholderList stakeholderList={stakeholderList} onAddStakeHolder={stakeholder => this.handleAddStackholderToGraph(stakeholder)} />
 					}
 					{screen === 'aosurvey' && aoQuestionList.length > 0 && optionList.length > 0 &&
 						driverList.length > 0 && skipQuestionList.length > 0 &&
@@ -388,18 +400,22 @@ class MyMap extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ survey, kmap, common, settings, aosurvey }) => {
+const mapStateToProps = ({ survey, kmap, common, settings, aosurvey, authUser }) => {
 
+	const { projectId, user } = authUser;
 	const { surveyId } = survey;
 	const { locale } = settings;
-	const { userList, projectUserList, kMapData } = kmap
-	const { shgroupList, driverList, skipQuestionList } = common;
+	const { kMapData } = kmap
+	const { driverList, skipQuestionList, stakeholderList, teamList, shCategoryList, userList } = common;
 	const { aoQuestionList, optionList } = aosurvey;
 
 	return {
+		userId: user.userId,
+		projectId,
+		stakeholderList,
+		teamList,
+		shCategoryList,
 		userList,
-		projectUserList,
-		shgroupList,
 		skipQuestionList,
 		surveyId,
 		kMapData,
@@ -414,12 +430,13 @@ export default connect(
 	mapStateToProps,
 	{
 		getUserList: userList,
-		getProjectUserList: projectUserList,
+		getStakeholderList: stakeholderList,
 		getKMapData: kMapData,
-		getShgroupList: shgroupList,
+		getShCategoryList: shCategoryList,
 		getAoQuestionList: aoQuestionList,
 		getDriverList: driverList,
 		getSkipQuestionList: skipQuestionList,
+		getTeamList: teamList,
 		submitAoQuestion
 	}
 )(MyMap);

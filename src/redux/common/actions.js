@@ -8,7 +8,11 @@ import {
   DRIVER_LIST,
   DRIVER_LIST_SUCCESS,
   SKIP_QUESTION_LIST,
-  SKIP_QUESTION_LIST_SUCCESS
+  SKIP_QUESTION_LIST_SUCCESS,
+  STAKEHOLDER_LIST,
+  STAKEHOLDER_LIST_SUCCESS,
+  SHCATEGORY_LIST,
+  SHCATEGORY_LIST_SUCCESS
 } from 'Constants/actionTypes';
 
 export const teamList = () => ({
@@ -54,4 +58,23 @@ export const skipQuestionList = () => ({
 export const skipQuestionListSuccess = (skipQuestionList) => ({
   type: SKIP_QUESTION_LIST_SUCCESS,
   payload: { skipQuestionList }
+});
+
+export const stakeholderList = (projectId) => ({
+  type: STAKEHOLDER_LIST,
+  payload: { projectId }
+});
+
+export const stakeholderListSuccess = (stakeholderList, userList) => ({
+  type: STAKEHOLDER_LIST_SUCCESS,
+  payload: { stakeholderList, userList }
+});
+
+export const shCategoryList = () => ({
+  type: SHCATEGORY_LIST
+});
+
+export const shCategoryListSuccess = (shCategoryList ) => ({
+  type: SHCATEGORY_LIST_SUCCESS,
+  payload: { shCategoryList }
 });
