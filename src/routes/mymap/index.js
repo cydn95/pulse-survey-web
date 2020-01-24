@@ -60,7 +60,10 @@ class MyMap extends React.Component {
 			viewMode: 'Org/ Team/ SH',
 			layoutUpdated: false,
 			apList: null,
-			esList: null
+			esList: null,
+			teamList: [],
+			userList: [],
+			shCategoryList: []
 		}
 	}
 
@@ -274,6 +277,9 @@ class MyMap extends React.Component {
 
 			this.setState({
 				stakeholderList,
+				teamList,
+				userList,
+				shCategoryList,
 				apList: architecture,
 				esList: individual
 			});
@@ -340,8 +346,8 @@ class MyMap extends React.Component {
 
 	render() {
 
-		const { aoQuestionList, optionList, driverList, skipQuestionList, shCategoryList, teamList, userList } = this.props;
-		const { enableLayout, viewDropDownOpen, layoutDropDownOpen, layout, viewMode, newStakeholder, layoutUpdated, screen, stakeholderList, apList, esList } = this.state;
+		const { aoQuestionList, optionList, driverList, skipQuestionList } = this.props;
+		const { enableLayout, viewDropDownOpen, layoutDropDownOpen, layout, viewMode, newStakeholder, layoutUpdated, screen, stakeholderList, apList, esList, shCategoryList, teamList, userList } = this.state;
 		
 		return (
 			<div className="map-container">
