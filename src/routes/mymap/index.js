@@ -32,13 +32,15 @@ import {
 import { Droppable } from 'react-drag-and-drop'
 
 const defaultStakeholder = {
-	projectuserId: '',
+	projectUserId: '',
 	projectId: '',
 	userId: '',
-	fullNanme: '',
+	fullName: '',
 	teamId: '',
 	team: '',
-	organization: '',
+	organisationId: '',
+	organisation: '',
+	shCategory: '',
 	show: true
 };
 
@@ -58,10 +60,7 @@ class MyMap extends React.Component {
 			viewMode: 'Org/ Team/ SH',
 			layoutUpdated: false,
 			apList: null,
-			esList: null,
-			shCategoryList: [],
-			userList: [],
-			teamList: []
+			esList: null
 		}
 	}
 
@@ -83,22 +82,33 @@ class MyMap extends React.Component {
 	}
 
 	handleAddStackholderToGraph = (data, e = {}) => {
-		const stakeholder = this.state.stakeholderList[data.stakeholder];
+		
+		const projectUserId = data.stakeholder;
+		const { stakeholderList } = this.state;
+
+		let projectUser = stakeholderList.filter( e => {
+			return e.projectUserId == projectUserId;
+		});
+
+		if (projectUser.length === 0) return;
+
+		projectUser = projectUser[0];
+
 		let newElem = {
 			individuals: [
 				{
-					id: stakeholder.userId,
-					name: `${stakeholder.firstName} ${stakeholder.lastName}`,
+					id: projectUser.projectUserId,
+					name: projectUser.fullName,
 					color: 'transparent',
 					icon: 'fa-user',
-					survey_completion: 20,
+					survey_completion: 100,
 					iconColor: 'rgb(0, 0, 0)',
 					team: {
-						current: "PC1",
+						current: projectUser.teamId,
 						changeable: true
 					},
 					organisation: {
-						current: "DoH1",
+						current: projectUser.organisationId,
 						changeable: true
 					},
 					viewCoordinates: Object.keys(e).length > 0 ? {
@@ -108,19 +118,20 @@ class MyMap extends React.Component {
 				}],
 			teams: [
 				{
-					id: "PC1",
-					name: "Planning Commission",
+					id: projectUser.teamId,
+					name: projectUser.team,
 					icon: "fa-users"
 				}
 			],
 			organisations: [
 				{
-					id: "DoH1",
+					id: projectUser.organisationId,
 					icon: "fa-building",
-					name: "Department of Health"
+					name: projectUser.organisation
 				}
 			]
 		}
+
 		this.setState({ newStakeholder: newElem });
 	}
 
@@ -162,7 +173,7 @@ class MyMap extends React.Component {
 			// Make Architecture
 			shCategoryList.forEach(shCategory => {
 				architecture.sh_categories.push({
-					"id": shCategory.id,
+					"id": 'SHC_' + shCategory.id,
 					"name": shCategory.SHCategoryName,
 					"icon": "fa-project-diagram",
 					"color": "#59a2ad",
@@ -175,7 +186,7 @@ class MyMap extends React.Component {
 			// Individual -> Team List
 			teamList.forEach(team => {
 				individual.teams.push({
-					"id": team.id,
+					"id": 'T_' + team.id,
 					"name": team.name,
 					"icon": "fa-users"
 				})
@@ -186,20 +197,20 @@ class MyMap extends React.Component {
 			userList.forEach(user => {
 				if (organizationList.length === 0) {
 					organizationList.push({
-						"id": user.user.organization.name,
+						"id": 'O_' + user.user.organization.name,
 						"icon": "fa-building",
-						"name": "Department of Health"
+						"name": user.user.organization.name
 					});
 				} else {
 					let bExist = false;
 					organizationList.forEach(o => {
-						if (o.id === user.user.organization.name) {
+						if (o.id === 'O_' + user.user.organization.name) {
 							bExist = true;
 						} 
 					});
 					if (bExist === false) {
 						organizationList.push({
-							"id": user.user.organization.name,
+							"id": 'O_' + user.user.organization.name,
 							"icon": "fa-building",
 							"name": user.user.organization.name
 						});
@@ -209,27 +220,6 @@ class MyMap extends React.Component {
 
 			individual.organisations = organizationList;
 
-			// Individual -> individuals
-			/**
-			 * {
-							"id": "MJ1",
-							"name": "Mick Jagger",
-							"icon": "fa-user",
-							"survey_completion": 100,
-							"team": {
-									"current": "PC1",
-									"changeable": false
-							},
-							"organisation": {
-									"current": "DoH1",
-									"changeable": false
-							},
-							"sh_category": {
-									"current": "es1",
-									"changeable": false
-							}
-					},
-			*/
 			let individualList = [];
 			if (kMapData.length > 0) {
 				let mapUserList = kMapData[0].projectUser;
@@ -256,11 +246,11 @@ class MyMap extends React.Component {
 					let bAdd = false;
 					for (let i = 0; i < userList.length; i++) {
 						if (userList[i].id === mapUser) {
-							individualUser.id = userList[i].user.id;
+							individualUser.id = 'S_' + userList[i].id;
 							individualUser.name = userList[i].user.first_name + ' ' + userList[i].user.last_name;
-							individualUser.team.current = userList[i].team.id;
-							individualUser.organisation.current = userList[i].team.organization;
-							individualUser.sh_category.current = userList[i].shCategory.id;
+							individualUser.team.current = 'T_' + userList[i].team.id;
+							individualUser.organisation.current = 'O_' + userList[i].team.organization;
+							individualUser.sh_category.current = 'SHC_' + userList[i].shCategory.id;
 
 							bAdd = true;
 
@@ -269,22 +259,23 @@ class MyMap extends React.Component {
 					}
 					if (bAdd) {
 						individualList.push(individualUser);
+						// update SHCategory individual Count
+						for (let i = 0; i < architecture.sh_categories.length; i++) {
+							if (architecture.sh_categories[i].id == individualUser.sh_category.current) {
+								architecture.sh_categories[i].individualCount++;
+								break;
+							}
+						}
 					}
 				});
 			}
 
 			individual.individuals = individualList;
-// console.log("*******************");
-// console.log(architecture);
-// console.log(individual);
-// console.log("*******************");
+
 			this.setState({
 				stakeholderList,
 				apList: architecture,
-				esList: individual,
-				shCategoryList,
-				userList,
-				teamList
+				esList: individual
 			});
 		}
 	}
@@ -349,8 +340,8 @@ class MyMap extends React.Component {
 
 	render() {
 
-		const { aoQuestionList, optionList, driverList, skipQuestionList } = this.props;
-		const { enableLayout, viewDropDownOpen, layoutDropDownOpen, layout, viewMode, newStakeholder, layoutUpdated, screen, stakeholderList, apList, esList, userList, teamList, shCategoryList } = this.state;
+		const { aoQuestionList, optionList, driverList, skipQuestionList, shCategoryList, teamList, userList } = this.props;
+		const { enableLayout, viewDropDownOpen, layoutDropDownOpen, layout, viewMode, newStakeholder, layoutUpdated, screen, stakeholderList, apList, esList } = this.state;
 		
 		return (
 			<div className="map-container">
@@ -379,7 +370,7 @@ class MyMap extends React.Component {
 						</Row>
 					}
 					{screen === 'add' && shCategoryList.length > 0 &&
-						<NewStakeholder shCategoryList={shCategoryList} onAddStakeholder={stakeholder => this.handleAddNewStakeholder(stakeholder)} stakeholder={defaultStakeholder} />
+						<NewStakeholder shCategoryList={shCategoryList} onAddStakeholder={data => this.handleAddNewStakeholder(data)} stakeholder={defaultStakeholder} />
 					}
 					{screen === 'list' && stakeholderList.length > 0 &&
 						<StakeholderList stakeholderList={stakeholderList} onAddStakeHolder={stakeholder => this.handleAddStackholderToGraph(stakeholder)} />

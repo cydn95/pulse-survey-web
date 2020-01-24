@@ -126,13 +126,15 @@ function* getStakeholderList({ payload }) {
         if (result.status === 200) {
             result.data.forEach(sh => {
                 stakeholderList.push({
-                    projectuserId: sh.id,
+                    projectUserId: sh.id,
                     projectId: sh.project,
-                    userId:  sh.user.id,
+                    userId:  'S_' + sh.user.id,
                     fullName: sh.user.first_name + ' ' + sh.user.last_name,
-                    teamId: sh.team.id,
+                    teamId: 'T_' + sh.team.id,
                     team: sh.team.name,
-                    organization: sh.user.organization.name,
+                    organisationId: 'O_' + sh.user.organization.name,
+                    organisation: sh.user.organization.name,
+                    shCategory: 'SHC_' + sh.shCategory.id,
                     show: true
                 })
             });

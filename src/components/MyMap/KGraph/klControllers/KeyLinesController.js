@@ -324,7 +324,9 @@ class BaseController {
     }
 
     handleClick = (id) => {
-        this.clickNodeListener(id);
+        if (id != null) {
+            this.clickNodeListener(id);
+        }
     };
 
     setupUI() {

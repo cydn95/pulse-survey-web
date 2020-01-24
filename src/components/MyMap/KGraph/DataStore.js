@@ -7,13 +7,14 @@ export default class DataStore {
     coreStructure = {};
 
     constructor(structureData, data) {
+        // console.log(structureData);
+        // console.log(data);
         this.structureData = structureData;
         this.data = data;
     }
 
     /** @public */
     structurizeData(entities, entityId, type, currentView=null) {
-
         const entityNodes = {};
         const entityLinks = {};
         const orgTeamCount = {};
@@ -173,10 +174,10 @@ export default class DataStore {
     }
 
     /** @public */
-    async getEntityNetwork(sh_category, entityId = 'ap1',currentView) {
+    async getEntityNetwork(sh_category, entityId = 'ap1', currentView) {
         // await this.getSchema(entityId);
         // const entities = await fetch(constants.dataEndpoints.data(entityId)).then(response => response.json());
         const entities = this.data;
-        return this.structurizeData(entities, entityId, 'entities',currentView);
+        return this.structurizeData(entities, entityId, 'entities', currentView);
     }
 }

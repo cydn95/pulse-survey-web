@@ -15,25 +15,21 @@ class StakeholderList extends React.Component {
 
     const { stakeholderList } = props;
     this.state = {
-      'stakeholderList': stakeholderList
+      stakeholderList
     };
   }
 
   componentWillReceiveProps(props) {
     const { stakeholderList } = props;
-    
+
     this.setState({
       stakeholderList
     });
   }
 
-  AddStakeHolderToGraph = (e, index) => {
+  AddStakeHolderToGraph = (e, projectUserId) => {
     e.preventDefault();
-
-    const data = {
-      "stakeholder": index
-    }
-    this.props.onAddStakeHolder(data);
+    this.props.onAddStakeHolder({ projectUserId });
   }
 
   render() {
@@ -44,9 +40,9 @@ class StakeholderList extends React.Component {
           <ul>
           {
             this.state.stakeholderList.map((sh, index) => {
-              if (sh.show === false) return;
+              if (sh.show === false) return false;
               return (
-                <Draggable key={sh.projectuserId} type="stakeholder" data={index} >
+                <Draggable key={sh.projectUserId} type="stakeholder" data={sh.projectUserId} >
                   <li className="stakeholder-item">
                     <FontAwesomeIcon icon="user" />
                     <span>{sh.fullName}</span>
