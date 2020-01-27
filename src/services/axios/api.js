@@ -68,6 +68,11 @@ const shCategoryListAPI = () => {
   return getClient(true).get("/shcategory/?format=json");
 }
 
+// Save Map Data
+const saveKMapAPI = (mapData) => {
+  return getClient(true).post("/mymaplayouts/", mapData);
+}
+
 /**
  * deprecated...
  */
@@ -99,6 +104,7 @@ export {
   shCategoryListAPI,
   
   myMapAPI,
+  saveKMapAPI,
   getKeyDataFromLambda,
 
   aoQuestionListAPI,

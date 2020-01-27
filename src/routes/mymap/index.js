@@ -9,6 +9,7 @@ import {
 	userList,
 	stakeholderList,
 	kMapData,
+	kMapSave,
 	aoQuestionList,
 	driverList,
 	submitAoQuestion,
@@ -31,23 +32,11 @@ import {
 
 import { Droppable } from 'react-drag-and-drop'
 
-const defaultStakeholder = {
-	projectUserId: '',
-	projectId: '',
-	userId: '',
-	fullName: '',
-	teamId: '',
-	team: '',
-	organisationId: '',
-	organisation: '',
-	shCategory: '',
-	show: true
-};
-
 class MyMap extends React.Component {
 
 	constructor(props) {
 		super(props);
+		
 		this.state = {
 			screen: 'list',
 			stakeholderList: [],
@@ -64,7 +53,23 @@ class MyMap extends React.Component {
 			teamList: [],
 			userList: [],
 			shCategoryList: []
-		}
+		};
+
+		this.defaultStakeholder = {
+			projectUserId: '',
+			projectId: this.props.projectId,
+			userId: this.props.userId,
+			fullName: '',
+			teamId: '',
+			team: '',
+			organisationId: '',
+			organisation: '',
+			shCategory: '',
+			show: true,
+			firstName: '',
+			lastName: '',
+			email: ''
+		};
 	}
 
 	handleAddNewStakeholder = stakeholder => {
@@ -134,6 +139,14 @@ class MyMap extends React.Component {
 				}
 			]
 		}
+
+		const newMapData = {
+			user: this.props.userId,
+			project: projectUser.projectId,
+			projectUser: [projectUser.projectUserId],
+			layout_json: {}
+		}
+		this.props.saveKMapData(newMapData);
 
 		this.setState({ newStakeholder: newElem });
 	}
@@ -346,8 +359,29 @@ class MyMap extends React.Component {
 
 	render() {
 
-		const { aoQuestionList, optionList, driverList, skipQuestionList } = this.props;
-		const { enableLayout, viewDropDownOpen, layoutDropDownOpen, layout, viewMode, newStakeholder, layoutUpdated, screen, stakeholderList, apList, esList, shCategoryList, teamList, userList } = this.state;
+		const { 
+			aoQuestionList,
+			optionList,
+			driverList, 
+			skipQuestionList
+		} = this.props;
+		
+		const { 
+			enableLayout, 
+			viewDropDownOpen,
+			layoutDropDownOpen,
+			layout,
+			viewMode,
+			newStakeholder,
+			layoutUpdated,
+			screen,
+			stakeholderList,
+			apList,
+			esList,
+			shCategoryList,
+			teamList,
+			userList
+		} = this.state;
 		
 		return (
 			<div className="map-container">
@@ -364,10 +398,10 @@ class MyMap extends React.Component {
 					}
 				</Droppable>
 				<div className="map-tool">
-					{screen !== 'aosurvey' &&
+					{screen === 'list' &&
 						<SearchBox onFilter={search => this.handleFilter(search)} />
 					}
-					{screen !== 'aosurvey' && shCategoryList.length > 0 &&
+					{screen === 'list' && shCategoryList.length > 0 &&
 						<Row>
 							<Colxx xs="12">
 								<Button onClick={e => this.handleShowAddPage()}
@@ -376,7 +410,9 @@ class MyMap extends React.Component {
 						</Row>
 					}
 					{screen === 'add' && shCategoryList.length > 0 &&
-						<NewStakeholder shCategoryList={shCategoryList} onAddStakeholder={data => this.handleAddNewStakeholder(data)} stakeholder={defaultStakeholder} />
+						<NewStakeholder shCategoryList={shCategoryList} teamList={teamList} 
+							onCancel={e => this.handleCancelSurvey()}
+							onAddStakeholder={data => this.handleAddNewStakeholder(data)} stakeholder={this.defaultStakeholder} />
 					}
 					{screen === 'list' && stakeholderList.length > 0 &&
 						<StakeholderList stakeholderList={stakeholderList} onAddStakeHolder={stakeholder => this.handleAddStackholderToGraph(stakeholder)} />
@@ -429,6 +465,7 @@ export default connect(
 		getUserList: userList,
 		getStakeholderList: stakeholderList,
 		getKMapData: kMapData,
+		saveKMapData: kMapSave,
 		getShCategoryList: shCategoryList,
 		getAoQuestionList: aoQuestionList,
 		getDriverList: driverList,

@@ -15,10 +15,7 @@ class NewStakeholder extends Component {
       answer: 0,
       stakeholder: {
         ...props.stakeholder,
-        projectId: Date.now(),
-	      userId: Date.now()  
-      },
-      shgroupList: props.shgroup
+      }
     };
 
   }
@@ -29,26 +26,12 @@ class NewStakeholder extends Component {
   }
 
   componentWillReceiveProps(props) {
-    const { stakeholder, shgroup } = props;
+    const { stakeholder } = props;
 
     this.setState({
       'stakeholder': {
         ...stakeholder
       },
-      shgroupList: shgroup
-    });
-  }
-
-  onSelectAnswer = (e, answer) => {
-    e.preventDefault();
-    
-    const organization = answer;
-
-    this.setState({
-      stakeholder: {
-        ...this.state.stakeholder,
-        'organization': organization
-      }
     });
   }
 
@@ -66,24 +49,19 @@ class NewStakeholder extends Component {
       ...this.state.stakeholder,
       show: true
     };
+console.log(stakeholder);
 
     this.props.onAddStakeholder(stakeholder);
   }
 
   render() {
     
-    let firstAnswerActive = this.state.stakeholder.organization === 1 ? ' active' : '';
-    let secondAnswerActive = this.state.stakeholder.organization === 2 ? ' active' : '';
+    const { shCategoryList, teamList } = this.props;
 
     return (
       <Row>
         <Colxx xs="12">
           <h1 className="mt-s">Add New StakeHolder</h1>  
-          <div className="input-field">
-            <input id="organization" type="text" className="validate" 
-              name="organization" value={this.state.stakeholder.organization} onChange={e => this.handleInputChange(e)} />
-            <label htmlFor="organization">Organization</label>
-          </div>
           <div className="input-field">
             <input id="firstName" type="text" className="validate" 
               name="firstName" value={this.state.stakeholder.firstName} onChange={e => this.handleInputChange(e)} />
@@ -95,39 +73,36 @@ class NewStakeholder extends Component {
             <label htmlFor="lastName">Last Name</label>
           </div>
           <div className="input-field">
-            <select value={this.state.stakeholder.shType} name="shType" onChange={e => this.handleInputChange(e)} >
-              <option value="0">--Select--</option>
-              {this.state.shgroupList.map((sh, index) =>
-                <option key={index} value={sh.id}>{sh.SHGroupName}</option>
-              )}
-            </select>
-            <label>SH Type</label>
-          </div>
-          <div className="input-field">
             <input id="email" type="email" className="validate"
               name="email" value={this.state.stakeholder.email} onChange={e => this.handleInputChange(e)} />
             <label htmlFor="email">Email</label>
           </div>
           <div className="input-field">
-            <input id="phone" type="tel" className="validate"
-              name="phone" value={this.state.stakeholder.phone} onChange={e => this.handleInputChange(e)} />
-            <label htmlFor="phone">Phone</label>
+            <select value={this.state.stakeholder.shCategory} name="shCategory" onChange={e => this.handleInputChange(e)} >
+              <option value="0">--Select--</option>
+              {shCategoryList.map((sh, index) =>
+                <option key={sh.id} value={sh.id}>{sh.SHCategoryName}</option>
+              )}
+            </select>
+            <label>SH Category</label>
           </div>
           <div className="input-field">
-            <h2 className="label">Organisation</h2>
-            <div className="input-field anwser-select2">
-              <a className={"waves-effect waves-light btn select2-btn " + firstAnswerActive} onClick={e => this.onSelectAnswer(e, 1)}>
-                He/she you works for us?</a>
-              <a className={"waves-effect waves-light btn select2-btn " + secondAnswerActive} onClick={e => this.onSelectAnswer(e, 2)}>
-                He/she you works for someone else</a>
-            </div>
+            <input id="organisation" type="text" className="validate" 
+              name="organisationId" value={this.state.stakeholder.organisationId} onChange={e => this.handleInputChange(e)} />
+            <label htmlFor="organisation">Organization</label>
           </div>
           <div className="input-field">
-            <input type="text" id="autocomplete-input" className="autocomplete" 
-              name="team" value={this.state.stakeholder.team} onChange={e => this.handleInputChange(e)} />
-            <label htmlFor="autocomplete-input"><i className="fas fa-search"></i> What team he/she is on?</label>
+            <select value={this.state.stakeholder.teamId} name="teamId" onChange={e => this.handleInputChange(e)} >
+              <option value="0">--Select--</option>
+              {teamList.map((team, index) =>
+                <option key={team.id} value={team.id}>{team.name}</option>
+              )}
+            </select>
+            <label>Team</label>
           </div>
           <div className="input-field">
+            <a className="waves-effect waves-light btn btn-danger active" 
+              onClick={e=>this.props.onCancel(e)}>Back</a>&nbsp;&nbsp;
             <Button className="waves-effect waves-light btn-xs right" onClick={e => this.handleAddStakeholder()}>Add stakeholder</Button>
           </div>
         </Colxx>
