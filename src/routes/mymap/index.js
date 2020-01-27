@@ -238,53 +238,56 @@ class MyMap extends React.Component {
 
 			let individualList = [];
 			if (kMapData.length > 0) {
-				let mapUserList = kMapData[0].projectUser;
+				for (let k = 0; k < kMapData.length; k++) {
+					let mapUserList = kMapData[k].projectUser;
 				
-				mapUserList.forEach(mapUser => {
-					let individualUser = {
-						"id": "",
-						"name": "",
-						"icon": "fa-user",
-						"survey_completion": 100,
-						"team": {
-								"current": "",
-								"changeable": false
-						},
-						"organisation": {
-								"current": "",
-								"changeable": false
-						},
-						"sh_category": {
-								"current": "",
-								"changeable": false
-						}
-					};
-					let bAdd = false;
-					for (let i = 0; i < userList.length; i++) {
-						if (userList[i].id === mapUser) {
-							individualUser.id = 'S_' + userList[i].id;
-							individualUser.name = userList[i].user.first_name + ' ' + userList[i].user.last_name;
-							individualUser.team.current = 'T_' + userList[i].team.id;
-							individualUser.organisation.current = 'O_' + userList[i].team.organization;
-							individualUser.sh_category.current = 'SHC_' + userList[i].shCategory.id;
+					mapUserList.forEach(mapUser => {
+						let individualUser = {
+							"id": "",
+							"name": "",
+							"icon": "fa-user",
+							"survey_completion": 100,
+							"team": {
+									"current": "",
+									"changeable": false
+							},
+							"organisation": {
+									"current": "",
+									"changeable": false
+							},
+							"sh_category": {
+									"current": "",
+									"changeable": false
+							}
+						};
+						let bAdd = false;
+						for (let i = 0; i < userList.length; i++) {
+							if (userList[i].id === mapUser) {
+								individualUser.id = 'S_' + userList[i].id;
+								individualUser.name = userList[i].user.first_name + ' ' + userList[i].user.last_name;
+								individualUser.team.current = 'T_' + userList[i].team.id;
+								individualUser.organisation.current = 'O_' + userList[i].team.organization;
+								individualUser.sh_category.current = 'SHC_' + userList[i].shCategory.id;
 
-							bAdd = true;
+								bAdd = true;
 
-							break;
-						}
-					}
-					if (bAdd) {
-						individualList.push(individualUser);
-						// update SHCategory individual Count
-						for (let i = 0; i < architecture.sh_categories.length; i++) {
-							if (architecture.sh_categories[i].id == individualUser.sh_category.current) {
-								architecture.sh_categories[i].individualCount++;
 								break;
 							}
 						}
-					}
-				});
+						if (bAdd) {
+							individualList.push(individualUser);
+							// update SHCategory individual Count
+							for (let i = 0; i < architecture.sh_categories.length; i++) {
+								if (architecture.sh_categories[i].id == individualUser.sh_category.current) {
+									architecture.sh_categories[i].individualCount++;
+									break;
+								}
+							}
+						}
+					});
+				}
 			}
+			
 
 			individual.individuals = individualList;
 
