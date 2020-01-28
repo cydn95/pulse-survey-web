@@ -5,6 +5,7 @@ import { Colxx } from "Components/CustomBootstrap";
 import { Button } from 'reactstrap';
 
 import { connect } from 'react-redux';
+
 import {
 	userList,
 	stakeholderList,
@@ -32,6 +33,8 @@ import {
 } from "Components/Survey";
 
 import { Droppable } from 'react-drag-and-drop'
+
+import ReactLoading from 'react-loading';
 
 class MyMap extends React.Component {
 
@@ -171,7 +174,7 @@ class MyMap extends React.Component {
 
 	componentWillReceiveProps(props) {
 
-		const { stakeholderList, teamList, shCategoryList, userList, kMapData } = props;
+		const { stakeholderList, teamList, shCategoryList, userList, kMapData, commonLoading } = props;
 
 		let architecture = {
 			"main": {
@@ -188,6 +191,12 @@ class MyMap extends React.Component {
 			"individuals": [],
 			"teams": [],
 			"organisations": []
+		}
+
+		if (commonLoading) {
+			this.setState({
+				screen: 'loading'
+			});
 		}
 
 		if (teamList.length > 0 && userList.length > 0 && shCategoryList.length > 0) {
@@ -304,6 +313,8 @@ class MyMap extends React.Component {
 				apList: architecture,
 				esList: individual,
 				'screen': 'list'
+			}, () => {
+				console.log(this.state.esList);
 			});
 		}
 	}
@@ -407,6 +418,11 @@ class MyMap extends React.Component {
 					}
 				</Droppable>
 				<div className="map-tool">
+					{screen === 'loading' &&
+						<div className="map-loading">
+							<ReactLoading type="bars" color="black" />
+						</div>
+					}
 					{screen === 'list' &&
 						<SearchBox onFilter={search => this.handleFilter(search)} />
 					}
@@ -464,7 +480,8 @@ const mapStateToProps = ({ survey, kmap, common, settings, aosurvey, authUser })
 		aoQuestionList,
 		optionList,
 		driverList,
-		locale
+		locale,
+		commonLoading: common.loading
 	};
 };
 
