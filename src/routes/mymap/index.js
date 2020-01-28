@@ -15,7 +15,8 @@ import {
 	submitAoQuestion,
 	skipQuestionList,
 	teamList,
-	shCategoryList
+	shCategoryList,
+	addStakeholder
 } from "Redux/actions";
 
 import {
@@ -74,13 +75,17 @@ class MyMap extends React.Component {
 
 	handleAddNewStakeholder = stakeholder => {
 
-		this.setState({
-			'stakeholderList': [
-				...this.state.stakeholderList,
-				stakeholder
-			],
-			'screen': 'list'
-		});
+		// this.setState({
+		// 	'stakeholderList': [
+		// 		...this.state.stakeholderList,
+		// 		stakeholder
+		// 	],
+		// 	'screen': 'list'
+		// });
+
+		const { projectId } = this.props;
+
+		this.props.addStakeholder(projectId, stakeholder);
 	}
 
 	handleShowAddPage = () => {
@@ -297,7 +302,8 @@ class MyMap extends React.Component {
 				userList,
 				shCategoryList,
 				apList: architecture,
-				esList: individual
+				esList: individual,
+				'screen': 'list'
 			});
 		}
 	}
@@ -474,6 +480,7 @@ export default connect(
 		getDriverList: driverList,
 		getSkipQuestionList: skipQuestionList,
 		getTeamList: teamList,
-		submitAoQuestion
+		submitAoQuestion,
+		addStakeholder
 	}
 )(MyMap);

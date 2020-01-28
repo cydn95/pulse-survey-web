@@ -49,7 +49,6 @@ class NewStakeholder extends Component {
       ...this.state.stakeholder,
       show: true
     };
-console.log(stakeholder);
 
     this.props.onAddStakeholder(stakeholder);
   }

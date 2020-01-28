@@ -12,7 +12,9 @@ import {
   STAKEHOLDER_LIST,
   STAKEHOLDER_LIST_SUCCESS,
   SHCATEGORY_LIST,
-  SHCATEGORY_LIST_SUCCESS
+  SHCATEGORY_LIST_SUCCESS,
+  ADD_STAKEHOLDER,
+  ADD_STAKEHOLDER_SUCCESS
 } from "Constants/actionTypes";
 
 const INIT_STATE = {
@@ -57,6 +59,10 @@ export default (state = INIT_STATE, action) => {
       return { ...state };
     case SHCATEGORY_LIST_SUCCESS:
       return { ...state, shCategoryList: action.payload.shCategoryList };
+    case ADD_STAKEHOLDER:
+      return { ...state, loading: true };
+    case ADD_STAKEHOLDER_SUCCESS:
+      return { ...state, load: false };
     default:
       return { ...state };
   }

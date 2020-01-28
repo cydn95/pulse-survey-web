@@ -1,6 +1,16 @@
 
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { teamListAPI, shgroupListAPI, optionListAPI, driverListAPI, skipQuestionListAPI, stakeholderListAPI, shCategoryListAPI } from '../../services/axios/api';
+import { 
+    teamListAPI,
+    shgroupListAPI,
+    optionListAPI,
+    driverListAPI,
+    skipQuestionListAPI,
+    stakeholderListAPI,
+    shCategoryListAPI,
+    addUserAPI,
+    addStakeholderAPI
+} from '../../services/axios/api';
 
 import {
     TEAM_LIST,
@@ -9,7 +19,8 @@ import {
     DRIVER_LIST,
     SKIP_QUESTION_LIST,
     STAKEHOLDER_LIST,
-    SHCATEGORY_LIST
+    SHCATEGORY_LIST,
+    ADD_STAKEHOLDER
 } from 'Constants/actionTypes';
 
 import {
@@ -18,9 +29,12 @@ import {
     optionListSuccess,
     driverListSuccess,
     skipQuestionListSuccess,
+    stakeholderList,
     stakeholderListSuccess,
-    shCategoryListSuccess
+    shCategoryListSuccess,
 } from './actions';
+
+import { uuid } from 'uuidv4';
 
 const getTeamListAysnc = async () =>
     await teamListAPI()
@@ -164,6 +178,54 @@ function* getShCategoryList() {
     }
 }
 
+const addUserAsync = async (user) =>
+    await addUserAPI(user)
+        .then(data => data)
+        .catch(error => error);
+
+const addStakeholderAsync = async (projectUser) =>
+    await addStakeholderAPI(projectUser)
+        .then(data => data)
+        .catch(error => error);
+
+function* addStakeholder({ payload }) {
+    try {
+        const { projectId, stakeholder } = payload;
+        
+        const user = {
+            "user": {
+                "username": uuid(),
+                "first_name": stakeholder.firstName,
+                "last_name": stakeholder.lastName,
+                "email": stakeholder.email
+            },
+            "name": stakeholder.organisationId
+        };
+
+        const result = yield call(addUserAsync, user);
+
+        if (result.status === 201) {
+            const userId = result.data;
+            const projectUser = {
+                "project": parseInt(projectId, 10),
+                "user": parseInt(userId, 10),
+                "team": parseInt(stakeholder.teamId, 10),
+                "shCategory": parseInt(stakeholder.shCategory, 10),
+                "userPermission": [97]
+            };
+
+            const result2 = yield call(addStakeholderAsync, projectUser);
+
+            if (result2.status === 201) {
+                yield put(stakeholderList(projectId));
+            }
+        }
+
+    } catch (error) {
+        console.log('error : ', error)
+    }
+}
+
 export function* watchTeamList() {
     yield takeEvery(TEAM_LIST, getTeamList);
 }
@@ -192,6 +254,10 @@ export function* watchShCategoryList() {
     yield takeEvery(SHCATEGORY_LIST, getShCategoryList);
 }
 
+export function* watchAddStakeholder() {
+    yield takeEvery(ADD_STAKEHOLDER, addStakeholder);
+}
+
 export default function* rootSaga() {
     yield all([
         fork(watchTeamList),
@@ -200,6 +266,7 @@ export default function* rootSaga() {
         fork(watchOptionList),
         fork(watchSkipQuestionList),
         fork(watchStakeholderList),
-        fork(watchShCategoryList)
+        fork(watchShCategoryList),
+        fork(watchAddStakeholder)
     ]);
 }

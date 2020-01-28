@@ -73,6 +73,16 @@ const saveKMapAPI = (mapData) => {
   return getClient(true).post("/mymaplayouts/", mapData);
 }
 
+// Add User
+const addUserAPI = (user) => {
+  return getClient(true).post("/stakeholder/", user);
+}
+
+// Add Stakeholder (ProjectUser)
+const addStakeholderAPI = (projectUser) => {
+  return getClient(true).post("/projectuser/", projectUser);
+}
+
 /**
  * deprecated...
  */
@@ -102,6 +112,9 @@ export {
   skipQuestionListAPI,
   stakeholderListAPI,
   shCategoryListAPI,
+  
+  addUserAPI,
+  addStakeholderAPI,
   
   myMapAPI,
   saveKMapAPI,

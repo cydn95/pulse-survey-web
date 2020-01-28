@@ -12,7 +12,11 @@ import {
   STAKEHOLDER_LIST,
   STAKEHOLDER_LIST_SUCCESS,
   SHCATEGORY_LIST,
-  SHCATEGORY_LIST_SUCCESS
+  SHCATEGORY_LIST_SUCCESS,
+  ADD_USER,
+  ADD_USER_SUCCESS,
+  ADD_STAKEHOLDER,
+  ADD_STAKEHOLDER_SUCCESS
 } from 'Constants/actionTypes';
 
 export const teamList = () => ({
@@ -77,4 +81,23 @@ export const shCategoryList = () => ({
 export const shCategoryListSuccess = (shCategoryList ) => ({
   type: SHCATEGORY_LIST_SUCCESS,
   payload: { shCategoryList }
+});
+
+export const addUser = (user) => ({
+  type: ADD_USER,
+  payload: { user }
+});
+
+export const addUserSuccess = (insertedUserId) => ({
+  type: ADD_USER_SUCCESS,
+  payload: { insertedUserId }
+});
+
+export const addStakeholder = (projectId, stakeholder) => ({
+  type: ADD_STAKEHOLDER,
+  payload: { projectId, stakeholder }
+});
+
+export const addStakeholderSuccess = () => ({
+  type: ADD_STAKEHOLDER_SUCCESS
 });
