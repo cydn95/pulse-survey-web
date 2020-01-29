@@ -59,7 +59,8 @@ class MyMap extends React.Component {
 			teamList: [],
 			userList: [],
 			shCategoryList: [],
-			mapLoading: false
+			mapSaveLoading: false,
+			mapGetLoading: false
 		};
 
 		this.defaultStakeholder = {
@@ -173,7 +174,7 @@ class MyMap extends React.Component {
 
 	componentWillReceiveProps(props) {
 
-		const { stakeholderList, teamList, shCategoryList, userList, kMapData, mapLoading } = props;
+		const { stakeholderList, teamList, shCategoryList, userList, kMapData, mapSaveLoading, mapGetLoading } = props;
 
 		let architecture = {
 			"main": {
@@ -245,57 +246,64 @@ class MyMap extends React.Component {
 
 			let individualList = [];
 			if (kMapData.length > 0) {
-				for (let k = 0; k < kMapData.length; k++) {
-					let mapUserList = kMapData[k].projectUser;
-				
-					mapUserList.forEach(mapUser => {
+				let mapUserList = kMapData[0].projectUser;
+			
+				mapUserList.forEach(mapUser => {
 
+					let bExist = false;
+					for (let i = 0; i < this.projectUserList.length; i++) {
+						if (this.projectUserList[i] == mapUser) {
+							bExist = true;
+							break;
+						}
+					}
+					if (! bExist) {
 						this.projectUserList.push(mapUser);
+					}
 
-						let individualUser = {
-							"id": "",
-							"name": "",
-							"icon": "fa-user",
-							"survey_completion": 100,
-							"team": {
-									"current": "",
-									"changeable": false
-							},
-							"organisation": {
-									"current": "",
-									"changeable": false
-							},
-							"sh_category": {
-									"current": "",
-									"changeable": false
-							}
-						};
-						let bAdd = false;
-						for (let i = 0; i < userList.length; i++) {
-							if (userList[i].id === mapUser) {
-								individualUser.id = 'S_' + userList[i].id;
-								individualUser.name = userList[i].user.first_name + ' ' + userList[i].user.last_name;
-								individualUser.team.current = 'T_' + userList[i].team.id;
-								individualUser.organisation.current = 'O_' + userList[i].team.organization;
-								individualUser.sh_category.current = 'SHC_' + userList[i].shCategory.id;
+					let individualUser = {
+						"id": "",
+						"name": "",
+						"icon": "fa-user",
+						"survey_completion": 100,
+						"team": {
+								"current": "",
+								"changeable": false
+						},
+						"organisation": {
+								"current": "",
+								"changeable": false
+						},
+						"sh_category": {
+								"current": "",
+								"changeable": false
+						}
+					};
+					let bAdd = false;
+					for (let i = 0; i < userList.length; i++) {
+						if (userList[i].id === mapUser) {
+							individualUser.id = 'S_' + userList[i].id;
+							individualUser.name = userList[i].user.first_name + ' ' + userList[i].user.last_name;
+							individualUser.team.current = 'T_' + userList[i].team.id;
+							individualUser.organisation.current = 'O_' + userList[i].team.organization;
+							individualUser.sh_category.current = 'SHC_' + userList[i].shCategory.id;
 
-								bAdd = true;
+							bAdd = true;
 
+							break;
+						}
+					}
+					if (bAdd) {
+						individualList.push(individualUser);
+						// update SHCategory individual Count
+						for (let i = 0; i < architecture.sh_categories.length; i++) {
+							if (architecture.sh_categories[i].id == individualUser.sh_category.current) {
+								architecture.sh_categories[i].individualCount++;
 								break;
 							}
 						}
-						if (bAdd) {
-							individualList.push(individualUser);
-							// update SHCategory individual Count
-							for (let i = 0; i < architecture.sh_categories.length; i++) {
-								if (architecture.sh_categories[i].id == individualUser.sh_category.current) {
-									architecture.sh_categories[i].individualCount++;
-									break;
-								}
-							}
-						}
-					});
-				}
+					}
+				});
 			}
 			
 			individual.individuals = individualList;
@@ -308,7 +316,8 @@ class MyMap extends React.Component {
 				apList: architecture,
 				esList: individual,
 				'screen': 'list',
-				mapLoading
+				mapSaveLoading,
+				mapGetLoading
 			});
 		}
 	}
@@ -409,7 +418,8 @@ class MyMap extends React.Component {
 			shCategoryList,
 			teamList,
 			userList,
-			mapLoading
+			mapSaveLoading,
+			mapGetLoading
 		} = this.state;
 		
 		return (
@@ -420,20 +430,15 @@ class MyMap extends React.Component {
 					onDrop={(data, e) => { this.handleAddStackholderToGraph(data, e) }}>
 					<KGraphNavControls enableLayout={enableLayout} viewDropDownOpen={viewDropDownOpen} layoutDropDownOpen={layoutDropDownOpen}
 						updateViewDisplay={this.handleToggleMapModeDropdown} updateLayoutDisplay={this.handleToggleLayoutDropdown} updateMap={this.setMapMode} 
-						saveGraph={e => this.handleSaveGraph(e)} saveLoading={mapLoading}
+						saveGraph={e => this.handleSaveGraph(e)} saveLoading={mapSaveLoading}
 						selectedLayout={layout} selectedViewMode={viewMode} />
-					{ (userList.length > 0 && teamList.length > 0 && shCategoryList.length > 0) && 
+					{ (userList.length > 0 && teamList.length > 0 && shCategoryList.length > 0 && mapGetLoading == false) && 
 					<KGraph
 						setParentState={this.setState.bind(this)} apList={apList} esList={esList}
 						newStakeholder={newStakeholder} onClickNode={id => this.handleStartOtherSurvey(id)} layout={layout.toLowerCase()} viewMode={viewMode} layoutUpdated={layoutUpdated} />
 					}
 				</Droppable>
 				<div className="map-tool">
-					{screen === 'loading' &&
-						<div className="map-loading">
-							<ReactLoading type="bars" color="black" />
-						</div>
-					}
 					{screen === 'list' &&
 						<SearchBox onFilter={search => this.handleFilter(search)} />
 					}
@@ -474,7 +479,7 @@ const mapStateToProps = ({ survey, kmap, common, settings, aosurvey, authUser })
 	const { projectId, user } = authUser;
 	const { surveyId } = survey;
 	const { locale } = settings;
-	const { kMapData } = kmap
+	const { kMapData, mapSaveLoading, mapGetLoading } = kmap
 	const { driverList, skipQuestionList, stakeholderList, teamList, shCategoryList, userList } = common;
 	const { aoQuestionList, optionList } = aosurvey;
 
@@ -493,7 +498,8 @@ const mapStateToProps = ({ survey, kmap, common, settings, aosurvey, authUser })
 		driverList,
 		locale,
 		commonLoading: common.loading,
-		mapLoading: kmap.loading
+		mapSaveLoading,
+		mapGetLoading
 	};
 };
 
