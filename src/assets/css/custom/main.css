@@ -246,7 +246,7 @@ body {
 
 .mapButtonGroup{
     position: absolute !important;
-    right: 30%;
+    right: 33%;
     top: 14%;
     z-index: 100;
     max-width: 500px !important;

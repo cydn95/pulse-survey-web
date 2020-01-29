@@ -287,14 +287,14 @@ class Sidebar extends Component {
                 {/* My Map */}
                 <NavItem
                   className={classnames({
-                    active: ((this.state.selectedParentMenu == "my-map" && this.state.viewingParentMenu == "") || this.state.viewingParentMenu == "my-map")
+                    active: ((this.state.selectedParentMenu === "my-map" && this.state.viewingParentMenu === "") || this.state.viewingParentMenu == "my-map")
                   })}
                 >
                   <NavLink
                     to="/app/my-map"
-                    onClick={() => this.changeViewingParentMenu('my-app')}
+                    onClick={() => this.changeViewingParentMenu('my-map')}
                     data-flag="my-map">
-                    <img className="menu-icon" src="/assets/img/survey/menu-mymap.png" />
+                    <img className="menu-icon" src="/assets/img/survey/menu-mymap.png" alt="map"/>
                     <IntlMessages id="menu.mymap" />
                   </NavLink>
                 </NavItem>

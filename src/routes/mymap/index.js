@@ -41,6 +41,8 @@ class MyMap extends React.Component {
 	constructor(props) {
 		super(props);
 		
+		this.projectUserList = [];
+
 		this.state = {
 			screen: 'list',
 			stakeholderList: [],
@@ -56,7 +58,8 @@ class MyMap extends React.Component {
 			esList: null,
 			teamList: [],
 			userList: [],
-			shCategoryList: []
+			shCategoryList: [],
+			mapLoading: false
 		};
 
 		this.defaultStakeholder = {
@@ -77,14 +80,6 @@ class MyMap extends React.Component {
 	}
 
 	handleAddNewStakeholder = stakeholder => {
-
-		// this.setState({
-		// 	'stakeholderList': [
-		// 		...this.state.stakeholderList,
-		// 		stakeholder
-		// 	],
-		// 	'screen': 'list'
-		// });
 
 		const { projectId } = this.props;
 
@@ -148,13 +143,17 @@ class MyMap extends React.Component {
 			]
 		}
 
-		const newMapData = {
-			user: this.props.userId,
-			project: projectUser.projectId,
-			projectUser: [projectUser.projectUserId],
-			layout_json: {}
+		let bExist = false;
+		for (let i = 0; i < this.projectUserList.length; i++) {
+			if (this.projectUserList[i] == projectUser.projectUserId) {
+				bExist = true;
+				break;
+			}
 		}
-		this.props.saveKMapData(newMapData);
+
+		if (! bExist) {
+			this.projectUserList.push(projectUser.projectUserId);
+		}
 
 		this.setState({ newStakeholder: newElem });
 	}
@@ -174,7 +173,7 @@ class MyMap extends React.Component {
 
 	componentWillReceiveProps(props) {
 
-		const { stakeholderList, teamList, shCategoryList, userList, kMapData, commonLoading } = props;
+		const { stakeholderList, teamList, shCategoryList, userList, kMapData, mapLoading } = props;
 
 		let architecture = {
 			"main": {
@@ -191,12 +190,6 @@ class MyMap extends React.Component {
 			"individuals": [],
 			"teams": [],
 			"organisations": []
-		}
-
-		if (commonLoading) {
-			this.setState({
-				screen: 'loading'
-			});
 		}
 
 		if (teamList.length > 0 && userList.length > 0 && shCategoryList.length > 0) {
@@ -256,6 +249,9 @@ class MyMap extends React.Component {
 					let mapUserList = kMapData[k].projectUser;
 				
 					mapUserList.forEach(mapUser => {
+
+						this.projectUserList.push(mapUser);
+
 						let individualUser = {
 							"id": "",
 							"name": "",
@@ -302,7 +298,6 @@ class MyMap extends React.Component {
 				}
 			}
 			
-
 			individual.individuals = individualList;
 
 			this.setState({
@@ -312,9 +307,8 @@ class MyMap extends React.Component {
 				shCategoryList,
 				apList: architecture,
 				esList: individual,
-				'screen': 'list'
-			}, () => {
-				console.log(this.state.esList);
+				'screen': 'list',
+				mapLoading
 			});
 		}
 	}
@@ -377,6 +371,20 @@ class MyMap extends React.Component {
 		this.setState({ [option]: selection, layoutUpdated: option === 'layout' ? true : false,newStakeholder:[] });
 	}
 
+	handleSaveGraph = (e) => {
+
+		const { userId, projectId } = this.props;
+
+		const newMapData = {
+			user: userId,
+			project: projectId,
+			projectUser: this.projectUserList,
+			layout_json: {}
+		}
+
+		this.props.saveKMapData(newMapData);
+	}
+
 	render() {
 
 		const { 
@@ -400,7 +408,8 @@ class MyMap extends React.Component {
 			esList,
 			shCategoryList,
 			teamList,
-			userList
+			userList,
+			mapLoading
 		} = this.state;
 		
 		return (
@@ -410,7 +419,9 @@ class MyMap extends React.Component {
 					types={['stakeholder']} // <= allowed drop types
 					onDrop={(data, e) => { this.handleAddStackholderToGraph(data, e) }}>
 					<KGraphNavControls enableLayout={enableLayout} viewDropDownOpen={viewDropDownOpen} layoutDropDownOpen={layoutDropDownOpen}
-						updateViewDisplay={this.handleToggleMapModeDropdown} updateLayoutDisplay={this.handleToggleLayoutDropdown} updateMap={this.setMapMode} selectedLayout={layout} selectedViewMode={viewMode} />
+						updateViewDisplay={this.handleToggleMapModeDropdown} updateLayoutDisplay={this.handleToggleLayoutDropdown} updateMap={this.setMapMode} 
+						saveGraph={e => this.handleSaveGraph(e)} saveLoading={mapLoading}
+						selectedLayout={layout} selectedViewMode={viewMode} />
 					{ (userList.length > 0 && teamList.length > 0 && shCategoryList.length > 0) && 
 					<KGraph
 						setParentState={this.setState.bind(this)} apList={apList} esList={esList}
@@ -481,7 +492,8 @@ const mapStateToProps = ({ survey, kmap, common, settings, aosurvey, authUser })
 		optionList,
 		driverList,
 		locale,
-		commonLoading: common.loading
+		commonLoading: common.loading,
+		mapLoading: kmap.loading
 	};
 };
 

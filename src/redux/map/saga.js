@@ -41,11 +41,11 @@ const saveKMapDataAysnc = async (mapData) =>
 function* saveKMapData({ payload }) {
     
     const { mapData } = payload;
-console.log(mapData);
+
 	try {
 		const result = yield call(saveKMapDataAysnc, mapData);
                 
-        if (result.status === 200) {
+        if (result.status === 201) {
             yield put(kMapSaveSuccess(result.data)); 
         }
 				

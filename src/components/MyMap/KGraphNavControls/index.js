@@ -10,7 +10,9 @@ const KGraphNavControls = (props) => {
         updateMap,
         selectedLayout,
         selectedViewMode,
-        enableLayout
+        enableLayout,
+        saveGraph,
+        saveLoading
     } = props
 
     let displayedViewMode;
@@ -30,7 +32,11 @@ const KGraphNavControls = (props) => {
     return (
         <div className='mapButtonGroup'>
             <Row>
-                <Col sm='5'> 
+                <Col> 
+                    <a className="waves-effect waves-light btn btn-danger active" 
+                        onClick={e => saveGraph(e)} disabled={saveLoading ? "disabled" : "" } >Save</a>&nbsp;&nbsp;
+                </Col>
+                <Col> 
                     <ButtonDropdown isOpen={viewDropDownOpen} toggle={() => updateViewDisplay()} id='viewMode'>
                         <DropdownToggle caret>
                             {displayedViewMode}
@@ -44,7 +50,7 @@ const KGraphNavControls = (props) => {
                         </DropdownMenu>
                     </ButtonDropdown>
                 </Col>
-                <Col sm='4'>
+                <Col>
                     <ButtonGroup>
                         <Button onClick={(e) => { updateMap(selectedLayout, 'layout') }} disabled={['Radial','Sequential'].includes(selectedLayout) && !enableLayout}>{selectedLayout}</Button>
                         <ButtonDropdown isOpen={layoutDropDownOpen} toggle={(e) => updateLayoutDisplay(e)}>

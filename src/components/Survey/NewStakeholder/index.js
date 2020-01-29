@@ -15,7 +15,8 @@ class NewStakeholder extends Component {
       answer: 0,
       stakeholder: {
         ...props.stakeholder,
-      }
+      },
+      btnAddDisabled: ""
     };
 
   }
@@ -45,17 +46,23 @@ class NewStakeholder extends Component {
   }
 
   handleAddStakeholder = () => {
-    const stakeholder = { 
-      ...this.state.stakeholder,
-      show: true
-    };
-
-    this.props.onAddStakeholder(stakeholder);
+    
+    this.setState({
+      btnAddDisabled: "disabled"
+    }, () => {
+      const stakeholder = { 
+        ...this.state.stakeholder,
+        show: true
+      };
+  
+      this.props.onAddStakeholder(stakeholder);
+    });
   }
 
   render() {
     
     const { shCategoryList, teamList } = this.props;
+    const { btnAddDisabled } = this.state;
 
     return (
       <Row>
@@ -102,7 +109,7 @@ class NewStakeholder extends Component {
           <div className="input-field">
             <a className="waves-effect waves-light btn btn-danger active" 
               onClick={e=>this.props.onCancel(e)}>Back</a>&nbsp;&nbsp;
-            <Button className="waves-effect waves-light btn-xs right" onClick={e => this.handleAddStakeholder()}>Add stakeholder</Button>
+            <Button disabled={ btnAddDisabled }  className="waves-effect waves-light btn-xs right" onClick={e => this.handleAddStakeholder()}>Add stakeholder</Button>
           </div>
         </Colxx>
       </Row>
