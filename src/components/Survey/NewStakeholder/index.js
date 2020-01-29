@@ -6,6 +6,9 @@ import M from "materialize-css";
 
 import { Button } from 'reactstrap';
 
+import 'react-notifications/lib/notifications.css';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+
 class NewStakeholder extends Component {
 
   constructor(props) {
@@ -50,12 +53,55 @@ class NewStakeholder extends Component {
     this.setState({
       btnAddDisabled: "disabled"
     }, () => {
-      const stakeholder = { 
-        ...this.state.stakeholder,
+
+      const { stakeholder } = this.state;
+
+      if (stakeholder.firstName.trim() == "") {
+        NotificationManager.error('First name must be required', 'Info', 2000);
+        this.setState({
+          "btnAddDisabled": ""
+        });
+        return;
+      }
+
+      if (stakeholder.lastName.trim() == "") {
+        NotificationManager.error('Last name must be required', 'Info', 2000);
+        this.setState({
+          "btnAddDisabled": ""
+        });
+        return;
+      }
+
+      if (stakeholder.shCategory == 0) {
+        NotificationManager.error('SHCategory must be required', 'Info', 2000);
+        this.setState({
+          "btnAddDisabled": ""
+        });
+        return;
+      }
+
+      if (stakeholder.organisationId.trim() == "") {
+        NotificationManager.error('Organisation must be required', 'Info', 2000);
+        this.setState({
+          "btnAddDisabled": ""
+        });
+        return;
+      }
+
+      if (stakeholder.teamId == 0) {
+        NotificationManager.error('Team must be required', 'Info', 2000);
+        this.setState({
+          "btnAddDisabled": ""
+        });
+        return;
+      }
+
+      const data = { 
+        ...stakeholder,
         show: true
       };
   
-      this.props.onAddStakeholder(stakeholder);
+      this.props.onAddStakeholder(data);
     });
   }
 
@@ -71,12 +117,12 @@ class NewStakeholder extends Component {
           <div className="input-field">
             <input id="firstName" type="text" className="validate" 
               name="firstName" value={this.state.stakeholder.firstName} onChange={e => this.handleInputChange(e)} />
-            <label htmlFor="firstName">First Name</label>
+            <label htmlFor="firstName">First Name<span className="require">*</span></label>
           </div>
           <div className="input-field">
             <input id="lastName" type="text" className="validate"
                 name="lastName" value={this.state.stakeholder.lastName} onChange={e => this.handleInputChange(e)} />
-            <label htmlFor="lastName">Last Name</label>
+            <label htmlFor="lastName">Last Name<span className="require">*</span></label>
           </div>
           <div className="input-field">
             <input id="email" type="email" className="validate"
@@ -90,12 +136,12 @@ class NewStakeholder extends Component {
                 <option key={sh.id} value={sh.id}>{sh.SHCategoryName}</option>
               )}
             </select>
-            <label>SH Category</label>
+            <label>SH Category<span className="require">*</span></label>
           </div>
           <div className="input-field">
             <input id="organisation" type="text" className="validate" 
               name="organisationId" value={this.state.stakeholder.organisationId} onChange={e => this.handleInputChange(e)} />
-            <label htmlFor="organisation">Organization</label>
+            <label htmlFor="organisation">Organization<span className="require">*</span></label>
           </div>
           <div className="input-field">
             <select value={this.state.stakeholder.teamId} name="teamId" onChange={e => this.handleInputChange(e)} >
@@ -104,7 +150,7 @@ class NewStakeholder extends Component {
                 <option key={team.id} value={team.id}>{team.name}</option>
               )}
             </select>
-            <label>Team</label>
+            <label>Team<span className="require">*</span></label>
           </div>
           <div className="input-field">
             <a className="waves-effect waves-light btn btn-danger active" 
@@ -112,6 +158,7 @@ class NewStakeholder extends Component {
             <Button disabled={ btnAddDisabled }  className="waves-effect waves-light btn-xs right" onClick={e => this.handleAddStakeholder()}>Add stakeholder</Button>
           </div>
         </Colxx>
+        <NotificationContainer/>
       </Row>
     );
   }

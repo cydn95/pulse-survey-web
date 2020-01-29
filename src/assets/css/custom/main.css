@@ -260,3 +260,7 @@ body {
 canvas {
     user-select: none;
 }
+
+.require {
+    color: #f00;
+}
