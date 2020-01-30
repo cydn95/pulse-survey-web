@@ -33,7 +33,7 @@ const KGraphNavControls = (props) => {
         <div className='mapButtonGroup'>
             <Row>
                 <Col> 
-                    <a className="waves-effect waves-light btn btn-danger active" 
+                    <a className="waves-effect waves-light btn btn-info active" 
                         onClick={e => saveGraph(e)} disabled={saveLoading ? "disabled" : "" } >Save</a>&nbsp;&nbsp;
                 </Col>
                 <Col> 

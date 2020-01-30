@@ -51,7 +51,9 @@ body {
     display: flex;
     flex-flow: row wrap; */
     display: flex;
-    overflow: hidden;
+    flex-flow: row wrap;
+    overflow-x: hidden;
+    overflow-y: auto;
     background-color: #f5f5f5;
     width: 100vw;
     height: 100vh;
@@ -59,7 +61,7 @@ body {
 
 .map-content {
     width: 64%;
-    height: 100%;
+    height: 100vh;
 }
 
 .kl-wrapper {
@@ -68,13 +70,14 @@ body {
     flex: 1;
     overflow: hidden;
     padding: 0.75rem;
+    height: 100vh;
   }
   
   .kl-chart-container {
-    position: absolute;
+    /* position: absolute; */
     flex: 1;
     height: 88%;
-    width: 60%;
+    width: 100%;
   }
 
   .kl-chart-container, .kl-timebar-container, .kl-toolbar {
@@ -83,9 +86,13 @@ body {
     box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
   }
 
+  .chart-wrapper {
+      height: 100%;
+  }
+
 .map-tool {
     width: 24%;
-    height: 88%;
+    height: 80%;
     display: flex;
     flex-flow: column;
     border: 1px solid #000;
@@ -129,7 +136,7 @@ body {
 
 /*-----------------------------------------------------------*/
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1024px) {
     .survey-progress-bar {
         background: #f8f8f8;
         left: 0px;
@@ -142,6 +149,7 @@ body {
         height: auto;
         width: 100%;
         padding-right: 6%;
+        overflow-y: auto;
         /* margin-left: 70px; */
     }
     .survey-content {
@@ -154,14 +162,64 @@ body {
     }
 
     .map-content {
-        width: 100%;
         margin-bottom: 15px;
         margin-left: 15px;
+        margin-right: 15px;
+        width: calc(100% - 174px);
     }
     
     .map-tool {
-        width: 100%;
+        width: calc(100% - 174px);
+        height: auto;
         margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    .mapButtonGroup {
+        right: 10% !important;
+        text-align: right;
+        width: 700px !important;
+    }
+
+    .mapButtonGroup .btn {
+        margin-bottom: 5px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .kl-wrapper {
+        width: 88vw;
+    }
+
+    .map-content {
+        height: 88vh;
+    }
+
+    .map-tool {
+        width: 88vw;
+    }
+
+    .mapButtonGroup {
+        right: 10% !important;
+        width: 400px !important;
+    }
+
+    .mapButtonGroup .btn {
+        margin-bottom: 5px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .mapButtonGroup {
+        text-align: right;
+        width: 250px !important;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .mapButtonGroup {
+        text-align: right;
+        width: 150px !important;
     }
 }
 
