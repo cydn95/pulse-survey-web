@@ -175,20 +175,12 @@ body {
         margin-right: 15px;
     }
 
-    .mapButtonGroup {
-        right: 10% !important;
-        text-align: right;
-        width: 700px !important;
-    }
-
-    .mapButtonGroup .btn {
-        margin-bottom: 5px;
-    }
 }
 
 @media screen and (max-width: 768px) {
+
     .kl-wrapper {
-        width: 88vw;
+        width: 80vw;
     }
 
     .map-content {
@@ -197,29 +189,13 @@ body {
 
     .map-tool {
         width: 88vw;
-    }
-
-    .mapButtonGroup {
-        right: 10% !important;
-        width: 400px !important;
-    }
-
-    .mapButtonGroup .btn {
-        margin-bottom: 5px;
+        margin-top: 40px;
     }
 }
 
-@media screen and (max-width: 600px) {
-    .mapButtonGroup {
-        text-align: right;
-        width: 250px !important;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    .mapButtonGroup {
-        text-align: right;
-        width: 150px !important;
+@media screen and (max-width: 768px) {
+    .map-tool {
+        margin-top: 90px;
     }
 }
 
@@ -303,11 +279,19 @@ body {
 }
 
 .mapButtonGroup{
-    position: absolute !important;
+    /* position: absolute !important;
     right: 33%;
     top: 14%;
-    z-index: 100;
-    max-width: 500px !important;
+    z-index: 100; */
+    margin-top: 20px;
+    width: 63vw;
+    text-align: right;
+    margin-right: 15px;
+    /* max-width: 500px !important; */
+}
+
+.mapButtonGroup .btn {
+    margin-bottom: 5px;
 }
 
 .dropdown-item:hover, .dropdown-item:focus {
