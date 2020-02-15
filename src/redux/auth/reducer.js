@@ -4,7 +4,8 @@ import {
   REGISTER_USER,
   REGISTER_USER_SUCCESS,
   LOGOUT_USER,
-  PROJECT_ID
+  PROJECT_ID,
+  SET_PASSWORD
 } from "Constants/actionTypes";
 
 const INIT_STATE = {
@@ -30,6 +31,8 @@ export default (state = INIT_STATE, action) => {
     case REGISTER_USER_SUCCESS:
       //notify.success('Register User Success');
       return { ...state, loading: false, user: action.payload.uid };
+    case SET_PASSWORD:
+      return { ...state };
     case LOGOUT_USER:
       return { ...state, user: { accessToken: '' } };
     default:

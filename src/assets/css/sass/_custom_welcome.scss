@@ -1,0 +1,208 @@
+@import url(//fonts.googleapis.com/css?family=Poppins);
+
+.round-text-field {
+  border: 1px solid #ddd !important;
+  border-radius: 26px !important;
+  height: 51px;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+
+  &:focus {
+    border-color: #c2d7fa !important;
+  }
+
+  &.error {
+    border-color: #f00 !important;
+  }
+}
+
+.round-btn {
+  display: inline-block;
+  height: 60px;
+  color: #fff;
+  border-radius: 30px;
+  border: none !important;
+  font-size: 15px;
+  line-height: 2.53;
+
+  &.green {
+    background-color: #7fcdc0 !important;
+
+    &:hover {
+      background-color: #00b8a3 !important;
+    }
+  }
+}
+
+.edge-btn {
+  display: inline-block;
+  height: 60px;
+  color: #fff;
+  border-radius: 10px;
+  border: none !important;
+  font-size: 15px;
+  line-height: 2.53;
+
+  &.green {
+    background-color: #78c8ba !important;
+
+    &:hover {
+      background-color: #00b8a3 !important;
+    }
+  }
+}
+
+.set-password {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  font-family: Poppins !important;
+  background-color: #fff !important;
+  background-image: url('/assets/img/email/welcome-right.png');
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-attachment: fixed;
+  background-size: 80%;
+
+  &__left-bg {
+    width: 15%;
+    height: 100vh;
+    position: fixed;
+    background-image: url('/assets/img/email/welcome-left.png');
+    background-repeat: no-repeat;
+    background-position: left 100px;
+    background-size: 80%;
+  }
+
+  &__content {
+    width: 60%;
+    margin-left: 15%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 55px;
+    padding-bottom: 50px;
+
+    &--title {
+      font-size: 46px !important;
+      color: #333;
+      line-height: 1.07;
+      letter-spacing: normal;
+      margin-top: 42px;
+    }
+
+    &--description {
+      font-size: 16px !important;
+      color: #666;
+      line-height: 1.75;
+      letter-spacing: normal;
+      margin-top: 22px;
+    }
+
+    &--error {
+      display: inline-block;
+      margin-top: 5px;
+      color: #f00;
+      margin-left: 20px;
+    }
+
+    &--subtitle {
+      font-size: 22px !important;
+      color: #333;
+      line-height: 1.73;
+      letter-spacing: normal;
+    }
+
+    &--input {
+      max-width: 416px;
+    }
+
+    &--submit {
+      max-width: 416px;
+    }
+  }
+}
+
+.welcome {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image: url('/assets/img/email/welcome-2.png');
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: 70%;
+  background-color: #fff !important;
+  background-attachment: fixed;
+  font-family: Poppins !important;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin-left: 15%;
+    padding-top: 49px;
+    padding-bottom: 50px;
+
+    &--help {
+      font-size: 15px !important;
+      line-height: 2;
+      color: #6d6f94 !important;
+    }
+
+    &--title {
+      font-weight: bold;
+      font-size: 60px !important;
+      line-height: 0.82;
+      color: #333;
+      margin-top: 29px;
+      margin-bottom: 20px;
+    }
+
+    &--description {
+      font-size: 15px;
+      line-height: 1.73;
+      color: #1a1a1a;
+      margin-top: 15px;
+      width: 70%;
+    }
+
+    &__about {
+      display: flex;
+      flex-flow: row wrap;
+
+      &__section {
+        display: flex;
+        flex-direction: column;
+        margin-right: 100px;
+
+        &--title {
+          font-size: 30px;
+          line-height: 1.63;
+          color: #333;
+        }
+
+        &--description {
+          font-size: 15px;
+          line-height: 1.73;
+          color: #1a1a1a;
+          margin-top: 15px;
+          width: 80%;
+        }
+
+        &--img {
+          width: 200px;
+          margin-top: 72px;
+        }
+
+        &--continue {
+          width: 164px;
+          max-width: 164px;
+          margin-top: 16px;
+          align-self: flex-end;
+        }
+      }
+    }
+  }
+}

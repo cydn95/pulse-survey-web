@@ -1,15 +1,16 @@
 
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { loginAPI } from '../../services/axios/api';
+import { loginAPI, setPasswordAPI } from '../../services/axios/api';
 
 import {
     LOGIN_USER,
-    LOGOUT_USER
+    LOGOUT_USER,
+    SET_PASSWORD
 } from 'Constants/actionTypes';
 
 import {
     loginUserSuccess,
-	logoutUser
+    logoutUser,
 } from './actions';
 
 const loginWithUsernamePasswordAsync = async (username, password) =>
@@ -56,14 +57,37 @@ function* loginWithUsernamePassword({ payload }) {
 }
 
 function* logout({payload}) {
-    const { history } = payload
+    const { history } = payload;
     try {
-            // yield call(logoutAsync, history);
-            localStorage.removeItem('accessToken');
-            yield call(logoutUser, history);
-            history.push('/')
+        // yield call(logoutAsync, history);
+        localStorage.removeItem('accessToken');
+        yield call(logoutUser, history);
+        history.push('/');
     } catch (error) {
     }
+}
+
+const setPasswordAsync = async (email, password, token) =>
+    await setPasswordAPI(email, password, token)
+        .then(authUser => authUser)
+        .catch(error => error);
+
+function* setPassword({ payload }) {
+
+	const { email, password, token, history } = payload;
+	
+	try {
+        const result = yield call(setPasswordAsync, email, password, token);
+
+        if (result.data) {
+            localStorage.removeItem('accessToken');
+            history.push('/welcome');
+            return;
+        }
+	} catch (error) {
+        // catch throw
+        console.log(error);
+	}
 }
 
 export function* watchLoginUser() {
@@ -74,9 +98,14 @@ export function* watchLogoutUser() {
     yield takeEvery(LOGOUT_USER, logout);
 }
 
+export function* watchSetPassword() {
+    yield takeEvery(SET_PASSWORD, setPassword);
+}
+
 export default function* rootSaga() {
     yield all([
         fork(watchLoginUser),
-        fork(watchLogoutUser)
+        fork(watchLogoutUser),
+        fork(watchSetPassword)
     ]);
 }

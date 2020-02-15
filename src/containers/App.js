@@ -12,9 +12,14 @@ import error from 'Routes/error'
 import coming from 'Routes/coming'
 import forgotPassword from 'Routes/forgot-password'
 
+// Invited
+import SetPassword from 'Routes/invite/SetPassword'
+import Welcome from 'Routes/invite/Welcome'
+
 import 'Assets/css/vendor/bootstrap.min.css'
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import 'Assets/css/sass/themes/gogo.light.purple.scss';
+
 /*
 color options : 
 	 'light.purple'		'dark.purple'
@@ -39,9 +44,11 @@ const InitialPath = ({ component: Component, ...rest, authUser }) =>
 	/>;
 
 class App extends Component {
+	
 	render() {
 		const { location, match, user, locale } = this.props;
 		const currentAppLocale = AppLocale[locale];
+		
 		if (location.pathname === '/'  || location.pathname==='/app'|| location.pathname==='/app/') {
 			return (<Redirect to={defaultStartPath} />);
 		}
@@ -63,6 +70,8 @@ class App extends Component {
 							<Route path={`/forgot-password`} component={forgotPassword} />
 							<Route path={`/error`} component={error} />
 							<Route path={`/coming-soon`} component={coming} />
+							<Route path={`/set-password`} component={SetPassword}/>
+							<Route path={`/welcome`} component={Welcome} />
 							<Redirect to="/error" />
 						</Switch>	
 						</Fragment>

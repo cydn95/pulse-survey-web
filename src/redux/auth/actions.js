@@ -4,7 +4,8 @@ import {
   LOGOUT_USER,
   REGISTER_USER,
   REGISTER_USER_SUCCESS,
-  PROJECT_ID
+  PROJECT_ID,
+  SET_PASSWORD
 } from 'Constants/actionTypes';
 
 export const setProjectID = (projectId) => ({
@@ -33,4 +34,9 @@ export const registerUserSuccess = (user) => ({
 export const logoutUser = (history) => ({
   type: LOGOUT_USER,
   payload : {history}
+});
+
+export const setPassword = (email, password, token, history) => ({
+  type: SET_PASSWORD,
+  payload: { email, password, token, history }
 });

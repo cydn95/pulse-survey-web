@@ -7,6 +7,14 @@ const loginAPI = (username, password) => {
   })
 }
 
+const setPasswordAPI = (email, password, token) => {
+  return getClient(false).post("setpassword/", {
+    email,
+    password,
+    token
+  })
+}
+
 const projectListByUserAPI = (userId) => {
   return getClient(true).get("/projectByUser/?format=json&user=" + userId)
 }
@@ -96,6 +104,7 @@ const getKeyDataFromLambda = () => {
 
 export {
   loginAPI,
+  setPasswordAPI,
   
   projectListByUserAPI,
   

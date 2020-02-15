@@ -138,7 +138,9 @@ function* getStakeholderList({ payload }) {
 
         let stakeholderList = [];
         if (result.status === 200) {
+            console.log(result.data);
             result.data.forEach(sh => {
+                if (sh.shCategory == null) return;
                 stakeholderList.push({
                     projectUserId: sh.id,
                     projectId: sh.project,
@@ -150,7 +152,7 @@ function* getStakeholderList({ payload }) {
                     organisation: sh.user.organization.name,
                     shCategory: 'SHC_' + sh.shCategory.id,
                     show: true
-                })
+                });
             });
             yield put(stakeholderListSuccess(stakeholderList, result.data));
         }
