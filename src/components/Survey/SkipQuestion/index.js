@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { Row } from "reactstrap";
 
+import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Colxx } from "Components/CustomBootstrap";
+
+import styles from './styles.scss';
 
 class SkipQuestion extends Component {
 
@@ -101,47 +104,69 @@ class SkipQuestion extends Component {
 
     // const { skipQuestionList, skipOption } = this.props;
 
-    const { optionList } =  this.state;
+    const { optionList, commentToggle, skipToogle } =  this.state;
+
+    const btnsToDraw = [];
+    if (!commentToggle) {
+      btnsToDraw.push(
+        (
+          <a key="show-btn" href="/" className={styles["qsn-comment-button"]} onClick={(e) => this.onShowCommentText(e)}><FontAwesomeIcon icon={faComment} />Comment</a>
+        )
+      );
+    } else {
+      btnsToDraw.push(
+        <a key="hide-btn" href="/" className={styles["hide-comment-button"]} onClick={(e) => this.onShowCommentText(e)}>Hide Comment</a>
+      );
+    }
+
+     console.log(skipToogle);
+    if (!skipToogle) {
+        if (optionList.length > 0) {
+          btnsToDraw.push(
+            <a key="skip-btn" className={styles["qsn-skip"]} href="/" onClick={(e) => this.onSkipQuestion(e)}>Skip</a>
+          );
+        }
+    } else {
+      if (optionList.length > 0) {
+        btnsToDraw.push(
+            <div key="skip" className="skip">
+              Why are you skiping this question? <a href="/" onClick={(e) => this.onSkipQuestion(e)}><strong>Cancel skip</strong></a>
+            </div>
+        );
+      }
+    }
+
+    const separatedBtns = btnsToDraw.flatMap((d, i) => i > 0 ? [ <div key={"separator" + i} className={styles.separator} />, d ] : [ d ]);
 
     return (
-      <Row>
-        <Colxx xs="12">
-          {!this.state.commentToggle &&
-            <a href="/" className="comment-button" onClick={(e) => this.onShowCommentText(e)}><FontAwesomeIcon icon="plus-circle"/> Add Comment</a>
-          }
-          {this.state.commentToggle &&
-            <a href="/" className="comment-button" onClick={(e) => this.onShowCommentText(e)}><FontAwesomeIcon icon="minus-circle"/> Hide Comment</a>
-          }
-          {this.state.commentToggle &&
-            <div className="input-field">
-              <input id="comment" type="text" className="" value={this.state.comment} onChange={e => this.onInputComment(e)} placeholder="Comment"/>
+      <div className={styles.main}>
+        <div className={styles["action-btns"]}>
+          {separatedBtns}
+        </div>
+        {skipToogle && optionList.length > 0 && 
+          <div className="skip">
+            <div className="anwser-select-n mt-3">
+            {
+              optionList.map((item, index) => {
+                let active = (item.optionName) === this.state.reason ? 'active' : '';
+                return (
+                  <a key={item.id}  className={"waves-effect waves-light btn select2-btn " + active}
+                    onClick={e => this.onSelectSkipReason(e, item.optionName)}>
+                    {item.optionName}
+                  </a>
+                )
+              })
+            }
             </div>
-          }
-          {!this.state.skipToogle && optionList.length > 0 && 
-            <a className="skip" href="/" onClick={(e) => this.onSkipQuestion(e)}>Skip this question</a>
-          }
-          {this.state.skipToogle && optionList.length > 0 && 
-            <div className="skip">
-              <div>
-                Why are you skiping this question? <a href="/" onClick={(e) => this.onSkipQuestion(e)}>Cancel skip</a>
-              </div>
-              <div className="anwser-select-n mt-3">
-              {
-                optionList.map((item, index) => {
-                  let active = (item.optionName) === this.state.reason ? 'active' : '';
-                  return (
-                    <a key={item.id}  className={"waves-effect waves-light btn select2-btn " + active}
-                      onClick={e => this.onSelectSkipReason(e, item.optionName)}>
-                      {item.optionName}
-                    </a>
-                  )
-                })
-              }
-              </div>
-            </div>
-          }
-        </Colxx>
-      </Row>
+          </div>
+        }
+        {this.state.commentToggle &&
+          <div className="input-field">
+            <input id="comment" type="text" className="" value={this.state.comment} onChange={e => this.onInputComment(e)} placeholder="Comment"/>
+          </div>
+        }
+        
+      </div>
     );
   }
 }
