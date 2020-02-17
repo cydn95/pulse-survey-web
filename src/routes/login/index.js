@@ -37,59 +37,44 @@ class LoginLayout extends Component {
   }
 
   render() {
+    const { username, password } = this.state;
+
     return (
-      <Fragment>
-        <div className="fixed-background" />
-        <main>
-          <div className="container">
-            <Row className="h-100">
-              <Colxx xxs="9" className="mx-auto my-auto col-xs-12 col-md-7">
-                <Card className="auth-card">
-                  <div className="position-relative image-side projectai-logo">
-                    <img src="/assets/img/survey/login-logo.png"/>
-                    <CardTitle className="mt-4">
-                      <strong>PULSE</strong>
-                    </CardTitle>
-                    <img src="/assets/img/survey/poweredby.png" className="mt-5" width="60%"/>
-                    <img src="/assets/img/survey/site-logo.png" className="mt-2" width="85%"/>
-                  </div>
-                  <div className="form-side">
-                    {/*<NavLink to={`/`} className="white">
-                      <span className="logo-single" />
-                      </NavLink>*/}
-                    <CardTitle className="mb-4">
-                      <IntlMessages id="user.login-title" />
-                    </CardTitle>
-                    <Form>
-                      <Label className="form-group has-float-label mb-4">
-                        <Input type="text" name="username" value={this.state.username} onChange={e => this.inputChange(e)}/>
-                        <IntlMessages id="user.username" />
-                      </Label>
-                      <Label className="form-group has-float-label mb-4">
-                        <Input type="password" name="password" value={this.state.password} onChange={e => this.inputChange(e)} />
-                        <IntlMessages id="user.password"/>
-                      </Label>
-                      <div className="d-flex justify-content-between align-items-center">
-                        <NavLink to={`/forgot-password`}>
-                          <IntlMessages id="user.forgot-password-question" />
-                        </NavLink>
-                        <Button
-                          color="primary"
-                          className="btn-shadow"
-                          size="sm"
-                          onClick={() => this.onUserLogin()}
-                        >
-                          <IntlMessages id="user.login-button" />
-                        </Button>
-                      </div>
-                    </Form>
-                  </div>
-                </Card>
-              </Colxx>
-            </Row>
+      <div className="login-container">
+        <div className="login-container__left">
+          <div className="login-container__left__logo">
+            <img className="login-container__left__logo--img" src="/assets/img/login/collective-insight.png" alt="collective-insight"/>
+            <h1 className="login-container__left__logo--title">Collective Insight</h1>
+            <p className="login-container__left__logo--description">
+              Pulse by ProjectAI helps project managers make<br/>sense of people’s collective insights for better project outcomes.
+            </p>
           </div>
-        </main>
-      </Fragment>
+        </div>
+        <div className="login-container__right">
+          <div className="login-container__right--login-panel">
+            <h2 className="login-container__right--login-panel--title">Log into your account</h2>
+            <span className="login-container__right--login-panel--error">The ID and password do not match. Please try again.</span>
+            <span className="login-container__right--login-panel--field-label">EMAIL ADDRESS</span>
+            <Input
+              type="text"
+              className="login-container__right--login-panel--field-input round-text-field" 
+              value={username}
+              name="username" 
+              onChange={e => this.inputChange(e)}
+            />
+            <span className="login-container__right--login-panel--field-label">EMAIL ADDRESS</span>
+            <Input
+              type="password"
+              className="login-container__right--login-panel--field-input round-text-field" 
+              value={password}
+              name="password" 
+              onChange={e => this.inputChange(e)}
+            />
+            <a href="#forgot-password" className="forgot-password">Forgot your password?</a>
+            <Button className="login-container__right--login-panel--submit round-btn green" onClick={ e => this.onUserLogin() }>Login</Button>
+          </div>
+        </div>
+      </div>
     );
   }
 }
