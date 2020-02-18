@@ -5,7 +5,7 @@ import styles from './styles.scss';
 
 function Slider(props) {
   const { percent } = props;
-  // Declare a new state variable, which we'll call "count"
+
   const [mouseDown, setMouseDown] = useState(false);
   const rangeRef = useRef(null);
 
