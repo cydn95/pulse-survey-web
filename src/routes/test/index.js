@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import Slider from 'Components/Slider';
 import Checkbox from 'Components/Checkbox';
 import Radio from 'Components/Radio';
+import Donut from 'Components/Donut';
+
+import styles from './styles.scss';
 
 function Test() {
   const [percent, setPercent] = useState(0);
@@ -16,8 +19,12 @@ function Test() {
     <Slider percent={percent} onChange={setPercent} />
     <Checkbox checked={sel} onChange={setsel}>OK</Checkbox>
     <Checkbox checked={sel2} onChange={setsel2}>Compartmentalize</Checkbox>
-    <Radio value="1" checked={radioValue === "1"} onChange={setRadioValue}>Option 1</Radio>
-    <Radio value="2" checked={radioValue === "2"} onChange={setRadioValue}>Option 2</Radio>
+    <Radio name="a" value="1" checked={radioValue === "1"} onChange={setRadioValue}>Option 1</Radio>
+    <Radio name="a" value="2" checked={radioValue === "2"} onChange={setRadioValue}>Option 2</Radio>
+    <div className={styles['donut-container']}>
+      <Donut />
+    </div>
+    
     </div>
   );
 }
