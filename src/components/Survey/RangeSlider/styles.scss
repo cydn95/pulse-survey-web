@@ -3,6 +3,9 @@
     padding: 27px 20px;
     margin: 10px;
     background: white;
+    > *:not(:first-child) {
+        margin-top: 10px;
+    }
 }
 
 .slider-text {
@@ -15,3 +18,4 @@
 .question-text {
     color: rgb(26, 26, 26);
 }
+

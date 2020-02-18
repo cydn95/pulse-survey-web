@@ -7,7 +7,7 @@ import SkipQuestion from "../SkipQuestion";
 
 import { SliderTooltip } from "Components/SliderTooltip";
 
-
+import Slider from 'Components/Slider';
 
 import "rc-slider/assets/index.css";
 import styles from "./styles.scss";
@@ -38,7 +38,6 @@ class RangeSlider extends Component {
 
   onChangeSlide = value => {
     const percent = value;
-    console.log(value);
 
     this.setState( (state) => ({
       answer: {
@@ -80,25 +79,20 @@ class RangeSlider extends Component {
     return (
       <div className={styles.main}>
         <div>
-            <h1 className="question-text">{question.questionText}</h1>
+          <h1 className="question-text">{question.questionText}</h1>
         </div>
-        <div>
-          <SliderTooltip
-            min={0}
-            max={100}
-            value={this.state.answer.integerValue}
-            tipFormatter={null}
-            className="mb-5"
-            onChange={value => this.onChangeSlide(value)}
-          />
-          <div className={styles["slider-text"]}>
-              <div className={styles["slider-text-left"]}>
-                {question.sliderTextLeft}
-              </div>
-              <div className={styles["slider-text-right"]}>
-                {question.sliderTextRight}
-              </div>
-          </div>
+        <Slider 
+          className={styles.slider} 
+          percent={this.state.answer.integerValue}
+          onChange={this.onChangeSlide}
+        />
+        <div className={styles["slider-text"]}>
+            <div className={styles["slider-text-left"]}>
+              {question.sliderTextLeft}
+            </div>
+            <div className={styles["slider-text-right"]}>
+              {question.sliderTextRight}
+            </div>
         </div>
         <SkipQuestion
           answer={this.state.answer.integerValue}

@@ -119,7 +119,6 @@ class SkipQuestion extends Component {
       );
     }
 
-     console.log(skipToogle);
     if (!skipToogle) {
         if (optionList.length > 0) {
           btnsToDraw.push(

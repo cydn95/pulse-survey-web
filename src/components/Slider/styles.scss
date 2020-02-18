@@ -1,0 +1,49 @@
+$rangecolor: #d9dada;
+
+$fill-start: #e66864; // rgb(230,104,100);
+$fill-end: #00b7a2;
+$fill-mid: #53A7F5;
+
+$range-height: 7px;
+
+$marker-size: 20px;
+
+.main {
+  padding: max($marker-size / 2 - $range-height / 2, 0) 0px;
+}
+
+.wrapper {
+  position: relative;
+}
+
+.range-mask {
+  top:0;
+  right: 0;
+  position: absolute;
+  height: $range-height;
+  background: $rangecolor;
+  border-radius: 100px;
+}
+
+.range-gradient {
+  height: $range-height;
+  background: linear-gradient(to right, $fill-start, $fill-mid, $fill-end);
+  border-radius: 100px;
+}
+
+.marker {
+  user-select: none;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width:$marker-size;
+  height:$marker-size;
+  background: $rangecolor;
+  &:focus {
+    outline: none;
+  }
+  border-radius: 50%;
+  border: 6px solid $fill-start;
+}
+
