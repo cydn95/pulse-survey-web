@@ -44,3 +44,24 @@ export const controlTypeText = (type) => {
         return 'SMART_TEXT';
     }
 }
+
+export const loginErrorType = {
+    AUTH_SUCCESS: 9999,
+    USERNAME: 1,
+    PASSWORD: 2,
+    INVALID_PASSWORD: 3
+}
+
+export const loginErrorTypeText = type => {
+    if (type === loginErrorType.AUTH_SUCCESS) {
+        return '';
+    } else if (type === loginErrorType.USERNAME) {
+        return 'Username is required';
+    } else if (type === loginErrorType.PASSWORD) {
+        return 'Password is required';
+    } else if (type === loginErrorType.INVALID_PASSWORD) {
+        return 'The ID and password do not match. Please try again';
+    } else {
+        return 'Unknown Error';
+    }
+}

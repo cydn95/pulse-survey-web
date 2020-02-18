@@ -11,7 +11,10 @@ import {
 import {
     loginUserSuccess,
     logoutUser,
+    loginUserFailed
 } from './actions';
+
+import { loginErrorType } from 'Constants/defaultValues';
 
 const loginWithUsernamePasswordAsync = async (username, password) =>
     await loginAPI(username, password)
@@ -32,24 +35,23 @@ function* loginWithUsernamePassword({ payload }) {
                 let accessToken = loginUser.data.token;
                 if (accessToken !== '') {
                     
-                // Save admin info to localStorage
-                localStorage.setItem('userId', userId);
-                localStorage.setItem('accessToken', accessToken);
+                    // Save admin info to localStorage
+                    localStorage.setItem('userId', userId);
+                    localStorage.setItem('accessToken', accessToken);
 
-                let authData = {
-                    userId,
-                    accessToken
-                };
+                    let authData = {
+                        userId,
+                        accessToken
+                    };
 
-                yield put(loginUserSuccess(authData));
-                history.push('/');
+                    yield put(loginUserSuccess(authData));
+                    history.push('/');
 
-                return;
+                    return;
                 }
-			}
-			
-			console.log('login failed')
-
+			} else {
+                yield put(loginUserFailed(loginErrorType.INVALID_PASSWORD))
+            }
 	} catch (error) {
 			// catch throw
 			console.log('login error : ', error)

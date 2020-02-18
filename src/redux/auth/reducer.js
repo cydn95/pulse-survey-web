@@ -1,6 +1,7 @@
 import {
   LOGIN_USER,
   LOGIN_USER_SUCCESS,
+  LOGIN_USER_FAILED,
   REGISTER_USER,
   REGISTER_USER_SUCCESS,
   LOGOUT_USER,
@@ -8,13 +9,16 @@ import {
   SET_PASSWORD
 } from "Constants/actionTypes";
 
+import { loginErrorType } from 'Constants/defaultValues';
+
 const INIT_STATE = {
   user: {
     userId: localStorage.getItem("userId"),
     accessToken: localStorage.getItem("accessToken")
   },
   projectId: localStorage.getItem("projectId"),
-  loading: false
+  loading: false,
+  authStatus: loginErrorType.AUTH_SUCCESS
 };
 
 export default (state = INIT_STATE, action) => {
@@ -24,12 +28,12 @@ export default (state = INIT_STATE, action) => {
     case LOGIN_USER:
       return { ...state, loading: true };
     case LOGIN_USER_SUCCESS:
-      //notify.success('Login Success');
       return { ...state, loading: false, user: action.payload };
+    case LOGIN_USER_FAILED:
+      return { ...state, loading: false, authStatus: action.payload.status };
     case REGISTER_USER:
       return { ...state, loading: true };
     case REGISTER_USER_SUCCESS:
-      //notify.success('Register User Success');
       return { ...state, loading: false, user: action.payload.uid };
     case SET_PASSWORD:
       return { ...state };
