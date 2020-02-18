@@ -1,5 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
-import * as d3 from "d3-interpolate";
+import React from 'react';
 
 import styles from './styles.scss';
 
