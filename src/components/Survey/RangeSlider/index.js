@@ -9,7 +9,7 @@ import { SliderTooltip } from "Components/SliderTooltip";
 
 import Slider from 'Components/Slider';
 
-import "rc-slider/assets/index.css";
+
 import styles from "./styles.scss";
 
 class RangeSlider extends Component {
