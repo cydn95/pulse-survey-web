@@ -9,6 +9,8 @@ import MyMap from './mymap';
 import Dashboard from './dashboard';
 import Settings from './settings';
 
+import Test from './test';
+
 import { connect } from 'react-redux';
 
 import "Assets/css/custom/main.css";
@@ -27,6 +29,7 @@ class MainApp extends Component {
 				<main>
 					<div className="container-fluid">
 						<Switch>
+							<Route path={`${match.url}/test`} component={Test} />
 							<Route path={`${match.url}/about-me`} component={Survey} />
 							<Route path={`${match.url}/my-map`} component={MyMap} />
 							<Route path={`${match.url}/settings`} component={Settings} />

@@ -65,3 +65,6 @@ typings/
 webpack.config.test.js
 
 .DS_Store
+
+# vim swap files
+*.swp

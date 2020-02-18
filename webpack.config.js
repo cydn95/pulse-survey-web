@@ -98,6 +98,21 @@ module.exports = {
             // Scss compiler
             {
                 test: /\.scss$/,
+                exclude: [path.resolve("./src/assets")],
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        "loader": "css-loader",
+                        options: {
+                            modules: true
+                        }
+                    },
+                    "sass-loader"
+                ]
+            },
+            {
+                test: /\.scss$/,
+                include: [path.resolve("./src/assets")],
                 use: [
                     MiniCssExtractPlugin.loader,
                     "css-loader",
