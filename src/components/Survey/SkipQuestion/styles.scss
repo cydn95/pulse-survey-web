@@ -1,5 +1,8 @@
 .main {
   font-size: 14px;
+  >:not(:first-child) {
+    margin-top: 10px;
+  }
 }
 
 $color: rgb(119, 120, 133);
@@ -38,4 +41,14 @@ $separator-color: rgb(109, 111, 148);
   margin-bottom: 4px;
   width: 2px;
   background: $separator-color;
+}
+
+.skip-btns {
+  > * {
+    &:not(:first-child) {
+      margin-top : 10px;
+    }
+    display: block;
+    width: 100%;
+  }
 }

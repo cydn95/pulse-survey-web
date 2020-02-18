@@ -5,6 +5,7 @@ import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Colxx } from "Components/CustomBootstrap";
+import Button from "Components/Button";
 
 import styles from './styles.scss';
 
@@ -72,9 +73,7 @@ class SkipQuestion extends Component {
     });
   }
 
-  onSelectSkipReason = (e, answer) => {
-    e.preventDefault();
-
+  onSelectSkipReason = (answer) => {
     this.setState({
       reason: answer
     }, () => {
@@ -143,20 +142,20 @@ class SkipQuestion extends Component {
           {separatedBtns}
         </div>
         {skipToogle && optionList.length > 0 && 
-          <div className="skip">
-            <div className="anwser-select-n mt-3">
+          <div className={styles["skip-btns"]}>
             {
               optionList.map((item, index) => {
-                let active = (item.optionName) === this.state.reason ? 'active' : '';
+                const active = (item.optionName) === this.state.reason;
                 return (
-                  <a key={item.id}  className={"waves-effect waves-light btn select2-btn " + active}
-                    onClick={e => this.onSelectSkipReason(e, item.optionName)}>
+                  <Button 
+                    key={item.id} 
+                    active={active}
+                    onClick={() => this.onSelectSkipReason(item.optionName)}>
                     {item.optionName}
-                  </a>
+                  </Button>
                 )
               })
             }
-            </div>
           </div>
         }
         {this.state.commentToggle &&
