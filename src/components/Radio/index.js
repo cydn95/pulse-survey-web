@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from "classnames";
+import { PropTypes } from 'prop-types';
 
 import styles from './styles.scss';
 
@@ -20,6 +21,17 @@ function Radio(props) {
     </label>
   );
 }
+
+Radio.defaultProps = {
+  checked: false,
+};
+
+Radio.propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  checked: PropTypes.bool,
+};
 
 export default Radio;
 

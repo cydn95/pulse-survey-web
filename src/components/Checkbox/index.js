@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from "classnames";
+import { PropTypes } from 'prop-types';
 
 import styles from './styles.scss';
 
@@ -18,5 +19,14 @@ function Checkbox(props) {
     </label>
   );
 }
+
+Checkbox.defaultProps = {
+  checked: false,
+};
+
+Checkbox.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  checked: PropTypes.bool,
+};
 
 export default Checkbox;
