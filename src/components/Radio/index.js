@@ -2,20 +2,23 @@ import React from 'react';
 
 import styles from './styles.scss';
 
-function Checkbox(props) {
-  const { children, onChange, checked } = props;
+function Radio(props) {
+  const { name, value, children, onChange, checked } = props;
   const checkedCls = checked ? styles.checked : "";
   return (
     <label className={styles.main + " " + checkedCls}>
       <span className={styles.checkmark}></span>
       <span className={styles.label}>{children}</span>
       <input 
-        type="checkbox"
+        name={name}
+        value={value}
+        type="radio"
         checked={checked}
-        onChange={(e) => onChange(!checked)}
+        onChange={(e) => onChange(e.target.value)}
       />
     </label>
   );
 }
 
-export default Checkbox;
+export default Radio;
+
