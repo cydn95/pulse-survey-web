@@ -196,7 +196,7 @@ function* addStakeholder({ payload }) {
         
         const user = {
             "user": {
-                "username": uuid(),
+                "username": stakeholder.email,
                 "first_name": stakeholder.firstName,
                 "last_name": stakeholder.lastName,
                 "email": stakeholder.email
