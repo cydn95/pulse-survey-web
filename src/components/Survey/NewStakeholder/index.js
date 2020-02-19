@@ -88,7 +88,7 @@ class NewStakeholder extends Component {
         return;
       }
 
-      if (stakeholder.teamId == 0) {
+      if (stakeholder.teamId === 0) {
         NotificationManager.error('Team must be required', 'Info', 2000);
         this.setState({
           "btnAddDisabled": ""
