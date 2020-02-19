@@ -4,11 +4,8 @@
   height: 100%;
 }
 
-.pie {
-  cursor: pointer;
-  &:hover {
-    stroke: black;
-    stroke-width: 2px;
+.bar {
+  text {
+    fill: white;
   }
 }
-

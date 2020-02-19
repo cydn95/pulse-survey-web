@@ -28,16 +28,32 @@ function renderGraph(node, props) {
     .range([0, bounds.height])
     .domain(data.map(d => d.name))
 
-  const rectSel = root.selectAll(".bar")
+  const rectSel = root.selectAll("." + styles.bar)
     .data(data, d => d.name)
 
   rectSel.exit().remove();
 
-  rectSel
-    .enter().append("rect")
-    .attr("class", "bar")
+  const groupenter = rectSel
+    .enter().append("g")
+    .attr("class", styles.bar)
+
+  groupenter
+    .append("rect")
     .attr("fill", "#4f7bc5")
-    .merge(rectSel)
+
+  groupenter
+    .append("text")
+    .attr("text-anchor", "middle")
+    .attr("font-size", 20)
+
+  root.selectAll("." + styles.bar).selectAll("text")
+    .transition()
+    .text(d => d.count)
+    .attr("x", d => x(d.count) / 2)
+    .attr("y", d => y(d.name) + y.bandwidth() / 2)
+    .attr("dy", "0.35em")
+
+  root.selectAll("." + styles.bar).selectAll("rect")
     .transition()
     .attr("x", function (d) {
       return 0
