@@ -1,0 +1,13 @@
+.main {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.pie {
+  cursor: pointer;
+  &:hover {
+    stroke: none;
+    stroke-width: 2px;
+  }
+}

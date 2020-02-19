@@ -1,0 +1,60 @@
+.main {
+  display: flex;
+
+  label {
+    font-size: 18px;
+    margin-bottom: 0;
+  }
+
+}
+
+.separator {
+  border:1px solid #e4e4e4;
+}
+
+.answer-self {
+  display: flex;
+  flex-direction: column;
+  flex: 0.65;
+  label {
+    margin-right: 10px;
+    text-align: right;
+  }
+
+}
+
+.answer-team {
+  display: flex;
+  flex-direction: column;
+  flex: 0.35;
+  label {
+    margin-left: 10px;
+    text-align: left;
+  }
+}
+
+.line-graph-self {
+  text {
+    user-select: none;
+    pointer-events: none;
+  }
+  rect {
+    fill: #4f7bc5;
+    &:hover {
+      fill: #0E2874;
+    }
+  }
+}
+
+.line-graph-team {
+  text {
+    user-select: none;
+    pointer-events: none;
+  }
+  rect {
+    &:hover {
+      fill: #C13608;
+    }
+    fill: #ED7E2D;
+  }
+}

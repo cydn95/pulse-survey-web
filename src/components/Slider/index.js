@@ -1,11 +1,13 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { PropTypes } from 'prop-types';
+
 import * as d3 from "d3-interpolate";
 
 import styles from './styles.scss';
 
 function Slider(props) {
   const { percent } = props;
-  // Declare a new state variable, which we'll call "count"
+
   const [mouseDown, setMouseDown] = useState(false);
   const rangeRef = useRef(null);
 
@@ -67,5 +69,10 @@ function Slider(props) {
     </div>
   );
 }
+
+Slider.propTypes = {
+  percent: PropTypes.number.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 export default Slider;

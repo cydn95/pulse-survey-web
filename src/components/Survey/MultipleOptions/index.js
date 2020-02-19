@@ -4,6 +4,9 @@ import { Row } from "reactstrap";
 import { Colxx } from "Components/CustomBootstrap";
 
 import SkipQuestion from "../SkipQuestion";
+import Radio from "Components/Radio";
+
+import styles from "./styles.scss";
 
 class MultipleOptions extends Component {
 
@@ -43,9 +46,7 @@ class MultipleOptions extends Component {
     })
   }
   
-  onSelectAnswer = (e, answerIndex, answerText) => {
-
-    e.preventDefault();
+  onSelectAnswer = (answerIndex, answerText) => {
 
     this.setState( (state) => ({
       answer: {
@@ -88,35 +89,36 @@ class MultipleOptions extends Component {
     const { optionList } = this.state
     
     return (
-      <Row>
-        <Colxx xs="12">
-          <h1 className="mt-s">{question.questionText}</h1>
-          <div className="anwser-select-n mt-3">
-              
-              </div>
-          <div className="mt-xs input-field anwser-select-n">
-            {
-              optionList.map((item, index) => {
-                let active = item.id === this.state.answer.integerValue ? 'active' : '';
-                return (
-                  <a key={index}  className={"waves-effect waves-light btn select2-btn " + active}
-                    onClick={e => this.onSelectAnswer(e, item.id, item.optionName)}>
-                    {item.optionName}
-                  </a>
-                )
-              })
-            }
-          </div>
-          <SkipQuestion
-            answer={this.state.answer.integerValue}
-            comment={this.state.answer.commentValue}
-            skipValue={this.state.answer.skipValue}
-            onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
-            skipOption={question.skipOption}
-            skipQuestionList={skipQuestionList}
-            onComment={commentAnswer => this.handleComment(commentAnswer)}/>
-        </Colxx>
-      </Row>
+      <div className={styles.main}>
+        <div>
+          <h1 className={styles["question-text"]}>{question.questionText}</h1>
+        </div>
+        <div className="anwser-select-n mt-3">
+
+        </div>
+        <div>
+        {
+          optionList.map((item, index) => {
+            const active = item.id === this.state.answer.integerValue;
+            return (
+              <Radio key={item.id} checked={active}
+              onChange={() => this.onSelectAnswer(item.id, item.optionName)}>
+              {item.optionName}
+              </Radio>
+            )
+          })
+        }
+        </div>
+        <SkipQuestion
+          answer={this.state.answer.integerValue}
+          comment={this.state.answer.commentValue}
+          skipValue={this.state.answer.skipValue}
+          onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
+          skipOption={question.skipOption}
+          skipQuestionList={skipQuestionList}
+          onComment={commentAnswer => this.handleComment(commentAnswer)}
+        />
+      </div>
     );
   }
 }
