@@ -1,12 +1,20 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { PropTypes } from "prop-types";
+import classnames from "classnames";
 
 import * as d3 from "d3";
 
 import styles from './styles.scss';
 
 function renderGraph(node, props) {
-  const { data, onClick, keySelector, label, value } = props;
+  const { 
+    data,
+    onClick,
+    keySelector,
+    label,
+    value,
+    flipped,
+  } = props;
 
   const svg = d3.select(node);
 
@@ -16,7 +24,7 @@ function renderGraph(node, props) {
     root = svg.select('g.main');
   }
 
-  const bounds = node.parentNode.getBoundingClientRect(); 
+  const bounds = node.getBoundingClientRect(); 
 
   const x = d3.scaleLinear()
     .rangeRound([0, bounds.width])
@@ -39,7 +47,6 @@ function renderGraph(node, props) {
 
   groupenter
     .append("rect")
-    .attr("fill", "#4f7bc5")
 
   groupenter
     .append("text")
@@ -49,14 +56,14 @@ function renderGraph(node, props) {
   root.selectAll("." + styles.bar).selectAll("text")
     .transition()
     .text(d => d.count)
-    .attr("x", d => x(d.count) / 2)
+    .attr("x", d => flipped ? bounds.width - x(d.count) / 2 : x(d.count) / 2)
     .attr("y", d => y(d.name) + y.bandwidth() / 2)
     .attr("dy", "0.35em")
 
   root.selectAll("." + styles.bar).selectAll("rect")
     .transition()
     .attr("x", function (d) {
-      return 0
+      return flipped ? bounds.width - x(d.count) : 0
     })
     .attr("y", function (d) {
       return y(d.name);
@@ -87,30 +94,34 @@ function renderGraph(node, props) {
 function LineGraph(props) {
   const ref = useRef(null);
 
+  const { className } = props;
+
   useEffect(() => {
     renderGraph(ref.current, props);
   }, [props]);
 
   return (
-    <React.Fragment>
     <svg 
-    className={styles.main}
+    className={classnames(className, styles.main)}
     ref={ref}
     >
     </svg>
-    </React.Fragment>
   );
 }
 
 LineGraph.defaultProps = {
+  className: undefined,
   label: "",
   data: [],
   value: "",
   onClick: d => null,
+  flipped: false,
   keySelector: (data, idx) => idx,
 };
 
 LineGraph.propTypes = {
+  className: PropTypes.string,
+  flipped: PropTypes.bool,
   data: PropTypes.arrayOf(PropTypes.any),
   keySelector: PropTypes.func,
   label: PropTypes.string,
@@ -119,5 +130,4 @@ LineGraph.propTypes = {
 };
 
 export default LineGraph;
-
 

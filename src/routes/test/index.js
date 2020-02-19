@@ -4,7 +4,7 @@ import Slider from 'Components/Slider';
 import Checkbox from 'Components/Checkbox';
 import Radio from 'Components/Radio';
 import Donut from 'Components/Donut';
-import LineGraph from 'Components/LineGraph';
+import SurveyLineGraph from 'Components/SurveyLineGraph';
 
 import styles from './styles.scss';
 
@@ -36,7 +36,7 @@ function Test() {
     <Radio name="a" value="2" checked={radioValue === "2"} onChange={setRadioValue}>Option 2</Radio>
     <button onClick={() => setData([...data, { name: "Pie" + data.length + 1, count: Math.floor(Math.random() * 50 + 10) }])}>Add</button>
     <div className={styles['linegraph-container']}>
-      <LineGraph 
+      <SurveyLineGraph 
         keySelector={d => d.name}
         data={data}
       />
