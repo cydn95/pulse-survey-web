@@ -4,6 +4,7 @@ import Slider from 'Components/Slider';
 import Checkbox from 'Components/Checkbox';
 import Radio from 'Components/Radio';
 import Donut from 'Components/Donut';
+import LineGraph from 'Components/LineGraph';
 
 import styles from './styles.scss';
 
@@ -33,8 +34,15 @@ function Test() {
     <Checkbox checked={sel2} onChange={setsel2}>Compartmentalize</Checkbox>
     <Radio name="a" value="1" checked={radioValue === "1"} onChange={setRadioValue}>Option 1</Radio>
     <Radio name="a" value="2" checked={radioValue === "2"} onChange={setRadioValue}>Option 2</Radio>
+    <button onClick={() => setData([...data, { name: "Pie" + data.length + 1, count: Math.random() * 50 + 10 }])}>Add</button>
+    <div className={styles['linegraph-container']}>
+      <LineGraph 
+        keySelector={d => d.name}
+        data={data}
+      />
+    </div>
+    <button onClick={() => setData([...data, { name: "Pie" + data.length + 1, count: Math.random() * 50 + 10 }])}>Add</button>
     <div className={styles['donut-container']}>
-      <button onClick={() => setData([...data, { name: "Pie" + data.length + 1, count: Math.random() * 50 + 10 }])}>Add</button>
       <Donut 
         label="Total questions answered"
         value={"80%"}

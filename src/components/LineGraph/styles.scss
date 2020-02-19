@@ -1,13 +1,14 @@
 .main {
-  display: block;
   width: 100%;
+  display: block;
   height: 100%;
 }
 
 .pie {
   cursor: pointer;
   &:hover {
-    stroke: none;
+    stroke: black;
     stroke-width: 2px;
   }
 }
+
