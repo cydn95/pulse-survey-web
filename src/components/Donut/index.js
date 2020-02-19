@@ -23,6 +23,7 @@ function renderGraph(node, data, handleClick) {
   const padding = 20;
   const hoverRadiusIncrease = 20;
   const radius = Math.min(bounds.height, bounds.width) / 2 - 2 * (padding + hoverRadiusIncrease);
+  const hoverRadius = radius + hoverRadiusIncrease;
 
   const arc = d3.arc()
     .innerRadius(radius / 1.5)
@@ -32,7 +33,7 @@ function renderGraph(node, data, handleClick) {
 
   const arcOver = d3.arc()
     .innerRadius(radius / 1.5)
-    .outerRadius(radius + hoverRadiusIncrease)
+    .outerRadius(radius + hoverRadius)
     .padAngle(0.05)
     .cornerRadius(4)
 
@@ -58,34 +59,51 @@ function renderGraph(node, data, handleClick) {
     .attr("stroke", "none")
     .attr("stroke-width", "2px");
 
+  let mouseOver = null;
+  const tween = function (d) {
+    const mouse_over_me = mouseOver && mouseOver.name === d.data.name;
+    this.current = this.current
+      || { startAngle: 2 * Math.PI, endAngle: 2 * Math.PI, outerRadius: radius };
+
+    const destination = { 
+      startAngle: d.startAngle, 
+      endAngle: d.endAngle, 
+      outerRadius: mouse_over_me ? hoverRadius : radius, 
+    };
+
+    const intpl = d3.interpolate(this.current, destination);
+    this.current = intpl(0);
+    return function (t) {
+      const sarc = d3.arc()
+        .innerRadius(radius / 1.5)
+        .outerRadius(intpl(t).outerRadius)
+        .padAngle(0.05)
+        .cornerRadius(4)
+      const pth = sarc(intpl(t));
+      return pth;
+    };
+  }
   path.merge(enterSel)
     .on("click", function (d) {
       handleClick(d.data)
     })
     .on("mouseover", function(d) {
+      mouseOver = d.data;
       d3.select(this)
         .transition()
         .duration(500)
-        .attr("d", arcOver);
+        .attrTween("d", tween);
     })
     .on("mouseout", function(d) {
+      mouseOver = null;
       d3.select(this)
         .transition()
         .duration(500)
-        .attr("d", arc);
+        .attrTween("d", tween);
     })
     .interrupt()
     .transition()
-    .attrTween('d', function (d) {
-      this.current = this.current
-        || { startAngle: d.startAngle, endAngle: d.startAngle };
-      const intpl = d3.interpolate(this.current, d);
-      this.current = intpl(0);
-      return function (t) {
-        const pth = arc(intpl(t));
-        return pth;
-      };
-    });
+    .attrTween('d', tween);
 
 }
 
