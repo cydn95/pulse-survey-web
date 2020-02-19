@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { PropTypes } from "prop-types";
 
 import * as d3 from "d3";
 
 import styles from './styles.scss';
 
-function renderGraph(node, data, handleClick) {
+function renderGraph(node, props) {
+  const { data, onClick, keySelector, label, value } = props;
+
   const svg = d3.select(node);
 
   let root = svg.select('g.main')
@@ -15,6 +18,28 @@ function renderGraph(node, data, handleClick) {
 
   const bounds = node.parentNode.getBoundingClientRect(); 
   root.attr('transform', `translate(${bounds.width / 2}, ${bounds.height / 2})`);
+
+  let info = root.select('g.info');
+  if (info.empty()) {
+    // TODO: make responsive to changes
+    info = root
+      .append('g')
+      .attr('class', 'info')
+      .attr('alignment-baseline', 'central')
+      .attr("text-anchor", "middle")
+
+    info.append('text')
+      .append('tspan')
+      .attr('class', 'label')
+      .attr("dy", "-.5em")
+      .attr("font-size", "15px")
+      .text(label);
+    info.append('text')
+      .attr('class', 'value')
+      .attr("dy", "1em")
+      .attr("font-size", "18px")
+      .text(value)
+  }
 
   const pie = d3.pie()
     .value(d => d.count)
@@ -38,7 +63,7 @@ function renderGraph(node, data, handleClick) {
     .cornerRadius(4)
 
   const path = root.selectAll("path")
-    .data(pie(data), pieDatum => pieDatum.data.name);
+    .data(pie(data), (pieDatum, i) => keySelector(pieDatum.data, i));
 
   path.exit()
     .remove();
@@ -85,7 +110,7 @@ function renderGraph(node, data, handleClick) {
   }
   path.merge(enterSel)
     .on("click", function (d) {
-      handleClick(d.data)
+      onClick(d.data)
     })
     .on("mouseover", function(d) {
       mouseOver = d.data;
@@ -110,25 +135,12 @@ function renderGraph(node, data, handleClick) {
 function Donut(props) {
   const ref = useRef(null);
 
-  const [data, setData] = useState(
-    [
-      { name: "Pie1", count: 15 },
-      { name: "Pie2", count: 20 },
-      { name: "Pie3", count: 80 }
-    ]
-  )
-
-  const handleClick = (datum) => {
-    setData(data.filter(d => d.name !== datum.name));
-  };
-
   useEffect(() => {
-    renderGraph(ref.current, data, handleClick);
-  }, [data]);
+    renderGraph(ref.current, props);
+  }, [props]);
 
   return (
     <React.Fragment>
-      <button onClick={() => setData([...data, { name: "Pie" + data.length + 1, count: 80 }])}>Add</button>
       <svg 
       className={styles.main}
       ref={ref}
@@ -137,6 +149,22 @@ function Donut(props) {
     </React.Fragment>
   );
 }
+
+Donut.defaultProps = {
+  label: "",
+  data: [],
+  value: "",
+  onClick: d => null,
+  keySelector: (data, idx) => idx,
+};
+
+Donut.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.any),
+  keySelector: PropTypes.func,
+  label: PropTypes.string,
+  value: PropTypes.string,
+  onClick: PropTypes.func,
+};
 
 export default Donut;
 

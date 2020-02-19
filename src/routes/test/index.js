@@ -13,6 +13,18 @@ function Test() {
   const [sel2, setsel2] = useState(false);
   const [radioValue, setRadioValue] = useState("1");
   const [r2, setr2] = useState(false);
+  const [data, setData] = useState(
+    [
+      { name: "Pie1", count: 15 },
+      { name: "Pie2", count: 20 },
+      { name: "Pie3", count: 80 }
+    ]
+  )
+
+  const handleClick = (datum) => {
+    setData(data.filter(d => d.name !== datum.name));
+  };
+
   return (
     <div>
     <h2>Components</h2>
@@ -22,7 +34,14 @@ function Test() {
     <Radio name="a" value="1" checked={radioValue === "1"} onChange={setRadioValue}>Option 1</Radio>
     <Radio name="a" value="2" checked={radioValue === "2"} onChange={setRadioValue}>Option 2</Radio>
     <div className={styles['donut-container']}>
-      <Donut />
+      <button onClick={() => setData([...data, { name: "Pie" + data.length + 1, count: Math.random() * 50 + 10 }])}>Add</button>
+      <Donut 
+        label="Total questions answered"
+        value={"80%"}
+        onClick={handleClick} 
+        keySelector={d => d.name}
+        data={data}
+      />
     </div>
     
     </div>
