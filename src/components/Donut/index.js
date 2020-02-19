@@ -84,7 +84,7 @@ function renderGraph(node, props) {
 
   const enterSel = path.enter()
     .append("path")
-    .attr('class', d => d.data.name + " " + styles.pie)
+    .attr('class', d => keySelector(d.data) + " " + styles.pie)
     .attr("fill", (d, i) => `#${r()}${r()}${r()}`)
     .attr("d", arc)
     .attr("stroke", "none")
@@ -92,7 +92,7 @@ function renderGraph(node, props) {
 
   let mouseOver = null;
   const tween = function (d) {
-    const mouse_over_me = mouseOver && mouseOver.name === d.data.name;
+    const mouse_over_me = mouseOver && keySelector(mouseOver) === keySelector(d.data);
     this.current = this.current
       || { startAngle: 2 * Math.PI, endAngle: 2 * Math.PI, outerRadius: radius };
 
@@ -173,4 +173,3 @@ Donut.propTypes = {
 };
 
 export default Donut;
-

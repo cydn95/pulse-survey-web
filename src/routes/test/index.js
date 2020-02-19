@@ -22,6 +22,14 @@ function Test() {
     ]
   )
 
+  const [survey_data] = useState(
+    [
+      { name: "Question 1", yourAnswer: 15, teamAnswer: 20 },
+      { name: "Question 2", yourAnswer: 20, teamAnswer: 80 },
+      { name: "Question 3", yourAnswer: 80, teamAnswer: 45 }
+    ]
+  )
+
   const handleClick = (datum) => {
     setData(data.filter(d => d.name !== datum.name));
   };
@@ -38,7 +46,7 @@ function Test() {
     <div className={styles['linegraph-container']}>
       <SurveyLineGraph 
         keySelector={d => d.name}
-        data={data}
+        data={survey_data}
       />
     </div>
     <div className={styles['donut-container']}>

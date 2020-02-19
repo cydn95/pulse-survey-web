@@ -19,7 +19,8 @@ function SurveyLineGraph(props) {
         <LineGraph
           className={styles["line-graph-self"]}
           flipped
-          keySelector={d => d.name}
+          keySelector={keySelector}
+          valueSelector={d => d.yourAnswer}
           data={data}
         />
       </div>
@@ -28,7 +29,8 @@ function SurveyLineGraph(props) {
         <label>Team's Answers</label>
         <LineGraph 
           className={styles["line-graph-team"]}
-          keySelector={d => d.name}
+          keySelector={keySelector}
+          valueSelector={d => d.teamAnswer}
           data={data}
         />
       </div>
@@ -37,9 +39,13 @@ function SurveyLineGraph(props) {
 }
 
 SurveyLineGraph.defaultProps = {
+  data: [],
+  keySelector: (d, i) => i,
 };
 
 SurveyLineGraph.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.any),
+  keySelector: PropTypes.func,
 };
 
 export default SurveyLineGraph;
