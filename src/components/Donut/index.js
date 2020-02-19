@@ -25,20 +25,26 @@ function renderGraph(node, props) {
     info = root
       .append('g')
       .attr('class', 'info')
-      .attr('alignment-baseline', 'central')
       .attr("text-anchor", "middle")
 
-    info.append('text')
-      .append('tspan')
+    const text = info.append('text');
+
+    // text font height=0.7em
+
+    text.append('tspan')
       .attr('class', 'label')
-      .attr("dy", "-.5em")
+      .attr("x", 0)
+      .attr("dy", ".7em")
       .attr("font-size", "15px")
-      .text(label);
-    info.append('text')
+      .text(label)
+    text.append('tspan')
       .attr('class', 'value')
-      .attr("dy", "1em")
-      .attr("font-size", "18px")
+      .attr("x", 0)
+      .attr("dy", "1.2em")
+      .attr("font-size", "20px")
       .text(value)
+
+    info.attr('transform', `translate(0, ${-info.node().getBBox().height / 2})`)
   }
 
   const pie = d3.pie()
@@ -75,7 +81,7 @@ function renderGraph(node, props) {
     const getc = (d) => d < 10 ? "" + d : "" + "ABCDEF"[d - 10]
     return getc(a) + "" + getc(b);
   }
-  
+
   const enterSel = path.enter()
     .append("path")
     .attr('class', d => d.data.name + " " + styles.pie)
@@ -141,11 +147,11 @@ function Donut(props) {
 
   return (
     <React.Fragment>
-      <svg 
-      className={styles.main}
-      ref={ref}
-      >
-      </svg>
+    <svg 
+    className={styles.main}
+    ref={ref}
+    >
+    </svg>
     </React.Fragment>
   );
 }
