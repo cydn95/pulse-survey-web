@@ -9,15 +9,6 @@
     font-family: Poppins !important;
   }
 
-  @media screen and (max-width: 768px) {
-    &__left {
-      width: 100% !important;
-    }
-
-    &__right {
-      width: 100% !important;
-    }
-  }
   &__left {
     display: flex;
     flex-direction: column;
@@ -121,6 +112,26 @@
       &--submit {
         margin-top: 61px;
         width: 182px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    &__left {
+      width: 100% !important;
+    }
+
+    &__right {
+      width: 100% !important;
+    }
+  }
+
+  @media screen and (max-width: 430px) {
+    &__left {
+      &__logo {
+        &--title {
+          font-size: 28px !important;
+        }
       }
     }
   }
