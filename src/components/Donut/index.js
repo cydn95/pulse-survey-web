@@ -1,12 +1,28 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { PropTypes } from "prop-types";
 
+import classnames from "classnames";
+
 import * as d3 from "d3";
 
 import styles from './styles.scss';
 
 function renderGraph(node, props) {
-  const { data, onClick, keySelector, label, value } = props;
+  const {
+    data,
+    onClick,
+    keySelector,
+    valueSelector,
+    sentiment,
+  } = props;
+
+  const bounds = node.getBoundingClientRect();
+
+  const padding = 20;
+  const hoverRadiusIncrease = 20;
+  const radius = Math.min(bounds.height, bounds.width) / 2 - 2 * (padding + hoverRadiusIncrease);
+  const hoverRadius = radius + hoverRadiusIncrease;
+  const innerRadius = radius * 0.5;
 
   const svg = d3.select(node);
 
@@ -16,48 +32,51 @@ function renderGraph(node, props) {
     root = svg.select('g.main');
   }
 
-  const bounds = node.parentNode.getBoundingClientRect(); 
   root.attr('transform', `translate(${bounds.width / 2}, ${bounds.height / 2})`);
 
-  let info = root.select('g.info');
-  if (info.empty()) {
+  const eyeDist = innerRadius / 2;
+  const thick = 10;
+  let face = root.select('g.' + styles.face);
+  if (face.empty()) {
     // TODO: make responsive to changes
-    info = root
+    face = root
       .append('g')
-      .attr('class', 'info')
-      .attr("text-anchor", "middle")
+      .attr('class', styles.face)
 
-    const text = info.append('text');
+    face.append('circle')
+      .attr("r", thick)
+      .attr("cx", -eyeDist)
 
-    // text font height=0.7em
+    face.append('circle')
+      .attr("r", thick)
+      .attr("cx", +eyeDist)
 
-    text.append('tspan')
-      .attr('class', 'label')
-      .attr("x", 0)
-      .attr("dy", ".7em")
-      .attr("font-size", "15px")
-      .text(label)
-    text.append('tspan')
-      .attr('class', 'value')
-      .attr("x", 0)
-      .attr("dy", "1.2em")
-      .attr("font-size", "20px")
-      .text(value)
+    face.append("path")
+      .attr("transform", `translate(0, ${eyeDist * 1.2})`)
+      .style("stroke-width", thick)
 
-    info.attr('transform', `translate(0, ${-info.node().getBBox().height / 2})`)
   }
 
-  const pie = d3.pie()
-    .value(d => d.count)
-    .sort(null);
+  face.selectAll('circle')
+      .attr("class", classnames(styles.eye, styles[sentiment]))
 
-  const padding = 20;
-  const hoverRadiusIncrease = 20;
-  const radius = Math.min(bounds.height, bounds.width) / 2 - 2 * (padding + hoverRadiusIncrease);
-  const hoverRadius = radius + hoverRadiusIncrease;
+  const mouth = face.select('path')
+    .attr("class", styles[sentiment])
+    .attr("d", () => {
+      if (sentiment === 'sad') {
+        return `M ${-eyeDist * 0.6} 0 H ${eyeDist * 0.6}`
+      }
+      return `M ${-eyeDist * 0.6} 0 Q 0 10 ${eyeDist * 0.6} 0`
+    })
+
+  // centerize the face
+  face.attr('transform', `translate(0, ${thick - face.node().getBBox().height / 2})`)
+
+  const pie = d3.pie()
+    .value(d => valueSelector(d))
 
   const arc = d3.arc()
-    .innerRadius(radius / 1.5)
+    .innerRadius(innerRadius)
     .outerRadius(radius)
     .padAngle(0.05)
     .cornerRadius(4)
@@ -68,8 +87,10 @@ function renderGraph(node, props) {
     .padAngle(0.05)
     .cornerRadius(4)
 
-  const path = root.selectAll("path")
-    .data(pie(data), (pieDatum, i) => keySelector(pieDatum.data, i));
+  const path = root.selectAll("." + styles.pie)
+    .data(pie(data), (pieDatum, i) => {
+      return keySelector(pieDatum.data, i)
+    });
 
   path.exit()
     .remove();
@@ -84,7 +105,7 @@ function renderGraph(node, props) {
 
   const enterSel = path.enter()
     .append("path")
-    .attr('class', d => keySelector(d.data) + " " + styles.pie)
+    .attr('class', styles.pie)
     .attr("fill", (d, i) => `#${r()}${r()}${r()}`)
     .attr("d", arc)
     .attr("stroke", "none")
@@ -96,10 +117,10 @@ function renderGraph(node, props) {
     this.current = this.current
       || { startAngle: 2 * Math.PI, endAngle: 2 * Math.PI, outerRadius: radius };
 
-    const destination = { 
-      startAngle: d.startAngle, 
-      endAngle: d.endAngle, 
-      outerRadius: mouse_over_me ? hoverRadius : radius, 
+    const destination = {
+      startAngle: d.startAngle,
+      endAngle: d.endAngle,
+      outerRadius: mouse_over_me ? hoverRadius : radius,
     };
 
     const intpl = d3.interpolate(this.current, destination);
@@ -118,14 +139,14 @@ function renderGraph(node, props) {
     .on("click", function (d) {
       onClick(d.data)
     })
-    .on("mouseover", function(d) {
+    .on("mouseover", function (d) {
       mouseOver = d.data;
       d3.select(this)
         .transition()
         .duration(500)
         .attrTween("d", tween);
     })
-    .on("mouseout", function(d) {
+    .on("mouseout", function (d) {
       mouseOver = null;
       d3.select(this)
         .transition()
@@ -145,30 +166,32 @@ function Donut(props) {
     renderGraph(ref.current, props);
   }, [props]);
 
+  const { className } = props;
   return (
-    <React.Fragment>
-    <svg 
-    className={styles.main}
-    ref={ref}
-    >
-    </svg>
-    </React.Fragment>
+    <div className={classnames(className, styles.main)}>
+      <svg
+        width="100%"
+        height="100%"
+        ref={ref}
+      >
+      </svg>
+    </div >
   );
 }
 
 Donut.defaultProps = {
-  label: "",
+  className: undefined,
   data: [],
-  value: "",
+  sentiment: "happy",
   onClick: d => null,
   keySelector: (data, idx) => idx,
 };
 
 Donut.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.any),
+  className: PropTypes.string,
   keySelector: PropTypes.func,
-  label: PropTypes.string,
-  value: PropTypes.string,
+  valueSelector: PropTypes.func.isRequired,
+  sentiment: PropTypes.oneOf(["sad", "happy"]),
   onClick: PropTypes.func,
 };
 

@@ -1,4 +1,22 @@
 .donut-container {
+  background: white;
+  margin-top: 10px;
+  padding: 10px;
   height: 500px;
-  width: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.linegraph-container {
+  background: white;
+  padding: 10px;
+}
+
+.info {
+  text-align: center;
+}
+
+.donut {
+  flex: 1;
 }

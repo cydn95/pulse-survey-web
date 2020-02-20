@@ -1,7 +1,4 @@
 .main {
-  display: block;
-  width: 100%;
-  height: 100%;
 }
 
 .pie {
@@ -9,5 +6,27 @@
   &:hover {
     stroke: none;
     stroke-width: 2px;
+  }
+}
+
+.eye {
+  &.sad {
+    fill: grey;
+  }
+  &.happy {
+    fill: #7fcdc1;
+  }
+}
+
+.face {
+  stroke-linecap: round;
+  path {
+    fill: none;
+  }
+  path.sad {
+    stroke: grey;
+  }
+  path.happy {
+    stroke: #7fcdc1;
   }
 }

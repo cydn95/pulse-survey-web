@@ -11,11 +11,14 @@ function renderGraph(node, props) {
     data,
     onClick,
     keySelector,
+    labelSelector,
     valueSelector,
     flipped,
   } = props;
 
   const svg = d3.select(node);
+
+  const tooltip = d3.select(node.parentNode).select("." + styles.tooltip);
 
   let root = svg.select('g.main')
   if (root.empty()) {
@@ -59,6 +62,23 @@ function renderGraph(node, props) {
     .attr("y", d => y(keySelector(d)) + y.bandwidth() / 2)
     .attr("dy", "0.35em")
 
+  root.selectAll("." + styles.bar).on("mouseover", function (d) {
+    const coords = d3.mouse(this);
+    tooltip
+      .node().classList.add(styles.visible)
+
+    tooltip
+      .html(labelSelector(d))
+
+    tooltip.style("left", 10 + coords[0] + "px")
+      .style("top", (coords[1] - 10 - tooltip.node().getBoundingClientRect().height) + "px")
+    
+  }).on("mouseout", function (d) {
+    tooltip
+      .node().classList.remove(styles.visible)
+    tooltip.html("")
+  })
+
   root.selectAll("." + styles.bar).selectAll("rect")
     .transition()
     .attr("x", function (d) {
@@ -100,11 +120,16 @@ function LineGraph(props) {
   }, [props]);
 
   return (
-    <svg 
-    className={classnames(className, styles.main)}
-    ref={ref}
+    <div
+      className={classnames(className, styles.main)}
     >
-    </svg>
+      <div className={styles.tooltip} />
+      <svg
+        width="100%"
+        height="100%"
+        ref={ref}
+      />
+    </div>
   );
 }
 
@@ -122,6 +147,7 @@ LineGraph.propTypes = {
   flipped: PropTypes.bool,
   data: PropTypes.arrayOf(PropTypes.any),
   keySelector: PropTypes.func,
+  labelSelector: PropTypes.func.isRequired,
   valueSelector: PropTypes.func.isRequired,
   onClick: PropTypes.func,
 };
