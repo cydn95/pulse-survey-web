@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Slider from 'Components/Slider';
 import Checkbox from 'Components/Checkbox';
 import Radio from 'Components/Radio';
-import Donut from 'Components/Donut';
+import { ResponsiveDonut as Donut } from 'Components/Donut';
 import SurveyLineGraph from 'Components/SurveyLineGraph';
 
 import styles from './styles.scss';
@@ -52,6 +52,8 @@ function Test() {
       <SurveyLineGraph 
         keySelector={d => d.name}
         questionNameSelector={d => d.name}
+        yourAnswerSelector={d => d.yourAnswer}
+        teamsAnswerSelector={d => d.teamAnswer}
         data={survey_data}
       />
     </div>
@@ -59,6 +61,8 @@ function Test() {
     <div className={styles['donut-container']}>
       <Donut 
         className={styles.donut}
+        width={500}
+        height={500}
         keySelector={d => d.name}
         valueSelector={d => d.count}
         sentiment={sentiment}

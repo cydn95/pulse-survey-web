@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from "classnames";
 import { PropTypes } from 'prop-types';
 
-import LineGraph from "Components/LineGraph";
+import { ResponsiveLineGraph as LineGraph } from "Components/LineGraph";
 
 import styles from './styles.scss';
 
@@ -11,6 +11,8 @@ function SurveyLineGraph(props) {
     data,
     keySelector,
     questionNameSelector,
+    yourAnswerSelector,
+    teamsAnswerSelector,
   } = props;
 
   return (
@@ -21,19 +23,19 @@ function SurveyLineGraph(props) {
           className={styles["line-graph-self"]}
           flipped
           keySelector={keySelector}
-          labelSelector={d => d.name}
-          valueSelector={d => d.yourAnswer}
+          labelSelector={questionNameSelector}
+          valueSelector={yourAnswerSelector}
           data={data}
         />
       </div>
       <div className={styles.separator} />
       <div className={styles["answer-team"]}>
         <label>Team's Answers</label>
-        <LineGraph 
+        <LineGraph
           className={styles["line-graph-team"]}
           keySelector={keySelector}
-          labelSelector={d => d.name}
-          valueSelector={d => d.teamAnswer}
+          labelSelector={questionNameSelector}
+          valueSelector={teamsAnswerSelector}
           data={data}
         />
       </div>
@@ -50,6 +52,8 @@ SurveyLineGraph.propTypes = {
   data: PropTypes.arrayOf(PropTypes.any),
   keySelector: PropTypes.func,
   questionNameSelector: PropTypes.func.isRequired,
+  teamsAnswerSelector: PropTypes.func.isRequired,
+  yourAnswerSelector: PropTypes.func.isRequired,
 };
 
 export default SurveyLineGraph;

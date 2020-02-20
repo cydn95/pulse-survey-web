@@ -1,8 +1,14 @@
 .main {
+  overflow: hidden;
+}
+
+svg {
+  display: block;
 }
 
 .pie {
   cursor: pointer;
+
   &:hover {
     stroke: none;
     stroke-width: 2px;
@@ -13,6 +19,7 @@
   &.sad {
     fill: grey;
   }
+
   &.happy {
     fill: #7fcdc1;
   }
@@ -20,12 +27,15 @@
 
 .face {
   stroke-linecap: round;
+
   path {
     fill: none;
   }
+
   path.sad {
     stroke: grey;
   }
+
   path.happy {
     stroke: #7fcdc1;
   }
