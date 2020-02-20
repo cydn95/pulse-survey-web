@@ -61,8 +61,6 @@ function Test() {
     <div className={styles['donut-container']}>
       <Donut 
         className={styles.donut}
-        width={500}
-        height={500}
         keySelector={d => d.name}
         valueSelector={d => d.count}
         sentiment={sentiment}

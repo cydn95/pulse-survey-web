@@ -16,15 +16,19 @@ function renderGraph(node, props) {
     sentiment,
   } = props;
 
-  const bounds = node.getBoundingClientRect();
+  const bounds = node.parentNode.getBoundingClientRect();
+  console.log(bounds)
 
+  const svg = d3.select(node);
+
+  svg.attr('width', bounds.width)
+    .attr('height', bounds.height)
+    
   const padding = 20;
   const hoverRadiusIncrease = 20;
   const radius = Math.min(bounds.height, bounds.width) / 2 - 2 * (padding + hoverRadiusIncrease);
   const hoverRadius = radius + hoverRadiusIncrease;
   const innerRadius = radius * 0.5;
-
-  const svg = d3.select(node);
 
   let root = svg.select('g.main')
   if (root.empty()) {
@@ -167,24 +171,14 @@ const Donut = React.forwardRef((props, ref_prop) => {
     renderGraph(ref.current, props);
   }, [props]);
 
-  const { className, width, height } = props;
-
-  const dimension_styles = {}
-  if (width) dimension_styles.width = `${width}px`
-  if (height) dimension_styles.height = `${height}px`
+  const { className } = props;
 
   return (
     <div
       ref={ref_prop}
       className={classnames(className, styles.main)}
-      style={dimension_styles}
     >
-      <svg
-        width="100%"
-        height="100%"
-        ref={ref}
-      >
-      </svg>
+      <svg ref={ref} />
     </div >
   );
 })

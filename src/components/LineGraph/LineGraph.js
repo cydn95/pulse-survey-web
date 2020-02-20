@@ -26,7 +26,10 @@ function renderGraph(node, props) {
     root = svg.select('g.main');
   }
 
-  const bounds = node.getBoundingClientRect(); 
+  const bounds = node.parentNode.getBoundingClientRect(); 
+
+  svg.attr('width', bounds.width)
+      .attr('height', bounds.height)
 
   const x = d3.scaleLinear()
     .rangeRound([0, bounds.width])
@@ -115,30 +118,19 @@ const LineGraph = React.forwardRef((props, ref_prop) => {
 
   const { 
     className,
-    width,
-    height
   } = props;
 
   useEffect(() => {
     renderGraph(ref.current, props);
   }, [props]);
 
-  const dimension_styles = {}
-  if (width) dimension_styles.width = `${width}px`
-  if (height) dimension_styles.height = `${height}px`
-
   return (
     <div
       ref={ref_prop}
       className={classnames(className, styles.main)}
-      style={dimension_styles}
     >
       <div className={styles.tooltip} />
-      <svg
-        width="100%"
-        height="100%"
-        ref={ref}
-      />
+      <svg ref={ref} />
     </div>
   );
 })

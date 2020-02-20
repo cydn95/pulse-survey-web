@@ -4,14 +4,16 @@ import LineGraph from './LineGraph';
 function ResponsiveLineGraph(props) {
 
   const ref = useRef(null)
-  const [width, setWidth] = useState(props.width)
-  const [height, setHeight] = useState(props.height)
+  const [width, setWidth] = useState(null)
+  const [height, setHeight] = useState(null)
 
   useEffect(() => {
     const handleResize = () => {
-      const node = ref.current.parentNode;
-      setWidth(node.offsetWidth)
-      setHeight(node.offsetHeight)
+      const node = ref.current;
+      setTimeout(() => {
+        setWidth(node.offsetWidth)
+        setHeight(node.offsetHeight)
+      }, 250)
     }
     window.addEventListener('resize', handleResize)
     return () => { window.removeEventListener('resize', handleResize) }
