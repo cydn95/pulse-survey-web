@@ -1,8 +1,26 @@
 .main {
+  .bar {
+    text {
+      fill: white;
+    }
+  }
 }
 
-.bar {
-  text {
-    fill: white;
+.tooltip {
+  font-size: 18px;
+  width: fit-content;
+  pointer-events: none;
+  z-index: 10;
+  display: none;
+  color: #777885;
+  padding: 10px;
+  position: fixed;
+  max-width: 200px;
+  border: 2px solid silver;
+  background: white;
+  border-radius: 4px;
+
+  &.visible {
+    display: block;
   }
 }

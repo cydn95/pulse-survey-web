@@ -1,4 +1,25 @@
 .donut-container {
-  height: 500px;
-  width: 500px;
+  background: white;
+  margin-top: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  max-height: 400px;
+}
+
+
+.linegraph-container {
+  background: white;
+  padding: 10px;
+}
+
+.info {
+  text-align: center;
+}
+
+.donut {
+  width: 100%;
+  min-height: 300px;
 }

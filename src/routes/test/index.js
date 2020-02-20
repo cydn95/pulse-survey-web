@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Slider from 'Components/Slider';
 import Checkbox from 'Components/Checkbox';
 import Radio from 'Components/Radio';
-import Donut from 'Components/Donut';
+import { ResponsiveDonut as Donut } from 'Components/Donut';
 import SurveyLineGraph from 'Components/SurveyLineGraph';
 
 import styles from './styles.scss';
@@ -14,6 +14,7 @@ function Test() {
   const [sel2, setsel2] = useState(false);
   const [radioValue, setRadioValue] = useState("1");
   const [r2, setr2] = useState(false);
+  const [sentiment, setSentiment] = useState("happy");
   const [data, setData] = useState(
     [
       { name: "Pie1", count: 15 },
@@ -22,9 +23,21 @@ function Test() {
     ]
   )
 
+  const [survey_data] = useState(
+    [
+      { name: "Question 1", yourAnswer: 15, teamAnswer: 20 },
+      { name: "Question 2", yourAnswer: 20, teamAnswer: 80 },
+      { name: "A very long Question, must break at 200px ", yourAnswer: 80, teamAnswer: 45 }
+    ]
+  )
+
   const handleClick = (datum) => {
     setData(data.filter(d => d.name !== datum.name));
   };
+
+  const toggle = () => {
+    setSentiment(sentiment === 'sad' ? 'happy' : 'sad')
+  }
 
   return (
     <div>
@@ -38,17 +51,26 @@ function Test() {
     <div className={styles['linegraph-container']}>
       <SurveyLineGraph 
         keySelector={d => d.name}
-        data={data}
+        questionNameSelector={d => d.name}
+        yourAnswerSelector={d => d.yourAnswer}
+        teamsAnswerSelector={d => d.teamAnswer}
+        data={survey_data}
       />
     </div>
+    <button onClick={toggle}>Toggle Sentiment</button>
     <div className={styles['donut-container']}>
       <Donut 
-        label="Total questions answered"
-        value={"80%"}
-        onClick={handleClick} 
+        className={styles.donut}
         keySelector={d => d.name}
+        valueSelector={d => d.count}
+        sentiment={sentiment}
+        onClick={handleClick} 
         data={data}
       />
+      <div className={styles.info}>
+          <h3>Total Questions Answered</h3>
+          <h2>80%</h2>
+      </div>
     </div>
     
     </div>

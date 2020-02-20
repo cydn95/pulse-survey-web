@@ -1,5 +1,6 @@
 .main {
   display: flex;
+  height: 200px;
 
   label {
     font-size: 18px;
@@ -9,13 +10,15 @@
 }
 
 .separator {
-  border:1px solid #e4e4e4;
+  border: 1px solid #e4e4e4;
 }
 
 .answer-self {
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   flex: 0.65;
+
   label {
     margin-right: 10px;
     text-align: right;
@@ -24,9 +27,11 @@
 }
 
 .answer-team {
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   flex: 0.35;
+
   label {
     margin-left: 10px;
     text-align: left;
@@ -34,12 +39,15 @@
 }
 
 .line-graph-self {
+  flex: 1;
   text {
     user-select: none;
     pointer-events: none;
   }
+
   rect {
     fill: #4f7bc5;
+
     &:hover {
       fill: #0E2874;
     }
@@ -47,14 +55,17 @@
 }
 
 .line-graph-team {
+  flex: 1;
   text {
     user-select: none;
     pointer-events: none;
   }
+
   rect {
     &:hover {
       fill: #C13608;
     }
+
     fill: #ED7E2D;
   }
 }
