@@ -13,49 +13,67 @@ import Test from './test';
 
 import { connect } from 'react-redux';
 
-import "Assets/css/custom/main.css";
-import 'Assets/css/custom/survey.css';
-import "Assets/css/custom/dashboard.css";
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core';
 
-class MainApp extends Component {
+const useStyles = makeStyles(() => ({
+	root: {
+		display: 'flex',
+		width: '100vw',
+		minHeight: '100vh',
+		flexFlow: 'row wrap'
+	},
 
-	render() {
-		const { match, containerClassnames} = this.props;
+	sidebar: {
+		width: 224,
+		height: '100vh'
+	},
 
-		return (
-			<div id="app-container" className={containerClassnames}>
-				<TopNav history={this.props.history} />
-				<Sidebar/>
-				<main>
-					<div className="container-fluid">
-						<Switch>
-							<Route path={`${match.url}/test`} component={Test} />
-							<Route path={`${match.url}/about-me`} component={Survey} />
-							<Route path={`${match.url}/my-map`} component={MyMap} />
-							<Route path={`${match.url}/settings`} component={Settings} />
-								
-							{/* <Route path={`${match.url}/welcome`}>
-								<Redirect to="/coming-soon" />
-							</Route>
-							
-							</Route>
-							<Route path={`${match.url}/project-map`}>
-								<Redirect to="/coming-soon" />
-							</Route> */}
-							
-							<Route path={`${match.url}/dashboard`} component={Dashboard} />
-								
-							<Redirect to="/error" />
-						</Switch>
-					</div>
-				</main>
-			</div>
-		);
+	container: {
+		flex: 1
+	},
+
+	topbar: {
+		width: '100%',
+		height: 79
+	},
+
+	main: {
+		width: '100%',
+		minHeight: 'calc(100% - 79px)'
 	}
-}
-const mapStateToProps = ({ menu }) => {
-	const { containerClassnames} = menu;
-	return { containerClassnames };
-  }
-  
-  export default withRouter(connect(mapStateToProps, {})(MainApp));
+}));
+
+const MainApp = ({ match, history }) => {
+	const classes = useStyles();
+
+	return (
+		<div className={ classes.root }>
+			<div className={ classes.sidebar }>
+				<Sidebar/> 
+			</div>
+			<div className={ classes.container }>
+				<div className={classes.topbar }>
+					<TopNav history={ history } />
+				</div>
+				<div className={ classes.main }>
+					<Switch>
+						<Route path={`${match.url}/test`} component={Test} />
+						<Route path={`${match.url}/about-me`} component={Survey} />
+						<Route path={`${match.url}/my-map`} component={MyMap} />
+						<Route path={`${match.url}/settings`} component={Settings} />
+						<Route path={`${match.url}/dashboard`} component={Dashboard} />
+						<Redirect to="/error" />
+					</Switch>
+				</div>
+			</div>
+		</div>
+	);
+};
+
+MainApp.propTypes = {
+	match: PropTypes.object,
+	history: PropTypes.object
+};
+
+export default withRouter(MainApp);
