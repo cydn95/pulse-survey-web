@@ -17,7 +17,6 @@ function renderGraph(node, props) {
   } = props;
 
   const bounds = node.parentNode.getBoundingClientRect();
-  console.log(bounds)
 
   const svg = d3.select(node);
 
@@ -38,8 +37,8 @@ function renderGraph(node, props) {
 
   root.attr('transform', `translate(${bounds.width / 2}, ${bounds.height / 2})`);
 
-  const eyeDist = innerRadius / 2;
-  const thick = 10;
+  const eyeDist = innerRadius / 1.75;
+  const thick = innerRadius * 0.15;
   let face = root.select('g.' + styles.face);
   if (face.empty()) {
     // TODO: make responsive to changes
