@@ -1,14 +1,27 @@
+$default-color: #7fcdc1;
+
 .main {
+  color: white;
   cursor: pointer;
   border: none;
   outline: none;
-  background: #f2f3f6;
+  background: $default-color;
   padding: 10px;
   border-radius: 5px;
-  transition: background 0.5s;
+
+  &:focus {
+    background: $default-color;
+  }
+
+  &:hover {
+    background: darken($default-color, 14%);
+  }
 }
 
 .main.active {
-  color: white;
-  background: #7fcdc1;
+  background: darken($default-color, 14%);
+}
+
+.selectable {
+  transition: background 0.5s;
 }

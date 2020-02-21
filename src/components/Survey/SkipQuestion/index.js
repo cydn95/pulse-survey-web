@@ -5,7 +5,7 @@ import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Colxx } from "Components/CustomBootstrap";
-import Button from "Components/Button";
+import { SelectableButton } from "Components/Button";
 
 import styles from './styles.scss';
 
@@ -147,12 +147,12 @@ class SkipQuestion extends Component {
               optionList.map((item, index) => {
                 const active = (item.optionName) === this.state.reason;
                 return (
-                  <Button 
+                  <SelectableButton 
                     key={item.id} 
                     active={active}
                     onClick={() => this.onSelectSkipReason(item.optionName)}>
                     {item.optionName}
-                  </Button>
+                  </SelectableButton>
                 )
               })
             }
