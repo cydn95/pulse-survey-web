@@ -1,11 +1,24 @@
 @import url(//fonts.googleapis.com/css?family=Poppins);
 
+@import "_custom_login.scss";
+@import "_custom_welcome.scss";
+
 body {
   padding: 0px;
   margin: 0px;
   font-family: Poppins;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  padding: 0px;
+  margin: 0px;
+}
+
 a {
   text-decoration: none;
+}
+
+ul {
+  margin: 0px;
+  padding: 0px;
 }

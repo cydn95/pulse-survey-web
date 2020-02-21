@@ -41,61 +41,49 @@ class Sidebar extends Component {
   render() {
     return (
       <div className={ styles.root }>
-        <img className={ styles.logo } src="/assets/img/login/projecai-logo.png" alt="logo"/>
+        <div className={ styles.logo }></div>
         <div className={ styles.link }>
-          <Nav vertical className="list-unstyled">
-            <NavItem
-              className={ classnames({
-                active: ((this.state.selectedParentMenu === "about-me" && this.state.viewingParentMenu === "") || this.state.viewingParentMenu === "about-me")
-              }) }
-            >
+          <ul className={ styles.nav }>
+            <li className={ styles["nav--item"] }>
               <NavLink
+                className={ styles["nav--item--link"] }
                 to="/app/about-me"
                 onClick={() => this.changeViewingParentMenu('welcome')}
                 data-flag="about-me">
                   About Me
               </NavLink>
-            </NavItem>
+            </li>
 
-            <NavItem
-              className={classnames({
-                active: ((this.state.selectedParentMenu === "my-map" && this.state.viewingParentMenu === "") || this.state.viewingParentMenu === "my-map")
-              })}
-            >
+            <li className={ styles["nav--item"] }>
               <NavLink
+                className={ styles["nav--item--link"] }
                 to="/app/my-map"
                 onClick={() => this.changeViewingParentMenu('my-map')}
                 data-flag="my-map">
                   My Map
               </NavLink>
-            </NavItem>
+            </li>
 
-            <NavItem
-              className={classnames({
-                active: ((this.state.selectedParentMenu === "project-map" && this.state.viewingParentMenu === "") || this.state.viewingParentMenu === "project-map")
-              })}
-            >
+            <li className={ styles["nav--item"] }>
               <NavLink
+                className={ styles["nav--item--link"] }
                 to="/app/project-map"
                 onClick={() => this.changeViewingParentMenu('project-map')}
                 data-flag="project-map">
                   Project Map
               </NavLink>
-            </NavItem>
+            </li>
 
-            <NavItem
-              className={classnames({
-                active: ((this.state.selectedParentMenu === "profile" && this.state.viewingParentMenu === "") || this.state.viewingParentMenu === "profile")
-              })}
-            >
+            <li className={ styles["nav--item"] }>
               <NavLink
+                className={ styles["nav--item--link"] }
                 to="/app/profile"
                 onClick={() => this.changeViewingParentMenu('profile')}
                 data-flag="profile">
                   User Profile
               </NavLink>
-            </NavItem>
-          </Nav>
+            </li>
+          </ul>
         </div>
       </div>
     )

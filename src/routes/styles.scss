@@ -1,0 +1,62 @@
+.root {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100vw;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 224px;
+  height: 100vh;
+}
+
+.container {
+  flex: 1;
+  background-color: #eff1f4;
+}
+
+.topbar {
+  width: 100%;
+  height: 80px;
+}
+
+.main {
+  width: 100%;
+  min-height: calc(100% - 80px);
+}
+
+.bottombar {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  width: 100vw;
+  height: 73px;
+  border-top: 1px solid #f0f0f0;
+  display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  .topbar {
+    height: 140px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+  }
+
+  .main {
+    margin-top: 140px;
+    min-height: calc(100% - 220px);
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .bottombar {
+    display: block;
+  }
+
+  .container {
+    background-color: #fff;
+  }
+}

@@ -1,0 +1,43 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 224px;
+  min-height: 100%;
+  background-color: #212529;
+}
+
+.logo {
+  width: 104px;
+  height: 53px;
+  margin-top: 21px;
+  margin-left: 40px;
+  background: url(/assets/img/login/projecai-logo.png);
+  background-size: cover;
+}
+
+.link {
+  margin-top: 21px;
+  margin-left: 40px;
+  
+  .nav {
+    list-style-type: none;
+    padding: 0px;
+
+    &--item {
+
+      display: block;
+      padding-top: 17px;
+      padding-bottom: 17px;
+
+      &--link {
+        font-size: 14px;
+        color: #bababa;
+
+        &:hover {
+          color: #7eccbf;
+        }
+      }
+    }
+  }
+}
