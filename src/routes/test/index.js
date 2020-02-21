@@ -6,6 +6,7 @@ import Radio from 'Components/Radio';
 import MultiTopic from 'Components/multi-topic';
 import DriverPanel from "Components/driver";
 import AssessmentSummary from "Components/assessment";
+import AvatarList from "Components/avatar";
 
 import { ResponsiveDonut as Donut } from 'Components/Donut';
 import SurveyLineGraph from 'Components/SurveyLineGraph';
@@ -74,6 +75,11 @@ function Test() {
     }
   ]
 
+  const user_info = [
+    { username: "Jane Doe", description: "Topsides Delivery Manager​ Topsides Team, BP​"},
+    { username: "Uttam Khanal", description: "I am a software engineer."},
+  ]
+
   return (
     <div>
       <h2>Components</h2>
@@ -94,6 +100,10 @@ function Test() {
       <AssessmentSummary 
         className={styles.panel} 
         data={driverdata} 
+      />
+      <AvatarList 
+        className={styles.panel} 
+        data={user_info} 
       />
       <button onClick={() => setData([...data, { name: "Pie" + data.length + 1, count: Math.floor(Math.random() * 50 + 10) }])}>Add</button>
       <div className={styles['linegraph-container']}>

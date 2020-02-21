@@ -1,0 +1,46 @@
+.avatar-component {
+  font-size: 14px;
+  border-radius: 2px;
+  cursor: pointer;
+
+  display: flex;
+
+  >*:not(:first-child) {
+    margin-left: 20px;
+  }
+
+  color: rgb(26, 26, 26);
+}
+
+.avatar-panel {
+  background: white;
+  padding: 21px;
+  .avatar-comp:not(:last-child) {
+    border-bottom: 1px solid silver;
+  }
+  .avatar-comp {
+    padding: 10px 0;
+  }
+
+}
+
+.info {
+  flex: 1;
+}
+
+.avatar {
+  img {
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.open {
+  font-size: 20px;
+  color: black;
+}
+
+.username {
+  font-weight: bold;
+}
