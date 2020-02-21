@@ -22,3 +22,20 @@ ul {
   margin: 0px;
   padding: 0px;
 }
+
+.panel {
+  background-color: #fff;
+  padding: 28px 36px;
+  border-radius: 10px;
+  box-sizing: border-box;
+
+  .title {
+    color: #1a1a1a;
+    font-size: 21px;
+    line-height: 1.38;
+  }
+}
+
+.row {
+  width: 100%;
+}

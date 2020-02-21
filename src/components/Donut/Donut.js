@@ -17,8 +17,7 @@ function renderGraph(node, props) {
   } = props;
 
   const bounds = node.parentNode.getBoundingClientRect();
-  console.log(bounds)
-
+  
   const svg = d3.select(node);
 
   svg.attr('width', bounds.width)
