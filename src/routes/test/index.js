@@ -3,6 +3,11 @@ import React, { useState } from 'react';
 import Slider from 'Components/Slider';
 import Checkbox from 'Components/Checkbox';
 import Radio from 'Components/Radio';
+import MultiTopic from 'Components/multi-topic';
+import DriverPanel from "Components/driver";
+import AssessmentSummary from "Components/assessment";
+import AvatarList from "Components/avatar";
+
 import { ResponsiveDonut as Donut } from 'Components/Donut';
 import SurveyLineGraph from 'Components/SurveyLineGraph';
 
@@ -39,40 +44,101 @@ function Test() {
     setSentiment(sentiment === 'sad' ? 'happy' : 'sad')
   }
 
+  const [topicData, setTopicData] = useState(
+    [
+      { topic: "Topic 1", comment: "I am worried about our approach to hazard identification" },
+      { topic: "Topic 2", comment: "I don’t think that the earthworks guys are going to deliver on time" },
+    ]
+  )
+
+  const driverdata = [
+    {
+      driverId: 2,
+      driverName: "Engagement",
+      percentage: 20,
+      progress: 0,
+      icon: "plus",
+    },
+    {
+      driverId: 3,
+      driverName: "Influence",
+      percentage: 90,
+      progress: 2,
+      icon: "user",
+    }, 
+    {
+      driverId: 4,
+      driverName: "Interest",
+      percentage: 50,
+      progress: 1,
+      icon: "comment",
+    }
+  ]
+
+  const user_info = [
+    { 
+      username: "Jane Doe", 
+      description: "Topsides Delivery Manager​ Topsides Team BP",
+      profilePicUrl: "/assets/img/profile-pic-l-2.jpg" ,
+    },
+    { 
+      username: "Uttam Khanal", 
+      description: "I am a software engineer.",
+      profilePicUrl: "/assets/img/profile-pic-l-2.jpg",
+    },
+  ]
+
   return (
     <div>
-    <h2>Components</h2>
-    <Slider percent={percent} onChange={setPercent} />
-    <Checkbox checked={sel} onChange={setsel}>OK</Checkbox>
-    <Checkbox checked={sel2} onChange={setsel2}>Compartmentalize</Checkbox>
-    <Radio name="a" value="1" checked={radioValue === "1"} onChange={setRadioValue}>Option 1</Radio>
-    <Radio name="a" value="2" checked={radioValue === "2"} onChange={setRadioValue}>Option 2</Radio>
-    <button onClick={() => setData([...data, { name: "Pie" + data.length + 1, count: Math.floor(Math.random() * 50 + 10) }])}>Add</button>
-    <div className={styles['linegraph-container']}>
-      <SurveyLineGraph 
-        keySelector={d => d.name}
-        questionNameSelector={d => d.name}
-        yourAnswerSelector={d => d.yourAnswer}
-        teamsAnswerSelector={d => d.teamAnswer}
-        data={survey_data}
+      <h2>Components</h2>
+      <Slider percent={percent} onChange={setPercent} />
+      <Checkbox checked={sel} onChange={setsel}>OK</Checkbox>
+      <Checkbox checked={sel2} onChange={setsel2}>Compartmentalize</Checkbox>
+      <Radio name="a" value="1" checked={radioValue === "1"} onChange={setRadioValue}>Option 1</Radio>
+      <Radio name="a" value="2" checked={radioValue === "2"} onChange={setRadioValue}>Option 2</Radio>
+      <MultiTopic
+        title="Key Themes"
+        options={topicData}
+        addNewTopic={(topic, comment) => setTopicData([...topicData, { topic, comment}])}
       />
-    </div>
-    <button onClick={toggle}>Toggle Sentiment</button>
-    <div className={styles['donut-container']}>
-      <Donut 
-        className={styles.donut}
-        keySelector={d => d.name}
-        valueSelector={d => d.count}
-        sentiment={sentiment}
-        onClick={handleClick} 
-        data={data}
+      <DriverPanel 
+        className={styles.panel} 
+        data={driverdata} 
       />
-      <div className={styles.info}>
+      <AssessmentSummary 
+        className={styles.panel} 
+        data={driverdata} 
+      />
+      <AvatarList 
+        className={styles.panel} 
+        data={user_info} 
+      />
+      <button onClick={() => setData([...data, { name: "Pie" + data.length + 1, count: Math.floor(Math.random() * 50 + 10) }])}>Add</button>
+      <div className={styles['linegraph-container']}>
+        <SurveyLineGraph
+          keySelector={d => d.name}
+          questionNameSelector={d => d.name}
+          yourAnswerSelector={d => d.yourAnswer}
+          teamsAnswerSelector={d => d.teamAnswer}
+          data={survey_data}
+        />
+      </div>
+      <button onClick={toggle}>Toggle Sentiment</button>
+      <div className={styles['donut-container']}>
+        <Donut
+          className={styles.donut}
+          keySelector={d => d.name}
+          valueSelector={d => d.count}
+          sentiment={sentiment}
+          onClick={handleClick}
+          data={data}
+        />
+        <div className={styles.info}>
           <h3>Total Questions Answered</h3>
           <h2>80%</h2>
+        </div>
       </div>
-    </div>
-    
+
     </div>
   );
 }

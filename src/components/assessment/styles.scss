@@ -1,0 +1,51 @@
+.assessment-component {
+  font-size: 14px;
+  border-radius: 2px;
+  cursor: pointer;
+
+  display: flex;
+
+  >*:not(:first-child) {
+    margin-left: 20px;
+  }
+
+  .Low {
+    color: red;
+  }
+
+  .High {
+    color: rgb(97, 178, 160);
+  }
+
+  .Medium {
+    color: rgb(86, 162, 253);
+  }
+
+  color: rgb(109, 111, 148);
+}
+
+.summary-panel {
+  background: white;
+  padding: 21px;
+  .ass-comp:not(:last-child) {
+    border-bottom: 1px solid silver;
+  }
+  .ass-comp {
+    padding: 10px 0;
+  }
+
+}
+
+.info {
+  flex: 1;
+}
+
+.icon {
+  margin-top: 4px;
+  font-size: 16px;
+}
+
+.open {
+  font-size: 20px;
+  color: black;
+}

@@ -1,0 +1,38 @@
+.driver-component {
+  font-size: 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: white;
+  &.selected {
+    background: #77C8BB;
+    color: white;
+  }
+  &.left {
+    display: flex;
+    > *:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
+  &:not(.selected) {
+    .Low {
+      color: red;
+    }
+    .High {
+      color: rgb(97, 178, 160);
+    }
+    .Medium {
+      color: rgb(86, 162, 253);
+    }
+  }
+
+  color: rgb(109, 111, 148);
+  padding: 21px;
+}
+
+.driver-panel {
+  display: flex;
+  overflow-x: auto;
+  > div:not(:first-child) {
+    margin-left: 20px;
+  }
+}

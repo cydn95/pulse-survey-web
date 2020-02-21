@@ -22,7 +22,7 @@ function renderGraph(node, props) {
 
   svg.attr('width', bounds.width)
     .attr('height', bounds.height)
-    
+
   const padding = 20;
   const hoverRadiusIncrease = 20;
   const radius = Math.min(bounds.height, bounds.width) / 2 - 2 * (padding + hoverRadiusIncrease);
@@ -37,8 +37,8 @@ function renderGraph(node, props) {
 
   root.attr('transform', `translate(${bounds.width / 2}, ${bounds.height / 2})`);
 
-  const eyeDist = innerRadius / 2;
-  const thick = 10;
+  const eyeDist = innerRadius / 1.75;
+  const thick = innerRadius * 0.15;
   let face = root.select('g.' + styles.face);
   if (face.empty()) {
     // TODO: make responsive to changes
@@ -54,7 +54,7 @@ function renderGraph(node, props) {
 
   face.select('.right_eye')
     .attr("cx", eyeDist)
-  
+
   face.selectAll('circle')
     .attr("r", thick)
     .attr("cx", (d, i) => i === 0 ? -eyeDist : eyeDist)

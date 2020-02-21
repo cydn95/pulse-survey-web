@@ -1,0 +1,22 @@
+$color: rgb(26, 26, 26);
+
+.main {
+  color: $color;
+  > div:not(:first-child) {
+    margin-top: 20px;
+  }
+  
+}
+
+$button-bg: #087BF0;
+.add-new-topic {
+  font-weight: bold;
+  text-transform: uppercase;
+  background: $button-bg;
+  &:focus {
+    background: $button-bg;
+  }
+  &:hover {
+    background: darken($button-bg, 8%);
+  }
+}
