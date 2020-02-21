@@ -1,5 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Route, withRouter, Switch,Redirect } from 'react-router-dom';
+
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core';
 
 import TopNav from 'Containers/TopNav'
 import Sidebar from 'Containers/Sidebar';
@@ -10,11 +13,6 @@ import Dashboard from './dashboard';
 import Settings from './settings';
 
 import Test from './test';
-
-import { connect } from 'react-redux';
-
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
 	root: {

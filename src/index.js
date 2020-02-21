@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import 'Assets/css/sass/common.scss';
-// import 'materialize-css/dist/css/materialize.min.css';
 
 const rootEl = document.getElementById("root");
 
