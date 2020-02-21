@@ -76,8 +76,16 @@ function Test() {
   ]
 
   const user_info = [
-    { username: "Jane Doe", description: "Topsides Delivery Manager​ Topsides Team, BP​"},
-    { username: "Uttam Khanal", description: "I am a software engineer."},
+    { 
+      username: "Jane Doe", 
+      description: "Topsides Delivery Manager​ Topsides Team BP",
+      profilePicUrl: "/assets/img/profile-pic-l-2.jpg" ,
+    },
+    { 
+      username: "Uttam Khanal", 
+      description: "I am a software engineer.",
+      profilePicUrl: "/assets/img/profile-pic-l-2.jpg",
+    },
   ]
 
   return (

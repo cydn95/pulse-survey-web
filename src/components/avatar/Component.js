@@ -16,12 +16,13 @@ function AvatarComponent(props) {
     username,
     description,
     onClick,
+    profilePicUrl,
   } = props;
 
   return (
     <div onClick={() => onClick(username)} className={classnames(styles["avatar-component"], className)}>
       <div className={styles.avatar}>
-        <img src="/assets/img/profile-pic-l-2.jpg" />
+        <img src={profilePicUrl} />
       </div>
       <div className={styles.info}>
         <div className={styles.username}>{username}</div>
