@@ -4,6 +4,8 @@ import Slider from 'Components/Slider';
 import Checkbox from 'Components/Checkbox';
 import Radio from 'Components/Radio';
 import MultiTopic from 'Components/multi-topic';
+import DriverPanel from "Components/driver";
+import AssessmentSummary from "Components/assessment";
 
 import { ResponsiveDonut as Donut } from 'Components/Donut';
 import SurveyLineGraph from 'Components/SurveyLineGraph';
@@ -48,6 +50,30 @@ function Test() {
     ]
   )
 
+  const driverdata = [
+    {
+      driverId: 2,
+      driverName: "Engagement",
+      percentage: 20,
+      progress: 0,
+      icon: "plus",
+    },
+    {
+      driverId: 3,
+      driverName: "Influence",
+      percentage: 90,
+      progress: 2,
+      icon: "user",
+    }, 
+    {
+      driverId: 4,
+      driverName: "Interest",
+      percentage: 50,
+      progress: 1,
+      icon: "comment",
+    }
+  ]
+
   return (
     <div>
       <h2>Components</h2>
@@ -60,6 +86,14 @@ function Test() {
         title="Key Themes"
         options={topicData}
         addNewTopic={(topic, comment) => setTopicData([...topicData, { topic, comment}])}
+      />
+      <DriverPanel 
+        className={styles.panel} 
+        data={driverdata} 
+      />
+      <AssessmentSummary 
+        className={styles.panel} 
+        data={driverdata} 
       />
       <button onClick={() => setData([...data, { name: "Pie" + data.length + 1, count: Math.floor(Math.random() * 50 + 10) }])}>Add</button>
       <div className={styles['linegraph-container']}>

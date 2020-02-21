@@ -6,9 +6,17 @@ import App from 'Containers/App';
 import { configureStore } from 'Redux/store';
 
 import { library, dom } from '@fortawesome/fontawesome-svg-core';
-import { faTimesCircle, faPlusCircle, faMinusCircle, faPlay, faUser, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faComment, 
+  faTimesCircle, 
+  faPlusCircle, 
+  faMinusCircle, 
+  faPlay, 
+  faUser, 
+  faPlus 
+} from '@fortawesome/free-solid-svg-icons';
 
-library.add(faTimesCircle, faPlusCircle, faMinusCircle, faPlay, faUser, faPlus);
+library.add(faComment, faTimesCircle, faPlusCircle, faMinusCircle, faPlay, faUser, faPlus);
 dom.watch();
 
 const MainApp = () => (

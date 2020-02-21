@@ -55,7 +55,7 @@ MultiTopic.defaultProps = {
 
 MultiTopic.propTypes = {
   title: PropTypes.string,
-  options: PropTypes.arrayOf(Option.propTypes),
+  options: PropTypes.arrayOf(PropTypes.shape(Option.propTypes)),
   addNewTopic: PropTypes.func,
 };
 
