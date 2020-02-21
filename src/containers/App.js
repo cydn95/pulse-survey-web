@@ -16,18 +16,9 @@ import forgotPassword from 'Routes/forgot-password'
 import SetPassword from 'Routes/invite/SetPassword'
 import Welcome from 'Routes/invite/Welcome'
 
-// import 'Assets/css/vendor/bootstrap.min.css'
-import 'react-perfect-scrollbar/dist/css/styles.css';
-// import 'Assets/css/sass/themes/gogo.light.purple.scss';
-
-/*
-color options : 
-	 'light.purple'		'dark.purple'
-	 'light.blue'		'dark.blue'
-	 'light.green'		'dark.green'
-	 'light.orange'		'dark.orange'
-	 'light.red'		'dark.red'
-*/
+import {
+  setCurrentMenuClassName
+} from "Redux/actions";
 
 const InitialPath = ({ component: Component, ...rest, authUser }) =>
 	<Route
@@ -45,10 +36,23 @@ const InitialPath = ({ component: Component, ...rest, authUser }) =>
 
 class App extends Component {
 	
+	componentDidMount() {
+		const { setCurrentMenuClassName, location } = this.props;
+		if (location.pathname.startsWith('/app/me')) {
+			setCurrentMenuClassName('me');
+		} else if (location.pathname.startsWith('/app/about-me')) {
+			setCurrentMenuClassName('about-me');
+		} else if (location.pathname.startsWith('/app/my-map')) {
+			setCurrentMenuClassName('my-map');
+		} else if (location.pathname.startsWith('/app/project-map')) {
+			setCurrentMenuClassName('project-map');
+		}
+	}
+
 	render() {
 		const { location, match, user, locale } = this.props;
 		const currentAppLocale = AppLocale[locale];
-		
+		console.log(location);
 		if (location.pathname === '/'  || location.pathname==='/app'|| location.pathname==='/app/') {
 			return (<Redirect to={defaultStartPath} />);
 		}
@@ -87,5 +91,4 @@ const mapStateToProps = ({ authUser, settings }) => {
 	return { user, locale };
 };
 
-export default connect(mapStateToProps,{  })(App);
-
+export default connect(mapStateToProps,{ setCurrentMenuClassName })(App);

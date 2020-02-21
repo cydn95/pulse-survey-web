@@ -3,8 +3,6 @@ import React, { Component } from "react";
 import Drawer from '@material-ui/core/Drawer';
 import MenuIcon from '@material-ui/icons/Menu';
 
-import { NavLink } from "react-router-dom";
-
 import styles from './styles.scss';
 
 import Sidebar from "../Sidebar";
@@ -26,7 +24,6 @@ class TopNav extends Component {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
-    console.log(open);
 
     this.setState({
       toggle: open

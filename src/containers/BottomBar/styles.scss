@@ -30,6 +30,29 @@
       &--link {
         font-size: 11px;
         color: rgb( 119, 120, 133);
+        display: flex;
+        flex-flow: column;
+
+        .icon {
+          display: block;
+          margin: 7px auto;
+          width: 21px;
+          height: 23px;
+          fill:  #bababa;
+        }
+
+        .name {
+          display: block;
+        }
+
+        &.active {
+          .icon {
+            fill: #7eccbf;
+          }
+          .name {
+            color: #7eccbf;
+          }
+        }
       }
     }
   }
