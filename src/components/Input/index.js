@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import classnames from "classnames";
 
 import styles from './styles.scss';
 
 function Input(props) {
   const { 
+    className,
     placeholder, 
     onChange,
     value,
@@ -11,7 +13,7 @@ function Input(props) {
   
   return (
     <input 
-      className={styles.main} 
+      className={classnames(styles.main, className)} 
       placeholder={placeholder} 
       onChange={(e) => onChange(e.target.value)}
       value={value}

@@ -1,0 +1,25 @@
+.main {
+  display: flex;
+  align-items: center;
+  background: #f1f2f6;
+  border-radius: 5px;
+  color: rgb(26, 26, 26);
+  padding: 5px;
+  >*:not(:first-child) {
+    margin-left: 10px;
+  }
+}
+
+.search-icon, .cross-icon {
+  margin: 5px;
+}
+
+.input {
+  &:focus {
+    box-shadow: none !important;
+  }
+}
+
+.cross-icon {
+  cursor: pointer;
+}
