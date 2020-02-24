@@ -5,6 +5,7 @@ $default-color: #7fcdc1;
 .main {
   position: relative;
   display: inline-block;
+
   &:focus {
     outline: none;
   }
@@ -16,6 +17,9 @@ $default-color: #7fcdc1;
   }
 
   position: absolute;
+  left: 0;
+  right: 0;
+  min-width: 150px;
   color: white;
 }
 
@@ -28,6 +32,7 @@ $default-color: #7fcdc1;
   min-width: 100px;
   cursor: pointer;
   background: $default-color;
+
   &:hover {
     background: darken($default-color, 20%);
   }
