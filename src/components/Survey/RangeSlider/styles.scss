@@ -1,21 +1,27 @@
 .main {
-    border-radius: 10px;
-    padding: 27px 20px;
-    margin: 10px;
-    background: white;
-    > *:not(:first-child) {
-        margin-top: 10px;
-    }
+    padding: 53px 20px;
+    background: #eff1f4;
 }
 
-.slider-text {
+.slider-section {
+    margin-top: 50px;
+}
+
+.slider-text-section {
     display: flex;
     font-size: 14px;
     justify-content:space-between;
     color: rgb(119,120,133);
+    margin-top: 24px;
 }
 
 .question-text {
     color: rgb(26, 26, 26);
+    font-size: 28px;
+    line-height: 1.43;
+}
+
+.skip-section {
+    margin-top: 35px;
 }
 

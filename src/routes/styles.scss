@@ -6,13 +6,16 @@
 }
 
 .sidebar {
-  position: relative;
+  position: fixed;
+  left: 0px;
+  top: 0px;
   width: 224px;
   height: 100vh;
 }
 
 .container {
   flex: 1;
+  margin-left: 224px;
   background-color: #eff1f4;
 }
 
@@ -61,5 +64,6 @@
 
   .container {
     background-color: #fff;
+    margin-left: 0px;
   }
 }

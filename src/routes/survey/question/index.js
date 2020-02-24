@@ -19,6 +19,8 @@ import {
   inputAnswer,
 } from "Redux/actions";
 
+import styles from "./styles.scss";
+
 class Question extends Component {
   
   handleAnswer = answer => {

@@ -77,16 +77,16 @@ class RangeSlider extends Component {
     const { question, skipQuestionList } = this.props;
     
     return (
-      <div className={styles.main}>
-        <div>
-          <h1 className={styles["question-text"]}>{question.questionText}</h1>
+      <div className={ styles.main }>
+        <h1 className={styles["question-text"]}>{question.questionText}</h1>
+        <div className={ styles['slider-section'] }>
+          <Slider 
+            className={styles.slider} 
+            percent={this.state.answer.integerValue}
+            onChange={this.onChangeSlide}
+          />
         </div>
-        <Slider 
-          className={styles.slider} 
-          percent={this.state.answer.integerValue}
-          onChange={this.onChangeSlide}
-        />
-        <div className={styles["slider-text"]}>
+        <div className={styles["slider-text-section"]}>
             <div className={styles["slider-text-left"]}>
               {question.sliderTextLeft}
             </div>
@@ -94,15 +94,17 @@ class RangeSlider extends Component {
               {question.sliderTextRight}
             </div>
         </div>
-        <SkipQuestion
-          answer={this.state.answer.integerValue}
-          comment={this.state.answer.commentValue}
-          skipValue={this.state.answer.skipValue}
-          onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
-          skipOption={question.skipOption}
-          skipQuestionList={skipQuestionList}
-          onComment={commentAnswer => this.handleComment(commentAnswer)}
-        />
+        <div className={ styles['skip-section'] }>
+          <SkipQuestion
+            answer={this.state.answer.integerValue}
+            comment={this.state.answer.commentValue}
+            skipValue={this.state.answer.skipValue}
+            onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
+            skipOption={question.skipOption}
+            skipQuestionList={skipQuestionList}
+            onComment={commentAnswer => this.handleComment(commentAnswer)}
+          />
+        </div>
       </div>
     );
   }

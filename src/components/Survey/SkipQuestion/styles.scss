@@ -1,8 +1,5 @@
 .main {
   font-size: 14px;
-  >:not(:first-child) {
-    margin-top: 10px;
-  }
 }
 
 $color: rgb(119, 120, 133);
@@ -44,6 +41,7 @@ $separator-color: rgb(109, 111, 148);
 }
 
 .skip-btns {
+  margin-top: 25px;
   > * {
     &:not(:first-child) {
       margin-top : 10px;
@@ -51,4 +49,11 @@ $separator-color: rgb(109, 111, 148);
     display: block;
     width: 100%;
   }
+}
+
+.comment-section {
+  margin-top: 35px;
+}
+.comment {
+  width: 100%;
 }

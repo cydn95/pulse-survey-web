@@ -3,6 +3,8 @@
   border-radius: 10px;
   cursor: pointer;
   background: white;
+  width: 140px;
+
   &.selected {
     background: #77C8BB;
     color: white;
@@ -26,7 +28,7 @@
   }
 
   color: rgb(109, 111, 148);
-  padding: 21px;
+  padding: 17px;
 }
 
 .driver-panel {

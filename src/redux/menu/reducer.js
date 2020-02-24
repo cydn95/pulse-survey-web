@@ -12,7 +12,6 @@ export default (state = INIT_STATE, action) => {
 	switch (action.type) {
 
 		case SET_CURRENT_MENU_CLASSNAME:
-			console.log(action);
 		return Object.assign({}, state, {
 			...state,
 			currentClassName: action.payload.strCurrentClasses

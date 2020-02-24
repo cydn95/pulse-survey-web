@@ -100,7 +100,17 @@ function* getDriverList() {
         const result = yield call(getDriverListAysnc);
 
         if (result.status === 200) {
-            yield put(driverListSuccess(result.data));
+            let driverList = [];
+            result.data.forEach(driver => {
+                driverList.push({
+                    driverId: driver.id,
+                    driverName: driver.driverName,
+                    icon: "user",
+                    percentage: 0,
+                    progress: 0
+                });
+            });
+            yield put(driverListSuccess(driverList));
         }
 
     } catch (error) {

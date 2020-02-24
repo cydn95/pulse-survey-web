@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { Row } from "reactstrap";
 
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { Colxx } from "Components/CustomBootstrap";
-import { SelectableButton } from "Components/Button";
+import { SelectableButton } from "Components/Button"
+;
+import TextField from '@material-ui/core/TextField';
 
 import styles from './styles.scss';
 
@@ -159,8 +159,14 @@ class SkipQuestion extends Component {
           </div>
         }
         {this.state.commentToggle &&
-          <div className="input-field">
-            <input id="comment" type="text" className="" value={this.state.comment} onChange={e => this.onInputComment(e)} placeholder="Comment"/>
+          <div className={ styles['comment-section'] }>
+            <TextField 
+              id="comment"
+              className={ styles.comment }
+              value={ this.state.comment }
+              onChange={e => this.onInputComment(e)}
+              placeholder="Type Your Comment Here"
+            />
           </div>
         }
         

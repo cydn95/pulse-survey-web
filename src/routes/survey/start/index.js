@@ -1,21 +1,27 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 
+import DriverPanel from "Components/driver";
+
+import Question from "../question";
+
 import { Row } from "reactstrap";
 import { Colxx } from "Components/CustomBootstrap";
 
 import {
-  StageBar
-} from "Components/Survey";
+  driverList,
 
-import Question from "../question";
 
-import {
+
   pageList,
   teamList,
   shgroupList,
-  skipQuestionList
+  skipQuestionList,
 } from "Redux/actions";
+
+import classnames from 'classnames';
+
+import styles from './styles.scss';
 
 class Start extends Component {
 
@@ -24,30 +30,31 @@ class Start extends Component {
     this.props.getTeamList();
     this.props.getShgroupList();
     this.props.getSkipQuestionList();
+    const { getDriverList } = this.props;
+    getDriverList();
   }
 
   render() {
-    const {pageIndex, surveyList, skipQuestionList} = this.props;
+    const { 
+      driverList,
+      surveyList,
+
+      pageIndex,
+      skipQuestionList
+    } = this.props;
     
     return (
-      <div className="survey-container">
-        <div className="survey-progress-bar">
-          <StageBar pages={surveyList} pageIndex={pageIndex} />
-        </div>
-        <div className="main-content">
-          <div className="survey-content">
-            <Row>
-              <Colxx xs="12">
-                {/* <Title title="Alfa Project" /> */}
-                { surveyList.length > 0 && skipQuestionList.length > 0 && 
-                  <Question history={this.props.history} skipQuestionList={skipQuestionList} /> }
-                {surveyList.length ===0 && <h1>Loading...</h1>}
-              </Colxx>
-            </Row>
+      <div className={ styles.root }>
+        <div className={ styles['driver-scroll']}>
+          <div className={ styles['driver-section'] }>
+            <DriverPanel data={ driverList } />
           </div>
-          <div className="survey-image">
-            <img alt="survey-description" className="img-survey-description" src="/assets/img/survey/survey.png"/>
-            <img alt="site-logo" className="img-site-logo" src="/assets/img/survey/site-logo.png"/>
+          <div className={ styles['survey-container']}>
+            <Colxx xs="12">
+              { surveyList.length > 0 && skipQuestionList.length > 0 && 
+                <Question history={this.props.history} skipQuestionList={skipQuestionList} /> }
+              {surveyList.length ===0 && <h1>Loading...</h1>}
+            </Colxx>
           </div>
         </div>
       </div>
@@ -59,9 +66,12 @@ const mapStateToProps = ({ survey, settings, common }) => {
 
   const { pageList, pageIndex } = survey;
   const { locale } = settings;
-  const { skipQuestionList } = common
+  const { skipQuestionList, driverList } = common
 
   return {
+    driverList,
+
+
     surveyList : pageList,
     pageIndex,
     skipQuestionList,
@@ -72,6 +82,8 @@ const mapStateToProps = ({ survey, settings, common }) => {
 export default connect(
   mapStateToProps,
   {
+    getDriverList: driverList,
+
     getPageList: pageList,
     getTeamList: teamList,
     getShgroupList: shgroupList,
