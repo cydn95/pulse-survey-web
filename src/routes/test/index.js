@@ -8,6 +8,7 @@ import DriverPanel from "Components/driver";
 import AssessmentSummary from "Components/assessment";
 import AvatarList from "Components/avatar";
 import SearchBar from "Components/search-bar";
+import Accordion from "Components/accordion";
 
 import { ResponsiveDonut as Donut } from 'Components/Donut';
 import SurveyLineGraph from 'Components/SurveyLineGraph';
@@ -109,6 +110,18 @@ function Test() {
         searchKey={searchKey} 
         data={search_data} 
         addNewStakeholder={() => alert('add new stakeholder')}
+      />
+      <Accordion
+        keySelector={d => d.title}  
+        headerSelector={d => d.title}  
+        componentSelector={d => d.component}  
+        iconSelector={d => d.icon}
+        data={
+          [
+            { title: "Engagement", component: (<div>Engagement panel<div>another component</div></div>), icon: "comment" },
+            { title: "Influence", component: (<div>Influence panel<div>hello component</div></div>), icon: "plus" }
+          ]
+        }
       />
       <MultiTopic
         title="Key Themes"

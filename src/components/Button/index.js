@@ -7,7 +7,7 @@ function Button(props) {
   const { className, children, onClick } = props;
   return (
     <button 
-      className={classnames(className, styles.main)}
+      className={classnames(styles.main, className)}
       onClick={onClick}
     >
       {children}
@@ -15,18 +15,18 @@ function Button(props) {
   );
 }
 
+export default Button;
+
 function SelectableButton(props) {
-  const { active } = props;
+  const { className, active } = props;
   const activeCls = active ? styles.active : "";
   return (
     <Button 
-      className={classnames(styles.selectable, activeCls)}
+      className={classnames(styles.selectable, activeCls, className)}
       {...props}
     />
   );
 }
-
-export default Button;
 
 export {
   SelectableButton

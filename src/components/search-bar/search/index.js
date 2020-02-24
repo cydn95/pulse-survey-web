@@ -26,11 +26,12 @@ function SearchInput(props) {
         value={value}
         onChange={onChange}
       />
-      <FontAwesomeIcon
+      {value !== "" && <FontAwesomeIcon
         onClick={onCancel}
         className={styles["cross-icon"]}
         icon={faTimes}
       />
+      }
     </label>
   )
 }
