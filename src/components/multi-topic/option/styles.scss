@@ -21,13 +21,11 @@ $editable-color: rgb(16, 122, 239);
         color: $editable-color !important;
       }
     }
-    .bullet {
-      border-color: $editable-color; 
-    }
   }
 }
 
 .data {
+  flex: 1;
   > *:not(:first-child) {
     margin-top: 10px;
   }
@@ -39,7 +37,6 @@ $editable-color: rgb(16, 122, 239);
   width: 20px;
   height: 20px;
   position: relative;
-  border-color: $color;
   &::after {
     content: "";
     display: block;
@@ -49,7 +46,6 @@ $editable-color: rgb(16, 122, 239);
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    border-color: inherit;
     @include round;
   }
 }
