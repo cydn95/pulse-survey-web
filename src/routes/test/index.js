@@ -9,11 +9,13 @@ import AssessmentSummary from "Components/assessment";
 import AvatarList from "Components/avatar";
 import SearchBar from "Components/search-bar";
 import Accordion from "Components/accordion";
+import DropDown from "Components/dropdown";
 
 import { ResponsiveDonut as Donut } from 'Components/Donut';
 import SurveyLineGraph from 'Components/SurveyLineGraph';
 
 import styles from './styles.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Test() {
   const [percent, setPercent] = useState(0);
@@ -106,6 +108,18 @@ function Test() {
       <Checkbox checked={sel2} onChange={setsel2}>Compartmentalize</Checkbox>
       <Radio name="a" value="1" checked={radioValue === "1"} onChange={setRadioValue}>Option 1</Radio>
       <Radio name="a" value="2" checked={radioValue === "2"} onChange={setRadioValue}>Option 2</Radio>
+      <DropDown
+        data={[
+          { key: 1, title: "Option 1" },
+          { key: 2, title: "Option 2" },
+          { key: 3, title: "Option 3" }
+        ]}
+        keySelector={d => d.key}
+        valueSelector={d => d.title}
+        onSelect={d => alert(JSON.stringify(d))}
+      >
+        SH Only
+      </DropDown>
       <SearchBar 
         searchKey={searchKey} 
         data={search_data} 

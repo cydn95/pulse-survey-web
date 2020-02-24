@@ -46,7 +46,9 @@ function Accordion(props) {
               <FontAwesomeIcon className={styles["icon-arrow"]} icon={faAngleRight} />
             </div>
             <div className={styles.component}>
-              <FontAwesomeIcon className={styles.icon} icon={iconSelector(d)} />
+              <div className={styles.icon}>
+                <FontAwesomeIcon className={styles.icon} icon={iconSelector(d)} />
+              </div>
               <div className={styles["component-content"]}>
                 {componentSelector(d)}
               </div>

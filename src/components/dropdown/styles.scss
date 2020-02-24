@@ -1,0 +1,34 @@
+@import "../Button/defaults.scss";
+
+$default-color: #7fcdc1;
+
+.main {
+  position: relative;
+  display: inline-block;
+  &:focus {
+    outline: none;
+  }
+}
+
+.dropdownlist {
+  &:not(.open) {
+    display: none;
+  }
+
+  position: absolute;
+  color: white;
+}
+
+.icon {
+  margin-left: 10px;
+}
+
+.option {
+  padding: 10px;
+  min-width: 100px;
+  cursor: pointer;
+  background: $default-color;
+  &:hover {
+    background: darken($default-color, 20%);
+  }
+}
