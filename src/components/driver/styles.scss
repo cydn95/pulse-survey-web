@@ -32,6 +32,8 @@
 .driver-panel {
   display: flex;
   overflow-x: auto;
+  scrollbar-width: none; /* Firefox 64 */
+
   &::-webkit-scrollbar {
     /* Safari and Chrome */
     display: none;
