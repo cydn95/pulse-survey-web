@@ -1,0 +1,10 @@
+.main {
+  >*:not(:first-child) {
+    margin-top: 10px;
+  }
+}
+.suggestion-list {
+  >*:not(:first-child) {
+    margin-top: 10px;
+  }
+}

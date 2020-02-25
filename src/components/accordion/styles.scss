@@ -1,0 +1,77 @@
+@mixin spacer {
+  >*:not(:first-child) {
+    margin-left: 10px;
+  }
+}
+
+.header {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  font-size: 16px;
+  border-top: 1px solid silver;
+  @include spacer;
+  .header-content {
+    flex: 1;
+  }
+}
+
+.chunk {
+  &.open .header {
+    border-bottom: 1px solid silver;
+  }
+  &:last-child {
+    border-bottom: 1px solid silver;
+  }
+  &:not(.open):not(:hover) {
+    opacity: 0.6;
+  }
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #545666;
+  color: white;
+  border-radius: 50%;
+  path {
+    stroke-width: 40px;
+    stroke: white;
+    fill: none;
+  }
+}
+
+.icon-arrow {
+  transition: transform .4s;
+}
+
+.open .icon-arrow {
+  transform: rotateZ(90deg);
+}
+
+.open .component {
+  height: 100%;
+  display: flex;
+  position: static;
+}
+  
+.component {
+  transition: height 1s;
+  display: none;
+  height: 0px;
+  @include spacer;
+  align-items: center;
+  padding: 10px;
+  .icon {
+    visibility: hidden;
+  }
+}
+
+.component-content {
+  flex: 1;
+}

@@ -34,6 +34,10 @@
 .driver-panel {
   display: flex;
   overflow-x: auto;
+  &::-webkit-scrollbar {
+    /* Safari and Chrome */
+    display: none;
+  }
   > div:not(:first-child) {
     margin-left: 20px;
   }

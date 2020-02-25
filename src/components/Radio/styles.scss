@@ -17,7 +17,7 @@ $checked-color: #e66864;
   position: relative;
   height: 15px;
   width: 15px;
-  border: 1px solid $unchecked-color;
+  border: 1px solid currentColor;
   border-radius: 50%;
 }
 
@@ -26,9 +26,8 @@ $checked-color: #e66864;
 }
 
 .checked {
-  color: black;
   .checkmark {
-    border: 5px solid $checked-color;
+    border: 5px solid currentColor;
   }
 }
 
