@@ -68,7 +68,7 @@ function renderGraph(node, props) {
       if (sentiment === 'sad') {
         return `M ${-eyeDist * 0.6} 0 H ${eyeDist * 0.6}`
       }
-      return `M ${-eyeDist * 0.6} 0 Q 0 ${innerRadius * 0.2} ${eyeDist * 0.6} 0`
+      return `M ${-eyeDist * 0.6} 0 Q 0 ${innerRadius * 0.2} ${eyeDist * 0.6} 0 L ${-eyeDist * 0.6} 0`
     })
 
   // centerize the face
