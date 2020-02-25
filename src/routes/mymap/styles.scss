@@ -1,0 +1,32 @@
+.map-container {
+  width: 100%;
+  min-height: calc(100vh - 118px);
+  border-radius: 10px;
+  // background-color: #fff;
+}
+
+.map-title-section {
+  height: 57px;
+  padding-top: 13px;
+  border-bottom: 1px solid #eee;
+}
+
+.map-content-section {
+
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+  height: calc(100vh - 188px);
+
+  .map-content {
+    width: 66.6666%;
+    border-right: 1px solid #eee;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  
+  .map-stakeholder {
+    width: 33.3334%;
+    height: 100%;
+  }
+}

@@ -1,0 +1,24 @@
+.kl-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  height: 100%;
+}
+
+.kl-chart-container {
+  /* position: absolute; */
+  flex: 1;
+  height: 88%;
+  width: 100%;
+}
+
+.kl-chart-container, .kl-timebar-container, .kl-toolbar {
+  background-color: #fff;
+  color: #666;
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+}
+
+.chart-wrapper {
+    height: 100%;
+}

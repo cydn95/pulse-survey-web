@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import KeyLinesController from './klControllers/KeyLinesController';
 
+import styles from './styles.scss';
+
 export default class KGraph extends Component {
 
     /**
@@ -9,9 +11,6 @@ export default class KGraph extends Component {
      */
     constructor(props) {
         super(props);
-        // console.log('************************');
-        // console.log(props);
-        // console.log('************************');
         this.state = {};
         // (changes) => { this.props.setParentState(changes);}
         this.keyLinesController = new KeyLinesController(
@@ -57,9 +56,9 @@ export default class KGraph extends Component {
 
     render() {
         return (
-            <div className="kl-wrapper">
-                <div className="chart-wrapper demo-cols">
-                    <div ref={el => this.chartContainer = el} className="kl-chart-container" id='kl'>
+            <div className={ styles['kl-wrapper'] }>
+                <div className={ styles['chart-wrapper demo-cols'] }>
+                    <div ref={el => this.chartContainer = el} className={ styles['kl-chart-container'] } id='kl'>
                     </div>
                 </div>
             </div>
