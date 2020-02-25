@@ -1,0 +1,53 @@
+$center-color: #f8f8f8;
+$empty-color: rgb(210, 210, 210);
+
+$fillStart: #e66864;
+$fillEnd: #00b7a2;
+$fillMid: #53A7F5;
+
+.main {
+  position: relative;
+  width: 200px;
+  height: 200px;
+
+  &.smooth {
+    background: conic-gradient($fillStart, $fillMid, $fillEnd);
+  }
+  
+  &.low {
+    background: $fillStart;
+  }
+  &.medium {
+    background: $fillMid;
+  }
+  &.high {
+    background: $fillEnd;
+  }
+
+  border-radius: 50%;
+}
+
+.center-mask {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: $center-color;
+}
+
+.mask-greater-than-180 {
+  height: 100%;
+  background: $empty-color;
+  border-radius: 50%;
+  clip-path: inset(0 50% 0 0);
+}
+
+.slider {
+  height: 100%;
+  border-radius: 50%;
+  clip-path: inset(0 0 0 50%);
+  background: $empty-color;
+}

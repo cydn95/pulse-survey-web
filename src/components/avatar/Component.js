@@ -8,6 +8,8 @@ import {
   faAngleRight, 
 } from '@fortawesome/free-solid-svg-icons';
 
+import CircularProgressBar from "../circular-progress-bar";
+
 import styles from './styles.scss';
 
 function AvatarComponent(props) {
@@ -17,11 +19,13 @@ function AvatarComponent(props) {
     description,
     onClick,
     profilePicUrl,
+    userProgress,
   } = props;
 
   return (
     <div onClick={() => onClick(username)} className={classnames(styles["avatar-component"], className)}>
       <div className={styles.avatar}>
+        <CircularProgressBar className={styles.progress} percent={userProgress} />
         <img src={profilePicUrl} />
       </div>
       <div className={styles.info}>
@@ -41,6 +45,10 @@ AvatarComponent.defaultProps = {
 
 AvatarComponent.propTypes = {
   onClick: PropTypes.func,
+  username: PropTypes.string.isRequired,
+  profilePicUrl: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  userProgress: PropTypes.number.isRequired,
 }
 
 export default AvatarComponent;

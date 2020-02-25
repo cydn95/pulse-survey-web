@@ -84,11 +84,19 @@ function Test() {
       username: "Jane Doe", 
       description: "Topsides Delivery Manager​ Topsides Team BP",
       profilePicUrl: "/assets/img/profile-pic-l-2.jpg" ,
+      userProgress: 30,
     },
     { 
       username: "Uttam Khanal", 
       description: "I am a software engineer.",
       profilePicUrl: "/assets/img/profile-pic-l-2.jpg",
+      userProgress: 60,
+    },
+    { 
+      username: "User 3", 
+      description: "halfway to the right",
+      profilePicUrl: "/assets/img/profile-pic-l-2.jpg",
+      userProgress: 90,
     },
   ]
 
