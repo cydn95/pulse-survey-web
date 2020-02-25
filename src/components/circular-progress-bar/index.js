@@ -52,6 +52,7 @@ function CircularProgressBar(props) {
 
 CircularProgressBar.defaultProps = {
   percent: 0,
+  // conic gradient vs discrete progress
   style: 'smooth',
 }
 
