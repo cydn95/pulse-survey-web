@@ -52,6 +52,24 @@
   
   .map-stakeholder {
     width: 33.3334%;
+    padding: 15px;
     height: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media only screen and (max-width: 630px) {
+  .map-content-section {
+
+    flex-flow: column;
+    
+    .map-content {
+      width: 100%;
+      border-right: none;
+    }
+    
+    .map-stakeholder {
+      width: 100%;
+    }
   }
 }

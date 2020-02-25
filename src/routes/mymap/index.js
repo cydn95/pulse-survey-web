@@ -32,12 +32,21 @@ import {
 	NewStakeholder
 } from "Components/Survey";
 
+import SearchBar from "Components/search-bar";
+
 import { Droppable } from 'react-drag-and-drop'
 
 import ReactLoading from 'react-loading';
 
 import styles from "./styles.scss";
 
+const searchKey = "oh";
+
+const search_data = [
+	{ firstName: "John", lastName: "Doe", description: "Topsides Delivery Manager " },
+	{ firstName: "James", lastName: "Doe", description: "Topsides Delivery Manager " },
+];
+	
 class MyMap extends React.Component {
 
 	constructor(props) {
@@ -62,7 +71,9 @@ class MyMap extends React.Component {
 			userList: [],
 			shCategoryList: [],
 			mapSaveLoading: false,
-			mapGetLoading: false
+			mapGetLoading: false,
+
+			search: ''
 		};
 
 		this.defaultStakeholder = {
@@ -461,6 +472,11 @@ class MyMap extends React.Component {
 						}
 					</Droppable>
 					<div className={ styles['map-stakeholder'] }>
+						<SearchBar
+							searchKey={searchKey} 
+							data={search_data} 
+							addNewStakeholder={() => {}}
+						/>
 					</div>
 				</div>
 			</div>

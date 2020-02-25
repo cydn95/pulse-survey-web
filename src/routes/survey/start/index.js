@@ -53,7 +53,7 @@ class Start extends Component {
             <Colxx xs="12">
               { surveyList.length > 0 && skipQuestionList.length > 0 && 
                 <Question history={this.props.history} skipQuestionList={skipQuestionList} /> }
-              {surveyList.length ===0 && <h1>Loading...</h1>}
+              {surveyList.length ===0 && <h1></h1>}
             </Colxx>
           </div>
         </div>
