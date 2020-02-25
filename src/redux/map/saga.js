@@ -13,14 +13,14 @@ import {
 } from './actions';
 
 const getKMapDataAysnc = async (userId, projectId) =>
-    await myMapAPI(userId, projectId)
+    await myMapAPI(userId, 1)   // set projectId = 1 - temporarily for testing
         .then(data => data)
         .catch(error => error);
 
 function* getKMapData({ payload }) {
     
     const { userId, projectId } = payload;
-
+    
 	try {
 		const result = yield call(getKMapDataAysnc, userId, projectId);
                 
