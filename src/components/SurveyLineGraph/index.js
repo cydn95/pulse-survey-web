@@ -17,28 +17,24 @@ function SurveyLineGraph(props) {
 
   return (
     <div className={classnames(styles.main)}>
-      <div className={styles["answer-self"]}>
-        <label>Your Answers</label>
-        <LineGraph
-          className={styles["line-graph-self"]}
-          flipped
-          keySelector={keySelector}
-          labelSelector={questionNameSelector}
-          valueSelector={yourAnswerSelector}
-          data={data}
-        />
-      </div>
+      <label className={styles["self-title"]}>Your Answers</label>
+      <LineGraph
+        className={styles["line-graph-self"]}
+        flipped
+        keySelector={keySelector}
+        labelSelector={questionNameSelector}
+        valueSelector={yourAnswerSelector}
+        data={data}
+      />
       <div className={styles.separator} />
-      <div className={styles["answer-team"]}>
-        <label>Team's Answers</label>
-        <LineGraph
-          className={styles["line-graph-team"]}
-          keySelector={keySelector}
-          labelSelector={questionNameSelector}
-          valueSelector={teamsAnswerSelector}
-          data={data}
-        />
-      </div>
+      <label className={styles["team-title"]}>Team's Answers</label>
+      <LineGraph
+        className={styles["line-graph-team"]}
+        keySelector={keySelector}
+        labelSelector={questionNameSelector}
+        valueSelector={teamsAnswerSelector}
+        data={data}
+      />
     </div>
   );
 }

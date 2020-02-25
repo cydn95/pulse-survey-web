@@ -1,6 +1,14 @@
 .main {
-  display: flex;
-  height: 200px;
+  display: grid;
+  width: 100%;
+  grid-template-areas:
+    "self-title separator team-title"
+    "self-graph separator team-graph";
+
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: auto 1fr;
+
+  gap: 5px;
 
   label {
     font-size: 18px;
@@ -9,7 +17,17 @@
 
 }
 
+.self-title {
+  text-align: right;
+  grid-area: self-title;
+}
+
+.team-title {
+  grid-area: team-title;
+}
+
 .separator {
+  grid-area: separator;
   border: 1px solid #e4e4e4;
 }
 
@@ -38,8 +56,18 @@
   }
 }
 
+.line-graph {
+
+  &-self,
+  &-team {
+    height: 200px;
+  }
+}
+
 .line-graph-self {
-  flex: 1;
+  grid-area: self-graph;
+  overflow: hidden;
+
   text {
     user-select: none;
     pointer-events: none;
@@ -55,7 +83,9 @@
 }
 
 .line-graph-team {
-  flex: 1;
+  grid-area: team-graph;
+  overflow: hidden;
+
   text {
     user-select: none;
     pointer-events: none;

@@ -127,7 +127,7 @@ const LineGraph = React.forwardRef((props, ref_prop) => {
   return (
     <div
       ref={ref_prop}
-      className={classnames(className, styles.main)}
+      className={classnames(styles.main, className)}
     >
       <div className={styles.tooltip} />
       <svg ref={ref} />
