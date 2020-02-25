@@ -10,6 +10,9 @@ $checked-color: #e66864;
   &.checked {
     color: $checked-color;
   }
+  input {
+    display: none;
+  }
 }
 
 .checkmark {

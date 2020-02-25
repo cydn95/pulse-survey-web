@@ -11,6 +11,12 @@ $editable-color: rgb(16, 122, 239);
 .main {
   color: $color;
   display: flex;
+  input {
+    background: none;
+    &:focus {
+      outline: none;
+    }
+  }
   > div:not(:first-child) {
     margin-left: 20px;
   }

@@ -6,6 +6,11 @@ $unchecked-color: rgb(119, 120, 133);
   align-items: center;
   cursor: pointer;
   color: $unchecked-color;
+
+  input {
+    display: none;
+  }
+
 }
 
 .checkmark {
@@ -25,6 +30,7 @@ $unchecked-color: rgb(119, 120, 133);
 
 .checked {
   color: black;
+
   .checkmark:after {
     content: "";
     left: 50%;
