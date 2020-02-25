@@ -23,8 +23,8 @@ function renderGraph(node, props) {
   svg.attr('width', bounds.width)
     .attr('height', bounds.height)
 
-  const padding = 20;
-  const hoverRadiusIncrease = 20;
+  const padding = bounds.width < 400 ? 5 : 20;
+  const hoverRadiusIncrease = bounds.width < 400 ? 5 : 20;
   const radius = Math.min(bounds.height, bounds.width) / 2 - 2 * (padding + hoverRadiusIncrease);
   const hoverRadius = radius + hoverRadiusIncrease;
   const innerRadius = radius * 0.5;
@@ -68,7 +68,7 @@ function renderGraph(node, props) {
       if (sentiment === 'sad') {
         return `M ${-eyeDist * 0.6} 0 H ${eyeDist * 0.6}`
       }
-      return `M ${-eyeDist * 0.6} 0 Q 0 10 ${eyeDist * 0.6} 0`
+      return `M ${-eyeDist * 0.6} 0 Q 0 ${innerRadius * 0.2} ${eyeDist * 0.6} 0`
     })
 
   // centerize the face

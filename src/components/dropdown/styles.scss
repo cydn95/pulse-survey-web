@@ -1,7 +1,5 @@
 @import "../Button/defaults.scss";
 
-$default-color: #7fcdc1;
-
 .main {
   position: relative;
   display: inline-block;
@@ -34,6 +32,9 @@ $default-color: #7fcdc1;
   background: $default-color;
 
   &:hover {
+    background: darken($default-color, 20%);
+  }
+  &.selected {
     background: darken($default-color, 20%);
   }
 }

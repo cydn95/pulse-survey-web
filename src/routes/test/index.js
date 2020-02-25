@@ -10,15 +10,15 @@ import AvatarList from "Components/avatar";
 import SearchBar from "Components/search-bar";
 import Accordion from "Components/accordion";
 import DropDown from "Components/dropdown";
+import CircularProgressbar from "Components/circular-progress-bar";
 
 import { ResponsiveDonut as Donut } from 'Components/Donut';
 import SurveyLineGraph from 'Components/SurveyLineGraph';
 
 import styles from './styles.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Test() {
-  const [percent, setPercent] = useState(0);
+  const [percent, setPercent] = useState(30);
   const [sel, setsel] = useState(false);
   const [sel2, setsel2] = useState(false);
   const [radioValue, setRadioValue] = useState("1");
@@ -126,11 +126,19 @@ function Test() {
       username: "Jane Doe", 
       description: "Topsides Delivery Manager​ Topsides Team BP",
       profilePicUrl: "/assets/img/profile-pic-l-2.jpg" ,
+      userProgress: 30,
     },
     { 
       username: "Uttam Khanal", 
       description: "I am a software engineer.",
       profilePicUrl: "/assets/img/profile-pic-l-2.jpg",
+      userProgress: 60,
+    },
+    { 
+      username: "User 3", 
+      description: "halfway to the right",
+      profilePicUrl: "/assets/img/profile-pic-l-2.jpg",
+      userProgress: 90,
     },
   ]
 
@@ -142,10 +150,13 @@ function Test() {
     { firstName: "James", lastName: "Doe", description: "Topsides Delivery Manager " },
   ];
 
+  const [selectedItem, setSelectedItem] = useState(null)
+
   return (
     <div>
       <h2>Components</h2>
       <Slider percent={percent} onChange={setPercent} />
+      <CircularProgressbar percent={percent} />
       <Checkbox checked={sel} onChange={setsel}>OK</Checkbox>
       <Checkbox checked={sel2} onChange={setsel2}>Compartmentalize</Checkbox>
       <Radio name="a" value="1" checked={radioValue === "1"} onChange={setRadioValue}>Option 1</Radio>
@@ -158,11 +169,12 @@ function Test() {
         ]}
         keySelector={d => d.key}
         valueSelector={d => d.title}
-        onSelect={d => alert(JSON.stringify(d))}
+        selectedItem={selectedItem}
+        onSelect={setSelectedItem}
       >
         SH Only
       </DropDown>
-      <SearchBar 
+      <SearchBar
         searchKey={searchKey} 
         data={search_data} 
         addNewStakeholder={() => alert('add new stakeholder')}

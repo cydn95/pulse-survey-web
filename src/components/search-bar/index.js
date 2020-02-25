@@ -9,9 +9,6 @@ import SuggestionOption from './suggestion-option';
 import styles from './styles.scss';
 
 const getSuggestions = (data, filter) => {
-  if (filter === "") {
-    return []
-  }
   return data.filter(d => (d.firstName + " " + d.lastName).indexOf(filter) !== -1)
 }
 
