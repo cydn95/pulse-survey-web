@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import PropTypes from "prop-types";
 import Button from 'Components/Button';
+
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -13,6 +15,7 @@ function DropDown(props) {
     valueSelector,
     onSelect,
     data,
+    selectedItem,
     children
   } = props;
 
@@ -46,8 +49,12 @@ function DropDown(props) {
       </Button>
       <div className={classnames(styles.dropdownlist, openCls)}>
         {
-          data.map(d => (
-            <div key={keySelector(d)} className={styles.option} onClick={() => onSelect(d)}>
+          data.map((d, i) => (
+            <div 
+              key={keySelector(d, i)} 
+              className={classnames(styles.option, selectedItem && keySelector(d) === keySelector(selectedItem) ? styles.selected : null)} 
+              onClick={() => onSelect(d)}
+              >
               {valueSelector(d)}
             </div>
           ))
@@ -57,4 +64,18 @@ function DropDown(props) {
   )
 }
 
-export default DropDown
+DropDown.defaultProps = {
+  selectedItem: null,
+  keySelector: (d, i) => i,
+  data: [],
+}
+
+DropDown.propTypes = {
+  selectedItem: PropTypes.any,
+  keySelector: PropTypes.func.isRequired,
+  valueSelector: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  data: PropTypes.arrayOf(PropTypes.any),
+}
+
+export default DropDown;

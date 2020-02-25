@@ -36,4 +36,7 @@ $default-color: #7fcdc1;
   &:hover {
     background: darken($default-color, 20%);
   }
+  &.selected {
+    background: darken($default-color, 20%);
+  }
 }
