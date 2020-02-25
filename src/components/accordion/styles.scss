@@ -54,19 +54,23 @@
   transform: rotateZ(90deg);
 }
 
-.open .component {
-  height: 100%;
-  display: flex;
-  position: static;
-}
-  
-.component {
+.content-wrapper {
   transition: height 1s;
-  display: none;
-  height: 0px;
+  overflow: hidden;
+}
+
+.chunk:not(.open) {
+  .content-wrapper {
+    height: 0px;
+  }
+}
+
+.component {
   @include spacer;
+  display: flex;
   align-items: center;
   padding: 10px;
+
   .icon {
     visibility: hidden;
   }
