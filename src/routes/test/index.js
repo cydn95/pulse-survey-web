@@ -76,6 +76,48 @@ function Test() {
       percentage: 50,
       progress: 1,
       icon: "comment",
+    },
+    {
+      driverId: 3,
+      driverName: "Influence",
+      percentage: 90,
+      progress: 2,
+      icon: "user",
+    }, 
+    {
+      driverId: 4,
+      driverName: "Interest",
+      percentage: 50,
+      progress: 1,
+      icon: "comment",
+    },
+    {
+      driverId: 3,
+      driverName: "Influence",
+      percentage: 90,
+      progress: 2,
+      icon: "user",
+    }, 
+    {
+      driverId: 4,
+      driverName: "Interest",
+      percentage: 50,
+      progress: 1,
+      icon: "comment",
+    },
+    {
+      driverId: 3,
+      driverName: "Influence",
+      percentage: 90,
+      progress: 2,
+      icon: "user",
+    }, 
+    {
+      driverId: 4,
+      driverName: "Interest",
+      percentage: 50,
+      progress: 1,
+      icon: "comment",
     }
   ]
 

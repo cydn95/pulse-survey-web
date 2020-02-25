@@ -57,7 +57,7 @@ export default class KGraph extends Component {
     render() {
         return (
             <div className={ styles['kl-wrapper'] }>
-                <div className={ styles['chart-wrapper demo-cols'] }>
+                <div className={ styles['chart-wrapper'] }>
                     <div ref={el => this.chartContainer = el} className={ styles['kl-chart-container'] } id='kl'>
                     </div>
                 </div>
