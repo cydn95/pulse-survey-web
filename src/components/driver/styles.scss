@@ -3,23 +3,29 @@
   border-radius: 10px;
   cursor: pointer;
   background: white;
+
   &.selected {
     background: #77C8BB;
     color: white;
   }
+
   &.left {
     display: flex;
-    > *:not(:first-child) {
+
+    >*:not(:first-child) {
       margin-left: 10px;
     }
   }
+
   &:not(.selected) {
     .Low {
       color: red;
     }
+
     .High {
       color: rgb(97, 178, 160);
     }
+
     .Medium {
       color: rgb(86, 162, 253);
     }
@@ -31,7 +37,8 @@
 
 .driver-panel {
   overflow-x: auto;
-  scrollbar-width: none; /* Firefox 64 */
+  scrollbar-width: none;
+  /* Firefox 64 */
 
   &::-webkit-scrollbar {
     /* Safari and Chrome */
@@ -41,7 +48,41 @@
 
 .container {
   display: flex;
-  > div:not(:first-child) {
+  width: min-content;
+
+  >div:not(:first-child) {
     margin-left: 20px;
+  }
+}
+
+.main {
+  position: relative;
+
+  &:hover {
+    .arrow.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}
+
+.arrow {
+  opacity: 0;
+  transition: opacity 1s;
+  visibility: hidden;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  color: grey;
+
+  &.arrowleft {
+    left: 0;
+  }
+
+  &.arrowright {
+    right: 0;
   }
 }
