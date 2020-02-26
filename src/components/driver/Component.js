@@ -50,12 +50,16 @@ DriverComponent.defaultProps = {
   onClick: () => null,
   selected: false,
   iconAlign: "top",
+  percentage: 0,
 }
 
 DriverComponent.propTypes = {
   onClick: PropTypes.func,
   selected: PropTypes.bool,
   iconAlign: PropTypes.string,
+  driverId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  driverName: PropTypes.string.isRequired,
+  progress: PropTypes.number,
 }
 
 export default DriverComponent;

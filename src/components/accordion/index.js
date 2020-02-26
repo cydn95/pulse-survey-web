@@ -121,12 +121,19 @@ function Accordion(props) {
 
 }
 
+Accordion.defaultProps = {
+  selectedItem: null,
+  className: null,
+}
+
 Accordion.propTypes = {
   data: PropTypes.arrayOf(PropTypes.any).isRequired,
   keySelector: PropTypes.func.isRequired,
   headerSelector: PropTypes.func.isRequired,
   iconSelector: PropTypes.func.isRequired,
   componentSelector: PropTypes.func.isRequired,
+  selectedItem: PropTypes.any,
+  className: PropTypes.string,
 }
 
 export default Accordion;
