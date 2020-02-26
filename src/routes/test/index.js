@@ -77,8 +77,13 @@ function Test() {
       percentage: 50,
       progress: 1,
       icon: "comment",
-    }
+    },
+    
   ]
+
+  for (let i = 0; i < 100; ++i) {
+    driverdata.push(driverdata[0])
+  }
 
   const user_info = [
     { 

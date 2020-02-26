@@ -30,7 +30,6 @@
 }
 
 .driver-panel {
-  display: flex;
   overflow-x: auto;
   scrollbar-width: none; /* Firefox 64 */
 
@@ -38,6 +37,10 @@
     /* Safari and Chrome */
     display: none;
   }
+}
+
+.container {
+  display: flex;
   > div:not(:first-child) {
     margin-left: 20px;
   }
