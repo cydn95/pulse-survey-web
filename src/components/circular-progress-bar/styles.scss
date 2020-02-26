@@ -1,25 +1,32 @@
-$center-color: #f8f8f8;
-$empty-color: rgb(210, 210, 210);
+$center-color: #f8f8f8 !default;
+$empty-color: rgb(210, 210, 210) !default;
 
-$fillStart: #e66864;
-$fillEnd: #00b7a2;
-$fillMid: #53A7F5;
+$fillStart: #e66864 !default;
+$fillEnd: #00b7a2 !default;
+$fillMid: #53A7F5 !default;
+
+$width: 200px !default;
+$height: 200px !default;
+$inner-width: 80% !default;
+$inner-height: 80% !default;
 
 .main {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: $width;
+  height: $height;
 
   &.smooth {
     background: conic-gradient($fillStart, $fillMid, $fillEnd);
   }
-  
+
   &.low {
     background: $fillStart;
   }
+
   &.medium {
     background: $fillMid;
   }
+
   &.high {
     background: $fillEnd;
   }
@@ -29,8 +36,8 @@ $fillMid: #53A7F5;
 
 .center-mask {
   position: absolute;
-  width: 80%;
-  height: 80%;
+  width: $inner-width;
+  height: $inner-height;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -39,15 +46,29 @@ $fillMid: #53A7F5;
 }
 
 .mask-greater-than-180 {
+  position: absolute;
+  width: 100%;
   height: 100%;
   background: $empty-color;
   border-radius: 50%;
-  clip-path: inset(0 50% 0 0);
+  clip: rect(0, #{$width / 2}, $height, 0);
 }
 
-.slider {
+.slider-wrapper {
+  position: absolute;
+  width: 100%;
   height: 100%;
-  border-radius: 50%;
-  clip-path: inset(0 0 0 50%);
-  background: $empty-color;
+
+  &.clip360overflow {
+    clip: rect(0, #{$width / 2}, $height, 0);
+  }
+
+  .slider {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    clip: rect(0, $width, $height, #{$width / 2});
+    background: $empty-color;
+  }
 }
