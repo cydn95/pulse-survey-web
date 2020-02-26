@@ -10,6 +10,48 @@ import {
 
 import styles from './styles.scss';
 
+function AccordionComponent(props) {
+  const {
+    icon, 
+    children,
+    isSelected,
+  } = props;
+
+  const ref = useRef(null)
+
+  useEffect(() => {
+    if (!isSelected) {
+      // hide the element content ( for border ) first time its rendered
+      // and its not selected
+      ref.current.style.visibility = "hidden";
+    }
+  }, [])
+
+  return (
+    <div
+      className={styles["content-wrapper"]}
+      ref={ref}
+      onTransitionEnd={(event) => {
+        const node = event.currentTarget
+        if (node.style.height === "0px") {
+          node.style.visibility = "hidden";
+        } else {
+          node.style.height = "auto";
+        }
+      }}
+      >
+      <div className={styles.component}>
+        <div className={styles.icon}>
+          <FontAwesomeIcon className={styles.icon} icon={icon} />
+        </div>
+        <div className={styles["component-content"]}>
+          {children}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function Accordion(props) {
   const {
     className,
@@ -22,15 +64,15 @@ function Accordion(props) {
   } = props;
 
   const [selected, setSelected] = useState(selectedItem);
-  const selectedRef = useRef(null);
 
   const changeSelection = (event, d) => {
     const collapseNode = (node) => {
       // need to remove auto height, otherwise transition doesnot work
-      node.style.height = node.scrollHeight + "px";
+      node.style.height = node.clientHeight + "px";
+      // give sufficient time for height change
       setTimeout(() => {
         node.style.height = 0 + "px";
-      })
+      }, 100)
     }
     if (keySelector(d) === selected) {
       collapseNode(event.currentTarget.nextSibling)
@@ -47,13 +89,12 @@ function Accordion(props) {
         node = node.nextSibling;
       }
       const cur_node = event.currentTarget.nextSibling;
-      const expandedHeight = cur_node.scrollHeight;
+      cur_node.style.visibility = "visible";
+      const expandedHeight = cur_node.firstChild.clientHeight;
       cur_node.style.height = expandedHeight + "px";
       setSelected(keySelector(d))
     }
   }
-
-  const selectedProps = { ref: selectedRef }
 
   return (
     <div
@@ -69,19 +110,9 @@ function Accordion(props) {
               <div className={styles["header-content"]}>{headerSelector(d)}</div>
               <FontAwesomeIcon className={styles["icon-arrow"]} icon={faAngleRight} />
             </div>
-
-            <div {...(keySelector(d) === selected ? selectedProps : {})} className={styles["content-wrapper"]}>
-              <div className={styles.component}>
-                <div className={styles.icon}>
-                  <FontAwesomeIcon className={styles.icon} icon={iconSelector(d)} />
-                </div>
-                <div className={styles["component-content"]}>
-                  {componentSelector(d)}
-                  <div className={styles["component-content"]}>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <AccordionComponent isSelected={keySelector(d) === selected} icon={iconSelector(d)}>
+              {componentSelector(d)}
+            </AccordionComponent>
           </div>
         ))
       }

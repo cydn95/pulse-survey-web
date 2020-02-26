@@ -192,7 +192,6 @@ function Test() {
         className={styles.panel} 
         data={user_info} 
       />
-      <button onClick={() => setData([...data, { name: "Pie" + data.length + 1, count: Math.floor(Math.random() * 50 + 10) }])}>Add</button>
       <div className={styles['linegraph-container']}>
         <SurveyLineGraph
           keySelector={d => d.name}
@@ -202,6 +201,7 @@ function Test() {
           data={survey_data}
         />
       </div>
+      <button onClick={() => setData([...data, { name: "Pie" + data.length + 1, count: Math.floor(Math.random() * 50 + 10) }])}>Add</button>
       <button onClick={toggle}>Toggle Sentiment</button>
       <div className={styles['donut-container']}>
         <Donut
