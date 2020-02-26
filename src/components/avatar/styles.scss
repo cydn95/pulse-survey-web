@@ -28,14 +28,14 @@
 
 .avatar {
   @import "./avatar_vars";
-  width : $width;
-  height : $height;
+  width : $progress-width;
+  height : $progress-height;
   position: relative;
 
   img {
     border-radius: 50%;
-    width: $inner-width;
-    height: $inner-height;
+    width: $img-inner-width;
+    height: $img-inner-height;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
