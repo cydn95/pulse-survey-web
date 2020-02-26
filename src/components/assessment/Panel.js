@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import classnames from "classnames";
-import { PropTypes } from "prop-types";
+import PropTypes from "prop-types";
 
 import styles from './styles.scss';
 import AssessmentComponent from "./Component";
@@ -28,5 +28,14 @@ function SummaryPanel(props) {
   )
 }
 
-export default SummaryPanel;
+SummaryPanel.defaultProps = {
+  className: null,
+  data: []
+}
 
+SummaryPanel.propTypes = {
+  className: PropTypes.string,
+  data: PropTypes.arrayOf(PropTypes.any)
+}
+
+export default SummaryPanel;
