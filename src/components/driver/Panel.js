@@ -47,13 +47,24 @@ function DriverPanel(props) {
 
   }, [data, className, selectedDriver, dimensions])
 
+  let chevronScrollAction = null;
+  let scrollAmount = 0
+
+  // debounced scroll
   const scrollPanel = (direction) => {
+    if (chevronScrollAction) {
+      clearTimeout(chevronScrollAction)
+    }
     const sgn = direction === 'left' ? -1 : 1
-    const amount = root.current.clientWidth * 0.3 * sgn;
-    root.current.scrollBy({
-      left: amount,
-      behavior: 'smooth'
-    })
+    scrollAmount = 2 * scrollAmount + root.current.clientWidth * 0.3 * sgn;
+    chevronScrollAction = setTimeout(() => {
+      root.current.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth'
+      })
+      chevronScrollAction = null
+      scrollAmount = 0
+    }, 200)
   }
 
   let dragStart;
