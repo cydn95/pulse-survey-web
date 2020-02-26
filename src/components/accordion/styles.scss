@@ -18,8 +18,9 @@
 }
 
 .chunk {
-  &.open .header {
-    border-bottom: 1px solid silver;
+  .content-wrapper {
+    box-sizing: content-box;
+    border-top: 1px solid silver;
   }
   &:last-child {
     border-bottom: 1px solid silver;

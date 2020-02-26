@@ -18,15 +18,19 @@ function Accordion(props) {
     keySelector,
     headerSelector,
     componentSelector,
-    selectedChunk
+    selectedItem
   } = props;
 
-  const [selected, setSelected] = useState(selectedChunk);
+  const [selected, setSelected] = useState(selectedItem);
   const selectedRef = useRef(null);
 
   const changeSelection = (event, d) => {
     const collapseNode = (node) => {
-      node.style.height = 0 + "px";
+      // need to remove auto height, otherwise transition doesnot work
+      node.style.height = node.scrollHeight + "px";
+      setTimeout(() => {
+        node.style.height = 0 + "px";
+      })
     }
     if (keySelector(d) === selected) {
       collapseNode(event.currentTarget.nextSibling)
@@ -53,7 +57,6 @@ function Accordion(props) {
 
   return (
     <div
-      ref = {() => console.log('got ref')}
       className={classnames(styles.main, className)}
     >
       {
