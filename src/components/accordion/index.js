@@ -14,18 +14,9 @@ function AccordionComponent(props) {
   const {
     icon, 
     children,
-    isSelected,
   } = props;
 
   const ref = useRef(null)
-
-  useEffect(() => {
-    if (!isSelected) {
-      // hide the element content ( for border ) first time its rendered
-      // and its not selected
-      ref.current.style.visibility = "hidden";
-    }
-  }, [])
 
   return (
     <div
@@ -33,9 +24,7 @@ function AccordionComponent(props) {
       ref={ref}
       onTransitionEnd={(event) => {
         const node = event.currentTarget
-        if (node.style.height === "0px") {
-          node.style.visibility = "hidden";
-        } else {
+        if (node.style.height !== "0px") {
           node.style.height = "auto";
         }
       }}
@@ -89,7 +78,6 @@ function Accordion(props) {
         node = node.nextSibling;
       }
       const cur_node = event.currentTarget.nextSibling;
-      cur_node.style.visibility = "visible";
       const expandedHeight = cur_node.firstChild.clientHeight;
       cur_node.style.height = expandedHeight + "px";
       setSelected(keySelector(d))
