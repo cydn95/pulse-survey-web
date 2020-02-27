@@ -30,20 +30,24 @@ function DriverPanel(props) {
   } = props;
 
   const [selectedDriver, selectDriver] = useState(null)
-  const [arrowsVisible, setArrowsVisible] = useState(false)
+  const [leftArrowVisible, setLeftArrowVisible] = useState(false)
+  const [rightArrowVisible, setRightArrowVisible] = useState(false)
   const dimensions = useResize()
 
   const root = useRef(null)
   const container = useRef(null)
   const dragRef = useRef(null)
 
+  const updateArrowsVisibility = () => {
+    setLeftArrowVisible(root.current.scrollLeft > 0)
+    setRightArrowVisible(container.current.clientWidth - root.current.scrollLeft > root.current.clientWidth)
+  }
+
   useEffect(() => {
     if (!container.current || !root.current) {
       return
     }
-    const rootWidth = root.current.clientWidth;
-    const containerWidth = container.current.clientWidth;
-    setArrowsVisible(rootWidth < containerWidth)
+    updateArrowsVisibility()
 
   }, [data, className, selectedDriver, dimensions])
 
@@ -76,14 +80,13 @@ function DriverPanel(props) {
   return (
     <div className className={classnames(styles["main"])}>
       <div 
-        className={classnames(styles.arrow, styles.arrowleft, arrowsVisible ? styles.visible : styles.hidden)}
+        className={classnames(styles.arrow, styles.arrowleft, leftArrowVisible ? styles.visible : null)}
         onClick={() => scrollPanel('left')}
       >
         <FontAwesomeIcon icon={faChevronLeft} />
       </div>
       <div 
-        style={{ 'visibility': arrowsVisible }} 
-        className={classnames(styles.arrow, styles.arrowright, arrowsVisible ? styles.visible : styles.hidden)}
+        className={classnames(styles.arrow, styles.arrowright, rightArrowVisible ? styles.visible : null)}
         onClick={() => scrollPanel('right')}
       >
         <FontAwesomeIcon icon={faChevronRight} />
@@ -92,6 +95,7 @@ function DriverPanel(props) {
         ref={root}
         draggable
         className={classnames(styles["driver-panel"], className)}
+        onScroll={updateArrowsVisibility}
         onDragStart={e => {
           e.dataTransfer.setDragImage(dragRef.current, 0, 0);
           dragStart = e.pageX;
