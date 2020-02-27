@@ -26,6 +26,7 @@ function UploadImage() {
         <div className={styles['upload-image']}>
           <img src={imgSrc} />
           <Input
+            className={styles.input}
             type="file"
             name="image"
             ref={register({ required: true })}
