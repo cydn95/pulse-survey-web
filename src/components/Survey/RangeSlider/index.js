@@ -1,15 +1,6 @@
 import React, { Component } from "react";
-import { Row } from "reactstrap";
-
-import { Colxx } from "Components/CustomBootstrap";
-
 import SkipQuestion from "../SkipQuestion";
-
-import { SliderTooltip } from "Components/SliderTooltip";
-
 import Slider from 'Components/Slider';
-
-
 import styles from "./styles.scss";
 
 class RangeSlider extends Component {
@@ -18,7 +9,6 @@ class RangeSlider extends Component {
     super(props);
 
     const { question } = this.props
-    
     this.state = {
       answer: {
         ...question.answer

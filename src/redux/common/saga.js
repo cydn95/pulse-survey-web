@@ -148,7 +148,7 @@ function* getStakeholderList({ payload }) {
 
         let stakeholderList = [];
         if (result.status === 200) {
-            console.log(result.data);
+
             result.data.forEach(sh => {
                 if (sh.shCategory == null) return;
                 stakeholderList.push({

@@ -20,8 +20,9 @@ import { controlTypeText } from 'Constants/defaultValues'
 
 import {
   pageListSuccess,
-  submitSurveySuccess
-} from './actions';
+  submitSurveySuccess,
+  driverListSuccess
+} from '../actions';
 
 const getPageListAsync = async () =>
     await pageListAPI()
@@ -37,23 +38,28 @@ function* getPageList() {
    
   try {
     const result = yield call(getPageListAsync);
-
+console.log(result.data);
     if (result.status === 200) {
 
-      // get only page which have page_order
-      let validPageList = result.data.filter(item => {
-        return item.page_order && item.pages
+      // Get Available Driver List
+      let driverList = [];
+      result.data.forEach(driver => {
+        driverList.push({
+            driverId: driver.id,
+            driverName: driver.driverName,
+            icon: "user",
+            percentage: 0,
+            progress: 0
+        });
       });
+      yield put(driverListSuccess(driverList));
 
-      // Order by PageOrder Asscend
-      let orderedPageList = validPageList.sort(
-        (a, b) => (a.page_order.order > b.page_order.order) ? 1 : -1);
+      const questionList  = [ ...result.data ];
 
-      for (let i = 0; i < orderedPageList.length; i++) {
-        
-        for (let j = 0; j < orderedPageList[i].pages.ampagesetting.length; j++) {
-          orderedPageList[i].pages.ampagesetting[j] = {
-            ...orderedPageList[i].pages.ampagesetting[j].amQuestion,
+      for (let i = 0; i < questionList.length; i++) {
+        for (let j = 0; j < questionList[i].amquestion.length; j++) {
+          questionList[i].amquestion[j] = {
+            ...questionList[i].amquestion[j],
             answer: {
               pageIndex: i,
               questionIndex: j,
@@ -65,10 +71,10 @@ function* getPageList() {
               commentTags: "",
               user: 0,
               subjectUser: 0,
-              survey: orderedPageList[i].pages.ampagesetting[j].amQuestion.survey,
-              amQuestion: orderedPageList[i].pages.ampagesetting[j].amQuestion.id,
+              survey: questionList[i].amquestion[j].survey,
+              amQuestion: questionList[i].amquestion[j].id,
               type: 'me',
-              controlType: controlTypeText(orderedPageList[i].pages.ampagesetting[j].amQuestion.controlType)
+              controlType: controlTypeText(questionList[i].amquestion[j].controlType)
             }
           }
         }
@@ -77,7 +83,7 @@ function* getPageList() {
       const result_option = yield call(getOptionListAsync);
       if (result_option.status === 200) {
         const optionList = result_option.data;
-        yield put(pageListSuccess(orderedPageList, optionList));
+        yield put(pageListSuccess(questionList, optionList));
       }
         
     } else {
@@ -111,7 +117,7 @@ const submitSurveyAsync = async (answerData) =>
     "amQuestion": null
   }]
 */
-function* submitSurvey( {payload }) {
+function* submitSurvey( { payload }) {
 
   const { surveyList, projectId, history } = payload;
   let answerList = [];

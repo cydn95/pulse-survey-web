@@ -9,10 +9,6 @@ import { Row } from "reactstrap";
 import { Colxx } from "Components/CustomBootstrap";
 
 import {
-  driverList,
-
-
-
   pageList,
   teamList,
   shgroupList,
@@ -30,15 +26,12 @@ class Start extends Component {
     this.props.getTeamList();
     this.props.getShgroupList();
     this.props.getSkipQuestionList();
-    const { getDriverList } = this.props;
-    getDriverList();
   }
 
   render() {
     const { 
       driverList,
       surveyList,
-
       pageIndex,
       skipQuestionList
     } = this.props;
@@ -82,8 +75,6 @@ const mapStateToProps = ({ survey, settings, common }) => {
 export default connect(
   mapStateToProps,
   {
-    getDriverList: driverList,
-
     getPageList: pageList,
     getTeamList: teamList,
     getShgroupList: shgroupList,

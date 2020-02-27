@@ -7,11 +7,8 @@ import {
   MultipleOptions,
   TwoOptions,
   FreeText,
-  Welcome,
   SmartText,
   RangeSlider,
-  NewStakeholder,
-  AboutMe,
   Continue
 } from "Components/Survey";
 
@@ -30,52 +27,39 @@ class Question extends Component {
   render() {
     
     const { surveyList, optionList, pageIndex, skipQuestionList } = this.props;
-    const question = surveyList[pageIndex];
+    const questionList = surveyList[pageIndex];
 
-    let questionControl;
     let continueText = 'Continue';
+   
+    let questionControl = questionList.amquestion.map( (control, index) => {
+      switch (control.controlType_id) {
+        case controlType.TEXT:
+          return <FreeText
+            key={index} 
+            question={control}
+            onAnswer={answer => this.handleAnswer(answer)}
+            skipQuestionList={skipQuestionList} />
 
-    if (question.pages.pageType === "PG_WELCOME1") {
+        case controlType.SLIDER:
+          return <RangeSlider key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} 
+            skipQuestionList={skipQuestionList} />
+        
+        case controlType.TWO_OPTIONS:
+          return <TwoOptions key={index} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
+            skipQuestionList={skipQuestionList} />
 
-      questionControl = <Welcome/>;
-      
-    } else if (question.pages.pageType === "PG_NEW_STAKEHOLDER") {  
-      
-      questionControl = <NewStakeholder />;
+        case controlType.MULTI_OPTIONS:
+          return <MultipleOptions key={index} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
+            skipQuestionList={skipQuestionList} />
 
-    } else if (question.pages.pageType === "PG_ABOUT_ME") {  
-      
-      questionControl = <AboutMe />;
-      continueText = "Add Stakeholder";
+        case controlType.SMART_TEXT:
+          return <SmartText key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} 
+            skipQuestionList={skipQuestionList} />
 
-    } else {
-      questionControl = question.pages.ampagesetting.map( (control, index) => {
-        switch (control.controlType) {
-          case controlType.TEXT:
-            return <FreeText key={index} question={control} onAnswer={answer => this.handleAnswer(answer)}
-              skipQuestionList={skipQuestionList} />
-
-          case controlType.SLIDER:
-            return <RangeSlider key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} 
-              skipQuestionList={skipQuestionList} />
-          
-          case controlType.TWO_OPTIONS:
-            return <TwoOptions key={index} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
-              skipQuestionList={skipQuestionList} />
-
-          case controlType.MULTI_OPTIONS:
-            return <MultipleOptions key={index} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
-              skipQuestionList={skipQuestionList} />
-
-          case controlType.SMART_TEXT:
-            return <SmartText key={index} question={control}  onAnswer={answer => this.handleAnswer(answer)} 
-              skipQuestionList={skipQuestionList} />
-
-          default:
-            return <div key={index} ></div>
-        }
-      });
-    }
+        default:
+          return <div key={index} ></div>
+      }
+    });
 
     if (pageIndex === (surveyList.length - 1)) {
       continueText = "Submit";
@@ -83,23 +67,21 @@ class Question extends Component {
 
     return (
       <div>
-        {questionControl}
+        { questionControl }
         <Continue history={this.props.history} title={continueText} />
       </div>
     )
   }
 }
 
-const mapStateToProps = ({ survey, settings }) => {
+const mapStateToProps = ({ survey }) => {
 
   const { pageList, optionList, pageIndex } = survey;
-  const { locale } = settings;
 
   return {
     surveyList: pageList,
     optionList,
-    pageIndex,
-    locale
+    pageIndex
   };
 };
 
