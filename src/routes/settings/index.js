@@ -48,8 +48,9 @@ class Settings extends Component {
 			<Fragment>
 				<Row>
 					<Colxx xxs="12">
-						<h1 className="h-title"><IntlMessages id="settings.settings" /></h1>
+						{/* <h1 className="h-title"><IntlMessages id="settings.settings" /></h1> */}
 
+{ false && 
 						<Nav tabs className="separator-tabs ml-0 mb-5">
               <NavItem>
                 <NavLink className={classnames({active: this.state.activeFirstTab === "1", "nav-link": true })}
@@ -64,6 +65,7 @@ class Settings extends Component {
                 </NavLink>
               </NavItem>
             </Nav>
+  }
 
 						<TabContent activeTab={this.state.activeFirstTab}>
 
