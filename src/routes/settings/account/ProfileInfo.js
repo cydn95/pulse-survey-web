@@ -48,16 +48,17 @@ function ProfileInfo() {
           label="Team"
           name="team"
           defaultValue="Team Management"
-          ref={register}
+          ref={register({ required: true })}
         />
+        {errors.team && <span className={styles.error}>This field is invalid</span>}
         <Input
           className={styles.input}
           label="Organization"
-          name="team"
+          name="organization"
           defaultValue="Pulse"
-          ref={register}
+          ref={register({ required: true })}
         />
-        {errors.email && <span className={styles.error}>This field is invalid</span>}
+        {errors.organization && <span className={styles.error}>This field is invalid</span>}
         <div className={styles.actions}>
           <Button default={false} onClick={() => alert('cancel')}>Cancel</Button>
           <Button type="submit" onClick={handleSubmit(onSubmit)}>Update</Button>
