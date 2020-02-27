@@ -18,6 +18,7 @@ function Button(props) {
 }
 
 Button.defaultProps = {
+  type: 'button',
   default: true
 }
 
