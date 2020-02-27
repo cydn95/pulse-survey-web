@@ -19,10 +19,7 @@ function UploadImage() {
 
     <div className={styles["form-wrapper"]}>
       <h2>Profile Photo</h2>
-      <form className={styles.form} onSubmit={(e) => {
-        handleSubmit(onSubmit)()
-        e.preventDefault()
-      }}>
+      <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
         <div className={styles['upload-image']}>
           <img src={imgSrc} />
           <Input

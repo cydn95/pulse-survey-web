@@ -16,10 +16,7 @@ function ChangePassword() {
 
     <div className={styles["form-wrapper"]}>
       <h2>Change Password</h2>
-      <form className={styles.form} onSubmit={(e) => {
-        handleSubmit(onSubmit)()
-        e.preventDefault()
-      }}>
+      <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
         <Input
           className={styles.input}
           type="password"

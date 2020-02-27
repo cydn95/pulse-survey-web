@@ -15,10 +15,7 @@ function ProfileInfo() {
   return (
     <div className={styles["form-wrapper"]}>
       <h2>Edit your profile</h2>
-      <form className={styles.form} onSubmit={(e) => {
-        handleSubmit(onSubmit)()
-        e.preventDefault()
-      }}>
+      <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
         <Input
           className={styles.input}
           label="First Name"
