@@ -51,31 +51,32 @@ function DriverPanel(props) {
 
   }, [data, className, selectedDriver, dimensions])
 
-  let chevronScrollAction = null;
-  let scrollAmount = 0
+  // during dragging scroll happens, which triggers rerender but our old data will be lost,
+  // so need to cache it
+  const [dragData] = useState({ 
+    dragStart: null, 
+    dragEnd: null, 
+    oldScroll: null, 
+    dragStartTimestamp: null,
+  })
 
+  const [chevronScrollInfo] = useState({ chevronScrollAction: null, scrollAmount: 0 })
+  
   // debounced scroll
   const scrollPanel = (direction) => {
-    if (chevronScrollAction) {
-      clearTimeout(chevronScrollAction)
+    if (chevronScrollInfo.chevronScrollAction) {
+      clearTimeout(chevronScrollInfo.chevronScrollAction)
     }
     const sgn = direction === 'left' ? -1 : 1
-    scrollAmount = 2 * scrollAmount + root.current.clientWidth * 0.3 * sgn;
-    chevronScrollAction = setTimeout(() => {
+    chevronScrollInfo.scrollAmount = 2 * chevronScrollInfo.scrollAmount + root.current.clientWidth * 0.3 * sgn;
+    chevronScrollInfo.chevronScrollAction = setTimeout(() => {
       root.current.scrollBy({
-        left: scrollAmount,
+        left: chevronScrollInfo.scrollAmount,
         behavior: 'smooth'
       })
-      chevronScrollAction = null
-      scrollAmount = 0
+      Object.assign(chevronScrollInfo, { chevronScrollAction: null, scrollAmount: 0 })
     }, 200)
   }
-
-  let dragStart;
-  let dragEnd;
-
-  let oldScroll;
-  let dragStartTimestamp;
 
   return (
     <div className className={classnames(styles["main"])}>
@@ -98,21 +99,22 @@ function DriverPanel(props) {
         onScroll={updateArrowsVisibility}
         onDragStart={e => {
           e.dataTransfer.setDragImage(dragRef.current, 0, 0);
-          dragStart = e.pageX;
-          dragStartTimestamp = Date.now()
-          oldScroll = root.current.scrollLeft
+          dragData.dragStart = e.pageX;
+          dragData.dragStartTimestamp = Date.now()
+          dragData.oldScroll = root.current.scrollLeft
         }}
         onDragOver={e => {
-          dragEnd = e.pageX;
-          const distance = dragEnd - dragStart;
-          root.current.scrollLeft = oldScroll - distance
+          const dragEnd = e.pageX;
+          const distance = dragEnd - dragData.dragStart;
+          root.current.scrollLeft = dragData.oldScroll - distance
         }}
         onDragEnd={e => {
-          const distance = dragEnd - dragStart;
+          const dragEnd = e.pageX;
+          const distance = dragEnd - dragData.dragStart;
           const dragEndTimestamp = Date.now()
-          const timeDelta = dragEndTimestamp - dragStartTimestamp;
+          const timeDelta = dragEndTimestamp - dragData.dragStartTimestamp;
           const factor = timeDelta > 800 ? 1 : Math.min(2000 / timeDelta, 10);
-          const finalScroll = oldScroll - distance * factor
+          const finalScroll = dragData.oldScroll - distance * factor
           root.current.scrollTo({
             left: finalScroll,
             behavior: 'smooth'
