@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Slider from 'Components/Slider';
 import Checkbox from 'Components/Checkbox';
 import Radio from 'Components/Radio';
+import Button from 'Components/Button';
 import MultiTopic from 'Components/multi-topic';
 import DriverPanel from "Components/driver";
 import AssessmentSummary from "Components/assessment";
@@ -121,6 +122,10 @@ function Test() {
     }
   ]
 
+  for (let i = 0; i < 5; ++i) {
+    driverdata.push({ ...driverdata[0], driverId: "0" + i })
+  }
+
   const user_info = [
     { 
       username: "Jane Doe", 
@@ -151,6 +156,11 @@ function Test() {
   ];
 
   const [selectedItem, setSelectedItem] = useState(null)
+
+  const [list, setList] = useState([])
+  const addNewItem = () => {
+    setList([...list, `item ${list.length + 1}`])
+  }
 
   return (
     <div>
@@ -184,10 +194,30 @@ function Test() {
         headerSelector={d => d.title}  
         componentSelector={d => d.component}  
         iconSelector={d => d.icon}
+        selectedItem="Engagement"
         data={
           [
-            { title: "Engagement", component: (<div>Engagement panel<div>another component</div></div>), icon: "comment" },
-            { title: "Influence", component: (<div>Influence panel<div>hello component</div></div>), icon: "plus" }
+            {
+              title: "Engagement",
+              component: (
+                <div>
+                  Engagement panel<div>another component</div>
+                  <Button onClick={addNewItem}>Add item here</Button>
+                  { list.map((d, i) => (<div key={i}>{d}</div>))}
+                </div>
+              ),
+              icon: "comment"
+            },
+            {
+              title: "Influence",
+              component: (
+                <div>
+                  Influence panel
+                <div>hello component</div>
+                </div>
+              ),
+              icon: "plus"
+            }
           ]
         }
       />
@@ -208,7 +238,6 @@ function Test() {
         className={styles.panel} 
         data={user_info} 
       />
-      <button onClick={() => setData([...data, { name: "Pie" + data.length + 1, count: Math.floor(Math.random() * 50 + 10) }])}>Add</button>
       <div className={styles['linegraph-container']}>
         <SurveyLineGraph
           keySelector={d => d.name}
@@ -218,6 +247,7 @@ function Test() {
           data={survey_data}
         />
       </div>
+      <button onClick={() => setData([...data, { name: "Pie" + data.length + 1, count: Math.floor(Math.random() * 50 + 10) }])}>Add</button>
       <button onClick={toggle}>Toggle Sentiment</button>
       <div className={styles['donut-container']}>
         <Donut

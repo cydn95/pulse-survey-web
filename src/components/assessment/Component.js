@@ -40,10 +40,16 @@ function AssessmentComponent(props) {
 
 AssessmentComponent.defaultProps = {
   onClick: () => null,
+  className: null,
+  icon: null,
 }
 
 AssessmentComponent.propTypes = {
   onClick: PropTypes.func,
+  className: PropTypes.string,
+  driverId: PropTypes.any.isRequired,
+  driverName: PropTypes.string.isRequired,
+  icon: PropTypes.any,
 }
 
 export default AssessmentComponent;

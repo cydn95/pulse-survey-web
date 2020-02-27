@@ -18,8 +18,9 @@
 }
 
 .chunk {
-  &.open .header {
-    border-bottom: 1px solid silver;
+  .content-wrapper {
+    box-sizing: content-box;
+    box-shadow: inset 0 1px silver;
   }
   &:last-child {
     border-bottom: 1px solid silver;
@@ -47,26 +48,30 @@
 }
 
 .icon-arrow {
-  transition: transform .4s;
+  transition: transform .7s;
 }
 
 .open .icon-arrow {
   transform: rotateZ(90deg);
 }
 
-.open .component {
-  height: 100%;
-  display: flex;
-  position: static;
+.content-wrapper {
+  transition: height .7s;
+  overflow: hidden;
 }
-  
+
+.chunk:not(.open) {
+  .content-wrapper {
+    height: 0px;
+  }
+}
+
 .component {
-  transition: height 1s;
-  display: none;
-  height: 0px;
   @include spacer;
+  display: flex;
   align-items: center;
   padding: 10px;
+
   .icon {
     visibility: hidden;
   }
