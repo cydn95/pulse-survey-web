@@ -20,7 +20,7 @@
 
   &.default {
     &:focus {
-      background: $default-color;
+      background: darken($default-color, 14%);
     }
 
     &:hover {
@@ -30,7 +30,7 @@
 
   &:not(.default) {
     &:focus {
-      background: $non-default-color;
+      background: darken($non-default-color, 14%);
     }
 
     &:hover {
