@@ -1,4 +1,4 @@
-import React, { } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form'
 
 import Input from "Components/Input"
@@ -9,8 +9,11 @@ import styles from './form.scss'
 function UploadImage() {
   const { register, handleSubmit, watch, errors } = useForm()
   const onSubmit = data => {
-    alert(JSON.stringify(data))
+    console.log(data)
+    alert('process file...')
   }
+
+  const [imgSrc, setImgSrc] = useState("/assets/img/profile-pic-l-2.jpg")
 
   return (
 
@@ -20,12 +23,23 @@ function UploadImage() {
         handleSubmit(onSubmit)()
         e.preventDefault()
       }}>
-        <Input
-          className={styles["upload-image"]}
-          type="file"
-          name="image"
-          ref={register({ required: true })}
-        />
+        <div className={styles['upload-image']}>
+          <img src={imgSrc} />
+          <Input
+            type="file"
+            name="image"
+            ref={register({ required: true })}
+            onChange={(value, event) => {
+              const file = event.target.files[0]
+              const reader = new FileReader();
+
+              reader.onload = function (e) {
+                setImgSrc(e.target.result);
+              }
+              reader.readAsDataURL(file);
+            }}
+          />
+        </div>
         {errors.image && <span className={styles.error}>This field is required</span>}
         <div className={styles.actions}>
           <Button onClick={handleSubmit(onSubmit)}>Upload</Button>

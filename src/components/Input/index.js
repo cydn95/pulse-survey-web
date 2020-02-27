@@ -26,7 +26,7 @@ const Input = React.forwardRef((props, ref) => {
         ref={ref}
         name={name}
         placeholder={placeholder}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value, e)}
         defaultValue={defaultValue}
         value={value}
       />
