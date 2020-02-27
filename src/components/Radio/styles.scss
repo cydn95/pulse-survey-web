@@ -7,7 +7,6 @@ $checked-color: #e66864;
   align-items: center;
   cursor: pointer;
   color: $unchecked-color;
-  box-sizing: border-box;
   &.checked {
     color: $checked-color;
   }
@@ -17,6 +16,7 @@ $checked-color: #e66864;
 }
 
 .checkmark {
+  box-sizing: border-box;
   display: inline-block;
   position: relative;
   height: 15px;

@@ -1,0 +1,21 @@
+.main {
+  display: grid;
+  grid-template-areas: "profile-info profile-pic"
+  "change-password .";
+
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+}
+
+.profile-info {
+  grid-area: profile-info;
+}
+
+.profile-pic {
+  grid-area: profile-pic;
+}
+
+.change-password {
+  grid-area: change-password;
+}
