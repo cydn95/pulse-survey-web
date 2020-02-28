@@ -82,7 +82,7 @@ class Project extends Component {
 
 		return (
       <Row>
-        { projectList.length > 0 && this.state.projectStatus.length > 0 &&
+        { false && projectList.length > 0 && this.state.projectStatus.length > 0 &&
         <Colxx>
           {
             projectList.map( (item, index) => {
