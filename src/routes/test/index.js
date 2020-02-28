@@ -13,6 +13,7 @@ import SearchBar from "Components/search-bar";
 import Accordion from "Components/accordion";
 import DropDown from "Components/dropdown";
 import CircularProgressbar from "Components/circular-progress-bar";
+import TabPanel from "Components/TabPanel";
 
 import { ResponsiveDonut as Donut } from 'Components/Donut';
 import SurveyLineGraph from 'Components/SurveyLineGraph';
@@ -183,6 +184,26 @@ function Test() {
       />
       <Radio styles={green} name="b" value="1" checked={radioValue === "1"} onChange={setRadioValue}>Option 1</Radio>
       <Radio styles={green} name="b" value="2" checked={radioValue === "2"} onChange={setRadioValue}>Option 2</Radio>
+
+      <TabPanel
+        data={[
+          { 
+            title: "Panel 1", 
+            name: "Panel1",
+            content: (
+              <div>panel 1</div>
+            ),
+          },
+          { 
+            title: "Panel2", 
+            name: "Panel2",
+            content: (
+              <div>panel 2</div>
+            ),
+          }
+        ]}
+      >
+      </TabPanel>
       <DropDown
         data={[
           { key: 1, title: "Option 1" },
