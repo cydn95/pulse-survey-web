@@ -10,7 +10,7 @@ function ComingSoon() {
     <MessageBox
       title="Coming Soon"
       subTitle="STAY TUNED!"
-      imageUrl="/assets/img/profile-pic-l-2.jpg"
+      imageUrl="/assets/img/comingsoon.png"
     >
       We are currently working on a super exciting feature
       <br />

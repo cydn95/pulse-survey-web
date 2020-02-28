@@ -10,7 +10,7 @@ function Error500(props) {
     <MessageBox
       title="500 Error"
       subTitle="INTERNAL SERVER ERROR"
-      imageUrl="/assets/img/profile-pic-l-2.jpg"
+      imageUrl="/assets/img/500.png"
     >
       The server has encountered an internal server misconfiguration and was unable to complete your request. Would you like to&nbsp; 
         <span onClick={() => props.history.goBack()} className={styles.link}>

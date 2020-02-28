@@ -13,7 +13,7 @@ function Error404() {
     <MessageBox
       title="404 Error"
       subTitle="NOT FOUND!"
-      imageUrl="/assets/img/profile-pic-l-2.jpg"
+      imageUrl="/assets/img/404.png"
     >
       We are sorry, the page you have looked for does not exist in our database. Perhaps you would
       like to go to our &nbsp;
