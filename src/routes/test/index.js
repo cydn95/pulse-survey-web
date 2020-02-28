@@ -17,6 +17,7 @@ import { ResponsiveDonut as Donut } from 'Components/Donut';
 import SurveyLineGraph from 'Components/SurveyLineGraph';
 
 import styles from './styles.scss';
+import green from './green_radio.scss';
 
 function Test() {
   const [percent, setPercent] = useState(30);
@@ -171,6 +172,8 @@ function Test() {
       <Checkbox checked={sel2} onChange={setsel2}>Compartmentalize</Checkbox>
       <Radio name="a" value="1" checked={radioValue === "1"} onChange={setRadioValue}>Option 1</Radio>
       <Radio name="a" value="2" checked={radioValue === "2"} onChange={setRadioValue}>Option 2</Radio>
+      <Radio styles={green} name="b" value="1" checked={radioValue === "1"} onChange={setRadioValue}>Option 1</Radio>
+      <Radio styles={green} name="b" value="2" checked={radioValue === "2"} onChange={setRadioValue}>Option 2</Radio>
       <DropDown
         data={[
           { key: 1, title: "Option 1" },

@@ -1,37 +1,6 @@
 $unchecked-color: rgb(119, 120, 133);
 $checked-color: #e66864;
 
-.main {
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  color: $unchecked-color;
-  &.checked {
-    color: $checked-color;
-  }
-  input {
-    display: none;
-  }
-}
+@import 'mixins';
 
-.checkmark {
-  box-sizing: border-box;
-  display: inline-block;
-  position: relative;
-  height: 15px;
-  width: 15px;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-}
-
-.label {
-  margin-left: 15px;
-}
-
-.checked {
-  .checkmark {
-    border: 5px solid currentColor;
-  }
-}
-
+@include stylize($unchecked-color, $checked-color);
