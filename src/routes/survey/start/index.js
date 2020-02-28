@@ -28,6 +28,10 @@ class Start extends Component {
     this.props.getSkipQuestionList();
   }
 
+  handleClickDriver = driverId => {
+    console.log(driverId);
+  }
+  
   render() {
     const { 
       driverList,
@@ -40,7 +44,7 @@ class Start extends Component {
       <div className={ styles.root }>
         <div className={ styles['driver-scroll']}>
           <div className={ styles['driver-section'] }>
-            <DriverPanel data={ driverList } />
+            <DriverPanel data={ driverList } onClick={(e, driverId) => this.handleClickDriver(driverId) } />
           </div>
           <div className={ styles['survey-container']}>
             <Colxx xs="12">

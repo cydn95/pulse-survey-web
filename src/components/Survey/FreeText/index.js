@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Row } from "reactstrap";
 
-import { Colxx } from "Components/CustomBootstrap";
+import TextField from '@material-ui/core/TextField';
 
 import SkipQuestion from "../SkipQuestion";
+
+import styles from './styles.scss';
 
 class FreeText extends Component {
 
@@ -71,10 +72,15 @@ class FreeText extends Component {
     const { question, skipQuestionList } = this.props;
     
     return (
-      <Row>
-        <Colxx xs="12">
-          <h1 className="mt-s">{question.questionText}</h1>
-          <textarea className="materialize-textarea" rows="1" value={this.state.answer.topicValue} onChange={e => this.onInputAnswer(e)}></textarea>
+      <div className={styles.root}>
+          <h2 className={ styles['question-text'] }>{question.questionText}</h2>
+          <div className={styles['answer-section']}>
+            <TextField 
+              className={ styles['answer-field'] }
+              value={ this.state.answer.topicValue }
+              onChange={e => this.onInputAnswer(e)}
+            />
+          </div>
           <SkipQuestion 
               answer={this.state.answer.topicValue}
               comment={this.state.answer.commentValue}
@@ -83,8 +89,7 @@ class FreeText extends Component {
               skipOption={question.skipOption}
               onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
               onComment={commentAnswer => this.handleComment(commentAnswer)}/>
-        </Colxx>
-      </Row>
+      </div>
     );
   }
 }

@@ -29,7 +29,7 @@ function DriverPanel(props) {
     data
   } = props;
 
-  const [selectedDriver, selectDriver] = useState(null)
+  const [selectedDriver, selectDriver] = useState((null))
   const [arrowsVisible, setArrowsVisible] = useState(false)
   const dimensions = useResize()
 
@@ -74,7 +74,7 @@ function DriverPanel(props) {
   let dragStartTimestamp;
 
   return (
-    <div className className={classnames(styles["main"])}>
+    <div className={classnames(styles["main"])}>
       <div 
         className={classnames(styles.arrow, styles.arrowleft, arrowsVisible ? styles.visible : styles.hidden)}
         onClick={() => scrollPanel('left')}
