@@ -12,6 +12,9 @@ import MyMap from './mymap';
 import Dashboard from './dashboard';
 import Settings from './settings';
 import UserProfile from './userprofile';
+import ComingSoon from './coming';
+import Error500 from './error500';
+import Error404 from './error404';
 
 import Test from './test';
 
@@ -39,6 +42,9 @@ const MainApp = ({ match, history }) => {
 						<Route path={`${match.url}/settings`} component={Settings} />
 						<Route path={`${match.url}/dashboard`} component={Dashboard} />
 						<Route path={`${match.url}/me`} component={UserProfile} />
+						<Route path={`${match.url}/comingsoon`} component={ComingSoon} />
+						<Route path={`${match.url}/500error`} component={Error500} />
+						<Route path={`${match.url}/404error`} component={Error404} />
 						<Redirect to="/error" />
 					</Switch>
 				</div>
