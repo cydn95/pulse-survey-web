@@ -18,8 +18,8 @@ function Settings(props) {
           ),
         },
         {
-          title: "Settings",
-          name: "settings",
+          title: "Projects",
+          name: "projects",
           content: (
             <Project />
           ),
