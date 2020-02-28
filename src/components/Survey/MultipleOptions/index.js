@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-import { Row } from "reactstrap";
-
-import { Colxx } from "Components/CustomBootstrap";
 
 import SkipQuestion from "../SkipQuestion";
 import Radio from "Components/Radio";
@@ -91,20 +88,21 @@ class MultipleOptions extends Component {
     return (
       <div className={styles.main}>
         <div>
-          <h1 className={styles["question-text"]}>{question.questionText}</h1>
+          <h2 className={styles["question-text"]}>{question.questionText}</h2>
         </div>
-        <div className="anwser-select-n mt-3">
-
-        </div>
-        <div>
+        <div className={styles["question-selector"]}>
         {
           optionList.map((item, index) => {
             const active = item.id === this.state.answer.integerValue;
             return (
-              <Radio key={item.id} checked={active}
-              onChange={() => this.onSelectAnswer(item.id, item.optionName)}>
-              {item.optionName}
-              </Radio>
+              <div key={item.id} className={styles['option-item']}>
+                <Radio 
+                  checked={active}
+                  onChange={() => this.onSelectAnswer(item.id, item.optionName)}
+                >
+                  {item.optionName}
+                </Radio>
+              </div>
             )
           })
         }

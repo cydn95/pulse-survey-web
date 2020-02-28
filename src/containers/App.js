@@ -16,6 +16,8 @@ import forgotPassword from 'Routes/forgot-password'
 import SetPassword from 'Routes/invite/SetPassword'
 import Welcome from 'Routes/invite/Welcome'
 
+import Test from 'Routes/test'
+
 import {
   setCurrentMenuClassName
 } from "Redux/actions";
@@ -76,6 +78,7 @@ class App extends Component {
 							<Route path={`/coming-soon`} component={coming} />
 							<Route path={`/set-password`} component={SetPassword}/>
 							<Route path={`/welcome`} component={Welcome} />
+							<Route path={`/component-test`} component={Test} />
 							<Redirect to="/error" />
 						</Switch>	
 						</Fragment>

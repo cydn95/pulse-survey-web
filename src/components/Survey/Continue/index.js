@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { Row } from "reactstrap";
-import { Colxx } from "Components/CustomBootstrap";
 
 import { connect } from 'react-redux';
+
+import Button from '../../Button';
 
 import {
   continueSurvey,
   submitSurvey
 } from "Redux/actions";
+
+import styles from "./styles.scss"
 
 class Continue extends Component {
 
@@ -16,41 +18,15 @@ class Continue extends Component {
     e.preventDefault();
 
     const {surveyList, pageIndex, projectId, aboutMe} = this.props;
-    let percentage = 0;
 
     if (pageIndex === (surveyList.length - 1)) {
-      percentage = 100;
-
       this.props.submitSurvey(surveyList, aboutMe, projectId, this.props.history);
-
-    } else {
-      let totalQuestions = 0;
-      let answeredQuestions = 0;
-      
-      for (let i = 0; i < surveyList.length; i++) {
-        if (surveyList[i].pages.pageType === "PG_NEW_STAKEHOLDER" 
-        || surveyList[i].pages.pageType === "PG_WELCOME1" 
-        || surveyList[i].pages.pageType === "PG_ABOUT_ME") {
-          totalQuestions++;
-          if (pageIndex >= i) {
-            answeredQuestions++;
-          }
-        } else {
-          totalQuestions += surveyList[i].pages.ampagesetting.length + surveyList[i].pages.aopagesetting.length;
-          if (pageIndex >= i) {
-            answeredQuestions += surveyList[i].pages.ampagesetting.length + surveyList[i].pages.aopagesetting.length;
-          }
-        }
-
-        percentage = Math.round(answeredQuestions / totalQuestions * 100);
-      }
-
     }
   
     if (pageIndex < (surveyList.length - 1)) {
-      this.props.continueSurvey(pageIndex + 1, percentage);
+      this.props.continueSurvey(pageIndex + 1, 0);
     } else {
-      this.props.continueSurvey(pageIndex, percentage);
+      this.props.continueSurvey(pageIndex, 0);
     }
   }
 
@@ -59,14 +35,9 @@ class Continue extends Component {
     const { title } = this.props;
     
     return (
-      <Row>
-        <Colxx xs="12">
-          <div className="mt-xs">
-            <a href='/' onClick={e=>this.onNextQuestion(e)} 
-            className="waves-effect waves-light btn black btn-continue right">{title}</a>
-          </div>
-        </Colxx>
-      </Row>
+      <div className={ styles.root }>
+        <Button onClick={e=>this.onNextQuestion(e)} >{title}</Button>
+      </div>
     );
   }
 }

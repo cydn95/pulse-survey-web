@@ -32,7 +32,7 @@ class Question extends Component {
     let continueText = 'Continue';
    
     let questionControl = questionList.amquestion.map( (control, index) => {
-      switch (control.controlType_id) {
+      switch (control.controlType) {
         case controlType.TEXT:
           return <FreeText
             key={index} 
@@ -66,7 +66,7 @@ class Question extends Component {
     }
 
     return (
-      <div>
+      <div className={styles.root} >
         { questionControl }
         <Continue history={this.props.history} title={continueText} />
       </div>

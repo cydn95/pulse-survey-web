@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { SelectableButton } from "Components/Button"
-;
+import { SelectableButton } from "Components/Button";
+
 import TextField from '@material-ui/core/TextField';
 
 import styles from './styles.scss';

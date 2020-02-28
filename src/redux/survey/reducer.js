@@ -49,11 +49,11 @@ export default (state = INIT_STATE, action) => {
       // }
 
       if (answer.type === 'me') {
-        state.pageList[answer.pageIndex].pages.ampagesetting[answer.questionIndex].answer = {
+        state.pageList[answer.pageIndex].amquestion[answer.questionIndex].answer = {
           ...answer
         };
       } else {
-        state.pageList[answer.pageIndex].pages.aopagesetting[answer.questionIndex].answer = {
+        state.pageList[answer.pageIndex].aoquestion[answer.questionIndex].answer = {
           ...answer
         };
       }

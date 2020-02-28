@@ -22,14 +22,14 @@ const useResize = () => {
   return dimensions
 }
 
-
 function DriverPanel(props) {
   const {
     className,
-    data
+    data,
+    onClick,
+    defaultDriverId
   } = props;
-
-  const [selectedDriver, selectDriver] = useState(null)
+  const [selectedDriver, selectDriver] = useState((null))
   const [leftArrowVisible, setLeftArrowVisible] = useState(false)
   const [rightArrowVisible, setRightArrowVisible] = useState(false)
   const dimensions = useResize()
@@ -49,7 +49,9 @@ function DriverPanel(props) {
     }
     updateArrowsVisibility()
 
-  }, [data, className, selectedDriver, dimensions])
+    selectDriver(defaultDriverId)
+
+  }, [data, className, selectedDriver, dimensions, defaultDriverId])
 
   // during dragging scroll happens, which triggers rerender but our old data will be lost,
   // so need to cache it
@@ -78,8 +80,13 @@ function DriverPanel(props) {
     }, 200)
   }
 
+  // handle click driver
+  const handleSelectDriver = (e, driverId) => {
+    onClick(e, driverId);
+  }
+
   return (
-    <div className className={classnames(styles["main"])}>
+    <div className={classnames(styles["main"])}>
       <div 
         className={classnames(styles.arrow, styles.arrowleft, leftArrowVisible ? styles.visible : null)}
         onClick={() => scrollPanel('left')}
@@ -129,7 +136,7 @@ function DriverPanel(props) {
                 iconAlign="left"
                 key={d.driverId}
                 selected={d.driverId === selectedDriver}
-                onClick={selectDriver}
+                onClick={e => handleSelectDriver(e, d.driverId)}
                 {...d}
               />
             ))
@@ -146,6 +153,7 @@ DriverPanel.defaultProps = {
 
 DriverPanel.propTypes = {
   onClick: PropTypes.func,
+  defaultDriverId: PropTypes.number
 }
 
 export default DriverPanel;

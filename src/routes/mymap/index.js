@@ -472,11 +472,14 @@ class MyMap extends React.Component {
 						}
 					</Droppable>
 					<div className={ styles['map-stakeholder'] }>
+					{screen === 'list' &&
 						<SearchBar
 							searchKey={searchKey} 
 							data={search_data} 
 							addNewStakeholder={() => {}}
 						/>
+					}
+						
 					</div>
 				</div>
 			</div>
