@@ -23,11 +23,11 @@ function renderGraph(node, props) {
   svg.attr('width', bounds.width)
     .attr('height', bounds.height)
 
-  const padding = bounds.width < 400 ? 5 : 20;
-  const hoverRadiusIncrease = bounds.width < 400 ? 5 : 20;
-  const radius = Math.min(bounds.height, bounds.width) / 2 - 2 * (padding + hoverRadiusIncrease);
-  const hoverRadius = radius + hoverRadiusIncrease;
-  const innerRadius = radius * 0.5;
+  const maxRadius = Math.min(bounds.height, bounds.width) / 2;
+  const padding = 0.1 * maxRadius;
+  const hoverRadius = maxRadius - padding;
+  const radius = 0.9 * hoverRadius;
+  const innerRadius = radius * 0.6;
 
   let root = svg.select('g.main')
   if (root.empty()) {
@@ -37,8 +37,8 @@ function renderGraph(node, props) {
 
   root.attr('transform', `translate(${bounds.width / 2}, ${bounds.height / 2})`);
 
-  const eyeDist = innerRadius / 1.75;
-  const thick = innerRadius * 0.15;
+  const eyeDist = innerRadius / 2.2;
+  const thick = innerRadius * 0.1;
   let face = root.select('g.' + styles.face);
   if (face.empty()) {
     // TODO: make responsive to changes
@@ -60,15 +60,15 @@ function renderGraph(node, props) {
     .attr("cx", (d, i) => i === 0 ? -eyeDist : eyeDist)
     .attr("class", classnames(styles.eye, styles[sentiment]))
 
-  const mouth = face.select('path')
+  face.select('path')
     .attr("class", styles[sentiment])
-    .attr("transform", `translate(0, ${eyeDist * 1.2})`)
+    .attr("transform", `translate(0, ${eyeDist * 1.4})`)
     .style("stroke-width", thick)
     .attr("d", () => {
       if (sentiment === 'sad') {
         return `M ${-eyeDist * 0.6} 0 H ${eyeDist * 0.6}`
       }
-      return `M ${-eyeDist * 0.6} 0 Q 0 ${innerRadius * 0.2} ${eyeDist * 0.6} 0 L ${-eyeDist * 0.6} 0`
+      return `M ${-eyeDist * 0.6} 0 Q 0 ${innerRadius * 0.15} ${eyeDist * 0.6} 0 L ${-eyeDist * 0.6} 0`
     })
 
   // centerize the face
@@ -81,12 +81,6 @@ function renderGraph(node, props) {
   const arc = d3.arc()
     .innerRadius(innerRadius)
     .outerRadius(radius)
-    .padAngle(0.05)
-    .cornerRadius(4)
-
-  const arcOver = d3.arc()
-    .innerRadius(radius / 1.5)
-    .outerRadius(radius + hoverRadius)
     .padAngle(0.05)
     .cornerRadius(4)
 
@@ -130,7 +124,7 @@ function renderGraph(node, props) {
     this.current = intpl(0);
     return function (t) {
       const sarc = d3.arc()
-        .innerRadius(radius / 1.5)
+        .innerRadius(innerRadius)
         .outerRadius(intpl(t).outerRadius)
         .padAngle(0.05)
         .cornerRadius(4)
