@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
-import { Colxx } from "Components/CustomBootstrap";
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-
-import {
-  Row,
-  Card,
-  CardBody,
-} from "reactstrap";
 
 import Switch from "rc-switch";
 
 import "rc-switch/assets/index.css";
+
+import styles from './project.scss';
 
 import {
   projectListByUser,
@@ -34,13 +29,13 @@ class Project extends Component {
 
   componentWillReceiveProps(props) {
     let projectStatus = [];
-    
+
     const { projectList, projectId } = props;
 
     for (let i = 0; i < projectList.length; i++) {
-      
+
       if (projectList[i].project.id == projectId) {
-        
+
         projectStatus.push(true)
       } else {
         projectStatus.push(false)
@@ -77,40 +72,32 @@ class Project extends Component {
     this.props.setSurveyProjectID(projectId);
   }
 
-	render() {
+  render() {
     const { projectList } = this.props;
 
-		return (
-      <Row>
-        { false && projectList.length > 0 && this.state.projectStatus.length > 0 &&
-        <Colxx>
-          {
-            projectList.map( (item, index) => {
-              return(
-                <Card className="d-flex flex-row mb-3" key={index}>
-                  <div className="d-flex flex-grow-1 min-width-zero">
-                    <CardBody className="align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
-                      <NavLink to="#" className="list-item-heading mb-1 truncate w-40 w-xs-100">
-                      {item.project.projectName}
-                      </NavLink>
-                      <div className="w-15 w-xs-100 text-right">
-                        <Switch
-                          className="custom-switch custom-switch-primary"
-                          checked={this.state.projectStatus[index]}
-                          onChange={(status) => this.changeProjectStatus(status, index)}
-                        />
-                      </div>
-                    </CardBody>
-                  </div>
-                </Card>
-              )
-            })
-          }
-        </Colxx>
+    return (
+      <div className={styles.main}>
+        {projectList.length > 0 &&
+          projectList.map((item, index) => {
+            return (
+              <div key={index}>
+                <NavLink to="#" className="list-item-heading mb-1 truncate w-40 w-xs-100">
+                  {item.project.projectName}
+                </NavLink>
+                <div className="w-15 w-xs-100 text-right">
+                  <Switch
+                    className="custom-switch custom-switch-primary"
+                    checked={this.state.projectStatus[index]}
+                    onChange={(status) => this.changeProjectStatus(status, index)}
+                  />
+                </div>
+              </div>
+            )
+          })
         }
-      </Row>
-		);
-	}
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = ({ authUser, settings }) => {

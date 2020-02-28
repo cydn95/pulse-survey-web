@@ -1,0 +1,18 @@
+.header {
+  display: flex;
+
+  >* {
+    padding: 5px 20px;
+  }
+}
+
+.panel-header {
+  transition: border-bottom 1s;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+
+  &.selected {
+    color: #61B3A1;
+    border-bottom: 2px solid currentColor;
+  }
+}

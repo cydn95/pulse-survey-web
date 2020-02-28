@@ -24,14 +24,14 @@ function Radio(props) {
 
 Radio.defaultProps = {
   checked: false,
-  name: '',
-  value: 0,
+  name: undefined,
+  value: undefined,
   styles: styles,
 };
 
 Radio.propTypes = {
   name: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
+  value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   checked: PropTypes.bool,
   styles: PropTypes.any,

@@ -29,7 +29,7 @@ function DriverPanel(props) {
     onClick,
     defaultDriverId
   } = props;
-  const [selectedDriver, selectDriver] = useState((null))
+  const [selectedDriver, selectDriver] = useState(defaultDriverId)
   const [leftArrowVisible, setLeftArrowVisible] = useState(false)
   const [rightArrowVisible, setRightArrowVisible] = useState(false)
   const dimensions = useResize()

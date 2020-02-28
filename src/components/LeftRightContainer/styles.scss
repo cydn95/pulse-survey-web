@@ -1,22 +1,26 @@
 .main {
   display: flex;
   width: 100vw;
-  height: 100vh;
-  > * {
+
+  >* {
     flex: 1;
+    height: 100vh;
   }
+
   background-color: #212529;
   background-image: url("/assets/img/login/projecai-logo.png");
   background-repeat: no-repeat;
   background-position: 40px 24px;
   background-attachment: fixed;
   background-size: 104px 53px;
+
   h2 {
     font-size: 22px;
     font-weight: 500;
     line-height: 1.73;
     color: #141c3a;
   }
+
   label {
     font-size: 14px;
     font-weight: 500;
@@ -24,6 +28,7 @@
     color: #292a30;
     margin-top: 21px;
   }
+
   input {
     margin-top: 18px;
     border: 1px solid #ddd !important;
@@ -40,4 +45,15 @@
   flex-direction: column;
   justify-content: center;
   align-content: center;
+}
+
+@media screen and (max-width: 768px) {
+  .main {
+    height: auto;
+    flex-direction: column;
+
+    >* {
+      flex: auto;
+    }
+  }
 }
