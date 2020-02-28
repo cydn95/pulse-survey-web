@@ -39,6 +39,7 @@ let cleanOptions = {
 }
 
 module.exports = {
+  devtool: "source-map", // any "source-map"-like devtool is possible
     entry: ["babel-polyfill", "react-hot-loader/patch", "./src/index.js"],
     output: {
         // The build folder.
@@ -104,10 +105,16 @@ module.exports = {
                     {
                         "loader": "css-loader",
                         options: {
-                            modules: true
+                            modules: true,
+                            sourceMap: true,
                         }
                     },
-                    "sass-loader"
+                  {
+                    loader: "sass-loader",
+                    options: {
+                      sourceMap: true
+                    }
+                  }
                 ]
             },
             {

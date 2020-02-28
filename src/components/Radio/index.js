@@ -5,7 +5,7 @@ import { PropTypes } from 'prop-types';
 import styles from './styles.scss';
 
 function Radio(props) {
-  const { name, value, children, onChange, checked } = props;
+  const { name, styles, value, children, onChange, checked } = props;
   const checkedCls = checked ? styles.checked : "";
   return (
     <label className={classnames(styles.main, checkedCls)}>
@@ -25,7 +25,8 @@ function Radio(props) {
 Radio.defaultProps = {
   checked: false,
   name: '',
-  value: 0
+  value: 0,
+  styles: styles,
 };
 
 Radio.propTypes = {
@@ -33,6 +34,7 @@ Radio.propTypes = {
   value: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
   checked: PropTypes.bool,
+  styles: PropTypes.any,
 };
 
 export default Radio;

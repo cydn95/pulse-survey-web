@@ -8,6 +8,9 @@ import styles from './form.scss'
 
 function ChangePassword() {
   const { register, handleSubmit, watch, errors } = useForm()
+
+  const password = watch('password')
+
   const onSubmit = data => {
     alert(JSON.stringify(data))
   }
@@ -25,16 +28,23 @@ function ChangePassword() {
           defaultValue="passw"
           ref={register({ required: true })}
         />
-        {errors.password && <span className={styles.error}>This field is required</span>}
+        {errors.password && <div className={styles.error}>This field is required</div>}
         <Input
           type="password"
           className={styles.input}
           label="Confirm Password"
           name="confirmPassword"
           defaultValue="passw"
-          ref={register({ required: true })}
+          ref={register({ 
+            validate: value => {
+              if (value === "") {
+                return "This field is required.";
+              }
+              return value === password || "Passwords don't match."
+            }
+          })}
         />
-        {errors.confirmPassword && <span className={styles.error}>This field is required</span>}
+        {errors.confirmPassword && <div className={styles.error}>{errors.confirmPassword.message}</div>}
         <div className={styles.actions}>
           <Button default={false} onClick={() => alert('cancel')}>Cancel</Button>
           <Button type="submit" onClick={handleSubmit(onSubmit)}>Change</Button>

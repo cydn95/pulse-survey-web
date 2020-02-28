@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Slider from 'Components/Slider';
 import Checkbox from 'Components/Checkbox';
 import Radio from 'Components/Radio';
+import RadioGroup from 'Components/RadioGroup';
 import Button from 'Components/Button';
 import MultiTopic from 'Components/multi-topic';
 import DriverPanel from "Components/driver";
@@ -17,6 +18,7 @@ import { ResponsiveDonut as Donut } from 'Components/Donut';
 import SurveyLineGraph from 'Components/SurveyLineGraph';
 
 import styles from './styles.scss';
+import green from './green_radio.scss';
 
 function Test() {
   const [percent, setPercent] = useState(30);
@@ -169,8 +171,18 @@ function Test() {
       <CircularProgressbar percent={percent} />
       <Checkbox checked={sel} onChange={setsel}>OK</Checkbox>
       <Checkbox checked={sel2} onChange={setsel2}>Compartmentalize</Checkbox>
-      <Radio name="a" value="1" checked={radioValue === "1"} onChange={setRadioValue}>Option 1</Radio>
-      <Radio name="a" value="2" checked={radioValue === "2"} onChange={setRadioValue}>Option 2</Radio>
+      <RadioGroup
+        selectedValue="2"
+        data={[
+          { value: "1", label: "ok" },
+          { value: "2", label: "not ok" }
+        ]}
+        onChange={(v) => alert(v)}
+        labelSelector={d => d.label}
+        valueSelector={d => d.value}
+      />
+      <Radio styles={green} name="b" value="1" checked={radioValue === "1"} onChange={setRadioValue}>Option 1</Radio>
+      <Radio styles={green} name="b" value="2" checked={radioValue === "2"} onChange={setRadioValue}>Option 2</Radio>
       <DropDown
         data={[
           { key: 1, title: "Option 1" },

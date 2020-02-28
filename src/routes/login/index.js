@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { loginUser, loginUserFailed } from "Redux/actions";
 
 import { loginErrorType, loginErrorTypeText } from 'Constants/defaultValues'
+import LeftRightContainer from "../../components/LeftRightContainer";
 
 class LoginLayout extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ class LoginLayout extends Component {
 
   inputChange = (e) => {
     const { loginUserFailed } = this.props;
-    
+
     loginUserFailed(loginErrorType.AUTH_SUCCESS);
 
     this.setState({
@@ -63,43 +64,28 @@ class LoginLayout extends Component {
     const { authStatus } = this.props;
 
     return (
-      <div className="login-container">
-        <div className="login-container__left">
-          <div className="login-container__left__logo">
-            <img className="login-container__left__logo--img" src="/assets/img/login/collective-insight.png" alt="collective-insight"/>
-            <h1 className="login-container__left__logo--title">Collective Insight</h1>
-            <p className="login-container__left__logo--description">
-              Pulse by ProjectAI helps project managers make<br/>sense of people’s collective insights for better project outcomes.
-            </p>
-          </div>
-        </div>
-        <div className="login-container__right">
-          <div className="login-container__right--login-panel">
-            <h2 className="login-container__right--login-panel--title">Log into your account</h2>
-            {
-              authStatus !== loginErrorType.AUTH_SUCCESS && <span className="login-container__right--login-panel--error">{ error }</span>
-            }
-            <span className="login-container__right--login-panel--field-label">USERNAME</span>
-            <Input
-              type="text"
-              className="login-container__right--login-panel--field-input round-text-field" 
-              value={username}
-              name="username" 
-              onChange={e => this.inputChange(e)}
-            />
-            <span className="login-container__right--login-panel--field-label">PASSWORD</span>
-            <Input
-              type="password"
-              className="login-container__right--login-panel--field-input round-text-field" 
-              value={password}
-              name="password" 
-              onChange={e => this.inputChange(e)}
-            />
-            <a href="#forgot-password" className="forgot-password">Forgot your password?</a>
-            <Button className="login-container__right--login-panel--submit round-btn green" onClick={ e => this.onUserLogin() }>Login</Button>
-          </div>
-        </div>
-      </div>
+      <LeftRightContainer>
+        <h2>Log into your account</h2>
+        {
+          authStatus !== loginErrorType.AUTH_SUCCESS && <span className="login-container__right--login-panel--error">{error}</span>
+        }
+        <label>USERNAME</label>
+        <Input
+          type="text"
+          value={username}
+          name="username"
+          onChange={e => this.inputChange(e)}
+        />
+        <label>PASSWORD</label>
+        <Input
+          type="password"
+          value={password}
+          name="password"
+          onChange={e => this.inputChange(e)}
+        />
+        <a href="/forgot-password" className="forgot-password">Forgot your password?</a>
+        <Button className="login-container__right--login-panel--submit round-btn green" onClick={e => this.onUserLogin()}>Login</Button>
+      </LeftRightContainer>
     );
   }
 }
