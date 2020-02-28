@@ -13,6 +13,7 @@ import {
   teamList,
   shgroupList,
   skipQuestionList,
+  selectPage
 } from "Redux/actions";
 
 import classnames from 'classnames';
@@ -21,6 +22,14 @@ import styles from './styles.scss';
 
 class Start extends Component {
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      pageIndex: props.pageIndex
+    };
+  }
+
   componentWillMount() {
     this.props.getPageList();
     this.props.getTeamList();
@@ -28,23 +37,40 @@ class Start extends Component {
     this.props.getSkipQuestionList();
   }
 
+  componentWillReceiveProps(props) {
+    const { pageIndex } = props;
+
+    this.setState({
+      pageIndex
+    });
+  }
+
   handleClickDriver = driverId => {
-    console.log(driverId);
+    const { driverList, setSurveyPage } =  this.props;
+    var pageIndex = driverList.findIndex(element => {
+      return element.driverId === driverId
+    });
+    setSurveyPage(pageIndex);
   }
   
   render() {
     const { 
       driverList,
       surveyList,
-      pageIndex,
       skipQuestionList
     } = this.props;
-    
+
+    const defaultDrvierId = driverList.length ? driverList[this.state.pageIndex].driverId : 0;
+
     return (
       <div className={ styles.root }>
         <div className={ styles['driver-scroll']}>
           <div className={ styles['driver-section'] }>
-            <DriverPanel data={ driverList } onClick={(e, driverId) => this.handleClickDriver(driverId) } />
+            <DriverPanel
+              defaultDriverId = { defaultDrvierId }
+              data={ driverList }
+              onClick={(e, driverId) => this.handleClickDriver(driverId) } 
+            />
           </div>
           <div className={ styles['survey-container']}>
             <Colxx xs="12">
@@ -59,20 +85,16 @@ class Start extends Component {
   }
 }
 
-const mapStateToProps = ({ survey, settings, common }) => {
+const mapStateToProps = ({ survey, common }) => {
 
   const { pageList, pageIndex } = survey;
-  const { locale } = settings;
   const { skipQuestionList, driverList } = common
 
   return {
     driverList,
-
-
     surveyList : pageList,
     pageIndex,
     skipQuestionList,
-    locale
   };
 };
 
@@ -82,6 +104,7 @@ export default connect(
     getPageList: pageList,
     getTeamList: teamList,
     getShgroupList: shgroupList,
-    getSkipQuestionList: skipQuestionList
+    getSkipQuestionList: skipQuestionList,
+    setSurveyPage: selectPage
   }
 )(Start);

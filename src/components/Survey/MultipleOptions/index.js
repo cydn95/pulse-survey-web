@@ -95,9 +95,8 @@ class MultipleOptions extends Component {
           optionList.map((item, index) => {
             const active = item.id === this.state.answer.integerValue;
             return (
-              <div className={styles['option-item']}>
+              <div key={item.id} className={styles['option-item']}>
                 <Radio 
-                  key={item.id}
                   checked={active}
                   onChange={() => this.onSelectAnswer(item.id, item.optionName)}
                 >

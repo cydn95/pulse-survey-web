@@ -38,7 +38,7 @@ function* getPageList() {
    
   try {
     const result = yield call(getPageListAsync);
-console.log(result.data);
+
     if (result.status === 200) {
 
       // Get Available Driver List
@@ -124,31 +124,29 @@ function* submitSurvey( { payload }) {
   
   for (let i = 0; i < surveyList.length; i++) {
 
-    if (surveyList[i].pages.pageType !== "PG_SURVEY") continue;
-    
-    let ampagesettings = surveyList[i].pages.ampagesetting;
+    let amquestions = surveyList[i].amquestion;
 
-    for (let j = 0; j < ampagesettings.length; j++) {
+    for (let j = 0; j < amquestions.length; j++) {
 
-      if ((ampagesettings[j].answer.integerValue === '' || ampagesettings[j].answer.integerValue === 0) 
-        && ampagesettings[j].answer.topicValue === '' && ampagesettings[j].answer.commentValue === ''
-        && ampagesettings[j].answer.skipValue === '') {
+      if ((amquestions[j].answer.integerValue === '' || amquestions[j].answer.integerValue === 0) 
+        && amquestions[j].answer.topicValue === '' && amquestions[j].answer.commentValue === ''
+        && amquestions[j].answer.skipValue === '') {
           continue;
       }
       
       let answer = Object.assign({}, {
-        "integerValue": ampagesettings[j].answer.integerValue,
-        "topicValue": ampagesettings[j].answer.topicValue,
-        "commentValue": ampagesettings[j].answer.commentValue,
-        "skipValue": ampagesettings[j].answer.skipValue,
-        "topicTags": ampagesettings[j].answer.topicTags,
-        "commentTags": ampagesettings[j].answer.commentTags,
+        "integerValue": amquestions[j].answer.integerValue,
+        "topicValue": amquestions[j].answer.topicValue,
+        "commentValue": amquestions[j].answer.commentValue,
+        "skipValue": amquestions[j].answer.skipValue,
+        "topicTags": amquestions[j].answer.topicTags,
+        "commentTags": amquestions[j].answer.commentTags,
         "user": getToken().userId,
         "subjectUser": getToken().userId,
-        "survey": ampagesettings[j].answer.survey,
-        "amQuestion": ampagesettings[j].answer.amQuestion,
+        "survey": amquestions[j].answer.survey,
+        "amQuestion": amquestions[j].answer.amQuestion,
         "project": projectId,
-        "controlType": ampagesettings[j].answer.controlType
+        "controlType": amquestions[j].answer.controlType
       });
 
       answerList.push(answer);
@@ -167,7 +165,7 @@ function* submitSurvey( { payload }) {
       
       localStorage.setItem('surveyId', surveyId);
       yield put(submitSurveySuccess(surveyId));
-      history.push('/app/dashboard');
+      history.push('/app/me');
 
     } else {
       console.log('submit failed')
