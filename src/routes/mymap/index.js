@@ -472,13 +472,16 @@ class MyMap extends React.Component {
 						}
 					</Droppable>
 					<div className={ styles['map-stakeholder'] }>
-					{screen === 'list' &&
+					{screen === 'dlist' &&
 						<SearchBar
 							searchKey={searchKey} 
 							data={search_data} 
 							addNewStakeholder={() => {}}
 						/>
 					}
+					<NewStakeholder shCategoryList={shCategoryList} teamList={teamList} 
+							onCancel={e => this.handleCancelSurvey()}
+							onAddStakeholder={data => this.handleAddNewStakeholder(data)} stakeholder={this.defaultStakeholder} />
 						
 					</div>
 				</div>

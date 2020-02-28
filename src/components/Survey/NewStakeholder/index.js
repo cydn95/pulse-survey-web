@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { Row } from "reactstrap";
-import { Colxx } from "Components/CustomBootstrap";
 
-import M from "materialize-css";
-
+import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import { Button } from 'reactstrap';
 
 import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
+
+import styles from './styles.scss';
 
 class NewStakeholder extends Component {
 
@@ -22,11 +24,6 @@ class NewStakeholder extends Component {
       btnAddDisabled: ""
     };
 
-  }
-
-  componentDidMount() {
-    // Auto initialize all the things!
-    M.AutoInit();
   }
 
   componentWillReceiveProps(props) {
@@ -119,55 +116,81 @@ class NewStakeholder extends Component {
     const { btnAddDisabled } = this.state;
 
     return (
-      <Row>
-        <Colxx xs="12">
-          <h1 className="mt-s">Add New StakeHolder</h1>  
-          <div className="input-field">
-            <input id="firstName" type="text" className="validate" 
-              name="firstName" value={this.state.stakeholder.firstName} onChange={e => this.handleInputChange(e)} />
-            <label htmlFor="firstName">First Name<span className="require">*</span></label>
+      <div className={ styles.root }>
+        <div>
+          <h1 className={ styles.title }>Add New StakeHolder</h1>  
+        </div>
+        <div className={ styles.form }>
+          <div className={ styles['input-field'] }>
+            <TextField
+              className={ styles.input } 
+              label="First Name*"
+              name="firstName"
+              value={ this.state.stakeholder.firstName }
+              onChange={ e => this.handleInputChange(e) }
+            />
           </div>
-          <div className="input-field">
-            <input id="lastName" type="text" className="validate"
-                name="lastName" value={this.state.stakeholder.lastName} onChange={e => this.handleInputChange(e)} />
-            <label htmlFor="lastName">Last Name<span className="require">*</span></label>
+          <div className={ styles['input-field'] }>
+            <TextField
+              className={ styles.input } 
+              label="Last Name*"
+              name="lastName"
+              value={this.state.stakeholder.lastName}
+              onChange={ e => this.handleInputChange(e) }
+            />
           </div>
-          <div className="input-field">
-            <input id="email" type="email" className="validate"
-              name="email" value={this.state.stakeholder.email} onChange={e => this.handleInputChange(e)} />
-            <label htmlFor="email">Email</label>
+          <div className={ styles['input-field'] }>
+            <TextField
+              className={ styles.input } 
+              label="Email*"
+              name="email"
+              value={this.state.stakeholder.email}
+              onChange={ e => this.handleInputChange(e) }
+            />
           </div>
-          <div className="input-field">
-            <select value={this.state.stakeholder.shCategory} name="shCategory" onChange={e => this.handleInputChange(e)} >
-              <option value="0">--Select--</option>
+          <div className={ styles['input-field'] }>
+            <Select
+              value={this.state.shCategory} 
+              className={ styles.input }
+              name="shCategory"
+              label="Sh Category*"
+              onChange={e => this.handleInputChange(e)}
+            >
               {shCategoryList.map((sh, index) =>
-                <option key={sh.id} value={sh.id}>{sh.SHCategoryName}</option>
+                 <MenuItem key={sh.id} value={sh.id}>{sh.SHCategoryName}</MenuItem>
               )}
-            </select>
-            <label>SH Category<span className="require">*</span></label>
+            </Select>
           </div>
-          <div className="input-field">
-            <input id="organisation" type="text" className="validate" 
-              name="organisationId" value={this.state.stakeholder.organisationId} onChange={e => this.handleInputChange(e)} />
-            <label htmlFor="organisation">Organization<span className="require">*</span></label>
+          <div className={ styles['input-field'] }>
+            <TextField
+              className={ styles.input } 
+              label="Organisation*"
+              name="organisationId"
+              value={this.state.stakeholder.organisationId}
+              onChange={ e => this.handleInputChange(e) }
+            />
           </div>
-          <div className="input-field">
-            <select value={this.state.stakeholder.teamId} name="teamId" onChange={e => this.handleInputChange(e)} >
-              <option value="0">--Select--</option>
+          <div className={ styles['input-field'] }>
+            <Select
+              value={this.state.teamId} 
+              className={ styles.input }
+              name="teamId"
+              label="Sh Category*"
+              onChange={e => this.handleInputChange(e)}
+            >
               {teamList.map((team, index) =>
-                <option key={team.id} value={team.id}>{team.name}</option>
+                 <MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>
               )}
-            </select>
-            <label>Team<span className="require">*</span></label>
+            </Select>
           </div>
           <div className="input-field">
             <a className="waves-effect waves-light btn btn-danger active" 
               onClick={e=>this.props.onCancel(e)}>Back</a>&nbsp;&nbsp;
             <Button disabled={ btnAddDisabled }  className="waves-effect waves-light btn-xs right" onClick={e => this.handleAddStakeholder()}>Add stakeholder</Button>
           </div>
-        </Colxx>
+        </div>
         <NotificationContainer/>
-      </Row>
+      </div>
     );
   }
 }
