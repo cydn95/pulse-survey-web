@@ -27,7 +27,6 @@ function SearchBar(props) {
 
   return (
     <div className={styles.main}>
-      <h2></h2>
       <Input 
         placeholder="Search / Add New Placeholder"
         value={filter}

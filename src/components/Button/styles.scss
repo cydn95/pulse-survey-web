@@ -1,20 +1,42 @@
 @import "./defaults.scss";
 
 .main {
-  color: white;
   cursor: pointer;
   border: none;
   outline: none;
-  background: $default-color;
-  padding: 10px;
-  border-radius: 5px;
 
-  &:focus {
+  &.default {
+    color: white;
     background: $default-color;
   }
 
-  &:hover {
-    background: darken($default-color, 14%);
+  &:not(.default) {
+    color: black;
+    background: $non-default-color;
+  }
+
+  padding: 10px 25px;
+  border-radius: 5px;
+
+  &.default {
+    &:focus {
+      background: darken($default-color, 14%);
+    }
+
+    &:hover {
+      background: darken($default-color, 14%);
+    }
+  }
+
+  &:not(.default) {
+    &:focus {
+      background: darken($non-default-color, 14%);
+    }
+
+    &:hover {
+      color: white;
+      background: darken($non-default-color, 14%);
+    }
   }
 }
 

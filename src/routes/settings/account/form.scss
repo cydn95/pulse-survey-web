@@ -1,0 +1,61 @@
+.form-wrapper,
+.form {
+  >*:not(:first-child) {
+    margin-top: 15px;
+  }
+}
+
+.input {
+  color: #9da6ab;
+
+  input {
+    color: #4d4d4d;
+    font-size: 16px;
+    box-shadow: 0 1px #cdcdce;
+  }
+}
+
+.actions {
+  display: flex;
+
+  >*:not(:first-child) {
+    margin-left: 10px;
+  }
+}
+
+.error {
+  color: red;
+}
+
+.upload-image {
+  background: #FFC08A;
+  cursor: pointer;
+  width: 213px;
+  height: 213px !important;
+  position: relative;
+
+  .input {
+    input {
+      display: none;
+    }
+
+    cursor: pointer;
+
+  }
+
+  &,
+  .input,
+  img {
+    border-radius: 5%;
+  }
+
+  img {
+    display: block;
+  }
+
+  * {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}

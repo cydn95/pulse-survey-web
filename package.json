@@ -75,6 +75,7 @@
     "react-circular-progressbar": "^2.0.2",
     "react-dom": "^16.4.1",
     "react-drag-and-drop": "^3.0.0",
+    "react-hook-form": "^4.9.8",
     "react-intl": "2.4.0",
     "react-loading": "^2.0.3",
     "react-notifications": "^1.4.3",

@@ -4,15 +4,22 @@ import classnames from "classnames";
 import styles from './styles.scss';
 
 function Button(props) {
-  const { className, children, onClick } = props;
+  const { className, type, children, onClick, default: isDefault } = props;
   return (
     <button 
-      className={classnames(styles.main, className)}
+      className={classnames(styles.main, isDefault ? styles.default : null, className)}
+      type={type}
       onClick={onClick}
+      {...{ autoFocus: isDefault }}
     >
       {children}
     </button>
   );
+}
+
+Button.defaultProps = {
+  type: 'button',
+  default: true
 }
 
 export default Button;

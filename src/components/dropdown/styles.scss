@@ -1,5 +1,9 @@
 @import "../Button/defaults.scss";
 
+.button {
+  font-size: inherit;
+}
+
 .main {
   position: relative;
   display: inline-block;

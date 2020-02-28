@@ -3,6 +3,7 @@ $comment-color: rgb(119, 120, 133);
 $editable-color: rgb(16, 122, 239);
 
 @mixin round {
+  box-sizing: border-box;
   border-width: 3px;
   border-style: solid;
   border-radius: 50%;

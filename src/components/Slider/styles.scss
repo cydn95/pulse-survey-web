@@ -32,6 +32,7 @@ $marker-size: 20px;
 }
 
 .marker {
+  box-sizing: border-box;
   user-select: none;
   cursor: pointer;
   position: absolute;

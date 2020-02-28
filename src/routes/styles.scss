@@ -14,6 +14,7 @@
 }
 
 .container {
+  overflow: auto;
   flex: 1;
   margin-left: 224px;
   background-color: #eff1f4;
@@ -25,6 +26,7 @@
 }
 
 .main {
+  background: white;
   width: 100%;
   min-height: calc(100% - 80px);
   padding: 19px;

@@ -2,7 +2,6 @@
   font-size: 14px;
   border-radius: 10px;
   cursor: pointer;
-  background: white;
   width: 140px;
 
   &.selected {
@@ -59,18 +58,17 @@
 .main {
   position: relative;
 
-  &:hover {
-    .arrow.visible {
-      visibility: visible;
-      opacity: 1;
-    }
+  .arrow.visible {
+    opacity: 1;
   }
 }
 
 .arrow {
   opacity: 0;
+  &:not(.visible) {
+    pointer-events: none;
+  }
   transition: opacity 1s;
-  visibility: hidden;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

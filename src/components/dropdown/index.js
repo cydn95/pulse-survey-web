@@ -43,6 +43,7 @@ function DropDown(props) {
   return (
     <div tabIndex={0} className={styles.main} onClick={toggleOpen} onBlur={blurHandler} onFocus={focusHandler}>
       <Button
+        className={styles.button}
       >
         {children}
         <FontAwesomeIcon className={styles.icon} icon={faChevronDown} />
