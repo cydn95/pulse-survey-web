@@ -143,7 +143,7 @@ function* submitSurvey( { payload }) {
         "commentTags": amquestions[j].answer.commentTags,
         "user": getToken().userId,
         "subjectUser": getToken().userId,
-        "survey": amquestions[j].answer.survey,
+        "survey": amquestions[j].answer.survey.id,
         "amQuestion": amquestions[j].answer.amQuestion,
         "project": projectId,
         "controlType": amquestions[j].answer.controlType
@@ -156,7 +156,7 @@ function* submitSurvey( { payload }) {
   if (answerList.length === 0) {
     return
   }
-  
+  console.log(answerList);
   try {
     let result = yield call(submitSurveyAsync, answerList);
 
