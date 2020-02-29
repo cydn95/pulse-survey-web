@@ -2,9 +2,9 @@ import React, { Component } from "react";
 
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Button } from 'reactstrap';
+import Button from '@material-ui/core/Button';
+import { green } from '@material-ui/core/colors';
 
 import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
@@ -183,10 +183,23 @@ class NewStakeholder extends Component {
               )}
             </Select>
           </div>
-          <div className="input-field">
-            <a className="waves-effect waves-light btn btn-danger active" 
-              onClick={e=>this.props.onCancel(e)}>Back</a>&nbsp;&nbsp;
-            <Button disabled={ btnAddDisabled }  className="waves-effect waves-light btn-xs right" onClick={e => this.handleAddStakeholder()}>Add stakeholder</Button>
+          <div className={ styles['form-button'] }>
+            {/* <a className="waves-effect waves-light btn btn-danger active" 
+              onClick={e=>this.props.onCancel(e)}>Back</a>&nbsp;&nbsp; */}
+            <Button 
+              variant="contained"
+              color="secondary"
+              onClick={e=>this.props.onCancel(e)}>
+              Back
+            </Button>
+            <div className={styles.space}></div>
+            <Button 
+              variant="contained"
+              className={styles.green}
+              disabled={ btnAddDisabled } 
+              onClick={e => this.handleAddStakeholder()}>
+              Add stakeholder
+            </Button>
           </div>
         </div>
         <NotificationContainer/>
