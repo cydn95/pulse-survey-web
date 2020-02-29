@@ -1,9 +1,35 @@
 .root {
+  width: 100%;
+  background-color: #eff1f4;
+}
+
+.topbar {
+  width: 100%;
+  height: 80px;
+
+  .section {
+    .page-title {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.19;
+      color: #7eccbf;
+      display: none;
+    }
+
+    .project-name {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.19;
+      color: rgb(126, 204, 191);
+    }
+  }
+}
+
+.main-content {
   display: flex;
   flex-flow: row wrap;
   width: 100%;
   padding: 19px;
-  background-color: #eff1f4;
   box-sizing: border-box;
 }
 
@@ -28,8 +54,20 @@
   }
 }
 
-@media only screen and (max-width: 630px) {
+@media only screen and (max-width: 880px) {
+  .topbar {
+    height: 100px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 300;
+  }
+
   .driver-scroll {
     width: calc(100vw - 38px);
+  }
+
+  .main-content {
+    margin-top: 100px;
   }
 }

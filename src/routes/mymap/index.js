@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { Row } from "reactstrap";
-import { Colxx } from "Components/CustomBootstrap";
-import { Button } from 'reactstrap';
+import TopNav from 'Containers/TopNav';
 
 import { connect } from 'react-redux';
 
@@ -21,8 +19,6 @@ import {
 } from "Redux/actions";
 
 import {
-	SearchBox,
-	StakeholderList,
 	KGraph,
 	AoSurvey,
 	KGraphNavControls
@@ -40,13 +36,8 @@ import ReactLoading from 'react-loading';
 
 import styles from "./styles.scss";
 
-const searchKey = "oh";
+const searchKey = "";
 
-const search_data = [
-	{ firstName: "John", lastName: "Doe", description: "Topsides Delivery Manager " },
-	{ firstName: "James", lastName: "Doe", description: "Topsides Delivery Manager " },
-];
-	
 class MyMap extends React.Component {
 
 	constructor(props) {
@@ -107,7 +98,7 @@ class MyMap extends React.Component {
 	}
 
 	handleAddStackholderToGraph = (data, e = {}) => {
-		
+
 		const projectUserId = data.stakeholder;
 		const { stakeholderList } = this.state;
 
@@ -413,9 +404,10 @@ class MyMap extends React.Component {
 			aoQuestionList,
 			optionList,
 			driverList, 
-			skipQuestionList
+			skipQuestionList,
+			history
 		} = this.props;
-		
+
 		const { 
 			enableLayout, 
 			viewDropDownOpen,
@@ -434,55 +426,76 @@ class MyMap extends React.Component {
 			mapSaveLoading,
 			mapGetLoading
 		} = this.state;
-		
+
 		return (
-			<div className={ styles['map-container'] }>
-				<div className={ styles['map-header'] }>
-					<div className={ styles['map-title'] }>
-						<svg className={ styles.icon } viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-							<g>
-								<rect x="-1" y="-1" width="22" height="22" fill="none"/>
-							</g>
-							<g stroke="null">
-								<path d="m2.642 9.5924c0.50308 0 0.94019 0.18144 1.3031 0.55257s0.55257 0.79998 0.55257 1.3031-0.18144 0.94019-0.55257 1.3031-0.79998 0.55257-1.3031 0.55257-0.94019-0.18144-1.3031-0.55257-0.55257-0.79998-0.55257-1.3031 0.18144-0.94019 0.55257-1.3031 0.79998-0.55257 1.3031-0.55257zm2.5484 2.3257v-0.93194h1.3938v0.93194h-1.3938zm12.066 1.3855c0.57731 0 1.0721 0.20618 1.4763 0.6103s0.6103 0.89895 0.6103 1.4763-0.20618 1.0721-0.6103 1.4763-0.89895 0.6103-1.4763 0.6103-1.0721-0.20618-1.4763-0.6103-0.6103-0.89895-0.6103-1.4763l0.032989-0.28865-2.3752-1.3608c-0.3134 0.3134-0.65978 0.54432-1.0474 0.70926s-0.79998 0.24742-1.2453 0.24742c-0.57731 0-1.1216-0.14845-1.6247-0.4371s-0.89895-0.68452-1.1876-1.1876-0.4371-1.0474-0.4371-1.6247c0-0.51958 0.11546-1.0062 0.34638-1.4515s0.54432-0.82473 0.93194-1.1299l-0.95668-2.0618h-0.09072c-0.57731 0-1.0721-0.20618-1.4763-0.6103s-0.6103-0.89895-0.6103-1.4763 0.20618-1.0721 0.6103-1.4763 0.89895-0.6103 1.4763-0.6103 1.0721 0.20618 1.4763 0.6103 0.6103 0.89895 0.6103 1.4763c0 0.61854-0.23917 1.1381-0.72576 1.567l0.95668 2.0041c0.23092-0.057731 0.46185-0.09072 0.69277-0.09072 0.57731 0 1.1216 0.14845 1.6247 0.4371s0.89895 0.68452 1.1876 1.1876 0.4371 1.0474 0.4371 1.6247c0 0.37113-0.065978 0.74225-0.20618 1.1299l2.2598 1.3113c0.40412-0.38762 0.88246-0.58556 1.4268-0.58556zm-9.7483-7.8844c0.18969 0 0.35463-0.065978 0.49484-0.20618s0.20618-0.2969 0.20618-0.49484-0.065978-0.35463-0.20618-0.49484-0.2969-0.20618-0.49484-0.20618-0.35463 0.065978-0.49484 0.20618-0.20618 0.2969-0.20618 0.49484 0.065978 0.35463 0.20618 0.49484 0.30515 0.20618 0.49484 0.20618zm3.0185 7.8844c0.50308 0 0.94019-0.18144 1.3031-0.55257s0.55257-0.79998 0.55257-1.3031-0.18144-0.94019-0.55257-1.3031-0.79998-0.55257-1.3031-0.55257-0.94019 0.18144-1.3031 0.55257-0.55257 0.79998-0.55257 1.3031 0.18144 0.94019 0.55257 1.3031 0.79998 0.55257 1.3031 0.55257zm5.1628-4.7834-1.3938 1.0474-0.57731-0.7505 1.3938-1.0474 0.57731 0.7505zm1.7979-0.3134c-0.50308 0-0.94019-0.18144-1.3031-0.55257s-0.55257-0.79998-0.55257-1.3031 0.18144-0.94019 0.55257-1.3031 0.79998-0.55257 1.3031-0.55257 0.94019 0.18144 1.3031 0.55257 0.55257 0.79998 0.55257 1.3031-0.18144 0.94019-0.55257 1.3031-0.79998 0.55257-1.3031 0.55257zm-0.23092 7.8844c0.18969 0 0.35463-0.065978 0.49484-0.20618s0.20618-0.2969 0.20618-0.49484-0.065978-0.35463-0.20618-0.49484-0.2969-0.20618-0.49484-0.20618-0.35463 0.065978-0.49484 0.20618-0.20618 0.2969-0.20618 0.49484 0.065978 0.35463 0.20618 0.49484 0.2969 0.20618 0.49484 0.20618z" stroke="null"/>
-							</g>
-						</svg>
-						<h2 className={ styles['title'] }>Click to choose a Category</h2>
-					</div>
-					<div className={ styles['map-control'] }>
-					
-					</div>
-				</div>
-				<div className={ styles['map-content-section']}>
-					<Droppable
-						className={ styles['map-content'] }
-						types={ ['stakeholder'] } // <= allowed drop types
-						onDrop={ (data, e) => { this.handleAddStackholderToGraph(data, e) } }>
-						{ (userList.length > 0 && teamList.length > 0 && shCategoryList.length > 0 && mapGetLoading === false) && 
-						<KGraph
-							setParentState={ this.setState.bind(this) } 
-							apList={ apList }
-							esList={ esList }
-							newStakeholder={ newStakeholder } 
-							onClickNode={ id => this.handleStartOtherSurvey(id) } 
-							layout={ layout.toLowerCase() } 
-							viewMode={ viewMode } 
-							layoutUpdated={ layoutUpdated } 
-						/>
-						}
-					</Droppable>
-					<div className={ styles['map-stakeholder'] }>
-					{screen === 'dlist' &&
-						<SearchBar
-							searchKey={searchKey} 
-							data={search_data} 
-							addNewStakeholder={() => {}}
-						/>
-					}
-					<NewStakeholder shCategoryList={shCategoryList} teamList={teamList} 
-							onCancel={e => this.handleCancelSurvey()}
-							onAddStakeholder={data => this.handleAddNewStakeholder(data)} stakeholder={this.defaultStakeholder} />
+			<div className={ styles.root}>
+				<div className={styles.topbar }>
+          <TopNav history={ history } menuTitle="My Map" >
+						<div className={ styles.section }>
+							<h2 className={ styles['page-title'] }>My Profile</h2>
+							<h2 className={ styles['project-name'] }>Alpha Project</h2>
+						</div>
+					</TopNav>
+        </div>
+				<div className={ styles['map-container'] }>
+					<div className={ styles['map-header'] }>
+						<div className={ styles['map-title'] }>
+							<svg className={ styles.icon } viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+								<g>
+									<rect x="-1" y="-1" width="22" height="22" fill="none"/>
+								</g>
+								<g stroke="null">
+									<path d="m2.642 9.5924c0.50308 0 0.94019 0.18144 1.3031 0.55257s0.55257 0.79998 0.55257 1.3031-0.18144 0.94019-0.55257 1.3031-0.79998 0.55257-1.3031 0.55257-0.94019-0.18144-1.3031-0.55257-0.55257-0.79998-0.55257-1.3031 0.18144-0.94019 0.55257-1.3031 0.79998-0.55257 1.3031-0.55257zm2.5484 2.3257v-0.93194h1.3938v0.93194h-1.3938zm12.066 1.3855c0.57731 0 1.0721 0.20618 1.4763 0.6103s0.6103 0.89895 0.6103 1.4763-0.20618 1.0721-0.6103 1.4763-0.89895 0.6103-1.4763 0.6103-1.0721-0.20618-1.4763-0.6103-0.6103-0.89895-0.6103-1.4763l0.032989-0.28865-2.3752-1.3608c-0.3134 0.3134-0.65978 0.54432-1.0474 0.70926s-0.79998 0.24742-1.2453 0.24742c-0.57731 0-1.1216-0.14845-1.6247-0.4371s-0.89895-0.68452-1.1876-1.1876-0.4371-1.0474-0.4371-1.6247c0-0.51958 0.11546-1.0062 0.34638-1.4515s0.54432-0.82473 0.93194-1.1299l-0.95668-2.0618h-0.09072c-0.57731 0-1.0721-0.20618-1.4763-0.6103s-0.6103-0.89895-0.6103-1.4763 0.20618-1.0721 0.6103-1.4763 0.89895-0.6103 1.4763-0.6103 1.0721 0.20618 1.4763 0.6103 0.6103 0.89895 0.6103 1.4763c0 0.61854-0.23917 1.1381-0.72576 1.567l0.95668 2.0041c0.23092-0.057731 0.46185-0.09072 0.69277-0.09072 0.57731 0 1.1216 0.14845 1.6247 0.4371s0.89895 0.68452 1.1876 1.1876 0.4371 1.0474 0.4371 1.6247c0 0.37113-0.065978 0.74225-0.20618 1.1299l2.2598 1.3113c0.40412-0.38762 0.88246-0.58556 1.4268-0.58556zm-9.7483-7.8844c0.18969 0 0.35463-0.065978 0.49484-0.20618s0.20618-0.2969 0.20618-0.49484-0.065978-0.35463-0.20618-0.49484-0.2969-0.20618-0.49484-0.20618-0.35463 0.065978-0.49484 0.20618-0.20618 0.2969-0.20618 0.49484 0.065978 0.35463 0.20618 0.49484 0.30515 0.20618 0.49484 0.20618zm3.0185 7.8844c0.50308 0 0.94019-0.18144 1.3031-0.55257s0.55257-0.79998 0.55257-1.3031-0.18144-0.94019-0.55257-1.3031-0.79998-0.55257-1.3031-0.55257-0.94019 0.18144-1.3031 0.55257-0.55257 0.79998-0.55257 1.3031 0.18144 0.94019 0.55257 1.3031 0.79998 0.55257 1.3031 0.55257zm5.1628-4.7834-1.3938 1.0474-0.57731-0.7505 1.3938-1.0474 0.57731 0.7505zm1.7979-0.3134c-0.50308 0-0.94019-0.18144-1.3031-0.55257s-0.55257-0.79998-0.55257-1.3031 0.18144-0.94019 0.55257-1.3031 0.79998-0.55257 1.3031-0.55257 0.94019 0.18144 1.3031 0.55257 0.55257 0.79998 0.55257 1.3031-0.18144 0.94019-0.55257 1.3031-0.79998 0.55257-1.3031 0.55257zm-0.23092 7.8844c0.18969 0 0.35463-0.065978 0.49484-0.20618s0.20618-0.2969 0.20618-0.49484-0.065978-0.35463-0.20618-0.49484-0.2969-0.20618-0.49484-0.20618-0.35463 0.065978-0.49484 0.20618-0.20618 0.2969-0.20618 0.49484 0.065978 0.35463 0.20618 0.49484 0.2969 0.20618 0.49484 0.20618z" stroke="null"/>
+								</g>
+							</svg>
+							<h2 className={ styles['title'] }>Click to choose a Category</h2>
+						</div>
+						<div className={ styles['map-control'] }>
 						
+						</div>
+					</div>
+					<div className={ styles['map-content-section']}>
+						<Droppable
+							className={ styles['map-content'] }
+							types={ ['stakeholder'] } // <= allowed drop types
+							onDrop={ (data, e) => { this.handleAddStackholderToGraph(data, e) } }>
+							{ (userList.length > 0 && teamList.length > 0 && shCategoryList.length > 0 && mapGetLoading === false) && 
+							<KGraph
+								setParentState={ this.setState.bind(this) } 
+								apList={ apList }
+								esList={ esList }
+								newStakeholder={ newStakeholder } 
+								onClickNode={ id => this.handleStartOtherSurvey(id) } 
+								layout={ layout.toLowerCase() } 
+								viewMode={ viewMode } 
+								layoutUpdated={ layoutUpdated } 
+							/>
+							}
+						</Droppable>
+						<div className={ styles['map-stakeholder'] }>
+						{screen === 'list' &&
+							<SearchBar
+								searchKey={searchKey} 
+								data={stakeholderList}
+								addNewStakeholder={e => this.handleShowAddPage(e)}
+							/>
+						}
+						{screen === 'add' && shCategoryList.length > 0 &&
+						<NewStakeholder shCategoryList={shCategoryList} teamList={teamList} 
+								onCancel={e => this.handleCancelSurvey()}
+								onAddStakeholder={data => this.handleAddNewStakeholder(data)} stakeholder={this.defaultStakeholder} />
+						}
+						{screen === 'aosurvey' && aoQuestionList.length > 0 && optionList.length > 0 &&
+						driverList.length > 0 && skipQuestionList.length > 0 &&
+						<AoSurvey
+							questions={aoQuestionList}
+							options={optionList}
+							drivers={driverList}
+							skipQuestionList={skipQuestionList}
+							onSubmit={(e, answerData) => this.handleSubmitSurvey(e, answerData)}
+							onCancel={e => this.handleCancelSurvey()} />
+					}
+						</div>
 					</div>
 				</div>
 			</div>

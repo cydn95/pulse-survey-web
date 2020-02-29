@@ -5,8 +5,8 @@ import DriverPanel from "Components/driver";
 
 import Question from "../question";
 
-import { Row } from "reactstrap";
-import { Colxx } from "Components/CustomBootstrap";
+
+import TopNav from 'Containers/TopNav';
 
 import {
   pageList,
@@ -57,30 +57,39 @@ class Start extends Component {
     const { 
       driverList,
       surveyList,
-      skipQuestionList
+      skipQuestionList,
+      history
     } = this.props;
 
     const defaultDrvierId = driverList.length ? driverList[this.state.pageIndex].driverId : 0;
 
     return (
       <div className={ styles.root }>
-        <div className={ styles['driver-scroll']}>
-          <div className={ styles['driver-section'] }>
-            <DriverPanel
-              defaultDriverId = { defaultDrvierId }
-              data={ driverList }
-              onClick={(e, driverId) => this.handleClickDriver(driverId) } 
-            />
-          </div>
-          <div className={ styles['survey-container']}>
-            <Colxx xs="12">
+        <div className={styles.topbar }>
+          <TopNav history={ history } menuTitle="About Me" >
+						<div className={ styles.section }>
+							<h2 className={ styles['project-name'] }>Alpha Project</h2>
+						</div>
+					</TopNav>
+        </div>
+        <div className={ styles['main-content'] }>
+          <div className={ styles['driver-scroll']}>
+            <div className={ styles['driver-section'] }>
+              <DriverPanel
+                defaultDriverId = { defaultDrvierId }
+                data={ driverList }
+                onClick={(e, driverId) => this.handleClickDriver(driverId) } 
+              />
+            </div>
+            <div className={ styles['survey-container']}>
               { surveyList.length > 0 && skipQuestionList.length > 0 && 
                 <Question history={this.props.history} skipQuestionList={skipQuestionList} /> }
               {surveyList.length ===0 && <h1></h1>}
-            </Colxx>
+            </div>
           </div>
         </div>
       </div>
+      
     );
   }
 }

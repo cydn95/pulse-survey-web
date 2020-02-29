@@ -1,0 +1,148 @@
+.root {
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: row wrap;
+
+  .project {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    padding-top: 12px;
+    padding-left: 17px;
+    
+    .drawer-section {
+      .drawer-toggle {
+        display: none;
+      }
+
+      .title {
+        font-size: 20px;
+        line-height: 1.9;
+        color: #1a1a1a;
+      }
+    }
+
+    .section {
+      .page-title {
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 1.19;
+        color: #7eccbf;
+        display: none;
+      }
+
+      .project-name {
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 1.19;
+        color: rgb(126, 204, 191);;
+      }
+    }
+  }
+
+  .control {
+    display: flex;
+    flex: 1;
+    flex-flow: row-reverse;
+    height: 100%;
+
+    .dropdown {
+      height: 100%;
+      display: flex;
+      flex-flow: row;
+      cursor: pointer;
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        margin-top: 20px;
+      }
+
+      .username {
+        display: inline-block;
+        margin-top: 34px;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.38;
+        color: #1a1a1a;
+        margin-left: 12px;
+        margin-right: 15px;
+      }
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 80px;
+      right: 10px;
+      width: 200px;
+      background-color: #fff;
+      border: 1px solid #eee;
+    }
+  }
+}
+
+@media only screen and (max-width: 630px) {
+  .root {
+   
+    .control {
+      display: none;
+    }
+
+    .project {
+      padding-top: 0px;
+      padding-left: 19px;
+      padding-right: 19px;
+      margin-top: 30px;
+      width: 100%;
+      
+      .drawer-section {
+
+        .title {
+          margin-left: 15px;
+        }
+
+        .drawer-toggle {
+          -webkit-touch-callout: none; 
+          -webkit-user-select: none; 
+          -khtml-user-select: none; 
+          -moz-user-select: none; 
+          -ms-user-select: none; 
+          user-select: none; 
+          left: 8px; 
+          top:38px;
+          font-size: 20px;
+          display: block; 
+          position: fixed; 
+          z-index: 1; 
+        }
+        
+      }
+      .section {
+        width: 100%;
+        display: flex;
+        flex-flow: row;
+        margin-top: 27px;
+
+        .page-title {
+          display: block;
+          font-size: 21px;
+          line-height: 29px;
+          color: rgb(26, 26, 26);
+          flex: 1;
+          display: flex;
+        }
+
+        .project-name {
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 19px;
+          color: rgb(126, 204, 191);
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}

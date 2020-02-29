@@ -20,6 +20,8 @@ import {
   submitAoQuestionSuccess
 } from './actions';
 
+import { controlType, controlTypeText } from 'Constants/defaultValues'
+
 const getAoQuestionListAsync = async () =>
     await aoQuestionListAPI()
       .then(result => result)
@@ -42,7 +44,18 @@ function* getAoQuestionList() {
         const optionList = result_option.data;
         let aoQuestionList = result.data;
 
+        aoQuestionList = aoQuestionList.filter(item => {
+          if (item.controlType == controlType.TWO_OPTIONS || item.controlType == controlType.MULTI_OPTIONS) {
+            if (item.option.length == 0) {
+              return false;
+            }
+          }
+          return true;
+        });
+
         for (let i = 0; i < aoQuestionList.length; i++) {
+          
+
           aoQuestionList[i] = {
             ...aoQuestionList[i],
             answer: {
@@ -113,7 +126,7 @@ function* submitAoQuestion({ payload }) {
     if (result.status === 201) {
       
       yield put(submitAoQuestionSuccess());
-      history.push('/app/dashboard');
+      history.push('/app/me');
     } else {
       console.log('submit failed')
     }

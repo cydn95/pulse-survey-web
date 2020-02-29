@@ -4,6 +4,9 @@
   }
 }
 .suggestion-list {
+  
+  cursor:  default;
+
   >*:not(:first-child) {
     margin-top: 10px;
   }

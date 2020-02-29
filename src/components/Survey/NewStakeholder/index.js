@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
-import { green } from '@material-ui/core/colors';
 
 import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
@@ -21,7 +20,7 @@ class NewStakeholder extends Component {
       stakeholder: {
         ...props.stakeholder,
       },
-      btnAddDisabled: ""
+      btnAddDisabled: false
     };
 
   }
@@ -48,7 +47,7 @@ class NewStakeholder extends Component {
   handleAddStakeholder = () => {
     
     this.setState({
-      btnAddDisabled: "disabled"
+      btnAddDisabled: true
     }, () => {
 
       const { stakeholder } = this.state;
@@ -56,7 +55,7 @@ class NewStakeholder extends Component {
       if (stakeholder.firstName.trim() === "") {
         NotificationManager.error('First name must be required', 'Info', 2000);
         this.setState({
-          "btnAddDisabled": ""
+          "btnAddDisabled": false
         });
         return;
       }
@@ -64,7 +63,7 @@ class NewStakeholder extends Component {
       if (stakeholder.lastName.trim() === "") {
         NotificationManager.error('Last name must be required', 'Info', 2000);
         this.setState({
-          "btnAddDisabled": ""
+          "btnAddDisabled": false
         });
         return;
       }
@@ -72,7 +71,7 @@ class NewStakeholder extends Component {
       if (stakeholder.email.trim() === "") {
         NotificationManager.error('Email must be required', 'Info', 2000);
         this.setState({
-          "btnAddDisabled": ""
+          "btnAddDisabled": false
         });
         return;
       }
@@ -80,7 +79,7 @@ class NewStakeholder extends Component {
       if (stakeholder.shCategory === 0) {
         NotificationManager.error('SHCategory must be required', 'Info', 2000);
         this.setState({
-          "btnAddDisabled": ""
+          "btnAddDisabled": false
         });
         return;
       }
@@ -88,7 +87,7 @@ class NewStakeholder extends Component {
       if (stakeholder.organisationId.trim() === "") {
         NotificationManager.error('Organisation must be required', 'Info', 2000);
         this.setState({
-          "btnAddDisabled": ""
+          "btnAddDisabled": false
         });
         return;
       }
@@ -96,7 +95,7 @@ class NewStakeholder extends Component {
       if (stakeholder.teamId === 0) {
         NotificationManager.error('Team must be required', 'Info', 2000);
         this.setState({
-          "btnAddDisabled": ""
+          "btnAddDisabled": false
         });
         return;
       }

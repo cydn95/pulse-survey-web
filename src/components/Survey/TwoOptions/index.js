@@ -89,7 +89,7 @@ class TwoOptions extends Component {
     return (
       <Row>
         <Colxx xs="12">
-          <h1 className="mt-s">{question.questionText}</h1>
+          <h2 className="mt-s">{question.questionText}</h2>
           <div className="anwser-select-n mt-3">
               
               </div>

@@ -18,3 +18,9 @@
     margin-top: 19px;
 }
 
+@media only screen and (max-width: 768px) {
+    .question-text {
+      font-size: 18px;
+    }
+}
+

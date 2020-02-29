@@ -6,10 +6,12 @@ import Button from 'Components/Button';
 import Input from './search';
 import SuggestionOption from './suggestion-option';
 
+import { Draggable } from 'react-drag-and-drop'
+
 import styles from './styles.scss';
 
 const getSuggestions = (data, filter) => {
-  return data.filter(d => (d.firstName + " " + d.lastName).indexOf(filter) !== -1)
+  return data.filter(d => (d.fullName).indexOf(filter) !== -1)
 }
 
 function SearchBar(props) {
@@ -35,12 +37,13 @@ function SearchBar(props) {
       />
       <div className={styles["suggestion-list"]}>
         {
-          getSuggestions(data, filter).map((d, i) => (
-            <SuggestionOption 
-              key={i}
-              name={d.firstName + " " + d.lastName} 
-              description={d.description}
-            />
+          getSuggestions(data, filter).map((d) => (
+            <Draggable key={d.projectUserId} type="stakeholder" data={d.projectUserId} >
+              <SuggestionOption 
+                name={d.fullName} 
+                description={`${d.organisation} / ${d.team}`}
+              />
+            </Draggable>
           ))
         }
       </div>

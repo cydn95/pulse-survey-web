@@ -217,11 +217,11 @@ function Test() {
       >
         SH Only
       </DropDown>
-      <SearchBar
+      {/* <SearchBar
         searchKey={searchKey} 
         data={search_data} 
         addNewStakeholder={() => alert('add new stakeholder')}
-      />
+      /> */}
       <Accordion
         keySelector={d => d.title}  
         headerSelector={d => d.title}  

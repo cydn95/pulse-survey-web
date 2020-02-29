@@ -31,9 +31,6 @@ const MainApp = ({ match, history }) => {
 				<BottomBar/> 
 			</div>
 			<div className={ styles.container }>
-				<div className={styles.topbar }>
-					<TopNav history={ history } />
-				</div>
 				<div className={ styles.main }>
 					<Switch>
 						<Route path={`${match.url}/test`} component={Test} />

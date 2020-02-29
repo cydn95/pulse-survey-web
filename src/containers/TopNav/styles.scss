@@ -23,23 +23,6 @@
         color: #1a1a1a;
       }
     }
-
-    .section {
-      .page-title {
-        font-size: 16px;
-        font-weight: 500;
-        line-height: 1.19;
-        color: #7eccbf;
-        display: none;
-      }
-
-      .project-name {
-        font-size: 16px;
-        font-weight: 500;
-        line-height: 1.19;
-        color: rgb(126, 204, 191);;
-      }
-    }
   }
 
   .control {
@@ -84,7 +67,7 @@
   }
 }
 
-@media only screen and (max-width: 630px) {
+@media only screen and (max-width: 880px) {
   .root {
    
     .control {
@@ -119,29 +102,6 @@
           z-index: 1; 
         }
         
-      }
-      .section {
-        width: 100%;
-        display: flex;
-        flex-flow: row;
-        margin-top: 27px;
-
-        .page-title {
-          display: block;
-          font-size: 21px;
-          line-height: 29px;
-          color: rgb(26, 26, 26);
-          flex: 1;
-          display: flex;
-        }
-
-        .project-name {
-          font-size: 16px;
-          font-weight: 500;
-          line-height: 19px;
-          color: rgb(126, 204, 191);
-          margin-top: 10px;
-        }
       }
     }
   }

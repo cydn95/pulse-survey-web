@@ -30,8 +30,8 @@ Radio.defaultProps = {
 };
 
 Radio.propTypes = {
-  name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   checked: PropTypes.bool,
   styles: PropTypes.any,

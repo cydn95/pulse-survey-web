@@ -31,6 +31,9 @@ class TopNav extends Component {
   };
 
   render() {
+
+    const { menuTitle, children } = this.props;
+
     return (
       <div className={ styles.root }>
         <Drawer 
@@ -48,11 +51,10 @@ class TopNav extends Component {
               onClick={e => this.toggleDrawer(e, true)}
               onKeyDown={e => this.toggleDrawer(e, true)}
             />
-            <h1 className={ styles.title }>Dashboard</h1>
+            <h1 className={ styles.title }>{menuTitle}</h1>
           </div>
           <div className={ styles.section }>
-            <h2 className={ styles['page-title'] }>My Profile</h2>
-            <h2 className={ styles['project-name'] }>Alpha Project</h2>
+            { children }
           </div>
         </div>
         <div className={ styles.control }>

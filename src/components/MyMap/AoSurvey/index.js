@@ -1,16 +1,7 @@
-import React, { Component, Fragment } from "react";
+import React from "react";
 
 import { controlType } from 'Constants/defaultValues'
-
-import {
-  Row,
-  Card,
-  CardBody,
-  Button,
-  Collapse,
-  CardTitle,
-  CardSubtitle,
-} from "reactstrap";
+import Button from '@material-ui/core/Button';
 
 import {
   MultipleOptions,
@@ -21,6 +12,10 @@ import {
 } from "Components/Survey";
 
 import { Colxx } from "Components/CustomBootstrap";
+
+import Accordion from "Components/accordion";
+
+import styles from './styles.scss';
 
 class AoSurvey extends React.Component {
 
@@ -39,7 +34,7 @@ class AoSurvey extends React.Component {
 
     for (let i = 0; i < questions.length; i++) {
       for (let j = 0; j < drivers.length; j++) {
-        if (questions[i].driver === drivers[j].id) {
+        if (questions[i].driver.id === drivers[j].driverId) {
           drivers[j].questions.push(questions[i]);
           break;
         }
@@ -50,30 +45,11 @@ class AoSurvey extends React.Component {
       return item.questions.length > 0 ? true : false
     });
 
-    let accordion = [];
-    for (let i = 0; i < orderedDrivers.length; i++) {
-      if (i === 0) 
-        accordion.push(true) 
-      else
-        accordion.push(false)
-    }
-
     this.state = {
-      collapse: false,
-      accordion,
       questions,
       options,
       drivers: orderedDrivers
     };
-
-  }
-
-  toggleAccordion = (tab)  => {
-    const prevState = this.state.accordion;
-    const state = prevState.map((x, index) => (tab === index ? !x : false));
-    this.setState({
-      accordion: state
-    });
   }
 
   handleAnswer = answer => {
@@ -95,58 +71,64 @@ class AoSurvey extends React.Component {
 
   render() {
     
-    const { options, drivers, accordion } = this.state;
+    const { options } = this.state;
     const { skipQuestionList } = this.props;
     
     return (
-      <div className="ao-survey-container">
-        { 
-          drivers.map((driver, index2) => {
-            let content = accordion[index2] === true ? 'show' : 'hide';
-            let indicator = accordion[index2] === true ? 'indicator-up' : 'indicator-down';
-            return <div className="aosurvey-section" key={index2}>
-              <div 
-                className="header"
-                onClick={() => this.toggleAccordion(index2)}>
-                <div className="icon">
-                  <img src={driver.iconPath}/>
-                </div>
-                <h1>{driver.driverName}</h1>
-                <div className={indicator}></div>
-              </div>
-              <div className={"content " + content}>
-                { 
-                  driver.questions.map( (control, index) => {
-                    switch (control.controlType) {
-                      case controlType.TEXT:
-                        return <FreeText skipQuestionList={skipQuestionList} key={index} question={control} onAnswer={answer => this.handleAnswer(answer)}/>
-            
-                      case controlType.SLIDER:
-                        return <RangeSlider skipQuestionList={skipQuestionList} key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                      
-                        case controlType.TWO_OPTIONS:
-                        return <TwoOptions skipQuestionList={skipQuestionList} key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-            
-                      case controlType.MULTI_OPTIONS:
-                        return <MultipleOptions skipQuestionList={skipQuestionList} key={index} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-            
-                      case controlType.SMART_TEXT:
-                        return <SmartText skipQuestionList={skipQuestionList} key={index} question={control}  onAnswer={answer => this.handleAnswer(answer)}/>
-            
-                      default:
-                        return <div key={index} ></div>
-                    }
-                  })
-                }
-              </div>
-            </div>
-          })
-        }
-        <div className="footer">
-          <a className="waves-effect waves-light btn btn-danger active" 
-            onClick={e=>this.handleCancel(e)}>Back</a>&nbsp;&nbsp;
-          <a className="waves-effect waves-light btn btn-primary active" 
-            onClick={e=>this.handleSubmit(e)} >Submit</a>
+      <div className={styles.root}>
+        <Accordion
+          keySelector={d => d.title}  
+          headerSelector={d => d.title}  
+          componentSelector={d => d.component}  
+          iconSelector={d => d.icon}
+          selectedItem={this.state.drivers[0].driverName}
+          data={
+            this.state.drivers.map((driver, index) => {
+              return {
+                  title: driver.driverName,
+                  component: (
+                    <div className={styles.questions}>
+                      { driver.questions.map((control, index2) => {
+                        switch (control.controlType) {
+                          case controlType.TEXT:
+                            return <FreeText skipQuestionList={skipQuestionList} key={`${index}${index2}`} question={control} onAnswer={answer => this.handleAnswer(answer)}/>
+                
+                          case controlType.SLIDER:
+                            return <RangeSlider skipQuestionList={skipQuestionList} key={`${index}${index2}`} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+                          
+                            case controlType.TWO_OPTIONS:
+                            return <TwoOptions skipQuestionList={skipQuestionList} key={`${index}${index2}`} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+                
+                          case controlType.MULTI_OPTIONS:
+                            return <MultipleOptions skipQuestionList={skipQuestionList} key={`${index}${index2}`} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+                
+                          case controlType.SMART_TEXT:
+                            return <SmartText skipQuestionList={skipQuestionList} key={`${index}${index2}`} question={control}  onAnswer={answer => this.handleAnswer(answer)}/>
+                
+                          default:
+                            return <div key={`${index}${index2}`} ></div>
+                        }
+                      })}
+                    </div>
+                  ),
+                  icon: "comment"
+              }
+            })
+          }
+        />
+        <div className={styles.footer}>
+          <Button
+            variant="contained"
+            color="default"
+            onClick={e=>this.handleCancel(e)}>
+            Cancel
+          </Button>&nbsp;&nbsp;
+          <Button 
+            variant="contained"
+            className={styles.green}
+            onClick={e=>this.handleSubmit(e)}>
+            Submit
+          </Button>
         </div>
       </div>
     )
