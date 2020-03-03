@@ -73,7 +73,7 @@ class AoSurvey extends React.Component {
     
     const { options } = this.state;
     const { skipQuestionList } = this.props;
-    
+
     return (
       <div className={styles.root}>
         <Accordion
@@ -111,7 +111,7 @@ class AoSurvey extends React.Component {
                       })}
                     </div>
                   ),
-                  icon: "comment"
+                  icon: driver.icon
               }
             })
           }

@@ -39,6 +39,7 @@
   padding-top: 23px;
   border-bottom: 1px solid #eee;
   flex: 1;
+  width: 100%;
 
   .map-title {
     display: flex;
@@ -59,8 +60,9 @@
       color: #6d6f94;
     }
   }
+
   .map-control {
-    
+    flex: 1;
   }
 }
 
@@ -133,6 +135,12 @@
     
     .map-stakeholder {
       width: 100%;
+    }
+  }
+
+  .map-header {
+    .map-title {
+      display: none;
     }
   }
 }

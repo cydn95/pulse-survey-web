@@ -1,0 +1,34 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: -7px;
+  margin-left: 10px;
+  justify-content: right;
+  align-content: right;
+
+  .dropdown {
+    margin-left: 10px;
+  }
+}
+
+.mapButtonGroup {
+  margin-left: 15px;
+}
+
+.mapButtonGroup .btn {
+  margin-bottom: 5px;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: 'transparent' !important;
+  color: #6c757d !important;
+}
+
+canvas {
+  user-select: none;
+}
+
+.require {
+  color: #f00;
+}

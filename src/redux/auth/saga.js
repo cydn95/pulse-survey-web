@@ -30,7 +30,7 @@ function* loginWithUsernamePassword({ payload }) {
 			const loginUser = yield call(loginWithUsernamePasswordAsync, username, password);
 
 			if (loginUser.data) {
-console.log(loginUser.data);
+
                 let userId = loginUser.data.id;
                 let accessToken = loginUser.data.token;
                 if (accessToken !== '') {

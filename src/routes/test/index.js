@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Slider from 'Components/Slider';
 import Checkbox from 'Components/Checkbox';
@@ -160,6 +160,10 @@ function Test() {
 
   const [selectedItem, setSelectedItem] = useState(null)
 
+  useEffect(() => {
+    console.log(selectedItem);
+  }, [selectedItem]);
+
   const [list, setList] = useState([])
   const addNewItem = () => {
     setList([...list, `item ${list.length + 1}`])
@@ -215,7 +219,7 @@ function Test() {
         selectedItem={selectedItem}
         onSelect={setSelectedItem}
       >
-        SH Only
+        { selectedItem ? selectedItem.title : 'Option1' }
       </DropDown>
       {/* <SearchBar
         searchKey={searchKey} 

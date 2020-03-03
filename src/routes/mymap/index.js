@@ -451,7 +451,17 @@ class MyMap extends React.Component {
 							<h2 className={ styles['title'] }>Click to choose a Category</h2>
 						</div>
 						<div className={ styles['map-control'] }>
-						
+							<KGraphNavControls 
+								enableLayout={enableLayout} 
+								viewDropDownOpen={viewDropDownOpen} 
+								layoutDropDownOpen={layoutDropDownOpen}
+								updateViewDisplay={this.handleToggleMapModeDropdown} 
+								updateLayoutDisplay={this.handleToggleLayoutDropdown} 
+								updateMap={this.setMapMode} 
+								saveGraph={e => this.handleSaveGraph(e)} saveLoading={mapSaveLoading}
+								selectedLayout={layout} 
+								selectedViewMode={viewMode} 
+							/>
 						</div>
 					</div>
 					<div className={ styles['map-content-section']}>

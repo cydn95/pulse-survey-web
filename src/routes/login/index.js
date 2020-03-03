@@ -69,7 +69,7 @@ class LoginLayout extends Component {
         {
           authStatus !== loginErrorType.AUTH_SUCCESS && <span className="login-container__right--login-panel--error">{error}</span>
         }
-        <label>USERNAME</label>
+        <label>EMAIL</label>
         <Input
           type="text"
           value={username}
