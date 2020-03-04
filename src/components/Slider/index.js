@@ -9,12 +9,14 @@ function Slider(props) {
   const { percent } = props;
 
   const [mouseDown, setMouseDown] = useState(false);
+  const [touchStart, setTouchStart] = useState(false);
   const rangeRef = useRef(null);
 
   const changeSliderToMousePos = (clientX) => {
     const rangeBounds = rangeRef.current.getBoundingClientRect();
     const offset = clientX - rangeBounds.left;
     const percent = 100 * Math.min(1, Math.max(offset / rangeBounds.width, 0));
+    
     props.onChange(percent);
   };
 
@@ -26,6 +28,7 @@ function Slider(props) {
     const mouseUp = (e) => {
       setMouseDown(false);
     };
+
     // set resize listener
     window.addEventListener('mousemove', mouseMove);
     window.addEventListener('mouseup', mouseUp);
@@ -35,6 +38,25 @@ function Slider(props) {
       window.removeEventListener('mouseup', mouseUp);
     }
   }, [mouseDown]);
+
+  useEffect(() => {
+    const touchMove = (e) => {
+      if (!touchStart) return;
+      changeSliderToMousePos(e.touches[0].clientX);
+    };
+    const touchUp = (e) => {
+      setTouchStart(false);
+    };
+
+    // set resize listener
+    window.addEventListener('touchmove', touchMove);
+    window.addEventListener('touchup', touchUp);
+
+    return () => {
+      window.removeEventListener('touchmove', touchMove);
+      window.removeEventListener('touchup', touchUp);
+    }
+  }, [touchStart]);
 
   const fillStart = "#e66864";
   const fillEnd = "#00b7a2";
@@ -64,6 +86,7 @@ function Slider(props) {
           className={styles.marker} 
           tabIndex={0}
           onMouseDown={(e) => setMouseDown(true)} 
+          onTouchStart={(e) => setTouchStart(true)}
         />
       </div>
     </div>
