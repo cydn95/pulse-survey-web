@@ -23,6 +23,10 @@
       color: rgb(126, 204, 191);
     }
   }
+
+  .graph-toggle {
+    display: none;
+  }
 }
 
 .map-container {
@@ -90,26 +94,23 @@
 
 @media only screen and (max-width: 880px) {
   .topbar {
-    height: 140px;
+    height: 110px;
     position: fixed;
     top: 0px;
     left: 0px;
     z-index: 300;
 
+    .graph-toggle {
+      display: block;
+      position: fixed;
+      right: 20px;
+      top: 40px;
+    }
+
     .section {
       width: 100%;
       display: flex;
       flex-flow: row;
-      margin-top: 27px;
-
-      .page-title {
-        display: block;
-        font-size: 21px;
-        line-height: 29px;
-        color: rgb(26, 26, 26);
-        flex: 1;
-        display: flex;
-      }
 
       .project-name {
         font-size: 16px;
@@ -122,13 +123,16 @@
   }
 
   .map-container {
-    margin: 159px 19px 19px 19px;
+    margin: 100px 0px 0px 0px;
+    width: 100vw;
+    min-height: calc(100vh - 220px);
+    border-radius: 0px;
   }
 
   .map-content-section {
 
     flex-flow: column;
-    
+
     .map-content {
       width: 100%;
       border-right: none;
@@ -136,6 +140,9 @@
     
     .map-stakeholder {
       width: 100%;
+      background-color: #fff;
+      min-height: calc(100vh - 170px);
+      overflow-y: auto;
     }
   }
 
@@ -143,5 +150,9 @@
     .map-title {
       display: none;
     }
+  }
+
+  .mobile-hide {
+    display: none;
   }
 }

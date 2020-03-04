@@ -47,7 +47,7 @@ function* getPageList() {
         driverList.push({
             driverId: driver.id,
             driverName: driver.driverName,
-            icon: "user",
+            icon: driver.iconPath,
             percentage: 0,
             progress: 0
         });

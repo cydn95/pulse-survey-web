@@ -30,11 +30,15 @@ import {
 
 import SearchBar from "Components/search-bar";
 
+import Button from "Components/Button";
+
 import { Droppable } from 'react-drag-and-drop'
 
 import ReactLoading from 'react-loading';
 
 import styles from "./styles.scss";
+
+import classnames from "classnames";
 
 const searchKey = "";
 
@@ -64,6 +68,7 @@ class MyMap extends React.Component {
 			mapSaveLoading: false,
 			mapGetLoading: false,
 
+			toggleGraph: true,
 			search: ''
 		};
 
@@ -398,6 +403,12 @@ class MyMap extends React.Component {
 		this.props.saveKMapData(newMapData);
 	}
 
+	toggleGraph = e => {
+		this.setState({
+			'toggleGraph': !this.state.toggleGraph
+		});
+	}
+
 	render() {
 
 		const { 
@@ -424,21 +435,28 @@ class MyMap extends React.Component {
 			teamList,
 			userList,
 			mapSaveLoading,
-			mapGetLoading
+			mapGetLoading,
+			toggleGraph
 		} = this.state;
+
+		const mapHeaderVisible = toggleGraph ? classnames(styles['map-header']) : classnames(styles['map-header'], styles['mobile-hide']);
+		const mapContentVisible = toggleGraph ? classnames(styles['map-content']) : classnames(styles['map-content'], styles['mobile-hide']);
+		const stakeholderVisible = !toggleGraph ? classnames(styles['map-stakeholder']) : classnames(styles['map-stakeholder'], styles['mobile-hide']);
 
 		return (
 			<div className={ styles.root}>
 				<div className={styles.topbar }>
           <TopNav history={ history } menuTitle="My Map" >
 						<div className={ styles.section }>
-							<h2 className={ styles['page-title'] }>My Profile</h2>
 							<h2 className={ styles['project-name'] }>Alpha Project</h2>
+							<div className={styles['graph-toggle']}>
+								<Button onClick={ e => this.toggleGraph(e) }>{ !toggleGraph ? 'GRAPH VIEW' : 'STAKEHOLDER' }</Button>
+							</div>
 						</div>
 					</TopNav>
         </div>
 				<div className={ styles['map-container'] }>
-					<div className={ styles['map-header'] }>
+					<div className={ classnames(mapHeaderVisible) }>
 						<div className={ styles['map-title'] }>
 							<svg className={ styles.icon } viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 								<g>
@@ -466,7 +484,7 @@ class MyMap extends React.Component {
 					</div>
 					<div className={ styles['map-content-section']}>
 						<Droppable
-							className={ styles['map-content'] }
+							className={ mapContentVisible }
 							types={ ['stakeholder'] } // <= allowed drop types
 							onDrop={ (data, e) => { this.handleAddStackholderToGraph(data, e) } }>
 							{ (userList.length > 0 && teamList.length > 0 && shCategoryList.length > 0 && mapGetLoading === false) && 
@@ -482,7 +500,7 @@ class MyMap extends React.Component {
 							/>
 							}
 						</Droppable>
-						<div className={ styles['map-stakeholder'] }>
+						<div className={ stakeholderVisible }>
 						{screen === 'list' &&
 							<SearchBar
 								searchKey={searchKey} 

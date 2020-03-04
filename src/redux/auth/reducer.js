@@ -16,7 +16,7 @@ const INIT_STATE = {
     userId: localStorage.getItem("userId"),
     accessToken: localStorage.getItem("accessToken")
   },
-  projectId: localStorage.getItem("projectId"),
+  projectId: localStorage.getItem("projectId") ? localStorage.getItem("projectId") : 1,
   loading: false,
   authStatus: loginErrorType.AUTH_SUCCESS
 };

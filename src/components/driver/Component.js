@@ -5,6 +5,7 @@ import { PropTypes } from "prop-types";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import styles from './styles.scss';
+import { style } from "d3";
 
 const ProgressLabels = [
   "Not Started",
@@ -35,7 +36,7 @@ function DriverComponent(props) {
   return (
     <div onClick={() => onClick(driverId)} className={classnames(styles["driver-component"], iconAlignCls, selectedCls, className)}>
       <div>
-        <FontAwesomeIcon icon={icon} />
+        <img src={icon} alt="icon" className={styles.icon}/>
       </div>
       <div>
         <div>{driverName}</div>

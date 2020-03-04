@@ -30,7 +30,7 @@ function SearchBar(props) {
   return (
     <div className={styles.main}>
       <Input 
-        placeholder="Search / Add New Placeholder"
+        placeholder="Search"
         value={filter}
         onChange={setFilter} 
         onCancel={() => setFilter("")}
