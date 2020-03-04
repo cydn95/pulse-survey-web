@@ -64,10 +64,11 @@ const KGraphNavControls = (props) => {
     return (
         <div className={styles.root}>
             <Button 
-              variant="contained"
-              color="secondary"
-              disabled={saveLoading ? true: false}
-              onClick={e=>saveGraph(e)}>
+                size="medium"
+                variant="contained"
+                color="secondary"
+                disabled={saveLoading ? true: false}
+                onClick={e=>saveGraph(e)}>
               Save
             </Button>
             <div className={styles.dropdown}>

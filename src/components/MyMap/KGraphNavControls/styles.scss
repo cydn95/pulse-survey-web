@@ -1,11 +1,15 @@
 .root {
   display: flex;
-  flex-direction: row;
+  flex-wrap: row ;
   width: 100%;
   margin-top: -7px;
   margin-left: 10px;
   justify-content: right;
   align-content: right;
+  
+  * { 
+    font-size: 13px;
+  }
 
   .dropdown {
     margin-left: 10px;
@@ -31,4 +35,12 @@ canvas {
 
 .require {
   color: #f00;
+}
+
+@media only screen and (max-width: 430px) {
+  .root {
+    * { 
+      font-size: 10px;
+    }
+  }
 }
