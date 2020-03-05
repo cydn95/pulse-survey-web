@@ -53,7 +53,6 @@ export default class KGraph extends Component {
         }
     }
 
-
     render() {
         return (
             <div className={ styles['kl-wrapper'] }>

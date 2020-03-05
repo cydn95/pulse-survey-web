@@ -20,6 +20,13 @@ import styles from "./styles.scss";
 
 class Question extends Component {
   
+  constructor(props) {
+    super(props);
+    
+    this.scrollRef = React.createRef();
+
+  }
+
   handleAnswer = answer => {
     this.props.inputAnswer(answer);
   }
@@ -33,13 +40,6 @@ class Question extends Component {
    
     let questionControl = questionList.amquestion.map( (control, index) => {
       switch (control.controlType) {
-        case controlType.TEXT:
-          return <FreeText
-            key={index} 
-            question={control}
-            onAnswer={answer => this.handleAnswer(answer)}
-            skipQuestionList={skipQuestionList} />
-
         case controlType.SLIDER:
           return <RangeSlider key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} 
             skipQuestionList={skipQuestionList} />
@@ -66,7 +66,7 @@ class Question extends Component {
     }
 
     return (
-      <div className={styles.root} >
+      <div className={styles.root} ref={this.scrollRef}>
         { questionControl }
         <Continue history={this.props.history} title={continueText} />
       </div>

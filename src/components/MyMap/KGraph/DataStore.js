@@ -49,10 +49,7 @@ export default class DataStore {
                 b: node.border || "#3b4f81",
                 bw: 1,
                 t: node.name || '',
-                fi: node.icon ? {
-                    t: KeyLines.getFontIcon(node.icon),
-                    c: node.iconColor || "#414b57"
-                } : {},
+                u: '/assets/img/5.svg',
                 fbc: 'transparent',
                 e: !node.icon && !node.name ? 0.1 : node.e || 1,
                 d: {

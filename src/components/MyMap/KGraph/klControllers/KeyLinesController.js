@@ -439,7 +439,7 @@ class BaseController {
                                 p: 45,
                                 r: 35,
                                 t: count[id],
-                                w: true
+                                w: true,
                             }],
                         donuts: {}
                     };

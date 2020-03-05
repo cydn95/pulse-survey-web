@@ -55,7 +55,7 @@ const KGraphNavControls = (props) => {
                 updateMap('Standard', 'layout');
             } else if (selectedLayoutMode.title === "Radial") {
                 updateMap('Radial', 'layout');
-            } else if (selectedLayoutMode.title === "Sequential") {
+            } else if (selectedLayoutMode.title === "Hierarchy") {
                 updateMap('Sequential', 'layout');
             }
         }
@@ -90,9 +90,9 @@ const KGraphNavControls = (props) => {
             <div className={styles.dropdown}>
                 <DropDown
                     data={[
-                        { key: 1, title: "Standar" },
+                        { key: 1, title: "Standard" },
                         { key: 2, title: "Radial" },
-                        { key: 3, title: "Sequential" }
+                        { key: 3, title: "Hierarchy" }
                     ]}
                     keySelector={d => d.key}
                     valueSelector={d => d.title}

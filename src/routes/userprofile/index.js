@@ -47,17 +47,17 @@ class UserProfile extends React.Component {
 								<div className={ classnames("panel", styles.info, styles.positive) }>
 									<h2>Top Positive</h2>
 									<div className={ styles.content }>
-										<a href="#maria" className={ styles['content-item'] }>1. Maria Robinson</a>
-										<a href="#maria" className={ styles['content-item'] }>2. James Williams</a>
-										<a href="#maria" className={ styles['content-item'] }>3. Elena Hauf</a>
+										<a href="#maria" className={ styles['content-item'] }>1. <span className={styles.green}>SMP Team Culture</span></a>
+										<a href="#maria" className={ styles['content-item'] }>2. <span className={styles.green}>Schedule Performance</span></a>
+										<a href="#maria" className={ styles['content-item'] }>3. <span className={styles.green}>Safety Record</span></a>
 									</div>
 								</div>
 								<div className={ classnames("panel", styles.info, styles.negative) }>
 									<h2>Top Negative</h2>
 									<div className={ styles.content }>
-										<a href="#maria" className={ styles['content-item'] }>1. Maria Robinson</a>
-										<a href="#maria" className={ styles['content-item'] }>2. James Williams</a>
-										<a href="#maria" className={ styles['content-item'] }>3. Elena Hauf</a>
+										<a href="#maria" className={ styles['content-item'] }>1. <span className={styles.orange}>Subcontractor performance</span></a>
+										<a href="#maria" className={ styles['content-item'] }>2. <span className={styles.orange}>Coronavirus spread</span></a>
+										<a href="#maria" className={ styles['content-item'] }>3. <span className={styles.orange}>Supply chain interruptions with China</span></a>
 									</div>
 								</div>
 							</div>
