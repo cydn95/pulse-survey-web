@@ -68,7 +68,7 @@ class RangeSlider extends Component {
     
     return (
       <div className={ styles.main }>
-        <h1 className={styles["question-text"]}>{question.questionText}</h1>
+        <h2 className={styles["question-text"]}>{question.questionText}</h2>
         <div className={ styles['slider-section'] }>
           <Slider 
             className={styles.slider} 

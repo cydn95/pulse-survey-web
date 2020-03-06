@@ -15,17 +15,26 @@
 }
 
 .input-field {
+  display: block;
+  width: 100%;
   margin-bottom: 20px;
 
   .input {
     color: #9da6ab;
     width: 100%;
   }
+
+  .select {
+    color: #9da6ab;
+    width: 100%;
+    margin-top: 15px;
+  }
 }
 
 .form-button {
   display: flex;
   flex-flow: row wrap;
+  margin-top: 15px;
 
   .space {
     flex-grow: 1;

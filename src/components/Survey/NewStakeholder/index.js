@@ -4,6 +4,9 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
 
 import 'react-notifications/lib/notifications.css';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
@@ -120,7 +123,7 @@ class NewStakeholder extends Component {
           <h1 className={ styles.title }>Add New StakeHolder</h1>  
         </div>
         <div className={ styles.form }>
-          <div className={ styles['input-field'] }>
+          <FormControl className={ styles['input-field'] }>
             <TextField
               className={ styles.input } 
               label="First Name*"
@@ -128,8 +131,8 @@ class NewStakeholder extends Component {
               value={ this.state.stakeholder.firstName }
               onChange={ e => this.handleInputChange(e) }
             />
-          </div>
-          <div className={ styles['input-field'] }>
+          </FormControl>
+          <FormControl className={ styles['input-field'] }>
             <TextField
               className={ styles.input } 
               label="Last Name*"
@@ -137,30 +140,33 @@ class NewStakeholder extends Component {
               value={this.state.stakeholder.lastName}
               onChange={ e => this.handleInputChange(e) }
             />
-          </div>
-          <div className={ styles['input-field'] }>
+          </FormControl>
+          <FormControl className={ styles['input-field'] }>
             <TextField
+              labelId="email_label"
               className={ styles.input } 
-              label="Email*"
               name="email"
+              label="Email*"
               value={this.state.stakeholder.email}
               onChange={ e => this.handleInputChange(e) }
             />
-          </div>
-          <div className={ styles['input-field'] }>
+          </FormControl>
+          <FormControl className={ styles['input-field'] }>
+            <InputLabel id="shcategory_label">SH Category</InputLabel>
             <Select
+              labelId="shcategory_label"
               value={this.state.shCategory} 
-              className={ styles.input }
+              className={ styles.select }
               name="shCategory"
               label="Sh Category*"
               onChange={e => this.handleInputChange(e)}
             >
               {shCategoryList.map((sh, index) =>
-                 <MenuItem key={sh.id} value={sh.id}>{sh.SHCategoryName}</MenuItem>
+                <MenuItem key={sh.id} value={sh.id}>{sh.SHCategoryName}</MenuItem>
               )}
             </Select>
-          </div>
-          <div className={ styles['input-field'] }>
+          </FormControl>
+          <FormControl className={ styles['input-field'] }>
             <TextField
               className={ styles.input } 
               label="Organisation*"
@@ -168,20 +174,23 @@ class NewStakeholder extends Component {
               value={this.state.stakeholder.organisationId}
               onChange={ e => this.handleInputChange(e) }
             />
-          </div>
-          <div className={ styles['input-field'] }>
+          </FormControl>
+          <FormControl className={ styles['input-field'] }>
+            <InputLabel id="team_label">Team*</InputLabel>
             <Select
+              labelId="team_label"
               value={this.state.teamId} 
-              className={ styles.input }
+              className={ styles.select }
               name="teamId"
-              label="Sh Category*"
+              label="Team*"
               onChange={e => this.handleInputChange(e)}
             >
               {teamList.map((team, index) =>
                  <MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>
               )}
             </Select>
-          </div>
+          </FormControl>
+          <br/>
           <div className={ styles['form-button'] }>
             {/* <a className="waves-effect waves-light btn btn-danger active" 
               onClick={e=>this.props.onCancel(e)}>Back</a>&nbsp;&nbsp; */}

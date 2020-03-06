@@ -6,7 +6,8 @@ import classnames from "classnames";
 import { withRouter } from "react-router-dom";
 
 import {
-  setCurrentMenuClassName
+  setCurrentMenuClassName,
+  logoutUser
 } from "Redux/actions";
 
 import styles from './styles.scss';
@@ -99,6 +100,30 @@ class Sidebar extends Component {
                 <span className={ classnames(styles.name) }>User Profile</span>
               </NavLink>
             </li>
+            <li className={ styles["nave--space"]}>
+
+            </li>
+          </ul>
+        </div>
+        <div className={styles.space}></div>
+        <div className={ classnames(styles.link, styles.bottom) }>
+          <ul className={ styles.nav }>
+            <li className={ styles["nav--item"] }>
+              <NavLink
+                className={ classnames(styles["nav--item--link"], { [styles.active]: currentClassName === 'settings' ? true : false }) }
+                to="/app/settings"
+                onClick={(e) => this.handleClickMenu(e, 'settings')}>
+                <span className={ classnames(styles.name) }>Settings</span>
+              </NavLink>
+            </li>
+            <li className={ styles["nav--item"] }>
+              <a
+                href=""
+                className={ styles["nav--item--link"] }
+                onClick={(e) => { e.preventDefault(); this.props.logoutUser() }}>
+                <span className={ classnames(styles.name) }>Log Out</span>
+              </a>
+            </li>
           </ul>
         </div>
       </div>
@@ -118,6 +143,6 @@ const mapStateToProps = ({ menu }) => {
 export default withRouter(
   connect(
     mapStateToProps,
-    { setCurrentMenuClassName }
+    { setCurrentMenuClassName, logoutUser }
   )(Sidebar)
 );

@@ -7,13 +7,23 @@ import styles from './styles.scss';
 
 import Sidebar from "../Sidebar";
 
+import { NavLink } from "react-router-dom";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+
+import {
+  setCurrentMenuClassName,
+  logoutUser,
+} from "Redux/actions";
+
 class TopNav extends Component {
 
   constructor(props) {
     super(props);
     
     this.state = {
-      toggle: false
+      toggle: false,
+      menu: false
     };
   }
 
@@ -29,6 +39,36 @@ class TopNav extends Component {
       toggle: open
     });
   };
+
+  logOut = e => {
+    e.preventDefault();
+
+    this.props.logoutUser();
+  }
+
+  toggleMenu = e => {
+    if (!this.state.menu) {
+      // attach/remove event handler
+      document.addEventListener('click', this.handleOutsideClick, false);
+    } else {
+      document.removeEventListener('click', this.handleOutsideClick, false);
+    }
+  
+    this.setState(prevState => ({
+      menu: !prevState.menu,
+    }));
+  }
+
+  handleOutsideClick = e => {
+    this.toggleMenu(e);
+  }
+
+  navigateSetting = e => {
+    e.preventDefault();
+
+    this.props.setCurrentMenuClassName('settings');
+    this.props.history.push("/app/settings");
+  }
 
   render() {
 
@@ -57,15 +97,29 @@ class TopNav extends Component {
             { children }
           </div>
         </div>
-        <div className={ styles.control }>
-          <div className={ styles.dropdown }>
+        <div id="menu" className={ styles.control }>
+          <div className={ styles.dropdown }  onClick={e => this.toggleMenu(e)}>
             <img className={ styles.avatar } src="/assets/img/profile-pic-l-2.jpg" alt="avatar"/>
             <span className={ styles.username }>Robert Bloggs</span>
           </div>
+          { this.state.menu &&
+          <div className={ styles['dropdown-menu'] }>
+            <div className= { styles['dropdown-menu-item'] }  onClick={e => this.navigateSetting(e)}>
+              <a href="" >Settings</a>
+            </div>
+            <div className= { styles['dropdown-menu-item'] } onClick={e => this.logOut(e) }>
+              <a href="">Log Out</a>
+            </div>
+          </div>
+          }
         </div>
       </div>
     )
   }
 }
 
-export default TopNav;
+const mapStateToProps = () => {
+  return {};
+};
+
+export default withRouter(connect(mapStateToProps, { setCurrentMenuClassName, logoutUser })(TopNav));
