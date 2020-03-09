@@ -21,7 +21,7 @@ $marker-size: 20px;
   right: 0;
   position: absolute;
   height: $range-height;
-  background: $rangecolor;
+  background-color: $rangecolor !important;
   border-radius: 100px;
 }
 

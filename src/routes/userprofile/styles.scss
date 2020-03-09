@@ -1,6 +1,6 @@
 .root {
   width: 100%;
-  background-color: #fff;
+  background-color: #f3f5f7;
 }
 
 .topbar {
@@ -29,6 +29,8 @@
   display: flex;
   flex-flow: row wrap;
   width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 
   .left {
     width: calc(66% - 20px);
