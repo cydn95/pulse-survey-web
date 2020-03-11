@@ -36,7 +36,7 @@ function* getAoQuestionList() {
    
   try {
     const result = yield call(getAoQuestionListAsync);
-    
+
     if (result.status === 200) {
       const result_option = yield call(getOptionListAsync);
       
@@ -54,7 +54,6 @@ function* getAoQuestionList() {
         });
 
         for (let i = 0; i < aoQuestionList.length; i++) {
-          
 
           aoQuestionList[i] = {
             ...aoQuestionList[i],
@@ -99,6 +98,7 @@ function* submitAoQuestion({ payload }) {
 
   for (let i = 0; i < questionList.length; i++) {
 
+    console.log(surveyUserId);
     if (surveyUserId.split('-').length !== 3) {
       continue;
     }

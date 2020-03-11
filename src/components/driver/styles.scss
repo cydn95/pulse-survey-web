@@ -90,3 +90,19 @@
     right: 0;
   }
 }
+
+@media only screen and (max-width: 880px) {
+
+  .driver-component {
+    &.left {
+      display: block;
+  
+      >*:not(:first-child) {
+        margin-left: 0px;
+      }
+    }
+
+    padding: 13px;
+  }
+
+}

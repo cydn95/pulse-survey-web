@@ -41,20 +41,20 @@ class Question extends Component {
     let questionControl = questionList.amquestion.map( (control, index) => {
       switch (control.controlType) {
         case controlType.SLIDER:
-          return <RangeSlider key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} 
-            skipQuestionList={skipQuestionList} />
+          return <div key={index} className={styles['question-container']}><RangeSlider question={control} onAnswer={answer => this.handleAnswer(answer)} 
+            skipQuestionList={skipQuestionList} /></div>
         
         case controlType.TWO_OPTIONS:
-          return <TwoOptions key={index} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
-            skipQuestionList={skipQuestionList} />
+          return <div key={index} className={styles['question-container']}><TwoOptions options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
+            skipQuestionList={skipQuestionList} /></div>
 
         case controlType.MULTI_OPTIONS:
-          return <MultipleOptions key={index} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
-            skipQuestionList={skipQuestionList} />
+          return <div key={index} className={styles['question-container']}><MultipleOptions options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
+            skipQuestionList={skipQuestionList} /></div>
 
         case controlType.SMART_TEXT:
-          return <SmartText key={index} question={control} onAnswer={answer => this.handleAnswer(answer)} 
-            skipQuestionList={skipQuestionList} />
+          return <div key={index} className={styles['question-container']}><SmartText question={control} onAnswer={answer => this.handleAnswer(answer)} 
+            skipQuestionList={skipQuestionList} /></div>
 
         default:
           return <div key={index} ></div>

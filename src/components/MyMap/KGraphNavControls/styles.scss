@@ -1,11 +1,13 @@
 .root {
   display: flex;
-  flex-wrap: row ;
+  flex-direction: row;
   width: 100%;
   margin-top: -7px;
-  margin-left: 10px;
-  justify-content: right;
-  align-content: right;
+  justify-content: flex-end;
+  align-content: flex-end;
+  padding-left: 10px;
+  padding-right: 10px;
+  box-sizing: border-box;
   
   * { 
     font-size: 13px;
@@ -17,7 +19,7 @@
 }
 
 .mapButtonGroup {
-  margin-left: 15px;
+  margin-left: 10px;
 }
 
 .mapButtonGroup .btn {

@@ -189,7 +189,7 @@ class MyMap extends React.Component {
 			"main": {
 				"id": "ap1",
 				"name": "ME",
-				"icon": "fa-sitemap",
+				"icon": "http://3.15.16.117/media/uploads/shcategory/me.svg",
 				"color": "#7030a0",
 				"iconColor": "#fefefa"
 			},
@@ -208,7 +208,7 @@ class MyMap extends React.Component {
 				architecture.sh_categories.push({
 					"id": 'SHC_' + shCategory.id,
 					"name": shCategory.SHCategoryName,
-					"icon": "fa-project-diagram",
+					"icon": shCategory.icon,
 					"color": "#59a2ad",
 					"iconColor": "#fefefa",
 					"individualCount": 0,

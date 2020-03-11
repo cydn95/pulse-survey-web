@@ -65,10 +65,21 @@
 
   .driver-scroll {
     width: calc(100vw - 38px);
+
+    .driver-section {
+      height: 120px;
+    }
   }
 
   .main-content {
     margin-top: 100px;
     padding-bottom: 80px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .survey-container {
+    width: 100%;
+    margin-left: 0px;
   }
 }

@@ -26,13 +26,13 @@ export default class DataStore {
                 ...entityNodes[id],
                 g: count === 0 ? []
                     : [{
-                        b: "#4a5c89",
-                        c: "#4966ac",
-                        e: 1.2,
+                        b: "#00000000",
+                        c: "#1d1d1d",
+                        e: 1.1,
                         fc: "#f3f5f9",
                         ff: "sans-serif",
                         p: 45,
-                        r: 35,
+                        r: 25,
                         t: count,
                         w: true
                     }]
@@ -45,13 +45,13 @@ export default class DataStore {
             entityNodes[id] = {
                 id,
                 type: 'node',
-                c: node.color || "#d8d8d8",
-                b: node.border || "#3b4f81",
-                bw: 1,
+                c: "#ffffffff",
+                b: false,
+                bw: 0,
                 t: node.name || '',
-                u: '/assets/img/5.svg',
+                u: node.icon,
                 fbc: 'transparent',
-                e: !node.icon && !node.name ? 0.1 : node.e || 1,
+                e: !node.icon && !node.name ? 0.1 : node.e || 3.5,
                 d: {
                     ...node
                 }

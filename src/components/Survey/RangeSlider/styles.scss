@@ -1,6 +1,6 @@
 .main {
     padding: 53px 20px;
-    background: #eff1f4;
+    background-color: #eff1f4;
 }
 
 .slider-section {
@@ -23,6 +23,16 @@
 
 .skip-section {
     margin-top: 35px;
+}
+
+@media only screen and (max-width: 880px) {
+    .main {
+        padding: 43px 8%;
+        background-color: #fff;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        border-radius: 16px;
+    }
 }
 
 @media only screen and (max-width: 768px) {

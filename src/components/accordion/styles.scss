@@ -31,8 +31,8 @@
 }
 
 .icon {
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   font-size: 16px;
   display: flex;
   align-items: center;
@@ -40,6 +40,11 @@
   background: #545666;
   color: white;
   border-radius: 50%;
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
   path {
     stroke-width: 40px;
     stroke: white;
@@ -83,4 +88,13 @@
 
 .component-content {
   flex: 1;
+}
+
+@media only screen and (max-width: 880px) {
+  .component {
+    
+    .icon {
+      display: none;
+    }
+  }
 }

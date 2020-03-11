@@ -2,10 +2,7 @@ import React from "react";
 import classnames from "classnames";
 import { PropTypes } from "prop-types";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import styles from './styles.scss';
-import { style } from "d3";
 
 const ProgressLabels = [
   "Not Started",
@@ -33,10 +30,26 @@ function DriverComponent(props) {
 
   const iconAlignCls = iconAlign === 'left' ? styles.left : "";
 
+  const getIcon = (path, type) => {
+    const pathArr = path.split('.');
+    if (pathArr.length < 2) return path;
+
+    let newPath = ''
+    for (let i = 0; i < pathArr.length - 1; i++) {
+      if (i > 0) {
+        newPath += '.';
+      }
+      newPath += pathArr[i];
+    }
+    newPath += '-' + type + '.' + pathArr[pathArr.length - 1];
+
+    return newPath;
+  };
+
   return (
     <div onClick={() => onClick(driverId)} className={classnames(styles["driver-component"], iconAlignCls, selectedCls, className)}>
       <div>
-        <img src={icon} alt="icon" className={styles.icon}/>
+        <img src={selected ? getIcon(icon, 'light') : getIcon(icon, 'dark')} alt="icon" className={styles.icon}/>
       </div>
       <div>
         <div>{driverName}</div>

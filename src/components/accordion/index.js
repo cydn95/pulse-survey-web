@@ -93,7 +93,7 @@ function Accordion(props) {
           <div key={keySelector(d)} className={classnames(styles.chunk, keySelector(d) === selected ? styles.open : undefined)}>
             <div onClick={(e) => changeSelection(e, d)} className={styles.header}>
               <div className={styles.icon}>
-                <img className={styles.icon} src={d.icon} alt={d.icon}/>
+                <img src={d.icon} alt={d.icon}/>
               </div>
               <div className={styles["header-content"]}>{headerSelector(d)}</div>
               <FontAwesomeIcon className={styles["icon-arrow"]} icon={faAngleRight} />
