@@ -16,6 +16,7 @@ import progressStyles from './progressStyles.scss';
 function AvatarComponent(props) {
   const {
     className,
+    userId,
     username,
     description,
     onClick,
@@ -25,10 +26,10 @@ function AvatarComponent(props) {
   } = props;
 
   return (
-    <div onClick={() => onClick(username)} className={classnames(styles["avatar-component"], className)}>
+    <div onClick={() => onClick(userId)} className={classnames(styles["avatar-component"], className)}>
       <div className={styles.avatar}>
         <CircularProgressBar styles={progressStyles} style={progressStyle} className={styles.progress} percent={userProgress} />
-        <img src={profilePicUrl} />
+        <img src={profilePicUrl} alt={profilePicUrl}/>
       </div>
       <div className={styles.info}>
         <div className={styles.username}>{username}</div>

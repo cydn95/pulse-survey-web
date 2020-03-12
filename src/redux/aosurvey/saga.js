@@ -98,22 +98,27 @@ function* submitAoQuestion({ payload }) {
 
   for (let i = 0; i < questionList.length; i++) {
 
-    console.log(surveyUserId);
-    if (surveyUserId.split('-').length !== 3) {
+    if (surveyUserId.split('_').length !== 2) {
       continue;
     }
 
     let answer = {
-      "integerValue": questionList[i].answer.integerValue,
+      "controlType": controlTypeText(questionList[i].controlType),
+      "integerValue": Math.round(questionList[i].answer.integerValue),
       "topicValue": questionList[i].answer.topicValue,
       "commentValue": questionList[i].answer.commentValue,
       "skipValue": questionList[i].answer.skipValue,
       "topicTags": questionList[i].answer.topicTags,
       "commentTags": questionList[i].answer.commentTags,
       "user": getToken().userId,
-      "subjectUser": surveyUserId.split('-')[2],
-      "survey": questionList[i].answer.survey,
+      "subjectUser": surveyUserId.split('_')[1] ,
+      "survey": questionList[i].answer.survey.id,
+      "project": questionList[i].answer.survey.project,
       "aoQuestion": questionList[i].answer.amQuestion
+    }
+
+    if (answer.integerValue == 0 && answer.topicValue == "" && answer.commentValue == "" && answer.skipValue == "") {
+      continue;
     }
 
     answerList.push(answer);

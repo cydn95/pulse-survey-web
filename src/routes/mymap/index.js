@@ -53,6 +53,7 @@ class MyMap extends React.Component {
 			screen: 'list',
 			stakeholderList: [],
 			currentSurveyUserId: 0,
+			currentSurveyFullName: '',
 			newStakeholder: {},
 			viewDropDownOpen: false,
 			layoutDropDownOpen: false,
@@ -65,6 +66,7 @@ class MyMap extends React.Component {
 			teamList: [],
 			userList: [],
 			shCategoryList: [],
+			decisionMakerList: [],
 			mapSaveLoading: false,
 			mapGetLoading: false,
 
@@ -255,6 +257,7 @@ class MyMap extends React.Component {
 
 			let individualList = [];
 			if (kMapData.length > 0) {
+
 				let mapUserList = kMapData[0].projectUser;
 			
 				mapUserList.forEach(mapUser => {
@@ -291,7 +294,7 @@ class MyMap extends React.Component {
 					let bAdd = false;
 					for (let i = 0; i < userList.length; i++) {
 						if (userList[i].id === mapUser) {
-							individualUser.id = 'S_' + userList[i].id;
+							individualUser.id = 'S_' + userList[i].user.id;
 							individualUser.name = userList[i].user.first_name + ' ' + userList[i].user.last_name;
 							individualUser.team.current = 'T_' + userList[i].team.id;
 							individualUser.organisation.current = 'O_' + userList[i].team.organization;
@@ -317,8 +320,22 @@ class MyMap extends React.Component {
 			
 			individual.individuals = individualList;
 
+			let decisionMakerList = [];
+			if (kMapData.length > 0 && stakeholderList.length > 0) {
+				let mapUserList = kMapData[0].projectUser;
+				for (let i = 0; i < mapUserList.length; i++) {
+					for (let j = 0; j < stakeholderList.length; j++) {
+						if (mapUserList[i] == stakeholderList[j].projectUserId) {
+							decisionMakerList.push(stakeholderList[j]);
+							break;
+						}
+					}
+				}
+			}
+
 			this.setState({
 				stakeholderList,
+				decisionMakerList,
 				teamList,
 				userList,
 				shCategoryList,
@@ -356,10 +373,24 @@ class MyMap extends React.Component {
 	}
 
 	handleStartOtherSurvey = id => {
-		this.setState({
-			screen: 'aosurvey',
-			currentSurveyUserId: id
-		})
+		if (id.startsWith('S_')) {
+
+			const userId = id.split('_')[1];
+			let fullName = '';
+
+			for (let i = 0; i < this.state.userList.length; i++) {
+				if (this.state.userList[i].user.id == userId) {
+					fullName = this.state.userList[i].user.first_name + " " + this.state.userList[i].user.last_name;
+					break;
+				}
+			}
+
+			this.setState({
+				screen: 'aosurvey',
+				currentSurveyUserId: id,
+				currentSurveyFullName: fullName
+			})
+		}
 	}
 
 	handleCancelSurvey = e => {
@@ -370,7 +401,6 @@ class MyMap extends React.Component {
 	}
 
 	handleSubmitSurvey = (e, answerData) => {
-
 		this.props.submitAoQuestion(answerData, this.props.history, this.state.currentSurveyUserId);
 	}
 
@@ -432,11 +462,13 @@ class MyMap extends React.Component {
 			apList,
 			esList,
 			shCategoryList,
+			decisionMakerList,
 			teamList,
 			userList,
 			mapSaveLoading,
 			mapGetLoading,
-			toggleGraph
+			toggleGraph,
+			currentSurveyFullName
 		} = this.state;
 
 		const mapHeaderVisible = toggleGraph ? classnames(styles['map-header']) : classnames(styles['map-header'], styles['mobile-hide']);
@@ -504,7 +536,9 @@ class MyMap extends React.Component {
 						{screen === 'list' &&
 							<SearchBar
 								searchKey={searchKey} 
-								data={stakeholderList}
+								decisionMakers={decisionMakerList}
+								onClickDecisionMaker={ id => this.handleStartOtherSurvey(id) } 
+								influencers={stakeholderList}
 								addNewStakeholder={e => this.handleShowAddPage(e)}
 							/>
 						}
@@ -519,6 +553,7 @@ class MyMap extends React.Component {
 							questions={aoQuestionList}
 							options={optionList}
 							drivers={driverList}
+							fullName={currentSurveyFullName}
 							skipQuestionList={skipQuestionList}
 							onSubmit={(e, answerData) => this.handleSubmitSurvey(e, answerData)}
 							onCancel={e => this.handleCancelSurvey()} />

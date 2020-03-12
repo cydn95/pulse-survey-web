@@ -72,10 +72,13 @@ class AoSurvey extends React.Component {
   render() {
     
     const { options } = this.state;
-    const { skipQuestionList } = this.props;
+    const { skipQuestionList, fullName } = this.props;
 
     return (
       <div className={styles.root}>
+        <div className={styles.user}>
+          About Others: { fullName }
+        </div>
         <Accordion
           keySelector={d => d.title}  
           headerSelector={d => d.title}  

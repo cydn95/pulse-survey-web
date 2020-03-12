@@ -15,3 +15,31 @@
 .input {
   flex: 1;
 }
+
+.input-wrapper {
+  padding: 25px 15px 0px 15px;
+  box-sizing: border-box;
+}
+.tab-content {
+  background-color: #f6f6fb;
+  padding: 15px 18px;
+
+  .cnt {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 0.9rem;
+    color: rgb(119, 120, 133);
+    line-height: 18px;
+  }
+
+  .avatar-comp {
+    padding: 14px 17px;
+    box-sizing: border-box;
+    background-color: #fff;
+    margin-top: 15px;
+  }
+}
+
+.add-stakeholder {
+  margin: 0px 15px;
+}
