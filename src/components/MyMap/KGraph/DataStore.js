@@ -42,6 +42,30 @@ export default class DataStore {
 
         const constructNode = (node, id2) => {
             const id = id2 || node.id;
+
+            var nodeIcon = {};
+            if (node.id.startsWith('SHC_')) {
+                nodeIcon = {
+                    u: node.icon
+                };
+            } else if (node.id.startsWith('S_')) {
+                nodeIcon = {
+                    u: node.avatar,
+                    ci: true
+                };
+            } else if (node.id === 'ap1') {
+                nodeIcon = {
+                    u: node.icon
+                };
+            } else {
+                nodeIcon = {
+                    fi: {
+                        t: KeyLines.getFontIcon('fa-sitemap'),
+                        c: node.iconColor || "#414b57"
+                    }
+                };
+            }
+
             entityNodes[id] = {
                 id,
                 type: 'node',
@@ -49,9 +73,9 @@ export default class DataStore {
                 b: false,
                 bw: 0,
                 t: node.name || '',
-                u: node.icon,
+                ...nodeIcon,
                 fbc: 'transparent',
-                e: !node.icon && !node.name ? 0.1 : node.e || 3.5,
+                e: !node.icon && !node.name ? 0.1 : node.e || 1,
                 d: {
                     ...node
                 }

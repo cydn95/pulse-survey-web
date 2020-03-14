@@ -15,16 +15,28 @@ const getSuggestions = (data, filter) => {
   return data.filter(d => (d.fullName).indexOf(filter) !== -1)
 }
 
+const getSuggestionsWithSh = (data, filter, shId) => {
+
+  if (shId === null || shId === 0) {
+    return data.filter(d => (d.fullName).indexOf(filter) !== -1)
+  } else {
+    return data.filter(d => (d.fullName).indexOf(filter) !== -1 && d.shCategory === ("SHC_" + shId))
+  }
+  
+}
+
 function SearchBar(props) {
   const { 
     decisionMakers, 
     influencers,
     searchKey,
     addNewStakeholder,
-    onClickDecisionMaker
+    onClickDecisionMaker,
+    list
   } = props;
 
   const [filter, setFilter] = useState(searchKey)
+  const [shId, setShId] = useState(0)
 
   useEffect(() => {
     setFilter(searchKey)
@@ -43,15 +55,18 @@ function SearchBar(props) {
       <div className={styles["suggestion-list"]}>
         <TabPanel
           selectedTab="decision"
+          onSelectSH={(e, id) => setShId(id)}
           data={[
             {
               title: "Decision Makers",
               name: "decision",
+              type: 'combo',
+              'list': list,
               content: (
                 <div className={styles['tab-content']}>
-                  <span className={styles.cnt}>{getSuggestions(decisionMakers, filter).length === 0 ? `No Users` : getSuggestions(decisionMakers, filter).length + ` Users`}</span>
+                  <span className={styles.cnt}>{getSuggestionsWithSh(decisionMakers, filter, shId).length === 0 ? `No Users` : getSuggestionsWithSh(decisionMakers, filter, shId).length + ` Users`}</span>
                   {
-                    getSuggestions(decisionMakers, filter).map((d, index) => (
+                    getSuggestionsWithSh(decisionMakers, filter, shId).map((d, index) => (
                       <AvatarComponent
                         key={d.projectUserId} 
                         className={styles["avatar-comp"]}
@@ -59,7 +74,7 @@ function SearchBar(props) {
                         userId={d.userId}
                         onClick={userId => onClickDecisionMaker(userId)}
                         description={`${d.organisation} / ${d.team}`}
-                        profilePicUrl={`/assets/img/profile-pic-l-2.jpg`}
+                        profilePicUrl={d.userAvatar}
                         userProgress={(10 + index * 10) % 100}
                       />
                     ))
@@ -70,6 +85,7 @@ function SearchBar(props) {
             {
               title: "Influencers",
               name: "influencers",
+              type: 'default',
               content: (
                 <div className={styles['tab-content']}>
                   <span className={styles.cnt}>{getSuggestions(influencers, filter).length === 0 ? `No Users` : getSuggestions(influencers, filter).length + ` Users`}</span>
@@ -81,7 +97,7 @@ function SearchBar(props) {
                           key={d.username}
                           username={d.fullName}
                           description={`${d.organisation} / ${d.team}`}
-                          profilePicUrl={`/assets/img/profile-pic-l-2.jpg`}
+                          profilePicUrl={d.userAvatar}
                           userProgress={(10 + index * 10) % 100}
                         />
                       </Draggable>

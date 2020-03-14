@@ -30,6 +30,7 @@ class Settings extends React.Component {
               {
                 title: "Account",
                 name: "account",
+                type: "default",
                 content: (
                   <Account />
                 ),
@@ -37,6 +38,7 @@ class Settings extends React.Component {
               {
                 title: "Projects",
                 name: "projects",
+                type: "default",
                 content: (
                   <Project />
                 ),

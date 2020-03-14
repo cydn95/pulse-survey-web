@@ -54,9 +54,9 @@ class BaseController {
         return {
             id: node.id,
             type: 'node',
-            c: node.color || "#d8d8d8",
-            b: node.border || "#3b4f81",
-            bw: 1,
+            c: "#ffffffff",
+            b: false,
+            bw: 0,
             t: node.name || '',
             fi: node.icon ? {
                 t: KeyLines.getFontIcon(node.icon),
@@ -78,13 +78,15 @@ class BaseController {
             if (item.d.survey_completion) {
                 let percentage = item.d.survey_completion;
                 let segment = Math.abs(percentage - 50) * 2;
-                let segmentColor = percentage <= 50 ? 'red' : 'green';
+                let segmentColor = percentage <= 50 ? '#ff5500' : '#1f45b8';
                 props.push({
                     id: item.id,
                     donut: {
                         v: [segment, 100 - segment],
-                        c: [segmentColor, 'white'],
-                        b: "#3b4f81"
+                        c: [segmentColor, '#00d3b2'],
+                        b: "#3b4f81",
+                        w: 5,
+                        bw: 0
                     }
 
                 })
@@ -110,13 +112,13 @@ class BaseController {
                 propsToUpdate.push({
                     id: baseId,
                     g: [{
-                        b: "#4a5c89",
-                        c: "#4966ac",
-                        e: 1.2,
+                        b: "#00000000",
+                        c: "#1d1d1d",
+                        e: 1.1,
                         fc: "#f3f5f9",
                         ff: "sans-serif",
                         p: 45,
-                        r: 35,
+                        r: 25,
                         t: 1,
                         w: true
                     }],

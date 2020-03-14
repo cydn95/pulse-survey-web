@@ -3,6 +3,8 @@ import React from "react";
 import { controlType } from 'Constants/defaultValues'
 import Button from '@material-ui/core/Button';
 
+import AvatarComponent from "Components/avatar/Component";
+
 import {
   MultipleOptions,
   TwoOptions,
@@ -10,8 +12,6 @@ import {
   SmartText,
   RangeSlider,
 } from "Components/Survey";
-
-import { Colxx } from "Components/CustomBootstrap";
 
 import Accordion from "Components/accordion";
 
@@ -72,12 +72,22 @@ class AoSurvey extends React.Component {
   render() {
     
     const { options } = this.state;
-    const { skipQuestionList, fullName } = this.props;
+    const { skipQuestionList, user } = this.props;
 
     return (
       <div className={styles.root}>
         <div className={styles.user}>
-          About Others: { fullName }
+          <div className={styles.title}>
+            About Others:
+          </div>
+          <AvatarComponent
+            className={styles["avatar-comp"]}
+            userId={user.id}
+            username={user.fullName}
+            description={user.organisation + ' / ' + user.team }
+            profilePicUrl={user.userAvatar}
+            userProgress={40}
+          />
         </div>
         <Accordion
           keySelector={d => d.title}  

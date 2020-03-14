@@ -53,7 +53,7 @@ class MyMap extends React.Component {
 			screen: 'list',
 			stakeholderList: [],
 			currentSurveyUserId: 0,
-			currentSurveyFullName: '',
+			currentSurveyUser: '',
 			newStakeholder: {},
 			viewDropDownOpen: false,
 			layoutDropDownOpen: false,
@@ -120,11 +120,12 @@ class MyMap extends React.Component {
 		let newElem = {
 			individuals: [
 				{
-					id: projectUser.projectUserId,
+					id: projectUser.userId,
 					name: projectUser.fullName,
 					color: 'transparent',
 					icon: 'fa-user',
-					survey_completion: 100,
+					avatar: projectUser.userAvatar,
+					survey_completion: 40,
 					iconColor: 'rgb(0, 0, 0)',
 					team: {
 						current: projectUser.teamId,
@@ -277,7 +278,7 @@ class MyMap extends React.Component {
 						"id": "",
 						"name": "",
 						"icon": "fa-user",
-						"survey_completion": 100,
+						"survey_completion": 40,
 						"team": {
 								"current": "",
 								"changeable": false
@@ -295,6 +296,7 @@ class MyMap extends React.Component {
 					for (let i = 0; i < userList.length; i++) {
 						if (userList[i].id === mapUser) {
 							individualUser.id = 'S_' + userList[i].user.id;
+							individualUser.avatar = userList[i].user.avatar.name ;
 							individualUser.name = userList[i].user.first_name + ' ' + userList[i].user.last_name;
 							individualUser.team.current = 'T_' + userList[i].team.id;
 							individualUser.organisation.current = 'O_' + userList[i].team.organization;
@@ -373,14 +375,13 @@ class MyMap extends React.Component {
 	}
 
 	handleStartOtherSurvey = id => {
+
 		if (id.startsWith('S_')) {
 
-			const userId = id.split('_')[1];
-			let fullName = '';
-
-			for (let i = 0; i < this.state.userList.length; i++) {
-				if (this.state.userList[i].user.id == userId) {
-					fullName = this.state.userList[i].user.first_name + " " + this.state.userList[i].user.last_name;
+			let user = {};
+			for (let i = 0; i < this.state.decisionMakerList.length; i++) {
+				if (this.state.decisionMakerList[i].userId === id) {
+					user = this.state.decisionMakerList[i];
 					break;
 				}
 			}
@@ -388,7 +389,7 @@ class MyMap extends React.Component {
 			this.setState({
 				screen: 'aosurvey',
 				currentSurveyUserId: id,
-				currentSurveyFullName: fullName
+				currentSurveyUser: user
 			})
 		}
 	}
@@ -396,7 +397,8 @@ class MyMap extends React.Component {
 	handleCancelSurvey = e => {
 		this.setState({
 			screen: 'list',
-			currentSurveyUserId: 0
+			currentSurveyUserId: 0,
+			currentSurveyUser: {}
 		})
 	}
 
@@ -468,7 +470,7 @@ class MyMap extends React.Component {
 			mapSaveLoading,
 			mapGetLoading,
 			toggleGraph,
-			currentSurveyFullName
+			currentSurveyUser
 		} = this.state;
 
 		const mapHeaderVisible = toggleGraph ? classnames(styles['map-header']) : classnames(styles['map-header'], styles['mobile-hide']);
@@ -533,13 +535,14 @@ class MyMap extends React.Component {
 							}
 						</Droppable>
 						<div className={ stakeholderVisible }>
-						{screen === 'list' &&
+						{screen === 'list' && shCategoryList.length > 0 &&
 							<SearchBar
 								searchKey={searchKey} 
 								decisionMakers={decisionMakerList}
 								onClickDecisionMaker={ id => this.handleStartOtherSurvey(id) } 
 								influencers={stakeholderList}
 								addNewStakeholder={e => this.handleShowAddPage(e)}
+								list={shCategoryList}
 							/>
 						}
 						{screen === 'add' && shCategoryList.length > 0 &&
@@ -553,7 +556,7 @@ class MyMap extends React.Component {
 							questions={aoQuestionList}
 							options={optionList}
 							drivers={driverList}
-							fullName={currentSurveyFullName}
+							user={currentSurveyUser}
 							skipQuestionList={skipQuestionList}
 							onSubmit={(e, answerData) => this.handleSubmitSurvey(e, answerData)}
 							onCancel={e => this.handleCancelSurvey()} />
