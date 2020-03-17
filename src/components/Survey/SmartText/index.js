@@ -139,6 +139,7 @@ class SmartText extends Component {
             <SkipQuestion 
               answer={this.state.answer.topicValue}  
               comment={this.state.answer.commentValue}
+              commentPrompt={question.commentPrompt}
               skipValue={this.state.answer.skipValue}
               onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
               skipOption={question.skipOption}

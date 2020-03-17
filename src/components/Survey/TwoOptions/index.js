@@ -109,6 +109,7 @@ class TwoOptions extends Component {
           <SkipQuestion
             answer={this.state.answer.integerValue}
             comment={this.state.answer.commentValue}
+            commentPrompt={question.commentPrompt}
             skipValue={this.state.answer.skipValue}
             onSkip={skipAnswer => this.handleSkip(skipAnswer)} 
             skipOption={question.skipOption}

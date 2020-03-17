@@ -55,6 +55,15 @@ function* getAoQuestionList() {
 
         for (let i = 0; i < aoQuestionList.length; i++) {
 
+          if (aoQuestionList[i].controlType === controlType.TWO_OPTIONS 
+            || aoQuestionList[i].controlType === controlType.MULTI_OPTIONS) {
+            if (aoQuestionList[i].option.length === 0) {
+              aoQuestionList.splice(i, 1);
+              i--;
+              continue;
+            }
+          }
+
           aoQuestionList[i] = {
             ...aoQuestionList[i],
             answer: {
@@ -73,8 +82,9 @@ function* getAoQuestionList() {
               type: 'other'
             }
           }
-          yield put(aoQuestionListSuccess(aoQuestionList, optionList));
         }
+
+        yield put(aoQuestionListSuccess(aoQuestionList, optionList));
       }
     } else {
       console.log('login failed :', result.statusText)

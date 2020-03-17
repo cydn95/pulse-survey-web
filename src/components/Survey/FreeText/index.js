@@ -84,6 +84,7 @@ class FreeText extends Component {
           <SkipQuestion 
               answer={this.state.answer.topicValue}
               comment={this.state.answer.commentValue}
+              commentPrompt={question.commentPrompt}
               skipValue={this.state.answer.skipValue}
               skipQuestionList={skipQuestionList}
               skipOption={question.skipOption}

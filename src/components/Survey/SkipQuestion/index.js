@@ -104,6 +104,7 @@ class SkipQuestion extends Component {
     // const { skipQuestionList, skipOption } = this.props;
 
     const { optionList, commentToggle, skipToogle } =  this.state;
+    const { commentPrompt } = this.props;
 
     const btnsToDraw = [];
     if (!commentToggle) {
@@ -165,7 +166,7 @@ class SkipQuestion extends Component {
               className={ styles.comment }
               value={ this.state.comment }
               onChange={e => this.onInputComment(e)}
-              placeholder="Type Your Comment Here"
+              placeholder={ commentPrompt }
             />
           </div>
         }

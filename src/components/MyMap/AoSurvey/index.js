@@ -109,8 +109,8 @@ class AoSurvey extends React.Component {
                           case controlType.SLIDER:
                             return <RangeSlider skipQuestionList={skipQuestionList} key={`${index}${index2}`} question={control} onAnswer={answer => this.handleAnswer(answer)} />
                           
-                            case controlType.TWO_OPTIONS:
-                            return <TwoOptions skipQuestionList={skipQuestionList} key={`${index}${index2}`} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+                          case controlType.TWO_OPTIONS:
+                            return <MultipleOptions skipQuestionList={skipQuestionList} key={`${index}${index2}`} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
                 
                           case controlType.MULTI_OPTIONS:
                             return <MultipleOptions skipQuestionList={skipQuestionList} key={`${index}${index2}`} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />

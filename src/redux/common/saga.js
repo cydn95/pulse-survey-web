@@ -155,7 +155,7 @@ function* getStakeholderList({ payload }) {
                     projectUserId: sh.id,
                     projectId: sh.project,
                     userId:  'S_' + sh.user.id,
-                    userAvatar: sh.user.avatar.name,
+                    userAvatar: sh.user.avatar === null ? '' : sh.user.avatar.name,
                     fullName: sh.user.first_name + ' ' + sh.user.last_name,
                     teamId: 'T_' + sh.team.id,
                     team: sh.team.name,

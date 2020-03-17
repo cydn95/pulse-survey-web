@@ -16,7 +16,7 @@ import {
   SUBMIT_SURVEY
 } from 'Constants/actionTypes';
 
-import { controlTypeText } from 'Constants/defaultValues'
+import { controlType, controlTypeText } from 'Constants/defaultValues'
 
 import {
   pageListSuccess,
@@ -58,6 +58,16 @@ function* getPageList() {
 
       for (let i = 0; i < questionList.length; i++) {
         for (let j = 0; j < questionList[i].amquestion.length; j++) {
+
+          if (questionList[i].amquestion[j].controlType === controlType.TWO_OPTIONS 
+            || questionList[i].amquestion[j].controlType === controlType.MULTI_OPTIONS) {
+            if (questionList[i].amquestion[j].option.length === 0) {
+              questionList[i].amquestion.splice(j, 1);
+              j--;
+              continue;
+            }
+          }
+
           questionList[i].amquestion[j] = {
             ...questionList[i].amquestion[j],
             answer: {
@@ -78,6 +88,10 @@ function* getPageList() {
             }
           }
         }
+
+        // Ordering by questionSequence
+        questionList[i].amquestion = questionList[i].amquestion.sort(
+          (a, b) => (a.questionSequence > b.questionSequence) ? 1 : -1);
       }
 
       const result_option = yield call(getOptionListAsync);
@@ -156,7 +170,7 @@ function* submitSurvey( { payload }) {
   if (answerList.length === 0) {
     return
   }
-  console.log(answerList);
+
   try {
     let result = yield call(submitSurveyAsync, answerList);
 

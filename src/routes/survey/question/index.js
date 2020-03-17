@@ -40,6 +40,10 @@ class Question extends Component {
    
     let questionControl = questionList.amquestion.map( (control, index) => {
       switch (control.controlType) {
+        case controlType.TEXT:
+          return <div key={index} className={styles['question-container']}>
+            <FreeText question={control} onAnswer={answer => this.handleAnswer(answer)} 
+            skipQuestionList={skipQuestionList} /></div>
         case controlType.SLIDER:
           return <div key={index} className={styles['question-container']}><RangeSlider question={control} onAnswer={answer => this.handleAnswer(answer)} 
             skipQuestionList={skipQuestionList} /></div>
