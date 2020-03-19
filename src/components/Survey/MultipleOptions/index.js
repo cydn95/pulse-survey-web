@@ -5,6 +5,8 @@ import Radio from "Components/Radio";
 
 import styles from "./styles.scss";
 
+import {replaceQuestionTextKeyWord} from 'Constants/defaultValues';
+
 class MultipleOptions extends Component {
 
   constructor(props) {
@@ -82,13 +84,13 @@ class MultipleOptions extends Component {
 
   render() {
 
-    const { question, skipQuestionList } = this.props;
+    const { question, skipQuestionList, user } = this.props;
     const { optionList } = this.state
     
     return (
       <div className={styles.main}>
         <div>
-          <h2 className={styles["question-text"]}>{question.questionText}</h2>
+          <h2 className={styles["question-text"]}>{replaceQuestionTextKeyWord(question.questionText, user)}</h2>
         </div>
         <div className={styles["question-selector"]}>
         {

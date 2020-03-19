@@ -38,16 +38,6 @@ export default (state = INIT_STATE, action) => {
     case INPUT_ANSWER:
       const { answer } = action.payload;
 
-      // if (answer.type === 'me') {
-      //   state.pageList[answer.pageIndex].pages.ampagesetting[answer.questionIndex].answer = {
-      //     ...answer
-      //   };
-      // } else {
-      //   state.pageList[answer.pageIndex].pages.aopagesetting[answer.questionIndex].answer = {
-      //     ...answer
-      //   };
-      // }
-
       if (answer.type === 'me') {
         state.pageList[answer.pageIndex].amquestion[answer.questionIndex].answer = {
           ...answer

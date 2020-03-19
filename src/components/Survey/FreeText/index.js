@@ -6,6 +6,8 @@ import SkipQuestion from "../SkipQuestion";
 
 import styles from './styles.scss';
 
+import {replaceQuestionTextKeyWord} from 'Constants/defaultValues';
+
 class FreeText extends Component {
 
   constructor(props) {
@@ -69,11 +71,11 @@ class FreeText extends Component {
   }
 
   render() {
-    const { question, skipQuestionList } = this.props;
+    const { question, skipQuestionList, user } = this.props;
     
     return (
       <div className={styles.root}>
-          <h2 className={ styles['question-text'] }>{question.questionText}</h2>
+          <h2 className={ styles['question-text'] }>{replaceQuestionTextKeyWord(question.questionText, user)}</h2>
           <div className={styles['answer-section']}>
             <TextField 
               className={ styles['answer-field'] }

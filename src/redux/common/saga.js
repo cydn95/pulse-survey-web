@@ -153,9 +153,12 @@ function* getStakeholderList({ payload }) {
                 if (sh.shCategory == null) return;
                 stakeholderList.push({
                     projectUserId: sh.id,
+                    projectUserTitle: sh.projectUserTitle,
                     projectId: sh.project,
                     userId:  'S_' + sh.user.id,
                     userAvatar: sh.user.avatar === null ? '' : sh.user.avatar.name,
+                    userTeam: sh.user.userteam === null ? '' : sh.user.userteam.name,
+                    userTitle: sh.user.usertitle === null ? '' : sh.user.usertitle.name,
                     fullName: sh.user.first_name + ' ' + sh.user.last_name,
                     teamId: 'T_' + sh.team.id,
                     team: sh.team.name,
@@ -165,6 +168,7 @@ function* getStakeholderList({ payload }) {
                     show: true
                 });
             });
+
             yield put(stakeholderListSuccess(stakeholderList, result.data));
         }
 

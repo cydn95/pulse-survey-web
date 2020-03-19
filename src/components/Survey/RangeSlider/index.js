@@ -3,6 +3,8 @@ import SkipQuestion from "../SkipQuestion";
 import Slider from 'Components/Slider';
 import styles from "./styles.scss";
 
+import {replaceQuestionTextKeyWord} from 'Constants/defaultValues';
+
 class RangeSlider extends Component {
 
   constructor(props) {
@@ -64,11 +66,11 @@ class RangeSlider extends Component {
   }
 
   render() {
-    const { question, skipQuestionList } = this.props;
-    
+    const { question, skipQuestionList, user } = this.props;
+
     return (
       <div className={ styles.main }>
-        <h2 className={styles["question-text"]}>{question.questionText}</h2>
+        <h2 className={styles["question-text"]}>{replaceQuestionTextKeyWord(question.questionText, user)}</h2>
         <div className={ styles['slider-section'] }>
           <Slider 
             className={styles.slider} 

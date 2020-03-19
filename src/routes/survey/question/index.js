@@ -37,27 +37,32 @@ class Question extends Component {
     const questionList = surveyList[pageIndex];
 
     let continueText = 'Continue';
-   
+    
+    let user = {
+      fullName: 'Mike Smith',
+      team: 'Pulse'
+    }
+
     let questionControl = questionList.amquestion.map( (control, index) => {
       switch (control.controlType) {
         case controlType.TEXT:
           return <div key={index} className={styles['question-container']}>
-            <FreeText question={control} onAnswer={answer => this.handleAnswer(answer)} 
+            <FreeText user={user} question={control} onAnswer={answer => this.handleAnswer(answer)} 
             skipQuestionList={skipQuestionList} /></div>
         case controlType.SLIDER:
-          return <div key={index} className={styles['question-container']}><RangeSlider question={control} onAnswer={answer => this.handleAnswer(answer)} 
+          return <div key={index} className={styles['question-container']}><RangeSlider  user={user} question={control} onAnswer={answer => this.handleAnswer(answer)} 
             skipQuestionList={skipQuestionList} /></div>
         
         case controlType.TWO_OPTIONS:
-          return <div key={index} className={styles['question-container']}><TwoOptions options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
+          return <div key={index} className={styles['question-container']}><TwoOptions user={user} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
             skipQuestionList={skipQuestionList} /></div>
 
         case controlType.MULTI_OPTIONS:
-          return <div key={index} className={styles['question-container']}><MultipleOptions options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
+          return <div key={index} className={styles['question-container']}><MultipleOptions user={user} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
             skipQuestionList={skipQuestionList} /></div>
 
         case controlType.SMART_TEXT:
-          return <div key={index} className={styles['question-container']}><SmartText question={control} onAnswer={answer => this.handleAnswer(answer)} 
+          return <div key={index} className={styles['question-container']}><SmartText user={user} question={control} onAnswer={answer => this.handleAnswer(answer)} 
             skipQuestionList={skipQuestionList} /></div>
 
         default:

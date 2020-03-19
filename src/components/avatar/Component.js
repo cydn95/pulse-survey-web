@@ -18,6 +18,7 @@ function AvatarComponent(props) {
     className,
     userId,
     username,
+    title,
     description,
     onClick,
     profilePicUrl,
@@ -33,6 +34,7 @@ function AvatarComponent(props) {
       </div>
       <div className={styles.info}>
         <div className={styles.username}>{username}</div>
+        <div className={styles.description}>{title}</div>
         <div className={styles.description}>{description}</div>
       </div>
       <div className={styles.open}>

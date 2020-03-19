@@ -66,18 +66,21 @@ function SearchBar(props) {
                 <div className={styles['tab-content']}>
                   <span className={styles.cnt}>{getSuggestionsWithSh(decisionMakers, filter, shId).length === 0 ? `No Users` : getSuggestionsWithSh(decisionMakers, filter, shId).length + ` Users`}</span>
                   {
-                    getSuggestionsWithSh(decisionMakers, filter, shId).map((d, index) => (
-                      <AvatarComponent
+                    getSuggestionsWithSh(decisionMakers, filter, shId).map((d, index) => {
+                      let title = d.projectUserTitle === '' ? d.userTitle : d.projectUserTitle;
+                      let description = d.organisation + ' / ' + (d.team === '' ? d.userTeam : d.team);
+                      return (<AvatarComponent
                         key={d.projectUserId} 
                         className={styles["avatar-comp"]}
                         username={d.fullName}
                         userId={d.userId}
                         onClick={userId => onClickDecisionMaker(userId)}
-                        description={`${d.organisation} / ${d.team}`}
+                        title={title}
+                        description={description}
                         profilePicUrl={d.userAvatar}
                         userProgress={(10 + index * 10) % 100}
-                      />
-                    ))
+                      />)
+                    })
                   }
                 </div>
               ),
@@ -90,18 +93,21 @@ function SearchBar(props) {
                 <div className={styles['tab-content']}>
                   <span className={styles.cnt}>{getSuggestions(influencers, filter).length === 0 ? `No Users` : getSuggestions(influencers, filter).length + ` Users`}</span>
                   {
-                    getSuggestions(influencers, filter).map((d, index) => (
-                      <Draggable key={d.projectUserId} type="stakeholder" data={d.projectUserId} >
+                    getSuggestions(influencers, filter).map((d, index) => {
+                      let title = d.projectUserTitle === '' ? d.userTitle : d.projectUserTitle;
+                      let description = d.organisation + ' / ' + (d.team === '' ? d.userTeam : d.team);
+                      return (<Draggable key={d.projectUserId} type="stakeholder" data={d.projectUserId} >
                         <AvatarComponent
                           className={styles["avatar-comp"]}
                           key={d.username}
                           username={d.fullName}
-                          description={`${d.organisation} / ${d.team}`}
+                          title={title}
+                          description={description}
                           profilePicUrl={d.userAvatar}
                           userProgress={(10 + index * 10) % 100}
                         />
-                      </Draggable>
-                    ))
+                      </Draggable>)
+                    })
                   }
                 </div>
               ),
