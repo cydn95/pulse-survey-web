@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { connect } from 'react-redux';
 
 import DriverPanel from "Components/driver";
+import Loading from "Components/Loading";
 
 import Question from "../question";
-
 
 import TopNav from 'Containers/TopNav';
 
@@ -28,6 +28,8 @@ class Start extends Component {
     this.state = {
       pageIndex: props.pageIndex
     };
+
+    this.scrollTop = false;
   }
 
   componentWillMount() {
@@ -38,7 +40,13 @@ class Start extends Component {
   }
 
   componentWillReceiveProps(props) {
-    const { pageIndex } = props;
+    const { pageIndex, surveyList } = props;
+
+    if (surveyList.length > 0) {
+      setTimeout(() => {
+        window.scrollTo(0,0);
+      }, 100);
+    }
 
     this.setState({
       pageIndex
@@ -84,7 +92,7 @@ class Start extends Component {
             <div className={ styles['survey-container']}>
               { surveyList.length > 0 && skipQuestionList.length > 0 && 
                 <Question history={this.props.history} skipQuestionList={skipQuestionList} /> }
-              {surveyList.length ===0 && <h1></h1>}
+              {surveyList.length ===0 && <Loading description=""/>}
             </div>
           </div>
         </div>
