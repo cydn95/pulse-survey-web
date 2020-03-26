@@ -8,12 +8,14 @@ import {
 import {
     pageListAPI,
     submitSurveyAPI,
-    optionListAPI
+    optionListAPI,
+    addNewTopicAboutMeAPI
 } from '../../services/axios/api';
 
 import {
   PAGE_LIST,
-  SUBMIT_SURVEY
+  SUBMIT_SURVEY,
+  ADD_ABOUT_ME_TOPIC
 } from 'Constants/actionTypes';
 
 import { controlType, controlTypeText } from 'Constants/defaultValues'
@@ -21,7 +23,8 @@ import { controlType, controlTypeText } from 'Constants/defaultValues'
 import {
   pageListSuccess,
   submitSurveySuccess,
-  driverListSuccess
+  driverListSuccess,
+  addAboutMeTopicSuccess
 } from '../actions';
 
 const getPageListAsync = async (projectUserId) =>
@@ -109,10 +112,6 @@ function* getPageList({payload}) {
   }
 }
 
-export function* watchPageList() {
-  yield takeEvery(PAGE_LIST, getPageList);
-}
-
 const submitSurveyAsync = async (answerData) =>
     await submitSurveyAPI(answerData)
       .then(result => result)
@@ -149,12 +148,20 @@ function* submitSurvey( { payload }) {
           continue;
       }
       
+      let integerValue = amquestions[j].answer.integerValue;
+      let isTopic = false;
+      if (integerValue.toString().includes("T-")) {
+        integerValue = integerValue.toString().replace("T-", "");
+        isTopic = true;
+      }
+      integerValue = Math.floor(parseInt(integerValue, 10));
+
       let answer = Object.assign({}, {
-        "integerValue": amquestions[j].answer.integerValue,
+        "integerValue": integerValue,
         "topicValue": amquestions[j].answer.topicValue,
         "commentValue": amquestions[j].answer.commentValue,
         "skipValue": amquestions[j].answer.skipValue,
-        "topicTags": amquestions[j].answer.topicTags,
+        "topicTags": isTopic ? amquestions[j].answer.topicValue : amquestions[j].answer.topicTags,
         "commentTags": amquestions[j].answer.commentTags,
         "user": getToken().userId,
         "subjectUser": getToken().userId,
@@ -190,13 +197,45 @@ function* submitSurvey( { payload }) {
   }
 }
 
+
+
+const addAboutMeTopicAsync = async (topicName, questionId, projectUserId) =>
+    await addNewTopicAboutMeAPI(topicName, questionId, projectUserId)
+      .then(result => result)
+      .catch(error => error);
+
+function* addAboutMeTopic( { payload }) {
+
+  const { topicName, questionId, projectUserId, pageIndex, questionIndex, callback } = payload;
+
+  try {
+    let result = yield call(addAboutMeTopicAsync, topicName, questionId, projectUserId);
+
+    if (result.status === 201) {
+      yield put(addAboutMeTopicSuccess(result.data, pageIndex, questionIndex));
+      callback(result.data);
+    } 
+  } catch (error) {
+    console.log('survey error : ', error)
+  }
+}
+
+export function* watchPageList() {
+  yield takeEvery(PAGE_LIST, getPageList);
+}
+
 export function* watchSubmitSurvey() {
   yield takeEvery(SUBMIT_SURVEY, submitSurvey);
+}
+
+export function* watchAddAboutMeTopic() {
+  yield takeEvery(ADD_ABOUT_ME_TOPIC, addAboutMeTopic);
 }
 
 export default function* rootSaga() {
   yield all([
     fork(watchPageList),
-    fork(watchSubmitSurvey)
+    fork(watchSubmitSurvey),
+    fork(watchAddAboutMeTopic)
   ]);
 }

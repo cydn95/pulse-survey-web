@@ -113,7 +113,7 @@ class AoSurvey extends React.Component {
                             return <TwoOptions user={user} skipQuestionList={skipQuestionList} key={`${index}${index2}`} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
                 
                           case controlType.MULTI_OPTIONS:
-                            return <MultipleOptions user={user} skipQuestionList={skipQuestionList} key={`${index}${index2}`} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
+                            return <MultipleOptions user={user} type="ao" skipQuestionList={skipQuestionList} key={`${index}${index2}`} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
                 
                           case controlType.SMART_TEXT:
                             return <SmartText user={user} skipQuestionList={skipQuestionList} key={`${index}${index2}`} question={control}  onAnswer={answer => this.handleAnswer(answer)}/>

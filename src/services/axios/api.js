@@ -59,8 +59,12 @@ const myMapAPI = (userId, projectId) => {
   return getClient(true).get("/mymaplayouts/?format=json&user=" + userId + "&project=" + projectId);
 }
 
+// const aoQuestionListAPI = (projectUserId) => {
+//   return getClient(true).get("/aoquestion/?format=json&projectuser=" + projectUserId)
+// }
+
 const aoQuestionListAPI = (projectUserId) => {
-  return getClient(true).get("/aoquestion/?format=json&projectuser=" + projectUserId)
+  return getClient(true).get("/pages/?format=json&survey=1&projectuser=" + projectUserId)
 }
 
 const submitAoQuestionAPI = (answerData) => {
@@ -93,6 +97,23 @@ const addUserAPI = (user) => {
 // Add Stakeholder (ProjectUser)
 const addStakeholderAPI = (projectUser) => {
   return getClient(true).post("/projectuser/", projectUser);
+}
+
+// Add NewTopic To About Me & Other Question 
+const addNewTopicAboutMeAPI = (topicName, questionId, projectUserId) => {
+  return getClient(true).post("/amresponsetopic/", {
+    'topicName': topicName,
+    amQuestion: questionId,
+    responseUser: projectUserId
+  });
+}
+
+const addNewTopicAboutOtherAPI = (topicName, questionId, projectUserId) => {
+  return getClient(true).post("/aoresponsetopic/", {
+    'topicName': topicName,
+    aoQuestion: questionId,
+    responseUser: projectUserId
+  });
 }
 
 /**
@@ -137,4 +158,6 @@ export {
   aoQuestionListAPI,
   submitAoQuestionAPI,
   
+  addNewTopicAboutMeAPI,
+  addNewTopicAboutOtherAPI,
 }

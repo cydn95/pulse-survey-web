@@ -7,7 +7,9 @@ import {
   SUBMIT_SURVEY,
   SUBMIT_SURVEY_SUCCESS,
   ABOUTME,
-  SUBMIT_ABOUTME
+  SUBMIT_ABOUTME,
+  ADD_ABOUT_ME_TOPIC,
+  ADD_ABOUT_ME_TOPIC_SUCCESS
 } from 'Constants/actionTypes';
 
 export const pageList = (projectUserId) => ({
@@ -53,4 +55,14 @@ export const aboutMe = (data) => ({
 export const submitAboutMe = (data, aboutMe) => ({
   type: SUBMIT_ABOUTME,
   payload: { data, aboutMe }
+})
+
+export const addAboutMeTopic = (topicName, questionId, projectUserId, pageIndex, questionIndex, callback) => ({
+  type: ADD_ABOUT_ME_TOPIC,
+  payload: { topicName, questionId, projectUserId, pageIndex, questionIndex, callback }
+})
+
+export const addAboutMeTopicSuccess = (topic, pageIndex, questionIndex) => ({
+  type: ADD_ABOUT_ME_TOPIC_SUCCESS,
+  payload: { topic, pageIndex, questionIndex }
 })

@@ -7,17 +7,20 @@ import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import {
     aoQuestionListAPI,
     optionListAPI,
-    submitAoQuestionAPI
+    submitAoQuestionAPI,
+    addNewTopicAboutOtherAPI
 } from '../../services/axios/api';
 
 import {
   AOQUESTION_LIST,
-  SUBMIT_AOQUESTION
+  SUBMIT_AOQUESTION,
+  ADD_ABOUT_OTHER_TOPIC
 } from 'Constants/actionTypes';
 
 import {
   aoQuestionListSuccess,
-  submitAoQuestionSuccess
+  submitAoQuestionSuccess,
+  addAboutOtherTopicSuccess
 } from './actions';
 
 import { controlType, controlTypeText } from 'Constants/defaultValues'
@@ -42,11 +45,20 @@ function* getAoQuestionList({payload}) {
       
       if (result_option.status === 200) {
         const optionList = result_option.data;
-        let aoQuestionList = result.data;
+
+        const questionList  = [];
+
+        for (let i = 0; i < result.data.length; i++) {
+          for (let j = 0; j < result.data[i].aoquestion.length; j++) {
+            questionList.push(result.data[i].aoquestion[j])
+          }
+        }
+
+        let aoQuestionList = questionList;
 
         aoQuestionList = aoQuestionList.filter(item => {
-          if (item.controlType == controlType.TWO_OPTIONS || item.controlType == controlType.MULTI_OPTIONS) {
-            if (item.option.length == 0) {
+          if (item.controlType === controlType.TWO_OPTIONS || item.controlType === controlType.MULTI_OPTIONS) {
+            if (item.option.length === 0) {
               return false;
             }
           }
@@ -112,13 +124,21 @@ function* submitAoQuestion({ payload }) {
       continue;
     }
 
+    let integerValue = questionList[i].answer.integerValue;
+    let isTopic = false;
+    if (integerValue.toString().includes("T-")) {
+      integerValue = integerValue.toString().replace("T-", "");
+      isTopic = true;
+    }
+    integerValue = Math.floor(parseInt(integerValue, 10));
+
     let answer = {
       "controlType": controlTypeText(questionList[i].controlType),
-      "integerValue": Math.round(questionList[i].answer.integerValue),
+      "integerValue": integerValue,
       "topicValue": questionList[i].answer.topicValue,
       "commentValue": questionList[i].answer.commentValue,
       "skipValue": questionList[i].answer.skipValue,
-      "topicTags": questionList[i].answer.topicTags,
+      "topicTags": isTopic ? questionList[i].answer.topicValue : questionList[i].answer.topicTags,
       "commentTags": questionList[i].answer.commentTags,
       "user": getToken().userId,
       "subjectUser": surveyUserId.split('_')[1] ,
@@ -151,6 +171,27 @@ function* submitAoQuestion({ payload }) {
 
 }
 
+const addAboutOtherTopicAsync = async (topicName, questionId, projectUserId) =>
+    await addNewTopicAboutOtherAPI(topicName, questionId, projectUserId)
+      .then(result => result)
+      .catch(error => error);
+
+function* addAboutOtherTopic( { payload }) {
+
+  const { topicName, questionId, projectUserId, questionIndex, callback } = payload;
+
+  try {
+    let result = yield call(addAboutOtherTopicAsync, topicName, questionId, projectUserId);
+
+    if (result.status === 201) {
+      yield put(addAboutOtherTopicSuccess(result.data, questionIndex));
+      callback(result.data);
+    } 
+  } catch (error) {
+    console.log('survey error : ', error)
+  }
+}
+
 export function* watchAoQuestionList() {
   yield takeEvery(AOQUESTION_LIST, getAoQuestionList);
 }
@@ -159,9 +200,14 @@ export function* watchAoQuestionSubmit() {
   yield takeEvery(SUBMIT_AOQUESTION, submitAoQuestion);
 }
 
+export function* watchAddAboutOtherTopic() {
+  yield takeEvery(ADD_ABOUT_OTHER_TOPIC, addAboutOtherTopic);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchAoQuestionList),
-    fork(watchAoQuestionSubmit)
+    fork(watchAoQuestionSubmit),
+    fork(watchAddAboutOtherTopic)
   ]);
 }

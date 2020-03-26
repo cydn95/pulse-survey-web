@@ -2,7 +2,8 @@ import {
   AOQUESTION_LIST,
   AOQUESTION_LIST_SUCCESS,
   SUBMIT_AOQUESTION,
-  SUBMIT_AOQUESTION_SUCCESS
+  SUBMIT_AOQUESTION_SUCCESS,
+  ADD_ABOUT_OTHER_TOPIC_SUCCESS
 } from "Constants/actionTypes";
 
 const INIT_STATE = {
@@ -21,6 +22,10 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loading: true }
     case SUBMIT_AOQUESTION_SUCCESS:
       return { ...state, loading: false }
+    case ADD_ABOUT_OTHER_TOPIC_SUCCESS:
+      const {topic, pageIndex} = action.payload;
+      state.aoQuestionList[pageIndex].topic.push(topic);
+      return { ...state };
     default:
       return { ...state };
   }

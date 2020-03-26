@@ -1,7 +1,7 @@
 $color: rgb(26, 26, 26);
 $comment-color: rgb(119, 120, 133);
-$editable-color: rgb(16, 122, 239);
-
+// $editable-color: rgb(16, 122, 239);
+$editable-color: #e66864;
 @mixin round {
   box-sizing: border-box;
   border-width: 3px;
@@ -12,6 +12,7 @@ $editable-color: rgb(16, 122, 239);
 .main {
   color: $color;
   display: flex;
+  cursor: pointer;
   input {
     background: none;
     &:focus {

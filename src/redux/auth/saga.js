@@ -110,9 +110,9 @@ function* setProjectID({ payload }) {
 
       if (result.data) {
         localStorage.setItem('projectId', projectId);
-        localStorage.setItem('projectUserId', result.data[0].project.id);
+        localStorage.setItem('projectUserId', result.data[0].id);
 
-        yield put(setProjectIDSuccess(projectId, result.data[0].project.id));
+        yield put(setProjectIDSuccess(projectId, result.data[0].id));
       }
     } else {
       localStorage.setItem('projectId', 0);

@@ -58,7 +58,7 @@ class Question extends Component {
             skipQuestionList={skipQuestionList} /></div>
 
         case controlType.MULTI_OPTIONS:
-          return <div key={index} className={styles['question-container']}><MultipleOptions user={user} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
+          return <div key={index} className={styles['question-container']}><MultipleOptions type="am" user={user} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
             skipQuestionList={skipQuestionList} /></div>
 
         case controlType.SMART_TEXT:

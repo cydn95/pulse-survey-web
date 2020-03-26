@@ -6,7 +6,8 @@ import {
   INPUT_ANSWER,
   SUBMIT_SURVEY,
   SUBMIT_SURVEY_SUCCESS,
-  ABOUTME
+  ABOUTME,
+  ADD_ABOUT_ME_TOPIC_SUCCESS
 } from "Constants/actionTypes";
 
 const INIT_STATE = {
@@ -47,6 +48,10 @@ export default (state = INIT_STATE, action) => {
           ...answer
         };
       }
+      return { ...state };
+    case ADD_ABOUT_ME_TOPIC_SUCCESS:
+      const {topic, pageIndex, questionIndex} = action.payload;
+      state.pageList[pageIndex].amquestion[questionIndex].topic.push(topic);
       return { ...state };
     case SUBMIT_SURVEY:
       return { ...state, loading: false };
