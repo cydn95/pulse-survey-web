@@ -26,9 +26,9 @@ export const submitAoQuestionSuccess = () => ({
   type: SUBMIT_AOQUESTION_SUCCESS
 })
 
-export const addAboutOtherTopic = (topicName, questionId, projectUserId, questionIndex, callback) => ({
+export const addAboutOtherTopic = (topicName, topicComment, questionId, projectUserId, questionIndex, callback) => ({
   type: ADD_ABOUT_OTHER_TOPIC,
-  payload: { topicName, questionId, projectUserId, questionIndex, callback }
+  payload: { topicName, topicComment, questionId, projectUserId, questionIndex, callback }
 })
 
 export const addAboutOtherTopicSuccess = (topic, questionIndex) => ({

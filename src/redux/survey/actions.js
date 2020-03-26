@@ -57,9 +57,9 @@ export const submitAboutMe = (data, aboutMe) => ({
   payload: { data, aboutMe }
 })
 
-export const addAboutMeTopic = (topicName, questionId, projectUserId, pageIndex, questionIndex, callback) => ({
+export const addAboutMeTopic = (topicName, topicComment, questionId, projectUserId, pageIndex, questionIndex, callback) => ({
   type: ADD_ABOUT_ME_TOPIC,
-  payload: { topicName, questionId, projectUserId, pageIndex, questionIndex, callback }
+  payload: { topicName, topicComment, questionId, projectUserId, pageIndex, questionIndex, callback }
 })
 
 export const addAboutMeTopicSuccess = (topic, pageIndex, questionIndex) => ({

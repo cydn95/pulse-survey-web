@@ -100,17 +100,19 @@ const addStakeholderAPI = (projectUser) => {
 }
 
 // Add NewTopic To About Me & Other Question 
-const addNewTopicAboutMeAPI = (topicName, questionId, projectUserId) => {
+const addNewTopicAboutMeAPI = (topicName, topicComment, questionId, projectUserId) => {
   return getClient(true).post("/amresponsetopic/", {
     'topicName': topicName,
+    'topicComment': topicComment,
     amQuestion: questionId,
     responseUser: projectUserId
   });
 }
 
-const addNewTopicAboutOtherAPI = (topicName, questionId, projectUserId) => {
+const addNewTopicAboutOtherAPI = (topicName, topicComment, questionId, projectUserId) => {
   return getClient(true).post("/aoresponsetopic/", {
     'topicName': topicName,
+    'topicComment': topicComment,
     aoQuestion: questionId,
     responseUser: projectUserId
   });

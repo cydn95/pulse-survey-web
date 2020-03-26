@@ -7,9 +7,9 @@ import EditableOption from './EditableOption';
 import styles from './styles.scss';
 
 function Option(props) {
-  const { topic, comment, checked, onSelectTopic } = props;
+  const { topic, comment, checked } = props;
   return (
-    <div onClick={e=>onSelectTopic()}className={classnames(styles.main, {[styles['editable']]: checked})}>
+    <div className={classnames(styles.main, {[styles['editable']]: checked})}>
       <div className={styles.bullet}></div>
       <div className={styles.data}>
         <div className={styles.topic}>{topic}</div>

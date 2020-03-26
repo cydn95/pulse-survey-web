@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import SkipQuestion from "../SkipQuestion";
 import Radio from "Components/Radio";
 import Option from "Components/multi-topic/option";
+import { EditableOption } from "Components/multi-topic/option";
 import Button from "Components/Button";
 
 import {
@@ -42,6 +43,7 @@ class MultipleOptions extends Component {
       optionList,
       input: false,
       newTopic: '',
+      newComment: '',
       topicList: [
         ...question.topic
       ]
@@ -109,6 +111,7 @@ class MultipleOptions extends Component {
       if (this.props.type === "am") {
         this.props.addAboutMeTopic(
           this.state.newTopic, 
+          this.state.newComment,
           this.props.question.id, 
           this.props.projectUserId, 
           this.props.question.answer.pageIndex, 
@@ -118,6 +121,7 @@ class MultipleOptions extends Component {
       } else {
         this.props.addAboutOtherTopic(
           this.state.newTopic, 
+          this.state.newComment,
           this.props.question.id, 
           this.props.projectUserId, 
           this.props.question.answer.questionIndex, 
@@ -127,7 +131,8 @@ class MultipleOptions extends Component {
 
       this.setState({
         input: false,
-        newTopic: ''
+        newTopic: '',
+        newComment: ''
       });
     }
   }
@@ -146,9 +151,15 @@ class MultipleOptions extends Component {
     }));
   }
 
-  handleInputNewTopic = (e) => {
+  handleInputNewTopic = (value) => {
     this.setState({
-      newTopic: e.target.value
+      newTopic: value
+    })
+  }
+
+  handleInputNewComment = (value) => {
+    this.setState({
+      newComment: value
     })
   }
 
@@ -180,27 +191,28 @@ class MultipleOptions extends Component {
           }
           {
             this.state.topicList.map((item) => {
-              let selectedValue = 0;
-              if (this.state.answer.integerValue.toString().includes("T-")) {
-                selectedValue = this.state.answer.integerValue.toString().replace("T-", "");
-              }
-              const active = item.id === parseInt(selectedValue, 10);
               return (
                 <div key={`topic-${item.id}`} className={styles['option-item']}>
                   <Option
-                    checked={active}
-                    onSelectTopic={(e) => this.onSelectAnswer('T-' + item.id, item.topicName)}
+                    checked={false}
                     topic={item.topicName}
-                    comment={''}
+                    comment={item.topicComment}
                   />
                 </div>
               )
             })
           }
           <div className={styles['topic-wrapper']}>
+            {this.state.input && <EditableOption
+              topic={this.state.newTopic}
+              comment={this.state.newComment}
+              changeTopic={value => this.handleInputNewTopic(value)}
+              changeComment={value => this.handleInputNewComment(value)}
+              topicPlaceholder={question.topicPrompt}
+              commentPlaceholder={question.commentPrompt}/>
+            }
             {!this.state.input && <Button className={styles['add-topic']} onClick={e => this.handleAddPanel()}>ADD NEW TOPIC</Button>}
-            {this.state.input && <TextField value={this.state.newTopic} onChange={e => this.handleInputNewTopic(e)} className={styles['input-topic']} />}
-            {this.state.input && <Button className={styles['add-topic']} onClick={e => this.handleSaveTopic()}>SAVE NEW TOPIC</Button>}
+            {this.state.input && <Button className={styles['save-topic']} onClick={e => this.handleSaveTopic()}>SAVE NEW TOPIC</Button>}
           </div>
         </div>
         <SkipQuestion

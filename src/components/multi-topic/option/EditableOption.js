@@ -12,6 +12,8 @@ function EditableOption(props) {
     comment,
     changeTopic,
     changeComment,
+    topicPlaceholder,
+    commentPlaceholder
   } = props;
 
   return (
@@ -20,14 +22,14 @@ function EditableOption(props) {
       <div className={styles.data}>
         <Input 
           className={styles.topic} 
-          onChange={changeTopic}
-          placeholder={"Specify topic"} 
+          onChange={(value, e) => changeTopic(value)}
+          placeholder={topicPlaceholder === "" ? "Specify your topic" : topicPlaceholder} 
           value={topic} 
         />
         <Input 
           className={styles.comment} 
-          onChange={changeComment}
-          placeholder={"Specify your comment"} 
+          onChange={(value, e) => changeComment(value)}
+          placeholder={commentPlaceholder === "" ? "Specify your comment" : commentPlaceholder} 
           value={comment} 
         />
       </div>

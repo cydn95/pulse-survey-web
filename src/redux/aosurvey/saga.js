@@ -36,7 +36,10 @@ const getOptionListAsync = async () =>
       .catch(error => error);
 
 function* getAoQuestionList({payload}) {
-  const { projectUserId } = payload;
+
+  let { projectUserId } = payload;
+  if (projectUserId == null) projectUserId = 0;
+
   try {
     const result = yield call(getAoQuestionListAsync, projectUserId);
 
@@ -171,17 +174,17 @@ function* submitAoQuestion({ payload }) {
 
 }
 
-const addAboutOtherTopicAsync = async (topicName, questionId, projectUserId) =>
-    await addNewTopicAboutOtherAPI(topicName, questionId, projectUserId)
+const addAboutOtherTopicAsync = async (topicName, topicComment, questionId, projectUserId) =>
+    await addNewTopicAboutOtherAPI(topicName, topicComment, questionId, projectUserId)
       .then(result => result)
       .catch(error => error);
 
 function* addAboutOtherTopic( { payload }) {
 
-  const { topicName, questionId, projectUserId, questionIndex, callback } = payload;
+  const { topicName, topicComment, questionId, projectUserId, questionIndex, callback } = payload;
 
   try {
-    let result = yield call(addAboutOtherTopicAsync, topicName, questionId, projectUserId);
+    let result = yield call(addAboutOtherTopicAsync, topicName, topicComment, questionId, projectUserId);
 
     if (result.status === 201) {
       yield put(addAboutOtherTopicSuccess(result.data, questionIndex));

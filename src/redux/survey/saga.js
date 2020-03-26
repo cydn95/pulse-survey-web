@@ -39,7 +39,9 @@ const getOptionListAsync = async () =>
 
 function* getPageList({payload}) {
   
-  const {projectUserId} = payload;
+  let projectUserId = payload.projectUserId;
+  if (projectUserId == null) projectUserId = 0;
+
   try {
     const result = yield call(getPageListAsync, projectUserId);
 
@@ -197,19 +199,17 @@ function* submitSurvey( { payload }) {
   }
 }
 
-
-
-const addAboutMeTopicAsync = async (topicName, questionId, projectUserId) =>
-    await addNewTopicAboutMeAPI(topicName, questionId, projectUserId)
+const addAboutMeTopicAsync = async (topicName, topicComment, questionId, projectUserId) =>
+    await addNewTopicAboutMeAPI(topicName, topicComment, questionId, projectUserId)
       .then(result => result)
       .catch(error => error);
 
 function* addAboutMeTopic( { payload }) {
 
-  const { topicName, questionId, projectUserId, pageIndex, questionIndex, callback } = payload;
+  const { topicName, topicComment, questionId, projectUserId, pageIndex, questionIndex, callback } = payload;
 
   try {
-    let result = yield call(addAboutMeTopicAsync, topicName, questionId, projectUserId);
+    let result = yield call(addAboutMeTopicAsync, topicName, topicComment, questionId, projectUserId);
 
     if (result.status === 201) {
       yield put(addAboutMeTopicSuccess(result.data, pageIndex, questionIndex));
