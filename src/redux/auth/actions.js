@@ -6,12 +6,18 @@ import {
   REGISTER_USER,
   REGISTER_USER_SUCCESS,
   PROJECT_ID,
+  PROJECT_ID_SUCCESS,
   SET_PASSWORD
 } from 'Constants/actionTypes';
 
-export const setProjectID = (projectId) => ({
+export const setProjectID = (userId, projectId) => ({
   type: PROJECT_ID,
-  payload : { projectId }
+  payload: { userId, projectId }
+});
+
+export const setProjectIDSuccess = (projectId, projectUserId) => ({
+  type: PROJECT_ID_SUCCESS,
+  payload: {projectId, projectUserId}
 });
 
 export const loginUser = (user, history) => ({

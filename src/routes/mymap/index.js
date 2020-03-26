@@ -173,13 +173,13 @@ class MyMap extends React.Component {
 
 	componentWillMount() {
 		
-		const { projectId, userId } = this.props;
+		const { projectId, projectUserId, userId } = this.props;
 		
 		this.props.getKMapData(userId, projectId);
 		this.props.getShCategoryList();
 		this.props.getStakeholderList(projectId);
 		this.props.getTeamList();
-		this.props.getAoQuestionList();
+		this.props.getAoQuestionList(projectUserId);
 		this.props.getDriverList();
 		this.props.getSkipQuestionList();
 	}
@@ -571,7 +571,7 @@ class MyMap extends React.Component {
 
 const mapStateToProps = ({ survey, kmap, common, settings, aosurvey, authUser }) => {
 
-	const { projectId, user } = authUser;
+	const { projectId, projectUserId, user } = authUser;
 	const { surveyId } = survey;
 	const { locale } = settings;
 	const { kMapData, mapSaveLoading, mapGetLoading } = kmap
@@ -581,6 +581,7 @@ const mapStateToProps = ({ survey, kmap, common, settings, aosurvey, authUser })
 	return {
 		userId: user.userId,
 		projectId,
+		projectUserId,
 		stakeholderList,
 		teamList,
 		shCategoryList,

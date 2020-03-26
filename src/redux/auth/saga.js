@@ -1,17 +1,19 @@
 
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { loginAPI, setPasswordAPI } from '../../services/axios/api';
+import { loginAPI, setPasswordAPI, getProjectUserAPI } from '../../services/axios/api';
 
 import {
   LOGIN_USER,
   LOGOUT_USER,
-  SET_PASSWORD
+  SET_PASSWORD,
+  PROJECT_ID
 } from 'Constants/actionTypes';
 
 import {
   loginUserSuccess,
   logoutUser,
-  loginUserFailed
+  loginUserFailed,
+  setProjectIDSuccess,
 } from './actions';
 
 import { loginErrorType } from 'Constants/defaultValues';
@@ -93,6 +95,37 @@ function* setPassword({ payload }) {
   }
 }
 
+const setProjectIDAsync = async (userId, projectId) =>
+  await getProjectUserAPI(userId, projectId)
+    .then(res => res)
+    .catch(error => error);
+
+function* setProjectID({ payload }) {
+
+  const { userId, projectId } = payload;
+
+  try {
+    if (projectId > 0) {
+      const result = yield call(setProjectIDAsync, userId, projectId);
+
+      if (result.data) {
+        localStorage.setItem('projectId', projectId);
+        localStorage.setItem('projectUserId', result.data[0].project.id);
+
+        yield put(setProjectIDSuccess(projectId, result.data[0].project.id));
+      }
+    } else {
+      localStorage.setItem('projectId', 0);
+      localStorage.setItem('projectUserId', 0);
+
+      yield put(setProjectIDSuccess(0, 0));
+    }
+  } catch (error) {
+    // catch throw
+    console.log(error);
+  }
+}
+
 export function* watchLoginUser() {
   yield takeEvery(LOGIN_USER, loginWithUsernamePassword);
 }
@@ -105,10 +138,15 @@ export function* watchSetPassword() {
   yield takeEvery(SET_PASSWORD, setPassword);
 }
 
+export function* watchSetProjectID() {
+  yield takeEvery(PROJECT_ID, setProjectID);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchLoginUser),
     fork(watchLogoutUser),
-    fork(watchSetPassword)
+    fork(watchSetPassword),
+    fork(watchSetProjectID)
   ]);
 }

@@ -10,8 +10,9 @@ import {
   SUBMIT_ABOUTME
 } from 'Constants/actionTypes';
 
-export const pageList = () => ({
-  type: PAGE_LIST
+export const pageList = (projectUserId) => ({
+  type: PAGE_LIST,
+  payload: { projectUserId }
 });
 
 export const pageListSuccess = (pageList, optionList) => ({
@@ -34,17 +35,17 @@ export const inputAnswer = (answer) => ({
   payload: { answer }
 })
 
-export const submitSurvey = (surveyList, aboutMe, projectId, history) => ( {
+export const submitSurvey = (surveyList, aboutMe, projectId, history) => ({
   type: SUBMIT_SURVEY,
   payload: { surveyList, aboutMe, projectId, history }
 })
 
-export const submitSurveySuccess = (surveyId) => ( {
+export const submitSurveySuccess = (surveyId) => ({
   type: SUBMIT_SURVEY_SUCCESS,
   payload: { surveyId }
 })
 
-export const aboutMe = (data) => ( {
+export const aboutMe = (data) => ({
   type: ABOUTME,
   payload: { data }
 })

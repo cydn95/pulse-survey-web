@@ -56,7 +56,11 @@ class Project extends Component {
     for (let i = 0; i < projectStatus.length; i++) {
       if (i === index) {
         projectStatus[i] = status;
-        projectId = this.props.projectList[index].project.id;
+        if (status) {
+          projectId = this.props.projectList[index].project.id;
+        } else {
+          projectId = 0;
+        }
       } else {
         projectStatus[i] = false;
       }
@@ -64,12 +68,9 @@ class Project extends Component {
 
     this.setState({
       'projectStatus': projectStatus
-    }, () => {
-      console.log(projectStatus)
-    })
+    });
 
-    localStorage.setItem('projectId', projectId);
-    this.props.setSurveyProjectID(projectId);
+    this.props.setSurveyProjectID(this.props.user.userId, projectId);
   }
 
   render() {

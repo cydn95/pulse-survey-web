@@ -24,8 +24,8 @@ import {
   driverListSuccess
 } from '../actions';
 
-const getPageListAsync = async () =>
-    await pageListAPI()
+const getPageListAsync = async (projectUserId) =>
+    await pageListAPI(projectUserId)
       .then(result => result)
       .catch(error => error);
 
@@ -34,10 +34,11 @@ const getOptionListAsync = async () =>
       .then(result => result)
       .catch(error => error);
 
-function* getPageList() {
-   
+function* getPageList({payload}) {
+  
+  const {projectUserId} = payload;
   try {
-    const result = yield call(getPageListAsync);
+    const result = yield call(getPageListAsync, projectUserId);
 
     if (result.status === 200) {
 

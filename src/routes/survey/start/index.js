@@ -33,7 +33,7 @@ class Start extends Component {
   }
 
   componentWillMount() {
-    this.props.getPageList();
+    this.props.getPageList(this.props.projectUserId);
     this.props.getTeamList();
     this.props.getShgroupList();
     this.props.getSkipQuestionList();
@@ -102,16 +102,18 @@ class Start extends Component {
   }
 }
 
-const mapStateToProps = ({ survey, common }) => {
+const mapStateToProps = ({ survey, common, authUser }) => {
 
   const { pageList, pageIndex } = survey;
   const { skipQuestionList, driverList } = common
+  const { projectUserId } = authUser
 
   return {
     driverList,
     surveyList : pageList,
     pageIndex,
     skipQuestionList,
+    projectUserId
   };
 };
 

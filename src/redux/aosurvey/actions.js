@@ -5,9 +5,9 @@ import {
   SUBMIT_AOQUESTION_SUCCESS
 } from 'Constants/actionTypes';
 
-export const aoQuestionList = () => ({
+export const aoQuestionList = (projectUserId) => ({
   type: AOQUESTION_LIST,
-  payload: { }
+  payload: { projectUserId }
 });
 
 export const aoQuestionListSuccess = (aoQuestionList, optionList) => ({

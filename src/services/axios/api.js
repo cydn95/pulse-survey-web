@@ -18,8 +18,9 @@ const setPasswordAPI = (email, password, token) => {
 const projectListByUserAPI = (userId) => {
   return getClient(true).get("/projectByUser/?format=json&user=" + userId)
 }
-const pageListAPI = () => {
-  return getClient(true).get("/pages/?format=json")
+
+const pageListAPI = (projectUserId) => {
+  return getClient(true).get("/pages/?format=json&survey=1&projectuser=" + projectUserId)
 }
 
 const optionListAPI = () => {
@@ -58,8 +59,8 @@ const myMapAPI = (userId, projectId) => {
   return getClient(true).get("/mymaplayouts/?format=json&user=" + userId + "&project=" + projectId);
 }
 
-const aoQuestionListAPI = () => {
-  return getClient(true).get("/aoquestion/?format=json")
+const aoQuestionListAPI = (projectUserId) => {
+  return getClient(true).get("/aoquestion/?format=json&projectuser=" + projectUserId)
 }
 
 const submitAoQuestionAPI = (answerData) => {
@@ -69,6 +70,9 @@ const submitAoQuestionAPI = (answerData) => {
 // Get StakeholderList (get users by project id)
 const stakeholderListAPI = (projectId) => {
   return getClient(true).get("/userByProject/?format=json&project=" + projectId);
+}
+const getProjectUserAPI = (userId, projectId) => {
+  return getClient(true).get("/userByProject/?format=json&user=" + userId + "&project=" + projectId);
 }
 
 // Get ShCategory
@@ -120,6 +124,7 @@ export {
   projectUserListAPI,
   skipQuestionListAPI,
   stakeholderListAPI,
+  getProjectUserAPI,
   shCategoryListAPI,
   
   addUserAPI,

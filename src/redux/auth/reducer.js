@@ -6,6 +6,7 @@ import {
   REGISTER_USER_SUCCESS,
   LOGOUT_USER,
   PROJECT_ID,
+  PROJECT_ID_SUCCESS,
   SET_PASSWORD
 } from "Constants/actionTypes";
 
@@ -16,15 +17,16 @@ const INIT_STATE = {
     userId: localStorage.getItem("userId"),
     accessToken: localStorage.getItem("accessToken")
   },
-  projectId: localStorage.getItem("projectId") ? localStorage.getItem("projectId") : 1,
+  projectId: localStorage.getItem("projectId"),
+  projectUserId: localStorage.getItem("projectUserId"),
   loading: false,
   authStatus: loginErrorType.AUTH_SUCCESS
 };
 
 export default (state = INIT_STATE, action) => {
   switch (action.type) {
-    case PROJECT_ID:
-      return { ...state, projectId: action.payload.projectId };
+    case PROJECT_ID_SUCCESS:
+      return { ...state, projectId: action.payload.projectId, projectUserId: action.payload.projectUserId };
     case LOGIN_USER:
       return { ...state, loading: true };
     case LOGIN_USER_SUCCESS:
