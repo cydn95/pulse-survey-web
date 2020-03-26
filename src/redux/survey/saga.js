@@ -39,9 +39,8 @@ const getOptionListAsync = async () =>
 
 function* getPageList({payload}) {
   
-  let projectUserId = payload.projectUserId;
-  if (projectUserId == null) projectUserId = 0;
-
+  const {projectUserId} = payload;
+  
   try {
     const result = yield call(getPageListAsync, projectUserId);
 

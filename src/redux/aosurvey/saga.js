@@ -36,10 +36,7 @@ const getOptionListAsync = async () =>
       .catch(error => error);
 
 function* getAoQuestionList({payload}) {
-
-  let { projectUserId } = payload;
-  if (projectUserId == null) projectUserId = 0;
-
+  const { projectUserId } = payload;
   try {
     const result = yield call(getAoQuestionListAsync, projectUserId);
 
