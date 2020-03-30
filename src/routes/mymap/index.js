@@ -294,9 +294,10 @@ class MyMap extends React.Component {
 					};
 					let bAdd = false;
 					for (let i = 0; i < userList.length; i++) {
+						console.log(userList[i].user)
 						if (userList[i].id === mapUser) {
 							individualUser.id = 'S_' + userList[i].user.id;
-							individualUser.avatar = userList[i].user.avatar.name ;
+							individualUser.avatar = userList[i].user.avatar == null ? '' : userList[i].user.avatar.name ;
 							individualUser.name = userList[i].user.first_name + ' ' + userList[i].user.last_name;
 							individualUser.team.current = 'T_' + userList[i].team.id;
 							individualUser.organisation.current = 'O_' + userList[i].team.organization;
