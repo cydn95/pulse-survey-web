@@ -192,7 +192,7 @@ class MyMap extends React.Component {
 			"main": {
 				"id": "ap1",
 				"name": "ME",
-				"icon": "http://3.15.16.117/media/uploads/shcategory/me.svg",
+				"icon": "http://3.17.57.137/media/uploads/shcategory/me.svg",
 				"color": "#7030a0",
 				"iconColor": "#fefefa"
 			},

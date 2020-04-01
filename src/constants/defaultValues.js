@@ -7,7 +7,7 @@ export const localeOptions = [
   { id: 'es', name: 'Español' },
 ];
 
-export const apiUrl = "http://3.15.16.117/api/v1"
+export const apiUrl = "http://3.17.57.137/api/v1"
 
 export const controlType = {
   TEXT: 1,
