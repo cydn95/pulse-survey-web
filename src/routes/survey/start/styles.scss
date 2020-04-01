@@ -4,8 +4,12 @@
 }
 
 .topbar {
-  width: 100%;
+  position: fixed;
+  top: 0px;
+  left:225px;
+  width: calc(100% - 224px);
   height: 80px;
+  z-index: 300;
 
   .section {
     .page-title {
@@ -37,14 +41,22 @@
   width: calc(100vw - 262px);
   
   .driver-section {
+    position: fixed;
+    left: 244px;
+    top: 80px;
+    padding-top: 19px;
+    z-index: 300;
+    width: calc(100vw - 281px);
     height: 97px;
     overflow: hidden;
+    background-color: #eff1f4;
   }
 }
 
 .survey-container {
   width: 80%;
   margin-left: 10%;
+  padding-top: 196px;
 }
 
 .d-none {
@@ -65,25 +77,24 @@
     top: 0px;
     left: 0px;
     z-index: 300;
+    width: 100%;
   }
 
   .driver-scroll {
     width: calc(100vw - 38px);
 
     .driver-section {
+      position: fixed;
+      left: 19px;
+      top: 100px;
       height: 120px;
+      width: calc(100% - 38px);
     }
   }
 
-  .main-content {
-    margin-top: 100px;
-    padding-bottom: 80px;
-  }
-}
-
-@media only screen and (max-width: 768px) {
   .survey-container {
     width: 100%;
     margin-left: 0px;
+    padding-top: 220px;
   }
 }
