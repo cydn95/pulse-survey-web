@@ -53,7 +53,6 @@ function DriverComponent(props) {
       </div>
       <div>
         <div>{driverName}</div>
-        <div className={styles[percentageLabel]}>{percentageLabel}</div>
         <div>{progressLabel}</div>
       </div>
     </div>
