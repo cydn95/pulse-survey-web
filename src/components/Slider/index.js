@@ -4,10 +4,12 @@ import { PropTypes } from 'prop-types';
 import * as d3 from "d3-interpolate";
 
 import styles from './styles.scss';
+import classnames from 'classnames';
 
 function Slider(props) {
   const { percent } = props;
 
+  const [answered, setAnswered] = useState(false);
   const [mouseDown, setMouseDown] = useState(false);
   const [touchStart, setTouchStart] = useState(false);
   const rangeRef = useRef(null);
@@ -23,6 +25,7 @@ function Slider(props) {
   useEffect(() => {
     const mouseMove = (e) => {
       if (!mouseDown) return;
+      setAnswered(true);
       changeSliderToMousePos(e.clientX);
     };
     const mouseUp = (e) => {
@@ -42,6 +45,7 @@ function Slider(props) {
   useEffect(() => {
     const touchMove = (e) => {
       if (!touchStart) return;
+      setAnswered(true);
       changeSliderToMousePos(e.touches[0].clientX);
     };
     const touchUp = (e) => {
@@ -83,7 +87,7 @@ function Slider(props) {
             left: `${percent}%`,
             borderColor: piecewiseColor(percent / 100)
           }}
-          className={styles.marker} 
+          className={classnames(styles.marker, {[styles['no-answered']]: !answered})} 
           tabIndex={0}
           onMouseDown={(e) => setMouseDown(true)} 
           onTouchStart={(e) => setTouchStart(true)}

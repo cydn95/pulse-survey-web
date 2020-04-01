@@ -41,9 +41,32 @@
 }
 
 .main.active {
-  background: darken($default-color, 14%);
+  background: darken($default-color, 50%);
 }
 
 .selectable {
   transition: background 0.5s;
+
+  &.main {
+    &.default {
+      &:focus {
+        background: darken($default-color, 50%);
+      }
+
+      &:hover {
+        background: darken($default-color, 50%);
+      }
+    }
+
+    &:not(.default) {
+      &:focus {
+        background: darken($non-default-color, 50%);
+      }
+
+      &:hover {
+        color: white;
+        background: darken($non-default-color, 50%);
+      }
+    }
+  }
 }
