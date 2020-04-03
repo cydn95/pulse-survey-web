@@ -5,7 +5,6 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 
 import 'react-notifications/lib/notifications.css';
@@ -113,104 +112,125 @@ class NewStakeholder extends Component {
   }
 
   render() {
-    
     const { shCategoryList, teamList } = this.props;
     const { btnAddDisabled } = this.state;
 
     return (
-      <div className={ styles.root }>
+      <div className={styles.root}>
         <div>
-          <h1 className={ styles.title }>Add New StakeHolder</h1>  
+          <h1 className={styles.title}>Add New StakeHolder</h1>
         </div>
-        <div className={ styles.form }>
-          <FormControl className={ styles['input-field'] }>
+        <div className={styles.form}>
+          <FormControl className={styles["input-field"]}>
             <TextField
-              className={ styles.input } 
+              className={styles.input}
               label="First Name*"
               name="firstName"
-              value={ this.state.stakeholder.firstName }
-              onChange={ e => this.handleInputChange(e) }
+              value={this.state.stakeholder.firstName}
+              onChange={e => this.handleInputChange(e)}
             />
           </FormControl>
-          <FormControl className={ styles['input-field'] }>
+          <FormControl className={styles["input-field"]}>
             <TextField
-              className={ styles.input } 
+              className={styles.input}
               label="Last Name*"
               name="lastName"
               value={this.state.stakeholder.lastName}
-              onChange={ e => this.handleInputChange(e) }
+              onChange={e => this.handleInputChange(e)}
             />
           </FormControl>
-          <FormControl className={ styles['input-field'] }>
+          <FormControl className={styles["input-field"]}>
             <TextField
-              labelId="email_label"
-              className={ styles.input } 
+              className={styles.input}
               name="email"
               label="Email*"
               value={this.state.stakeholder.email}
-              onChange={ e => this.handleInputChange(e) }
+              onChange={e => this.handleInputChange(e)}
             />
           </FormControl>
-          <FormControl className={ styles['input-field'] }>
-            <InputLabel id="shcategory_label">SH Category</InputLabel>
-            <Select
-              labelId="shcategory_label"
-              value={this.state.shCategory} 
-              className={ styles.select }
-              name="shCategory"
-              label="Sh Category*"
-              onChange={e => this.handleInputChange(e)}
-            >
-              {shCategoryList.map((sh, index) =>
-                <MenuItem key={sh.id} value={sh.id}>{sh.SHCategoryName}</MenuItem>
-              )}
-            </Select>
-          </FormControl>
-          <FormControl className={ styles['input-field'] }>
+          <FormControl className={styles["input-field"]}>
             <TextField
-              className={ styles.input } 
+              className={styles.input}
               label="Organisation*"
               name="organisationId"
               value={this.state.stakeholder.organisationId}
-              onChange={ e => this.handleInputChange(e) }
+              onChange={e => this.handleInputChange(e)}
             />
           </FormControl>
-          <FormControl className={ styles['input-field'] }>
+          <FormControl className={styles["input-field"]}>
+            <TextField
+              className={styles.input}
+              label="Project Title"
+              name="projectUserTitle"
+              value={this.state.stakeholder.projectUserTitle}
+              onChange={e => this.handleInputChange(e)}
+            />
+          </FormControl>
+          <FormControl className={styles["input-field"]}>
             <InputLabel id="team_label">Team*</InputLabel>
             <Select
-              labelId="team_label"
-              value={this.state.teamId} 
-              className={ styles.select }
+              value={this.state.teamId}
+              className={styles.select}
               name="teamId"
               label="Team*"
               onChange={e => this.handleInputChange(e)}
             >
-              {teamList.map((team, index) =>
-                 <MenuItem key={team.id} value={team.id}>{team.name}</MenuItem>
-              )}
+              {teamList.map((team, index) => (
+                <MenuItem key={team.id} value={team.id}>
+                  {team.name}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
-          <br/>
-          <div className={ styles['form-button'] }>
-            {/* <a className="waves-effect waves-light btn btn-danger active" 
-              onClick={e=>this.props.onCancel(e)}>Back</a>&nbsp;&nbsp; */}
-            <Button 
+          <FormControl className={styles["input-field"]}>
+            <InputLabel id="shcategory_label">Category</InputLabel>
+            <Select
+              value={this.state.shCategory}
+              className={styles.select}
+              name="shCategory"
+              label="Sh Category*"
+              onChange={e => this.handleInputChange(e)}
+            >
+              {shCategoryList.map((sh, index) => (
+                <MenuItem key={sh.id} value={sh.id}>
+                  {sh.SHCategoryName}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl className={styles["input-field"]}>
+            <div className={styles.label}>
+              How would you describe this person’s role on the project?​
+            </div>
+            <TextField
+              className={styles.input}
+              label=""
+              name="projectUserRoleDesc"
+              value={this.state.stakeholder.projectUserRoleDesc}
+              onChange={e => this.handleInputChange(e)}
+            />
+          </FormControl>
+          <br />
+          <div className={styles["form-button"]}>
+            <Button
               variant="contained"
               color="secondary"
-              onClick={e=>this.props.onCancel(e)}>
+              onClick={e => this.props.onCancel(e)}
+            >
               Back
             </Button>
             <div className={styles.space}></div>
-            <Button 
+            <Button
               variant="contained"
               className={styles.green}
-              disabled={ btnAddDisabled } 
-              onClick={e => this.handleAddStakeholder()}>
+              disabled={btnAddDisabled}
+              onClick={e => this.handleAddStakeholder()}
+            >
               Add stakeholder
             </Button>
           </div>
         </div>
-        <NotificationContainer/>
+        <NotificationContainer />
       </div>
     );
   }
