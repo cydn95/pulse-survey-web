@@ -147,6 +147,7 @@ function* getStakeholderList({ payload }) {
         stakeholderList.push({
           projectUserId: sh.id,
           projectUserTitle: sh.projectUserTitle,
+          projectUserRoleDesc: sh.projectUserRoleDesc,
           projectId: sh.project,
           userId: "S_" + sh.user.id,
           userAvatar: sh.user.avatar === null ? "" : sh.user.avatar.name,
@@ -161,7 +162,7 @@ function* getStakeholderList({ payload }) {
           show: true
         });
       });
-
+console.log(stakeholderList);
       yield put(stakeholderListSuccess(stakeholderList, result.data));
     }
   } catch (error) {
@@ -219,7 +220,8 @@ function* addStakeholder({ payload }) {
         user: parseInt(userId, 10),
         team: parseInt(stakeholder.teamId, 10),
         shCategory: parseInt(stakeholder.shCategory, 10),
-        userPermission: [97]
+        projectUserTitle: stakeholder.projectUserTitle,
+        projectUserRoleDesc: stakeholder.projectUserRoleDesc
       };
 
       const result2 = yield call(addStakeholderAsync, projectUser);

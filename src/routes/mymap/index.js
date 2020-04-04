@@ -75,20 +75,22 @@ class MyMap extends React.Component {
 		};
 
 		this.defaultStakeholder = {
-			projectUserId: '',
-			projectId: this.props.projectId,
-			userId: this.props.userId,
-			fullName: '',
-			teamId: '',
-			team: '',
-			organisationId: '',
-			organisation: '',
-			shCategory: '',
-			show: true,
-			firstName: '',
-			lastName: '',
-			email: ''
-		};
+      projectUserId: "",
+      projectId: this.props.projectId,
+      projectUserTitle: "",
+      projectUserRoleDesc: "",
+      userId: this.props.userId,
+      fullName: "",
+      teamId: "",
+      team: "",
+      organisationId: "",
+      organisation: "",
+      shCategory: "",
+      show: true,
+      firstName: "",
+      lastName: "",
+      email: ""
+    };
 	}
 
 	handleAddNewStakeholder = stakeholder => {
