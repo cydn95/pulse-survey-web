@@ -8,7 +8,8 @@ import {
   stakeholderListAPI,
   shCategoryListAPI,
   addUserAPI,
-  addStakeholderAPI
+  addStakeholderAPI,
+  updateStakeholderAPI
 } from "../../services/axios/api";
 
 import {
@@ -19,7 +20,8 @@ import {
   SKIP_QUESTION_LIST,
   STAKEHOLDER_LIST,
   SHCATEGORY_LIST,
-  ADD_STAKEHOLDER
+  ADD_STAKEHOLDER,
+  UPDATE_STAKEHOLDER
 } from "Constants/actionTypes";
 
 import {
@@ -153,6 +155,7 @@ function* getStakeholderList({ payload }) {
           userAvatar: sh.user.avatar === null ? "" : sh.user.avatar.name,
           userTeam: sh.user.userteam === null ? "" : sh.user.userteam.name,
           userTitle: sh.user.usertitle === null ? "" : sh.user.usertitle.name,
+          email: sh.user.email,
           fullName: sh.user.first_name + " " + sh.user.last_name,
           teamId: "T_" + sh.team.id,
           team: sh.team.name,
@@ -162,7 +165,7 @@ function* getStakeholderList({ payload }) {
           show: true
         });
       });
-console.log(stakeholderList);
+
       yield put(stakeholderListSuccess(stakeholderList, result.data));
     }
   } catch (error) {
@@ -235,6 +238,34 @@ function* addStakeholder({ payload }) {
   }
 }
 
+const updateStakeholderAsync = async (projectUserId, projectUser) =>
+  await updateStakeholderAPI(projectUserId, projectUser)
+    .then((data) => data)
+    .catch((error) => error);
+
+function* updateStakeholder({ payload }) {
+  try {
+    const { stakeholder } = payload;
+    const projectUser = {
+      project: parseInt(stakeholder.projectId, 10),
+      id: parseInt(stakeholder.projectUserId, 10),
+      user: parseInt(stakeholder.userId, 10),
+      team: parseInt(stakeholder.teamId, 10),
+      shCategory: parseInt(stakeholder.shCategory, 10),
+      projectUserTitle: stakeholder.projectUserTitle,
+      projectUserRoleDesc: stakeholder.projectUserRoleDesc,
+    };
+console.log(projectUser);
+    const result = yield call(updateStakeholderAsync, parseInt(stakeholder.projectUserId, 10), projectUser);
+
+    if (result.status === 201) {
+      yield put(stakeholderList(stakeholder.projectId));
+    }
+  } catch (error) {
+    console.log("error : ", error);
+  }
+}
+
 export function* watchTeamList() {
   yield takeEvery(TEAM_LIST, getTeamList);
 }
@@ -267,6 +298,10 @@ export function* watchAddStakeholder() {
   yield takeEvery(ADD_STAKEHOLDER, addStakeholder);
 }
 
+export function* watchUpdateStakeholder() {
+  yield takeEvery(UPDATE_STAKEHOLDER, updateStakeholder);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchTeamList),
@@ -276,6 +311,7 @@ export default function* rootSaga() {
     fork(watchSkipQuestionList),
     fork(watchStakeholderList),
     fork(watchShCategoryList),
-    fork(watchAddStakeholder)
+    fork(watchAddStakeholder),
+    fork(watchUpdateStakeholder)
   ]);
 }

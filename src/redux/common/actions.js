@@ -16,8 +16,10 @@ import {
   ADD_USER,
   ADD_USER_SUCCESS,
   ADD_STAKEHOLDER,
-  ADD_STAKEHOLDER_SUCCESS
-} from 'Constants/actionTypes';
+  ADD_STAKEHOLDER_SUCCESS,
+  UPDATE_STAKEHOLDER,
+  UPDATE_STAKEHOLDER_SUCCESS,
+} from "Constants/actionTypes";
 
 export const teamList = () => ({
   type: TEAM_LIST
@@ -100,4 +102,13 @@ export const addStakeholder = (projectId, stakeholder) => ({
 
 export const addStakeholderSuccess = () => ({
   type: ADD_STAKEHOLDER_SUCCESS
+});
+
+export const updateStakeholder = (stakeholder) => ({
+  type: UPDATE_STAKEHOLDER,
+  payload: { stakeholder },
+});
+
+export const updateStakeholderSuccess = () => ({
+  type: UPDATE_STAKEHOLDER_SUCCESS,
 });

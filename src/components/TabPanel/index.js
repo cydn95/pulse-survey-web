@@ -16,7 +16,8 @@ class TabPanel extends React.Component {
     this.state = {
       selectedTabName: this.props.selectedTab,
       menuShow: false,
-      selectedMenu: false
+      selectedMenu: false,
+      selectedMenuName: 'Select Category'
     }
   }
 
@@ -49,11 +50,12 @@ class TabPanel extends React.Component {
     this.handleClickMenuButton(e);
   }
 
-  handleSelectSH = (e, id) => {
+  handleSelectSH = (e, id, categoryName) => {
     setTimeout(() => {
       this.setState({
         menuShow: false,
-        selectMenu: id
+        selectMenu: id,
+        selectedMenuName: categoryName
       })
     }, 300)
     
@@ -83,25 +85,57 @@ class TabPanel extends React.Component {
                 );
               } else {
                 return (
-                  <div className={styles['combo-tab']} key={d.name}>
+                  <div className={styles["combo-tab"]} key={d.name}>
                     <div
-                      className={classnames(styles['panel-header'], styles.combo, d.name === this.state.selectedTabName ? styles.selected : null)}
+                      className={classnames(
+                        styles["panel-header"],
+                        styles.combo,
+                        d.name === this.state.selectedTabName
+                          ? styles.selected
+                          : null
+                      )}
                       onClick={e => this.handleChange(d.name)}
                     >
-                      {d.title}
-                      <FontAwesomeIcon onClick={e => this.handleClickMenuButton(e)} className={styles.arrow} icon={faAngleDown}/>
+                      {this.state.selectedMenuName}
+                      <FontAwesomeIcon
+                        onClick={e => this.handleClickMenuButton(e)}
+                        className={styles.arrow}
+                        icon={faAngleDown}
+                      />
                     </div>
-                    {this.state.menuShow &&
+                    {this.state.menuShow && (
                       <div className={styles.menu}>
-                        <div key={'ALL'} onClick={e => this.handleSelectSH(e, 0)} className={styles['menu-item']}>{'ALL'}</div>
-                        {
-                          d.list.map(item => (
-                            <div key={item.SHCategoryName} onClick={e => this.handleSelectSH(e, item.id)} 
-                              className={classnames(styles['menu-item'],  {[styles.selected]: this.state.selectedMenu == item.id ? true : false})}>{item.SHCategoryName}</div>
-                          ))
-                        }
+                        <div
+                          key={"NONE"}
+                          onClick={e =>
+                            this.handleSelectSH(e, 0, "Selected Category")
+                          }
+                          className={styles["menu-item"]}
+                        >
+                          {"Select Category"}
+                        </div>
+                        {d.list.map(item => (
+                          <div
+                            key={item.SHCategoryName}
+                            onClick={e =>
+                              this.handleSelectSH(
+                                e,
+                                item.id,
+                                item.SHCategoryName
+                              )
+                            }
+                            className={classnames(styles["menu-item"], {
+                              [styles.selected]:
+                                this.state.selectedMenu == item.id
+                                  ? true
+                                  : false
+                            })}
+                          >
+                            {item.SHCategoryName}
+                          </div>
+                        ))}
                       </div>
-                    }
+                    )}
                   </div>
                 );
               }

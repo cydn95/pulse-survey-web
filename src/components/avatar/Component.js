@@ -24,6 +24,9 @@ function AvatarComponent(props) {
     profilePicUrl,
     userProgress,
     progressStyle,
+    arrow,
+    stakeholder,
+    onArrowClick
   } = props;
 
   return (
@@ -37,9 +40,11 @@ function AvatarComponent(props) {
         <div className={styles.description}>{title}</div>
         <div className={styles.description}>{description}</div>
       </div>
-      <div className={styles.open}>
-        <FontAwesomeIcon icon={faAngleRight} />
-      </div>
+      {arrow &&
+        <div className={styles.open} onClick={e => onArrowClick(e, stakeholder)}>
+          <FontAwesomeIcon icon={faAngleRight} />
+        </div>
+      }
     </div>
   )
 }
@@ -56,7 +61,7 @@ AvatarComponent.propTypes = {
   profilePicUrl: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   userProgress: PropTypes.number.isRequired,
-  progressStyle: PropTypes.oneOf(["smooth", "discrete"]),
+  progressStyle: PropTypes.oneOf(["smooth", "discrete"])
 }
 
 export default AvatarComponent;

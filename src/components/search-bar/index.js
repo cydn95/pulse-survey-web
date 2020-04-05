@@ -1,135 +1,243 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-import Button from 'Components/Button';
+import { connect } from "react-redux";
 
-import Input from './search';
+import Button from "Components/Button";
+
+import Input from "./search";
 import TabPanel from "Components/TabPanel";
 import AvatarComponent from "../avatar/Component";
+import { NewStakeholder } from "Components/Survey";
 
-import { Draggable } from 'react-drag-and-drop'
+import { Draggable } from "react-drag-and-drop";
 
-import styles from './styles.scss';
+import { updateStakeholder } from "Redux/actions";
+
+import styles from "./styles.scss";
 
 const getSuggestions = (data, filter) => {
-  return data.filter(d => (d.fullName).indexOf(filter) !== -1)
-}
+  return data.filter((d) => d.fullName.indexOf(filter) !== -1);
+};
 
 const getSuggestionsWithSh = (data, filter, shId) => {
-
-  if (shId === null || shId === 0) {
-    return data.filter(d => (d.fullName).indexOf(filter) !== -1)
-  } else {
-    return data.filter(d => (d.fullName).indexOf(filter) !== -1 && d.shCategory === ("SHC_" + shId))
-  }
-  
-}
+  return data.filter(
+    (d) => d.fullName.indexOf(filter) !== -1 && d.shCategory === "SHC_" + shId
+  );
+};
 
 function SearchBar(props) {
-  const { 
-    decisionMakers, 
-    influencers,
+  const {
+    decisionMakers,
+    allStakeholders,
     searchKey,
     addNewStakeholder,
     onClickDecisionMaker,
-    list
+    list,
+    shCategoryList,
+    teamList,
+    projectId,
+    userId,
+    updateStakeholder,
   } = props;
 
-  const [filter, setFilter] = useState(searchKey)
-  const [shId, setShId] = useState(0)
+  const defaultStakeholder = {
+    projectUserId: "",
+    projectId: projectId,
+    userId: userId,
+    fullName: "",
+    teamId: "",
+    team: "",
+    organisationId: "",
+    organisation: "",
+    shCategory: "",
+    show: true,
+    firstName: "",
+    lastName: "",
+    email: ""
+  };
+
+  const [filter, setFilter] = useState(searchKey);
+  const [shId, setShId] = useState(0);
+  const [viewType, setViewType] = useState("search");
+  const [selectedStakeholder, setSelectedStakeholder] = useState({
+    ...defaultStakeholder,
+  });
 
   useEffect(() => {
-    setFilter(searchKey)
-  }, [searchKey])
+    setFilter(searchKey);
+  }, [searchKey]);
+
+  const handleUpdateStakeholder = (stakeholder) => {
+    updateStakeholder(stakeholder);
+    setViewType("search");
+  };
+
+  const handleArrowClick = (stakeholder) => {
+    setViewType("category");
+    setSelectedStakeholder(stakeholder);
+  };
 
   return (
     <div className={styles.main}>
-      <div className={styles['input-wrapper']}>
-        <Input 
-          placeholder="Search"
-          value={filter}
-          onChange={setFilter} 
-          onCancel={() => setFilter("")}
+      {viewType === "search" && (
+        <div>
+          <div className={styles["input-wrapper"]}>
+            <Input
+              placeholder="Search"
+              value={filter}
+              onChange={setFilter}
+              onCancel={() => setFilter("")}
+            />
+          </div>
+          <div className={styles["suggestion-list"]}>
+            <TabPanel
+              selectedTab="decision"
+              onSelectSH={(e, id) => setShId(id)}
+              data={[
+                {
+                  title: "Decision Makers",
+                  name: "decision",
+                  type: "combo",
+                  list: list,
+                  content: (
+                    <div className={styles["tab-content"]}>
+                      <span className={styles.cnt}>
+                        {getSuggestionsWithSh(decisionMakers, filter, shId)
+                          .length === 0
+                          ? `No Users`
+                          : getSuggestionsWithSh(decisionMakers, filter, shId)
+                              .length + ` Users`}
+                      </span>
+                      {getSuggestionsWithSh(decisionMakers, filter, shId).map(
+                        (d, index) => {
+                          let title =
+                            d.projectUserTitle === ""
+                              ? d.userTitle
+                              : d.projectUserTitle;
+                          let description =
+                            d.organisation +
+                            " / " +
+                            (d.team === "" ? d.userTeam : d.team);
+                          console.log(d);
+                          return (
+                            <AvatarComponent
+                              key={d.projectUserId}
+                              className={styles["avatar-comp"]}
+                              username={d.fullName}
+                              userId={d.userId}
+                              onClick={(userId) => onClickDecisionMaker(userId)}
+                              title={title}
+                              description={description}
+                              profilePicUrl={d.userAvatar}
+                              userProgress={(10 + index * 10) % 100}
+                            />
+                          );
+                        }
+                      )}
+                    </div>
+                  ),
+                },
+                {
+                  title: "All Stakeholders",
+                  name: "all-stakeholders",
+                  type: "default",
+                  content: (
+                    <div className={styles["tab-content"]}>
+                      <span className={styles.cnt}>
+                        {getSuggestions(allStakeholders, filter).length === 0
+                          ? `No Users`
+                          : getSuggestions(allStakeholders, filter).length +
+                            ` Users`}
+                      </span>
+                      {getSuggestions(allStakeholders, filter).map(
+                        (d, index) => {
+                          let title =
+                            d.projectUserTitle === ""
+                              ? d.userTitle
+                              : d.projectUserTitle;
+                          let description =
+                            d.organisation +
+                            " / " +
+                            (d.team === "" ? d.userTeam : d.team);
+                          return (
+                            <Draggable
+                              key={d.projectUserId}
+                              type="stakeholder"
+                              data={d.projectUserId}
+                            >
+                              <AvatarComponent
+                                className={styles["avatar-comp"]}
+                                key={d.username}
+                                username={d.fullName}
+                                title={title}
+                                description={description}
+                                profilePicUrl={d.userAvatar}
+                                userProgress={(10 + index * 10) % 100}
+                                arrow={true}
+                                stakeholder={d}
+                                onArrowClick={(e, stakeholder) =>
+                                  handleArrowClick(stakeholder)
+                                }
+                              />
+                            </Draggable>
+                          );
+                        }
+                      )}
+                    </div>
+                  ),
+                },
+              ]}
+            ></TabPanel>
+          </div>
+          <Button
+            className={styles["add-stakeholder"]}
+            onClick={addNewStakeholder}
+          >
+            Add New Stakeholder
+          </Button>
+        </div>
+      )}
+      {viewType === "category" && (
+        <NewStakeholder
+          shCategoryList={shCategoryList}
+          teamList={teamList}
+          onCancel={(e) => setViewType("search")}
+          onAddStakeholder={(stakeholder) =>
+            handleUpdateStakeholder(stakeholder)
+          }
+          update={true}
+          stakeholder={selectedStakeholder}
         />
-      </div>
-      <div className={styles["suggestion-list"]}>
-        <TabPanel
-          selectedTab="decision"
-          onSelectSH={(e, id) => setShId(id)}
-          data={[
-            {
-              title: "Decision Makers",
-              name: "decision",
-              type: 'combo',
-              'list': list,
-              content: (
-                <div className={styles['tab-content']}>
-                  <span className={styles.cnt}>{getSuggestionsWithSh(decisionMakers, filter, shId).length === 0 ? `No Users` : getSuggestionsWithSh(decisionMakers, filter, shId).length + ` Users`}</span>
-                  {
-                    getSuggestionsWithSh(decisionMakers, filter, shId).map((d, index) => {
-                      let title = d.projectUserTitle === '' ? d.userTitle : d.projectUserTitle;
-                      let description = d.organisation + ' / ' + (d.team === '' ? d.userTeam : d.team);
-                      return (<AvatarComponent
-                        key={d.projectUserId} 
-                        className={styles["avatar-comp"]}
-                        username={d.fullName}
-                        userId={d.userId}
-                        onClick={userId => onClickDecisionMaker(userId)}
-                        title={title}
-                        description={description}
-                        profilePicUrl={d.userAvatar}
-                        userProgress={(10 + index * 10) % 100}
-                      />)
-                    })
-                  }
-                </div>
-              ),
-            },
-            {
-              title: "Influencers",
-              name: "influencers",
-              type: 'default',
-              content: (
-                <div className={styles['tab-content']}>
-                  <span className={styles.cnt}>{getSuggestions(influencers, filter).length === 0 ? `No Users` : getSuggestions(influencers, filter).length + ` Users`}</span>
-                  {
-                    getSuggestions(influencers, filter).map((d, index) => {
-                      let title = d.projectUserTitle === '' ? d.userTitle : d.projectUserTitle;
-                      let description = d.organisation + ' / ' + (d.team === '' ? d.userTeam : d.team);
-                      return (<Draggable key={d.projectUserId} type="stakeholder" data={d.projectUserId} >
-                        <AvatarComponent
-                          className={styles["avatar-comp"]}
-                          key={d.username}
-                          username={d.fullName}
-                          title={title}
-                          description={description}
-                          profilePicUrl={d.userAvatar}
-                          userProgress={(10 + index * 10) % 100}
-                        />
-                      </Draggable>)
-                    })
-                  }
-                </div>
-              ),
-            }
-          ]}
-        >
-        </TabPanel>
-      </div>
-      <Button className={styles['add-stakeholder']} onClick={addNewStakeholder}>Add New Stakeholder</Button>
+      )}
     </div>
-  )
+  );
 }
 
 SearchBar.defaultProps = {
   searchKey: "",
   data: [],
-}
+};
 
 SearchBar.propTypes = {
   searchKey: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(PropTypes.any),
   addNewStakeholder: PropTypes.func.isRequired,
-}
+  shCategoryList: PropTypes.arrayOf(PropTypes.any),
+  teamList: PropTypes.arrayOf(PropTypes.any),
+  projectId: PropTypes.string,
+  userId: PropTypes.string,
+};
 
-export default SearchBar;
+const mapStateToProps = ({ common, authUser }) => {
+  const { teamList, shCategoryList } = common;
+  const { projectId, user } = authUser;
+  return {
+    projectId,
+    userId: user.userId,
+    teamList,
+    shCategoryList,
+  };
+};
+
+export default connect(mapStateToProps, { updateStakeholder })(SearchBar);

@@ -542,7 +542,7 @@ class MyMap extends React.Component {
 								searchKey={searchKey} 
 								decisionMakers={decisionMakerList}
 								onClickDecisionMaker={ id => this.handleStartOtherSurvey(id) } 
-								influencers={stakeholderList}
+								allStakeholders={stakeholderList}
 								addNewStakeholder={e => this.handleShowAddPage(e)}
 								list={shCategoryList}
 							/>
