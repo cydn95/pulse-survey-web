@@ -99,6 +99,10 @@ const addStakeholderAPI = (projectUser) => {
   return getClient(true).post("/projectuser/", projectUser);
 }
 
+const updateStakeholderAPI = (projectUserId, projectUser) => {
+  return getClient(true).put("/projectuser/" + projectUserId + "/", projectUser);
+};
+
 // Add NewTopic To About Me & Other Question 
 const addNewTopicAboutMeAPI = (topicName, topicComment, questionId, projectUserId) => {
   return getClient(true).post("/amresponsetopic/", {
@@ -152,6 +156,7 @@ export {
   
   addUserAPI,
   addStakeholderAPI,
+  updateStakeholderAPI,
   
   myMapAPI,
   saveKMapAPI,
