@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from "react-redux";
 
 import styles from './styles.scss';
 
@@ -28,7 +29,7 @@ class UserProfile extends React.Component {
 
 	render() {
 
-		const { history } = this.props;
+		const { history, projectTitle } = this.props;
 
 		return (
 			<div className={ styles.root }>
@@ -36,7 +37,7 @@ class UserProfile extends React.Component {
           <TopNav history={ history } menuTitle="Dashboard" >
 						<div className={ styles.section }>
 							<h2 className={ styles['page-title'] }>My Profile</h2>
-							<h2 className={ styles['project-name'] }>Alpha Project</h2>
+							<h2 className={ styles['project-name'] }>{projectTitle}</h2>
 						</div>
 					</TopNav>
         </div>
@@ -101,4 +102,12 @@ class UserProfile extends React.Component {
 	}
 }
 
-export default UserProfile;
+const mapStateToProps = ({ authUser }) => {
+  const { projectTitle } = authUser;
+
+  return {
+    projectTitle
+  };
+};
+
+export default connect(mapStateToProps, {})(UserProfile);

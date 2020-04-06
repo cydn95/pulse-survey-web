@@ -7,7 +7,6 @@ import styles from './styles.scss';
 
 import Sidebar from "../Sidebar";
 
-import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
