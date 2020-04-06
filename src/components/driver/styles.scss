@@ -11,6 +11,13 @@
 
   &.selected {
     background: #77C8BB;
+    &.green {
+      background: #77C8BB;
+    }
+    &.black {
+      background: #1a1a1a;
+    }
+    
     color: white;
   }
 

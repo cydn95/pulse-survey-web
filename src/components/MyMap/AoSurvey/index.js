@@ -1,7 +1,8 @@
 import React from "react";
+import { connect } from "react-redux";
 
-import { controlType } from 'Constants/defaultValues'
-import Button from '@material-ui/core/Button';
+import { controlType } from "Constants/defaultValues";
+import Button from "@material-ui/core/Button";
 
 import AvatarComponent from "Components/avatar/Component";
 
@@ -13,22 +14,29 @@ import {
   RangeSlider,
 } from "Components/Survey";
 
+import DriverPanel from "Components/driver";
 import Accordion from "Components/accordion";
 
-import styles from './styles.scss';
+import styles from "./styles.scss";
+
+import {
+  pageList,
+  teamList,
+  shgroupList,
+  skipQuestionList,
+  selectPage,
+} from "Redux/actions";
 
 class AoSurvey extends React.Component {
-
   constructor(props) {
-
     super(props);
-    
-    const { questions, options, drivers } = this.props;
+
+    const { questions, options, drivers, pageIndex } = this.props;
 
     for (let i = 0; i < drivers.length; i++) {
       drivers[i] = {
         ...drivers[i],
-        questions: []
+        questions: [],
       };
     }
 
@@ -41,111 +49,184 @@ class AoSurvey extends React.Component {
       }
     }
 
-    const orderedDrivers = drivers.filter(item => {
-      return item.questions.length > 0 ? true : false
+    const orderedDrivers = drivers.filter((item) => {
+      return item.questions.length > 0 ? true : false;
     });
 
     this.state = {
       questions,
       options,
-      drivers: orderedDrivers
+      drivers: orderedDrivers,
+      pageIndex,
     };
   }
 
-  handleAnswer = answer => {
-    this.setState( state => {
-      state.questions[answer.questionIndex].answer = {
-        ...answer
-      };
-      return state;
+  componentWillReceiveProps(props) {
+    const { pageIndex } = props;
+
+    this.setState({
+      pageIndex,
     });
   }
 
-  handleCancel = e => {
-    this.props.onCancel(e);
-  }
+  handleAnswer = (answer) => {
+    this.setState((state) => {
+      state.questions[answer.questionIndex].answer = {
+        ...answer,
+      };
+      return state;
+    });
+  };
 
-  handleSubmit = e => {
+  handleCancel = (e) => {
+    this.props.onCancel(e);
+  };
+
+  handleSubmit = (e) => {
     this.props.onSubmit(e, this.state.questions);
-  }
+  };
+
+  handleClickDriver = (driverId) => {
+    const { drivers, setSurveyPage } = this.props;
+    var pageIndex = drivers.findIndex((element) => {
+      return element.driverId === driverId;
+    });
+    setSurveyPage(pageIndex);
+  };
 
   render() {
-    
     const { options } = this.state;
-    const { skipQuestionList, user } = this.props;
+    const { skipQuestionList, user, drivers } = this.props;
+
+    const defaultDrvierId = drivers.length
+      ? drivers[this.state.pageIndex].driverId
+      : 0;
+
+    const driver = drivers.filter((d) => d.driverId === defaultDrvierId)[0];
 
     return (
       <div className={styles.root}>
         <div className={styles.user}>
-          <div className={styles.title}>
-            About Others:
-          </div>
+          <div className={styles.title}>About Others:</div>
           <AvatarComponent
             className={styles["avatar-comp"]}
             userId={user.id}
             username={user.fullName}
-            description={user.organisation + ' / ' + user.team }
+            description={user.organisation + " / " + user.team}
             profilePicUrl={user.userAvatar}
             userProgress={40}
           />
         </div>
-        <Accordion
-          keySelector={d => d.title}  
-          headerSelector={d => d.title}  
-          componentSelector={d => d.component}  
-          iconSelector={d => d.icon}
-          selectedItem={this.state.drivers[0].driverName}
-          data={
-            this.state.drivers.map((driver, index) => {
-              return {
-                  title: driver.driverName,
-                  component: (
-                    <div className={styles.questions}>
-                      { driver.questions.map((control, index2) => {
-                        switch (control.controlType) {
-                          case controlType.TEXT:
-                            return <FreeText user={user} skipQuestionList={skipQuestionList} key={`${index}${index2}`} question={control} onAnswer={answer => this.handleAnswer(answer)}/>
-                
-                          case controlType.SLIDER:
-                            return <RangeSlider user={user} skipQuestionList={skipQuestionList} key={`${index}${index2}`} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                          
-                          case controlType.TWO_OPTIONS:
-                            return <TwoOptions user={user} skipQuestionList={skipQuestionList} key={`${index}${index2}`} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                
-                          case controlType.MULTI_OPTIONS:
-                            return <MultipleOptions user={user} type="ao" skipQuestionList={skipQuestionList} key={`${index}${index2}`} options={options} question={control} onAnswer={answer => this.handleAnswer(answer)} />
-                
-                          case controlType.SMART_TEXT:
-                            return <SmartText user={user} skipQuestionList={skipQuestionList} key={`${index}${index2}`} question={control}  onAnswer={answer => this.handleAnswer(answer)}/>
-                
-                          default:
-                            return <div key={`${index}${index2}`} ></div>
-                        }
-                      })}
-                    </div>
-                  ),
-                  icon: driver.icon
-              }
-            })
-          }
-        />
+        <hr />
+        <div className={styles["driver-section"]}>
+          <DriverPanel
+            defaultDriverId={defaultDrvierId}
+            data={drivers}
+            color="black"
+            onClick={(e, driverId) => this.handleClickDriver(driverId)}
+          />
+        </div>
+        <hr />
+        <div className={styles.questions}>
+          {driver.questions.map((control, index) => {
+            switch (control.controlType) {
+              case controlType.TEXT:
+                return (
+                  <FreeText
+                    user={user}
+                    skipQuestionList={skipQuestionList}
+                    key={`${index}`}
+                    question={control}
+                    onAnswer={(answer) => this.handleAnswer(answer)}
+                  />
+                );
+              case controlType.SLIDER:
+                return (
+                  <RangeSlider
+                    user={user}
+                    skipQuestionList={skipQuestionList}
+                    key={`${index}`}
+                    question={control}
+                    onAnswer={(answer) => this.handleAnswer(answer)}
+                  />
+                );
+
+              case controlType.TWO_OPTIONS:
+                return (
+                  <TwoOptions
+                    user={user}
+                    skipQuestionList={skipQuestionList}
+                    key={`${index}`}
+                    options={options}
+                    question={control}
+                    onAnswer={(answer) => this.handleAnswer(answer)}
+                  />
+                );
+
+              case controlType.MULTI_OPTIONS:
+                return (
+                  <MultipleOptions
+                    user={user}
+                    type="ao"
+                    skipQuestionList={skipQuestionList}
+                    key={`${index}`}
+                    options={options}
+                    question={control}
+                    onAnswer={(answer) => this.handleAnswer(answer)}
+                  />
+                );
+
+              case controlType.SMART_TEXT:
+                return (
+                  <SmartText
+                    user={user}
+                    skipQuestionList={skipQuestionList}
+                    key={`${index}`}
+                    question={control}
+                    onAnswer={(answer) => this.handleAnswer(answer)}
+                  />
+                );
+
+              default:
+                return <div key={`${index}`}></div>;
+            }
+          })}
+        </div>
         <div className={styles.footer}>
           <Button
             variant="contained"
             color="default"
-            onClick={e=>this.handleCancel(e)}>
+            onClick={(e) => this.handleCancel(e)}
+          >
             Cancel
-          </Button>&nbsp;&nbsp;
-          <Button 
+          </Button>
+          &nbsp;&nbsp;
+          <Button
             variant="contained"
             className={styles.green}
-            onClick={e=>this.handleSubmit(e)}>
+            onClick={(e) => this.handleSubmit(e)}
+          >
             Submit
           </Button>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default AoSurvey;
+const mapStateToProps = ({ survey, common, authUser }) => {
+  const { pageList, pageIndex } = survey;
+  const { skipQuestionList } = common;
+  const { projectUserId } = authUser;
+
+  return {
+    surveyList: pageList,
+    pageIndex,
+    skipQuestionList,
+    projectUserId,
+  };
+};
+
+export default connect(mapStateToProps, {
+  setSurveyPage: selectPage,
+})(AoSurvey);
