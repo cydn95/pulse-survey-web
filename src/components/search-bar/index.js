@@ -119,7 +119,6 @@ function SearchBar(props) {
                             d.organisation +
                             " / " +
                             (d.team === "" ? d.userTeam : d.team);
-                          console.log(d);
                           return (
                             <AvatarComponent
                               key={d.projectUserId}

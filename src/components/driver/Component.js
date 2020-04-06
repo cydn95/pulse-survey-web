@@ -21,6 +21,7 @@ function DriverComponent(props) {
     progress,
     onClick,
     selected,
+    color
   } = props;
 
   const progressLabel = ProgressLabels[progress]
@@ -47,7 +48,7 @@ function DriverComponent(props) {
   };
 
   return (
-    <div onClick={() => onClick(driverId)} className={classnames(styles["driver-component"], iconAlignCls, selectedCls, className)}>
+    <div onClick={() => onClick(driverId)} className={classnames(styles["driver-component"], styles[color], iconAlignCls, selectedCls, className)}>
       <div>
         <img src={selected ? getIcon(icon, 'light') : getIcon(icon, 'dark')} alt="icon" className={styles.icon}/>
       </div>

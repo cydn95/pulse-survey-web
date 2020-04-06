@@ -34,8 +34,6 @@ import Button from "Components/Button";
 
 import { Droppable } from 'react-drag-and-drop'
 
-import ReactLoading from 'react-loading';
-
 import styles from "./styles.scss";
 
 import classnames from "classnames";

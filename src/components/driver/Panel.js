@@ -27,8 +27,10 @@ function DriverPanel(props) {
     className,
     data,
     onClick,
+    color,
     defaultDriverId
   } = props;
+
   const [selectedDriver, selectDriver] = useState(defaultDriverId)
   const [leftArrowVisible, setLeftArrowVisible] = useState(false)
   const [rightArrowVisible, setRightArrowVisible] = useState(false)
@@ -135,6 +137,7 @@ function DriverPanel(props) {
               <DriverComponent
                 iconAlign="left"
                 key={d.driverId}
+                color={color}
                 selected={d.driverId === selectedDriver}
                 onClick={e => handleSelectDriver(e, d.driverId)}
                 {...d}
