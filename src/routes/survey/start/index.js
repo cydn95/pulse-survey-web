@@ -16,8 +16,6 @@ import {
   selectPage
 } from "Redux/actions";
 
-import classnames from 'classnames';
-
 import styles from './styles.scss';
 
 class Start extends Component {
@@ -62,7 +60,8 @@ class Start extends Component {
   }
   
   render() {
-    const { 
+    const {
+      projectTitle,
       driverList,
       surveyList,
       skipQuestionList,
@@ -76,7 +75,7 @@ class Start extends Component {
         <div className={styles.topbar }>
           <TopNav history={ history } menuTitle="About Me" >
 						<div className={ styles.section }>
-							<h2 className={ styles['project-name'] }>Alpha Project</h2>
+							<h2 className={ styles['project-name'] }>{projectTitle}</h2>
 						</div>
 					</TopNav>
         </div>
@@ -107,9 +106,10 @@ const mapStateToProps = ({ survey, common, authUser }) => {
 
   const { pageList, pageIndex } = survey;
   const { skipQuestionList, driverList } = common
-  const { projectUserId } = authUser
+  const { projectTitle, projectUserId } = authUser
 
   return {
+    projectTitle,
     driverList,
     surveyList : pageList,
     pageIndex,
