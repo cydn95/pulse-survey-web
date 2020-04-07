@@ -114,7 +114,8 @@ class AoSurvey extends React.Component {
             username={user.fullName}
             description={user.organisation + " / " + user.team}
             profilePicUrl={user.userAvatar}
-            userProgress={40}
+            userProgress={(user.aoAnswered / user.aoTotal) * 100}
+            donut={true}
           />
         </div>
         <hr />
