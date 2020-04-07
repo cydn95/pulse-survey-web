@@ -162,7 +162,11 @@ function* getStakeholderList({ payload }) {
           organisationId: "O_" + sh.user.organization.name,
           organisation: sh.user.organization.name,
           shCategory: "SHC_" + sh.shCategory.id,
-          show: true
+          show: true,
+          amTotal: sh.am_total,
+          amAnswered: sh.am_answered,
+          aoTotal: sh.ao_total,
+          aoAnswered: sh.ao_answered
         });
       });
 
@@ -255,7 +259,7 @@ function* updateStakeholder({ payload }) {
       projectUserTitle: stakeholder.projectUserTitle,
       projectUserRoleDesc: stakeholder.projectUserRoleDesc,
     };
-console.log(projectUser);
+
     const result = yield call(updateStakeholderAsync, parseInt(stakeholder.projectUserId, 10), projectUser);
 
     if (result.status === 201) {

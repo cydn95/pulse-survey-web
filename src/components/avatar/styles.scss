@@ -33,6 +33,17 @@
   height : $progress-height;
   position: relative;
 
+  .icon {
+    border-radius: 50%;
+    width: $icon-inner-width;
+    height: $icon-inner-height;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    color: #414b57;
+  }
+
   img {
     border-radius: 50%;
     width: $img-inner-width;

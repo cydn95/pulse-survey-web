@@ -97,11 +97,11 @@ class MyMap extends React.Component {
   };
 
   handleAddStackholderToGraph = (data, e = {}) => {
+
     const projectUserId = data.stakeholder;
     const { stakeholderList } = this.state;
-
     let projectUser = stakeholderList.filter((e) => {
-      return e.projectUserId === projectUserId;
+      return parseInt(e.projectUserId, 10) === parseInt(projectUserId, 10);
     });
 
     if (projectUser.length === 0) return;
@@ -116,7 +116,7 @@ class MyMap extends React.Component {
           color: "transparent",
           icon: "fa-user",
           avatar: projectUser.userAvatar,
-          survey_completion: 40,
+          survey_completion: (projectUser.aoAnswered / projectUser.aoTotal) * 100,
           iconColor: "rgb(0, 0, 0)",
           team: {
             current: projectUser.teamId,
@@ -281,7 +281,7 @@ class MyMap extends React.Component {
             id: "",
             name: "",
             icon: "fa-user",
-            survey_completion: 40,
+            survey_completion: 0,
             team: {
               current: "",
               changeable: false,
@@ -310,6 +310,8 @@ class MyMap extends React.Component {
                 "O_" + userList[i].user.organization.name;
               individualUser.sh_category.current =
                 "SHC_" + userList[i].shCategory.id;
+              individualUser.survey_completion =
+                (userList[i].ao_answered / userList[i].ao_total) * 100;
 
               bAdd = true;
 
