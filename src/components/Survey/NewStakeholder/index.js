@@ -14,6 +14,7 @@ import {
 } from "react-notifications";
 
 import styles from "./styles.scss";
+import classnames from "classnames";
 
 class NewStakeholder extends Component {
   constructor(props) {
@@ -229,11 +230,18 @@ class NewStakeholder extends Component {
               ))}
             </Select>
           </FormControl>
-          <FormControl className={styles["input-field"]}>
-            <InputLabel id="shcategory_label">Category</InputLabel>
+          <FormControl className={classnames(styles["input-field"])}>
+            <InputLabel
+              id="shcategory_label"
+              className={classnames({[styles.highlights]: update})}
+            >
+              Category
+            </InputLabel>
             <Select
               value={this.state.stakeholder.shCategory}
-              className={styles.select}
+              className={classnames(styles.select, {
+                [styles.highlights]: update
+              })}
               name="shCategory"
               label="Sh Category*"
               onChange={(e) => this.handleInputChange(e)}
