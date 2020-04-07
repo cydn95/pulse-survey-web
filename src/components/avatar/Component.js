@@ -25,6 +25,7 @@ function AvatarComponent(props) {
     arrow,
     stakeholder,
     onArrowClick,
+    donut
   } = props;
 
   return (
@@ -33,13 +34,17 @@ function AvatarComponent(props) {
       className={classnames(styles["avatar-component"], className)}
     >
       <div className={styles.avatar}>
-        <CircularProgressBar
-          styles={progressStyles}
-          style={progressStyle}
-          className={styles.progress}
-          percent={userProgress}
-        />
-        {profilePicUrl === "" && <FontAwesomeIcon className={styles.icon} icon={faUser} />}
+        {donut && (
+          <CircularProgressBar
+            styles={progressStyles}
+            style={progressStyle}
+            className={styles.progress}
+            percent={userProgress}
+          />
+        )}
+        {profilePicUrl === "" && (
+          <FontAwesomeIcon className={styles.icon} icon={faUser} />
+        )}
         {profilePicUrl !== "" && (
           <img src={profilePicUrl} alt={profilePicUrl} />
         )}

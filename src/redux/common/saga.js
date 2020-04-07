@@ -255,7 +255,7 @@ function* updateStakeholder({ payload }) {
       projectUserTitle: stakeholder.projectUserTitle,
       projectUserRoleDesc: stakeholder.projectUserRoleDesc,
     };
-console.log(projectUser);
+
     const result = yield call(updateStakeholderAsync, parseInt(stakeholder.projectUserId, 10), projectUser);
 
     if (result.status === 201) {

@@ -130,6 +130,7 @@ function SearchBar(props) {
                               description={description}
                               profilePicUrl={d.userAvatar}
                               userProgress={(10 + index * 10) % 100}
+                              donut={true}
                             />
                           );
                         }
@@ -178,6 +179,7 @@ function SearchBar(props) {
                                 onArrowClick={(e, stakeholder) =>
                                   handleArrowClick(stakeholder)
                                 }
+                                donut={false}
                               />
                             </Draggable>
                           );
