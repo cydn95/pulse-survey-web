@@ -85,7 +85,7 @@ class Start extends Component {
               <DriverPanel
                 defaultDriverId = { defaultDrvierId }
                 data={ driverList }
-                color="black"
+                color="green"
                 onClick={(e, driverId) => this.handleClickDriver(driverId) } 
               />
             </div>
