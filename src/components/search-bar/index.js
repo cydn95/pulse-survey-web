@@ -39,6 +39,8 @@ function SearchBar(props) {
     projectId,
     userId,
     updateStakeholder,
+    onSearchFocus,
+    onSearchBlur
   } = props;
 
   const defaultStakeholder = {
@@ -84,6 +86,8 @@ function SearchBar(props) {
         <div>
           <div className={styles["input-wrapper"]}>
             <Input
+              onFocus={e => onSearchFocus(e)}
+              onBlur={e => onSearchBlur(e)}
               placeholder="Search"
               value={filter}
               onChange={setFilter}
