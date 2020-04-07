@@ -119,6 +119,7 @@ function SearchBar(props) {
                             d.organisation +
                             " / " +
                             (d.team === "" ? d.userTeam : d.team);
+                          let percentage = ((d.aoAnswered / d.aoTotal) * 100);
                           return (
                             <AvatarComponent
                               key={d.projectUserId}
@@ -129,7 +130,7 @@ function SearchBar(props) {
                               title={title}
                               description={description}
                               profilePicUrl={d.userAvatar}
-                              userProgress={(10 + index * 10) % 100}
+                              userProgress={percentage}
                               donut={true}
                             />
                           );
