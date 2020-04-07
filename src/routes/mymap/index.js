@@ -29,7 +29,6 @@ import Button from "Components/Button";
 import { Droppable } from "react-drag-and-drop";
 
 import styles from "./styles.scss";
-
 import classnames from "classnames";
 
 const searchKey = "";
@@ -63,6 +62,8 @@ class MyMap extends React.Component {
 
       toggleGraph: true,
       search: "",
+
+      searchFullHeight: false,
     };
 
     this.defaultStakeholder = {
@@ -97,7 +98,6 @@ class MyMap extends React.Component {
   };
 
   handleAddStackholderToGraph = (data, e = {}) => {
-
     const projectUserId = data.stakeholder;
     const { stakeholderList } = this.state;
     let projectUser = stakeholderList.filter((e) => {
@@ -116,7 +116,8 @@ class MyMap extends React.Component {
           color: "transparent",
           icon: "fa-user",
           avatar: projectUser.userAvatar,
-          survey_completion: (projectUser.aoAnswered / projectUser.aoTotal) * 100,
+          survey_completion:
+            (projectUser.aoAnswered / projectUser.aoTotal) * 100,
           iconColor: "rgb(0, 0, 0)",
           team: {
             current: projectUser.teamId,
@@ -468,6 +469,18 @@ class MyMap extends React.Component {
     });
   };
 
+  handleSearchFocus = () => {
+    this.setState({
+      searchFullHeight: true,
+    });
+  };
+
+  handleSearchBlur = () => {
+    this.setState({
+      searchFullHeight: false,
+    });
+  };
+
   render() {
     const {
       projectTitle,
@@ -498,6 +511,7 @@ class MyMap extends React.Component {
       mapGetLoading,
       toggleGraph,
       currentSurveyUser,
+      searchFullHeight,
     } = this.state;
 
     const mapHeaderVisible = toggleGraph
@@ -512,28 +526,35 @@ class MyMap extends React.Component {
 
     return (
       <div className={styles.root}>
-        <div className={styles.topbar}>
-          <TopNav history={history} menuTitle="My Map">
-            {screen === "aosurvey" && (
-              <div className={styles.section}>
-                <div className={styles["graph-toggle"]}>
+        {(!searchFullHeight || toggleGraph) && (
+          <div className={styles.topbar}>
+            <TopNav history={history} menuTitle="My Map">
+              {screen === "aosurvey" && (
+                <div className={styles.section}>
+                  <div className={styles["graph-toggle"]}>
+                    <h2 className={styles["project-name"]}>{projectTitle}</h2>
+                  </div>
+                </div>
+              )}
+              {screen !== "aosurvey" && (
+                <div className={styles.section}>
                   <h2 className={styles["project-name"]}>{projectTitle}</h2>
+                  <div className={styles["graph-toggle"]}>
+                    <Button onClick={(e) => this.toggleGraph(e)}>
+                      {!toggleGraph ? "GRAPH VIEW" : "STAKEHOLDER"}
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            )}
-            {screen !== "aosurvey" && (
-              <div className={styles.section}>
-                <h2 className={styles["project-name"]}>{projectTitle}</h2>
-                <div className={styles["graph-toggle"]}>
-                  <Button onClick={(e) => this.toggleGraph(e)}>
-                    {!toggleGraph ? "GRAPH VIEW" : "STAKEHOLDER"}
-                  </Button>
-                </div>
-              </div>
-            )}
-          </TopNav>
-        </div>
-        <div className={styles["map-container"]}>
+              )}
+            </TopNav>
+          </div>
+        )}
+        <div
+          className={classnames(styles["map-container"], {
+            [styles.full]:
+              searchFullHeight && !toggleGraph && screen === "list",
+          })}
+        >
           <div className={classnames(mapHeaderVisible)}>
             <div className={styles["map-title"]}>
               <svg
@@ -568,7 +589,12 @@ class MyMap extends React.Component {
               />
             </div>
           </div>
-          <div className={styles["map-content-section"]}>
+          <div
+            className={classnames(styles["map-content-section"], {
+              [styles.full]:
+                searchFullHeight && !toggleGraph && screen === "list",
+            })}
+          >
             <Droppable
               className={mapContentVisible}
               types={["stakeholder"]} // <= allowed drop types
@@ -592,7 +618,12 @@ class MyMap extends React.Component {
                   />
                 )}
             </Droppable>
-            <div className={stakeholderVisible}>
+            <div
+              className={classnames(stakeholderVisible, {
+                [styles.full]:
+                  searchFullHeight && !toggleGraph && screen === "list",
+              })}
+            >
               {screen === "list" && shCategoryList.length > 0 && (
                 <SearchBar
                   searchKey={searchKey}
@@ -600,6 +631,8 @@ class MyMap extends React.Component {
                   onClickDecisionMaker={(id) => this.handleStartOtherSurvey(id)}
                   allStakeholders={stakeholderList}
                   addNewStakeholder={(e) => this.handleShowAddPage(e)}
+                  onSearchFocus={(e) => this.handleSearchFocus()}
+                  onSearchBlur={(e) => this.handleSearchBlur()}
                   list={shCategoryList}
                 />
               )}

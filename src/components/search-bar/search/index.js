@@ -15,6 +15,8 @@ function SearchInput(props) {
     value,
     onChange,
     onCancel,
+    onFocus,
+    onBlur
   } = props;
 
   return (
@@ -25,6 +27,9 @@ function SearchInput(props) {
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        type="text"
+        onFocus={e => onFocus(e)}
+        onBlur={e => onBlur(e)}
       />
       {value !== "" && <FontAwesomeIcon
         onClick={onCancel}
