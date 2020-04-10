@@ -15,15 +15,10 @@ import {
 } from "Components/Survey";
 
 import DriverPanel from "Components/driver";
-import Accordion from "Components/accordion";
 
 import styles from "./styles.scss";
 
 import {
-  pageList,
-  teamList,
-  shgroupList,
-  skipQuestionList,
   selectPage,
 } from "Redux/actions";
 

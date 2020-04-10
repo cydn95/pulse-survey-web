@@ -19,7 +19,7 @@ import Welcome from 'Routes/invite/Welcome'
 import Test from 'Routes/test'
 
 import {
-  setCurrentMenuClassName
+  setMainMenuClassName
 } from "Redux/actions";
 
 const InitialPath = ({ component: Component, ...rest, authUser }) =>
@@ -39,15 +39,15 @@ const InitialPath = ({ component: Component, ...rest, authUser }) =>
 class App extends Component {
 	
 	componentDidMount() {
-		const { setCurrentMenuClassName, location } = this.props;
-		if (location.pathname.startsWith('/app/me')) {
-			setCurrentMenuClassName('me');
+		const { setMainMenuClassName, location } = this.props;
+		if (location.pathname.startsWith('/app/dashboard')) {
+			setMainMenuClassName('dashboard');
 		} else if (location.pathname.startsWith('/app/about-me')) {
-			setCurrentMenuClassName('about-me');
+			setMainMenuClassName('about-me');
 		} else if (location.pathname.startsWith('/app/my-map')) {
-			setCurrentMenuClassName('my-map');
+			setMainMenuClassName('my-map');
 		} else if (location.pathname.startsWith('/app/project-map')) {
-			setCurrentMenuClassName('project-map');
+			setMainMenuClassName('project-map');
 		}
 	}
 
@@ -94,4 +94,4 @@ const mapStateToProps = ({ authUser, settings }) => {
 	return { user, locale };
 };
 
-export default connect(mapStateToProps,{ setCurrentMenuClassName })(App);
+export default connect(mapStateToProps,{ setMainMenuClassName })(App);

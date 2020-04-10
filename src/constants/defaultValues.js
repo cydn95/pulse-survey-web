@@ -1,5 +1,7 @@
-export const defaultMenuClassName = 'me';
-export const defaultStartPath = '/app/me';
+export const defaultMainMenuClassName = 'dashboard';
+export const defaultSubMenuClassName = "dashboard";
+
+export const defaultStartPath = '/app/dashboard';
 
 export const defaultLocale = 'en';
 export const localeOptions = [

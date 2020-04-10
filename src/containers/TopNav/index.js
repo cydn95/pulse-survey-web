@@ -10,10 +10,7 @@ import Sidebar from "../Sidebar";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import {
-  setCurrentMenuClassName,
-  logoutUser,
-} from "Redux/actions";
+import { setMainMenuClassName, logoutUser } from "Redux/actions";
 
 class TopNav extends Component {
 
@@ -65,7 +62,7 @@ class TopNav extends Component {
   navigateSetting = e => {
     e.preventDefault();
 
-    this.props.setCurrentMenuClassName('settings');
+    this.props.setMainMenuClassName("settings");
     this.props.history.push("/app/settings");
   }
 
@@ -78,7 +75,6 @@ class TopNav extends Component {
         <Drawer 
           open={ this.state.toggle }
           onClose={this.toggleDrawer(null, false)}
-          onClick={e => this.toggleDrawer(e, false)}
           onKeyDown={e => this.toggleDrawer(e, false)}
         >
           <Sidebar/>
@@ -121,4 +117,6 @@ const mapStateToProps = () => {
   return {};
 };
 
-export default withRouter(connect(mapStateToProps, { setCurrentMenuClassName, logoutUser })(TopNav));
+export default withRouter(
+  connect(mapStateToProps, { setMainMenuClassName, logoutUser })(TopNav)
+);
