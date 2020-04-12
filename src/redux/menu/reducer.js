@@ -1,22 +1,31 @@
 import {
-	SET_CURRENT_MENU_CLASSNAME
-} from 'Constants/actionTypes';
+  SET_MAIN_MENU_CLASSNAME,
+  SET_SUB_MENU_CLASSNAME,
+} from "Constants/actionTypes";
 
-import {defaultMenuClassName } from 'Constants/defaultValues'
+import {
+  defaultMainMenuClassName,
+  defaultSubMenuClassName,
+} from "Constants/defaultValues";
 
 const INIT_STATE = {
-	currentClassName: defaultMenuClassName
+  mainMenuClassName: defaultMainMenuClassName,
+  subMenuClassName: defaultSubMenuClassName,
 };
 
 export default (state = INIT_STATE, action) => {
-	switch (action.type) {
-
-		case SET_CURRENT_MENU_CLASSNAME:
-		return Object.assign({}, state, {
-			...state,
-			currentClassName: action.payload.strCurrentClasses
-		})
-
-		default: return { ...state };
-	}
-}
+  switch (action.type) {
+    case SET_MAIN_MENU_CLASSNAME:
+      return Object.assign({}, state, {
+        ...state,
+        mainMenuClassName: action.payload.mainMenuClassName,
+      });
+    case SET_SUB_MENU_CLASSNAME:
+      return Object.assign({}, state, {
+        ...state,
+        subMenuClassName: action.payload.subMenuClassName,
+      });
+    default:
+      return { ...state };
+  }
+};

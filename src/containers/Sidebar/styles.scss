@@ -1,8 +1,7 @@
 .root {
   display: flex;
-  flex-direction: column;
-  width: 100%;
-  min-width: 224px;
+  flex-direction: row;
+  width: auto;
   min-height: 100%;
   background-color: #212529;
   box-sizing: content-box;
@@ -17,6 +16,14 @@
   background-size: cover;
 }
 
+.main-menu {
+  width: 224px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 50px;
+  background-color: #212529;
+}
+
 .link {
   margin-top: 21px;
   margin-left: 40px;
@@ -25,13 +32,12 @@
     margin-bottom: 20px;
     display: none;
   }
-  
+
   .nav {
     list-style-type: none;
     padding: 0px;
 
     &--item {
-
       display: block;
       padding-top: 17px;
       padding-bottom: 17px;
@@ -50,7 +56,7 @@
           display: inline-block;
           width: 19px;
           height: 18px;
-          fill:  #bababa;
+          fill: #bababa;
         }
 
         .name {
@@ -80,15 +86,20 @@
   }
 }
 
+.sub-menu {
+  display: flex;
+  flex-direction: column;
+  padding-top: 70px;
+  background-color: #504652;
+  width: 224px;
+  padding-bottom: 30px;
+
+  .link {
+    margin-left: 0px;
+  }
+}
+
 .space {
   display: flex;
   flex-grow: 1;
-}
-
-@media only screen and (max-width: 880px) {
-  .link {
-    &.bottom {
-      display: block;
-    }
-  }
 }

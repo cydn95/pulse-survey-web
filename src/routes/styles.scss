@@ -9,8 +9,9 @@
   position: fixed;
   left: 0px;
   top: 0px;
-  width: 224px;
+  width: auto;
   height: 100vh;
+  z-index: 900;
 }
 
 .container {
