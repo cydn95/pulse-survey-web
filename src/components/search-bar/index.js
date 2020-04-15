@@ -22,7 +22,7 @@ const getSuggestions = (data, filter) => {
 
 const getSuggestionsWithSh = (data, filter, shId) => {
   return data.filter(
-    (d) => d.fullName.indexOf(filter) !== -1 && d.shCategory === "SHC_" + shId
+    (d) => d.fullName.indexOf(filter) !== -1 && d.shCategory.indexOf(shId) >= 0
   );
 };
 
