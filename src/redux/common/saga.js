@@ -9,7 +9,7 @@ import {
   shCategoryListAPI,
   addUserAPI,
   addStakeholderAPI,
-  updateStakeholderAPI
+  updateStakeholderAPI,
 } from "../../services/axios/api";
 
 import {
@@ -21,7 +21,7 @@ import {
   STAKEHOLDER_LIST,
   SHCATEGORY_LIST,
   ADD_STAKEHOLDER,
-  UPDATE_STAKEHOLDER
+  UPDATE_STAKEHOLDER,
 } from "Constants/actionTypes";
 
 import {
@@ -32,15 +32,15 @@ import {
   skipQuestionListSuccess,
   stakeholderList,
   stakeholderListSuccess,
-  shCategoryListSuccess
+  shCategoryListSuccess,
 } from "./actions";
 
 import { uuid } from "uuidv4";
 
 const getTeamListAysnc = async () =>
   await teamListAPI()
-    .then(data => data)
-    .catch(error => error);
+    .then((data) => data)
+    .catch((error) => error);
 
 function* getTeamList() {
   try {
@@ -56,8 +56,8 @@ function* getTeamList() {
 
 const getShgroupListAysnc = async () =>
   await shgroupListAPI()
-    .then(data => data)
-    .catch(error => error);
+    .then((data) => data)
+    .catch((error) => error);
 
 function* getShgroupList() {
   try {
@@ -73,8 +73,8 @@ function* getShgroupList() {
 
 const getOptionListAysnc = async () =>
   await optionListAPI()
-    .then(data => data)
-    .catch(error => error);
+    .then((data) => data)
+    .catch((error) => error);
 
 function* getOptionList() {
   try {
@@ -90,8 +90,8 @@ function* getOptionList() {
 
 const getDriverListAysnc = async () =>
   await driverListAPI()
-    .then(data => data)
-    .catch(error => error);
+    .then((data) => data)
+    .catch((error) => error);
 
 function* getDriverList() {
   try {
@@ -99,13 +99,13 @@ function* getDriverList() {
 
     if (result.status === 200) {
       let driverList = [];
-      result.data.forEach(driver => {
+      result.data.forEach((driver) => {
         driverList.push({
           driverId: driver.id,
           driverName: driver.driverName,
           icon: driver.iconPath,
           percentage: 0,
-          progress: 0
+          progress: 0,
         });
       });
       yield put(driverListSuccess(driverList));
@@ -117,8 +117,8 @@ function* getDriverList() {
 
 const getSkipQuestionListAysnc = async () =>
   await skipQuestionListAPI()
-    .then(data => data)
-    .catch(error => error);
+    .then((data) => data)
+    .catch((error) => error);
 
 function* getSkipQuestionList() {
   try {
@@ -132,10 +132,10 @@ function* getSkipQuestionList() {
   }
 }
 
-const getStakeholderListAysnc = async projectId =>
+const getStakeholderListAysnc = async (projectId) =>
   await stakeholderListAPI(projectId)
-    .then(data => data)
-    .catch(error => error);
+    .then((data) => data)
+    .catch((error) => error);
 
 function* getStakeholderList({ payload }) {
   try {
@@ -144,8 +144,7 @@ function* getStakeholderList({ payload }) {
 
     let stakeholderList = [];
     if (result.status === 200) {
-      result.data.forEach(sh => {
-        if (sh.shCategory == null) return;
+      result.data.forEach((sh) => {
         stakeholderList.push({
           projectUserId: sh.id,
           projectUserTitle: sh.projectUserTitle,
@@ -161,12 +160,12 @@ function* getStakeholderList({ payload }) {
           team: sh.team.name,
           organisationId: "O_" + sh.user.organization.name,
           organisation: sh.user.organization.name,
-          shCategory: "SHC_" + sh.shCategory.id,
+          shCategory: sh.shCategory == null ? [] : sh.shCategory,
           show: true,
           amTotal: sh.am_total,
           amAnswered: sh.am_answered,
           aoTotal: sh.ao_total,
-          aoAnswered: sh.ao_answered
+          aoAnswered: sh.ao_answered,
         });
       });
 
@@ -179,8 +178,8 @@ function* getStakeholderList({ payload }) {
 
 const getShCategoryListAsync = async () =>
   await shCategoryListAPI()
-    .then(data => data)
-    .catch(error => error);
+    .then((data) => data)
+    .catch((error) => error);
 
 function* getShCategoryList() {
   try {
@@ -194,15 +193,15 @@ function* getShCategoryList() {
   }
 }
 
-const addUserAsync = async user =>
+const addUserAsync = async (user) =>
   await addUserAPI(user)
-    .then(data => data)
-    .catch(error => error);
+    .then((data) => data)
+    .catch((error) => error);
 
-const addStakeholderAsync = async projectUser =>
+const addStakeholderAsync = async (projectUser) =>
   await addStakeholderAPI(projectUser)
-    .then(data => data)
-    .catch(error => error);
+    .then((data) => data)
+    .catch((error) => error);
 
 function* addStakeholder({ payload }) {
   try {
@@ -213,9 +212,9 @@ function* addStakeholder({ payload }) {
         username: stakeholder.email,
         first_name: stakeholder.firstName,
         last_name: stakeholder.lastName,
-        email: stakeholder.email
+        email: stakeholder.email,
       },
-      name: stakeholder.organisationId
+      name: stakeholder.organisationId,
     };
 
     const result = yield call(addUserAsync, user);
@@ -228,7 +227,7 @@ function* addStakeholder({ payload }) {
         team: parseInt(stakeholder.teamId, 10),
         shCategory: parseInt(stakeholder.shCategory, 10),
         projectUserTitle: stakeholder.projectUserTitle,
-        projectUserRoleDesc: stakeholder.projectUserRoleDesc
+        projectUserRoleDesc: stakeholder.projectUserRoleDesc,
       };
 
       const result2 = yield call(addStakeholderAsync, projectUser);
@@ -260,7 +259,11 @@ function* updateStakeholder({ payload }) {
       projectUserRoleDesc: stakeholder.projectUserRoleDesc,
     };
 
-    const result = yield call(updateStakeholderAsync, parseInt(stakeholder.projectUserId, 10), projectUser);
+    const result = yield call(
+      updateStakeholderAsync,
+      parseInt(stakeholder.projectUserId, 10),
+      projectUser
+    );
 
     if (result.status === 201) {
       yield put(stakeholderList(stakeholder.projectId));
@@ -316,6 +319,6 @@ export default function* rootSaga() {
     fork(watchStakeholderList),
     fork(watchShCategoryList),
     fork(watchAddStakeholder),
-    fork(watchUpdateStakeholder)
+    fork(watchUpdateStakeholder),
   ]);
 }

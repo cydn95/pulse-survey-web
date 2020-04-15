@@ -152,19 +152,37 @@ class MyMap extends React.Component {
       ],
     };
 
-    let bExist = false;
-    for (let i = 0; i < this.projectUserList.length; i++) {
-      if (this.projectUserList[i] === projectUser.projectUserId) {
-        bExist = true;
-        break;
+    console.log(projectUser);
+    console.log(newElem);
+    console.log(this.projectUserList);
+
+    // console.log(newProjectUserId, newShCategory);
+
+    this.setState({ newStakeholder: newElem }, () => {
+      if (!newElem.individuals[0].sh_category) return;
+      const newProjectUserId = projectUser.projectUserId;
+      const newShCategory = newElem.individuals[0].sh_category.current.split(
+        "_"
+      )[1];
+
+      let bExist = false;
+
+      for (let i = 0; i < this.projectUserList.length; i++) {
+        if (
+          this.projectUserList[i].projectUserId === newProjectUserId &&
+          this.projectUserList[i].shCategory === newShCategory
+        ) {
+          bExist = true;
+          break;
+        }
       }
-    }
-
-    if (!bExist) {
-      this.projectUserList.push(projectUser.projectUserId);
-    }
-
-    this.setState({ newStakeholder: newElem });
+      if (!bExist) {
+        this.projectUserList.push({
+          projectUserId: newProjectUserId,
+          shCategory: parseInt(newShCategory, 10)
+        });
+      }
+    });
   };
 
   componentWillMount() {
@@ -233,7 +251,8 @@ class MyMap extends React.Component {
           icon: "fa-users",
         });
       });
-
+      console.log("****************************");
+      console.log(userList);
       // Individual -> Organization
       let organizationList = [];
       userList.forEach((user) => {
@@ -264,12 +283,30 @@ class MyMap extends React.Component {
 
       let individualList = [];
       if (kMapData.length > 0) {
-        let mapUserList = kMapData[0].projectUser;
+        let mapUserList = [];
+
+        // Map MapUser and ShCategory
+        for (let i = 0; i < kMapData[0].projectUser.length; i++) {
+          for (let j = 0; j < userList.length; j++) {
+            if (kMapData[0].projectUser[i] === userList[j].id) {
+              for (let k = 0; k < userList[j].shCategory.length; k++) {
+                mapUserList.push({
+                  projectUserId: userList[j].id,
+                  shCategory: userList[j].shCategory[k],
+                });
+              }
+              break;
+            }
+          }
+        }
 
         mapUserList.forEach((mapUser) => {
           let bExist = false;
           for (let i = 0; i < this.projectUserList.length; i++) {
-            if (this.projectUserList[i] === mapUser) {
+            if (
+              this.projectUserList[i].projectUserId === mapUser.projectUserId &&
+              this.projectUserList[i].shCategory === mapUser.shCategory
+            ) {
               bExist = true;
               break;
             }
@@ -277,6 +314,9 @@ class MyMap extends React.Component {
           if (!bExist) {
             this.projectUserList.push(mapUser);
           }
+
+          console.log("---------------------");
+          console.log(this.projectUserList);
 
           let individualUser = {
             id: "",
@@ -298,27 +338,35 @@ class MyMap extends React.Component {
           };
           let bAdd = false;
           for (let i = 0; i < userList.length; i++) {
-            if (userList[i].id === mapUser) {
-              individualUser.id = "S_" + userList[i].user.id;
-              individualUser.avatar =
-                userList[i].user.avatar == null
-                  ? ""
-                  : userList[i].user.avatar.name;
-              individualUser.name =
-                userList[i].user.first_name + " " + userList[i].user.last_name;
-              individualUser.team.current = "T_" + userList[i].team.id;
-              individualUser.organisation.current =
-                "O_" + userList[i].user.organization.name;
-              individualUser.sh_category.current =
-                "SHC_" + userList[i].shCategory.id;
-              individualUser.survey_completion =
-                (userList[i].ao_answered / userList[i].ao_total) * 100;
+            if (userList[i].id === mapUser.projectUserId) {
+              for (let j = 0; j < userList[i].shCategory.length; j++) {
+                if (userList[i].shCategory[j] === mapUser.shCategory) {
+                  individualUser.id = "S_" + userList[i].user.id;
+                  individualUser.avatar =
+                    userList[i].user.avatar == null
+                      ? ""
+                      : userList[i].user.avatar.name;
+                  individualUser.name =
+                    userList[i].user.first_name +
+                    " " +
+                    userList[i].user.last_name;
+                  individualUser.team.current = "T_" + userList[i].team.id;
+                  individualUser.organisation.current =
+                    "O_" + userList[i].user.organization.name;
+                  individualUser.sh_category.current =
+                    "SHC_" + userList[i].shCategory[j];
+                  individualUser.survey_completion =
+                    (userList[i].ao_answered / userList[i].ao_total) * 100;
 
-              bAdd = true;
+                  bAdd = true;
 
-              break;
+                  break;
+                }
+              }
             }
           }
+          console.log("---individual list----------");
+          console.log(individualList);
           if (bAdd) {
             individualList.push(individualUser);
             // update SHCategory individual Count
@@ -453,13 +501,20 @@ class MyMap extends React.Component {
   handleSaveGraph = (e) => {
     const { userId, projectId } = this.props;
 
+    let projectUserList = [];
+    for (let i = 0; i < this.projectUserList.length; i++) {
+      projectUserList.push({
+        projectUser: this.projectUserList[i].projectUserId,
+        category: this.projectUserList[i].shCategory
+      });
+    }
     const newMapData = {
       user: userId,
       project: projectId,
-      projectUser: this.projectUserList,
+      pu_category: projectUserList,
       layout_json: {},
     };
-
+// console.log(newMapData); return;
     this.props.saveKMapData(newMapData);
   };
 
