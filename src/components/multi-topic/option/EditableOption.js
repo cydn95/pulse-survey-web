@@ -13,24 +13,36 @@ function EditableOption(props) {
     changeTopic,
     changeComment,
     topicPlaceholder,
-    commentPlaceholder
+    commentPlaceholder,
+    onFocus,
+    onBlur
   } = props;
 
   return (
     <div className={classnames(styles.main, styles.editable)}>
       <div className={styles.bullet}></div>
       <div className={styles.data}>
-        <Input 
-          className={styles.topic} 
+        <Input
+          onFocus={(e) => onFocus()}
+          onBlur={(e) => onBlur()}
+          className={styles.topic}
           onChange={(value, e) => changeTopic(value)}
-          placeholder={topicPlaceholder === "" ? "Specify your topic" : topicPlaceholder} 
-          value={topic} 
+          placeholder={
+            topicPlaceholder === "" ? "Specify your topic" : topicPlaceholder
+          }
+          value={topic}
         />
-        <Input 
-          className={styles.comment} 
+        <Input
+          onFocus={(e) => onFocus()}
+          onBlur={(e) => onBlur()}
+          className={styles.comment}
           onChange={(value, e) => changeComment(value)}
-          placeholder={commentPlaceholder === "" ? "Specify your comment" : commentPlaceholder} 
-          value={comment} 
+          placeholder={
+            commentPlaceholder === ""
+              ? "Specify your comment"
+              : commentPlaceholder
+          }
+          value={comment}
         />
       </div>
     </div>

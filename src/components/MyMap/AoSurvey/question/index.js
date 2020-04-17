@@ -5,6 +5,7 @@ import { controlType } from 'Constants/defaultValues'
 
 import {
   MultipleOptions,
+  MultiTopics,
   TwoOptions,
   FreeText,
   SmartText,
@@ -46,27 +47,83 @@ class Question extends Component {
     let questionControl = questionList.amquestion.map( (control, index) => {
       switch (control.controlType) {
         case controlType.TEXT:
-          return <div key={index} className={styles['question-container']}>
-            <FreeText user={user} question={control} onAnswer={answer => this.handleAnswer(answer)} 
-            skipQuestionList={skipQuestionList} /></div>
+          return (
+            <div key={index} className={styles["question-container"]}>
+              <FreeText
+                user={user}
+                question={control}
+                onAnswer={(answer) => this.handleAnswer(answer)}
+                skipQuestionList={skipQuestionList}
+              />
+            </div>
+          );
         case controlType.SLIDER:
-          return <div key={index} className={styles['question-container']}><RangeSlider  user={user} question={control} onAnswer={answer => this.handleAnswer(answer)} 
-            skipQuestionList={skipQuestionList} /></div>
-        
+          return (
+            <div key={index} className={styles["question-container"]}>
+              <RangeSlider
+                user={user}
+                question={control}
+                onAnswer={(answer) => this.handleAnswer(answer)}
+                skipQuestionList={skipQuestionList}
+              />
+            </div>
+          );
+
         case controlType.TWO_OPTIONS:
-          return <div key={index} className={styles['question-container']}><TwoOptions user={user} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
-            skipQuestionList={skipQuestionList} /></div>
+          return (
+            <div key={index} className={styles["question-container"]}>
+              <TwoOptions
+                user={user}
+                options={optionList}
+                question={control}
+                onAnswer={(answer) => this.handleAnswer(answer)}
+                skipQuestionList={skipQuestionList}
+              />
+            </div>
+          );
 
         case controlType.MULTI_OPTIONS:
-          return <div key={index} className={styles['question-container']}><MultipleOptions type="am" user={user} options={optionList} question={control} onAnswer={answer => this.handleAnswer(answer)} 
-            skipQuestionList={skipQuestionList} /></div>
+          return (
+            <div key={index} className={styles["question-container"]}>
+              <MultipleOptions
+                type="am"
+                user={user}
+                options={optionList}
+                question={control}
+                onAnswer={(answer) => this.handleAnswer(answer)}
+                skipQuestionList={skipQuestionList}
+              />
+            </div>
+          );
+
+        case controlType.MULTI_TOPICS:
+          return (
+            <div key={index} className={styles["question-container"]}>
+              <MultiTopics
+                type="am"
+                user={user}
+                options={optionList}
+                question={control}
+                onAnswer={(answer) => this.handleAnswer(answer)}
+                skipQuestionList={skipQuestionList}
+              />
+            </div>
+          );
 
         case controlType.SMART_TEXT:
-          return <div key={index} className={styles['question-container']}><SmartText user={user} question={control} onAnswer={answer => this.handleAnswer(answer)} 
-            skipQuestionList={skipQuestionList} /></div>
+          return (
+            <div key={index} className={styles["question-container"]}>
+              <SmartText
+                user={user}
+                question={control}
+                onAnswer={(answer) => this.handleAnswer(answer)}
+                skipQuestionList={skipQuestionList}
+              />
+            </div>
+          );
 
         default:
-          return <div key={index} ></div>
+          return <div key={index}></div>;
       }
     });
 
