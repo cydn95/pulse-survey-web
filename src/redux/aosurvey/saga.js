@@ -161,7 +161,7 @@ function* submitAoQuestion({ payload }) {
     if (result.status === 201) {
       
       yield put(submitAoQuestionSuccess());
-      history.push('/app/me');
+      history.push('/app/dashboard');
     } else {
       console.log('submit failed')
     }

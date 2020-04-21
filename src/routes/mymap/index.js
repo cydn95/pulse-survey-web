@@ -152,9 +152,9 @@ class MyMap extends React.Component {
       ],
     };
 
-    console.log(projectUser);
-    console.log(newElem);
-    console.log(this.projectUserList);
+    // console.log(projectUser);
+    // console.log(newElem);
+    // console.log(this.projectUserList);
 
     // console.log(newProjectUserId, newShCategory);
 
@@ -251,8 +251,8 @@ class MyMap extends React.Component {
           icon: "fa-users",
         });
       });
-      console.log("****************************");
-      console.log(userList);
+      // console.log("****************************");
+      // console.log(userList);
       // Individual -> Organization
       let organizationList = [];
       userList.forEach((user) => {
@@ -315,8 +315,8 @@ class MyMap extends React.Component {
             this.projectUserList.push(mapUser);
           }
 
-          console.log("---------------------");
-          console.log(this.projectUserList);
+          // console.log("---------------------");
+          // console.log(this.projectUserList);
 
           let individualUser = {
             id: "",
@@ -365,8 +365,8 @@ class MyMap extends React.Component {
               }
             }
           }
-          console.log("---individual list----------");
-          console.log(individualList);
+          // console.log("---individual list----------");
+          // console.log(individualList);
           if (bAdd) {
             individualList.push(individualUser);
             // update SHCategory individual Count

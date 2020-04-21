@@ -76,3 +76,7 @@ export const replaceQuestionTextKeyWord = (questionText, user) => {
 
   return str;
 };
+
+export const SURVEY_NOT_STARTED = 0;
+export const SURVEY_IN_PROGRESS = 1;
+export const SURVEY_COMPLETED = 2;

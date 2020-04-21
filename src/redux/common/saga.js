@@ -145,6 +145,16 @@ function* getStakeholderList({ payload }) {
     let stakeholderList = [];
     if (result.status === 200) {
       result.data.forEach((sh) => {
+        const shAoResponse = sh.ao_response;
+        const filteredAoResponse = shAoResponse.filter((item, index) => {
+          return shAoResponse.indexOf(item) === index;
+        });
+
+        // console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^');
+        // console.log(shAoResponse);
+        // console.log(filteredAoResponse);
+        // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^");
+
         stakeholderList.push({
           projectUserId: sh.id,
           projectUserTitle: sh.projectUserTitle,
@@ -165,7 +175,8 @@ function* getStakeholderList({ payload }) {
           amTotal: sh.am_total,
           amAnswered: sh.am_answered,
           aoTotal: sh.ao_total,
-          aoAnswered: sh.ao_answered,
+          aoAnswered: filteredAoResponse.length,
+          aoResponse: filteredAoResponse,
         });
       });
 

@@ -16,17 +16,20 @@ import {
 
 import DriverPanel from "Components/driver";
 
+import { SURVEY_NOT_STARTED, SURVEY_IN_PROGRESS, SURVEY_COMPLETED } from "Constants/defaultValues";
+
 import styles from "./styles.scss";
 
 import {
   selectPage,
+  stakeholderAnswer
 } from "Redux/actions";
 
 class AoSurvey extends React.Component {
   constructor(props) {
     super(props);
 
-    const { questions, options, drivers, pageIndex } = this.props;
+    const { questions, options, drivers, pageIndex, user } = this.props;
 
     for (let i = 0; i < drivers.length; i++) {
       drivers[i] = {
@@ -53,6 +56,7 @@ class AoSurvey extends React.Component {
       options,
       drivers: orderedDrivers,
       pageIndex,
+      currentUser: user
     };
   }
 
@@ -71,6 +75,7 @@ class AoSurvey extends React.Component {
       };
       return state;
     });
+    this.props.stakeholderAnswer(this.state.currentUser.projectUserId, answer.amQuestion);
   };
 
   handleCancel = (e) => {
@@ -90,14 +95,32 @@ class AoSurvey extends React.Component {
   };
 
   render() {
-    const { options } = this.state;
-    const { skipQuestionList, user, drivers } = this.props;
+    const { options, currentUser } = this.state;
+    const { skipQuestionList, user } = this.props;
+
+    const drivers = [...this.state.drivers];
 
     const defaultDrvierId = drivers.length
       ? drivers[this.state.pageIndex].driverId
       : 0;
 
     const driver = drivers.filter((d) => d.driverId === defaultDrvierId)[0];
+
+    for (let i = 0; i < drivers.length; i++) {
+      let answeredCount = 0;
+      for (let j = 0; j < drivers[i].questions.length; j++) {
+        if (currentUser.aoResponse.indexOf(drivers[i].questions[j].id) >= 0) {
+          answeredCount++;
+        }
+      }
+      if (answeredCount === 0) {
+        drivers[i].progress = SURVEY_NOT_STARTED;
+      } else if (answeredCount < drivers[i].questions.length) {
+        drivers[i].progress = SURVEY_IN_PROGRESS;
+      } else {
+        drivers[i].progress = SURVEY_COMPLETED;
+      }
+    }
 
     return (
       <div className={styles.root}>
@@ -113,16 +136,17 @@ class AoSurvey extends React.Component {
             donut={true}
           />
         </div>
-        <hr />
+
         <div className={styles["driver-section"]}>
+          <hr />
           <DriverPanel
             defaultDriverId={defaultDrvierId}
             data={drivers}
             color="black"
             onClick={(e, driverId) => this.handleClickDriver(driverId)}
           />
+          <hr />
         </div>
-        <hr />
         <div className={styles.questions}>
           {driver.questions.map((control, index) => {
             switch (control.controlType) {
@@ -225,4 +249,5 @@ const mapStateToProps = ({ survey, common, authUser }) => {
 
 export default connect(mapStateToProps, {
   setSurveyPage: selectPage,
+  stakeholderAnswer,
 })(AoSurvey);

@@ -40,7 +40,7 @@ const getOptionListAsync = async () =>
 function* getPageList({payload}) {
   
   const { projectUserId } = payload;
-  
+
   try {
     const result = yield call(getPageListAsync, projectUserId);
 

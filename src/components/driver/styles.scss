@@ -5,6 +5,13 @@
   width: 140px;
   background: #fff;
 
+  &.finished {
+    margin-top: -10px;
+  }
+  &.inprogress {
+    margin-top: 6px;
+  }
+
   .icon {
     width: 25px;
   }
@@ -15,7 +22,7 @@
       background: #77C8BB;
     }
     &.black {
-      background: #1a1a1a;
+      background: #545666;
     }
     
     color: white;
@@ -98,7 +105,36 @@
   }
 }
 
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-content: flex-end;
+  align-items: flex-end;
+  width: 170px;
+}
+
+.progress-icon {
+  display: none;
+  color: #7f7f7f;
+  width: 16px;
+  height: 16px;
+}
+
+.progress-icon-mobile {
+  color: #7f7f7f;
+  width: 16px;
+  height: 16px;
+  z-index: 3000;
+}
+
 @media only screen and (max-width: 880px) {
+
+  .progress-icon {
+    display: block;
+    position: absolute;
+    top: -5px;
+  }
 
   .driver-component {
     align-items: center;
