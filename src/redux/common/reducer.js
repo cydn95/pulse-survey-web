@@ -17,6 +17,7 @@ import {
   ADD_STAKEHOLDER_SUCCESS,
   UPDATE_STAKEHOLDER,
   UPDATE_STAKEHOLDER_SUCCESS,
+  STAKEHOLDER_ANSWER,
 } from "Constants/actionTypes";
 
 const INIT_STATE = {
@@ -73,6 +74,20 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loading: true };
     case UPDATE_STAKEHOLDER_SUCCESS:
       return { ...state, load: false };
+    case STAKEHOLDER_ANSWER:
+      const { projectUserId, questionId } = action.payload;
+      for (let i = 0; i < state.stakeholderList.length; i++) {
+        if (state.stakeholderList[i].projectUserId == projectUserId) {
+          state.stakeholderList[i].aoResponse.push(questionId);
+          state.stakeholderList[i].aoResponse = state.stakeholderList[i].aoResponse.filter((item, index) => {
+            return state.stakeholderList[i].aoResponse.indexOf(item) === index;
+          });
+          state.stakeholderList[i].aoAnswered = state.stakeholderList[i].aoResponse.length;
+          break;
+        }
+      }
+      
+      return {...state}
     default:
       return { ...state };
   }
