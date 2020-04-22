@@ -22,14 +22,26 @@ class Question extends Component {
     super(props);
 
     this.scrollRef = React.createRef();
+
+    this.state = {
+      surveyList: this.props.surveyList
+    }
   }
 
   handleAnswer = (answer) => {
     this.props.inputAnswer(answer);
   };
 
+  componentWillReceiveProps(props) {
+    const { surveyList } = props;
+    this.setState({
+      surveyList
+    });
+  }
+
   render() {
-    const { surveyList, optionList, pageIndex, skipQuestionList } = this.props;
+    const { surveyList } = this.state;
+    const { optionList, pageIndex, skipQuestionList } = this.props;
     const questionList = surveyList[pageIndex];
 
     let continueText = "Continue";

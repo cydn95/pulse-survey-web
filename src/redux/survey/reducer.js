@@ -41,7 +41,8 @@ export default (state = INIT_STATE, action) => {
 
       if (answer.type === 'me') {
         state.pageList[answer.pageIndex].amquestion[answer.questionIndex].answer = {
-          ...answer
+          ...answer,
+          responsestatus: true
         };
       } else {
         state.pageList[answer.pageIndex].aoquestion[answer.questionIndex].answer = {

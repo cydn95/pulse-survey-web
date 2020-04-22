@@ -104,7 +104,7 @@ function* getPageList({payload}) {
         const optionList = result_option.data;
         yield put(pageListSuccess(questionList, optionList));
       }
-        
+
     } else {
       console.log('login failed :', result.statusText)
     }
