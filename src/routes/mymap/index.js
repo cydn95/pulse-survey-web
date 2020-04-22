@@ -18,12 +18,11 @@ import {
   addStakeholder,
 } from "Redux/actions";
 
+import ComingSoon from "Routes/coming";
+
 import { KGraph, AoSurvey, KGraphNavControls } from "Components/MyMap";
-
 import { NewStakeholder } from "Components/Survey";
-
 import SearchBar from "Components/search-bar";
-
 import Button from "Components/Button";
 
 import { Droppable } from "react-drag-and-drop";
@@ -45,6 +44,7 @@ class MyMap extends React.Component {
       currentSurveyUserId: 0,
       currentSurveyUser: "",
       newStakeholder: {},
+      mapStyle: "my-map",
       viewDropDownOpen: false,
       layoutDropDownOpen: false,
       enableLayout: true,
@@ -179,7 +179,7 @@ class MyMap extends React.Component {
       if (!bExist) {
         this.projectUserList.push({
           projectUserId: newProjectUserId,
-          shCategory: parseInt(newShCategory, 10)
+          shCategory: parseInt(newShCategory, 10),
         });
       }
     });
@@ -505,7 +505,7 @@ class MyMap extends React.Component {
     for (let i = 0; i < this.projectUserList.length; i++) {
       projectUserList.push({
         projectUser: this.projectUserList[i].projectUserId,
-        category: this.projectUserList[i].shCategory
+        category: this.projectUserList[i].shCategory,
       });
     }
     const newMapData = {
@@ -514,7 +514,7 @@ class MyMap extends React.Component {
       pu_category: projectUserList,
       layout_json: {},
     };
-// console.log(newMapData); return;
+    // console.log(newMapData); return;
     this.props.saveKMapData(newMapData);
   };
 
@@ -535,6 +535,12 @@ class MyMap extends React.Component {
       searchFullHeight: false,
     });
   };
+
+  handleSelectMapStyle = (mapStyle) => {
+    this.setState({
+      mapStyle
+    });
+  }
 
   render() {
     const {
@@ -567,6 +573,7 @@ class MyMap extends React.Component {
       toggleGraph,
       currentSurveyUser,
       searchFullHeight,
+      mapStyle,
     } = this.state;
 
     const mapHeaderVisible = toggleGraph
@@ -627,7 +634,22 @@ class MyMap extends React.Component {
                   />
                 </g>
               </svg>
-              <h2 className={styles["title"]}>Click to choose a Category</h2>
+              <h2
+                className={classnames(styles["title"], {
+                  [styles["map-selected"]]: mapStyle === "my-map",
+                })}
+                onClick={(e) => this.handleSelectMapStyle("my-map")}
+              >
+                My Map
+              </h2>
+              <h2
+                className={classnames(styles["title"], {
+                  [styles["map-selected"]]: mapStyle === "project-map",
+                })}
+                onClick={(e) => this.handleSelectMapStyle("project-map")}
+              >
+                Project Map
+              </h2>
             </div>
             <div className={styles["map-control"]}>
               <KGraphNavControls
@@ -660,7 +682,8 @@ class MyMap extends React.Component {
               {userList.length > 0 &&
                 teamList.length > 0 &&
                 shCategoryList.length > 0 &&
-                mapGetLoading === false && (
+                mapGetLoading === false && 
+                mapStyle === 'my-map' && (
                   <KGraph
                     setParentState={this.setState.bind(this)}
                     apList={apList}
@@ -672,6 +695,7 @@ class MyMap extends React.Component {
                     layoutUpdated={layoutUpdated}
                   />
                 )}
+                {mapStyle === 'project-map' && <ComingSoon/>}
             </Droppable>
             <div
               className={classnames(stakeholderVisible, {

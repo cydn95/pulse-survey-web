@@ -61,7 +61,13 @@
       font-size: 16px;
       font-weight: normal;
       line-height: 1.33;
-      color: #6d6f94;
+      color: #777885;
+      cursor: pointer;
+
+      &.map-selected {
+        color: rgb(126, 204, 191);
+        border-bottom: 1px solid rgb(126, 204, 191);
+      }
     }
   }
 
