@@ -16,6 +16,12 @@ import {
   selectPage
 } from "Redux/actions";
 
+import {
+  SURVEY_NOT_STARTED,
+  SURVEY_IN_PROGRESS,
+  SURVEY_COMPLETED,
+} from "Constants/defaultValues";
+
 import styles from './styles.scss';
 
 class Start extends Component {
@@ -24,7 +30,8 @@ class Start extends Component {
     super(props);
 
     this.state = {
-      pageIndex: props.pageIndex
+      pageIndex: props.pageIndex,
+      driverList: [],
     };
 
     this.scrollTop = false;
@@ -44,15 +51,51 @@ class Start extends Component {
       setTimeout(() => {
         window.scrollTo(0,0);
       }, 100);
+
+      const driverList = [];
+
+      for (let i = 0; i < surveyList.length; i++) {
+        let answeredCount = 0;
+        let driverProgress = SURVEY_NOT_STARTED;
+
+        for (let j = 0; j < surveyList[i].amquestion.length; j++) {
+          if (surveyList[i].amquestion[j].responsestatus === true) {
+            answeredCount++;
+          }
+        }
+
+        if (answeredCount === 0) {
+          driverProgress = SURVEY_NOT_STARTED;
+        } else if (answeredCount < surveyList[i].amquestion.length) {
+          driverProgress = SURVEY_IN_PROGRESS;
+        } else {
+          driverProgress = SURVEY_COMPLETED;
+        }
+
+        const driver = {
+          driverId: surveyList[i].id,
+          driverName: surveyList[i].driverName,
+          icon: surveyList[i].iconPath,
+          percentage: 0,
+          progress: driverProgress,
+        };
+
+        driverList.push(driver);
+      }
+
+      this.setState({
+        driverList,
+      });
     }
 
     this.setState({
-      pageIndex
+      pageIndex,
     });
   }
 
   handleClickDriver = driverId => {
-    const { driverList, setSurveyPage } =  this.props;
+    const { setSurveyPage } =  this.props;
+    const { driverList } = this.state;
     var pageIndex = driverList.findIndex(element => {
       return element.driverId === driverId
     });
@@ -61,12 +104,13 @@ class Start extends Component {
   
   render() {
     const {
-      projectTitle,
-      driverList,
       surveyList,
+      projectTitle,
       skipQuestionList,
       history
     } = this.props;
+
+    const { driverList } = this.state;
 
     const defaultDrvierId = driverList.length ? driverList[this.state.pageIndex].driverId : 0;
 
