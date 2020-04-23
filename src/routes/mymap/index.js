@@ -407,6 +407,10 @@ class MyMap extends React.Component {
       }
       
       projectArchitecture.main.name = projectTitle;
+      projectArchitecture.main.icon = "http://3.17.57.137/media/uploads/shcategory/project.svg";
+      projectArchitecture.main.color = "#7030a0";
+      projectArchitecture.main.iconColor = "#fefefa";
+
       for (let i = 0; i < architecture.sh_categories.length; i++) {
         projectArchitecture.sh_categories.push({
           ...architecture.sh_categories[i],
