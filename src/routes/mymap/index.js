@@ -18,8 +18,6 @@ import {
   addStakeholder,
 } from "Redux/actions";
 
-import ComingSoon from "Routes/coming";
-
 import { KGraph, AoSurvey, KGraphNavControls } from "Components/MyMap";
 import { NewStakeholder } from "Components/Survey";
 import SearchBar from "Components/search-bar";
@@ -53,6 +51,7 @@ class MyMap extends React.Component {
       layoutUpdated: false,
       apList: null,
       esList: null,
+      projectApList: null,
       teamList: [],
       userList: [],
       shCategoryList: [],
@@ -206,6 +205,7 @@ class MyMap extends React.Component {
       kMapData,
       mapSaveLoading,
       mapGetLoading,
+      projectTitle
     } = props;
 
     let architecture = {
@@ -398,6 +398,26 @@ class MyMap extends React.Component {
         }
       }
 
+      // Project Map
+      const projectArchitecture = {
+        main: {
+          ...architecture.main
+        },
+        sh_categories: []
+      }
+      
+      projectArchitecture.main.name = projectTitle;
+      projectArchitecture.main.icon = "http://3.17.57.137/media/uploads/shcategory/project.svg";
+      projectArchitecture.main.color = "#7030a0";
+      projectArchitecture.main.iconColor = "#fefefa";
+
+      for (let i = 0; i < architecture.sh_categories.length; i++) {
+        projectArchitecture.sh_categories.push({
+          ...architecture.sh_categories[i],
+          individualCount: 0,
+        });
+      }
+
       this.setState({
         stakeholderList,
         decisionMakerList,
@@ -406,6 +426,7 @@ class MyMap extends React.Component {
         shCategoryList,
         apList: architecture,
         esList: individual,
+        projectApList: projectArchitecture,
         screen: "list",
         mapSaveLoading,
         mapGetLoading,
@@ -564,6 +585,7 @@ class MyMap extends React.Component {
       stakeholderList,
       apList,
       esList,
+      projectApList,
       shCategoryList,
       decisionMakerList,
       teamList,
@@ -672,31 +694,48 @@ class MyMap extends React.Component {
                 searchFullHeight && !toggleGraph && screen === "list",
             })}
           >
-            <Droppable
-              className={mapContentVisible}
-              types={["stakeholder"]} // <= allowed drop types
-              onDrop={(data, e) => {
-                this.handleAddStackholderToGraph(data, e);
-              }}
-            >
-              {userList.length > 0 &&
-                teamList.length > 0 &&
-                shCategoryList.length > 0 &&
-                mapGetLoading === false && 
-                mapStyle === 'my-map' && (
-                  <KGraph
-                    setParentState={this.setState.bind(this)}
-                    apList={apList}
-                    esList={esList}
-                    newStakeholder={newStakeholder}
-                    onClickNode={(id) => this.handleStartOtherSurvey(id)}
-                    layout={layout.toLowerCase()}
-                    viewMode={viewMode}
-                    layoutUpdated={layoutUpdated}
-                  />
-                )}
-                {mapStyle === 'project-map' && <ComingSoon/>}
-            </Droppable>
+            {mapStyle === "my-map" && (
+              <Droppable
+                className={mapContentVisible}
+                types={["stakeholder"]} // <= allowed drop types
+                onDrop={(data, e) => {
+                  this.handleAddStackholderToGraph(data, e);
+                }}
+              >
+                {userList.length > 0 &&
+                  teamList.length > 0 &&
+                  shCategoryList.length > 0 &&
+                  mapGetLoading === false && (
+                    <KGraph
+                      setParentState={this.setState.bind(this)}
+                      apList={apList}
+                      esList={esList}
+                      newStakeholder={newStakeholder}
+                      onClickNode={(id) => this.handleStartOtherSurvey(id)}
+                      layout={layout.toLowerCase()}
+                      viewMode={viewMode}
+                      layoutUpdated={layoutUpdated}
+                    />
+                  )}
+              </Droppable>
+            )}
+            {mapStyle === "project-map" && (
+              <div className={mapContentVisible}>
+                {userList.length > 0 &&
+                  teamList.length > 0 &&
+                  shCategoryList.length > 0 &&
+                  mapGetLoading === false && (
+                    <KGraph
+                      setParentState={this.setState.bind(this)}
+                      apList={projectApList}
+                      esList={[]}
+                      layout={layout.toLowerCase()}
+                      viewMode={viewMode}
+                      layoutUpdated={layoutUpdated}
+                    />
+                  )}
+              </div>
+            )}
             <div
               className={classnames(stakeholderVisible, {
                 [styles.full]:
