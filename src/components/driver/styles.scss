@@ -5,9 +5,14 @@
   width: 140px;
   background: #fff;
 
-  &.finished {
+  &.mobile-finished {
     margin-top: -10px;
   }
+
+  &.finished {
+    margin-top: 6px;
+  }
+
   &.inprogress {
     margin-top: 6px;
   }
@@ -132,12 +137,15 @@
 
   .progress-icon {
     display: block;
-    position: absolute;
-    top: -5px;
+    z-index: 3000;
   }
 
   .driver-component {
     align-items: center;
+
+    &.finished {
+      margin-top: -10px;
+    }
   }
 
   .progress {

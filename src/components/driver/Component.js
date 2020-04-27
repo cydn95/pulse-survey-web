@@ -17,7 +17,6 @@ function DriverComponent(props) {
     className,
     driverId,
     driverName,
-    percentage,
     progress,
     onClick,
     selected,
@@ -25,8 +24,6 @@ function DriverComponent(props) {
   } = props;
 
   const progressLabel = ProgressLabels[progress];
-  const percentageLabel =
-    percentage > 80 ? "High" : percentage > 30 ? "Medium" : "Low";
 
   const selectedCls = selected ? styles.selected : null;
 
@@ -67,7 +64,8 @@ function DriverComponent(props) {
           selectedCls,
           className,
           {
-            [styles.finished]: progress === SURVEY_COMPLETED,
+            [styles['mobile-finished']]: color === 'black' && progress === SURVEY_COMPLETED,
+            [styles.finished]: color !== 'black' && progress === SURVEY_COMPLETED,
             [styles.inprogress]: progress !== SURVEY_COMPLETED,
           }
         )}
