@@ -25,7 +25,7 @@ class Settings extends React.Component {
         </div>
 				<div className={ styles['setting-container'] }>
           <TabPanel
-            selectedTab="projects"
+            selectedTab="account"
             data={[
               {
                 title: "Account",

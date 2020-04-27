@@ -1,57 +1,64 @@
 import React, { } from 'react';
-import { useForm } from 'react-hook-form'
 
 import Input from "Components/Input"
 import Button from "Components/Button"
 
 import styles from './form.scss'
 
-function ChangePassword() {
-  const { register, handleSubmit, watch, errors } = useForm()
+class ChangePassword extends React.Component {
 
-  const password = watch('password')
+  constructor(props) {
+    super(props);
 
-  const onSubmit = data => {
-    alert(JSON.stringify(data))
+    this.state = {
+      password: '',
+      confirmPassword: ''
+    };
   }
 
-  return (
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const { onChangePassword } = this.props;
+    onChangePassword(this.state.password, this.state.confirmPassword);
+  }
 
-    <div className={styles["form-wrapper"]}>
-      <h2>Change Password</h2>
-      <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
-        <Input
-          className={styles.input}
-          type="password"
-          label="New Password"
-          name="password"
-          defaultValue="passw"
-          ref={register({ required: true })}
-        />
-        {errors.password && <div className={styles.error}>This field is required</div>}
-        <Input
-          type="password"
-          className={styles.input}
-          label="Confirm Password"
-          name="confirmPassword"
-          defaultValue="passw"
-          ref={register({ 
-            validate: value => {
-              if (value === "") {
-                return "This field is required.";
-              }
-              return value === password || "Passwords don't match."
-            }
-          })}
-        />
-        {errors.confirmPassword && <div className={styles.error}>{errors.confirmPassword.message}</div>}
-        <div className={styles.actions}>
-          <Button default={false} onClick={() => alert('cancel')}>Cancel</Button>
-          <Button type="submit" onClick={handleSubmit(onSubmit)}>Change</Button>
-        </div>
-      </form>
-    </div>
-  )
+  handleInputChange = (value, e) => {
+    this.setState({
+      [e.target.name]: value
+    });
+  }
+
+  render() {
+    return (
+      <div className={styles["form-wrapper"]}>
+        <h2>Change Password</h2>
+        <form className={styles.form} onSubmit={(e) => this.handleSubmit(e)}>
+          <Input
+            className={styles.input}
+            type="password"
+            label="New Password"
+            name="password"
+            onChange={(value, e) => this.handleInputChange(value, e)}
+            onFocus={() => {}}
+            onBlur={() => {}}
+          />
+          <Input
+            type="password"
+            className={styles.input}
+            label="Confirm Password"
+            name="confirmPassword"
+            onChange={(value, e) => this.handleInputChange(value, e)}
+            onFocus={() => {}}
+            onBlur={() => {}}
+          />
+          <div className={styles.actions}>
+            <Button default={false} onClick={e => this.handleReset()}>Cancel</Button>
+            <Button type="submit">Change</Button>
+          </div>
+        </form>
+      </div>
+    )
+  }
 }
 
 export default ChangePassword

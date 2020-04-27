@@ -7,6 +7,7 @@ import notification from './notification/reducer';
 import common from './common/reducer';
 import kmap from './map/reducer';
 import aosurvey from './aosurvey/reducer';
+import account from './account/reducer';
 
 const reducers = combineReducers({
   menu,
@@ -16,7 +17,8 @@ const reducers = combineReducers({
   survey,
   common,
   kmap,
-  aosurvey
+  aosurvey,
+  account
 });
 
 export default reducers;

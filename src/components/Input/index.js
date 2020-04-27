@@ -27,8 +27,8 @@ const Input = ({
         onChange={(e) => onChange(e.target.value, e)}
         defaultValue={defaultValue}
         value={value}
-        onFocus={(e) => onFocus(e)}
-        onBlur={(e) => onBlur(e)}
+        onFocus={(e) => onFocus ? onFocus(e) : {}}
+        onBlur={(e) => onBlur ? onBlur(e) : {}}
       />
     </label>
   );

@@ -68,7 +68,6 @@ function* logout({ payload }) {
   const { history } = payload;
   try {
     // yield call(logoutAsync, history);
-    console.log("ddddd");
     localStorage.removeItem("accessToken");
     yield call(logoutUser, history);
     history.push("/");

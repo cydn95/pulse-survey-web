@@ -122,6 +122,36 @@ const addNewTopicAboutOtherAPI = (topicName, topicComment, questionId, projectUs
   });
 }
 
+/* Account */
+const changePasswordAPI = (token, email, password) => {
+  return getClient(true).post("/changepassword/", {
+    token,
+    email,
+    password
+  });
+}
+
+const getProfileAPI = (userId) => {
+  return getClient(true).get("/users/" + userId + "/");
+}
+
+const changeProfileAPI = (token, firstName, lastName, email, team, organization) => {
+  return getClient(true).post("/userprofile/", {
+    token,
+    first_name: firstName,
+    last_name: lastName,
+    email,
+    team,
+    organization
+  });
+}
+
+const changeAvatarAPI = (avatarId, data) => {
+  return getClient(true).put("/useravatar/" + avatarId + "/", data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+}
+
 /**
  * deprecated...
  */
@@ -167,4 +197,9 @@ export {
   
   addNewTopicAboutMeAPI,
   addNewTopicAboutOtherAPI,
+
+  changePasswordAPI,
+  getProfileAPI,
+  changeProfileAPI,
+  changeAvatarAPI
 }
