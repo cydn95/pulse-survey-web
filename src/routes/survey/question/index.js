@@ -21,8 +21,6 @@ class Question extends Component {
   constructor(props) {
     super(props);
 
-    this.scrollRef = React.createRef();
-
     this.state = {
       surveyList: this.props.surveyList
     }
@@ -139,7 +137,7 @@ class Question extends Component {
     }
 
     return (
-      <div className={styles.root} ref={this.scrollRef}>
+      <div className={styles.root}>
         {questionControl}
         <Continue history={this.props.history} title={continueText} />
       </div>

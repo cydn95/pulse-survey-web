@@ -3,11 +3,10 @@ import { Route, withRouter, Switch,Redirect } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
-import TopNav from 'Containers/TopNav'
 import Sidebar from 'Containers/Sidebar';
 import BottomBar from 'Containers/BottomBar';
 
-import Survey from './survey';
+import AboutMeSurvey from './about-me';
 import MyMap from './mymap';
 import Dashboard from './dashboard';
 import Settings from './settings';
@@ -33,7 +32,7 @@ const MainApp = ({ match, history }) => {
         <div className={styles.main}>
           <Switch>
             <Route path={`${match.url}/test`} component={Test} />
-            <Route path={`${match.url}/about-me`} component={Survey} />
+            <Route path={`${match.url}/about-me`} component={AboutMeSurvey} />
             <Route path={`${match.url}/my-map`} component={MyMap} />
             <Route path={`${match.url}/settings`} component={Settings} />
             <Route path={`${match.url}/dashboard`} component={Dashboard} />

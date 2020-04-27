@@ -1,0 +1,126 @@
+.root {
+  width: 100%;
+  background-color: #eff1f4;
+}
+
+.topbar {
+  position: fixed;
+  top: 0px;
+  left:225px;
+  width: calc(100% - 224px);
+  height: 80px;
+  z-index: 300;
+
+  @media only screen and (max-width: 880px) {
+    height: 100px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 300;
+    width: 100%;
+  }
+
+  .section {
+    .page-title {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.19;
+      color: #7eccbf;
+      display: none;
+    }
+
+    .project-name {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.19;
+      color: rgb(126, 204, 191);
+    }
+  }
+}
+
+.main-content {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+  padding: 19px;
+  box-sizing: border-box;
+}
+
+.driver-scroll {
+  width: calc(100vw - 262px);
+  
+  @media only screen and (max-width: 880px) {
+    width: calc(100vw - 38px);
+  }
+
+  .driver-section {
+    position: fixed;
+    left: 244px;
+    top: 80px;
+    padding-top: 19px;
+    z-index: 300;
+    width: calc(100vw - 281px);
+    height: 87px;
+    overflow: hidden;
+    background-color: #eff1f4;
+
+    @media only screen and (max-width: 880px) {
+      position: fixed;
+      left: 19px;
+      top: 100px;
+      height: 80px;
+      width: calc(100% - 38px);
+    }
+  }
+}
+
+.survey-container {
+  width: 80%;
+  margin-left: 10%;
+  padding-top: 186px;
+
+  @media only screen and (max-width: 1024px) {
+    width: 90%;
+    margin-left: 5%;
+  }
+
+  @media only screen and (max-width: 880px) {
+    width: 100%;
+    margin-left: 0px;
+    padding-top: 170px;
+    padding-bottom: 80px;
+  }
+}
+
+.d-none {
+  display: none;
+}
+
+.survey-driver-container {
+  width: 100%;
+  padding: 0px 13%;
+  box-sizing: border-box;
+
+  @media only screen and (max-width: 1024px) {
+    padding: 0px 8%;
+  }
+
+  @media only screen and (max-width: 880px) {
+    padding: 0px 8%;
+  }
+
+  @media only screen and (max-width: 768px) {
+    padding: 0px 0px;
+  }
+}
+
+@media only screen and (max-width: 880px) {
+  .control-container {
+    display: block;
+    width: auto;
+    height: auto;
+    background-color: #fff;
+    border-radius: 16px;
+  }
+}
+
