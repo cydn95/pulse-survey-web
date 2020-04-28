@@ -51,7 +51,6 @@ class NewStakeholder extends Component {
         btnAddDisabled: false,
       };
     }
-
   }
 
   componentWillReceiveProps(props) {
@@ -146,16 +145,48 @@ class NewStakeholder extends Component {
           show: true,
         };
 
-        this.props.onAddStakeholder(data);
+        // this.props.onAddStakeholder(data);
       }
     );
+  };
+
+  handleSelectMyCategory = (categoryId) => {
+    const myCategoryList = [...this.state.stakeholder.myCategoryList];
+    if (myCategoryList.indexOf(categoryId) >= 0) {
+      myCategoryList.splice(myCategoryList.indexOf(categoryId), 1);
+    } else {
+      myCategoryList.push(categoryId);
+    }
+
+    this.setState({
+      stakeholder: {
+        ...this.state.stakeholder,
+        myCategoryList,
+      },
+    });
+  };
+
+  handleSelectProjectCategory = (categoryId) => {
+    const projectCategoryList = [...this.state.stakeholder.projectCategoryList];
+    if (projectCategoryList.indexOf(categoryId) >= 0) {
+      projectCategoryList.splice(projectCategoryList.indexOf(categoryId), 1);
+    } else {
+      projectCategoryList.push(categoryId);
+    }
+
+    this.setState({
+      stakeholder: {
+        ...this.state.stakeholder,
+        projectCategoryList,
+      },
+    });
   };
 
   render() {
     const { shCategoryList, teamList } = this.props;
     const update = this.props.update ? this.props.update : false;
-
-    const { btnAddDisabled } = this.state;
+    const { btnAddDisabled, stakeholder } = this.state;
+    const { myCategoryList, projectCategoryList } = stakeholder;
 
     return (
       <div className={styles.root}>
@@ -230,32 +261,60 @@ class NewStakeholder extends Component {
               ))}
             </Select>
           </FormControl>
-          <FormControl className={classnames(styles["input-field"])}>
-            <InputLabel
-              id="shcategory_label"
-              className={classnames({[styles.highlights]: update})}
-            >
-              Category
-            </InputLabel>
-            <Select
-              value={this.state.stakeholder.shCategory}
-              className={classnames(styles.select, {
-                [styles.highlights]: update
+          <div className={styles["category-wrapper"]}>
+            <div className={styles["category-type"]}>
+              <strong>My Map: </strong>How does this person relate to you?
+            </div>
+            <div className={styles["category-section"]}>
+              {shCategoryList.map((category) => {
+                const gray =
+                  myCategoryList.indexOf(category.id) >= 0 ? true : false;
+                return (
+                  <div
+                    className={styles.category}
+                    key={`category_${category.id}`}
+                  >
+                    <img
+                      src={category.icon}
+                      alt=""
+                      className={classnames({ [styles.gray]: !gray })}
+                      onClick={(e) => this.handleSelectMyCategory(category.id)}
+                    />
+                    <span>{category.SHCategoryName}</span>
+                  </div>
+                );
               })}
-              name="shCategory"
-              label="Sh Category*"
-              onChange={(e) => this.handleInputChange(e)}
-            >
-              {shCategoryList.map((sh, index) => (
-                <MenuItem key={sh.id} value={sh.id}>
-                  {sh.SHCategoryName}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+            </div>
+          </div>
+          <div className={styles["category-wrapper"]}>
+            <div className={styles["category-type"]}>
+              <strong>Project Map: </strong>How does this person relate to the
+              project?
+            </div>
+            <div className={styles["category-section"]}>
+              {shCategoryList.map((category) => {
+                const gray =
+                  projectCategoryList.indexOf(category.id) >= 0 ? true : false;
+                return (
+                  <div
+                    className={styles.category}
+                    key={`category_${category.id}`}
+                  >
+                    <img
+                      src={category.icon}
+                      alt=""
+                      className={classnames({ [styles.gray]: !gray })}
+                      onClick={(e) => this.handleSelectProjectCategory(category.id)}
+                    />
+                    <span>{category.SHCategoryName}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
           <FormControl className={styles["input-field"]}>
             <div className={styles.label}>
-              How would you describe this person’s role on the project?​
+              {`How would you describe this person’s role on the project?​`}
             </div>
             <TextField
               className={styles.input}
