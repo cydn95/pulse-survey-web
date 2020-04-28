@@ -35,8 +35,6 @@ import {
   shCategoryListSuccess,
 } from "./actions";
 
-import { uuid } from "uuidv4";
-
 const getTeamListAysnc = async () =>
   await teamListAPI()
     .then((data) => data)
