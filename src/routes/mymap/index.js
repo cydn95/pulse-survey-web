@@ -28,6 +28,8 @@ import { Droppable } from "react-drag-and-drop";
 import styles from "./styles.scss";
 import classnames from "classnames";
 
+import { uuid } from "uuidv4";
+
 const searchKey = "";
 
 class MyMap extends React.Component {
@@ -110,7 +112,7 @@ class MyMap extends React.Component {
     let newElem = {
       individuals: [
         {
-          id: projectUser.userId,
+          id: projectUser.userId + "_" + uuid(),
           name: projectUser.fullName,
           color: "transparent",
           icon: "fa-user",
@@ -280,24 +282,29 @@ class MyMap extends React.Component {
       });
 
       individual.organisations = organizationList;
-
       let individualList = [];
       if (kMapData.length > 0) {
         let mapUserList = [];
-
+        // console.log(kMapData);
         // Map MapUser and ShCategory
-        for (let i = 0; i < kMapData[0].projectUser.length; i++) {
-          for (let j = 0; j < userList.length; j++) {
-            if (kMapData[0].projectUser[i] === userList[j].id) {
-              for (let k = 0; k < userList[j].shCategory.length; k++) {
-                mapUserList.push({
-                  projectUserId: userList[j].id,
-                  shCategory: userList[j].shCategory[k],
-                });
-              }
-              break;
-            }
-          }
+        // for (let i = 0; i < kMapData[0].projectUser.length; i++) {
+        //   for (let j = 0; j < userList.length; j++) {
+        //     if (kMapData[0].projectUser[i] === userList[j].id) {
+        //       for (let k = 0; k < userList[j].shCategory.length; k++) {
+        //         mapUserList.push({
+        //           projectUserId: userList[j].id,
+        //           shCategory: userList[j].shCategory[k],
+        //         });
+        //       }
+        //       break;
+        //     }
+        //   }
+        // }
+        for (let i = 0; i < kMapData[0].pu_category.length; i++) {
+          mapUserList.push({
+            projectUserId: kMapData[0].pu_category[i].projectUser,
+            shCategory: kMapData[0].pu_category[i].category,
+          });
         }
 
         mapUserList.forEach((mapUser) => {
@@ -341,20 +348,30 @@ class MyMap extends React.Component {
             if (userList[i].id === mapUser.projectUserId) {
               for (let j = 0; j < userList[i].shCategory.length; j++) {
                 if (userList[i].shCategory[j] === mapUser.shCategory) {
-                  individualUser.id = "S_" + userList[i].user.id;
+                  individualUser.id =
+                    "S_" +
+                    userList[i].user.id +
+                    "_SHC_" +
+                    userList[i].shCategory[j];
+
                   individualUser.avatar =
                     userList[i].user.avatar == null
                       ? ""
                       : userList[i].user.avatar.name;
+
                   individualUser.name =
                     userList[i].user.first_name +
                     " " +
                     userList[i].user.last_name;
+
                   individualUser.team.current = "T_" + userList[i].team.id;
+
                   individualUser.organisation.current =
                     "O_" + userList[i].user.organization.name;
+
                   individualUser.sh_category.current =
                     "SHC_" + userList[i].shCategory[j];
+
                   individualUser.survey_completion =
                     (userList[i].ao_answered / userList[i].ao_total) * 100;
 
