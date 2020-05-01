@@ -70,16 +70,14 @@ function DriverComponent(props) {
           }
         )}
       >
-        <div>
-          <img
-            src={selected ? getIcon(icon, "light") : getIcon(icon, "dark")}
-            alt="icon"
-            className={styles.icon}
-          />
-        </div>
+        <img
+          src={selected ? getIcon(icon, "light") : getIcon(icon, "dark")}
+          alt="icon"
+          className={styles.icon}
+        />
         <div>
           <div>{driverName}</div>
-          <div className={styles.progress}>{progressLabel}</div>
+          {/* <div className={styles.progress}>{progressLabel}</div> */}
         </div>
       </div>
     </div>

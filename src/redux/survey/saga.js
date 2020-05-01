@@ -73,24 +73,36 @@ function* getPageList({payload}) {
             }
           }
 
-          questionList[i].amquestion[j] = {
-            ...questionList[i].amquestion[j],
-            answer: {
-              pageIndex: i,
-              questionIndex: j,
-              integerValue: 0,
-              topicValue: "",
-              commentValue: "",
-              skipValue: "",
-              topicTags: "",
-              commentTags: "",
-              user: 0,
-              subjectUser: 0,
-              survey: questionList[i].amquestion[j].survey,
-              amQuestion: questionList[i].amquestion[j].id,
-              type: 'me',
-              controlType: controlTypeText(questionList[i].amquestion[j].controlType)
-            }
+          if (questionList[i].amquestion[j].responsestatus) {
+            questionList[i].amquestion[j] = {
+              ...questionList[i].amquestion[j],
+              answer: {
+                ...questionList[i].amquestion[j].response,
+                survey: questionList[i].amquestion[j].survey,
+              },
+            };
+          } else {
+            questionList[i].amquestion[j] = {
+              ...questionList[i].amquestion[j],
+              answer: {
+                pageIndex: i,
+                questionIndex: j,
+                integerValue: 0,
+                topicValue: "",
+                commentValue: "",
+                skipValue: "",
+                topicTags: "",
+                commentTags: "",
+                user: 0,
+                subjectUser: 0,
+                survey: questionList[i].amquestion[j].survey,
+                amQuestion: questionList[i].amquestion[j].id,
+                type: "me",
+                controlType: controlTypeText(
+                  questionList[i].amquestion[j].controlType
+                ),
+              },
+            };
           }
         }
 
@@ -135,7 +147,6 @@ const submitSurveyAsync = async (answerData) =>
 function* submitSurvey( { payload }) {
 
   const { surveyList, projectId, history } = payload;
-  console.log(surveyList);
   let answerList = [];
   
   for (let i = 0; i < surveyList.length; i++) {
@@ -149,7 +160,7 @@ function* submitSurvey( { payload }) {
         && amquestions[j].answer.skipValue === '') {
           continue;
       }
-      
+
       let integerValue = amquestions[j].answer.integerValue;
       let isTopic = false;
       if (integerValue.toString().includes("T-")) {
