@@ -77,7 +77,7 @@ function DriverPanel(props) {
       root.current.scrollBy({
         left: chevronScrollInfo.scrollAmount,
         behavior: 'smooth'
-      })
+      });
       Object.assign(chevronScrollInfo, { chevronScrollAction: null, scrollAmount: 0 })
     }, 200)
   }
