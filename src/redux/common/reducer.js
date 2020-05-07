@@ -20,6 +20,8 @@ import {
   STAKEHOLDER_ANSWER,
 } from "Constants/actionTypes";
 
+import { SH_CATEGORY_TYPE } from "Constants/defaultValues";
+
 const INIT_STATE = {
   teamList: [],
   shgroupList: [],
@@ -28,8 +30,9 @@ const INIT_STATE = {
   skipQuestionList: [],
   stakeholderList: [],
   shCategoryList: [],
+  projectMapShCategoryList: [],
   userList: [],
-  loading: false
+  loading: false,
 };
 
 export default (state = INIT_STATE, action) => {
@@ -65,7 +68,23 @@ export default (state = INIT_STATE, action) => {
     case SHCATEGORY_LIST:
       return { ...state };
     case SHCATEGORY_LIST_SUCCESS:
-      return { ...state, shCategoryList: action.payload.shCategoryList };
+      const { shCategoryList } = action.payload;
+      const myMapShCategoryList = [];
+      const projectMapShCategoryList = [];
+
+      shCategoryList.forEach((item) => {
+        if (item.mapType === SH_CATEGORY_TYPE.MY_MAP) {
+          myMapShCategoryList.push(item);
+        } else if (item.mapType === SH_CATEGORY_TYPE.PROJECT_MAP) {
+          projectMapShCategoryList.push(item);
+        }
+      });
+
+      return {
+        ...state,
+        shCategoryList: myMapShCategoryList,
+        projectMapShCategoryList: projectMapShCategoryList,
+      };
     case ADD_STAKEHOLDER:
       return { ...state, loading: true };
     case ADD_STAKEHOLDER_SUCCESS:
@@ -79,15 +98,18 @@ export default (state = INIT_STATE, action) => {
       for (let i = 0; i < state.stakeholderList.length; i++) {
         if (state.stakeholderList[i].projectUserId == projectUserId) {
           state.stakeholderList[i].aoResponse.push(questionId);
-          state.stakeholderList[i].aoResponse = state.stakeholderList[i].aoResponse.filter((item, index) => {
+          state.stakeholderList[i].aoResponse = state.stakeholderList[
+            i
+          ].aoResponse.filter((item, index) => {
             return state.stakeholderList[i].aoResponse.indexOf(item) === index;
           });
-          state.stakeholderList[i].aoAnswered = state.stakeholderList[i].aoResponse.length;
+          state.stakeholderList[i].aoAnswered =
+            state.stakeholderList[i].aoResponse.length;
           break;
         }
       }
-      
-      return {...state}
+
+      return { ...state };
     default:
       return { ...state };
   }

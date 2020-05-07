@@ -21,6 +21,21 @@ class NewStakeholder extends Component {
     super(props);
 
     if (props.update) {
+      const myCategoryList = [];
+      const projectCategoryList = [];
+
+      props.shCategoryList.forEach(item => {
+        if (props.stakeholder.shCategory.indexOf(item.id) >= 0) {
+          myCategoryList.push(item.id);
+        }
+      });
+
+      props.projectMapShCategoryList.forEach((item) => {
+        if (props.stakeholder.shCategory.indexOf(item.id) >= 0) {
+          projectCategoryList.push(item.id);
+        }
+      });
+
       this.state = {
         stakeholder: {
           projectUserId: props.stakeholder.projectUserId,
@@ -31,7 +46,8 @@ class NewStakeholder extends Component {
           team: props.stakeholder.team,
           organisationId: props.stakeholder.organisationId.split("_")[1],
           organisation: props.stakeholder.organisation,
-          shCategory: props.stakeholder.shCategory.split("_")[1],
+          myCategoryList: myCategoryList,
+          projectCategoryList: projectCategoryList,
           show: true,
           firstName: props.stakeholder.fullName.split(" ")[0],
           lastName: props.stakeholder.fullName.split(" ")[1],
@@ -108,9 +124,9 @@ class NewStakeholder extends Component {
           return;
         }
 
-        if (stakeholder.shCategory === 0) {
+        if (stakeholder.myCategoryList.length === 0 && stakeholder.projectCategoryList.length === 0) {
           NotificationManager.error(
-            "SHCategory must be required",
+            "Select at least one category",
             "Info",
             2000
           );
@@ -145,7 +161,7 @@ class NewStakeholder extends Component {
           show: true,
         };
 
-        // this.props.onAddStakeholder(data);
+        this.props.onAddStakeholder(data);
       }
     );
   };
@@ -183,7 +199,7 @@ class NewStakeholder extends Component {
   };
 
   render() {
-    const { shCategoryList, teamList } = this.props;
+    const { shCategoryList, projectMapShCategoryList, teamList } = this.props;
     const update = this.props.update ? this.props.update : false;
     const { btnAddDisabled, stakeholder } = this.state;
     const { myCategoryList, projectCategoryList } = stakeholder;
@@ -292,7 +308,7 @@ class NewStakeholder extends Component {
               project?
             </div>
             <div className={styles["category-section"]}>
-              {shCategoryList.map((category) => {
+              {projectMapShCategoryList.map((category) => {
                 const gray =
                   projectCategoryList.indexOf(category.id) >= 0 ? true : false;
                 return (
@@ -304,7 +320,9 @@ class NewStakeholder extends Component {
                       src={category.icon}
                       alt=""
                       className={classnames({ [styles.gray]: !gray })}
-                      onClick={(e) => this.handleSelectProjectCategory(category.id)}
+                      onClick={(e) =>
+                        this.handleSelectProjectCategory(category.id)
+                      }
                     />
                     <span>{category.SHCategoryName}</span>
                   </div>

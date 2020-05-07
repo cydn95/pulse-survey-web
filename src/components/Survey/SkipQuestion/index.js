@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 
 import { faComment } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { SelectableButton } from "Components/Button";
+import SelectableButton from "Components/SelectableButton";
 
-import TextField from '@material-ui/core/TextField';
+import TextField from "@material-ui/core/TextField";
 
-import styles from './styles.scss';
+import styles from "./styles.scss";
 
 class SkipQuestion extends Component {
-
   constructor(props) {
     super(props);
 
@@ -18,162 +17,190 @@ class SkipQuestion extends Component {
 
     let optionList = [];
 
-    for (let i = 0 ; i < skipOption.length; i++) {
+    for (let i = 0; i < skipOption.length; i++) {
       for (let j = 0; j < skipQuestionList.length; j++) {
         if (skipOption[i] === skipQuestionList[j].id) {
           optionList.push(skipQuestionList[j]);
           break;
         }
       }
-    }    
+    }
 
     this.state = {
       skipToogle: false,
       commentToggle: false,
       reason: 0,
       comment,
-      optionList
-    }
+      optionList,
+    };
   }
 
   componentWillReceiveProps(props) {
     const { comment, skipValue } = props;
 
-    if (skipValue === '') {
+    if (skipValue === "") {
       this.setState({
-        skipToogle: false
-      })
+        skipToogle: false,
+      });
     } else {
       this.setState({
-        skipToogle: true
-      })
+        skipToogle: true,
+      });
     }
 
-    if (comment === '') {
+    if (comment === "") {
       this.setState({
-        commentToggle: false
-      })
+        commentToggle: false,
+      });
     } else {
       this.setState({
-        commentToggle: true
-      })
+        commentToggle: true,
+      });
     }
 
     this.setState({
-      'comment': comment,
-      reason: skipValue
+      comment: comment,
+      reason: skipValue,
     });
   }
 
-  onSkipQuestion = e => {
+  onSkipQuestion = (e) => {
     e.preventDefault();
 
     this.setState({
-      skipToogle: !this.state.skipToogle
+      skipToogle: !this.state.skipToogle,
     });
-  }
+  };
 
   onSelectSkipReason = (answer) => {
-    this.setState({
-      reason: answer
-    }, () => {
-      this.props.onSkip(answer);
-    });
-  }
+    console.log(answer);
+    this.setState(
+      {
+        reason: answer,
+      },
+      () => {
+        this.props.onSkip(answer);
+      }
+    );
+  };
 
   onShowCommentText = (e) => {
     e.preventDefault();
     this.setState({
-      commentToggle: !this.state.commentToggle
+      commentToggle: !this.state.commentToggle,
     });
-  }
+  };
 
-  onInputComment = e => {
-
+  onInputComment = (e) => {
     const comment = e.target.value;
 
-    this.setState({
-      'comment': comment
-    }, () => {
-      this.props.onComment(comment);
-    })
-  }
-  
-  render() {
+    this.setState(
+      {
+        comment: comment,
+      },
+      () => {
+        this.props.onComment(comment);
+      }
+    );
+  };
 
+  render() {
     // const { skipQuestionList, skipOption } = this.props;
 
-    const { optionList, commentToggle, skipToogle } =  this.state;
+    const { optionList, commentToggle, skipToogle } = this.state;
     const { commentPrompt } = this.props;
 
     const btnsToDraw = [];
     if (!commentToggle) {
       btnsToDraw.push(
-        (
-          <a key="show-btn" href="/" className={styles["qsn-comment-button"]} onClick={(e) => this.onShowCommentText(e)}><FontAwesomeIcon icon={faComment} />Comment</a>
-        )
+        <a
+          key="show-btn"
+          href="/"
+          className={styles["qsn-comment-button"]}
+          onClick={(e) => this.onShowCommentText(e)}
+        >
+          <FontAwesomeIcon icon={faComment} />
+          Comment
+        </a>
       );
     } else {
       btnsToDraw.push(
-        <a key="hide-btn" href="/" className={styles["hide-comment-button"]} onClick={(e) => this.onShowCommentText(e)}>Hide Comment</a>
+        <a
+          key="hide-btn"
+          href="/"
+          className={styles["hide-comment-button"]}
+          onClick={(e) => this.onShowCommentText(e)}
+        >
+          Hide Comment
+        </a>
       );
     }
 
     if (!skipToogle) {
-        if (optionList.length > 0) {
-          btnsToDraw.push(
-            <a key="skip-btn" className={styles["qsn-skip"]} href="/" onClick={(e) => this.onSkipQuestion(e)}>Skip</a>
-          );
-        }
+      if (optionList.length > 0) {
+        btnsToDraw.push(
+          <a
+            key="skip-btn"
+            className={styles["qsn-skip"]}
+            href="/"
+            onClick={(e) => this.onSkipQuestion(e)}
+          >
+            Skip
+          </a>
+        );
+      }
     } else {
       if (optionList.length > 0) {
         btnsToDraw.push(
-            <div key="skip" className="skip">
-              Why are you skiping this question? <a href="/" onClick={(e) => this.onSkipQuestion(e)}><strong>Cancel skip</strong></a>
-            </div>
+          <div key="skip" className="skip">
+            Why are you skiping this question?{" "}
+            <a href="/" onClick={(e) => this.onSkipQuestion(e)}>
+              <strong>Cancel skip</strong>
+            </a>
+          </div>
         );
       }
     }
 
-    const separatedBtns = btnsToDraw.flatMap((d, i) => i > 0 ? [ <div key={"separator" + i} className={styles.separator} />, d ] : [ d ]);
+    const separatedBtns = btnsToDraw.flatMap((d, i) =>
+      i > 0
+        ? [<div key={"separator" + i} className={styles.separator} />, d]
+        : [d]
+    );
 
     return (
       <div className={styles.main}>
-        <div className={styles["action-btns"]}>
-          {separatedBtns}
-        </div>
-        {skipToogle && optionList.length > 0 && 
+        <div className={styles["action-btns"]}>{separatedBtns}</div>
+        {skipToogle && optionList.length > 0 && (
           <div className={styles["skip-btns"]}>
-            {
-              optionList.map((item, index) => {
-                const active = (item.optionName) === this.state.reason;
-                return (
-                  <SelectableButton 
-                    key={item.id} 
-                    active={active}
-                    onClick={() => this.onSelectSkipReason(item.optionName)}>
-                    {item.optionName}
-                  </SelectableButton>
-                )
-              })
-            }
+            {optionList.map((item, index) => {
+              const active = item.optionName === this.state.reason;
+              return (
+                <SelectableButton
+                  key={item.id}
+                  active={active}
+                  onClick={() => this.onSelectSkipReason(item.optionName)}
+                >
+                  {item.optionName}
+                </SelectableButton>
+              );
+            })}
           </div>
-        }
-        {this.state.commentToggle &&
-          <div className={ styles['comment-section'] }>
-            <TextField 
+        )}
+        {this.state.commentToggle && (
+          <div className={styles["comment-section"]}>
+            <TextField
               id="comment"
-              className={ styles.comment }
-              value={ this.state.comment }
-              onChange={e => this.onInputComment(e)}
-              placeholder={ commentPrompt }
+              className={styles.comment}
+              value={this.state.comment}
+              onChange={(e) => this.onInputComment(e)}
+              placeholder={commentPrompt}
             />
           </div>
-        }
-        
+        )}
       </div>
     );
   }
 }
 
-export default SkipQuestion
+export default SkipQuestion;

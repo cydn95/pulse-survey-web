@@ -9,8 +9,12 @@ import {
   ABOUTME,
   SUBMIT_ABOUTME,
   ADD_ABOUT_ME_TOPIC,
-  ADD_ABOUT_ME_TOPIC_SUCCESS
-} from 'Constants/actionTypes';
+  ADD_ABOUT_ME_TOPIC_SUCCESS,
+  UPDATE_ABOUT_ME_TOPIC,
+  UPDATE_ABOUT_ME_TOPIC_SUCCESS,
+  DELETE_ABOUT_ME_TOPIC,
+  DELETE_ABOUT_ME_TOPIC_SUCCESS,
+} from "Constants/actionTypes";
 
 export const pageList = (projectUserId) => ({
   type: PAGE_LIST,
@@ -66,3 +70,50 @@ export const addAboutMeTopicSuccess = (topic, pageIndex, questionIndex) => ({
   type: ADD_ABOUT_ME_TOPIC_SUCCESS,
   payload: { topic, pageIndex, questionIndex }
 })
+
+export const updateAboutMeTopic = (
+  topicId,
+  topicName,
+  topicComment,
+  questionId,
+  projectUserId,
+  pageIndex,
+  questionIndex,
+  callback
+) => ({
+  type: UPDATE_ABOUT_ME_TOPIC,
+  payload: {
+    topicId,
+    topicName,
+    topicComment,
+    questionId,
+    projectUserId,
+    pageIndex,
+    questionIndex,
+    callback,
+  },
+});
+
+export const updateAboutMeTopicSuccess = (topicId, topic, pageIndex, questionIndex) => ({
+  type: UPDATE_ABOUT_ME_TOPIC_SUCCESS,
+  payload: { topicId, topic, pageIndex, questionIndex },
+});
+
+export const deleteAboutMeTopic = (
+  topicId,
+  pageIndex,
+  questionIndex,
+  callback
+) => ({
+  type: DELETE_ABOUT_ME_TOPIC,
+  payload: { topicId, pageIndex, questionIndex, callback },
+});
+
+export const deleteAboutMeTopicSuccess = (
+  topicId,
+  pageIndex,
+  questionIndex
+) => ({
+  type: DELETE_ABOUT_ME_TOPIC_SUCCESS,
+  payload: { topicId, pageIndex, questionIndex },
+});

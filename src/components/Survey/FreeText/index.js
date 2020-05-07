@@ -71,11 +71,11 @@ class FreeText extends Component {
   }
 
   render() {
-    const { question, skipQuestionList, user } = this.props;
+    const { question, skipQuestionList, user, projectTitle } = this.props;
     
     return (
       <div className={styles.root}>
-          <h2 className={ styles['question-text'] }>{replaceQuestionTextKeyWord(question.questionText, user)}</h2>
+          <h2 className={ styles['question-text'] }>{replaceQuestionTextKeyWord(question.questionText, user, projectTitle)}</h2>
           <div className={styles['answer-section']}>
             <TextField 
               className={ styles['answer-field'] }

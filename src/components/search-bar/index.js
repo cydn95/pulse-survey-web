@@ -33,8 +33,8 @@ function SearchBar(props) {
     searchKey,
     addNewStakeholder,
     onClickDecisionMaker,
-    list,
     shCategoryList,
+    projectMapShCategoryList,
     teamList,
     projectId,
     userId,
@@ -86,8 +86,8 @@ function SearchBar(props) {
         <div>
           <div className={styles["input-wrapper"]}>
             <Input
-              onFocus={e => onSearchFocus(e)}
-              onBlur={e => onSearchBlur(e)}
+              onFocus={(e) => onSearchFocus(e)}
+              onBlur={(e) => onSearchBlur(e)}
               placeholder="Search"
               value={filter}
               onChange={setFilter}
@@ -103,7 +103,7 @@ function SearchBar(props) {
                   title: "Decision Makers",
                   name: "decision",
                   type: "combo",
-                  list: list,
+                  list: shCategoryList,
                   content: (
                     <div className={styles["tab-content"]}>
                       <span className={styles.cnt}>
@@ -123,7 +123,7 @@ function SearchBar(props) {
                             d.organisation +
                             " / " +
                             (d.team === "" ? d.userTeam : d.team);
-                          let percentage = ((d.aoAnswered / d.aoTotal) * 100);
+                          let percentage = (d.aoAnswered / d.aoTotal) * 100;
                           return (
                             <AvatarComponent
                               key={d.projectUserId}
@@ -207,6 +207,7 @@ function SearchBar(props) {
       {viewType === "category" && (
         <NewStakeholder
           shCategoryList={shCategoryList}
+          projectMapShCategoryList={projectMapShCategoryList}
           teamList={teamList}
           onCancel={(e) => setViewType("search")}
           onAddStakeholder={(stakeholder) =>
@@ -236,13 +237,14 @@ SearchBar.propTypes = {
 };
 
 const mapStateToProps = ({ common, authUser }) => {
-  const { teamList, shCategoryList } = common;
+  const { teamList, shCategoryList, projectMapShCategoryList } = common;
   const { projectId, user } = authUser;
   return {
     projectId,
     userId: user.userId,
     teamList,
     shCategoryList,
+    projectMapShCategoryList,
   };
 };
 

@@ -6,17 +6,21 @@ import {
 } from '../../services/axios/utility';
 
 import {
-    pageListAPI,
-    submitSurveyAPI,
-    optionListAPI,
-    addNewTopicAboutMeAPI
-} from '../../services/axios/api';
+  pageListAPI,
+  submitSurveyAPI,
+  optionListAPI,
+  addNewTopicAboutMeAPI,
+  updateTopicAboutMeAPI,
+  deleteTopicAboutMeAPI,
+} from "../../services/axios/api";
 
 import {
   PAGE_LIST,
   SUBMIT_SURVEY,
-  ADD_ABOUT_ME_TOPIC
-} from 'Constants/actionTypes';
+  ADD_ABOUT_ME_TOPIC,
+  UPDATE_ABOUT_ME_TOPIC,
+  DELETE_ABOUT_ME_TOPIC,
+} from "Constants/actionTypes";
 
 import { controlType, controlTypeText } from 'Constants/defaultValues'
 
@@ -24,8 +28,10 @@ import {
   pageListSuccess,
   submitSurveySuccess,
   driverListSuccess,
-  addAboutMeTopicSuccess
-} from '../actions';
+  addAboutMeTopicSuccess,
+  updateAboutMeTopicSuccess,
+  deleteAboutMeTopicSuccess,
+} from "../actions";
 
 const getPageListAsync = async (projectUserId) =>
     await pageListAPI(projectUserId)
@@ -231,6 +237,73 @@ function* addAboutMeTopic( { payload }) {
   }
 }
 
+const updateAboutMeTopicAsync = async (
+  topicId,
+  topicName,
+  topicComment,
+  questionId,
+  projectUserId
+) =>
+  await updateTopicAboutMeAPI(
+    topicId,
+    topicName,
+    topicComment,
+    questionId,
+    projectUserId
+  )
+    .then((result) => result)
+    .catch((error) => error);
+
+function* updateAboutMeTopic({ payload }) {
+  const {
+    topicId,
+    topicName,
+    topicComment,
+    questionId,
+    projectUserId,
+    pageIndex,
+    questionIndex,
+    callback,
+  } = payload;
+
+  try {
+    let result = yield call(
+      updateAboutMeTopicAsync,
+      topicId,
+      topicName,
+      topicComment,
+      questionId,
+      projectUserId
+    );
+
+    if (result.status === 200) {
+      yield put(updateAboutMeTopicSuccess(topicId, result.data, pageIndex, questionIndex));
+      callback(topicId, result.data);
+    }
+  } catch (error) {
+    console.log("survey error : ", error);
+  }
+}
+
+const deleteAboutMeTopicAsync = async (topicId) =>
+  await deleteTopicAboutMeAPI(topicId)
+    .then((result) => result)
+    .catch((error) => error);
+
+function* deleteAboutMeTopic({ payload }) {
+  const { topicId, pageIndex, questionIndex, callback } = payload;
+
+  try {
+    const result = yield call(deleteAboutMeTopicAsync, topicId);
+    if (result.status === 204) {
+      yield put(deleteAboutMeTopicSuccess(topicId, pageIndex, questionIndex));
+      callback(topicId);
+    }
+  } catch (error) {
+    console.log("survey error : ", error);
+  }
+}
+
 export function* watchPageList() {
   yield takeEvery(PAGE_LIST, getPageList);
 }
@@ -243,10 +316,20 @@ export function* watchAddAboutMeTopic() {
   yield takeEvery(ADD_ABOUT_ME_TOPIC, addAboutMeTopic);
 }
 
+export function* watchUpdateAboutMeTopic() {
+  yield takeEvery(UPDATE_ABOUT_ME_TOPIC, updateAboutMeTopic);
+}
+
+export function* watchDeleteAboutMeTopic() {
+  yield takeEvery(DELETE_ABOUT_ME_TOPIC, deleteAboutMeTopic);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchPageList),
     fork(watchSubmitSurvey),
-    fork(watchAddAboutMeTopic)
+    fork(watchAddAboutMeTopic),
+    fork(watchUpdateAboutMeTopic),
+    fork(watchDeleteAboutMeTopic)
   ]);
 }

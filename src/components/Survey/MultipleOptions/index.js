@@ -89,14 +89,14 @@ class MultipleOptions extends Component {
   };
 
   render() {
-    const { question, skipQuestionList, user } = this.props;
+    const { question, skipQuestionList, user, projectTitle } = this.props;
     const { optionList } = this.state;
 
     return (
       <div className={styles.main}>
         <div>
           <h2 className={styles["question-text"]}>
-            {replaceQuestionTextKeyWord(question.questionText, user)}
+            {replaceQuestionTextKeyWord(question.questionText, user, projectTitle)}
           </h2>
         </div>
         <div className={styles["question-selector"]}>

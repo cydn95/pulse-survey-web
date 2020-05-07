@@ -57,19 +57,23 @@ export const loginErrorTypeText = (type) => {
   }
 };
 
-export const replaceQuestionTextKeyWord = (questionText, user) => {
-  if (user == null || user == undefined) {
+export const replaceQuestionTextKeyWord = (questionText, user, projectName) => {
+  if (user == null || user === undefined) {
     return questionText;
+  }
+
+  if (projectName == null || projectName === undefined) {
+    projectName = 'Project';
   }
 
   var str = questionText;
 
-  str = str.replace("{{{PROJECTNAME}}}", "ProjectAI");
+  str = str.replace("{{{PROJECTNAME}}}", projectName);
   str = str.replace("{{{TEAMNAME}}}", user.team);
   str = str.replace("{{{FULLNAME}}}", user.fullName);
   str = str.replace("{{{STAKEHOLDERNAME}}}", user.fullName);
 
-  str = str.replace("{{PROJECTNAME}}", "ProjectAI");
+  str = str.replace("{{PROJECTNAME}}", projectName);
   str = str.replace("{{TEAMNAME}}", user.team);
   str = str.replace("{{FULLNAME}}", user.fullName);
   str = str.replace("{{STAKEHOLDERNAME}}", user.fullName);
@@ -80,3 +84,8 @@ export const replaceQuestionTextKeyWord = (questionText, user) => {
 export const SURVEY_NOT_STARTED = 0;
 export const SURVEY_IN_PROGRESS = 1;
 export const SURVEY_COMPLETED = 2;
+
+export const SH_CATEGORY_TYPE = {
+  MY_MAP: 2,
+  PROJECT_MAP: 3
+};
