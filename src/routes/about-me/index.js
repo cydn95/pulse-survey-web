@@ -183,7 +183,7 @@ class AboutMeSurvey extends React.Component {
       fullName: "Mike Smith",
       team: "Pulse",
     };
-
+console.log(projectTitle);
     return (
       <div className={styles.root}>
         <div className={styles.topbar}>
@@ -220,6 +220,7 @@ class AboutMeSurvey extends React.Component {
                                 question={question}
                                 onAnswer={(answer) => this.handleAnswer(answer)}
                                 skipQuestionList={skipQuestionList}
+                                projectTitle={projectTitle}
                               />
                             </div>
                           );
@@ -234,6 +235,7 @@ class AboutMeSurvey extends React.Component {
                                 question={question}
                                 onAnswer={(answer) => this.handleAnswer(answer)}
                                 skipQuestionList={skipQuestionList}
+                                projectTitle={'projectTitle'}
                               />
                             </div>
                           );
@@ -250,6 +252,7 @@ class AboutMeSurvey extends React.Component {
                                 question={question}
                                 onAnswer={(answer) => this.handleAnswer(answer)}
                                 skipQuestionList={skipQuestionList}
+                                projectTitle={projectTitle}
                               />
                             </div>
                           );
@@ -267,6 +270,7 @@ class AboutMeSurvey extends React.Component {
                                 question={question}
                                 onAnswer={(answer) => this.handleAnswer(answer)}
                                 skipQuestionList={skipQuestionList}
+                                projectTitle={projectTitle}
                               />
                             </div>
                           );
@@ -284,6 +288,7 @@ class AboutMeSurvey extends React.Component {
                                 question={question}
                                 onAnswer={(answer) => this.handleAnswer(answer)}
                                 skipQuestionList={skipQuestionList}
+                                projectTitle={projectTitle}
                               />
                             </div>
                           );
@@ -299,6 +304,7 @@ class AboutMeSurvey extends React.Component {
                                 question={question}
                                 onAnswer={(answer) => this.handleAnswer(answer)}
                                 skipQuestionList={skipQuestionList}
+                                projectTitle={projectTitle}
                               />
                             </div>
                           );

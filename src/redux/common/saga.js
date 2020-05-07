@@ -185,14 +185,15 @@ function* getStakeholderList({ payload }) {
   }
 }
 
-const getShCategoryListAsync = async () =>
-  await shCategoryListAPI()
+const getShCategoryListAsync = async (mapType) =>
+  await shCategoryListAPI(mapType)
     .then((data) => data)
     .catch((error) => error);
 
-function* getShCategoryList() {
+function* getShCategoryList({ payload }) {
+  const { mapType } = payload;
   try {
-    const result = yield call(getShCategoryListAsync);
+    const result = yield call(getShCategoryListAsync, mapType);
 
     if (result.status === 200) {
       yield put(shCategoryListSuccess(result.data));
@@ -234,9 +235,9 @@ function* addStakeholder({ payload }) {
         project: parseInt(projectId, 10),
         user: parseInt(userId, 10),
         team: parseInt(stakeholder.teamId, 10),
-        shCategory: parseInt(stakeholder.shCategory, 10),
+        shMyCategory: stakeholder.myCategoryList,
+        shProjectCategory: stakeholder.projectCategoryList,
         projectUserTitle: stakeholder.projectUserTitle,
-        projectUserRoleDesc: stakeholder.projectUserRoleDesc,
       };
 
       const result2 = yield call(addStakeholderAsync, projectUser);
@@ -258,14 +259,16 @@ const updateStakeholderAsync = async (projectUserId, projectUser) =>
 function* updateStakeholder({ payload }) {
   try {
     const { stakeholder } = payload;
+    
     const projectUser = {
       project: parseInt(stakeholder.projectId, 10),
       id: parseInt(stakeholder.projectUserId, 10),
       user: parseInt(stakeholder.userId, 10),
       team: parseInt(stakeholder.teamId, 10),
-      shCategory: parseInt(stakeholder.shCategory, 10),
+      shMyCategory: stakeholder.myCategoryList,
+      shProjectCategory: stakeholder.projectCategoryList,
       projectUserTitle: stakeholder.projectUserTitle,
-      projectUserRoleDesc: stakeholder.projectUserRoleDesc,
+      shGroup: null,
     };
 
     const result = yield call(

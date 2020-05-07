@@ -1,0 +1,21 @@
+.main {
+  cursor: pointer;
+  border: none;
+  outline: none;
+
+  padding: 10px 25px;
+  border-radius: 5px;
+
+  background: #4cb9a8;
+  color: #fff;
+
+  transition: background 0.3s;
+
+  &:hover {
+    background: #163732;
+  }
+
+  &.active {
+    background: #163732;
+  }
+}
