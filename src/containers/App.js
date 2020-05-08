@@ -44,8 +44,8 @@ class App extends Component {
 			setMainMenuClassName('dashboard');
 		} else if (location.pathname.startsWith('/app/about-me')) {
 			setMainMenuClassName('about-me');
-		} else if (location.pathname.startsWith('/app/my-map')) {
-			setMainMenuClassName('my-map');
+		} else if (location.pathname.startsWith('/app/about-others')) {
+			setMainMenuClassName('about-others');
 		} else if (location.pathname.startsWith('/app/project-map')) {
 			setMainMenuClassName('project-map');
 		}

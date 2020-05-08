@@ -33,7 +33,7 @@ const MainApp = ({ match, history }) => {
           <Switch>
             <Route path={`${match.url}/test`} component={Test} />
             <Route path={`${match.url}/about-me`} component={AboutMeSurvey} />
-            <Route path={`${match.url}/my-map`} component={MyMap} />
+            <Route path={`${match.url}/about-others`} component={MyMap} />
             <Route path={`${match.url}/settings`} component={Settings} />
             <Route path={`${match.url}/dashboard`} component={Dashboard} />
             <Route path={`${match.url}/my-project`} component={ComingSoon} />

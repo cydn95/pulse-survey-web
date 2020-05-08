@@ -17,9 +17,10 @@ import {
   addAboutOtherTopic,
 } from "Redux/actions";
 
-import styles from "./styles.scss";
-
 import { replaceQuestionTextKeyWord } from "Constants/defaultValues";
+
+import styles from "./styles.scss";
+import classnames from "classnames";
 
 class MultiTopics extends Component {
   constructor(props) {
@@ -239,11 +240,10 @@ class MultiTopics extends Component {
   };
 
   callbackUpdateTopicMe = (topicId, data) => {
-
     const topicList = [...this.state.topicList];
     const topicIndex = topicList.findIndex((item) => item.id === topicId);
     topicList[topicIndex] = {
-      ...data
+      ...data,
     };
 
     this.setState((state) => ({
@@ -302,8 +302,10 @@ class MultiTopics extends Component {
                 />
                 <div className={styles.space}>
                   <MButton
-                    className={styles["edit-btn"]}
-                    variant="outlined"
+                    className={classnames(styles["edit-btn"], {
+                      [styles["green"]]: active,
+                    })}
+                    variant={active ? "container" : "outlined"}
                     color="primary"
                     size="small"
                     onClick={(e) =>
@@ -318,7 +320,7 @@ class MultiTopics extends Component {
                   </MButton>
                   <MButton
                     className={styles["edit-btn"]}
-                    variant="outlined"
+                    variant={active ? "container" : "outlined"}
                     color="secondary"
                     size="small"
                     disabled={this.state.btnDeleteDisable}

@@ -27,6 +27,10 @@
     }
     .edit-btn {
         margin-left: 20px;
+        border-color: #7fcdc1;
+        &.green {
+            background: #7fcdc1;
+        }
     }
 }
 

@@ -137,9 +137,9 @@ class Sidebar extends Component {
               </li>
               <li className={styles["nav--item"]}>
                 <SideBarMenuItem
-                  to="/app/my-map"
-                  menuKey="my-map"
-                  menuTitle="My Map"
+                  to="/app/about-others"
+                  menuKey="about-others"
+                  menuTitle="About Others"
                   className={styles["nav--item--link"]}
                   mainMenuClassName={mainMenuClassName}
                   onClickMenu={(e, menuKey) =>
@@ -207,8 +207,7 @@ class Sidebar extends Component {
                   onClickMenu={(e, menuKey) =>
                     this.handleClickMainMenu(e, menuKey, true)
                   }
-                >
-                </SideBarMenuItem>
+                ></SideBarMenuItem>
               </li>
               <li className={styles["nav--item"]}>
                 <SideBarMenuItem
