@@ -305,7 +305,7 @@ class MultiTopics extends Component {
                     className={classnames(styles["edit-btn"], {
                       [styles["green"]]: active,
                     })}
-                    variant={active ? "container" : "outlined"}
+                    variant={active ? "contained" : "outlined"}
                     color="primary"
                     size="small"
                     onClick={(e) =>
@@ -320,7 +320,7 @@ class MultiTopics extends Component {
                   </MButton>
                   <MButton
                     className={styles["edit-btn"]}
-                    variant={active ? "container" : "outlined"}
+                    variant={active ? "contained" : "outlined"}
                     color="secondary"
                     size="small"
                     disabled={this.state.btnDeleteDisable}
