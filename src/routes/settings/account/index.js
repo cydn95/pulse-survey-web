@@ -118,12 +118,14 @@ class Account extends React.Component {
   }
 
   callbackChangeProfile = (res) => {
+    const { getProfile, userId } = this.props;
     if (res.data === "success") {
       NotificationManager.success(
         "Profile has been changed successfully",
         "Info",
         2000
       );
+      getProfile(userId);
     }
   }
 
@@ -133,12 +135,14 @@ class Account extends React.Component {
   }
 
   callbackChangeAvatar = (res) => {
+    const { getProfile, userId } = this.props;
     if (res.status === 200) {
       NotificationManager.success(
         "Your avatar has been changed successfully",
         "Info",
         2000
       );
+      getProfile(userId);
     }
   }
 

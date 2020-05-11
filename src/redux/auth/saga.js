@@ -17,7 +17,7 @@ import {
   logoutUser,
   loginUserFailed,
   setProjectIDSuccess,
-} from "./actions";
+} from "Redux/actions";
 
 import { loginErrorType } from "Constants/defaultValues";
 

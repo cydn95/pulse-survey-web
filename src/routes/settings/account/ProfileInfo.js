@@ -1,5 +1,4 @@
 import React, { } from 'react';
-import { useForm } from 'react-hook-form'
 
 import Input from "Components/Input"
 import Button from "Components/Button"
@@ -68,13 +67,13 @@ class ProfileInfo extends React.Component {
             value={this.state.lastName}
             onChange={(value, e) => this.handleInputChange(value, e)}
           />
-          {/* <Input
+          <Input
             className={styles.input}
             label="Email"
             name="email"
             value={this.state.email}
             onChange={(value, e) => this.handleInputChange(value, e)}
-          /> */}
+          />
           <Input
             className={styles.input}
             label="Team"
