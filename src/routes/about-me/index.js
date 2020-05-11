@@ -47,8 +47,14 @@ class AboutMeSurvey extends React.Component {
   }
 
   componentWillMount() {
-    this.props.getPageList(this.props.projectUserId);
-    this.props.getSkipQuestionList();
+    const { projectUserId, getPageList, getSkipQuestionList, history } = this.props;
+    if (projectUserId == undefined || projectUserId == null || projectUserId <= 0) {
+      history.push('/app/project-not-found');
+      return;
+    }
+
+    getPageList(projectUserId);
+    getSkipQuestionList();
   }
 
   componentWillReceiveProps(props) {

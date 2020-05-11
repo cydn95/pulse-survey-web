@@ -199,7 +199,7 @@ class Sidebar extends Component {
             <ul className={styles.nav}>
               <li className={styles["nav--item"]}>
                 <SideBarMenuItem
-                  to="/app/settings"
+                  to="/app/settings/account"
                   menuKey="settings"
                   menuTitle="Profile"
                   className={styles["nav--item--link"]}

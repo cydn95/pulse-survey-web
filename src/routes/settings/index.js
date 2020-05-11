@@ -10,9 +10,19 @@ import styles from './styles.scss';
 
 class Settings extends React.Component {
 
-  render() {
+  constructor(props) {
+    super(props);
 
+    const { tab } = props.match.params;
+
+    this.state = {
+      tab: (tab == undefined || tab == null ) ? 'account' : tab
+    }
+  }
+  
+  render() {
     const { history } = this.props;
+    const { tab } = this.state;
 
     return (
       <div className={ styles.root}>
@@ -25,7 +35,7 @@ class Settings extends React.Component {
         </div>
 				<div className={ styles['setting-container'] }>
           <TabPanel
-            selectedTab="account"
+            selectedTab={tab}
             data={[
               {
                 title: "Account",

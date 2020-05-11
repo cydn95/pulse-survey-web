@@ -25,7 +25,6 @@ import { NewStakeholder } from "Components/Survey";
 import SearchBar from "Components/search-bar";
 import Button from "Components/Button";
 
-import { SH_CATEGORY_TYPE } from "Constants/defaultValues";
 import { Droppable } from "react-drag-and-drop";
 
 import styles from "./styles.scss";
@@ -271,7 +270,12 @@ class MyMap extends React.Component {
   };
 
   componentWillMount() {
-    const { projectId, projectUserId, userId } = this.props;
+    const { projectId, projectUserId, userId, history} = this.props;
+
+    if (projectId == undefined || projectId == null || projectId <= 0 || projectUserId == undefined || projectUserId == null || projectUserId <= 0) {
+      history.push('/app/project-not-found');
+      return;
+    }
 
     this.props.getKMapData(userId, projectId);
     this.props.getProjectMapData(userId, projectId);

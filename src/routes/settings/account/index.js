@@ -44,8 +44,6 @@ class Account extends React.Component {
     changePassword(userToken, userProfile.email, password, this.callbackChangePassword);
   }
 
-
-
   callbackChangePassword = (res) => {
     if (res.data === "success") {
       NotificationManager.success(
