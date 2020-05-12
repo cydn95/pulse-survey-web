@@ -308,7 +308,7 @@ class Sidebar extends Component {
               <ul className={styles.nav}>
                 <li className={styles["nav--item"]}>
                   <SideBarMenuItem
-                    to="/app/dashboard/report-1"
+                    to="/app/dashboard"
                     menuKey="report-1"
                     menuTitle="Report 1"
                     className={styles["nav--item--link"]}
@@ -324,7 +324,7 @@ class Sidebar extends Component {
                 </li>
                 <li className={styles["nav--item"]}>
                   <SideBarMenuItem
-                    to="/app/dashboard/report-2"
+                    to="/app/dashboard"
                     menuKey="report-2"
                     menuTitle="Report 2"
                     className={styles["nav--item--link"]}
