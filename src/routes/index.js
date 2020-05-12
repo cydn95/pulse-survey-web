@@ -15,8 +15,6 @@ import ProjectNotFound from './project-not-found';
 import Error500 from './error500';
 import Error404 from './error404';
 
-import Test from './test';
-
 import styles from './styles.scss';
 
 const MainApp = ({ match, history }) => {
@@ -32,13 +30,12 @@ const MainApp = ({ match, history }) => {
       <div className={styles.container}>
         <div className={styles.main}>
           <Switch>
-            <Route path={`${match.url}/test`} component={Test} />
             <Route path={`${match.url}/about-me`} component={AboutMeSurvey} />
             <Route path={`${match.url}/about-others`} component={MyMap} />
             <Route path={`${match.url}/settings/:tab`} component={Settings} />
             <Route path={`${match.url}/settings`} component={Settings} />
             <Route path={`${match.url}/dashboard`} component={Dashboard} />
-            <Route path={`${match.url}/my-project`} component={ComingSoon} />
+            <Route path={`${match.url}/my-project/:projectUserId`} component={ComingSoon} />
             <Route path={`${match.url}/help`} component={ComingSoon} />
             <Route path={`${match.url}/project-not-found`} component={ProjectNotFound} />
             <Route path={`${match.url}/comingsoon`} component={ComingSoon} />

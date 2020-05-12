@@ -102,7 +102,7 @@ const setProjectIDAsync = async (userId, projectId) =>
     .catch((error) => error);
 
 function* setProjectID({ payload }) {
-  const { userId, projectId } = payload;
+  const { userId, projectId, callback } = payload;
 
   try {
     if (projectId > 0) {
@@ -123,6 +123,10 @@ function* setProjectID({ payload }) {
             result.data[0].id
           )
         );
+
+        if (callback !== undefined) {
+          callback();
+        }
       }
     } else {
       localStorage.setItem("projectId", 0);

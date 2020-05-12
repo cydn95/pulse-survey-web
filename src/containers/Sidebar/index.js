@@ -9,6 +9,7 @@ import {
   setSubMenuClassName,
   logoutUser,
   projectListByUser,
+  setProjectID,
 } from "Redux/actions";
 
 import styles from "./styles.scss";
@@ -67,6 +68,23 @@ class Sidebar extends Component {
 
     history.push(to);
   };
+
+  handleClickProject = (e, projectId) => {
+    e.preventDefault();
+
+    this.setState({
+      subMenuOpen: false,
+    });
+
+    const { user, setSurveyProjectID } = this.props;
+
+    setSurveyProjectID(user.userId, projectId, this.callbackClickProject);
+  };
+
+  callbackClickProject = () => {
+    const { history } = this.props;
+    history.push("/app/about-me");
+  }
 
   render() {
     const { mainMenuClassName, subMenuClassName, projectList } = this.props;
@@ -232,17 +250,13 @@ class Sidebar extends Component {
                 {projectList.map((project, index) => (
                   <li key={index} className={styles["nav--item"]}>
                     <SideBarMenuItem
-                      to={`/app/my-project/${project.project.projectName}`}
+                      to=""
                       menuKey={project.project.projectName}
                       menuTitle={project.project.projectName}
                       className={styles["nav--item--link"]}
                       mainMenuClassName={subMenuClassName}
                       onClickMenu={(e, menuKey) =>
-                        this.handleClickSubMenu(
-                          e,
-                          menuKey,
-                          `/app/my-project/${project.project.projectName}`
-                        )
+                        this.handleClickProject(e, project.project.id)
                       }
                     ></SideBarMenuItem>
                   </li>
@@ -438,5 +452,6 @@ export default withRouter(
     setSubMenuClassName,
     logoutUser,
     getProjectListByUser: projectListByUser,
+    setSurveyProjectID: setProjectID,
   })(Sidebar)
 );

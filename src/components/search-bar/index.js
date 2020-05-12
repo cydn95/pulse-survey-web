@@ -130,7 +130,7 @@ function SearchBar(props) {
                               className={styles["avatar-comp"]}
                               username={d.fullName}
                               userId={d.userId}
-                              onClick={(userId) => onClickDecisionMaker(userId)}
+                              onClick={(userId) => onClickDecisionMaker(`${userId}_`)}
                               title={title}
                               description={description}
                               profilePicUrl={d.userAvatar}

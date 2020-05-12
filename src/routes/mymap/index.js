@@ -666,6 +666,7 @@ class MyMap extends React.Component {
   };
 
   handleStartOtherSurvey = (id) => {
+
     if (id.startsWith("S_")) {
       let user = {};
       for (let i = 0; i < this.state.decisionMakerList.length; i++) {

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 
 import classnames from "classnames";
@@ -25,8 +25,7 @@ const Input = ({
         name={name}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value, e)}
-        defaultValue={defaultValue}
-        value={value}
+        defaultValue={value}
         onFocus={(e) => onFocus ? onFocus(e) : {}}
         onBlur={(e) => onBlur ? onBlur(e) : {}}
       />

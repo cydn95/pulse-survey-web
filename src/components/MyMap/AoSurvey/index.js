@@ -96,7 +96,7 @@ class AoSurvey extends React.Component {
 
   render() {
     const { options, currentUser } = this.state;
-    const { skipQuestionList, user } = this.props;
+    const { skipQuestionList, user, projectTitle } = this.props;
 
     const drivers = [...this.state.drivers];
 
@@ -109,8 +109,10 @@ class AoSurvey extends React.Component {
     for (let i = 0; i < drivers.length; i++) {
       let answeredCount = 0;
       for (let j = 0; j < drivers[i].questions.length; j++) {
-        if (currentUser.aoResponse.indexOf(drivers[i].questions[j].id) >= 0) {
-          answeredCount++;
+        if (currentUser.aoResponse instanceof Array) {
+          if (currentUser.aoResponse.indexOf(drivers[i].questions[j].id) >= 0) {
+            answeredCount++;
+          }
         }
       }
       if (answeredCount === 0) {
@@ -158,6 +160,7 @@ class AoSurvey extends React.Component {
                     key={`${index}`}
                     question={control}
                     onAnswer={(answer) => this.handleAnswer(answer)}
+                    projectTitle={projectTitle}
                   />
                 );
               case controlType.SLIDER:
@@ -168,6 +171,7 @@ class AoSurvey extends React.Component {
                     key={`${index}`}
                     question={control}
                     onAnswer={(answer) => this.handleAnswer(answer)}
+                    projectTitle={projectTitle}
                   />
                 );
 
@@ -180,6 +184,7 @@ class AoSurvey extends React.Component {
                     options={options}
                     question={control}
                     onAnswer={(answer) => this.handleAnswer(answer)}
+                    projectTitle={projectTitle}
                   />
                 );
 
@@ -193,6 +198,7 @@ class AoSurvey extends React.Component {
                     options={options}
                     question={control}
                     onAnswer={(answer) => this.handleAnswer(answer)}
+                    projectTitle={projectTitle}
                   />
                 );
 
@@ -204,6 +210,7 @@ class AoSurvey extends React.Component {
                     key={`${index}`}
                     question={control}
                     onAnswer={(answer) => this.handleAnswer(answer)}
+                    projectTitle={projectTitle}
                   />
                 );
 
@@ -237,13 +244,13 @@ class AoSurvey extends React.Component {
 const mapStateToProps = ({ survey, common, authUser }) => {
   const { pageList, pageIndex } = survey;
   const { skipQuestionList } = common;
-  const { projectUserId } = authUser;
-
+  const { projectTitle, projectUserId, projectId } = authUser;
   return {
     surveyList: pageList,
     pageIndex,
     skipQuestionList,
     projectUserId,
+    projectTitle,
   };
 };
 

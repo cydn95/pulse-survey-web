@@ -10,9 +10,9 @@ import {
   SET_PASSWORD,
 } from "Constants/actionTypes";
 
-export const setProjectID = (userId, projectId) => ({
+export const setProjectID = (userId, projectId, callback) => ({
   type: PROJECT_ID,
-  payload: { userId, projectId },
+  payload: { userId, projectId, callback },
 });
 
 export const setProjectIDSuccess = (
