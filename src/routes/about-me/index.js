@@ -241,7 +241,7 @@ class AboutMeSurvey extends React.Component {
                                 question={question}
                                 onAnswer={(answer) => this.handleAnswer(answer)}
                                 skipQuestionList={skipQuestionList}
-                                projectTitle={'projectTitle'}
+                                projectTitle={projectTitle}
                               />
                             </div>
                           );
