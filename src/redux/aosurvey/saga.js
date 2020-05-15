@@ -39,7 +39,7 @@ function* getAoQuestionList({payload}) {
   const { projectUserId } = payload;
   try {
     const result = yield call(getAoQuestionListAsync, projectUserId);
-
+console.log(result);
     if (result.status === 200) {
       const result_option = yield call(getOptionListAsync);
       
@@ -76,22 +76,43 @@ function* getAoQuestionList({payload}) {
             }
           }
 
-          aoQuestionList[i] = {
-            ...aoQuestionList[i],
-            answer: {
-              pageIndex: 0,
-              questionIndex: i,
-              integerValue: 0,
-              topicValue: "",
-              commentValue: "",
-              skipValue: "",
-              topicTags: "",
-              commentTags: "",
-              user: 0,
-              subjectUser: 0,
-              survey: aoQuestionList[i].survey,
-              amQuestion: aoQuestionList[i].id,
-              type: 'other'
+          if (aoQuestionList[i].responsestatus) {
+            aoQuestionList[i] = {
+              ...aoQuestionList[i],
+              answer: {
+                amQuestion: aoQuestionList[i].response.aoQuestion,
+                pageIndex: 0,
+                questionIndex: i,
+                integerValue: aoQuestionList[i].response.integerValue,
+                topicValue: aoQuestionList[i].response.topicValue,
+                commentValue: aoQuestionList[i].response.commentValue,
+                skipValue: aoQuestionList[i].response.skipValue,
+                topicTags: aoQuestionList[i].response.topicValue,
+                commentTags: aoQuestionList[i].response.commentTags,
+                user: aoQuestionList[i].response.user,
+                subjectUser: aoQuestionList[i].response.subjectUser,
+                survey: aoQuestionList[i].survey,
+                type: 'other'
+              }
+            }
+          } else {
+            aoQuestionList[i] = {
+              ...aoQuestionList[i],
+              answer: {
+                pageIndex: 0,
+                questionIndex: i,
+                integerValue: 0,
+                topicValue: "",
+                commentValue: "",
+                skipValue: "",
+                topicTags: "",
+                commentTags: "",
+                user: 0,
+                subjectUser: 0,
+                survey: aoQuestionList[i].survey,
+                amQuestion: aoQuestionList[i].id,
+                type: 'other'
+              }
             }
           }
         }
