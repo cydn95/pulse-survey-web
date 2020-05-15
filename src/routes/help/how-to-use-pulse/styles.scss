@@ -1,0 +1,146 @@
+.round-text-field {
+  border: 1px solid #ddd !important;
+  border-radius: 26px !important;
+  height: 51px;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+
+  &:focus {
+    border-color: #c2d7fa !important;
+  }
+
+  &.error {
+    border-color: #f00 !important;
+  }
+}
+
+.round-btn {
+  display: inline-block;
+  height: 60px;
+  color: #fff;
+  border-radius: 30px;
+  border: none !important;
+  font-size: 15px;
+  line-height: 2.53;
+
+  &.green {
+    background-color: #7fcdc0 !important;
+
+    &:hover {
+      background-color: #00b8a3 !important;
+    }
+  }
+}
+
+.edge-btn {
+  display: inline-block;
+  height: 60px;
+  color: #fff;
+  border-radius: 10px;
+  border: none !important;
+  font-size: 15px;
+  line-height: 2.53;
+
+  &.green {
+    background-color: #78c8ba !important;
+
+    &:hover {
+      background-color: #00b8a3 !important;
+    }
+  }
+}
+
+.welcome {
+  
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-image: url('/assets/img/email/welcome-2.png');
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: 70%;
+  background-color: #fff !important;
+  background-attachment: fixed;
+  font-family: Poppins !important;
+
+  * {
+    font-family: Poppins !important;
+  }
+  
+  &__content {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin-left: 5%;
+    padding-top: 20px;
+    padding-bottom: 90px;
+
+    &--title {
+      font-weight: bold;
+      font-size: 60px;
+      line-height: 0.82;
+      color: #333;
+      margin-top: 29px;
+      margin-bottom: 20px;
+
+
+      @media only screen and (max-width: 768px) {
+        font-size: 2.5rem;
+      }
+    }
+
+    &--description {
+      font-size: 15px;
+      line-height: 1.73;
+      color: #1a1a1a;
+      margin-top: 15px;
+      width: 100%;
+    }
+
+    &__about {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+
+      @media only screen and (max-width: 768px) {
+        flex-direction: column;
+      }
+
+      &__section {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+
+        &--title {
+          font-size: 30px;
+          line-height: 1.63;
+          color: #333;
+        }
+
+        &--description {
+          font-size: 15px;
+          line-height: 1.73;
+          color: #1a1a1a;
+          margin-top: 15px;
+          width: 80%;
+        }
+
+        &--img {
+          width: 200px;
+          margin-top: 72px;
+          margin-bottom: 20px;
+          display: flex;
+          align-self: center;
+        }
+
+        &--continue {
+          width: 164px;
+          max-width: 164px;
+          margin-top: 16px;
+          align-self: flex-end;
+        }
+      }
+    }
+  }
+}

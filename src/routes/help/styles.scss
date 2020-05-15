@@ -1,0 +1,68 @@
+.root {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f3f5f7;
+}
+
+.topbar {
+  width: 100%;
+  height: 70px;
+  position: fixed;
+  top: 0px;
+  border-bottom: 1px solid #eee;
+
+  .section {
+    .page-title {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.19;
+      color: #7eccbf;
+      display: none;
+    }
+  }
+}
+
+.main-content {
+  display: flex;
+  flex-flow: row wrap;
+  width: 100%;
+  margin-top: 70px;
+}
+
+@media only screen and (max-width: 880px) {
+  .topbar {
+    height: 80px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+
+    .section {
+      width: 100%;
+      display: flex;
+      flex-flow: row;
+      margin-top: 27px;
+
+      .page-title {
+        display: block;
+        font-size: 21px;
+        line-height: 29px;
+        color: rgb(26, 26, 26);
+        flex: 1;
+        display: flex;
+      }
+
+      .project-name {
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 19px;
+        color: rgb(126, 204, 191);
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .main-content {
+    flex-direction: column-reverse;
+    margin-top: 80px;
+  }
+}
