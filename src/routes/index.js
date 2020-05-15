@@ -10,6 +10,7 @@ import AboutMeSurvey from './about-me';
 import MyMap from './mymap';
 import Dashboard from './dashboard';
 import Settings from './settings';
+import Help from './help';
 import ComingSoon from './coming';
 import ProjectNotFound from './project-not-found';
 import Error500 from './error500';
@@ -17,7 +18,7 @@ import Error404 from './error404';
 
 import styles from './styles.scss';
 
-const MainApp = ({ match, history }) => {
+const MainApp = ({ match }) => {
 
 	return (
     <div className={styles.root}>
@@ -35,9 +36,15 @@ const MainApp = ({ match, history }) => {
             <Route path={`${match.url}/settings/:tab`} component={Settings} />
             <Route path={`${match.url}/settings`} component={Settings} />
             <Route path={`${match.url}/dashboard`} component={Dashboard} />
-            <Route path={`${match.url}/my-project/:projectUserId`} component={ComingSoon} />
-            <Route path={`${match.url}/help`} component={ComingSoon} />
-            <Route path={`${match.url}/project-not-found`} component={ProjectNotFound} />
+            <Route
+              path={`${match.url}/my-project/:projectUserId`}
+              component={ComingSoon}
+            />
+            <Route path={`${match.url}/help`} component={Help} />
+            <Route
+              path={`${match.url}/project-not-found`}
+              component={ProjectNotFound}
+            />
             <Route path={`${match.url}/comingsoon`} component={ComingSoon} />
             <Route path={`${match.url}/500error`} component={Error500} />
             <Route path={`${match.url}/404error`} component={Error404} />
