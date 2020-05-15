@@ -10,6 +10,7 @@ const Input = ({
   name,
   placeholder,
   onChange,
+  onKeyUp,
   value,
   defaultValue,
   label,
@@ -25,6 +26,7 @@ const Input = ({
         name={name}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value, e)}
+        onKeyUp={e => onKeyUp ? onKeyUp(e) : {}}
         defaultValue={value}
         onFocus={(e) => onFocus ? onFocus(e) : {}}
         onBlur={(e) => onBlur ? onBlur(e) : {}}

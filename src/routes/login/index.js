@@ -51,6 +51,13 @@ class LoginLayout extends Component {
     })
   }
 
+  inputKeyUp = e => {
+    if (e.keyCode === 13) {
+      this.onUserLogin();
+      return;
+    }
+  }
+
   componentWillReceiveProps(props) {
     const { authStatus } = props;
 
@@ -75,6 +82,7 @@ class LoginLayout extends Component {
           value={username}
           name="username"
           onChange={e => this.inputChange(e)}
+          onKeyUp={e => this.inputKeyUp(e)}
         />
         <label>PASSWORD</label>
         <Input
@@ -82,6 +90,7 @@ class LoginLayout extends Component {
           value={password}
           name="password"
           onChange={e => this.inputChange(e)}
+          onKeyUp={e => this.inputKeyUp(e)}
         />
         <a href="/forgot-password" className="forgot-password">Forgot your password?</a>
         <Button className="login-container__right--login-panel--submit round-btn green" onClick={e => this.onUserLogin()}>Login</Button>
