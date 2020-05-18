@@ -21,7 +21,7 @@ const HowToUsePulse = ({ history }) => {
           <p className={styles["welcome__content--description"]}>
             This platform has been taught many of the important concepts​
             involved in this project. This questionnaire is not designed to
-            point fingers or find people to blame - but only to vimprove how we
+            point fingers or find people to blame - but only to improve how we
             communicate and collaborate. ​Your responses will be anonymised and
             combined with others to guide managers on new focus areas to improve
             team/stakeholder engagement and project performance.​
