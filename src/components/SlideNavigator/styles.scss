@@ -1,0 +1,14 @@
+.dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: #5e7caf;
+  border-radius: 3px;
+  margin-right: 7px;
+  // opacity: 0.7;
+
+  &.active {
+    background: #fff;
+    opacity: 1;
+  }
+}
