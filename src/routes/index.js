@@ -1,33 +1,65 @@
-import React from 'react';
-import { Route, withRouter, Switch,Redirect } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Route, withRouter, Switch, Redirect } from "react-router-dom";
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import { isMobile } from "react-device-detect";
 
-import Sidebar from 'Containers/Sidebar';
-import BottomBar from 'Containers/BottomBar';
+import Sidebar from "Containers/Sidebar";
+import BottomBar from "Containers/BottomBar";
 
-import AboutMeSurvey from './about-me';
-import MyMap from './mymap';
-import Dashboard from './dashboard';
-import Settings from './settings';
-import Help from './help';
-import ComingSoon from './coming';
-import ProjectNotFound from './project-not-found';
-import Error500 from './error500';
-import Error404 from './error404';
+import AboutMeSurvey from "./about-me";
+import MyMap from "./mymap";
+import Dashboard from "./dashboard";
+import Settings from "./settings";
+import Help from "./help";
+import ComingSoon from "./coming";
+import ProjectNotFound from "./project-not-found";
+import Error500 from "./error500";
+import Error404 from "./error404";
 
-import styles from './styles.scss';
+import DialogTourView from "Components/DialogTourView";
+import MobileTour from "./tour/mobile";
 
-const MainApp = ({ match }) => {
+import styles from "./styles.scss";
 
-	return (
+const MainApp = ({ history, match }) => {
+  const [open, setOpen] = useState(false);
+  // const showSideBar = history.location.pathname.includes("/tour") ? false : true;
+  const showSideBar = true;
+  const showBottomBar = history.location.pathname.includes("/tour")
+    ? false
+    : true;
+
+  useEffect(() => {
+    if (!history.location.pathname.includes("/tour")) {
+      const tourView = localStorage.getItem("tour");
+      if (!tourView) {
+        if (isMobile) {
+          history.push("/app/tour");
+        } else {
+          setOpen(true);
+        }
+        localStorage.setItem("tour", true);
+      }
+    }
+  }, [history.location.pathname]);
+
+  const closeTourDialog = () => {
+    setOpen(false);
+  };
+
+  return (
     <div className={styles.root}>
-      <div className={styles.sidebar}>
-        <Sidebar />
-      </div>
-      <div className={styles.bottombar}>
-        <BottomBar />
-      </div>
+      {showSideBar && (
+        <div className={styles.sidebar}>
+          <Sidebar />
+        </div>
+      )}
+      {showBottomBar && (
+        <div className={styles.bottombar}>
+          <BottomBar />
+        </div>
+      )}
       <div className={styles.container}>
         <div className={styles.main}>
           <Switch>
@@ -41,6 +73,7 @@ const MainApp = ({ match }) => {
               component={ComingSoon}
             />
             <Route path={`${match.url}/help`} component={Help} />
+            <Route path={`${match.url}/tour`} component={MobileTour} />
             <Route
               path={`${match.url}/project-not-found`}
               component={ProjectNotFound}
@@ -52,13 +85,14 @@ const MainApp = ({ match }) => {
           </Switch>
         </div>
       </div>
+      <DialogTourView open={open} onClose={(e) => closeTourDialog()} />
     </div>
   );
 };
 
 MainApp.propTypes = {
-	match: PropTypes.object,
-	history: PropTypes.object
+  match: PropTypes.object,
+  history: PropTypes.object,
 };
 
 export default withRouter(MainApp);

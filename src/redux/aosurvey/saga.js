@@ -39,7 +39,7 @@ function* getAoQuestionList({payload}) {
   const { projectUserId } = payload;
   try {
     const result = yield call(getAoQuestionListAsync, projectUserId);
-console.log(result);
+
     if (result.status === 200) {
       const result_option = yield call(getOptionListAsync);
       
