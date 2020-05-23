@@ -38,7 +38,7 @@ const InitialPath = ({ component: Component, ...rest, authUser }) =>
 class App extends Component {
 	
 	componentDidMount() {
-		const { setMainMenuClassName, getProfile, user, location } = this.props;
+		const { setMainMenuClassName, location } = this.props;
 		if (location.pathname.startsWith('/app/dashboard')) {
 			setMainMenuClassName('dashboard');
 		} else if (location.pathname.startsWith('/app/about-me')) {
@@ -48,8 +48,15 @@ class App extends Component {
 		} else if (location.pathname.startsWith('/app/project-map')) {
 			setMainMenuClassName('project-map');
 		}
+	}
 
-		getProfile(user.userId)
+	componentWillReceiveProps(props) {
+		const { user, getProfile } = props;
+		const { oldUser } = this.props;
+
+		if (!oldUser || user.userId !== oldUser.userId) {
+			getProfile(user.userId);
+		}
 	}
 
 	render() {
