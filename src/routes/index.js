@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Route, withRouter, Switch, Redirect } from "react-router-dom";
 
 import PropTypes from "prop-types";
+import { isMobile } from "react-device-detect";
 
 import Sidebar from "Containers/Sidebar";
 import BottomBar from "Containers/BottomBar";
@@ -16,17 +17,36 @@ import ProjectNotFound from "./project-not-found";
 import Error500 from "./error500";
 import Error404 from "./error404";
 
+import DialogTourView from "Components/DialogTourView";
 import MobileTour from "./tour/mobile";
 
 import styles from "./styles.scss";
 
 const MainApp = ({ history, match }) => {
-
+  const [open, setOpen] = useState(false);
   // const showSideBar = history.location.pathname.includes("/tour") ? false : true;
   const showSideBar = true;
   const showBottomBar = history.location.pathname.includes("/tour")
     ? false
     : true;
+
+  useEffect(() => {
+    if (!history.location.pathname.includes("/tour")) {
+      const tourView = localStorage.getItem("tour");
+      if (!tourView) {
+        if (isMobile) {
+          history.push("/app/tour");
+        } else {
+          setOpen(true);
+        }
+        localStorage.setItem("tour", true);
+      }
+    }
+  }, [history.location.pathname]);
+
+  const closeTourDialog = () => {
+    setOpen(false);
+  };
 
   return (
     <div className={styles.root}>
@@ -65,6 +85,7 @@ const MainApp = ({ history, match }) => {
           </Switch>
         </div>
       </div>
+      <DialogTourView open={open} onClose={(e) => closeTourDialog()} />
     </div>
   );
 };

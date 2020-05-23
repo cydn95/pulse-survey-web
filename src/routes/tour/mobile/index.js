@@ -1,7 +1,5 @@
 import React from "react";
 
-import { isMobile } from "react-device-detect";
-
 import MobileTourView from "Components/MobileTourView";
 import { MOBILE_TOUR_CONTENT } from "Constants/defaultValues";
 
@@ -45,7 +43,6 @@ class MobileTour extends React.Component {
   }
 
   render() {
-    console.log(isMobile ? "This is a mobile browser" : "Not a mobile");
     const { step } = this.state;
     
     return (
