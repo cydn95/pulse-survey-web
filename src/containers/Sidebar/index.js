@@ -250,7 +250,7 @@ class Sidebar extends Component {
                 <SideBarMenuItem
                   to="/logout"
                   menuKey="logout"
-                  menuTitle="LogOut"
+                  menuTitle="Log Out"
                   className={styles["nav--item--link"]}
                   mainMenuClassName={mainMenuClassName}
                   onClickMenu={(e, menuKey) =>
