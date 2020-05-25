@@ -250,7 +250,7 @@ class Sidebar extends Component {
                 <SideBarMenuItem
                   to="/logout"
                   menuKey="logout"
-                  menuTitle="Log Out"
+                  menuTitle="Log out"
                   className={styles["nav--item--link"]}
                   mainMenuClassName={mainMenuClassName}
                   onClickMenu={(e, menuKey) =>
@@ -366,6 +366,22 @@ class Sidebar extends Component {
           <div className={styles["sub-menu"]}>
             <div className={styles.link}>
               <ul className={styles.nav}>
+                <li className={styles["nav--item"]}>
+                  <SideBarMenuItem
+                    to="/app/tour"
+                    menuKey="take-the-tour"
+                    menuTitle="Take the tour"
+                    className={styles["nav--item--link"]}
+                    mainMenuClassName={subMenuClassName}
+                    onClickMenu={(e, menuKey) =>
+                      this.handleClickSubMenu(
+                        e,
+                        menuKey,
+                        "/app/tour"
+                      )
+                    }
+                  ></SideBarMenuItem>
+                </li>
                 <li className={styles["nav--item"]}>
                   <SideBarMenuItem
                     to="/app/help/how-to-use-pulse"
