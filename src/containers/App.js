@@ -52,9 +52,10 @@ class App extends Component {
 
 	componentWillReceiveProps(props) {
 		const { user, getProfile } = props;
+		console.log(user.userId);
 		const { oldUser } = this.props;
 
-		if (!oldUser || user.userId !== oldUser.userId) {
+		if (!oldUser || user.userId !== oldUser.userId || user.userId > 0) {
 			getProfile(user.userId);
 		}
 	}

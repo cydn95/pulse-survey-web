@@ -33,9 +33,15 @@ class Sidebar extends Component {
   handleClickMainMenu = (e, menu, navigate) => {
     e.preventDefault();
 
-    const { history, setMainMenuClassName, mainMenuClassName } = this.props;
+    const { history, setMainMenuClassName, mainMenuClassName, logoutUser } = this.props;
 
     setMainMenuClassName(menu);
+
+    if (menu === 'logout') {
+      setMainMenuClassName('dashboard');
+      logoutUser();
+      return;
+    }
 
     if (navigate) {
       this.setState({
@@ -232,6 +238,19 @@ class Sidebar extends Component {
                   to="/app/help"
                   menuKey="help"
                   menuTitle="Help"
+                  className={styles["nav--item--link"]}
+                  mainMenuClassName={mainMenuClassName}
+                  onClickMenu={(e, menuKey) =>
+                    this.handleClickMainMenu(e, menuKey, false)
+                  }
+                ></SideBarMenuItem>
+              </li>
+
+              <li className={styles["nav--item"]}>
+                <SideBarMenuItem
+                  to="/logout"
+                  menuKey="logout"
+                  menuTitle="LogOut"
                   className={styles["nav--item--link"]}
                   mainMenuClassName={mainMenuClassName}
                   onClickMenu={(e, menuKey) =>
