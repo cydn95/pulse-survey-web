@@ -9,9 +9,9 @@ import {
   PROJECTMAP_SAVE_SUCCESS,
 } from "Constants/actionTypes";
 
-export const kMapData = (userId, projectId) => ({
+export const kMapData = (projectUserId) => ({
   type: KMAP_DATA,
-  payload: { userId, projectId },
+  payload: { projectUserId },
 });
 
 export const kMapDataSuccess = (kMapData) => ({
@@ -28,9 +28,9 @@ export const kMapSaveSuccess = () => ({
   type: KMAP_SAVE_SUCCESS,
 });
 
-export const projectMapData = (userId, projectId) => ({
+export const projectMapData = (projectUserId) => ({
   type: PROJECTMAP_DATA,
-  payload: { userId, projectId },
+  payload: { projectUserId },
 });
 
 export const projectMapDataSuccess = (projectMapData) => ({

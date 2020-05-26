@@ -38,13 +38,14 @@ function SearchBar(props) {
     teamList,
     projectId,
     userId,
+    projectUserId,
     updateStakeholder,
     onSearchFocus,
     onSearchBlur
   } = props;
 
   const defaultStakeholder = {
-    projectUserId: "",
+    projectUserId: projectUserId,
     projectId: projectId,
     userId: userId,
     fullName: "",
@@ -56,7 +57,8 @@ function SearchBar(props) {
     show: true,
     firstName: "",
     lastName: "",
-    email: ""
+    email: "",
+    myProjectUser: projectUserId
   };
 
   const [filter, setFilter] = useState(searchKey);
@@ -130,7 +132,9 @@ function SearchBar(props) {
                               className={styles["avatar-comp"]}
                               username={d.fullName}
                               userId={d.userId}
-                              onClick={(userId) => onClickDecisionMaker(`${userId}_`)}
+                              onClick={(userId) =>
+                                onClickDecisionMaker(`${userId}_`)
+                              }
                               title={title}
                               description={description}
                               profilePicUrl={d.userAvatar}
@@ -180,7 +184,10 @@ function SearchBar(props) {
                                 profilePicUrl={d.userAvatar}
                                 userProgress={(10 + index * 10) % 100}
                                 arrow={true}
-                                stakeholder={d}
+                                stakeholder={{
+                                  ...d,
+                                  myProjectUser: projectUserId,
+                                }}
                                 onArrowClick={(e, stakeholder) =>
                                   handleArrowClick(stakeholder)
                                 }
@@ -211,7 +218,10 @@ function SearchBar(props) {
           teamList={teamList}
           onCancel={(e) => setViewType("search")}
           onAddStakeholder={(stakeholder) =>
-            handleUpdateStakeholder(stakeholder)
+            handleUpdateStakeholder({
+              ...stakeholder,
+              myProjectUser: projectUserId,
+            })
           }
           update={true}
           stakeholder={selectedStakeholder}
@@ -238,10 +248,11 @@ SearchBar.propTypes = {
 
 const mapStateToProps = ({ common, authUser }) => {
   const { teamList, shCategoryList, projectMapShCategoryList } = common;
-  const { projectId, user } = authUser;
+  const { projectId, user, projectUserId } = authUser;
   return {
     projectId,
     userId: user.userId,
+    projectUserId,
     teamList,
     shCategoryList,
     projectMapShCategoryList,

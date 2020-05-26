@@ -86,14 +86,15 @@ function* getOptionList() {
   }
 }
 
-const getDriverListAysnc = async () =>
-  await driverListAPI()
+const getDriverListAysnc = async (surveyId) =>
+  await driverListAPI(surveyId)
     .then((data) => data)
     .catch((error) => error);
 
-function* getDriverList() {
+function* getDriverList({ payload }) {
   try {
-    const result = yield call(getDriverListAysnc);
+    const { surveyId } = payload;
+    const result = yield call(getDriverListAysnc, surveyId);
 
     if (result.status === 200) {
       let driverList = [];
@@ -130,15 +131,15 @@ function* getSkipQuestionList() {
   }
 }
 
-const getStakeholderListAysnc = async (projectId) =>
-  await stakeholderListAPI(projectId)
+const getStakeholderListAysnc = async (projectUserId) =>
+  await stakeholderListAPI(projectUserId)
     .then((data) => data)
     .catch((error) => error);
 
 function* getStakeholderList({ payload }) {
   try {
-    const { projectId } = payload;
-    const result = yield call(getStakeholderListAysnc, projectId);
+    const { projectUserId } = payload;
+    const result = yield call(getStakeholderListAysnc, projectUserId);
 
     let stakeholderList = [];
     if (result.status === 200) {
@@ -164,8 +165,8 @@ function* getStakeholderList({ payload }) {
           userTitle: sh.user.usertitle === null ? "" : sh.user.usertitle.name,
           email: sh.user.email,
           fullName: sh.user.first_name + " " + sh.user.last_name,
-          teamId: "T_" + sh.team.id,
-          team: sh.team.name,
+          teamId: "T_" + (sh.team === null ? "0" : sh.team.id),
+          team: sh.team === null ? "" : sh.team.name,
           organisationId: "O_" + sh.user.organization.name,
           organisation: sh.user.organization.name,
           shCategory: sh.shCategory == null ? [] : sh.shCategory,
@@ -238,6 +239,8 @@ function* addStakeholder({ payload }) {
         shMyCategory: stakeholder.myCategoryList,
         shProjectCategory: stakeholder.projectCategoryList,
         projectUserTitle: stakeholder.projectUserTitle,
+        shGroup: null,
+        myProjectUser: stakeholder.myProjectUser,
       };
 
       const result2 = yield call(addStakeholderAsync, projectUser);
@@ -259,7 +262,7 @@ const updateStakeholderAsync = async (projectUserId, projectUser) =>
 function* updateStakeholder({ payload }) {
   try {
     const { stakeholder } = payload;
-    
+
     const projectUser = {
       project: parseInt(stakeholder.projectId, 10),
       id: parseInt(stakeholder.projectUserId, 10),
@@ -269,6 +272,7 @@ function* updateStakeholder({ payload }) {
       shProjectCategory: stakeholder.projectCategoryList,
       projectUserTitle: stakeholder.projectUserTitle,
       shGroup: null,
+      myProjectUser: stakeholder.myProjectUser,
     };
 
     const result = yield call(

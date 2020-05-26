@@ -29,8 +29,8 @@ const optionListAPI = () => {
   return getClient(true).get("/option/?format=json");
 };
 
-const driverListAPI = () => {
-  return getClient(true).get("/driver/?format=json");
+const driverListAPI = (surveyId = 1) => {
+  return getClient(true).get(`/driver/?format=json&survey_id=${surveyId}`);
 };
 
 const submitSurveyAPI = (answerData) => {
@@ -41,7 +41,11 @@ const teamListAPI = () => {
   return getClient(true).get("/team/?format=json");
 };
 
-const shgroupListAPI = () => {
+const shgroupListAPI = (surveyId = 1) => {
+  if (!surveyId || surveyId === undefined) {
+    surveyId = 1;
+  }
+
   return getClient(true).get("/shgroup/?format=json");
 };
 
@@ -57,15 +61,15 @@ const userListAPI = () => {
   return getClient(true).get("/users/");
 };
 
-const myMapAPI = (userId, projectId) => {
+const myMapAPI = (projectUserId) => {
   return getClient(true).get(
-    "/mymaplayouts/?format=json&user=" + userId + "&project=" + projectId
+    `/mymaplayouts/?format=json&myProjectUser=${projectUserId}`
   );
 };
 
-const projectMapAPI = (userId, projectId) => {
+const projectMapAPI = (projectUserId) => {
   return getClient(true).get(
-    "/projectmaplayouts/?format=json&user=" + userId + "&project=" + projectId
+    `/projectmaplayouts/?format=json&myProjectUser=${projectUserId}`
   );
 };
 
@@ -84,9 +88,9 @@ const submitAoQuestionAPI = (answerData) => {
 };
 
 // Get StakeholderList (get users by project id)
-const stakeholderListAPI = (projectId) => {
+const stakeholderListAPI = (projectUserId) => {
   return getClient(true).get(
-    "/userByProject/?format=json&project=" + projectId
+    "/userByProject/?format=json&myProjectUser=" + projectUserId
   );
 };
 const getProjectUserAPI = (userId, projectId) => {
