@@ -5,7 +5,7 @@ import { Colxx } from "Components/CustomBootstrap";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { Draggable, Droppable } from 'react-drag-and-drop'
+import { Draggable } from 'react-drag-and-drop'
 
 class StakeholderList extends React.Component {
 

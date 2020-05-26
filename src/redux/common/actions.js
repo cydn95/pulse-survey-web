@@ -23,87 +23,88 @@ import {
 } from "Constants/actionTypes";
 
 export const teamList = () => ({
-  type: TEAM_LIST
+  type: TEAM_LIST,
 });
 
 export const teamListSuccess = (teamList) => ({
   type: TEAM_LIST_SUCCESS,
-  payload: { teamList }
+  payload: { teamList },
 });
 
 export const shgroupList = () => ({
-  type: SHGROUP_LIST
+  type: SHGROUP_LIST,
 });
 
 export const shgroupListSuccess = (shgroupList) => ({
   type: SHGROUP_LIST_SUCCESS,
-  payload: {shgroupList}
+  payload: { shgroupList },
 });
 
 export const optionList = () => ({
-  type: OPTION_LIST
+  type: OPTION_LIST,
 });
 
 export const optionListSuccess = (optionList) => ({
   type: OPTION_LIST_SUCCESS,
-  payload: { optionList }
+  payload: { optionList },
 });
 
-export const driverList = () => ({
-  type: DRIVER_LIST
+export const driverList = (surveyId) => ({
+  type: DRIVER_LIST,
+  payload: { surveyId },
 });
 
 export const driverListSuccess = (driverList) => ({
   type: DRIVER_LIST_SUCCESS,
-  payload: { driverList }
+  payload: { driverList },
 });
 
 export const skipQuestionList = () => ({
-  type: SKIP_QUESTION_LIST
+  type: SKIP_QUESTION_LIST,
 });
 
 export const skipQuestionListSuccess = (skipQuestionList) => ({
   type: SKIP_QUESTION_LIST_SUCCESS,
-  payload: { skipQuestionList }
+  payload: { skipQuestionList },
 });
 
-export const stakeholderList = (projectId) => ({
+export const stakeholderList = (projectUserId) => ({
   type: STAKEHOLDER_LIST,
-  payload: { projectId }
+  payload: { projectUserId },
 });
 
 export const stakeholderListSuccess = (stakeholderList, userList) => ({
   type: STAKEHOLDER_LIST_SUCCESS,
-  payload: { stakeholderList, userList }
+  payload: { stakeholderList, userList },
 });
 
 export const shCategoryList = (mapType) => ({
   type: SHCATEGORY_LIST,
-  payload: { mapType }
+  payload: { mapType },
 });
 
-export const shCategoryListSuccess = (shCategoryList ) => ({
+export const shCategoryListSuccess = (shCategoryList) => ({
   type: SHCATEGORY_LIST_SUCCESS,
-  payload: { shCategoryList }
+  payload: { shCategoryList },
 });
 
 export const addUser = (user) => ({
   type: ADD_USER,
-  payload: { user }
+  payload: { user },
 });
 
 export const addUserSuccess = (insertedUserId) => ({
   type: ADD_USER_SUCCESS,
-  payload: { insertedUserId }
+  payload: { insertedUserId },
 });
 
 export const addStakeholder = (projectId, stakeholder) => ({
   type: ADD_STAKEHOLDER,
-  payload: { projectId, stakeholder }
+  payload: { projectId, stakeholder },
 });
 
 export const addStakeholderSuccess = () => ({
-  type: ADD_STAKEHOLDER_SUCCESS
+  type: ADD_STAKEHOLDER_SUCCESS,
 });
 
 export const updateStakeholder = (stakeholder) => ({
@@ -117,5 +118,5 @@ export const updateStakeholderSuccess = () => ({
 
 export const stakeholderAnswer = (projectUserId, questionId) => ({
   type: STAKEHOLDER_ANSWER,
-  payload: { projectUserId, questionId }
+  payload: { projectUserId, questionId },
 });

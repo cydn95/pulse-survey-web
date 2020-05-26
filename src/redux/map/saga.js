@@ -20,16 +20,16 @@ import {
   projectMapSaveSuccess,
 } from "./actions";
 
-const getKMapDataAysnc = async (userId, projectId) =>
-  await myMapAPI(userId, projectId)
+const getKMapDataAysnc = async (projectUserId) =>
+  await myMapAPI(projectUserId)
     .then((data) => data)
     .catch((error) => error);
 
 function* getKMapData({ payload }) {
-  const { userId, projectId } = payload;
+  const { projectUserId } = payload;
 
   try {
-    const result = yield call(getKMapDataAysnc, userId, projectId);
+    const result = yield call(getKMapDataAysnc, projectUserId);
 
     if (result.status === 200) {
       yield put(kMapDataSuccess(result.data));
@@ -39,16 +39,16 @@ function* getKMapData({ payload }) {
   }
 }
 
-const getProjectMapDataAysnc = async (userId, projectId) =>
-  await projectMapAPI(userId, projectId)
+const getProjectMapDataAysnc = async (projectUserId) =>
+  await projectMapAPI(projectUserId)
     .then((data) => data)
     .catch((error) => error);
 
 function* getProjectMapData({ payload }) {
-  const { userId, projectId } = payload;
+  const { projectUserId } = payload;
 
   try {
-    const result = yield call(getProjectMapDataAysnc, userId, projectId);
+    const result = yield call(getProjectMapDataAysnc, projectUserId);
 
     if (result.status === 200) {
       yield put(projectMapDataSuccess(result.data));

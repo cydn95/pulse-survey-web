@@ -89,12 +89,12 @@ class MyMap extends React.Component {
       firstName: "",
       lastName: "",
       email: "",
+      myProjectUser: this.props.projectUserId,
     };
   }
 
   handleAddNewStakeholder = (stakeholder) => {
     const { projectId } = this.props;
-
     this.props.addStakeholder(projectId, stakeholder);
   };
 
@@ -270,20 +270,20 @@ class MyMap extends React.Component {
   };
 
   componentWillMount() {
-    const { projectId, projectUserId, userId, history} = this.props;
+    const { projectId, projectUserId, history} = this.props;
 
     if (projectId == undefined || projectId == null || projectId <= 0 || projectUserId == undefined || projectUserId == null || projectUserId <= 0) {
       history.push('/app/project-not-found');
       return;
     }
 
-    this.props.getKMapData(userId, projectId);
-    this.props.getProjectMapData(userId, projectId);
+    this.props.getKMapData(projectUserId);
+    this.props.getProjectMapData(projectUserId);
     this.props.getShCategoryList(0);
-    this.props.getStakeholderList(projectId);
+    this.props.getStakeholderList(projectUserId);
     this.props.getTeamList();
     this.props.getAoQuestionList(projectUserId);
-    this.props.getDriverList();
+    this.props.getDriverList(1);  // For now,  surveyId is 1 by default
     this.props.getSkipQuestionList();
   }
 
@@ -731,7 +731,7 @@ class MyMap extends React.Component {
   };
 
   handleSaveGraph = (e) => {
-    const { userId, projectId } = this.props;
+    const { userId, projectId, projectUserId } = this.props;
     const { mapStyle } = this.state;
 
     let mapProjectUserList = [];
@@ -756,6 +756,7 @@ class MyMap extends React.Component {
     const newMapData = {
       user: userId,
       project: projectId,
+      myProjectUser: projectUserId,
       pu_category: mapProjectUserList,
       layout_json: {},
     };
