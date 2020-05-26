@@ -67,6 +67,10 @@ const DialogTourView = ({ open, onClose }) => {
     setTour(MOBILE_TOUR_CONTENT[step]);
   }, [step]);
 
+  useEffect(() => {
+    setStep(0);
+  }, [open]);
+
   const containerBackgroundStyle = {
     background: `${tour.background}`,
   };

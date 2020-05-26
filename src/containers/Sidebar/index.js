@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
+import { isMobile } from "react-device-detect";
+import DialogTourView from "Components/DialogTourView";
+
 import SideBarMenuItem from "./SideBarMenuItem";
 
 import {
@@ -20,8 +23,15 @@ class Sidebar extends Component {
     super(props);
     this.state = {
       subMenuOpen: false,
+      tourViewOpen: false
     };
   }
+
+  handleCloseTourDialog = () => {
+    this.setState({
+      tourViewOpen: false
+    });
+  };
 
   componentDidMount() {
     const { getProjectListByUser, user, projectList } = this.props;
@@ -33,12 +43,17 @@ class Sidebar extends Component {
   handleClickMainMenu = (e, menu, navigate) => {
     e.preventDefault();
 
-    const { history, setMainMenuClassName, mainMenuClassName, logoutUser } = this.props;
+    const {
+      history,
+      setMainMenuClassName,
+      mainMenuClassName,
+      logoutUser,
+    } = this.props;
 
     setMainMenuClassName(menu);
 
-    if (menu === 'logout') {
-      setMainMenuClassName('dashboard');
+    if (menu === "logout") {
+      setMainMenuClassName("dashboard");
       logoutUser();
       return;
     }
@@ -66,6 +81,18 @@ class Sidebar extends Component {
 
     const { history, setSubMenuClassName } = this.props;
 
+    if (menu === "take-the-tour") {
+      if (isMobile) {
+        history.push(to);
+      } else {
+        this.setState({
+          tourViewOpen: true,
+          subMenuOpen: false,
+        });
+      }
+      return;
+    }
+
     setSubMenuClassName(menu);
 
     this.setState({
@@ -90,7 +117,7 @@ class Sidebar extends Component {
   callbackClickProject = () => {
     const { history } = this.props;
     history.push("/app/about-me");
-  }
+  };
 
   render() {
     const { mainMenuClassName, subMenuClassName, projectList } = this.props;
@@ -374,11 +401,7 @@ class Sidebar extends Component {
                     className={styles["nav--item--link"]}
                     mainMenuClassName={subMenuClassName}
                     onClickMenu={(e, menuKey) =>
-                      this.handleClickSubMenu(
-                        e,
-                        menuKey,
-                        "/app/tour"
-                      )
+                      this.handleClickSubMenu(e, menuKey, "/app/tour")
                     }
                   ></SideBarMenuItem>
                 </li>
@@ -463,6 +486,10 @@ class Sidebar extends Component {
             <div className={styles.space}></div>
           </div>
         )}
+        <DialogTourView
+          open={this.state.tourViewOpen}
+          onClose={(e) => this.handleCloseTourDialog()}
+        />
       </div>
     );
   }
