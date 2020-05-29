@@ -8,6 +8,7 @@ import common from './common/reducer';
 import kmap from './map/reducer';
 import aosurvey from './aosurvey/reducer';
 import account from './account/reducer';
+import tour from "./tour/reducer";
 
 const reducers = combineReducers({
   menu,
@@ -18,7 +19,8 @@ const reducers = combineReducers({
   common,
   kmap,
   aosurvey,
-  account
+  account,
+  tour
 });
 
 export default reducers;

@@ -2,6 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
+import Joyride, {
+  STATUS,
+} from "react-joyride";
+import a11yChecker from "a11y-checker";
+
 import { isMobile } from "react-device-detect";
 import DialogTourView from "Components/DialogTourView";
 
@@ -23,20 +28,60 @@ class Sidebar extends Component {
     super(props);
     this.state = {
       subMenuOpen: false,
-      tourViewOpen: false
+      tourViewOpen: false,
+      run: false,
+      stepIndex: 0,
+      steps: [
+        {
+          content: <h2>Step 1, make sure your on the right project</h2>,
+          locale: { skip: <strong aria-label="skip">S-K-I-P</strong> },
+          placement: "right",
+          target: ".s-menu-my-projects",
+          disableBeacon: true,
+        },
+        {
+          content: <h2>Step 2, rate how you feel the Project is going</h2>,
+          locale: { skip: <strong aria-label="skip">S-K-I-P</strong> },
+          placement: "right",
+          target: ".s-menu-about-me",
+        },
+        {
+          content: (
+            <h2>
+              Step 3, now tell us your views on how others see the project
+            </h2>
+          ),
+          locale: { skip: <strong aria-label="skip">S-K-I-P</strong> },
+          placement: "right",
+          target: ".s-menu-about-others",
+        },
+      ],
     };
   }
 
   handleCloseTourDialog = () => {
     this.setState({
-      tourViewOpen: false
+      tourViewOpen: false,
     });
   };
 
+  handleStartGuide = () => {
+    this.setState({
+      run: true,
+    });
+  }
+
   componentDidMount() {
-    const { getProjectListByUser, user, projectList } = this.props;
+    const { getProjectListByUser, user, projectList, screenMode } = this.props;
     if (projectList.length === 0) {
       getProjectListByUser(user.userId);
+    }
+
+    a11yChecker();
+
+    console.log(screenMode);
+    if (screenMode === 'desktop') {
+      // setTimeout(this.handleStartGuide, 500);
     }
   }
 
@@ -119,17 +164,56 @@ class Sidebar extends Component {
     history.push("/app/about-me");
   };
 
+  handleJoyrideCallback = (data) => {
+    const { status, type } = data;
+    const finishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED];
+
+    if (finishedStatuses.includes(status)) {
+      this.setState({ run: false });
+    }
+
+    // console.groupCollapsed(type);
+    // console.log(data);
+    // console.groupEnd();
+  };
+
+  getHelpers = (helpers) => {
+    this.helpers = helpers;
+  };
+
   render() {
     const { mainMenuClassName, subMenuClassName, projectList } = this.props;
-    const { subMenuOpen } = this.state;
-
+    const { subMenuOpen, run, steps } = this.state;
+  
+    console.log(run);
     return (
       <div className={styles.root}>
+        <Joyride
+          callback={this.handleJoyrideCallback}
+          continuous={true}
+          getHelpers={this.getHelpers}
+          run={run}
+          scrollToFirstStep={true}
+          showProgress={true}
+          showSkipButton={true}
+          steps={steps}
+          skipBeacon={true}
+          styles={{
+            options: {
+              zIndex: 10000,
+            },
+          }}
+        />
         <div className={styles["main-menu"]}>
           <div className={styles.logo}></div>
           <div className={styles.link}>
             <ul className={styles.nav}>
-              <li className={styles["nav--item"]}>
+              <li
+                className={classnames(
+                  styles["nav--item"],
+                  "s-menu-my-projects"
+                )}
+              >
                 <SideBarMenuItem
                   to="/app/my-project"
                   menuKey="my-project"
@@ -160,7 +244,9 @@ class Sidebar extends Component {
                   </svg>
                 </SideBarMenuItem>
               </li>
-              <li className={styles["nav--item"]}>
+              <li
+                className={classnames(styles["nav--item"], "s-menu-about-me")}
+              >
                 <SideBarMenuItem
                   to="/app/about-me"
                   menuKey="about-me"
@@ -186,7 +272,12 @@ class Sidebar extends Component {
                   </svg>
                 </SideBarMenuItem>
               </li>
-              <li className={styles["nav--item"]}>
+              <li
+                className={classnames(
+                  styles["nav--item"],
+                  "s-menu-about-others"
+                )}
+              >
                 <SideBarMenuItem
                   to="/app/about-others"
                   menuKey="about-others"
