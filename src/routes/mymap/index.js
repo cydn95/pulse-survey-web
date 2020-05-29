@@ -696,7 +696,8 @@ class MyMap extends React.Component {
     this.props.submitAoQuestion(
       answerData,
       this.props.history,
-      this.state.currentSurveyUserId
+      this.state.currentSurveyUser,
+      this.props.projectUserId
     );
   };
 

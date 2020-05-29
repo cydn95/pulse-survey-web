@@ -17,9 +17,9 @@ export const aoQuestionListSuccess = (aoQuestionList, optionList) => ({
   payload: { aoQuestionList, optionList }
 });
 
-export const submitAoQuestion = (questionList, history, surveyUserId) => ({
+export const submitAoQuestion = (questionList, history, currentSurveyUser, projectUserId) => ({
   type: SUBMIT_AOQUESTION,
-  payload: { questionList, history, surveyUserId }
+  payload: { questionList, history, currentSurveyUser, projectUserId }
 })
 
 export const submitAoQuestionSuccess = () => ({

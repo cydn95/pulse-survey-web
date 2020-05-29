@@ -152,7 +152,7 @@ const submitSurveyAsync = async (answerData) =>
 */
 function* submitSurvey( { payload }) {
 
-  const { surveyList, projectId, history } = payload;
+  const { surveyList, projectId, projectUserId, history } = payload;
   let answerList = [];
   
   for (let i = 0; i < surveyList.length; i++) {
@@ -182,8 +182,8 @@ function* submitSurvey( { payload }) {
         "skipValue": amquestions[j].answer.skipValue,
         "topicTags": isTopic ? amquestions[j].answer.topicValue : amquestions[j].answer.topicTags,
         "commentTags": amquestions[j].answer.commentTags,
-        "user": getToken().userId,
-        "subjectUser": getToken().userId,
+        "projectUser": projectUserId,
+        "subProjectUser": projectUserId,
         "survey": amquestions[j].answer.survey.id,
         "amQuestion": amquestions[j].answer.amQuestion,
         "project": projectId,
