@@ -152,6 +152,7 @@ class AboutMeSurvey extends React.Component {
     const {driverList, pageIndex } = this.state
     const {
       projectId,
+      projectUserId,
       aboutMe,
       history,
       continueSurvey,
@@ -163,6 +164,7 @@ class AboutMeSurvey extends React.Component {
         driverList,
         aboutMe,
         projectId,
+        projectUserId,
         history
       );
     }

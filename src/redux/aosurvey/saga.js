@@ -135,15 +135,15 @@ const submitAoQuestionAsync = async (answerData) =>
 
 function* submitAoQuestion({ payload }) {
 
-  const { questionList, history, surveyUserId } = payload;
+  const { questionList, history, currentSurveyUser, projectUserId } = payload;
 
   let answerList = [];
 
   for (let i = 0; i < questionList.length; i++) {
 
-    if (surveyUserId.split('_').length !== 2) {
-      continue;
-    }
+    // if (surveyUserId.split('_').length !== 2) {
+    //   continue;
+    // }
 
     let integerValue = questionList[i].answer.integerValue;
     let isTopic = false;
@@ -161,8 +161,8 @@ function* submitAoQuestion({ payload }) {
       "skipValue": questionList[i].answer.skipValue,
       "topicTags": isTopic ? questionList[i].answer.topicValue : questionList[i].answer.topicTags,
       "commentTags": questionList[i].answer.commentTags,
-      "user": getToken().userId,
-      "subjectUser": surveyUserId.split('_')[1] ,
+      "projectUser": projectUserId,
+      "subProjectUser": currentSurveyUser.projectUserId,
       "survey": questionList[i].answer.survey.id,
       "project": questionList[i].answer.survey.project,
       "aoQuestion": questionList[i].answer.amQuestion
