@@ -30,7 +30,7 @@ class BottomBarMenuItem extends Component {
         to={to}
         onClick={(e) => onClickMenu(e, menuKey)}
       >
-        { children }
+        {children}
         <span className={classnames(styles.name)}>{menuTitle}</span>
       </NavLink>
     );

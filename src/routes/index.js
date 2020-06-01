@@ -78,12 +78,12 @@ const MainApp = ({ history, match }) => {
     <div className={styles.root}>
       {showSideBar && (
         <div className={styles.sidebar}>
-          <Sidebar screenMode={screenMode}/>
+          <Sidebar screenMode={screenMode} />
         </div>
       )}
       {showBottomBar && (
         <div className={styles.bottombar}>
-          <BottomBar />
+          <BottomBar screenMode={screenMode} />
         </div>
       )}
       <div className={styles.container}>
