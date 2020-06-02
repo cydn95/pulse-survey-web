@@ -138,7 +138,7 @@ class BottomBar extends Component {
     a11yChecker();
 
     if (screenMode === "mobile") {
-      setTimeout(this.handleStartGuide, 1500);
+      setTimeout(this.handleStartGuide, 1000);
     } else {
       setTimeout(this.handleStopGuide, 500);
     }
