@@ -19,10 +19,13 @@ import Error404 from "./error404";
 
 import DialogTourView from "Components/DialogTourView";
 import MobileTour from "./tour/mobile";
+import Tooltip from "./tour/tooltip";
 
 import styles from "./styles.scss";
 
 const MainApp = ({ history, match }) => {
+  const [screenMode, setScreenMode] = useState('desktop');
+
   const [open, setOpen] = useState(false);
   // const showSideBar = history.location.pathname.includes("/tour") ? false : true;
   const showSideBar = true;
@@ -31,6 +34,13 @@ const MainApp = ({ history, match }) => {
     : true;
 
   useEffect(() => {
+    
+    if (window.innerWidth > 880) {
+      setScreenMode("desktop");
+    } else {
+      setScreenMode("mobile");
+    }
+
     if (!history.location.pathname.includes("/tour")) {
       const tourView = localStorage.getItem("tour");
       if (!tourView) {
@@ -44,6 +54,22 @@ const MainApp = ({ history, match }) => {
     }
   }, [history.location.pathname]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setTimeout(() => {
+        if (window.innerWidth > 880) {
+          setScreenMode('desktop');
+        } else {
+          setScreenMode('mobile');
+        }
+      }, 250);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const closeTourDialog = () => {
     setOpen(false);
   };
@@ -52,12 +78,12 @@ const MainApp = ({ history, match }) => {
     <div className={styles.root}>
       {showSideBar && (
         <div className={styles.sidebar}>
-          <Sidebar />
+          <Sidebar screenMode={screenMode} />
         </div>
       )}
       {showBottomBar && (
         <div className={styles.bottombar}>
-          <BottomBar />
+          <BottomBar screenMode={screenMode} />
         </div>
       )}
       <div className={styles.container}>
@@ -74,6 +100,7 @@ const MainApp = ({ history, match }) => {
             />
             <Route path={`${match.url}/help`} component={Help} />
             <Route path={`${match.url}/tour`} component={MobileTour} />
+            <Route path={`${match.url}/guide`} component={Tooltip} />
             <Route
               path={`${match.url}/project-not-found`}
               component={ProjectNotFound}
