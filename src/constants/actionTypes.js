@@ -111,4 +111,4 @@ export const CHANGE_PROFILE = 'CHANGE_PROFILE';
 export const CHANGE_AVATAR = 'CHANGE_AVATAR';
 
 /* ToolTip Tour */
-export const SET_TOUR_VIEW_VALUE = "SET_TOUR_VIEW_VALUE";
+export const GUIDE_SHOW_STATUS = "GUIDE_SHOW_STATUS";

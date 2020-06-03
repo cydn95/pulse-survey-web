@@ -1,8 +1,6 @@
-import {
-  SET_TOUR_VIEW_VALUE
-} from "Constants/actionTypes";
+import { GUIDE_SHOW_STATUS } from "Constants/actionTypes";
 
-export const  setTourViewValue= (key, value) => ({
-    type: SET_TOUR_VIEW_VALUE,
-    payload: { key, value }
+export const guideShowStatus = (status) => ({
+  type: GUIDE_SHOW_STATUS,
+  payload: { status },
 });

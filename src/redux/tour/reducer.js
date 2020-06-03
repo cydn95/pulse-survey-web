@@ -1,17 +1,14 @@
-import {
-	SET_TOUR_VIEW_VALUE
-} from 'Constants/actionTypes';
+import { GUIDE_SHOW_STATUS } from "Constants/actionTypes";
 
 const INIT_STATE = {
-	view: {
-
-	}
+  guide: localStorage.getItem("guide") === "true",
 };
 
 export default (state = INIT_STATE, action) => {
-	switch (action.type) {
-		case SET_TOUR_VIEW_VALUE:
-			return { ...state, [action.payload.key]: action.payload.value };
-		default: return { ...state };
-	}
-}
+  switch (action.type) {
+    case GUIDE_SHOW_STATUS:
+      return { ...state, guide: action.payload.status };
+    default:
+      return { ...state };
+  }
+};

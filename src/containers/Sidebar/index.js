@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
+import Switch from "react-switch";
+
 import Joyride, { STATUS } from "react-joyride";
 import a11yChecker from "a11y-checker";
 
@@ -17,6 +19,7 @@ import {
   logoutUser,
   projectListByUser,
   setProjectID,
+  guideShowStatus,
 } from "Redux/actions";
 
 import styles from "./styles.scss";
@@ -25,9 +28,11 @@ import classnames from "classnames";
 class Sidebar extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       subMenuOpen: false,
       tourViewOpen: false,
+      'guide': localStorage.getItem("guide") === "true",
       run: false,
       stepIndex: 0,
       steps: [
@@ -152,12 +157,15 @@ class Sidebar extends Component {
   }
 
   componentWillReceiveProps(props) {
-    const { screenMode } = this.props;
+    const { screenMode, guide, setGuideShowStatus } = props;
 
-    a11yChecker();
+    // a11yChecker();
 
     if (screenMode === "desktop") {
-      setTimeout(this.handleStartGuide, 1000);
+      if (guide) {
+        setTimeout(this.handleStartGuide, 1000);
+        setGuideShowStatus(false);
+      }
     } else {
       setTimeout(this.handleStopGuide, 500);
     }
@@ -216,6 +224,10 @@ class Sidebar extends Component {
       return;
     }
 
+    if (menu === "turn-on-guide-mode") {
+      return;
+    }
+
     setSubMenuClassName(menu);
 
     this.setState({
@@ -259,10 +271,18 @@ class Sidebar extends Component {
     this.helpers = helpers;
   };
 
+  handleSetGuideShowStatus = () => {
+    const { guide } = this.state;
+    localStorage.setItem("guide", !guide);
+    this.setState({
+      'guide': !guide
+    });
+  };
+
   render() {
     const { mainMenuClassName, subMenuClassName, projectList } = this.props;
-    const { subMenuOpen, run, steps } = this.state;
-
+    const { subMenuOpen, run, steps, guide } = this.state;
+    console.log(guide);
     return (
       <div className={styles.root}>
         <Joyride
@@ -595,7 +615,7 @@ class Sidebar extends Component {
                   <SideBarMenuItem
                     to="/app/help/turn-on-guide-mode"
                     menuKey="turn-on-guide-mode"
-                    menuTitle="Turn On Guide Mode"
+                    menuTitle=""
                     className={styles["nav--item--link"]}
                     mainMenuClassName={subMenuClassName}
                     onClickMenu={(e, menuKey) =>
@@ -605,7 +625,24 @@ class Sidebar extends Component {
                         "/app/help/turn-on-guide-mode"
                       )
                     }
-                  ></SideBarMenuItem>
+                    left={false}
+                  >
+                    <span>{`Turn On Guide Mode `}</span>
+                    <Switch
+                      checked={guide}
+                      onChange={(e) => this.handleSetGuideShowStatus()}
+                      onColor="#7fcdc1"
+                      onHandleColor="#4cb9a8"
+                      handleDiameter={20}
+                      uncheckedIcon={false}
+                      checkedIcon={false}
+                      boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                      activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                      height={20}
+                      width={38}
+                      className="react-switch"
+                    />
+                  </SideBarMenuItem>
                 </li>
                 <li className={styles["nav--item"]}>
                   <SideBarMenuItem
@@ -665,16 +702,18 @@ class Sidebar extends Component {
   }
 }
 
-const mapStateToProps = ({ menu, settings, authUser }) => {
+const mapStateToProps = ({ menu, settings, authUser, tour }) => {
   const { mainMenuClassName, subMenuClassName } = menu;
   const { projectList } = settings;
   const { user } = authUser;
+  const { guide } = tour;
 
   return {
     user,
     projectList,
     mainMenuClassName,
     subMenuClassName,
+    guide,
   };
 };
 
@@ -685,5 +724,6 @@ export default withRouter(
     logoutUser,
     getProjectListByUser: projectListByUser,
     setSurveyProjectID: setProjectID,
+    setGuideShowStatus: guideShowStatus,
   })(Sidebar)
 );

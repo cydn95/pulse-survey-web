@@ -13,6 +13,7 @@ import {
   setMainMenuClassName,
   setSubMenuClassName,
   projectListByUser,
+  guideShowStatus,
 } from "Redux/actions";
 
 import styles from './styles.scss';
@@ -133,12 +134,15 @@ class BottomBar extends Component {
   };
 
   componentWillReceiveProps(props) {
-    const { screenMode } = props;
+    const { screenMode, guide, setGuideShowStatus } = props;
 
-    a11yChecker();
+    // a11yChecker();
 
     if (screenMode === "mobile") {
-      setTimeout(this.handleStartGuide, 1000);
+      if (guide) {
+        setTimeout(this.handleStartGuide, 1000);
+        setGuideShowStatus(false);
+      }
     } else {
       setTimeout(this.handleStopGuide, 500);
     }
@@ -551,16 +555,18 @@ class BottomBar extends Component {
   }
 };
 
-const mapStateToProps = ({ menu, settings, authUser }) => {
+const mapStateToProps = ({ menu, settings, authUser, tour }) => {
   const { mainMenuClassName, subMenuClassName } = menu;
   const { projectList } = settings;
   const { user } = authUser;
+  const { guide } = tour;
 
   return {
     user,
     projectList,
     mainMenuClassName,
     subMenuClassName,
+    guide
   };
 };
 
@@ -569,5 +575,6 @@ export default withRouter(
     setMainMenuClassName,
     setSubMenuClassName,
     getProjectListByUser: projectListByUser,
+    setGuideShowStatus: guideShowStatus,
   })(BottomBar)
 );
