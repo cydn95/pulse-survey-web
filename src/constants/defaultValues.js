@@ -10,7 +10,8 @@ export const localeOptions = [
 ];
 
 export const apiUrl = process.env.API_URL;
-console.log(apiUrl);
+export const serverUrl = process.env.SERVER_URL;
+
 export const controlType = {
   TEXT: 1,
   SLIDER: 2,
