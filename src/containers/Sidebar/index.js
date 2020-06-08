@@ -282,7 +282,7 @@ class Sidebar extends Component {
   render() {
     const { mainMenuClassName, subMenuClassName, projectList } = this.props;
     const { subMenuOpen, run, steps, guide } = this.state;
-    console.log(guide);
+
     return (
       <div className={styles.root}>
         <Joyride

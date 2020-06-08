@@ -16,7 +16,7 @@ const setPasswordAPI = (email, password, token) => {
 };
 
 const projectListByUserAPI = (userId) => {
-  return getClient(true).get("/projectByUser/?format=json&user=" + userId);
+  return getClient(true).get("/projectbyuser/?format=json&user=" + userId);
 };
 
 const pageListAPI = (projectUserId) => {
@@ -50,7 +50,7 @@ const shgroupListAPI = (surveyId = 1) => {
 };
 
 const skipQuestionListAPI = () => {
-  return getClient(true).get("skipOption/?format=json");
+  return getClient(true).get("skipoption/?format=json");
 };
 
 const submitAboutMeAPI = (data) => {
@@ -90,12 +90,12 @@ const submitAoQuestionAPI = (answerData) => {
 // Get StakeholderList (get users by project id)
 const stakeholderListAPI = (projectUserId) => {
   return getClient(true).get(
-    "/userByProject/?format=json&myProjectUser=" + projectUserId
+    "/userbyproject/?format=json&myProjectUser=" + projectUserId
   );
 };
 const getProjectUserAPI = (userId, projectId) => {
   return getClient(true).get(
-    "/userByProject/?format=json&user=" + userId + "&project=" + projectId
+    "/userbyproject/?format=json&user=" + userId + "&project=" + projectId
   );
 };
 

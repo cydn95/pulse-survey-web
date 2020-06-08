@@ -9,8 +9,8 @@ export const localeOptions = [
   { id: "es", name: "Español" },
 ];
 
-export const apiUrl = "http://3.17.57.137/api/v1";
-
+export const apiUrl = process.env.API_URL;
+console.log(apiUrl);
 export const controlType = {
   TEXT: 1,
   SLIDER: 2,
