@@ -1,8 +1,11 @@
 const express = require('express');
 const favicon = require('express-favicon');
 const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config();
 const port = process.env.PORT || 3031;
 const app = express();
+console.log(port);
 app.use(favicon(__dirname + '/build/favicon.ico'));
 // the __dirname is the current directory from where the script is running
 app.use(express.static(__dirname));
