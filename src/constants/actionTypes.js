@@ -109,3 +109,6 @@ export const GET_PROFILE = 'GET_PROFILE';
 export const GET_PROFILE_SUCCESS = 'GET_PROFILE_SUCCESS';
 export const CHANGE_PROFILE = 'CHANGE_PROFILE';
 export const CHANGE_AVATAR = 'CHANGE_AVATAR';
+
+/* ToolTip Tour */
+export const GUIDE_SHOW_STATUS = "GUIDE_SHOW_STATUS";

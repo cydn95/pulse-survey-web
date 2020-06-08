@@ -15,6 +15,7 @@ class SideBarMenuItem extends Component {
       menuTitle,
       onClickMenu,
       children,
+      left = true
     } = this.props;
     return (
       <NavLink
@@ -24,8 +25,9 @@ class SideBarMenuItem extends Component {
         to={to}
         onClick={(e) => onClickMenu(e, menuKey)}
       >
-        {children}
+        {left && children}
         <span className={classnames(styles.name)}>{menuTitle}</span>
+        {!left && children}
       </NavLink>
     );
   }
