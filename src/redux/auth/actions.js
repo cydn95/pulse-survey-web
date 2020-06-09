@@ -7,21 +7,29 @@ import {
   REGISTER_USER_SUCCESS,
   PROJECT_ID,
   PROJECT_ID_SUCCESS,
+  SURVEY_ID,
+  SURVEY_ID_SUCCESS,
   SET_PASSWORD,
 } from "Constants/actionTypes";
 
-export const setProjectID = (userId, projectId, callback) => ({
+export const setProjectID = (projectId) => ({
   type: PROJECT_ID,
-  payload: { userId, projectId, callback },
+  payload: { projectId },
 });
 
-export const setProjectIDSuccess = (
-  projectId,
-  projectTitle,
-  projectUserId
-) => ({
+export const setProjectIDSuccess = (projectId) => ({
   type: PROJECT_ID_SUCCESS,
-  payload: { projectId, projectTitle, projectUserId },
+  payload: { projectId },
+});
+
+export const setSurveyID = (userId, surveyId, callback) => ({
+  type: SURVEY_ID,
+  payload: { userId, surveyId, callback },
+});
+
+export const setSurveyIDSuccess = (surveyId, surveyTitle, surveyUserId) => ({
+  type: SURVEY_ID_SUCCESS,
+  payload: { surveyId, surveyTitle, surveyUserId },
 });
 
 export const loginUser = (user, history) => ({

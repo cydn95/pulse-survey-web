@@ -1,9 +1,6 @@
+import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-
-import {
-  getToken
-} from '../../services/axios/utility';
+import { getToken } from "../../services/axios/utility";
 
 import {
   pageListAPI,
@@ -22,7 +19,7 @@ import {
   DELETE_ABOUT_ME_TOPIC,
 } from "Constants/actionTypes";
 
-import { controlType, controlTypeText } from 'Constants/defaultValues'
+import { controlType, controlTypeText } from "Constants/defaultValues";
 
 import {
   pageListSuccess,
@@ -33,45 +30,46 @@ import {
   deleteAboutMeTopicSuccess,
 } from "../actions";
 
-const getPageListAsync = async (projectUserId) =>
-    await pageListAPI(projectUserId)
-      .then(result => result)
-      .catch(error => error);
+const getPageListAsync = async (surveyId, surveyUserId) =>
+  await pageListAPI(surveyId, surveyUserId)
+    .then((result) => result)
+    .catch((error) => error);
 
 const getOptionListAsync = async () =>
-    await optionListAPI()
-      .then(result => result)
-      .catch(error => error);
+  await optionListAPI()
+    .then((result) => result)
+    .catch((error) => error);
 
-function* getPageList({payload}) {
-  
-  const { projectUserId } = payload;
+function* getPageList({ payload }) {
+  const { surveyId, surveyUserId } = payload;
 
   try {
-    const result = yield call(getPageListAsync, projectUserId);
+    const result = yield call(getPageListAsync, surveyId, surveyUserId);
 
     if (result.status === 200) {
-
       // Get Available Driver List
       let driverList = [];
-      result.data.forEach(driver => {
+      result.data.forEach((driver) => {
         driverList.push({
-            driverId: driver.id,
-            driverName: driver.driverName,
-            icon: driver.iconPath,
-            percentage: 0,
-            progress: 0
+          driverId: driver.id,
+          driverName: driver.driverName,
+          icon: driver.iconPath,
+          percentage: 0,
+          progress: 0,
         });
       });
       yield put(driverListSuccess(driverList));
 
-      const questionList  = [ ...result.data ];
+      const questionList = [...result.data];
 
       for (let i = 0; i < questionList.length; i++) {
         for (let j = 0; j < questionList[i].amquestion.length; j++) {
-
-          if (questionList[i].amquestion[j].controlType === controlType.TWO_OPTIONS 
-            || questionList[i].amquestion[j].controlType === controlType.MULTI_OPTIONS) {
+          if (
+            questionList[i].amquestion[j].controlType ===
+              controlType.TWO_OPTIONS ||
+            questionList[i].amquestion[j].controlType ===
+              controlType.MULTI_OPTIONS
+          ) {
             if (questionList[i].amquestion[j].option.length === 0) {
               questionList[i].amquestion.splice(j, 1);
               j--;
@@ -113,8 +111,9 @@ function* getPageList({payload}) {
         }
 
         // Ordering by questionSequence
-        questionList[i].amquestion = questionList[i].amquestion.sort(
-          (a, b) => (a.questionSequence > b.questionSequence) ? 1 : -1);
+        questionList[i].amquestion = questionList[i].amquestion.sort((a, b) =>
+          a.questionSequence > b.questionSequence ? 1 : -1
+        );
       }
 
       const result_option = yield call(getOptionListAsync);
@@ -122,19 +121,18 @@ function* getPageList({payload}) {
         const optionList = result_option.data;
         yield put(pageListSuccess(questionList, optionList));
       }
-
     } else {
-      console.log('login failed :', result.statusText)
+      console.log("login failed :", result.statusText);
     }
   } catch (error) {
-    console.log('survey error : ', error)
+    console.log("survey error : ", error);
   }
 }
 
 const submitSurveyAsync = async (answerData) =>
-    await submitSurveyAPI(answerData)
-      .then(result => result)
-      .catch(error => error);
+  await submitSurveyAPI(answerData)
+    .then((result) => result)
+    .catch((error) => error);
 
 /** 
   [{
@@ -150,21 +148,22 @@ const submitSurveyAsync = async (answerData) =>
     "amQuestion": null
   }]
 */
-function* submitSurvey( { payload }) {
-
-  const { surveyList, projectId, projectUserId, history } = payload;
+function* submitSurvey({ payload }) {
+  const { surveyList, projectId, surveyUserId, history } = payload;
   let answerList = [];
-  
-  for (let i = 0; i < surveyList.length; i++) {
 
+  for (let i = 0; i < surveyList.length; i++) {
     let amquestions = surveyList[i].amquestion;
 
     for (let j = 0; j < amquestions.length; j++) {
-
-      if ((amquestions[j].answer.integerValue === '' || amquestions[j].answer.integerValue === 0) 
-        && amquestions[j].answer.topicValue === '' && amquestions[j].answer.commentValue === ''
-        && amquestions[j].answer.skipValue === '') {
-          continue;
+      if (
+        (amquestions[j].answer.integerValue === "" ||
+          amquestions[j].answer.integerValue === 0) &&
+        amquestions[j].answer.topicValue === "" &&
+        amquestions[j].answer.commentValue === "" &&
+        amquestions[j].answer.skipValue === ""
+      ) {
+        continue;
       }
 
       let integerValue = amquestions[j].answer.integerValue;
@@ -175,27 +174,32 @@ function* submitSurvey( { payload }) {
       }
       integerValue = Math.floor(parseInt(integerValue, 10));
 
-      let answer = Object.assign({}, {
-        "integerValue": integerValue,
-        "topicValue": amquestions[j].answer.topicValue,
-        "commentValue": amquestions[j].answer.commentValue,
-        "skipValue": amquestions[j].answer.skipValue,
-        "topicTags": isTopic ? amquestions[j].answer.topicValue : amquestions[j].answer.topicTags,
-        "commentTags": amquestions[j].answer.commentTags,
-        "projectUser": projectUserId,
-        "subProjectUser": projectUserId,
-        "survey": amquestions[j].answer.survey.id,
-        "amQuestion": amquestions[j].answer.amQuestion,
-        "project": projectId,
-        "controlType": amquestions[j].answer.controlType
-      });
+      let answer = Object.assign(
+        {},
+        {
+          integerValue: integerValue,
+          topicValue: amquestions[j].answer.topicValue,
+          commentValue: amquestions[j].answer.commentValue,
+          skipValue: amquestions[j].answer.skipValue,
+          topicTags: isTopic
+            ? amquestions[j].answer.topicValue
+            : amquestions[j].answer.topicTags,
+          commentTags: amquestions[j].answer.commentTags,
+          projectUser: surveyUserId,
+          subProjectUser: surveyUserId,
+          survey: amquestions[j].answer.survey.id,
+          amQuestion: amquestions[j].answer.amQuestion,
+          project: projectId,
+          controlType: amquestions[j].answer.controlType,
+        }
+      );
 
       answerList.push(answer);
     }
   }
 
   if (answerList.length === 0) {
-    return
+    return;
   }
 
   try {
@@ -203,37 +207,59 @@ function* submitSurvey( { payload }) {
 
     if (result.status === 201) {
       var surveyId = projectId;
-      
-      localStorage.setItem('surveyId', surveyId);
-      yield put(submitSurveySuccess(surveyId));
-      history.push('/app/dashboard');
 
+      localStorage.setItem("surveyId", surveyId);
+      yield put(submitSurveySuccess(surveyId));
+      history.push("/app/dashboard");
     } else {
-      console.log('submit failed')
+      console.log("submit failed");
     }
   } catch (error) {
-    console.log('survey error : ', error)
+    console.log("survey error : ", error);
   }
 }
 
-const addAboutMeTopicAsync = async (topicName, topicComment, questionId, projectUserId) =>
-    await addNewTopicAboutMeAPI(topicName, topicComment, questionId, projectUserId)
-      .then(result => result)
-      .catch(error => error);
+const addAboutMeTopicAsync = async (
+  topicName,
+  topicComment,
+  questionId,
+  projectUserId
+) =>
+  await addNewTopicAboutMeAPI(
+    topicName,
+    topicComment,
+    questionId,
+    projectUserId
+  )
+    .then((result) => result)
+    .catch((error) => error);
 
-function* addAboutMeTopic( { payload }) {
-
-  const { topicName, topicComment, questionId, projectUserId, pageIndex, questionIndex, callback } = payload;
+function* addAboutMeTopic({ payload }) {
+  const {
+    topicName,
+    topicComment,
+    questionId,
+    projectUserId,
+    pageIndex,
+    questionIndex,
+    callback,
+  } = payload;
 
   try {
-    let result = yield call(addAboutMeTopicAsync, topicName, topicComment, questionId, projectUserId);
+    let result = yield call(
+      addAboutMeTopicAsync,
+      topicName,
+      topicComment,
+      questionId,
+      projectUserId
+    );
 
     if (result.status === 201) {
       yield put(addAboutMeTopicSuccess(result.data, pageIndex, questionIndex));
       callback(result.data);
-    } 
+    }
   } catch (error) {
-    console.log('survey error : ', error)
+    console.log("survey error : ", error);
   }
 }
 
@@ -277,7 +303,14 @@ function* updateAboutMeTopic({ payload }) {
     );
 
     if (result.status === 200) {
-      yield put(updateAboutMeTopicSuccess(topicId, result.data, pageIndex, questionIndex));
+      yield put(
+        updateAboutMeTopicSuccess(
+          topicId,
+          result.data,
+          pageIndex,
+          questionIndex
+        )
+      );
       callback(topicId, result.data);
     }
   } catch (error) {
@@ -330,6 +363,6 @@ export default function* rootSaga() {
     fork(watchSubmitSurvey),
     fork(watchAddAboutMeTopic),
     fork(watchUpdateAboutMeTopic),
-    fork(watchDeleteAboutMeTopic)
+    fork(watchDeleteAboutMeTopic),
   ]);
 }

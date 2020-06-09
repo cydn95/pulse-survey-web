@@ -32,7 +32,7 @@ import {
   Continue,
 } from "Components/Survey";
 
-import styles from './styles.scss';
+import styles from "./styles.scss";
 
 class AboutMeSurvey extends React.Component {
   constructor(props) {
@@ -47,13 +47,23 @@ class AboutMeSurvey extends React.Component {
   }
 
   componentWillMount() {
-    const { projectUserId, getPageList, getSkipQuestionList, history } = this.props;
-    if (projectUserId == undefined || projectUserId == null || projectUserId <= 0) {
-      history.push('/app/project-not-found');
+    const {
+      surveyId,
+      surveyUserId,
+      getPageList,
+      getSkipQuestionList,
+      history,
+    } = this.props;
+    if (
+      surveyUserId == undefined ||
+      surveyUserId == null ||
+      surveyUserId <= 0
+    ) {
+      history.push("/app/project-not-found");
       return;
     }
 
-    getPageList(projectUserId);
+    getPageList(surveyId, surveyUserId);
     getSkipQuestionList();
   }
 
@@ -146,13 +156,13 @@ class AboutMeSurvey extends React.Component {
     });
   };
 
-  handleContinue = e => {
+  handleContinue = (e) => {
     e.preventDefault();
-    
-    const {driverList, pageIndex } = this.state
+
+    const { driverList, pageIndex } = this.state;
     const {
       projectId,
-      projectUserId,
+      surveyUserId,
       aboutMe,
       history,
       continueSurvey,
@@ -160,13 +170,7 @@ class AboutMeSurvey extends React.Component {
     } = this.props;
 
     if (pageIndex === driverList.length - 1) {
-      submitSurvey(
-        driverList,
-        aboutMe,
-        projectId,
-        projectUserId,
-        history
-      );
+      submitSurvey(driverList, aboutMe, projectId, surveyUserId, history);
     }
 
     if (pageIndex < driverList.length - 1) {
@@ -174,7 +178,7 @@ class AboutMeSurvey extends React.Component {
     } else {
       continueSurvey(pageIndex, 0);
     }
-  }
+  };
 
   render() {
     const { optionList, projectTitle, skipQuestionList, history } = this.props;
@@ -347,17 +351,18 @@ class AboutMeSurvey extends React.Component {
 const mapStateToProps = ({ survey, common, authUser }) => {
   const { pageList, pageIndex, optionList, aboutMe } = survey;
   const { skipQuestionList } = common;
-  const { projectTitle, projectUserId, projectId } = authUser;
+  const { projectId, surveyTitle, surveyUserId, surveyId } = authUser;
 
   return {
     optionList,
-    projectTitle,
     aboutMe,
     surveyList: pageList,
     pageIndex,
     skipQuestionList,
-    projectUserId,
     projectId,
+    surveyTitle,
+    surveyUserId,
+    surveyId,
   };
 };
 

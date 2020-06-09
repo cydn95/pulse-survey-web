@@ -37,15 +37,16 @@ function SearchBar(props) {
     projectMapShCategoryList,
     teamList,
     projectId,
+    surveyId,
     userId,
-    projectUserId,
+    surveyUserId,
     updateStakeholder,
     onSearchFocus,
-    onSearchBlur
+    onSearchBlur,
   } = props;
 
   const defaultStakeholder = {
-    projectUserId: projectUserId,
+    projectUserId: surveyUserId,
     projectId: projectId,
     userId: userId,
     fullName: "",
@@ -58,7 +59,7 @@ function SearchBar(props) {
     firstName: "",
     lastName: "",
     email: "",
-    myProjectUser: projectUserId
+    myProjectUser: surveyUserId,
   };
 
   const [filter, setFilter] = useState(searchKey);
@@ -73,7 +74,7 @@ function SearchBar(props) {
   }, [searchKey]);
 
   const handleUpdateStakeholder = (stakeholder) => {
-    updateStakeholder(stakeholder);
+    updateStakeholder(projectId, surveyId, stakeholder);
     setViewType("search");
   };
 
@@ -186,7 +187,7 @@ function SearchBar(props) {
                                 arrow={true}
                                 stakeholder={{
                                   ...d,
-                                  myProjectUser: projectUserId,
+                                  myProjectUser: surveyUserId,
                                 }}
                                 onArrowClick={(e, stakeholder) =>
                                   handleArrowClick(stakeholder)
@@ -220,7 +221,7 @@ function SearchBar(props) {
           onAddStakeholder={(stakeholder) =>
             handleUpdateStakeholder({
               ...stakeholder,
-              myProjectUser: projectUserId,
+              myProjectUser: surveyUserId,
             })
           }
           update={true}
@@ -248,11 +249,12 @@ SearchBar.propTypes = {
 
 const mapStateToProps = ({ common, authUser }) => {
   const { teamList, shCategoryList, projectMapShCategoryList } = common;
-  const { projectId, user, projectUserId } = authUser;
+  const { projectId, user, surveyId, surveyUserId } = authUser;
   return {
     projectId,
+    surveyId,
     userId: user.userId,
-    projectUserId,
+    surveyUserId,
     teamList,
     shCategoryList,
     projectMapShCategoryList,

@@ -2,7 +2,7 @@ import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import {
   loginAPI,
   setPasswordAPI,
-  getProjectUserAPI,
+  getSurveyUserAPI,
 } from "../../services/axios/api";
 
 import {
@@ -10,6 +10,7 @@ import {
   LOGOUT_USER,
   SET_PASSWORD,
   PROJECT_ID,
+  SURVEY_ID,
 } from "Constants/actionTypes";
 
 import {
@@ -17,6 +18,7 @@ import {
   logoutUser,
   loginUserFailed,
   setProjectIDSuccess,
+  setSurveyIDSuccess,
 } from "Redux/actions";
 
 import { loginErrorType } from "Constants/defaultValues";
@@ -96,30 +98,27 @@ function* setPassword({ payload }) {
   }
 }
 
-const setProjectIDAsync = async (userId, projectId) =>
-  await getProjectUserAPI(userId, projectId)
+const setSurveyIDAsync = async (userId, surveyId) =>
+  await getSurveyUserAPI(userId, surveyId)
     .then((res) => res)
     .catch((error) => error);
 
-function* setProjectID({ payload }) {
-  const { userId, projectId, callback } = payload;
+function* setSurveyID({ payload }) {
+  const { userId, surveyId, callback } = payload;
 
   try {
-    if (projectId > 0) {
-      const result = yield call(setProjectIDAsync, userId, projectId);
+    if (surveyId > 0) {
+      const result = yield call(setSurveyIDAsync, userId, surveyId);
 
-      if (result.data) {
-        localStorage.setItem("projectId", projectId);
-        localStorage.setItem(
-          "projectTitle",
-          result.data[0].project.projectName
-        );
-        localStorage.setItem("projectUserId", result.data[0].id);
+      if (result.data && result.data.length > 0) {
+        localStorage.setItem("surveyId", surveyId);
+        localStorage.setItem("surveyTitle", result.data[0].survey.surveyTitle);
+        localStorage.setItem("surveyUserId", result.data[0].id);
 
         yield put(
-          setProjectIDSuccess(
-            projectId,
-            result.data[0].project.projectName,
+          setSurveyIDSuccess(
+            surveyId,
+            result.data[0].survey.surveyTitle,
             result.data[0].id
           )
         );
@@ -129,16 +128,22 @@ function* setProjectID({ payload }) {
         }
       }
     } else {
-      localStorage.setItem("projectId", 0);
-      localStorage.setItem("projectTitle", "");
-      localStorage.setItem("projectUserId", 0);
+      localStorage.setItem("surveyId", 0);
+      localStorage.setItem("surveyTitle", "");
+      localStorage.setItem("surveyUserId", 0);
 
-      yield put(setProjectIDSuccess(0, "", 0));
+      yield put(setSurveyIDSuccess(0, "", 0));
     }
   } catch (error) {
     // catch throw
     console.log(error);
   }
+}
+
+function* setProjectID({ payload }) {
+  const { projectId } = payload;
+  localStorage.setItem("projectId", projectId);
+  yield put(setProjectIDSuccess(projectId));
 }
 
 export function* watchLoginUser() {
@@ -157,11 +162,16 @@ export function* watchSetProjectID() {
   yield takeEvery(PROJECT_ID, setProjectID);
 }
 
+export function* watchSetSurveyID() {
+  yield takeEvery(SURVEY_ID, setSurveyID);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchLoginUser),
     fork(watchLogoutUser),
     fork(watchSetPassword),
     fork(watchSetProjectID),
+    fork(watchSetSurveyID),
   ]);
 }

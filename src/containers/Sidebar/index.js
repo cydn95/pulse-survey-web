@@ -244,9 +244,9 @@ class Sidebar extends Component {
       subMenuOpen: false,
     });
 
-    const { user, setSurveyProjectID } = this.props;
+    // const { user, setSurveyProjectID } = this.props;
 
-    setSurveyProjectID(user.userId, projectId, this.callbackClickProject);
+    // setSurveyProjectID(user.userId, projectId, this.callbackClickProject);
   };
 
   callbackClickProject = () => {
@@ -487,12 +487,12 @@ class Sidebar extends Component {
                   <li key={index} className={styles["nav--item"]}>
                     <SideBarMenuItem
                       to=""
-                      menuKey={project.project.projectName}
-                      menuTitle={project.project.projectName}
+                      menuKey={project.projectName}
+                      menuTitle={project.projectName}
                       className={styles["nav--item--link"]}
                       mainMenuClassName={subMenuClassName}
                       onClickMenu={(e, menuKey) =>
-                        this.handleClickProject(e, project.project.id)
+                        this.handleClickProject(e, project.id)
                       }
                     ></SideBarMenuItem>
                   </li>

@@ -84,6 +84,7 @@ function DriverPanel(props) {
 
   // handle click driver
   const handleSelectDriver = (e, driverId) => {
+    console.log(driverId);
     onClick(e, driverId);
   }
 

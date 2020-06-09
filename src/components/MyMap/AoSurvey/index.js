@@ -87,9 +87,10 @@ class AoSurvey extends React.Component {
   };
 
   handleClickDriver = (driverId) => {
-    const { drivers, setSurveyPage } = this.props;
+    const { setSurveyPage } = this.props;
+    const { drivers } = this.state;
     var pageIndex = drivers.findIndex((element) => {
-      return element.driverId === driverId;
+      return element.driverId == driverId;
     });
     setSurveyPage(pageIndex);
   };
@@ -103,9 +104,7 @@ class AoSurvey extends React.Component {
     const defaultDrvierId = drivers.length
       ? drivers[this.state.pageIndex].driverId
       : 0;
-
     const driver = drivers.filter((d) => d.driverId === defaultDrvierId)[0];
-
     for (let i = 0; i < drivers.length; i++) {
       let answeredCount = 0;
       for (let j = 0; j < drivers[i].questions.length; j++) {
@@ -123,7 +122,6 @@ class AoSurvey extends React.Component {
         drivers[i].progress = SURVEY_COMPLETED;
       }
     }
-
     return (
       <div className={styles.root}>
         <div className={styles.user}>
