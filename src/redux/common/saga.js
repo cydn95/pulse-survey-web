@@ -157,8 +157,8 @@ function* getStakeholderList({ payload }) {
         stakeholderList.push({
           projectUserId: sh.id,
           projectUserTitle: sh.projectUserTitle,
-          projectUserRoleDesc: sh.projectUserRoleDesc,
-          projectId: sh.project,
+          // projectUserRoleDesc: sh.projectUserRoleDesc,
+          projectId: sh.survey.project,
           userId: "S_" + sh.user.id,
           userAvatar: sh.user.avatar === null ? "" : sh.user.avatar.name,
           userTeam: sh.user.userteam === null ? "" : sh.user.userteam.name,
@@ -216,7 +216,7 @@ const addStakeholderAsync = async (projectUser) =>
 
 function* addStakeholder({ payload }) {
   try {
-    const { projectId, stakeholder } = payload;
+    const { projectId, surveyId, stakeholder } = payload;
 
     const user = {
       user: {
@@ -234,6 +234,7 @@ function* addStakeholder({ payload }) {
       const userId = result.data;
       const projectUser = {
         project: parseInt(projectId, 10),
+        survey: parseInt(surveyId, 10),
         user: parseInt(userId, 10),
         team: parseInt(stakeholder.teamId, 10),
         shMyCategory: stakeholder.myCategoryList,
@@ -246,7 +247,7 @@ function* addStakeholder({ payload }) {
       const result2 = yield call(addStakeholderAsync, projectUser);
 
       if (result2.status === 201) {
-        yield put(stakeholderList(projectId));
+        yield put(stakeholderList(surveyId));
       }
     }
   } catch (error) {
@@ -261,10 +262,11 @@ const updateStakeholderAsync = async (projectUserId, projectUser) =>
 
 function* updateStakeholder({ payload }) {
   try {
-    const { stakeholder } = payload;
+    const { projectId, surveyId, stakeholder } = payload;
 
     const projectUser = {
-      project: parseInt(stakeholder.projectId, 10),
+      project: parseInt(projectId, 10),
+      survey: parseInt(surveyId, 10),
       id: parseInt(stakeholder.projectUserId, 10),
       user: parseInt(stakeholder.userId, 10),
       team: parseInt(stakeholder.teamId, 10),
