@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragement, Fragment } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
@@ -20,6 +20,7 @@ import {
   projectListByUser,
   setProjectID,
   guideShowStatus,
+  pageContent,
 } from "Redux/actions";
 
 import styles from "./styles.scss";
@@ -32,7 +33,7 @@ class Sidebar extends Component {
     this.state = {
       subMenuOpen: false,
       tourViewOpen: false,
-      'guide': localStorage.getItem("guide") === "true",
+      guide: localStorage.getItem("guide") === "true",
       run: false,
       stepIndex: 0,
       steps: [
@@ -150,10 +151,18 @@ class Sidebar extends Component {
   };
 
   componentDidMount() {
-    const { getProjectListByUser, user, projectList } = this.props;
+    const {
+      getProjectListByUser,
+      user,
+      projectList,
+      getPageContent,
+    } = this.props;
+
     if (projectList.length === 0) {
       getProjectListByUser(user.userId);
     }
+
+    getPageContent();
   }
 
   componentWillReceiveProps(props) {
@@ -275,12 +284,17 @@ class Sidebar extends Component {
     const { guide } = this.state;
     localStorage.setItem("guide", !guide);
     this.setState({
-      'guide': !guide
+      guide: !guide,
     });
   };
 
   render() {
-    const { mainMenuClassName, subMenuClassName, projectList } = this.props;
+    const {
+      mainMenuClassName,
+      subMenuClassName,
+      projectList,
+      pageContent,
+    } = this.props;
     const { subMenuOpen, run, steps, guide } = this.state;
 
     return (
@@ -644,50 +658,33 @@ class Sidebar extends Component {
                     />
                   </SideBarMenuItem>
                 </li>
-                <li className={styles["nav--item"]}>
-                  <SideBarMenuItem
-                    to="/app/help/faq"
-                    menuKey="faq"
-                    menuTitle="FAQ"
-                    className={styles["nav--item--link"]}
-                    mainMenuClassName={subMenuClassName}
-                    onClickMenu={(e, menuKey) =>
-                      this.handleClickSubMenu(e, menuKey, "/app/help/faq")
-                    }
-                  ></SideBarMenuItem>
-                </li>
-                <li className={styles["nav--item"]}>
-                  <SideBarMenuItem
-                    to="/app/help/safe-to-speak"
-                    menuKey="safe-to-speak"
-                    menuTitle="Safe to Speak?"
-                    className={styles["nav--item--link"]}
-                    mainMenuClassName={subMenuClassName}
-                    onClickMenu={(e, menuKey) =>
-                      this.handleClickSubMenu(
-                        e,
-                        menuKey,
-                        "/app/help/safe-to-speak"
-                      )
-                    }
-                  ></SideBarMenuItem>
-                </li>
-                <li className={styles["nav--item"]}>
-                  <SideBarMenuItem
-                    to="/app/help/code-of-conduct"
-                    menuKey="code-of-conduct"
-                    menuTitle="Code of Conduct"
-                    className={styles["nav--item--link"]}
-                    mainMenuClassName={subMenuClassName}
-                    onClickMenu={(e, menuKey) =>
-                      this.handleClickSubMenu(
-                        e,
-                        menuKey,
-                        "/app/help/code-of-conduct"
-                      )
-                    }
-                  ></SideBarMenuItem>
-                </li>
+                {pageContent.length > 0 &&
+                  pageContent.map((page) => {
+                    const link = page.tabName
+                      .toLowerCase()
+                      .replace(/\s+/g, "-");
+                    return (
+                      <li
+                        key={`page_${page.id}`}
+                        className={styles["nav--item"]}
+                      >
+                        <SideBarMenuItem
+                          to={`/app/help/${link}`}
+                          menuKey={link}
+                          menuTitle={page.tabName}
+                          className={styles["nav--item--link"]}
+                          mainMenuClassName={subMenuClassName}
+                          onClickMenu={(e, menuKey) =>
+                            this.handleClickSubMenu(
+                              e,
+                              menuKey,
+                              `/app/help/${link}`
+                            )
+                          }
+                        ></SideBarMenuItem>
+                      </li>
+                    );
+                  })}
               </ul>
             </div>
             <div className={styles.space}></div>
@@ -706,7 +703,7 @@ const mapStateToProps = ({ menu, settings, authUser, tour }) => {
   const { mainMenuClassName, subMenuClassName } = menu;
   const { projectList } = settings;
   const { user } = authUser;
-  const { guide } = tour;
+  const { guide, pageContent } = tour;
 
   return {
     user,
@@ -714,6 +711,7 @@ const mapStateToProps = ({ menu, settings, authUser, tour }) => {
     mainMenuClassName,
     subMenuClassName,
     guide,
+    pageContent,
   };
 };
 
@@ -725,5 +723,6 @@ export default withRouter(
     getProjectListByUser: projectListByUser,
     setSurveyProjectID: setProjectID,
     setGuideShowStatus: guideShowStatus,
+    getPageContent: pageContent,
   })(Sidebar)
 );
