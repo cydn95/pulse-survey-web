@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
+import { connect } from "react-redux";
+
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import MuiDialogContent from "@material-ui/core/DialogContent";
@@ -8,8 +9,9 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 
-import { MOBILE_TOUR_CONTENT } from "Constants/defaultValues";
 import SlideNavigator from "Components/SlideNavigator";
+
+import { nikelTourContent } from "Redux/actions";
 
 import dlgStyles from "./styles.scss";
 
@@ -23,7 +25,7 @@ const styles = (theme) => ({
     right: theme.spacing(1),
     top: theme.spacing(1),
     // color: theme.palette.grey[500],
-    color: 'white',
+    color: "white",
   },
 });
 
@@ -59,24 +61,41 @@ const DialogContent = withStyles((theme) => ({
   },
 }))(MuiDialogContent);
 
-const DialogTourView = ({ open, onClose }) => {
+const DialogTourView = ({
+  open,
+  onClose,
+  nikelContent,
+  actionNikelTourContent,
+}) => {
   const [step, setStep] = useState(0);
-  const [tour, setTour] = useState(MOBILE_TOUR_CONTENT[step]);
+  const [tour, setTour] = useState(null);
 
   useEffect(() => {
-    setTour(MOBILE_TOUR_CONTENT[step]);
+    setTour(nikelContent.length === 0 ? null : nikelContent[step]);
   }, [step]);
+
+  useEffect(() => {
+    actionNikelTourContent();
+  }, [actionNikelTourContent]);
+
+  useEffect(() => {
+    setTour(nikelContent[step]);
+  }, [nikelContent]);
 
   useEffect(() => {
     setStep(0);
   }, [open]);
 
-  const containerBackgroundStyle = {
-    background: `${tour.background}`,
+  const containerBackgroundStyle = () => {
+    return {
+      background: `${tour.background}`
+    }
   };
 
-  const imgBackgroundStyle = {
-    background: `${tour.background} url('${tour.img}') center/contain no-repeat`,
+  const imgBackgroundStyle = () => {
+    return {
+      background: `${tour.background} url('${tour.img}') center/contain no-repeat`
+    }
   };
 
   const onSelect = (position) => {
@@ -84,18 +103,18 @@ const DialogTourView = ({ open, onClose }) => {
   };
 
   const onNext = () => {
-    if (step === MOBILE_TOUR_CONTENT.length - 1) {
+    if (step === nikelContent.length - 1) {
       onClose();
     } else {
       setStep(step + 1);
     }
-  }
+  };
 
   const onBack = () => {
     if (step > 0) {
       setStep(step - 1);
     }
-  }
+  };
 
   return (
     <Dialog
@@ -106,38 +125,59 @@ const DialogTourView = ({ open, onClose }) => {
       fullWidth={true}
       classes={{ paper: dlgStyles.root }}
     >
-      <DialogTitle
-        id="customized-dialog-title"
-        background={tour.background}
-        onClose={(e) => onClose(e)}
-      ></DialogTitle>
-      <DialogContent>
-        <div className={dlgStyles.content}>
-          <div
-            className={dlgStyles["bg-section"]}
-            style={containerBackgroundStyle}
-          >
-            <div className={dlgStyles.img} style={imgBackgroundStyle}></div>
-          </div>
-          <div className={dlgStyles.description}>
-            <h1>{tour.title}</h1>
-            <p>{tour.content}</p>
-          </div>
-          <div className={dlgStyles.control}>
-            <input type="button" value="Back" className={dlgStyles.back} onClick={e => onBack()}/>
-            <input type="button" value="Next" className={dlgStyles.next} onClick={e => onNext()}/>
-          </div>
-          <div className={dlgStyles.navigator}>
-            <SlideNavigator
-              onSelect={(position) => onSelect(position)}
-              cnt={MOBILE_TOUR_CONTENT.length}
-              position={step}
-            />
-          </div>
-        </div>
-      </DialogContent>
+      {tour && (
+        <Fragment>
+          <DialogTitle
+            id="customized-dialog-title"
+            background={tour.background}
+            onClose={(e) => onClose(e)}
+          ></DialogTitle>
+          <DialogContent>
+            <div className={dlgStyles.content}>
+              <div
+                className={dlgStyles["bg-section"]}
+                style={containerBackgroundStyle()}
+              >
+                <div className={dlgStyles.img} style={imgBackgroundStyle()}></div>
+              </div>
+              <div className={dlgStyles.description}>
+                <h1>{tour.title}</h1>
+                <p>{tour.content}</p>
+              </div>
+              <div className={dlgStyles.control}>
+                <input
+                  type="button"
+                  value="Back"
+                  className={dlgStyles.back}
+                  onClick={(e) => onBack()}
+                />
+                <input
+                  type="button"
+                  value="Next"
+                  className={dlgStyles.next}
+                  onClick={(e) => onNext()}
+                />
+              </div>
+              <div className={dlgStyles.navigator}>
+                <SlideNavigator
+                  onSelect={(position) => onSelect(position)}
+                  cnt={nikelContent.length}
+                  position={step}
+                />
+              </div>
+            </div>
+          </DialogContent>
+        </Fragment>
+      )}
     </Dialog>
   );
 };
 
-export default DialogTourView;
+const mapStateToProps = ({ tour }) => {
+  const { nikelContent } = tour;
+  return { nikelContent };
+};
+
+export default connect(mapStateToProps, {
+  actionNikelTourContent: nikelTourContent,
+})(DialogTourView);

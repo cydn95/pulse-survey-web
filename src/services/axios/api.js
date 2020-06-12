@@ -32,6 +32,19 @@ const getSurveyUserAPI = (userId, surveyId) => {
   );
 };
 
+/* Tour */
+const getNikelTourAPI = () => {
+  return getClient(true).get("/nikelmobilepage/?format=json");
+};
+
+const getTooltipGuideAPI = () => {
+  return getClient(true).get("/tooltipguide/?format=json");
+};
+
+const getConfigPageAPI = () => {
+  return getClient(true).get("/configpage/?format=json");
+};
+
 /* Get Survey Question List */
 const pageListAPI = (surveyId, surveyUserId) => {
   return getClient(true).get(
@@ -248,6 +261,9 @@ export {
   projectListByUserAPI,
   surveyListByProjectAPI,
   getSurveyUserAPI,
+  getNikelTourAPI,
+  getTooltipGuideAPI,
+  getConfigPageAPI,
   pageListAPI,
   submitAboutMeAPI,
   submitSurveyAPI,
