@@ -27,9 +27,30 @@ export default (state = INIT_STATE, action) => {
           content: content[i].pageContent,
         });
       }
-      return { ...state, 'nikelContent': nikelContent };
+      return { ...state, nikelContent: nikelContent };
     case TOOLTIP_TOUR_CONTENT_SUCCESS:
-      return { ...state, tooltipContent: action.payload.content };
+      const tooltipContent = action.payload.content.sort((a, b) =>
+        a.tooltipOrder >= b.tooltipOrder ? 1 : -1
+      );
+
+      const arrangedContent = {};
+
+      for (let i = 0; i < tooltipContent.length; i++) {
+        if (tooltipContent[i].group.toLowerCase() in arrangedContent) {
+          arrangedContent[tooltipContent[i].group.toLowerCase()].push(
+            tooltipContent[i]
+          );
+        } else {
+          arrangedContent[tooltipContent[i].group.toLowerCase()] = [
+            tooltipContent[i],
+          ];
+        }
+      }
+
+      return {
+        ...state,
+        tooltipContent: arrangedContent,
+      };
     case PAGE_CONTENT_SUCCESS:
       return { ...state, pageContent: action.payload.content };
     default:
