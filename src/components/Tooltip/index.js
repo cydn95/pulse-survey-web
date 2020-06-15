@@ -1,4 +1,7 @@
 import DesktopGuide from "./DesktopGuide";
 import MobileGuide from "./MobileGuide";
 
-export { DesktopGuide, MobileGuide }
+import DesktopTooltip from "./DesktopTooltip";
+import MobileTooltip from "./MobileTooltip";
+
+export { DesktopGuide, MobileGuide, DesktopTooltip, MobileTooltip };

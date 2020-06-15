@@ -1,0 +1,35 @@
+.guide {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+
+  &__icon {
+    width: 64px;
+    height: 64px;
+    background: #bacffe;
+    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+    &__image {
+      width: 38px;
+      height: 36px;
+      fill: #fff;
+    }
+  }
+  &__title {
+    color: #333;
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+  &__content {
+    color: #565866;
+    font-size: 0.8375rem;
+  }
+}
