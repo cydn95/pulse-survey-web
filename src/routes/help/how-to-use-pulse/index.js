@@ -6,7 +6,6 @@ import styles from './styles.scss';
 import classnames from 'classnames';
 
 const HowToUsePulse = ({ history }) => {
-  console.log(history);
   const handleContinue = (e) => {
     history.push("/app/about-me");
   };

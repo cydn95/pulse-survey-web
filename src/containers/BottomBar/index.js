@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import Joyride, { STATUS } from "react-joyride";
 import a11yChecker from "a11y-checker";
-import { MobileGuide } from "Components/Tooltip";
+import { MobileGuide, MobileTooltip } from "Components/Tooltip";
 
 import classnames from "classnames";
 import { withRouter } from "react-router-dom";
@@ -14,9 +14,10 @@ import {
   setSubMenuClassName,
   projectListByUser,
   guideShowStatus,
+  tooltipTourContent,
 } from "Redux/actions";
 
-import styles from './styles.scss';
+import styles from "./styles.scss";
 
 class BottomBar extends Component {
   constructor(props) {
@@ -25,99 +26,7 @@ class BottomBar extends Component {
       subMenuOpen: false,
       run: false,
       stepIndex: 0,
-      steps: [
-        {
-          content: (
-            <div className={styles.guide}>
-              <div className={styles["guide__icon"]}>
-                <svg
-                  className={classnames(styles["guide__icon__image"])}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <g stroke="none" strokeWidth="1">
-                    <g transform="translate(-120.000000, -264.000000)">
-                      <g transform="translate(120.000000, 267.000000)">
-                        <rect x="11" y="4" width="1" height="8"></rect>
-                        <path d="M21,9.0093689 C21,8.45190985 20.5490746,8 20.0052288,8 L2.99477117,8 C2.44537422,8 2,8.44335318 2,9.0093689 L2,12 L3,12 L3,9 L20,9 L20,12 L21,12 L21,9.0093689 Z"></path>
-                        <path d="M17,0.497698784 C17,0.222827336 16.7702494,0 16.4987692,0 L6.50123084,0 C6.22440869,0 6,0.21484375 6,0.497698784 L6,4.50230122 C6,4.77717266 6.22975063,5 6.50123084,5 L16.4987692,5 C16.7755913,5 17,4.78515625 17,4.50230122 L17,0.497698784 Z"></path>
-                        <path d="M5,13.4976988 C5,13.2228273 4.78515625,13 4.50230122,13 L0.497698784,13 C0.222827336,13 0,13.2148438 0,13.4976988 L0,17.5023012 C0,17.7771727 0.21484375,18 0.497698784,18 L4.50230122,18 C4.77717266,18 5,17.7851562 5,17.5023012 L5,13.4976988 Z"></path>
-                        <path d="M14,13.4976988 C14,13.2228273 13.7851562,13 13.5023012,13 L9.49769878,13 C9.22282734,13 9,13.2148438 9,13.4976988 L9,17.5023012 C9,17.7771727 9.21484375,18 9.49769878,18 L13.5023012,18 C13.7771727,18 14,17.7851562 14,17.5023012 L14,13.4976988 Z"></path>
-                        <path d="M23,13.4976988 C23,13.2228273 22.7851562,13 22.5023012,13 L18.4976988,13 C18.2228273,13 18,13.2148438 18,13.4976988 L18,17.5023012 C18,17.7771727 18.2148438,18 18.4976988,18 L22.5023012,18 C22.7771727,18 23,17.7851562 23,17.5023012 L23,13.4976988 Z"></path>
-                      </g>
-                    </g>
-                  </g>
-                </svg>
-              </div>
-              <h2 className={styles["guide__title"]}>Step 1</h2>
-              <p className={styles["guide__content"]}>
-                Make sure your on the right project
-              </p>
-            </div>
-          ),
-          placement: "bottom",
-          target: ".b-menu-my-projects",
-          disableBeacon: true,
-        },
-        {
-          content: (
-            <div className={styles.guide}>
-              <div className={styles["guide__icon"]}>
-                <svg
-                  className={classnames(styles["guide__icon__image"])}
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g>
-                    <rect x="-1" y="-1" width="22" height="22" fill="none" />
-                  </g>
-                  <g>
-                    <path d="m10.54 10.443c-2.48 0-4.5-2.02-4.5-4.5s2.02-4.5 4.5-4.5 4.5 2.02 4.5 4.5-2.02 4.5-4.5 4.5zm0-7c-1.38 0-2.5 1.12-2.5 2.5s1.12 2.5 2.5 2.5 2.5-1.12 2.5-2.5-1.12-2.5-2.5-2.5z" />
-                    <path d="m16.69 18.803c-0.19-3.62-3.17-6.45-6.79-6.45s-6.6 2.83-6.79 6.45l-2-0.1c0.24-4.68 4.1-8.34 8.79-8.34 4.68 0 8.54 3.67 8.79 8.34l-2 0.1z" />
-                  </g>
-                </svg>
-              </div>
-              <h2 className={styles["guide__title"]}>Step 2</h2>
-              <p className={styles["guide__content"]}>
-                Rate how you feel the Project is going
-              </p>
-            </div>
-          ),
-          locale: { skip: <strong aria-label="skip">S-K-I-P</strong> },
-          placement: "bottom",
-          target: ".b-menu-about-me",
-        },
-        {
-          content: (
-            <div className={styles.guide}>
-              <div className={styles["guide__icon"]}>
-                <svg
-                  className={classnames(styles["guide__icon__image"])}
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g>
-                    <rect x="-1" y="-1" width="22" height="22" fill="none" />
-                  </g>
-                  <g stroke="null">
-                    <path
-                      d="m2.642 9.5924c0.50308 0 0.94019 0.18144 1.3031 0.55257s0.55257 0.79998 0.55257 1.3031-0.18144 0.94019-0.55257 1.3031-0.79998 0.55257-1.3031 0.55257-0.94019-0.18144-1.3031-0.55257-0.55257-0.79998-0.55257-1.3031 0.18144-0.94019 0.55257-1.3031 0.79998-0.55257 1.3031-0.55257zm2.5484 2.3257v-0.93194h1.3938v0.93194h-1.3938zm12.066 1.3855c0.57731 0 1.0721 0.20618 1.4763 0.6103s0.6103 0.89895 0.6103 1.4763-0.20618 1.0721-0.6103 1.4763-0.89895 0.6103-1.4763 0.6103-1.0721-0.20618-1.4763-0.6103-0.6103-0.89895-0.6103-1.4763l0.032989-0.28865-2.3752-1.3608c-0.3134 0.3134-0.65978 0.54432-1.0474 0.70926s-0.79998 0.24742-1.2453 0.24742c-0.57731 0-1.1216-0.14845-1.6247-0.4371s-0.89895-0.68452-1.1876-1.1876-0.4371-1.0474-0.4371-1.6247c0-0.51958 0.11546-1.0062 0.34638-1.4515s0.54432-0.82473 0.93194-1.1299l-0.95668-2.0618h-0.09072c-0.57731 0-1.0721-0.20618-1.4763-0.6103s-0.6103-0.89895-0.6103-1.4763 0.20618-1.0721 0.6103-1.4763 0.89895-0.6103 1.4763-0.6103 1.0721 0.20618 1.4763 0.6103 0.6103 0.89895 0.6103 1.4763c0 0.61854-0.23917 1.1381-0.72576 1.567l0.95668 2.0041c0.23092-0.057731 0.46185-0.09072 0.69277-0.09072 0.57731 0 1.1216 0.14845 1.6247 0.4371s0.89895 0.68452 1.1876 1.1876 0.4371 1.0474 0.4371 1.6247c0 0.37113-0.065978 0.74225-0.20618 1.1299l2.2598 1.3113c0.40412-0.38762 0.88246-0.58556 1.4268-0.58556zm-9.7483-7.8844c0.18969 0 0.35463-0.065978 0.49484-0.20618s0.20618-0.2969 0.20618-0.49484-0.065978-0.35463-0.20618-0.49484-0.2969-0.20618-0.49484-0.20618-0.35463 0.065978-0.49484 0.20618-0.20618 0.2969-0.20618 0.49484 0.065978 0.35463 0.20618 0.49484 0.30515 0.20618 0.49484 0.20618zm3.0185 7.8844c0.50308 0 0.94019-0.18144 1.3031-0.55257s0.55257-0.79998 0.55257-1.3031-0.18144-0.94019-0.55257-1.3031-0.79998-0.55257-1.3031-0.55257-0.94019 0.18144-1.3031 0.55257-0.55257 0.79998-0.55257 1.3031 0.18144 0.94019 0.55257 1.3031 0.79998 0.55257 1.3031 0.55257zm5.1628-4.7834-1.3938 1.0474-0.57731-0.7505 1.3938-1.0474 0.57731 0.7505zm1.7979-0.3134c-0.50308 0-0.94019-0.18144-1.3031-0.55257s-0.55257-0.79998-0.55257-1.3031 0.18144-0.94019 0.55257-1.3031 0.79998-0.55257 1.3031-0.55257 0.94019 0.18144 1.3031 0.55257 0.55257 0.79998 0.55257 1.3031-0.18144 0.94019-0.55257 1.3031-0.79998 0.55257-1.3031 0.55257zm-0.23092 7.8844c0.18969 0 0.35463-0.065978 0.49484-0.20618s0.20618-0.2969 0.20618-0.49484-0.065978-0.35463-0.20618-0.49484-0.2969-0.20618-0.49484-0.20618-0.35463 0.065978-0.49484 0.20618-0.20618 0.2969-0.20618 0.49484 0.065978 0.35463 0.20618 0.49484 0.2969 0.20618 0.49484 0.20618z"
-                      stroke="null"
-                    />
-                  </g>
-                </svg>
-              </div>
-              <h2 className={styles["guide__title"]}>Step 3</h2>
-              <p className={styles["guide__content"]}>
-                Now tell us your views on how others see the project
-              </p>
-            </div>
-          ),
-          locale: { skip: <strong aria-label="skip">S-K-I-P</strong> },
-          placement: "bottom",
-          target: ".b-menu-about-others",
-        },
-      ],
+      steps: [],
     };
   }
 
@@ -134,25 +43,50 @@ class BottomBar extends Component {
   };
 
   componentWillReceiveProps(props) {
-    const { screenMode, guide, setGuideShowStatus } = props;
+    const { screenMode, guide, setGuideShowStatus, tooltipContent } = props;
 
     // a11yChecker();
 
-    if (screenMode === "mobile") {
-      if (guide) {
-        setTimeout(this.handleStartGuide, 1000);
-        setGuideShowStatus(false);
+    if (tooltipContent.menu && tooltipContent.menu.length > 0) {
+      const steps = [];
+      for (let i = 0; i < tooltipContent.menu.length; i++) {
+        steps.push({
+          content: <MobileTooltip tooltip={tooltipContent.menu[i]} />,
+          placement: "bottom",
+          target: `.b-menu-${tooltipContent.menu[i].place.toLowerCase()}`,
+          disableBeacon: true,
+        });
       }
-    } else {
-      setTimeout(this.handleStopGuide, 500);
+      this.setState(
+        {
+          steps: steps,
+        },
+        () => {
+          if (screenMode === "mobile") {
+            if (guide) {
+              setTimeout(this.handleStartGuide, 1000);
+              setGuideShowStatus(false);
+            }
+          } else {
+            setTimeout(this.handleStopGuide, 500);
+          }
+        }
+      );
     }
   }
 
   componentWillMount() {
-    const { getProjectListByUser, user, projectList } = this.props;
+    const {
+      getProjectListByUser,
+      user,
+      projectList,
+      getTooltipTourContent,
+    } = this.props;
     if (projectList.length === 0) {
       getProjectListByUser(user.userId);
     }
+
+    getTooltipTourContent();
   }
 
   handleClickMainMenu = (e, menu, navigate) => {
@@ -213,23 +147,25 @@ class BottomBar extends Component {
 
     return (
       <div className={styles.root}>
-        <Joyride
-          callback={this.handleJoyrideCallback}
-          continuous={true}
-          getHelpers={this.getHelpers}
-          run={run}
-          scrollToFirstStep={true}
-          showProgress={true}
-          showSkipButton={true}
-          steps={steps}
-          skipBeacon={true}
-          tooltipComponent={MobileGuide}
-          styles={{
-            options: {
-              zIndex: 10000,
-            },
-          }}
-        />
+        {steps.length > 0 && (
+          <Joyride
+            callback={this.handleJoyrideCallback}
+            continuous={true}
+            getHelpers={this.getHelpers}
+            run={run}
+            scrollToFirstStep={true}
+            showProgress={true}
+            showSkipButton={true}
+            steps={steps}
+            skipBeacon={true}
+            tooltipComponent={MobileGuide}
+            styles={{
+              options: {
+                zIndex: 10000,
+              },
+            }}
+          />
+        )}
         <div className={styles["main-menu"]}>
           <div className={styles.link}>
             <ul className={styles.nav}>
@@ -553,20 +489,21 @@ class BottomBar extends Component {
       </div>
     );
   }
-};
+}
 
 const mapStateToProps = ({ menu, settings, authUser, tour }) => {
   const { mainMenuClassName, subMenuClassName } = menu;
   const { projectList } = settings;
   const { user } = authUser;
-  const { guide } = tour;
+  const { guide, tooltipContent } = tour;
 
   return {
     user,
     projectList,
     mainMenuClassName,
     subMenuClassName,
-    guide
+    tooltipContent,
+    guide,
   };
 };
 
@@ -576,5 +513,6 @@ export default withRouter(
     setSubMenuClassName,
     getProjectListByUser: projectListByUser,
     setGuideShowStatus: guideShowStatus,
+    getTooltipTourContent: tooltipTourContent,
   })(BottomBar)
 );

@@ -1,123 +1,137 @@
-import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
-import { connect } from 'react-redux';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { NavLink } from "react-router-dom";
+
+import {
+  InputLabel,
+  FormHelperText,
+  FormControl,
+  NativeSelect,
+} from "@material-ui/core";
 
 import Switch from "rc-switch";
-
 import "rc-switch/assets/index.css";
-
-import styles from './project.scss';
 
 import {
   projectListByUser,
-  setProjectID
+  surveyListByProject,
+  setProjectID,
+  setSurveyID,
 } from "Redux/actions";
+import styles from "./project.scss";
 
 class Project extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
-      projectStatus: []
+      projectId: props.projectId,
+      surveyId: props.surveyId,
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.getProjectListByUser(this.props.user.userId);
+
+    const { projectId } = this.state;
+    const { getSurveyListByProject } = this.props;
+    getSurveyListByProject(projectId);
   }
 
-  componentWillReceiveProps(props) {
-    let projectStatus = [];
-
-    const { projectList, projectId } = props;
-
-    for (let i = 0; i < projectList.length; i++) {
-
-      if (projectList[i].project.id == projectId) {
-
-        projectStatus.push(true)
-      } else {
-        projectStatus.push(false)
-      }
-    }
-
+  handleSelectProject = (event) => {
     this.setState({
-      'projectStatus': projectStatus
-    })
-  }
-
-  changeProjectStatus = (status, index) => {
-
-    let projectStatus = this.state.projectStatus;
-
-    let projectId = 0;
-
-    for (let i = 0; i < projectStatus.length; i++) {
-      if (i === index) {
-        projectStatus[i] = status;
-        if (status) {
-          projectId = this.props.projectList[index].project.id;
-        } else {
-          projectId = 0;
-        }
-      } else {
-        projectStatus[i] = false;
-      }
-    }
-
-    this.setState({
-      'projectStatus': projectStatus
+      projectId: event.target.value,
     });
 
-    this.props.setSurveyProjectID(this.props.user.userId, projectId);
-  }
+    const { getSurveyListByProject } = this.props;
+    getSurveyListByProject(event.target.value);
+  };
+
+  handleSelectSurvey = (newSurveyId, status) => {
+    if (status) {
+      this.setState({
+        surveyId: newSurveyId,
+      });
+    } else {
+      this.setState({
+        surveyId: 0,
+      });
+    }
+
+    const { projectId } = this.state;
+    const { actionSetProjectID, actionSetSurveyID, user } = this.props;
+    actionSetProjectID(projectId);
+    actionSetSurveyID(user.userId, status ? newSurveyId : 0);
+  };
 
   render() {
-    const { projectList } = this.props;
+    const { projectList, surveyList } = this.props;
+    const { projectId, surveyId } = this.state;
 
     return (
       <div className={styles.main}>
-        {projectList.length > 0 &&
-          projectList.map((item, index) => {
+        <FormControl className={styles["form-control"]}>
+          <InputLabel htmlFor="project-native-helper">Project</InputLabel>
+          <NativeSelect
+            value={projectId}
+            onChange={(e) => this.handleSelectProject(e)}
+            inputProps={{
+              name: "project",
+              id: "project-native-helper",
+            }}
+          >
+            <option aria-label="None" value={0} />
+            {projectList.length > 0 &&
+              projectList.map((item) => (
+                <option key={`project_${item.id}`} value={item.id}>{item.projectName}</option>
+              ))}
+          </NativeSelect>
+          <FormHelperText>Please select a Project</FormHelperText>
+        </FormControl>
+        {surveyList.length > 0 &&
+          surveyList.map((item) => {
             return (
-              <div key={index}>
-                <NavLink to="#" className="list-item-heading mb-1 truncate w-40 w-xs-100">
-                  {item.project.projectName}
+              <div key={`survey_${item.id}`}>
+                <NavLink
+                  to="#"
+                  className="list-item-heading mb-1 truncate w-40 w-xs-100"
+                >
+                  {item.surveyTitle}
                 </NavLink>
                 <div className="w-15 w-xs-100 text-right">
                   <Switch
                     className="custom-switch custom-switch-primary"
-                    checked={this.state.projectStatus[index]}
-                    onChange={(status) => this.changeProjectStatus(status, index)}
+                    checked={item.id == surveyId ? true : false}
+                    onChange={(status) =>
+                      this.handleSelectSurvey(item.id, status)
+                    }
                   />
                 </div>
               </div>
-            )
-          })
-        }
+            );
+          })}
       </div>
     );
   }
 }
 
 const mapStateToProps = ({ authUser, settings }) => {
-
-  const { user, projectId } = authUser;
-  const { locale, projectList } = settings;
+  const { user, projectId, surveyId } = authUser;
+  const { locale, projectList, surveyList } = settings;
 
   return {
-    projectId,
     user,
+    projectId,
     projectList,
-    locale
+    surveyId,
+    surveyList,
+    locale,
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    getProjectListByUser: projectListByUser,
-    setSurveyProjectID: setProjectID
-  }
-)(Project);
+export default connect(mapStateToProps, {
+  getProjectListByUser: projectListByUser,
+  getSurveyListByProject: surveyListByProject,
+  actionSetProjectID: setProjectID,
+  actionSetSurveyID: setSurveyID,
+})(Project);

@@ -16,60 +16,82 @@ import {
   DELETE_ABOUT_ME_TOPIC_SUCCESS,
 } from "Constants/actionTypes";
 
-export const pageList = (projectUserId) => ({
+export const pageList = (surveyId, surveyUserId) => ({
   type: PAGE_LIST,
-  payload: { projectUserId }
+  payload: { surveyId, surveyUserId },
 });
 
 export const pageListSuccess = (pageList, optionList) => ({
   type: PAGE_LIST_SUCCESS,
-  payload: { pageList, optionList }
+  payload: { pageList, optionList },
 });
 
-export const selectPage = pageIndex => ({
+export const selectPage = (pageIndex) => ({
   type: SELECT_PAGE,
-  payload: { pageIndex }
-})
+  payload: { pageIndex },
+});
 
 export const continueSurvey = (pageIndex, percentage) => ({
   type: CONTINUE_SURVEY,
-  payload: { pageIndex, percentage }
-})
+  payload: { pageIndex, percentage },
+});
 
 export const inputAnswer = (answer) => ({
   type: INPUT_ANSWER,
-  payload: { answer }
-})
+  payload: { answer },
+});
 
-export const submitSurvey = (surveyList, aboutMe, projectId, projectUserId, history) => ({
+export const submitSurvey = (
+  surveyList,
+  aboutMe,
+  projectId,
+  surveyUserId,
+  history
+) => ({
   type: SUBMIT_SURVEY,
-  payload: { surveyList, aboutMe, projectId, projectUserId, history }
-})
+  payload: { surveyList, aboutMe, projectId, surveyUserId, history },
+});
 
 export const submitSurveySuccess = (surveyId) => ({
   type: SUBMIT_SURVEY_SUCCESS,
-  payload: { surveyId }
-})
+  payload: { surveyId },
+});
 
 export const aboutMe = (data) => ({
   type: ABOUTME,
-  payload: { data }
-})
+  payload: { data },
+});
 
 export const submitAboutMe = (data, aboutMe) => ({
   type: SUBMIT_ABOUTME,
-  payload: { data, aboutMe }
-})
+  payload: { data, aboutMe },
+});
 
-export const addAboutMeTopic = (topicName, topicComment, questionId, projectUserId, pageIndex, questionIndex, callback) => ({
+export const addAboutMeTopic = (
+  topicName,
+  topicComment,
+  questionId,
+  projectUserId,
+  pageIndex,
+  questionIndex,
+  callback
+) => ({
   type: ADD_ABOUT_ME_TOPIC,
-  payload: { topicName, topicComment, questionId, projectUserId, pageIndex, questionIndex, callback }
-})
+  payload: {
+    topicName,
+    topicComment,
+    questionId,
+    projectUserId,
+    pageIndex,
+    questionIndex,
+    callback,
+  },
+});
 
 export const addAboutMeTopicSuccess = (topic, pageIndex, questionIndex) => ({
   type: ADD_ABOUT_ME_TOPIC_SUCCESS,
-  payload: { topic, pageIndex, questionIndex }
-})
+  payload: { topic, pageIndex, questionIndex },
+});
 
 export const updateAboutMeTopic = (
   topicId,
@@ -94,7 +116,12 @@ export const updateAboutMeTopic = (
   },
 });
 
-export const updateAboutMeTopicSuccess = (topicId, topic, pageIndex, questionIndex) => ({
+export const updateAboutMeTopicSuccess = (
+  topicId,
+  topic,
+  pageIndex,
+  questionIndex
+) => ({
   type: UPDATE_ABOUT_ME_TOPIC_SUCCESS,
   payload: { topicId, topic, pageIndex, questionIndex },
 });

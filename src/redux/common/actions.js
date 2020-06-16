@@ -98,18 +98,18 @@ export const addUserSuccess = (insertedUserId) => ({
   payload: { insertedUserId },
 });
 
-export const addStakeholder = (projectId, stakeholder) => ({
+export const addStakeholder = (projectId, surveyId, stakeholder) => ({
   type: ADD_STAKEHOLDER,
-  payload: { projectId, stakeholder },
+  payload: { projectId, surveyId, stakeholder },
 });
 
 export const addStakeholderSuccess = () => ({
   type: ADD_STAKEHOLDER_SUCCESS,
 });
 
-export const updateStakeholder = (stakeholder) => ({
+export const updateStakeholder = (projectId, surveyId, stakeholder) => ({
   type: UPDATE_STAKEHOLDER,
-  payload: { stakeholder },
+  payload: { projectId, surveyId, stakeholder },
 });
 
 export const updateStakeholderSuccess = () => ({

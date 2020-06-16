@@ -1,9 +1,8 @@
 import React from "react";
+import { connect } from "react-redux";
+import { Droppable } from "react-drag-and-drop";
 
 import TopNav from "Containers/TopNav";
-
-import { connect } from "react-redux";
-
 import {
   userList,
   stakeholderList,
@@ -25,7 +24,7 @@ import { NewStakeholder } from "Components/Survey";
 import SearchBar from "Components/search-bar";
 import Button from "Components/Button";
 
-import { Droppable } from "react-drag-and-drop";
+import { serverUrl } from "Constants/defaultValues";
 
 import styles from "./styles.scss";
 import classnames from "classnames";
@@ -89,13 +88,13 @@ class MyMap extends React.Component {
       firstName: "",
       lastName: "",
       email: "",
-      myProjectUser: this.props.projectUserId,
+      myProjectUser: this.props.surveyUserId,
     };
   }
 
   handleAddNewStakeholder = (stakeholder) => {
-    const { projectId } = this.props;
-    this.props.addStakeholder(projectId, stakeholder);
+    const { projectId, surveyId } = this.props;
+    this.props.addStakeholder(projectId, surveyId, stakeholder);
   };
 
   handleShowAddPage = () => {
@@ -187,7 +186,6 @@ class MyMap extends React.Component {
   };
 
   handleAddStackholderToProjectGraph = (data, e = {}) => {
-
     const projectUserId = data.stakeholder;
     const { stakeholderList } = this.state;
     let projectUser = stakeholderList.filter((e) => {
@@ -253,7 +251,8 @@ class MyMap extends React.Component {
 
       for (let i = 0; i < this.projectMapProjectUserList.length; i++) {
         if (
-          this.projectMapProjectUserList[i].projectUserId === newProjectUserId &&
+          this.projectMapProjectUserList[i].projectUserId ===
+            newProjectUserId &&
           this.projectMapProjectUserList[i].shCategory === newShCategory
         ) {
           bExist = true;
@@ -270,20 +269,27 @@ class MyMap extends React.Component {
   };
 
   componentWillMount() {
-    const { projectId, projectUserId, history} = this.props;
+    const { surveyId, surveyUserId, history } = this.props;
 
-    if (projectId == undefined || projectId == null || projectId <= 0 || projectUserId == undefined || projectUserId == null || projectUserId <= 0) {
-      history.push('/app/project-not-found');
+    if (
+      surveyId == undefined ||
+      surveyId == null ||
+      surveyId <= 0 ||
+      surveyUserId == undefined ||
+      surveyUserId == null ||
+      surveyUserId <= 0
+    ) {
+      history.push("/app/project-not-found");
       return;
     }
 
-    this.props.getKMapData(projectUserId);
-    this.props.getProjectMapData(projectUserId);
+    this.props.getKMapData(surveyUserId);
+    this.props.getProjectMapData(surveyUserId);
     this.props.getShCategoryList(0);
-    this.props.getStakeholderList(projectUserId);
+    this.props.getStakeholderList(surveyUserId);
     this.props.getTeamList();
-    this.props.getAoQuestionList(projectUserId);
-    this.props.getDriverList(1);  // For now,  surveyId is 1 by default
+    this.props.getAoQuestionList(surveyUserId);
+    this.props.getDriverList(surveyId);
     this.props.getSkipQuestionList();
   }
 
@@ -309,7 +315,7 @@ class MyMap extends React.Component {
       main: {
         id: "ap1",
         name: "ME",
-        icon: "http://3.17.57.137/media/uploads/shcategory/me.svg",
+        icon: `${serverUrl}/media/uploads/shcategory/me.svg`,
         color: "#7030a0",
         iconColor: "#fefefa",
       },
@@ -326,7 +332,7 @@ class MyMap extends React.Component {
       main: {
         id: "ap1",
         name: "projectTitle",
-        icon: "http://3.17.57.137/media/uploads/shcategory/project.svg",
+        icon: `${serverUrl}/media/uploads/shcategory/project.svg`,
         color: "#7030a0",
         iconColor: "#fefefa",
       },
@@ -520,7 +526,8 @@ class MyMap extends React.Component {
             if (
               this.projectMapProjectUserList[i].projectUserId ===
                 mapUser.projectUserId &&
-              this.projectMapProjectUserList[i].shCategory === mapUser.shCategory
+              this.projectMapProjectUserList[i].shCategory ===
+                mapUser.shCategory
             ) {
               bExist = true;
               break;
@@ -576,7 +583,11 @@ class MyMap extends React.Component {
           if (bAdd) {
             individualList.push(individualUser);
             // update SHCategory individual Count
-            for (let i = 0; i < projectMapArchitecture.sh_categories.length; i++) {
+            for (
+              let i = 0;
+              i < projectMapArchitecture.sh_categories.length;
+              i++
+            ) {
               if (
                 projectMapArchitecture.sh_categories[i].id ===
                 individualUser.sh_category.current
@@ -615,7 +626,7 @@ class MyMap extends React.Component {
       // }
 
       // projectArchitecture.main.name = projectTitle;
-      // projectArchitecture.main.icon = "http://3.17.57.137/media/uploads/shcategory/project.svg";
+      // projectArchitecture.main.icon = `${serverUrl}/media/uploads/shcategory/project.svg`;
       // projectArchitecture.main.color = "#7030a0";
       // projectArchitecture.main.iconColor = "#fefefa";
 
@@ -666,7 +677,6 @@ class MyMap extends React.Component {
   };
 
   handleStartOtherSurvey = (id) => {
-
     if (id.startsWith("S_")) {
       let user = {};
       for (let i = 0; i < this.state.decisionMakerList.length; i++) {
@@ -697,7 +707,7 @@ class MyMap extends React.Component {
       answerData,
       this.props.history,
       this.state.currentSurveyUser,
-      this.props.projectUserId
+      this.props.surveyUserId
     );
   };
 
@@ -732,7 +742,7 @@ class MyMap extends React.Component {
   };
 
   handleSaveGraph = (e) => {
-    const { userId, projectId, projectUserId } = this.props;
+    const { userId, projectId, surveyUserId } = this.props;
     const { mapStyle } = this.state;
 
     let mapProjectUserList = [];
@@ -752,12 +762,11 @@ class MyMap extends React.Component {
         });
       }
     }
-   
-    
+
     const newMapData = {
       user: userId,
       project: projectId,
-      myProjectUser: projectUserId,
+      myProjectUser: surveyUserId,
       pu_category: mapProjectUserList,
       layout_json: {},
     };
@@ -1038,8 +1047,7 @@ const mapStateToProps = ({
   aosurvey,
   authUser,
 }) => {
-  const { projectId, projectTitle, projectUserId, user } = authUser;
-  const { surveyId } = survey;
+  const { projectId, surveyId, surveyTitle, surveyUserId, user } = authUser;
   const { locale } = settings;
   const { kMapData, projectMapData, mapSaveLoading, mapGetLoading } = kmap;
   const {
@@ -1056,15 +1064,15 @@ const mapStateToProps = ({
   return {
     userId: user.userId,
     projectId,
-    projectTitle,
-    projectUserId,
+    surveyId,
+    surveyTitle,
+    surveyUserId,
     stakeholderList,
     teamList,
     shCategoryList,
     projectMapShCategoryList,
     userList,
     skipQuestionList,
-    surveyId,
     kMapData,
     projectMapData,
     aoQuestionList,

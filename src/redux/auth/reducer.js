@@ -6,6 +6,7 @@ import {
   REGISTER_USER_SUCCESS,
   LOGOUT_USER,
   PROJECT_ID_SUCCESS,
+  SURVEY_ID_SUCCESS,
   SET_PASSWORD,
 } from "Constants/actionTypes";
 
@@ -17,8 +18,9 @@ const INIT_STATE = {
     accessToken: localStorage.getItem("accessToken"),
   },
   projectId: localStorage.getItem("projectId"),
-  projectTitle: localStorage.getItem("projectTitle"),
-  projectUserId: localStorage.getItem("projectUserId"),
+  surveyId: localStorage.getItem("surveyId"),
+  surveyTitle: localStorage.getItem("surveyTitle"),
+  surveyUserId: localStorage.getItem("surveyUserId"),
   loading: false,
   authStatus: loginErrorType.AUTH_SUCCESS,
 };
@@ -28,9 +30,14 @@ export default (state = INIT_STATE, action) => {
     case PROJECT_ID_SUCCESS:
       return {
         ...state,
-        projectId: action.payload.projectId,
-        projectTitle: action.payload.projectTitle,
-        projectUserId: action.payload.projectUserId,
+        projectId: action.payload.projectId
+      }
+    case SURVEY_ID_SUCCESS:
+      return {
+        ...state,
+        surveyId: action.payload.surveyId,
+        surveyTitle: action.payload.surveyTitle,
+        surveyUserId: action.payload.surveyUserId,
       };
     case LOGIN_USER:
       return { ...state, loading: true };

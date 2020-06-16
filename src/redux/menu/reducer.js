@@ -1,6 +1,7 @@
 import {
   SET_MAIN_MENU_CLASSNAME,
   SET_SUB_MENU_CLASSNAME,
+  SET_MENU_NAME,
 } from "Constants/actionTypes";
 
 import {
@@ -11,6 +12,7 @@ import {
 const INIT_STATE = {
   mainMenuClassName: defaultMainMenuClassName,
   subMenuClassName: defaultSubMenuClassName,
+  menuName: "",
 };
 
 export default (state = INIT_STATE, action) => {
@@ -24,6 +26,11 @@ export default (state = INIT_STATE, action) => {
       return Object.assign({}, state, {
         ...state,
         subMenuClassName: action.payload.subMenuClassName,
+      });
+    case SET_MENU_NAME:
+      return Object.assign({}, state, {
+        ...state,
+        menuName: action.payload.menuName,
       });
     default:
       return { ...state };

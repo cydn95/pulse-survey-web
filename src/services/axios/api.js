@@ -15,13 +15,40 @@ const setPasswordAPI = (email, password, token) => {
   });
 };
 
+/* Settings -> Project */
 const projectListByUserAPI = (userId) => {
   return getClient(true).get("/projectbyuser/?format=json&user=" + userId);
 };
 
-const pageListAPI = (projectUserId) => {
+const surveyListByProjectAPI = (projectId) => {
   return getClient(true).get(
-    "/pages/?format=json&survey=1&projectuser=" + projectUserId
+    "/surveybyproject/?format=json&project=" + projectId
+  );
+};
+
+const getSurveyUserAPI = (userId, surveyId) => {
+  return getClient(true).get(
+    "/userbysurvey/?format=json&user=" + userId + "&survey=" + surveyId
+  );
+};
+
+/* Tour */
+const getNikelTourAPI = () => {
+  return getClient(true).get("/nikelmobilepage/?format=json");
+};
+
+const getTooltipGuideAPI = () => {
+  return getClient(true).get("/tooltipguide/?format=json");
+};
+
+const getConfigPageAPI = () => {
+  return getClient(true).get("/configpage/?format=json");
+};
+
+/* Get Survey Question List */
+const pageListAPI = (surveyId, surveyUserId) => {
+  return getClient(true).get(
+    `/pages/?format=json&survey=${surveyId}&projectuser=${surveyUserId}`
   );
 };
 
@@ -90,12 +117,7 @@ const submitAoQuestionAPI = (answerData) => {
 // Get StakeholderList (get users by project id)
 const stakeholderListAPI = (projectUserId) => {
   return getClient(true).get(
-    "/userbyproject/?format=json&myProjectUser=" + projectUserId
-  );
-};
-const getProjectUserAPI = (userId, projectId) => {
-  return getClient(true).get(
-    "/userbyproject/?format=json&user=" + userId + "&project=" + projectId
+    "/userbysurvey/?format=json&myProjectUser=" + projectUserId
   );
 };
 
@@ -237,6 +259,11 @@ export {
   loginAPI,
   setPasswordAPI,
   projectListByUserAPI,
+  surveyListByProjectAPI,
+  getSurveyUserAPI,
+  getNikelTourAPI,
+  getTooltipGuideAPI,
+  getConfigPageAPI,
   pageListAPI,
   submitAboutMeAPI,
   submitSurveyAPI,
@@ -248,7 +275,6 @@ export {
   projectUserListAPI,
   skipQuestionListAPI,
   stakeholderListAPI,
-  getProjectUserAPI,
   shCategoryListAPI,
   addUserAPI,
   deleteTopicAboutMeAPI,

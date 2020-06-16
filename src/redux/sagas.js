@@ -6,6 +6,7 @@ import mapSagas from './map/saga';
 import aoSurveySagas from './aosurvey/saga';
 import settingSagas from './settings/saga';
 import accountSagas from './account/saga';
+import tourSagas from "./tour/saga";
 
 export default function* rootSaga(getState) {
   yield all([
@@ -15,6 +16,7 @@ export default function* rootSaga(getState) {
     mapSagas(),
     aoSurveySagas(),
     settingSagas(),
-    accountSagas()
+    accountSagas(),
+    tourSagas()
   ]);
 }
