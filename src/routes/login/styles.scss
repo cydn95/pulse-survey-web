@@ -1,0 +1,25 @@
+.down {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  bottom: 30px;
+  left: calc(50vw - 20px);
+  font-size: 1rem;
+  color: #fff;
+  border: 1px solid #fff;
+  border-radius: 25px;
+  visibility: hidden;
+  cursor: pointer;
+  box-sizing: border-box;
+  padding-top: 3px;
+  z-index: 0;
+
+  @media screen and (max-width: 768px) {
+    visibility: visible;
+  }
+}
