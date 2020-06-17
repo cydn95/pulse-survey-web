@@ -5,7 +5,6 @@ import { withRouter } from "react-router-dom";
 import Switch from "react-switch";
 
 import Joyride, { STATUS } from "react-joyride";
-import a11yChecker from "a11y-checker";
 
 import { isMobile } from "react-device-detect";
 import DialogTourView from "Components/DialogTourView";

@@ -1,5 +1,5 @@
-import Title from './Title'
-import StageBar from './StageBar'
+import Title from "./Title";
+import StageBar from "./StageBar";
 import FreeText from "./FreeText";
 import Welcome from "./Welcome";
 import AboutMe from "./AboutMe";
@@ -25,5 +25,5 @@ export {
   RangeSlider,
   SkipQuestion,
   NewStakeholder,
-  Continue
-}
+  Continue,
+};

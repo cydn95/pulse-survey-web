@@ -93,12 +93,10 @@ class TopNav extends Component {
         </div>
         <div id="menu" className={styles.control}>
           <div className={styles.dropdown} onClick={(e) => this.toggleMenu(e)}>
-            <img
-              className={styles.avatar}
-              src={profile.avatar}
-              alt="avatar"
-            />
-            <span className={styles.username}>{`${profile.firstName} ${profile.lastName}`}</span>
+            <img className={styles.avatar} src={profile.avatar} alt="avatar" />
+            <span
+              className={styles.username}
+            >{`${profile.firstName} ${profile.lastName}`}</span>
           </div>
           {this.state.menu && (
             <div className={styles["dropdown-menu"]}>

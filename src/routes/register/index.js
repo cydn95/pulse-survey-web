@@ -13,11 +13,11 @@ function RegisterLayout(props) {
 
   const onUserRegister = () => {
     if (email !== "" && password !== "") {
-      // This is for adding user to Firebase. Commented out for demo purpose.  
+      // This is for adding user to Firebase. Commented out for demo purpose.
       // props.registerUser(this.state, this.props.history);
       props.history.push("/");
     }
-  }
+  };
 
   return (
     <LeftRightContainer>
@@ -27,29 +27,30 @@ function RegisterLayout(props) {
         type="text"
         value={username}
         name="username"
-        onChange={e => setUserName(e.target.value)}
+        onChange={(e) => setUserName(e.target.value)}
       />
       <label>PASSWORD</label>
       <Input
         type="password"
         value={password}
         name="password"
-        onChange={e => setPassword(e.target.value)}
+        onChange={(e) => setPassword(e.target.value)}
       />
-      <Button className="login-container__right--login-panel--submit round-btn green" onClick={e => onUserRegister()}>Register</Button>
+      <Button
+        className="login-container__right--login-panel--submit round-btn green"
+        onClick={(e) => onUserRegister()}
+      >
+        Register
+      </Button>
     </LeftRightContainer>
-  )
-
-};
+  );
+}
 
 const mapStateToProps = ({ authUser }) => {
   const { user, loading } = authUser;
   return { user, loading };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    registerUser
-  }
-)(withRouter(RegisterLayout));
+export default connect(mapStateToProps, {
+  registerUser,
+})(withRouter(RegisterLayout));

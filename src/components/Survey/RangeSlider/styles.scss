@@ -1,42 +1,42 @@
 .main {
-    padding: 53px 20px;
-    background-color: #eff1f4;
+  padding: 53px 20px;
+  background-color: #eff1f4;
 }
 
 .slider-section {
-    margin-top: 50px;
+  margin-top: 50px;
 }
 
 .slider-text-section {
-    display: flex;
-    font-size: 14px;
-    justify-content:space-between;
-    color: rgb(119,120,133);
-    margin-top: 24px;
+  display: flex;
+  font-size: 14px;
+  justify-content: space-between;
+  color: rgb(119, 120, 133);
+  margin-top: 24px;
 }
 
 .question-text {
-    color: rgb(26, 26, 26);
-    font-size: 28px;
-    line-height: 1.43;
+  color: rgb(26, 26, 26);
+  font-size: 28px;
+  line-height: 1.43;
 }
 
 .skip-section {
-    margin-top: 35px;
+  margin-top: 35px;
 }
 
 @media only screen and (max-width: 880px) {
-    .main {
-        padding: 43px 8%;
-        background-color: #fff;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        border-radius: 16px;
-    }
+  .main {
+    padding: 43px 8%;
+    background-color: #fff;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 16px;
+  }
 }
 
 @media only screen and (max-width: 768px) {
-    .question-text {
-        font-size: 18px;
-    }
+  .question-text {
+    font-size: 18px;
+  }
 }

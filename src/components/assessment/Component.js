@@ -2,28 +2,23 @@ import React from "react";
 import classnames from "classnames";
 import { PropTypes } from "prop-types";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { 
-  faAngleRight, 
-} from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
-import styles from './styles.scss';
+import styles from "./styles.scss";
 
 function AssessmentComponent(props) {
-  const {
-    icon,
-    className,
-    driverId,
-    driverName,
-    percentage,
-    onClick,
-  } = props;
+  const { icon, className, driverId, driverName, percentage, onClick } = props;
 
-  const percentageLabel = percentage > 80 ? "High": (percentage > 30 ? "Medium": "Low")
+  const percentageLabel =
+    percentage > 80 ? "High" : percentage > 30 ? "Medium" : "Low";
 
   return (
-    <div onClick={() => onClick(driverId)} className={classnames(styles["assessment-component"], className)}>
+    <div
+      onClick={() => onClick(driverId)}
+      className={classnames(styles["assessment-component"], className)}
+    >
       <div className={styles.icon}>
         <FontAwesomeIcon icon={icon} />
       </div>
@@ -35,14 +30,14 @@ function AssessmentComponent(props) {
         <FontAwesomeIcon icon={faAngleRight} />
       </div>
     </div>
-  )
+  );
 }
 
 AssessmentComponent.defaultProps = {
   onClick: () => null,
   className: null,
   icon: null,
-}
+};
 
 AssessmentComponent.propTypes = {
   onClick: PropTypes.func,
@@ -50,6 +45,6 @@ AssessmentComponent.propTypes = {
   driverId: PropTypes.any.isRequired,
   driverName: PropTypes.string.isRequired,
   icon: PropTypes.any,
-}
+};
 
 export default AssessmentComponent;

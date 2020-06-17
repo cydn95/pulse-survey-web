@@ -24,7 +24,7 @@ import Tooltip from "./tour/tooltip";
 import styles from "./styles.scss";
 
 const MainApp = ({ history, match }) => {
-  const [screenMode, setScreenMode] = useState('desktop');
+  const [screenMode, setScreenMode] = useState("desktop");
 
   const [open, setOpen] = useState(false);
   // const showSideBar = history.location.pathname.includes("/tour") ? false : true;
@@ -34,7 +34,6 @@ const MainApp = ({ history, match }) => {
     : true;
 
   useEffect(() => {
-    
     if (window.innerWidth > 880) {
       setScreenMode("desktop");
     } else {
@@ -58,9 +57,9 @@ const MainApp = ({ history, match }) => {
     const handleResize = () => {
       setTimeout(() => {
         if (window.innerWidth > 880) {
-          setScreenMode('desktop');
+          setScreenMode("desktop");
         } else {
-          setScreenMode('mobile');
+          setScreenMode("mobile");
         }
       }, 250);
     };

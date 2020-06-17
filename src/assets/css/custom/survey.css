@@ -76,13 +76,13 @@
 }
 
 .stage-progress ul li a.done {
-  background: #2F3F92;
-  border: 1px solid #2F3F92;
+  background: #2f3f92;
+  border: 1px solid #2f3f92;
 }
 
 .stage-progress ul li a.active {
-  background: #89CBC1;
-  border: 1px solid #89CBC1;
+  background: #89cbc1;
+  border: 1px solid #89cbc1;
 }
 
 .stage-progress-circle {
@@ -95,7 +95,6 @@
 .mt-xs {
   margin-top: 10px;
 }
-
 
 .mt-s {
   margin-top: 20px;
@@ -136,7 +135,6 @@ video {
   height: auto !important;
 }
 
-
 /* Component */
 .anwser-select2 {
   display: flex;
@@ -164,7 +162,7 @@ video {
   margin-bottom: 5px;
   margin-right: 5px;
   color: #fff;
-  background: #2F3F92;
+  background: #2f3f92;
 }
 
 .anwser-select-n .select2-btn {
@@ -180,21 +178,21 @@ video {
 
 .btn-second {
   line-height: 1 !important;
-  background: #2F3F92;
+  background: #2f3f92;
 }
 
 .no-results {
   background: #000;
   color: #fff;
   font-size: 13px;
-  box-shadow: 0px 10px 15px 0px rgba(0,0,0,0.3);
+  box-shadow: 0px 10px 15px 0px rgba(0, 0, 0, 0.3);
   padding: 20px;
 }
 
 .no-results-header {
-    display: block;
-    margin-bottom: 20px;
-    opacity: .5;
+  display: block;
+  margin-bottom: 20px;
+  opacity: 0.5;
 }
 
 .smart-list-section {
@@ -228,24 +226,25 @@ video {
   padding-left: 15px;
 }
 
-.smart-col, .smart-col2 {
+.smart-col,
+.smart-col2 {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
 .smart-col:hover {
-  background: #2F3F92;
+  background: #2f3f92;
 }
 
 .row-container:hover {
-  background: #44539D;
+  background: #44539d;
   color: #fff;
 }
 
 .coming-box {
   text-align: center;
 }
-.coming-box span{
+.coming-box span {
   display: inline-block;
   width: 80%;
   font-size: 3.2em;
@@ -262,20 +261,44 @@ video {
   top: 0px;
 }
 /*-----Override Slider CSS ------------------------------------------------*/
-.rc-slider-handle { 
-  background: #fff url(/assets/img/survey/slider_handler.png) center center no-repeat !important;
+.rc-slider-handle {
+  background: #fff url(/assets/img/survey/slider_handler.png) center center
+    no-repeat !important;
   width: 30px !important;
   height: 30px !important;
   margin-top: -10px !important;
   cursor: pointer !important;
 }
-.rc-slider-track, .rc-slider-rail, .rc-slider-step {
+.rc-slider-track,
+.rc-slider-rail,
+.rc-slider-step {
   height: 10px !important;
   background: #109558;
-  background: -moz-linear-gradient(left, #109558 0%, #999999 50%, #999999 50%, #999999 50%, #e81919 100%);
-  background: -webkit-linear-gradient(left, #109558 0%,#999999 50%,#999999 50%,#999999 50%,#e81919 100%);
+  background: -moz-linear-gradient(
+    left,
+    #109558 0%,
+    #999999 50%,
+    #999999 50%,
+    #999999 50%,
+    #e81919 100%
+  );
+  background: -webkit-linear-gradient(
+    left,
+    #109558 0%,
+    #999999 50%,
+    #999999 50%,
+    #999999 50%,
+    #e81919 100%
+  );
   /* background: linear-gradient(to right, #109558 0%,#999999 50%,#999999 50%,#999999 50%,#e81919 100%); */
-  background: linear-gradient(to right, #e81919 0%,#999999 40%,#999999 60%,#999999 60%,#109558 100%);
+  background: linear-gradient(
+    to right,
+    #e81919 0%,
+    #999999 40%,
+    #999999 60%,
+    #999999 60%,
+    #109558 100%
+  );
   border-radius: 100px;
 }
 

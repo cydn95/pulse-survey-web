@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 import classnames from "classnames";
-import { PropTypes } from 'prop-types';
+import { PropTypes } from "prop-types";
 
-import styles from './styles.scss';
+import styles from "./styles.scss";
 
 function Checkbox(props) {
   const { children, onChange, checked } = props;
@@ -11,7 +11,7 @@ function Checkbox(props) {
     <label className={classnames(styles.main, checkedCls)}>
       <span className={styles.checkmark}></span>
       <span className={styles.label}>{children}</span>
-      <input 
+      <input
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(!checked)}

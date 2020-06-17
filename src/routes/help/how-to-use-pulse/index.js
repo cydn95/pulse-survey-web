@@ -2,8 +2,8 @@ import React from "react";
 
 import { Button } from "reactstrap";
 
-import styles from './styles.scss';
-import classnames from 'classnames';
+import styles from "./styles.scss";
+import classnames from "classnames";
 
 const HowToUsePulse = ({ history }) => {
   const handleContinue = (e) => {
@@ -30,10 +30,18 @@ const HowToUsePulse = ({ history }) => {
           </p>
           <div className={styles["welcome__content__about"]}>
             <div className={styles["welcome__content__about__section"]}>
-              <h2 className={styles["welcome__content__about__section--subtitle2"]}>
+              <h2
+                className={
+                  styles["welcome__content__about__section--subtitle2"]
+                }
+              >
                 About Me
               </h2>
-              <p className={styles["welcome__content__about__section--description"]}>
+              <p
+                className={
+                  styles["welcome__content__about__section--description"]
+                }
+              >
                 What you think / feel about the project.​
               </p>
               <img
@@ -43,10 +51,18 @@ const HowToUsePulse = ({ history }) => {
               />
             </div>
             <div className={styles["welcome__content__about__section"]}>
-              <h2 className={styles["welcome__content__about__section--subtitle2"]}>
+              <h2
+                className={
+                  styles["welcome__content__about__section--subtitle2"]
+                }
+              >
                 About Others
               </h2>
-              <p className={styles["welcome__content__about__section--description"]}>
+              <p
+                className={
+                  styles["welcome__content__about__section--description"]
+                }
+              >
                 What you assume other people are thinking​ or feeling about the
                 project.​​
               </p>
@@ -56,7 +72,11 @@ const HowToUsePulse = ({ history }) => {
                 alt=""
               />
               <Button
-                className={classnames(styles["welcome__content__about__section--continue"], styles["edge-btn"], styles.green)}
+                className={classnames(
+                  styles["welcome__content__about__section--continue"],
+                  styles["edge-btn"],
+                  styles.green
+                )}
                 onClick={(e) => handleContinue(e)}
               >
                 Continue
@@ -67,6 +87,6 @@ const HowToUsePulse = ({ history }) => {
       </div>
     </div>
   );
-}
+};
 
 export default HowToUsePulse;

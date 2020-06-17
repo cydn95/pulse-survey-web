@@ -24,7 +24,7 @@ class NewStakeholder extends Component {
       const myCategoryList = [];
       const projectCategoryList = [];
 
-      props.shCategoryList.forEach(item => {
+      props.shCategoryList.forEach((item) => {
         if (props.stakeholder.shCategory.indexOf(item.id) >= 0) {
           myCategoryList.push(item.id);
         }
@@ -124,7 +124,10 @@ class NewStakeholder extends Component {
           return;
         }
 
-        if (stakeholder.myCategoryList.length === 0 && stakeholder.projectCategoryList.length === 0) {
+        if (
+          stakeholder.myCategoryList.length === 0 &&
+          stakeholder.projectCategoryList.length === 0
+        ) {
           NotificationManager.error(
             "Select at least one category",
             "Info",

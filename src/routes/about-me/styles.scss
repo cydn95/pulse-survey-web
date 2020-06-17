@@ -6,7 +6,7 @@
 .topbar {
   position: fixed;
   top: 0px;
-  left:225px;
+  left: 225px;
   width: calc(100% - 224px);
   height: 80px;
   z-index: 400;
@@ -48,7 +48,7 @@
 
 .driver-scroll {
   width: calc(100vw - 262px);
-  
+
   @media only screen and (max-width: 880px) {
     width: calc(100vw - 38px);
   }
@@ -123,4 +123,3 @@
     border-radius: 16px;
   }
 }
-

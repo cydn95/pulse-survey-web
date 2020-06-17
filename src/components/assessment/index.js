@@ -3,6 +3,4 @@ import Summary from "./Panel";
 
 export default Summary;
 
-export {
-  AssessmentComponent
-}
+export { AssessmentComponent };

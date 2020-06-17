@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 import Button from "Components/Button";
 
-import Option, { EditableOption } from './option';
+import Option, { EditableOption } from "./option";
 
-import styles from './styles.scss';
+import styles from "./styles.scss";
 
 function MultiTopic(props) {
   const { title, options } = props;
@@ -14,22 +14,16 @@ function MultiTopic(props) {
 
   const addNewTopic = () => {
     props.addNewTopic(newTopic, newComment);
-    setNewTopic("")
-    setNewComment("")
-  }
+    setNewTopic("");
+    setNewComment("");
+  };
 
   return (
     <div className={styles.main}>
       <h2>{title}</h2>
-      {
-        options.map(d => (
-          <Option
-            key={d.topic}
-            topic={d.topic}
-            comment={d.comment}
-          />
-        ))
-      }
+      {options.map((d) => (
+        <Option key={d.topic} topic={d.topic} comment={d.comment} />
+      ))}
       <EditableOption
         topic={newTopic}
         comment={newComment}
@@ -37,21 +31,18 @@ function MultiTopic(props) {
         changeComment={setNewComment}
       />
       <div>
-        <Button
-          className={styles["add-new-topic"]}
-          onClick={addNewTopic}
-        >
+        <Button className={styles["add-new-topic"]} onClick={addNewTopic}>
           Add New Topic
         </Button>
       </div>
     </div>
-  )
+  );
 }
 
 MultiTopic.defaultProps = {
   title: "",
   addNewTopic: () => null,
-}
+};
 
 MultiTopic.propTypes = {
   title: PropTypes.string,

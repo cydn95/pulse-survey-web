@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import classnames from "classnames";
@@ -26,10 +26,10 @@ const Input = ({
         name={name}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value, e)}
-        onKeyUp={e => onKeyUp ? onKeyUp(e) : {}}
+        onKeyUp={(e) => (onKeyUp ? onKeyUp(e) : {})}
         defaultValue={value}
-        onFocus={(e) => onFocus ? onFocus(e) : {}}
-        onBlur={(e) => onBlur ? onBlur(e) : {}}
+        onFocus={(e) => (onFocus ? onFocus(e) : {})}
+        onBlur={(e) => (onBlur ? onBlur(e) : {})}
       />
     </label>
   );
@@ -52,7 +52,7 @@ Input.propTypes = {
   onChange: PropTypes.func,
   type: PropTypes.string,
   onBlur: PropTypes.func,
-  onFocus: PropTypes.func
+  onFocus: PropTypes.func,
 };
 
 export default Input;

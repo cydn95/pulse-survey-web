@@ -24,21 +24,21 @@
   }
 
   &.selected {
-    background: #77C8BB;
+    background: #77c8bb;
     &.green {
-      background: #77C8BB;
+      background: #77c8bb;
     }
     &.black {
       background: #545666;
     }
-    
+
     color: white;
   }
 
   &.left {
     display: flex;
 
-    >*:not(:first-child) {
+    > *:not(:first-child) {
       margin-left: 10px;
     }
   }
@@ -76,7 +76,7 @@
   display: flex;
   width: min-content;
 
-  >div:not(:first-child) {
+  > div:not(:first-child) {
     margin-left: 5px;
   }
 }
@@ -112,7 +112,7 @@
   }
 }
 
-.wrapper{
+.wrapper {
   display: flex;
   flex-direction: column;
   justify-content: end;
@@ -137,7 +137,6 @@
 }
 
 @media only screen and (max-width: 880px) {
-
   .progress-icon {
     display: block;
     z-index: 3000;

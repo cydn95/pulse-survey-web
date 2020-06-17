@@ -1,9 +1,7 @@
-import React, { Component, Fragment } from "react";
+import React from "react";
 import ComingSoon from "../coming";
 
 function Error404() {
-  return (
-    <ComingSoon />
-  );
+  return <ComingSoon />;
 }
 export default Error404;

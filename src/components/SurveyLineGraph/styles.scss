@@ -14,7 +14,6 @@
     font-size: 18px;
     margin-bottom: 0;
   }
-
 }
 
 .self-title {
@@ -32,7 +31,6 @@
 }
 
 .line-graph {
-
   &-self,
   &-team {
     height: 200px;
@@ -52,7 +50,7 @@
     fill: #4f7bc5;
 
     &:hover {
-      fill: #0E2874;
+      fill: #0e2874;
     }
   }
 }
@@ -68,9 +66,9 @@
 
   rect {
     &:hover {
-      fill: #C13608;
+      fill: #c13608;
     }
 
-    fill: #ED7E2D;
+    fill: #ed7e2d;
   }
 }

@@ -8,8 +8,8 @@
   padding-left: 10px;
   padding-right: 10px;
   box-sizing: border-box;
-  
-  * { 
+
+  * {
     font-size: 13px;
   }
 
@@ -26,8 +26,9 @@
   margin-bottom: 5px;
 }
 
-.dropdown-item:hover, .dropdown-item:focus {
-  background-color: 'transparent' !important;
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: "transparent" !important;
   color: #6c757d !important;
 }
 
@@ -41,7 +42,7 @@ canvas {
 
 @media only screen and (max-width: 430px) {
   .root {
-    * { 
+    * {
       font-size: 10px;
     }
   }

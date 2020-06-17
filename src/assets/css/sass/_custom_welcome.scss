@@ -59,7 +59,7 @@
   flex-direction: row;
   font-family: Poppins !important;
   background-color: #fff !important;
-  background-image: url('/assets/img/email/welcome-right.png');
+  background-image: url("/assets/img/email/welcome-right.png");
   background-repeat: no-repeat;
   background-position: right bottom;
   background-attachment: fixed;
@@ -73,7 +73,7 @@
     width: 15%;
     height: 100vh;
     position: fixed;
-    background-image: url('/assets/img/email/welcome-left.png');
+    background-image: url("/assets/img/email/welcome-left.png");
     background-repeat: no-repeat;
     background-position: left 100px;
     background-size: 80%;
@@ -130,12 +130,11 @@
 }
 
 .welcome {
-  
   width: 100vw;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-image: url('/assets/img/email/welcome-2.png');
+  background-image: url("/assets/img/email/welcome-2.png");
   background-repeat: no-repeat;
   background-position: right bottom;
   background-size: 70%;
@@ -146,7 +145,7 @@
   * {
     font-family: Poppins !important;
   }
-  
+
   &__content {
     display: flex;
     flex-direction: column;

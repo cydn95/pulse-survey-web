@@ -1,7 +1,5 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
-import { getToken } from "../../services/axios/utility";
-
 import {
   pageListAPI,
   submitSurveyAPI,

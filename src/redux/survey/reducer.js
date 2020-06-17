@@ -19,13 +19,13 @@ const INIT_STATE = {
   loading: false,
   optionList: [],
   aboutMe: {
-    "project": 1,
-    "user": localStorage.getItem("userId"),
-    "userPermission": [1],
-    "team": 0,
-    "shGroup": 0
+    project: 1,
+    user: localStorage.getItem("userId"),
+    userPermission: [1],
+    team: 0,
+    shGroup: 0,
   },
-  "surveyId": localStorage.getItem("surveyId")
+  surveyId: localStorage.getItem("surveyId"),
 };
 
 export default (state = INIT_STATE, action) => {
@@ -77,8 +77,8 @@ export default (state = INIT_STATE, action) => {
         questionIndex
       ].topic.findIndex((item) => item.id === topicId);
       state.pageList[pageIndex].amquestion[questionIndex].topic[topicIndex] = {
-        ...topic
-      }
+        ...topic,
+      };
       return { ...state };
     }
     case DELETE_ABOUT_ME_TOPIC_SUCCESS: {

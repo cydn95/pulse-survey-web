@@ -19,7 +19,7 @@ function SelectableButton(props) {
 SelectableButton.defaultProps = {
   type: "button",
   default: true,
-  active: false
+  active: false,
 };
 
 export default SelectableButton;

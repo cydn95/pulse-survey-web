@@ -1,13 +1,12 @@
 .main {
-  >*:not(:first-child) {
+  > *:not(:first-child) {
     margin-top: 10px;
   }
 }
 .suggestion-list {
-  
-  cursor:  default;
+  cursor: default;
 
-  >*:not(:first-child) {
+  > *:not(:first-child) {
     margin-top: 10px;
   }
 }

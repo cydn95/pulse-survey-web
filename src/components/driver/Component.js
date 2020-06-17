@@ -2,13 +2,11 @@ import React from "react";
 import classnames from "classnames";
 import { PropTypes } from "prop-types";
 
-import {
-  SURVEY_COMPLETED,
-} from "Constants/defaultValues";
+import { SURVEY_COMPLETED } from "Constants/defaultValues";
 
 import styles from "./styles.scss";
 
-const ProgressLabels = ["Not Started", "In Progress", "Completed"];
+// const ProgressLabels = ["Not Started", "In Progress", "Completed"];
 
 function DriverComponent(props) {
   const {
@@ -23,7 +21,7 @@ function DriverComponent(props) {
     color,
   } = props;
 
-  const progressLabel = ProgressLabels[progress];
+  // const progressLabel = ProgressLabels[progress];
 
   const selectedCls = selected ? styles.selected : null;
 
@@ -64,8 +62,10 @@ function DriverComponent(props) {
           selectedCls,
           className,
           {
-            [styles['mobile-finished']]: color === 'black' && progress === SURVEY_COMPLETED,
-            [styles.finished]: color !== 'black' && progress === SURVEY_COMPLETED,
+            [styles["mobile-finished"]]:
+              color === "black" && progress === SURVEY_COMPLETED,
+            [styles.finished]:
+              color !== "black" && progress === SURVEY_COMPLETED,
             [styles.inprogress]: progress !== SURVEY_COMPLETED,
           }
         )}

@@ -15,7 +15,7 @@ class SideBarMenuItem extends Component {
       menuTitle,
       onClickMenu,
       children,
-      left = true
+      left = true,
     } = this.props;
     return (
       <NavLink

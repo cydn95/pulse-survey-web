@@ -2,7 +2,7 @@ $rangecolor: #d9dada;
 
 $fill-start: #e66864; // rgb(230,104,100);
 $fill-end: #00b7a2;
-$fill-mid: #53A7F5;
+$fill-mid: #53a7f5;
 
 $range-height: 7px;
 
@@ -17,7 +17,7 @@ $marker-size: 20px;
 }
 
 .range-mask {
-  top:0;
+  top: 0;
   right: 0;
   position: absolute;
   height: $range-height;
@@ -38,8 +38,8 @@ $marker-size: 20px;
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%);
-  width:$marker-size;
-  height:$marker-size;
+  width: $marker-size;
+  height: $marker-size;
   background: $rangecolor;
   &:focus {
     outline: none;
@@ -52,4 +52,3 @@ $marker-size: 20px;
     border: 6px solid #1a1a1a !important;
   }
 }
-

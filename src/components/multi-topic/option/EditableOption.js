@@ -1,21 +1,21 @@
-import React from 'react';
+import React from "react";
 import classnames from "classnames";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import Input from 'Components/Input';
+import Input from "Components/Input";
 
-import styles from './styles.scss';
+import styles from "./styles.scss";
 
 function EditableOption(props) {
-  const { 
-    topic, 
+  const {
+    topic,
     comment,
     changeTopic,
     changeComment,
     topicPlaceholder,
     commentPlaceholder,
     onFocus,
-    onBlur
+    onBlur,
   } = props;
 
   return (
@@ -49,8 +49,7 @@ function EditableOption(props) {
   );
 }
 
-EditableOption.defaultProps = {
-};
+EditableOption.defaultProps = {};
 
 EditableOption.propTypes = {
   topic: PropTypes.string.isRequired,
@@ -60,4 +59,3 @@ EditableOption.propTypes = {
 };
 
 export default EditableOption;
-

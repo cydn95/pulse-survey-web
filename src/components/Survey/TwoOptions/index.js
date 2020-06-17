@@ -5,18 +5,17 @@ import Radio from "Components/Radio";
 
 import styles from "./styles.scss";
 
-import {replaceQuestionTextKeyWord} from 'Constants/defaultValues';
+import { replaceQuestionTextKeyWord } from "Constants/defaultValues";
 
 class TwoOptions extends Component {
-
   constructor(props) {
     super(props);
 
-    const { question, options } = props
+    const { question, options } = props;
 
     let optionList = [];
-    
-    for (let i = 0 ; i < question.option.length; i++) {
+
+    for (let i = 0; i < question.option.length; i++) {
       for (let j = 0; j < options.length; j++) {
         if (question.option[i] === options[j].id) {
           optionList.push(options[j]);
@@ -29,64 +28,70 @@ class TwoOptions extends Component {
       answer: {
         ...question.answer,
       },
-      optionList
+      optionList,
     };
-
   }
 
   componentWillReceiveProps(props) {
     const { question } = props;
-    
+
     this.setState({
       answer: {
         ...question.answer,
-        controlType: 'TWO_OPTIONS'
-      }
-    })
+        controlType: "TWO_OPTIONS",
+      },
+    });
   }
-  
+
   onSelectAnswer = (answerIndex, answerText) => {
-
-    this.setState( (state) => ({
-      answer: {
-        ...state.answer,
-        'integerValue': answerIndex,
-        'topicValue': answerText,
-        'skipValue': ''
+    this.setState(
+      (state) => ({
+        answer: {
+          ...state.answer,
+          integerValue: answerIndex,
+          topicValue: answerText,
+          skipValue: "",
+        },
+      }),
+      () => {
+        this.props.onAnswer(this.state.answer);
       }
-    }), () => {
-      this.props.onAnswer(this.state.answer);
-    });
-  }
+    );
+  };
 
-  handleSkip = skipAnswer => {
-    this.setState( (state) => ({
-      answer: {
-        ...state.answer,
-        'skipValue': skipAnswer,
-        'integerValue': 0
+  handleSkip = (skipAnswer) => {
+    this.setState(
+      (state) => ({
+        answer: {
+          ...state.answer,
+          skipValue: skipAnswer,
+          integerValue: 0,
+        },
+      }),
+      () => {
+        this.props.onAnswer(this.state.answer);
       }
-    }), () => {
-      this.props.onAnswer(this.state.answer);
-    });
-  }
+    );
+  };
 
-  handleComment = commentAnswer => {
-    this.setState( (state) => ({
-      answer: {
-        ...state.answer,
-        'commentValue': commentAnswer
+  handleComment = (commentAnswer) => {
+    this.setState(
+      (state) => ({
+        answer: {
+          ...state.answer,
+          commentValue: commentAnswer,
+        },
+      }),
+      () => {
+        this.props.onAnswer(this.state.answer);
       }
-    }), () => {
-      this.props.onAnswer(this.state.answer);
-    });
-  }
+    );
+  };
 
   render() {
-
     const { question, skipQuestionList, user, projectTitle } = this.props;
-    const { optionList } = this.state
-    
+    const { optionList } = this.state;
+
     return (
       <div className={styles.main}>
         <div>
@@ -128,4 +133,4 @@ class TwoOptions extends Component {
   }
 }
 
-export default TwoOptions
+export default TwoOptions;

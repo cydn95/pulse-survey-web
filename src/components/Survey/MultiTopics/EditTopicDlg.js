@@ -7,13 +7,12 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 class EditTopicDialog extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       topicName: props.topicName,
-      topicComment: props.topicComment
-    }
+      topicComment: props.topicComment,
+    };
   }
 
   componentWillReceiveProps(props) {
@@ -23,11 +22,11 @@ class EditTopicDialog extends React.Component {
     });
   }
 
-  handleInput = e => {
+  handleInput = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-  }
+  };
 
   handleSave = () => {
     const { topicName, topicComment } = this.state;
@@ -35,7 +34,7 @@ class EditTopicDialog extends React.Component {
     if (topicName !== "" && topicComment !== "") {
       onSave(topicName, topicComment);
     }
-  }
+  };
   render() {
     const { open, onClose, onSave } = this.props;
     return (

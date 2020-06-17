@@ -88,14 +88,14 @@ const DialogTourView = ({
 
   const containerBackgroundStyle = () => {
     return {
-      background: `${tour.background}`
-    }
+      background: `${tour.background}`,
+    };
   };
 
   const imgBackgroundStyle = () => {
     return {
-      background: `${tour.background} url('${tour.img}') center/contain no-repeat`
-    }
+      background: `${tour.background} url('${tour.img}') center/contain no-repeat`,
+    };
   };
 
   const onSelect = (position) => {
@@ -138,7 +138,10 @@ const DialogTourView = ({
                 className={dlgStyles["bg-section"]}
                 style={containerBackgroundStyle()}
               >
-                <div className={dlgStyles.img} style={imgBackgroundStyle()}></div>
+                <div
+                  className={dlgStyles.img}
+                  style={imgBackgroundStyle()}
+                ></div>
               </div>
               <div className={dlgStyles.description}>
                 <h1>{tour.title}</h1>

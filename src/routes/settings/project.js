@@ -83,7 +83,9 @@ class Project extends Component {
             <option aria-label="None" value={0} />
             {projectList.length > 0 &&
               projectList.map((item) => (
-                <option key={`project_${item.id}`} value={item.id}>{item.projectName}</option>
+                <option key={`project_${item.id}`} value={item.id}>
+                  {item.projectName}
+                </option>
               ))}
           </NativeSelect>
           <FormHelperText>Please select a Project</FormHelperText>

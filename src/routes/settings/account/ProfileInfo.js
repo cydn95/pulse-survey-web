@@ -1,56 +1,55 @@
-import React, { } from 'react';
+import React from "react";
 
-import Input from "Components/Input"
-import Button from "Components/Button"
+import Input from "Components/Input";
+import Button from "Components/Button";
 
-import styles from './form.scss'
+import styles from "./form.scss";
 
 class ProfileInfo extends React.Component {
-  
   constructor(props) {
     super(props);
 
     this.state = {
       id: 0,
-      firstName: '',
-      lastName: '',
-      team: '',
-      organization: ''
+      firstName: "",
+      lastName: "",
+      team: "",
+      organization: "",
     };
   }
 
   componentWillReceiveProps(props) {
-    this.setState ({
-      ...props.profile
+    this.setState({
+      ...props.profile,
     });
   }
 
-  handleReset = e => {
+  handleReset = (e) => {
     this.setState({
       id: 0,
-      firstName: '',
-      lastName: '',
-      team: '',
-      organization: ''
-    })
-  }
-  
+      firstName: "",
+      lastName: "",
+      team: "",
+      organization: "",
+    });
+  };
+
   handleSubmit = () => {
     const { onChangeProfile } = this.props;
     onChangeProfile({
-      ...this.state
+      ...this.state,
     });
-  }
+  };
 
   handleInputChange = (value, e) => {
     this.setState({
-      [e.target.name]: value
+      [e.target.name]: value,
     });
-  }
+  };
 
   render() {
     return (
-      <div className={styles['form-wrapper']}>
+      <div className={styles["form-wrapper"]}>
         <h2>Edit your profile</h2>
         <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
           <Input
@@ -89,13 +88,17 @@ class ProfileInfo extends React.Component {
             onChange={(value, e) => this.handleInputChange(value, e)}
           />
           <div className={styles.actions}>
-            <Button default={false} onClick={e => this.handleReset()}>Cancel</Button>
-            <Button type="submit" onClick={e => this.handleSubmit()}>Update</Button>
+            <Button default={false} onClick={(e) => this.handleReset()}>
+              Cancel
+            </Button>
+            <Button type="submit" onClick={(e) => this.handleSubmit()}>
+              Update
+            </Button>
           </div>
-        </form >
+        </form>
       </div>
-    )
+    );
   }
 }
 
-export default ProfileInfo
+export default ProfileInfo;

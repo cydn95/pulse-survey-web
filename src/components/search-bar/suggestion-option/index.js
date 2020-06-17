@@ -1,6 +1,6 @@
 import React from "react";
 
-import styles from './styles.scss';
+import styles from "./styles.scss";
 
 function SuggestionOption(props) {
   const { name, description } = props;
@@ -9,7 +9,7 @@ function SuggestionOption(props) {
       <div className={styles.name}>{name}</div>
       <div className={styles.description}>{description}</div>
     </div>
-  )
+  );
 }
 
 export default SuggestionOption;

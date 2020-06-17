@@ -1,7 +1,8 @@
 .main {
   display: grid;
-  grid-template-areas: "profile-info profile-pic"
-  "change-password .";
+  grid-template-areas:
+    "profile-info profile-pic"
+    "change-password .";
 
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;

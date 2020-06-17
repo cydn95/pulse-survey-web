@@ -16,14 +16,15 @@ import {
 
 import DriverPanel from "Components/driver";
 
-import { SURVEY_NOT_STARTED, SURVEY_IN_PROGRESS, SURVEY_COMPLETED } from "Constants/defaultValues";
+import {
+  SURVEY_NOT_STARTED,
+  SURVEY_IN_PROGRESS,
+  SURVEY_COMPLETED,
+} from "Constants/defaultValues";
 
 import styles from "./styles.scss";
 
-import {
-  selectPage,
-  stakeholderAnswer
-} from "Redux/actions";
+import { selectPage, stakeholderAnswer } from "Redux/actions";
 
 class AoSurvey extends React.Component {
   constructor(props) {
@@ -56,7 +57,7 @@ class AoSurvey extends React.Component {
       options,
       drivers: orderedDrivers,
       pageIndex,
-      currentUser: user
+      currentUser: user,
     };
   }
 
@@ -75,7 +76,10 @@ class AoSurvey extends React.Component {
       };
       return state;
     });
-    this.props.stakeholderAnswer(this.state.currentUser.projectUserId, answer.amQuestion);
+    this.props.stakeholderAnswer(
+      this.state.currentUser.projectUserId,
+      answer.amQuestion
+    );
   };
 
   handleCancel = (e) => {
@@ -242,7 +246,7 @@ class AoSurvey extends React.Component {
 const mapStateToProps = ({ survey, common, authUser }) => {
   const { pageList, pageIndex } = survey;
   const { skipQuestionList } = common;
-  const { projectTitle, projectUserId, projectId } = authUser;
+  const { projectTitle, projectUserId } = authUser;
   return {
     surveyList: pageList,
     pageIndex,

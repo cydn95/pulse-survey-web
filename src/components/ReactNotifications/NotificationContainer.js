@@ -1,21 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import NotificationManager from './NotificationManager';
-import Notifications from './Notifications';
+import React from "react";
+import PropTypes from "prop-types";
+import NotificationManager from "./NotificationManager";
+import Notifications from "./Notifications";
 
 class NotificationContainer extends React.Component {
   static propTypes = {
     enterTimeout: PropTypes.number,
-    leaveTimeout: PropTypes.number
+    leaveTimeout: PropTypes.number,
   };
 
   static defaultProps = {
     enterTimeout: 400,
-    leaveTimeout: 400
+    leaveTimeout: 400,
   };
 
   state = {
-    notifications: []
+    notifications: [],
   };
 
   componentWillMount = () => {
@@ -28,7 +28,7 @@ class NotificationContainer extends React.Component {
 
   handleStoreChange = (notifications) => {
     this.setState({
-      notifications
+      notifications,
     });
   };
 

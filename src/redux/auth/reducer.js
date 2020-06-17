@@ -30,8 +30,8 @@ export default (state = INIT_STATE, action) => {
     case PROJECT_ID_SUCCESS:
       return {
         ...state,
-        projectId: action.payload.projectId
-      }
+        projectId: action.payload.projectId,
+      };
     case SURVEY_ID_SUCCESS:
       return {
         ...state,
