@@ -285,7 +285,7 @@ class MyMap extends React.Component {
 
     this.props.getKMapData(surveyUserId);
     this.props.getProjectMapData(surveyUserId);
-    this.props.getShCategoryList(0);
+    this.props.getShCategoryList(surveyId, 0);
     this.props.getStakeholderList(surveyUserId);
     this.props.getTeamList();
     this.props.getAoQuestionList(surveyUserId);

@@ -78,9 +78,9 @@ export const stakeholderListSuccess = (stakeholderList, userList) => ({
   payload: { stakeholderList, userList },
 });
 
-export const shCategoryList = (mapType) => ({
+export const shCategoryList = (surveyId, mapType) => ({
   type: SHCATEGORY_LIST,
-  payload: { mapType },
+  payload: { surveyId, mapType },
 });
 
 export const shCategoryListSuccess = (shCategoryList) => ({

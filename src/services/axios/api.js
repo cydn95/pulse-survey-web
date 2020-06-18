@@ -122,12 +122,12 @@ const stakeholderListAPI = (projectUserId) => {
 };
 
 // Get ShCategory
-const shCategoryListAPI = (mapType) => {
-  if (mapType === 0) {
-    return getClient(true).get("/shcategory/?format=json");
-  } else {
-    return getClient(true).get("/shcategory/?format=json&mapType=" + mapType);
+const shCategoryListAPI = (surveyId, mapType) => {
+  let url = `/shcategory/?format=json&survey=${surveyId}`;
+  if (mapType !== 0) {
+    url += `&mapType=${mapType}`;
   }
+  return getClient(true).get(url);
 };
 
 // Save Map Data
