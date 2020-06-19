@@ -169,3 +169,14 @@
     display: none;
   }
 }
+
+.map-selector {
+  position: fixed;
+  right: 10px;
+  top: 170px;
+  visibility: hidden;
+
+  @media only screen and (max-width: 880px) {
+    visibility: visible;
+  }
+}

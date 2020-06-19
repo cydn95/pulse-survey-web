@@ -2,6 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { Droppable } from "react-drag-and-drop";
 
+import { Button as MButton, ButtonGroup } from "@material-ui/core";
+
 import TopNav from "Containers/TopNav";
 import {
   userList,
@@ -850,7 +852,7 @@ class MyMap extends React.Component {
       : classnames(styles["map-stakeholder"], styles["mobile-hide"]);
 
     return (
-      <div className={styles.root}>
+      <div>
         {(!searchFullHeight || toggleGraph) && (
           <div className={styles.topbar}>
             <TopNav history={history} menuTitle="My Map">
@@ -935,6 +937,27 @@ class MyMap extends React.Component {
                 searchFullHeight && !toggleGraph && screen === "list",
             })}
           >
+            <ButtonGroup
+              size="small"
+              className={styles["map-selector"]}
+              color="primary"
+              aria-label="outlined primary button group"
+            >
+              <MButton
+                variant={mapStyle === "my-map" ? "contained" : "outlined"}
+                color="primary"
+                onClick={(e) => this.handleSelectMapStyle("my-map")}
+              >
+                My Map
+              </MButton>
+              <MButton
+                variant={mapStyle === "project-map" ? "contained" : "outlined"}
+                color="primary"
+                onClick={(e) => this.handleSelectMapStyle("project-map")}
+              >
+                Project Map
+              </MButton>
+            </ButtonGroup>
             {mapStyle === "my-map" && (
               <Droppable
                 className={mapContentVisible}
