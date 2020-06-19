@@ -48,17 +48,17 @@ function Slider(props) {
       setAnswered(true);
       changeSliderToMousePos(e.touches[0].clientX);
     };
-    const touchUp = (e) => {
+
+    const touchEnd = (e) => {
       setTouchStart(false);
     };
-
     // set resize listener
     window.addEventListener("touchmove", touchMove);
-    window.addEventListener("touchup", touchUp);
+    window.addEventListener("touchend", touchEnd);
 
     return () => {
       window.removeEventListener("touchmove", touchMove);
-      window.removeEventListener("touchup", touchUp);
+      window.removeEventListener("touchend", touchEnd);
     };
   }, [touchStart]);
 
