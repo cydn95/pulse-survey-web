@@ -12,6 +12,8 @@ import {
 import Switch from "rc-switch";
 import "rc-switch/assets/index.css";
 
+import Button from "Components/Button";
+
 import {
   projectListByUser,
   surveyListByProject,
@@ -64,6 +66,14 @@ class Project extends Component {
     actionSetSurveyID(user.userId, status ? newSurveyId : 0);
   };
 
+  handleGotoSurvey = () => {
+    const { history } = this.props;
+    const { surveyId } = this.state;
+    if (surveyId > 0) {
+      history.push("/app/about-me");
+    }
+  };
+
   render() {
     const { projectList, surveyList } = this.props;
     const { projectId, surveyId } = this.state;
@@ -83,7 +93,9 @@ class Project extends Component {
             <option aria-label="None" value={0} />
             {projectList.length > 0 &&
               projectList.map((item) => (
-                <option key={`project_${item.id}`} value={item.id}>{item.projectName}</option>
+                <option key={`project_${item.id}`} value={item.id}>
+                  {item.projectName}
+                </option>
               ))}
           </NativeSelect>
           <FormHelperText>Please select a Project</FormHelperText>
@@ -110,6 +122,13 @@ class Project extends Component {
               </div>
             );
           })}
+        {surveyId > 0 && (
+          <div className={styles.actions}>
+            <Button default={true} onClick={(e) => this.handleGotoSurvey()}>
+              Goto Survey
+            </Button>
+          </div>
+        )}
       </div>
     );
   }

@@ -70,7 +70,6 @@ class TopNav extends Component {
 
   render() {
     const { menuTitle, profile, children } = this.props;
-
     return (
       <div className={styles.root}>
         <Drawer
@@ -93,12 +92,23 @@ class TopNav extends Component {
         </div>
         <div id="menu" className={styles.control}>
           <div className={styles.dropdown} onClick={(e) => this.toggleMenu(e)}>
-            <img
-              className={styles.avatar}
-              src={profile.avatar}
-              alt="avatar"
-            />
-            <span className={styles.username}>{`${profile.firstName} ${profile.lastName}`}</span>
+            {profile.avatar && (
+              <img
+                className={styles.avatar}
+                src={profile.avatar}
+                alt="avatar"
+              />
+            )}
+            {(!profile.avatar || profile.avatar == "") && (
+              <img
+                className={styles.avatar}
+                src="/assets/img/survey/menu-aboutme.png"
+                alt="avatar"
+              />
+            )}
+            <span
+              className={styles.username}
+            >{`${profile.firstName} ${profile.lastName}`}</span>
           </div>
           {this.state.menu && (
             <div className={styles["dropdown-menu"]}>

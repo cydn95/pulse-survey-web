@@ -32,6 +32,14 @@ const getSurveyUserAPI = (userId, surveyId) => {
   );
 };
 
+const getProjectAPI = (projectId = 0) => {
+  if (projectId === 0) {
+    return getClient(true).get("/project/?format=json");
+  } else {
+    return getClient(true).get(`/project/${projectId}/?format=json`);
+  }
+};
+
 /* Tour */
 const getNikelTourAPI = () => {
   return getClient(true).get("/nikelmobilepage/?format=json");
@@ -41,8 +49,12 @@ const getTooltipGuideAPI = () => {
   return getClient(true).get("/tooltipguide/?format=json");
 };
 
-const getConfigPageAPI = () => {
-  return getClient(true).get("/configpage/?format=json");
+const getConfigPageAPI = (surveyId = 0) => {
+  if (surveyId === 0) {
+    return getClient(true).get("/configpage/?format=json");
+  } else {
+    return getClient(true).get(`/configpage/?format=json&survey=${surveyId}`);
+  }
 };
 
 /* Get Survey Question List */
@@ -115,19 +127,22 @@ const submitAoQuestionAPI = (answerData) => {
 };
 
 // Get StakeholderList (get users by project id)
-const stakeholderListAPI = (projectUserId) => {
-  return getClient(true).get(
-    "/userbysurvey/?format=json&myProjectUser=" + projectUserId
-  );
+const stakeholderListAPI = (projectUserId, surveyId = 0) => {
+  var url = `/userbysurvey/?format=json&myProjectUser=${projectUserId}`;
+  if (surveyId > 0) {
+    url += `&survey=${surveyId}`;
+  }
+
+  return getClient(true).get(url);
 };
 
 // Get ShCategory
-const shCategoryListAPI = (mapType) => {
-  if (mapType === 0) {
-    return getClient(true).get("/shcategory/?format=json");
-  } else {
-    return getClient(true).get("/shcategory/?format=json&mapType=" + mapType);
+const shCategoryListAPI = (surveyId, mapType) => {
+  let url = `/shcategory/?format=json&survey=${surveyId}`;
+  if (mapType !== 0) {
+    url += `&mapType=${mapType}`;
   }
+  return getClient(true).get(url);
 };
 
 // Save Map Data
@@ -273,6 +288,7 @@ export {
   driverListAPI,
   userListAPI,
   projectUserListAPI,
+  getProjectAPI,
   skipQuestionListAPI,
   stakeholderListAPI,
   shCategoryListAPI,

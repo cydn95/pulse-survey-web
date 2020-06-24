@@ -1,14 +1,7 @@
 import React, { Component } from "react";
-import Joyride, {
-  ACTIONS,
-  CallBackProps,
-  EVENTS,
-  STATUS,
-  Step,
-} from "react-joyride";
 import styled from "styled-components";
 import { grommet } from "grommet/themes";
-import { Box, Button, Grommet, Heading } from "grommet";
+import { Grommet } from "grommet";
 
 import a11yChecker from "a11y-checker";
 
@@ -28,8 +21,8 @@ class Tooltip extends Component {
     this.state = {
       steps: [],
       stepIndex: [],
-      run: false
-    }
+      run: false,
+    };
   }
 
   componentDidMount() {
@@ -69,10 +62,10 @@ class Tooltip extends Component {
 
   render() {
     return (
-        <Wrapper theme={grommet} full={true} id="outerContainer">
-          dfdd
-        </Wrapper>
-    )
+      <Wrapper theme={grommet} full={true} id="outerContainer">
+        dfdd
+      </Wrapper>
+    );
   }
 }
 

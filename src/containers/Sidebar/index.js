@@ -5,7 +5,6 @@ import { withRouter } from "react-router-dom";
 import Switch from "react-switch";
 
 import Joyride, { STATUS } from "react-joyride";
-import a11yChecker from "a11y-checker";
 
 import { isMobile } from "react-device-detect";
 import DialogTourView from "Components/DialogTourView";
@@ -64,7 +63,6 @@ class Sidebar extends Component {
       getProjectListByUser,
       user,
       projectList,
-      getPageContent,
       getTooltipTourContent,
     } = this.props;
 
@@ -72,14 +70,24 @@ class Sidebar extends Component {
       getProjectListByUser(user.userId);
     }
 
-    getPageContent();
     getTooltipTourContent();
   }
 
   componentWillReceiveProps(props) {
-    const { screenMode, guide, setGuideShowStatus, tooltipContent } = props;
+    const {
+      surveyId,
+      screenMode,
+      guide,
+      setGuideShowStatus,
+      tooltipContent,
+      getPageContent,
+    } = props;
 
     // a11yChecker();
+
+    if (surveyId >  0) {
+      getPageContent(surveyId);
+    }
 
     if (tooltipContent.menu && tooltipContent.menu.length > 0) {
       const steps = [];
@@ -633,11 +641,12 @@ class Sidebar extends Component {
 const mapStateToProps = ({ menu, settings, authUser, tour }) => {
   const { mainMenuClassName, subMenuClassName } = menu;
   const { projectList } = settings;
-  const { user } = authUser;
+  const { user, surveyId } = authUser;
   const { guide, pageContent, tooltipContent } = tour;
 
   return {
     user,
+    surveyId,
     projectList,
     mainMenuClassName,
     subMenuClassName,

@@ -9,7 +9,6 @@ export function getToken() {
     const accessToken = localStorage.getItem("accessToken");
 
     return { userId, accessToken };
-
   } catch (err) {
     clearToken();
     return null;

@@ -1,22 +1,22 @@
-import { EventEmitter } from 'events';
+import { EventEmitter } from "events";
 
 const createUUID = () => {
-  const pattern = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+  const pattern = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
   return pattern.replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0;
-    const v = c === 'x' ? r : ((r & 0x3) | 0x8);
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 };
 
 const Constants = {
-  CHANGE: 'change',
-  PRIMARY: 'primary',
-  SECONDARY: 'secondary',
-  INFO: 'info',
-  SUCCESS: 'success',
-  WARNING: 'warning',
-  ERROR: 'error'
+  CHANGE: "change",
+  PRIMARY: "primary",
+  SECONDARY: "secondary",
+  INFO: "info",
+  SUCCESS: "success",
+  WARNING: "warning",
+  ERROR: "error",
 };
 
 class NotificationManager extends EventEmitter {
@@ -28,11 +28,11 @@ class NotificationManager extends EventEmitter {
   create(notify) {
     const defaultNotify = {
       id: createUUID(),
-      type: 'info',
+      type: "info",
       title: null,
       message: null,
       timeOut: 5000,
-      customClassName:""
+      customClassName: "",
     };
     if (notify.priority) {
       this.listNotify.unshift(Object.assign(defaultNotify, notify));
@@ -42,7 +42,6 @@ class NotificationManager extends EventEmitter {
     this.emitChange();
   }
 
-  
   primary(message, title, timeOut, onClick, priority, customClassName) {
     this.create({
       type: Constants.PRIMARY,
@@ -51,7 +50,7 @@ class NotificationManager extends EventEmitter {
       timeOut,
       onClick,
       priority,
-      customClassName
+      customClassName,
     });
   }
 
@@ -63,7 +62,7 @@ class NotificationManager extends EventEmitter {
       timeOut,
       onClick,
       priority,
-      customClassName
+      customClassName,
     });
   }
 
@@ -75,7 +74,7 @@ class NotificationManager extends EventEmitter {
       timeOut,
       onClick,
       priority,
-      customClassName
+      customClassName,
     });
   }
 
@@ -87,7 +86,7 @@ class NotificationManager extends EventEmitter {
       timeOut,
       onClick,
       priority,
-      customClassName
+      customClassName,
     });
   }
 
@@ -99,7 +98,7 @@ class NotificationManager extends EventEmitter {
       timeOut,
       onClick,
       priority,
-      customClassName
+      customClassName,
     });
   }
 
@@ -111,12 +110,12 @@ class NotificationManager extends EventEmitter {
       timeOut,
       onClick,
       priority,
-      customClassName
+      customClassName,
     });
   }
 
   remove(notification) {
-    this.listNotify = this.listNotify.filter(n => notification.id !== n.id);
+    this.listNotify = this.listNotify.filter((n) => notification.id !== n.id);
     this.emitChange();
   }
 

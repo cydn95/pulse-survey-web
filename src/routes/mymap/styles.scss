@@ -77,7 +77,6 @@
 }
 
 .map-content-section {
-
   display: flex;
   flex-flow: row wrap;
   width: 100%;
@@ -89,7 +88,7 @@
     height: 100%;
     box-sizing: border-box;
   }
-  
+
   .map-stakeholder {
     width: 33.3334%;
     padding: 0px;
@@ -141,14 +140,13 @@
   }
 
   .map-content-section {
-
     flex-flow: column;
 
     .map-content {
       width: 100%;
       border-right: none;
     }
-    
+
     .map-stakeholder {
       width: 100%;
       background-color: #fff;
@@ -169,5 +167,16 @@
 
   .mobile-hide {
     display: none;
+  }
+}
+
+.map-selector {
+  position: fixed;
+  right: 10px;
+  top: 170px;
+  visibility: hidden;
+
+  @media only screen and (max-width: 880px) {
+    visibility: visible;
   }
 }

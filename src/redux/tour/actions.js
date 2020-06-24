@@ -31,8 +31,9 @@ export const tooltipTourContentSuccess = (content) => ({
   payload: { content },
 });
 
-export const pageContent = () => ({
+export const pageContent = (surveyId = 0) => ({
   type: PAGE_CONTENT,
+  payload: { surveyId },
 });
 
 export const pageContentSuccess = (content) => ({

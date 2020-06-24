@@ -1,23 +1,20 @@
-import React, {} from "react";
+import React from "react";
 
 import { NavLink } from "react-router-dom";
 import MessageBox from "Components/MessageBox";
 
-import styles from './styles.scss';
+import styles from "./styles.scss";
 
 function ProjectNotFound() {
   return (
-    <MessageBox
-      title="Project Not Found"
-      subTitle=""
-    >
+    <MessageBox title="Project Not Found" subTitle="">
       Please select a project first.
       <br />
-        <NavLink to={`/app/settings/projects`} className={styles.link}>
+      <NavLink to={`/app/settings/projects`} className={styles.link}>
         Go to Setting Page
-        </NavLink>
+      </NavLink>
     </MessageBox>
-  )
+  );
 }
 
 export default ProjectNotFound;

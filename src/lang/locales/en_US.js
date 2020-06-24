@@ -8,7 +8,6 @@ Table of Contents
 04.Error Page
 */
 
-
 module.exports = {
   /* 01.General */
   "general.copyright": "Gogo React © 2018 All Rights Reserved.",
@@ -49,7 +48,8 @@ module.exports = {
   "layouts.error-code": "Error code",
   "layouts.go-back-home": "GO BACK HOME",
   "layouts.coming-soon-title": "COMING SOON",
-  "layouts.coming-soon-message": "This page is under construction. we are working very hard to give you the best experience with this one",
+  "layouts.coming-soon-message":
+    "This page is under construction. we are working very hard to give you the best experience with this one",
 
   /* 05.Survey Page */
   "survey.engagement": "ENGAGEMENT",
@@ -62,5 +62,5 @@ module.exports = {
   /* 06.Settings */
   "settings.settings": "SETTINGS",
   "settings.account": "ACCOUNT",
-  "settings.project": "PROJECTS"
+  "settings.project": "PROJECTS",
 };

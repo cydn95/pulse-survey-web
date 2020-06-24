@@ -1,6 +1,6 @@
 .form-wrapper,
 .form {
-  >*:not(:first-child) {
+  > *:not(:first-child) {
     margin-top: 15px;
   }
 }
@@ -18,7 +18,7 @@
 .actions {
   display: flex;
 
-  >*:not(:first-child) {
+  > *:not(:first-child) {
     margin-left: 10px;
   }
 }
@@ -28,7 +28,7 @@
 }
 
 .upload-image {
-  background: #FFC08A;
+  background: #ffc08a;
   cursor: pointer;
   width: 213px;
   height: 213px !important;
@@ -40,7 +40,6 @@
     }
 
     cursor: pointer;
-
   }
 
   &,

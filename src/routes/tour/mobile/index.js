@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import MobileTourView from "Components/MobileTourView";
-import { MOBILE_TOUR_CONTENT } from "Constants/defaultValues";
 
 import { nikelTourContent } from "Redux/actions";
 

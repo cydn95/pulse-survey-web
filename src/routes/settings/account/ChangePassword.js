@@ -1,18 +1,17 @@
-import React, { } from 'react';
+import React from "react";
 
-import Input from "Components/Input"
-import Button from "Components/Button"
+import Input from "Components/Input";
+import Button from "Components/Button";
 
-import styles from './form.scss'
+import styles from "./form.scss";
 
 class ChangePassword extends React.Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
-      password: '',
-      confirmPassword: ''
+      password: "",
+      confirmPassword: "",
     };
   }
 
@@ -20,13 +19,13 @@ class ChangePassword extends React.Component {
     e.preventDefault();
     const { onChangePassword } = this.props;
     onChangePassword(this.state.password, this.state.confirmPassword);
-  }
+  };
 
   handleInputChange = (value, e) => {
     this.setState({
-      [e.target.name]: value
+      [e.target.name]: value,
     });
-  }
+  };
 
   render() {
     return (
@@ -52,13 +51,15 @@ class ChangePassword extends React.Component {
             onBlur={() => {}}
           />
           <div className={styles.actions}>
-            <Button default={false} onClick={e => this.handleReset()}>Cancel</Button>
+            <Button default={false} onClick={(e) => this.handleReset()}>
+              Cancel
+            </Button>
             <Button type="submit">Change</Button>
           </div>
         </form>
       </div>
-    )
+    );
   }
 }
 
-export default ChangePassword
+export default ChangePassword;

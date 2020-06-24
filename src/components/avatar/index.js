@@ -3,6 +3,4 @@ import AvatarList from "./Panel";
 
 export default AvatarList;
 
-export {
-  AvatarComponent
-}
+export { AvatarComponent };

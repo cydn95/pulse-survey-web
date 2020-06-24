@@ -3,7 +3,7 @@ import { Breadcrumb, BreadcrumbItem } from "reactstrap";
 import { NavLink } from "react-router-dom";
 import IntlMessages from "Util/IntlMessages";
 
-const getMenuTitle = sub => {
+const getMenuTitle = (sub) => {
   return <IntlMessages id={`menu.${sub}`} />;
 };
 
@@ -28,7 +28,7 @@ export const BreadcrumbItems = ({ match }) => {
   const path = match.path.substr(1);
   let paths = path.split("/");
   if (paths[paths.length - 1].indexOf(":") > -1) {
-    paths = paths.filter(x => x.indexOf(":") === -1);
+    paths = paths.filter((x) => x.indexOf(":") === -1);
   }
   return (
     <Fragment>

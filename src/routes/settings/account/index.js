@@ -1,9 +1,9 @@
-import React, { } from 'react';
+import React from "react";
 import { connect } from "react-redux";
 
-import ProfileInfo from './ProfileInfo'
-import ChangePassword from './ChangePassword'
-import UploadImage from './UploadImage'
+import ProfileInfo from "./ProfileInfo";
+import ChangePassword from "./ChangePassword";
+import UploadImage from "./UploadImage";
 
 import "react-notifications/lib/notifications.css";
 import {
@@ -11,12 +11,16 @@ import {
   NotificationManager,
 } from "react-notifications";
 
-import styles from './styles.scss'
+import styles from "./styles.scss";
 
-import { changePassword, getProfile, changeProfile, changeAvatar } from 'Redux/actions'
+import {
+  changePassword,
+  getProfile,
+  changeProfile,
+  changeAvatar,
+} from "Redux/actions";
 
 class Account extends React.Component {
-
   componentDidMount() {
     const { userId, getProfile } = this.props;
     getProfile(userId);
@@ -25,24 +29,21 @@ class Account extends React.Component {
   handleChangePassword = (password, confirmPassword) => {
     const { userProfile, userToken, changePassword } = this.props;
     if (password === "") {
-      NotificationManager.error(
-        "Password must be required",
-        "Info",
-        2000
-      );
+      NotificationManager.error("Password must be required", "Info", 2000);
       return;
     }
     if (password != confirmPassword) {
-      NotificationManager.error(
-        "Password does not match",
-        "Info",
-        2000
-      );
+      NotificationManager.error("Password does not match", "Info", 2000);
       return;
     }
 
-    changePassword(userToken, userProfile.email, password, this.callbackChangePassword);
-  }
+    changePassword(
+      userToken,
+      userProfile.email,
+      password,
+      this.callbackChangePassword
+    );
+  };
 
   callbackChangePassword = (res) => {
     if (res.data === "success") {
@@ -52,68 +53,52 @@ class Account extends React.Component {
         2000
       );
     }
-  }
+  };
 
-  handleChangeProfile = profile => {
+  handleChangeProfile = (profile) => {
     const { firstName, lastName, email, team, organization } = profile;
     const { userToken, changeProfile } = this.props;
 
-    if (firstName === '') {
-      NotificationManager.error(
-        "First name must be required",
-        "Info",
-        2000
-      );
-      return
+    if (firstName === "") {
+      NotificationManager.error("First name must be required", "Info", 2000);
+      return;
     }
 
-    if (lastName === '') {
-      NotificationManager.error(
-        "Last name must be required",
-        "Info",
-        2000
-      );
-      return
+    if (lastName === "") {
+      NotificationManager.error("Last name must be required", "Info", 2000);
+      return;
     }
 
-    if (email === '') {
-      NotificationManager.error(
-        "Email must be required",
-        "Info",
-        2000
-      );
-      return
+    if (email === "") {
+      NotificationManager.error("Email must be required", "Info", 2000);
+      return;
     }
 
-    if (! /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      NotificationManager.error(
-        "Invalid email address",
-        "Info",
-        2000
-      );
-      return
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      NotificationManager.error("Invalid email address", "Info", 2000);
+      return;
     }
 
-    if (team === '') {
-      NotificationManager.error(
-        "Team must be required",
-        "Info",
-        2000
-      );
-      return
+    if (team === "") {
+      NotificationManager.error("Team must be required", "Info", 2000);
+      return;
     }
 
-    if (organization === '') {
-      NotificationManager.error(
-        "Organization must be required",
-        "Info",
-        2000
-      );
-      return
+    if (organization === "") {
+      NotificationManager.error("Organization must be required", "Info", 2000);
+      return;
     }
 
-    changeProfile(userToken, firstName, lastName, email, team, organization, this.callbackChangeProfile);
-  }
+    changeProfile(
+      userToken,
+      firstName,
+      lastName,
+      email,
+      team,
+      organization,
+      this.callbackChangeProfile
+    );
+  };
 
   callbackChangeProfile = (res) => {
     const { getProfile, userId } = this.props;
@@ -125,12 +110,12 @@ class Account extends React.Component {
       );
       getProfile(userId);
     }
-  }
+  };
 
   handleChangeAvatar = (data) => {
     const { userProfile, changeAvatar } = this.props;
     changeAvatar(userProfile.avatarId, data, this.callbackChangeAvatar);
-  }
+  };
 
   callbackChangeAvatar = (res) => {
     const { getProfile, userId } = this.props;
@@ -142,21 +127,31 @@ class Account extends React.Component {
       );
       getProfile(userId);
     }
-  }
+  };
 
   render() {
     const { userProfile } = this.props;
     return (
       <div className={styles.main}>
-        <ProfileInfo className="profile-info" profile={userProfile} 
-          onChangeProfile={profile => this.handleChangeProfile(profile)} />
-        <UploadImage className="profile-pic" profile={userProfile}
-          onChangeAvatar={data => this.handleChangeAvatar(data)}/>
-        <ChangePassword className="change-password" 
-          onChangePassword={(password, confirmPassword) => this.handleChangePassword(password, confirmPassword)} />
+        <ProfileInfo
+          className="profile-info"
+          profile={userProfile}
+          onChangeProfile={(profile) => this.handleChangeProfile(profile)}
+        />
+        <UploadImage
+          className="profile-pic"
+          profile={userProfile}
+          onChangeAvatar={(data) => this.handleChangeAvatar(data)}
+        />
+        <ChangePassword
+          className="change-password"
+          onChangePassword={(password, confirmPassword) =>
+            this.handleChangePassword(password, confirmPassword)
+          }
+        />
         <NotificationContainer />
       </div>
-    )
+    );
   }
 }
 
@@ -166,16 +161,13 @@ const mapStateToProps = ({ authUser, account }) => {
   return {
     userId: user.userId,
     userToken: user.accessToken,
-    userProfile: profile
+    userProfile: profile,
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    changePassword,
-    getProfile,
-    changeProfile,
-    changeAvatar
-  }
-)(Account);
+export default connect(mapStateToProps, {
+  changePassword,
+  getProfile,
+  changeProfile,
+  changeAvatar,
+})(Account);

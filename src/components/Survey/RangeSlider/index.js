@@ -1,20 +1,19 @@
 import React, { Component } from "react";
 import SkipQuestion from "../SkipQuestion";
-import Slider from 'Components/Slider';
+import Slider from "Components/Slider";
 import styles from "./styles.scss";
 
-import {replaceQuestionTextKeyWord} from 'Constants/defaultValues';
+import { replaceQuestionTextKeyWord } from "Constants/defaultValues";
 
 class RangeSlider extends Component {
-
   constructor(props) {
     super(props);
 
-    const { question } = this.props
+    const { question } = this.props;
     this.state = {
       answer: {
-        ...question.answer
-      }
+        ...question.answer,
+      },
     };
   }
 
@@ -23,47 +22,56 @@ class RangeSlider extends Component {
     this.setState({
       answer: {
         ...question.answer,
-        controlType: 'SLIDER'
-      }
-    })
+        controlType: "SLIDER",
+      },
+    });
   }
 
-  onChangeSlide = value => {
+  onChangeSlide = (value) => {
     const percent = value;
 
-    this.setState( (state) => ({
-      answer: {
-        ...state.answer,
-        'integerValue': percent,
-        'skipValue': ''
+    this.setState(
+      (state) => ({
+        answer: {
+          ...state.answer,
+          integerValue: percent,
+          skipValue: "",
+        },
+      }),
+      () => {
+        this.props.onAnswer(this.state.answer);
       }
-    }), () => {
-      this.props.onAnswer(this.state.answer);
-    });
-  }
+    );
+  };
 
-  handleSkip = skipAnswer => {
-    this.setState( (state) => ({
-      answer: {
-        ...state.answer,
-        'skipValue': skipAnswer,
-        'integerValue': 0
+  handleSkip = (skipAnswer) => {
+    this.setState(
+      (state) => ({
+        answer: {
+          ...state.answer,
+          skipValue: skipAnswer,
+          integerValue: 0,
+        },
+      }),
+      () => {
+        this.props.onAnswer(this.state.answer);
       }
-    }), () => {
-      this.props.onAnswer(this.state.answer);
-    });
-  }
+    );
+  };
 
-  handleComment = commentAnswer => {
-    this.setState( (state) => ({
-      answer: {
-        ...state.answer,
-        'commentValue': commentAnswer
+  handleComment = (commentAnswer) => {
+    this.setState(
+      (state) => ({
+        answer: {
+          ...state.answer,
+          commentValue: commentAnswer,
+        },
+      }),
+      () => {
+        this.props.onAnswer(this.state.answer);
       }
-    }), () => {
-      this.props.onAnswer(this.state.answer);
-    });
-  }
+    );
+  };
 
   render() {
     const { question, skipQuestionList, user, projectTitle } = this.props;
@@ -109,4 +117,4 @@ class RangeSlider extends Component {
   }
 }
 
-export default RangeSlider
+export default RangeSlider;

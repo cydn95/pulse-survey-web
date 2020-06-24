@@ -96,7 +96,11 @@ class MultipleOptions extends Component {
       <div className={styles.main}>
         <div>
           <h2 className={styles["question-text"]}>
-            {replaceQuestionTextKeyWord(question.questionText, user, projectTitle)}
+            {replaceQuestionTextKeyWord(
+              question.questionText,
+              user,
+              projectTitle
+            )}
           </h2>
         </div>
         <div className={styles["question-selector"]}>

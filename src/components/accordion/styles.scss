@@ -1,5 +1,5 @@
 @mixin spacer {
-  >*:not(:first-child) {
+  > *:not(:first-child) {
     margin-left: 10px;
   }
 }
@@ -53,7 +53,7 @@
 }
 
 .icon-arrow {
-  transition: transform .7s;
+  transition: transform 0.7s;
 }
 
 .open .icon-arrow {
@@ -61,7 +61,7 @@
 }
 
 .content-wrapper {
-  transition: height .7s;
+  transition: height 0.7s;
   overflow: hidden;
 }
 
@@ -92,7 +92,6 @@
 
 @media only screen and (max-width: 880px) {
   .component {
-    
     .icon {
       display: none;
     }

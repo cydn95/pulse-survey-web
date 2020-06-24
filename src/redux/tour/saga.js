@@ -48,14 +48,15 @@ function* getTooltipTourContent() {
   } catch (error) {}
 }
 
-const getPageContentAsync = async () =>
-  await getConfigPageAPI()
+const getPageContentAsync = async (surveyId) =>
+  await getConfigPageAPI(surveyId)
     .then((result) => result)
     .catch((error) => error);
 
-function* getPageContent() {
+function* getPageContent({ payload }) {
   try {
-    const result = yield call(getPageContentAsync);
+    const { surveyId } = payload;
+    const result = yield call(getPageContentAsync, surveyId);
 
     if (result.status === 200) {
       yield put(pageContentSuccess(result.data));

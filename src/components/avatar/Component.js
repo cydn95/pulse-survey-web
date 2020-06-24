@@ -25,7 +25,7 @@ function AvatarComponent(props) {
     arrow,
     stakeholder,
     onArrowClick,
-    donut
+    donut,
   } = props;
 
   return (

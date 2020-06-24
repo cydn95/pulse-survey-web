@@ -10,9 +10,9 @@ import LeftRightContainer from "../../components/LeftRightContainer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
-import { Link, animateScroll as scroll } from "react-scroll";
+import { Link } from "react-scroll";
 
-import styles from './styles.scss';
+import styles from "./styles.scss";
 
 class LoginLayout extends Component {
   constructor(props) {
@@ -111,13 +111,7 @@ class LoginLayout extends Component {
           Login
         </Button>
         <div className={styles.down}>
-          <Link
-            to="login"
-            spy={true}
-            smooth={true}
-            offset={-70}
-            duration={500}
-          >
+          <Link to="login" spy={true} smooth={true} offset={-70} duration={500}>
             <FontAwesomeIcon icon={faChevronDown} />
           </Link>
         </div>

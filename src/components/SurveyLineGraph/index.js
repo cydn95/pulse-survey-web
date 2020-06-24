@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 import classnames from "classnames";
-import { PropTypes } from 'prop-types';
+import { PropTypes } from "prop-types";
 
 import { ResponsiveLineGraph as LineGraph } from "Components/LineGraph";
 
-import styles from './styles.scss';
+import styles from "./styles.scss";
 
 function SurveyLineGraph(props) {
-  const { 
+  const {
     data,
     keySelector,
     questionNameSelector,
@@ -53,5 +53,3 @@ SurveyLineGraph.propTypes = {
 };
 
 export default SurveyLineGraph;
-
-

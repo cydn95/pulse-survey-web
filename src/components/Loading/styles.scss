@@ -1,12 +1,12 @@
 .root {
-  position:fixed;
+  position: fixed;
   top: 50%;
   left: calc(50% + 112px);
 }
 
 @media only screen and (max-width: 880px) {
   .root {
-    position:fixed;
+    position: fixed;
     top: 50%;
     left: 50%;
   }

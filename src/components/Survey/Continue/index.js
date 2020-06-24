@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Button from '../../Button';
-import styles from "./styles.scss"
+import Button from "../../Button";
+import styles from "./styles.scss";
 
 class Continue extends Component {
   handleNextQuestion = (e) => {

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import Joyride, { STATUS } from "react-joyride";
-import a11yChecker from "a11y-checker";
 import { MobileGuide, MobileTooltip } from "Components/Tooltip";
 
 import classnames from "classnames";

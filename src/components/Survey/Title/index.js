@@ -4,9 +4,7 @@ import { Row } from "reactstrap";
 import { Colxx } from "Components/CustomBootstrap";
 
 class Title extends Component {
-
   render() {
-    
     const { title } = this.props;
 
     return (
@@ -22,4 +20,4 @@ class Title extends Component {
   }
 }
 
-export default Title
+export default Title;

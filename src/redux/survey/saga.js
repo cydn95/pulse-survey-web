@@ -1,7 +1,5 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
-import { getToken } from "../../services/axios/utility";
-
 import {
   pageListAPI,
   submitSurveyAPI,
@@ -45,21 +43,7 @@ function* getPageList({ payload }) {
 
   try {
     const result = yield call(getPageListAsync, surveyId, surveyUserId);
-
     if (result.status === 200) {
-      // Get Available Driver List
-      let driverList = [];
-      result.data.forEach((driver) => {
-        driverList.push({
-          driverId: driver.id,
-          driverName: driver.driverName,
-          icon: driver.iconPath,
-          percentage: 0,
-          progress: 0,
-        });
-      });
-      yield put(driverListSuccess(driverList));
-
       const questionList = [...result.data];
 
       for (let i = 0; i < questionList.length; i++) {
@@ -75,6 +59,15 @@ function* getPageList({ payload }) {
               j--;
               continue;
             }
+          }
+
+          if (
+            !questionList[i].amquestion[j].shGroup ||
+            questionList[i].amquestion[j].shGroup.length === 0
+          ) {
+            questionList[i].amquestion.splice(j, 1);
+            j--;
+            continue;
           }
 
           if (questionList[i].amquestion[j].responsestatus) {
@@ -115,14 +108,29 @@ function* getPageList({ payload }) {
           a.questionSequence > b.questionSequence ? 1 : -1
         );
       }
-
       const result_option = yield call(getOptionListAsync);
       if (result_option.status === 200) {
         const optionList = result_option.data;
         yield put(pageListSuccess(questionList, optionList));
       }
+
+      // Get Available Driver List
+      let driverList = [];
+      for (let i = 0; i < questionList.length; i++) {
+        if (questionList[i].amquestion.length > 0) {
+          driverList.push({
+            driverId: questionList[i].id,
+            driverName: questionList[i].driverName,
+            icon: questionList[i].iconPath,
+            percentage: 0,
+            progress: 0,
+          });
+        }
+      }
+      yield put(driverListSuccess(driverList));
+
     } else {
-      console.log("login failed :", result.statusText);
+      console.log("survey error :", result.statusText);
     }
   } catch (error) {
     console.log("survey error : ", error);

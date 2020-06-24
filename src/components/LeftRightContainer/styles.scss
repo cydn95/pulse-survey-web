@@ -2,7 +2,7 @@
   display: flex;
   width: 100vw;
 
-  >* {
+  > * {
     flex: 1;
     height: 100vh;
   }
@@ -52,7 +52,7 @@
     height: auto;
     flex-direction: column;
 
-    >* {
+    > * {
       flex: auto;
     }
   }

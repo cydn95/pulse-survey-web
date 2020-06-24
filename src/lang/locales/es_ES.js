@@ -8,7 +8,6 @@ Table of Contents
 04.Error 
 */
 
-
 module.exports = {
   /* 01.General */
   "general.copyright": "Gogo React © Todos los derechos reservados.",
@@ -36,7 +35,7 @@ module.exports = {
   "menu.chat": "Chatea",
   "menu.survey": "Encuesta",
   "menu.todo": "Notas",
-  "menu.search" :"Búsqueda",
+  "menu.search": "Búsqueda",
 
   /* 04.Error  */
   "layouts.error-title": "Vaya, parece que ha ocurrido un error!",

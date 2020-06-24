@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 import classnames from "classnames";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import EditableOption from './EditableOption';
+import EditableOption from "./EditableOption";
 
-import styles from './styles.scss';
+import styles from "./styles.scss";
 
 function Option(props) {
   const { topic, comment, checked, onSelectTopic } = props;
@@ -22,8 +22,7 @@ function Option(props) {
   );
 }
 
-Option.defaultProps = {
-};
+Option.defaultProps = {};
 
 Option.propTypes = {
   topic: PropTypes.string.isRequired,

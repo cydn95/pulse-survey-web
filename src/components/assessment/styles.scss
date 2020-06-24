@@ -5,7 +5,7 @@
 
   display: flex;
 
-  >*:not(:first-child) {
+  > *:not(:first-child) {
     margin-left: 20px;
   }
 
@@ -33,7 +33,6 @@
   .ass-comp {
     padding: 10px 0;
   }
-
 }
 
 .info {
