@@ -76,6 +76,17 @@ function* getAoQuestionList({ payload }) {
             }
           }
 
+          // if (
+          //   !aoQuestionList[i].shGroup ||
+          //   aoQuestionList[i].shGroup.length === 0
+          // ) {
+          //   if (aoQuestionList[i].option.length === 0) {
+          //     aoQuestionList.splice(i, 1);
+          //     i--;
+          //     continue;
+          //   }
+          // }
+
           if (aoQuestionList[i].responsestatus) {
             aoQuestionList[i] = {
               ...aoQuestionList[i],

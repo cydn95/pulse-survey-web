@@ -3,6 +3,7 @@ import {
   loginAPI,
   setPasswordAPI,
   getSurveyUserAPI,
+  getProjectAPI,
 } from "../../services/axios/api";
 
 import {
@@ -70,7 +71,14 @@ function* logout({ payload }) {
   const { history } = payload;
   try {
     // yield call(logoutAsync, history);
+    localStorage.removeItem("tour");
+    localStorage.removeItem("projectId");
+    localStorage.removeItem("projectTitle");
+    localStorage.removeItem("surveyTitle");
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("surveyUserId");
+    localStorage.removeItem("surveyId");
+    localStorage.removeItem("userId");
     yield call(logoutUser, history);
     history.push("/");
   } catch (error) {}
@@ -140,10 +148,19 @@ function* setSurveyID({ payload }) {
   }
 }
 
+const getProjectByIdAsync = async (projectId) =>
+  await getProjectAPI(projectId)
+    .then((res) => res)
+    .catch((error) => error);
+
 function* setProjectID({ payload }) {
   const { projectId } = payload;
-  localStorage.setItem("projectId", projectId);
-  yield put(setProjectIDSuccess(projectId));
+  const result = yield call(getProjectByIdAsync, projectId);
+  if (result.status === 200) {
+    localStorage.setItem("projectId", projectId);
+    localStorage.setItem("projectTitle", result.data.projectName);
+    yield put(setProjectIDSuccess(projectId, result.data.projectName));
+  }
 }
 
 export function* watchLoginUser() {

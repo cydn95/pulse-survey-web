@@ -29,7 +29,7 @@ export const surveyListByProject = (projectId) => ({
   payload: { projectId },
 });
 
-export const surveyListByProjectSuccess = (surveyList) => ({
+export const surveyListByProjectSuccess = (surveyList, project) => ({
   type: SURVEY_LIST_BY_PROJECT_SUCCESS,
-  payload: { surveyList },
+  payload: { surveyList, project },
 });

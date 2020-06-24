@@ -1,13 +1,23 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import { Button } from "reactstrap";
 
 import styles from "./styles.scss";
 import classnames from "classnames";
 
-const HowToUsePulse = ({ history }) => {
+const HowToUsePulse = ({ history, surveyUserId }) => {
   const handleContinue = (e) => {
-    history.push("/app/about-me");
+    if (
+      surveyUserId == undefined ||
+      surveyUserId == null ||
+      surveyUserId <= 0
+    ) {
+      history.push("/app/settings/projects");
+      return;
+    } else {
+      history.push("/app/about-me");
+    }
   };
 
   return (
@@ -89,4 +99,12 @@ const HowToUsePulse = ({ history }) => {
   );
 };
 
-export default HowToUsePulse;
+const mapStateToProps = ({ authUser }) => {
+  const { surveyUserId } = authUser;
+
+  return {
+    surveyUserId,
+  };
+};
+
+export default connect(mapStateToProps, {})(HowToUsePulse);

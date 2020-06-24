@@ -17,9 +17,9 @@ export const setProjectID = (projectId) => ({
   payload: { projectId },
 });
 
-export const setProjectIDSuccess = (projectId) => ({
+export const setProjectIDSuccess = (projectId, projectTitle) => ({
   type: PROJECT_ID_SUCCESS,
-  payload: { projectId },
+  payload: { projectId, projectTitle },
 });
 
 export const setSurveyID = (userId, surveyId, callback) => ({

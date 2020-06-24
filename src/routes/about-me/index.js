@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import { connect } from "react-redux";
 
@@ -95,16 +95,17 @@ class AboutMeSurvey extends React.Component {
           driverProgress = SURVEY_COMPLETED;
         }
 
-        const driver = {
-          driverId: surveyList[i].id,
-          driverName: surveyList[i].driverName,
-          icon: surveyList[i].iconPath,
-          percentage: 0,
-          progress: driverProgress,
-          amquestion: [...surveyList[i].amquestion],
-        };
-
-        driverList.push(driver);
+        if (surveyList[i].amquestion.length > 0) {
+          const driver = {
+            driverId: surveyList[i].id,
+            driverName: surveyList[i].driverName,
+            icon: surveyList[i].iconPath,
+            percentage: 0,
+            progress: driverProgress,
+            amquestion: [...surveyList[i].amquestion],
+          };
+          driverList.push(driver);
+        }
       }
 
       this.setState({
@@ -181,7 +182,13 @@ class AboutMeSurvey extends React.Component {
   };
 
   render() {
-    const { optionList, projectTitle, skipQuestionList, history } = this.props;
+    const {
+      surveyList,
+      optionList,
+      projectTitle,
+      skipQuestionList,
+      history,
+    } = this.props;
 
     const { driverList, pageIndex } = this.state;
 
@@ -195,7 +202,8 @@ class AboutMeSurvey extends React.Component {
       fullName: "Mike Smith",
       team: "Pulse",
     };
-
+    console.log(surveyList);
+    console.log(driverList);
     return (
       <div className={styles.root}>
         <div className={styles.topbar}>
@@ -205,144 +213,163 @@ class AboutMeSurvey extends React.Component {
             </div>
           </TopNav>
         </div>
-        <div className={styles["main-content"]}>
-          <div className={styles["driver-scroll"]}>
-            <div className={styles["driver-section"]}>
-              <DriverPanel
-                defaultDriverId={defaultDrvierId}
-                data={driverList}
-                color="green"
-                onClick={(e, driverId) => this.handleClickDriver(driverId)}
-              />
-            </div>
-            <div className={styles["survey-container"]}>
-              {driverList.length > 0 && skipQuestionList.length > 0 && (
-                <div className={styles["survey-driver-container"]}>
-                  <div className={styles["question-driver-container"]}>
-                    {driver.amquestion.map((question) => {
-                      switch (question.controlType) {
-                        case controlType.TEXT:
-                          return (
-                            <div
-                              key={`question-page-${question.id}`}
-                              className={styles["control-container"]}
-                            >
-                              <FreeText
-                                user={user}
-                                question={question}
-                                onAnswer={(answer) => this.handleAnswer(answer)}
-                                skipQuestionList={skipQuestionList}
-                                projectTitle={projectTitle}
-                              />
-                            </div>
-                          );
-                        case controlType.SLIDER:
-                          return (
-                            <div
-                              key={`question-page-${question.id}`}
-                              className={styles["control-container"]}
-                            >
-                              <RangeSlider
-                                user={user}
-                                question={question}
-                                onAnswer={(answer) => this.handleAnswer(answer)}
-                                skipQuestionList={skipQuestionList}
-                                projectTitle={projectTitle}
-                              />
-                            </div>
-                          );
-
-                        case controlType.TWO_OPTIONS:
-                          return (
-                            <div
-                              key={`question-page-${question.id}`}
-                              className={styles["control-container"]}
-                            >
-                              <TwoOptions
-                                user={user}
-                                options={optionList}
-                                question={question}
-                                onAnswer={(answer) => this.handleAnswer(answer)}
-                                skipQuestionList={skipQuestionList}
-                                projectTitle={projectTitle}
-                              />
-                            </div>
-                          );
-
-                        case controlType.MULTI_OPTIONS:
-                          return (
-                            <div
-                              key={`question-page-${question.id}`}
-                              className={styles["control-container"]}
-                            >
-                              <MultipleOptions
-                                type="am"
-                                user={user}
-                                options={optionList}
-                                question={question}
-                                onAnswer={(answer) => this.handleAnswer(answer)}
-                                skipQuestionList={skipQuestionList}
-                                projectTitle={projectTitle}
-                              />
-                            </div>
-                          );
-
-                        case controlType.MULTI_TOPICS:
-                          return (
-                            <div
-                              key={`question-page-${question.id}`}
-                              className={styles["control-container"]}
-                            >
-                              <MultiTopics
-                                type="am"
-                                user={user}
-                                options={optionList}
-                                question={question}
-                                onAnswer={(answer) => this.handleAnswer(answer)}
-                                skipQuestionList={skipQuestionList}
-                                projectTitle={projectTitle}
-                              />
-                            </div>
-                          );
-
-                        case controlType.SMART_TEXT:
-                          return (
-                            <div
-                              key={`question-page-${question.id}`}
-                              className={styles["control-container"]}
-                            >
-                              <SmartText
-                                user={user}
-                                question={question}
-                                onAnswer={(answer) => this.handleAnswer(answer)}
-                                skipQuestionList={skipQuestionList}
-                                projectTitle={projectTitle}
-                              />
-                            </div>
-                          );
-
-                        default:
-                          return (
-                            <div key={`question-page-${question.id}`}></div>
-                          );
+        {surveyList.length > 0 && (
+          <div className={styles["main-content"]}>
+            {driverList.length > 0 && skipQuestionList.length > 0 && (
+              <Fragment>
+                <div className={styles["driver-scroll"]}>
+                  <div className={styles["driver-section"]}>
+                    <DriverPanel
+                      defaultDriverId={defaultDrvierId}
+                      data={driverList}
+                      color="green"
+                      onClick={(e, driverId) =>
+                        this.handleClickDriver(driverId)
                       }
-                    })}
+                    />
                   </div>
-                  <Continue
-                    onContinue={(e) => this.handleContinue(e)}
-                    history={this.props.history}
-                    title={
-                      pageIndex === driverList.length - 1
-                        ? "Submit"
-                        : "Continue"
-                    }
-                  />
+                  <div className={styles["survey-container"]}>
+                    <div className={styles["survey-driver-container"]}>
+                      <div className={styles["question-driver-container"]}>
+                        {driver.amquestion.map((question) => {
+                          switch (question.controlType) {
+                            case controlType.TEXT:
+                              return (
+                                <div
+                                  key={`question-page-${question.id}`}
+                                  className={styles["control-container"]}
+                                >
+                                  <FreeText
+                                    user={user}
+                                    question={question}
+                                    onAnswer={(answer) =>
+                                      this.handleAnswer(answer)
+                                    }
+                                    skipQuestionList={skipQuestionList}
+                                    projectTitle={projectTitle}
+                                  />
+                                </div>
+                              );
+                            case controlType.SLIDER:
+                              return (
+                                <div
+                                  key={`question-page-${question.id}`}
+                                  className={styles["control-container"]}
+                                >
+                                  <RangeSlider
+                                    user={user}
+                                    question={question}
+                                    onAnswer={(answer) =>
+                                      this.handleAnswer(answer)
+                                    }
+                                    skipQuestionList={skipQuestionList}
+                                    projectTitle={projectTitle}
+                                  />
+                                </div>
+                              );
+
+                            case controlType.TWO_OPTIONS:
+                              return (
+                                <div
+                                  key={`question-page-${question.id}`}
+                                  className={styles["control-container"]}
+                                >
+                                  <TwoOptions
+                                    user={user}
+                                    options={optionList}
+                                    question={question}
+                                    onAnswer={(answer) =>
+                                      this.handleAnswer(answer)
+                                    }
+                                    skipQuestionList={skipQuestionList}
+                                    projectTitle={projectTitle}
+                                  />
+                                </div>
+                              );
+
+                            case controlType.MULTI_OPTIONS:
+                              return (
+                                <div
+                                  key={`question-page-${question.id}`}
+                                  className={styles["control-container"]}
+                                >
+                                  <MultipleOptions
+                                    type="am"
+                                    user={user}
+                                    options={optionList}
+                                    question={question}
+                                    onAnswer={(answer) =>
+                                      this.handleAnswer(answer)
+                                    }
+                                    skipQuestionList={skipQuestionList}
+                                    projectTitle={projectTitle}
+                                  />
+                                </div>
+                              );
+
+                            case controlType.MULTI_TOPICS:
+                              return (
+                                <div
+                                  key={`question-page-${question.id}`}
+                                  className={styles["control-container"]}
+                                >
+                                  <MultiTopics
+                                    type="am"
+                                    user={user}
+                                    options={optionList}
+                                    question={question}
+                                    onAnswer={(answer) =>
+                                      this.handleAnswer(answer)
+                                    }
+                                    skipQuestionList={skipQuestionList}
+                                    projectTitle={projectTitle}
+                                  />
+                                </div>
+                              );
+
+                            case controlType.SMART_TEXT:
+                              return (
+                                <div
+                                  key={`question-page-${question.id}`}
+                                  className={styles["control-container"]}
+                                >
+                                  <SmartText
+                                    user={user}
+                                    question={question}
+                                    onAnswer={(answer) =>
+                                      this.handleAnswer(answer)
+                                    }
+                                    skipQuestionList={skipQuestionList}
+                                    projectTitle={projectTitle}
+                                  />
+                                </div>
+                              );
+
+                            default:
+                              return (
+                                <div key={`question-page-${question.id}`}></div>
+                              );
+                          }
+                        })}
+                      </div>
+                      <Continue
+                        onContinue={(e) => this.handleContinue(e)}
+                        history={this.props.history}
+                        title={
+                          pageIndex === driverList.length - 1
+                            ? "Submit"
+                            : "Continue"
+                        }
+                      />
+                    </div>
+                  </div>
                 </div>
-              )}
-              {driverList.length === 0 && <Loading description="" />}
-            </div>
+              </Fragment>
+            )}
+            <h2 className={styles['no-questions']}>No Questions</h2>
           </div>
-        </div>
+        )}
+        {surveyList.length === 0 && <Loading description="" />}
       </div>
     );
   }
@@ -351,7 +378,13 @@ class AboutMeSurvey extends React.Component {
 const mapStateToProps = ({ survey, common, authUser }) => {
   const { pageList, pageIndex, optionList, aboutMe } = survey;
   const { skipQuestionList } = common;
-  const { projectId, surveyTitle, surveyUserId, surveyId } = authUser;
+  const {
+    projectId,
+    projectTitle,
+    surveyTitle,
+    surveyUserId,
+    surveyId,
+  } = authUser;
 
   return {
     optionList,
@@ -360,6 +393,7 @@ const mapStateToProps = ({ survey, common, authUser }) => {
     pageIndex,
     skipQuestionList,
     projectId,
+    projectTitle,
     surveyTitle,
     surveyUserId,
     surveyId,

@@ -1,7 +1,7 @@
 export const defaultMainMenuClassName = "dashboard";
 export const defaultSubMenuClassName = "dashboard";
 
-export const defaultStartPath = "/app/dashboard";
+export const defaultStartPath = "/app/help/how-to-use-pulse";
 
 export const defaultLocale = "en";
 export const localeOptions = [

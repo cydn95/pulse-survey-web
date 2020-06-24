@@ -288,7 +288,7 @@ class MyMap extends React.Component {
     this.props.getKMapData(surveyUserId);
     this.props.getProjectMapData(surveyUserId);
     this.props.getShCategoryList(surveyId, 0);
-    this.props.getStakeholderList(surveyUserId);
+    this.props.getStakeholderList(surveyUserId, surveyId);
     this.props.getTeamList();
     this.props.getAoQuestionList(surveyUserId);
     this.props.getDriverList(surveyId);
@@ -813,7 +813,7 @@ class MyMap extends React.Component {
       skipQuestionList,
       history,
     } = this.props;
-
+console.log(aoQuestionList);
     const {
       enableLayout,
       viewDropDownOpen,
@@ -1070,7 +1070,7 @@ const mapStateToProps = ({
   aosurvey,
   authUser,
 }) => {
-  const { projectId, surveyId, surveyTitle, surveyUserId, user } = authUser;
+  const { projectId, projectTitle, surveyId, surveyTitle, surveyUserId, user } = authUser;
   const { locale } = settings;
   const { kMapData, projectMapData, mapSaveLoading, mapGetLoading } = kmap;
   const {
@@ -1087,6 +1087,7 @@ const mapStateToProps = ({
   return {
     userId: user.userId,
     projectId,
+    projectTitle,
     surveyId,
     surveyTitle,
     surveyUserId,

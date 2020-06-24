@@ -131,15 +131,15 @@ function* getSkipQuestionList() {
   }
 }
 
-const getStakeholderListAysnc = async (projectUserId) =>
-  await stakeholderListAPI(projectUserId)
+const getStakeholderListAysnc = async (projectUserId, surveyId) =>
+  await stakeholderListAPI(projectUserId, surveyId)
     .then((data) => data)
     .catch((error) => error);
 
 function* getStakeholderList({ payload }) {
   try {
-    const { projectUserId } = payload;
-    const result = yield call(getStakeholderListAysnc, projectUserId);
+    const { projectUserId, surveyId } = payload;
+    const result = yield call(getStakeholderListAysnc, projectUserId, surveyId);
 
     let stakeholderList = [];
     if (result.status === 200) {

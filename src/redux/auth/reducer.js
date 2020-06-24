@@ -18,6 +18,7 @@ const INIT_STATE = {
     accessToken: localStorage.getItem("accessToken"),
   },
   projectId: localStorage.getItem("projectId"),
+  projectTitle: localStorage.getItem("projectTitle"),
   surveyId: localStorage.getItem("surveyId"),
   surveyTitle: localStorage.getItem("surveyTitle"),
   surveyUserId: localStorage.getItem("surveyUserId"),
@@ -31,6 +32,7 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         projectId: action.payload.projectId,
+        projectTitle: action.payload.projectTitle,
       };
     case SURVEY_ID_SUCCESS:
       return {

@@ -68,9 +68,9 @@ export const skipQuestionListSuccess = (skipQuestionList) => ({
   payload: { skipQuestionList },
 });
 
-export const stakeholderList = (projectUserId) => ({
+export const stakeholderList = (projectUserId, surveyId = 0) => ({
   type: STAKEHOLDER_LIST,
-  payload: { projectUserId },
+  payload: { projectUserId, surveyId },
 });
 
 export const stakeholderListSuccess = (stakeholderList, userList) => ({

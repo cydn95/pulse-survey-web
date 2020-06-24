@@ -46,7 +46,7 @@ class Settings extends React.Component {
                 title: "Projects",
                 name: "projects",
                 type: "default",
-                content: <Project />,
+                content: <Project history={history} />,
               },
             ]}
           ></TabPanel>

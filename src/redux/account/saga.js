@@ -47,10 +47,10 @@ function* getProfile({ payload }) {
         firstName: result.data.first_name,
         lastName: result.data.last_name,
         email: result.data.email,
-        team: result.data.userteam.name,
+        team: result.data.userteam ? result.data.userteam.name : "",
         organization: result.data.organization.name,
-        avatarId: result.data.avatar.id,
-        avatar: result.data.avatar.name,
+        avatarId: result.data.avatar ? result.data.avatar.id : 0,
+        avatar: result.data.avatar ? result.data.avatar.name : '',
       };
 
       yield put(getProfileSuccess(profile));
