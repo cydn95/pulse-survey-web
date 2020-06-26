@@ -85,7 +85,7 @@ class Sidebar extends Component {
 
     // a11yChecker();
 
-    if (surveyId >  0) {
+    if (surveyId >  0 && surveyId !== this.props.surveyId) {
       getPageContent(surveyId);
     }
 

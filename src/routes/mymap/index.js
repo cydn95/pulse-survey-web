@@ -271,7 +271,7 @@ class MyMap extends React.Component {
   };
 
   componentWillMount() {
-    const { surveyId, surveyUserId, history } = this.props;
+    const { userId, surveyId, surveyUserId, history } = this.props;
 
     if (
       surveyId == undefined ||
@@ -285,8 +285,8 @@ class MyMap extends React.Component {
       return;
     }
 
-    this.props.getKMapData(surveyUserId);
-    this.props.getProjectMapData(surveyUserId);
+    this.props.getKMapData(surveyUserId, userId);
+    this.props.getProjectMapData(surveyUserId, userId);
     this.props.getShCategoryList(surveyId, 0);
     this.props.getStakeholderList(surveyUserId, surveyId);
     this.props.getTeamList();
@@ -471,6 +471,9 @@ class MyMap extends React.Component {
           for (let i = 0; i < userList.length; i++) {
             if (userList[i].id === mapUser.projectUserId) {
               for (let j = 0; j < userList[i].shCategory.length; j++) {
+                if (!userList[i].team) {
+                  continue;
+                }
                 if (userList[i].shCategory[j] === mapUser.shCategory) {
                   individualUser.id = `S_${userList[i].user.id}_SHC_${userList[i].shCategory[j]}`;
                   individualUser.avatar =
@@ -813,7 +816,7 @@ class MyMap extends React.Component {
       skipQuestionList,
       history,
     } = this.props;
-console.log(aoQuestionList);
+
     const {
       enableLayout,
       viewDropDownOpen,
@@ -1070,7 +1073,14 @@ const mapStateToProps = ({
   aosurvey,
   authUser,
 }) => {
-  const { projectId, projectTitle, surveyId, surveyTitle, surveyUserId, user } = authUser;
+  const {
+    projectId,
+    projectTitle,
+    surveyId,
+    surveyTitle,
+    surveyUserId,
+    user,
+  } = authUser;
   const { locale } = settings;
   const { kMapData, projectMapData, mapSaveLoading, mapGetLoading } = kmap;
   const {

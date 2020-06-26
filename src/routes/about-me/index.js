@@ -202,8 +202,6 @@ class AboutMeSurvey extends React.Component {
       fullName: "Mike Smith",
       team: "Pulse",
     };
-    console.log(surveyList);
-    console.log(driverList);
     return (
       <div className={styles.root}>
         <div className={styles.topbar}>
@@ -366,7 +364,9 @@ class AboutMeSurvey extends React.Component {
                 </div>
               </Fragment>
             )}
-            <h2 className={styles['no-questions']}>No Questions</h2>
+            {driverList.length === 0 && (
+              <h2 className={styles["no-questions"]}>No Questions</h2>
+            )}
           </div>
         )}
         {surveyList.length === 0 && <Loading description="" />}
