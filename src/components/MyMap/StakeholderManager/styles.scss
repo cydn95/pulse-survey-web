@@ -73,11 +73,20 @@
     }
   }
 
+  .add-stakeholder {
+    margin-top: 7px;
+    margin-bottom: 7px;
+    width: 100%;
+    font-size: 0.9rem;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
   .scroll-section {
     width: 100%;
     height: calc(100vh - 293px);
     overflow: auto;
-    padding: 15px;
+    padding: 0px 15px 15px 15px;
     box-sizing: border-box;
 
     @media only screen and (max-width: 880px) {

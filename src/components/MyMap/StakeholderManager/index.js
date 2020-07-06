@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faPlus } from "@fortawesome/free-solid-svg-icons";
 
+import Button from "Components/Button";
 import MapStakeholderList from "./MapStakholderList";
 import { updateStakeholder } from "Redux/actions";
 
@@ -74,6 +75,7 @@ class StakeholderManager extends Component {
       shCategoryList,
       projectMapShCategoryList,
       onClickDecisionMaker,
+      addNewStakeholder,
     } = this.props;
 
     const {
@@ -123,6 +125,13 @@ class StakeholderManager extends Component {
               {`${userCount} stakeholders`}
             </div>
           </div>
+          <Button
+            className={styles["add-stakeholder"]}
+            onClick={(e) => addNewStakeholder(e)}
+          >
+            <strong>+</strong>
+            {` Add Stakeholder`}
+          </Button>
         </div>
         <div className={styles["scroll-section"]}>
           {filterView && (
