@@ -144,6 +144,10 @@ function* getStakeholderList({ payload }) {
     let stakeholderList = [];
     if (result.status === 200) {
       result.data.forEach((sh) => {
+        if (parseInt(sh.id, 10) === parseInt(projectUserId, 10)) {
+          return; // logged user must not shown on the stackholder list
+        } 
+
         const shAoResponse = sh.ao_response;
         const filteredAoResponse = shAoResponse.filter((item, index) => {
           return shAoResponse.indexOf(item) === index;

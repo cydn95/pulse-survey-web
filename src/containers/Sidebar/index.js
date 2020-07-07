@@ -17,7 +17,9 @@ import {
   setSubMenuClassName,
   logoutUser,
   projectListByUser,
+  surveyListByProject,
   setProjectID,
+  setSurveyID,
   guideShowStatus,
   tooltipTourContent,
   pageContent,
@@ -85,7 +87,7 @@ class Sidebar extends Component {
 
     // a11yChecker();
 
-    if (surveyId >  0 && surveyId !== this.props.surveyId) {
+    if (surveyId > 0 && surveyId !== this.props.surveyId) {
       getPageContent(surveyId);
     }
 
@@ -190,9 +192,19 @@ class Sidebar extends Component {
       subMenuOpen: false,
     });
 
-    // const { user, setSurveyProjectID } = this.props;
+    const { getSurveyListByProject } = this.props;
+    getSurveyListByProject(projectId, this.callbackSelectProject);
+  };
 
-    // setSurveyProjectID(user.userId, projectId, this.callbackClickProject);
+  callbackSelectProject = (data) => {
+    const activeSurveys = data.filter((d) => d.isActive === true);
+    if (activeSurveys.length > 0) {
+      const survey = activeSurveys[0];
+
+      const { actionSetProjectID, actionSetSurveyID, user } = this.props;
+      actionSetProjectID(survey.project);
+      actionSetSurveyID(user.userId, survey.id, this.callbackClickProject);
+    }
   };
 
   callbackClickProject = () => {
@@ -662,7 +674,9 @@ export default withRouter(
     setSubMenuClassName,
     logoutUser,
     getProjectListByUser: projectListByUser,
-    setSurveyProjectID: setProjectID,
+    getSurveyListByProject: surveyListByProject,
+    actionSetProjectID: setProjectID,
+    actionSetSurveyID: setSurveyID,
     setGuideShowStatus: guideShowStatus,
     getPageContent: pageContent,
     getTooltipTourContent: tooltipTourContent,
