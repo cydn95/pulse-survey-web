@@ -46,8 +46,20 @@ class Project extends Component {
     });
 
     const { getSurveyListByProject } = this.props;
-    getSurveyListByProject(event.target.value);
+    getSurveyListByProject(event.target.value, this.callbackSelectProject);
   };
+
+  callbackSelectProject = (data) => {
+    const activeSurveys = data.filter(d => d.isActive === true);
+    if (activeSurveys.length > 0) {
+      const survey = activeSurveys[0];
+      console.log(survey);
+
+      const { actionSetProjectID, actionSetSurveyID, user } = this.props;
+      actionSetProjectID(survey.project);
+      actionSetSurveyID(user.userId, survey.id);
+    }
+  }
 
   handleSelectSurvey = (newSurveyId, status) => {
     if (status) {
@@ -100,7 +112,7 @@ class Project extends Component {
           </NativeSelect>
           <FormHelperText>Please select a Project</FormHelperText>
         </FormControl>
-        {surveyList.length > 0 &&
+        {surveyList.length > 0 && false && 
           surveyList.map((item) => {
             return (
               <div key={`survey_${item.id}`}>

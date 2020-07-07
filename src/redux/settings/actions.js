@@ -24,9 +24,9 @@ export const projectListByUserSuccess = (projectList) => ({
   payload: { projectList },
 });
 
-export const surveyListByProject = (projectId) => ({
+export const surveyListByProject = (projectId, callback) => ({
   type: SURVEY_LIST_BY_PROJECT,
-  payload: { projectId },
+  payload: { projectId, callback },
 });
 
 export const surveyListByProjectSuccess = (surveyList, project) => ({
