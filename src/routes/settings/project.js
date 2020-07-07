@@ -58,6 +58,9 @@ class Project extends Component {
       const { actionSetProjectID, actionSetSurveyID, user } = this.props;
       actionSetProjectID(survey.project);
       actionSetSurveyID(user.userId, survey.id);
+      this.setState({
+        surveyId: survey.id,
+      });
     }
   }
 
@@ -95,7 +98,7 @@ class Project extends Component {
         <FormControl className={styles["form-control"]}>
           <InputLabel htmlFor="project-native-helper">Project</InputLabel>
           <NativeSelect
-            value={projectId}
+            value={projectId ? projectId : 0}
             onChange={(e) => this.handleSelectProject(e)}
             inputProps={{
               name: "project",
@@ -112,7 +115,7 @@ class Project extends Component {
           </NativeSelect>
           <FormHelperText>Please select a Project</FormHelperText>
         </FormControl>
-        {surveyList.length > 0 && false && 
+        {/* {surveyList.length > 0 && false && 
           surveyList.map((item) => {
             return (
               <div key={`survey_${item.id}`}>
@@ -133,7 +136,7 @@ class Project extends Component {
                 </div>
               </div>
             );
-          })}
+          })} */}
         {surveyId > 0 && (
           <div className={styles.actions}>
             <Button default={true} onClick={(e) => this.handleGotoSurvey()}>
