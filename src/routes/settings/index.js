@@ -26,14 +26,15 @@ class Settings extends React.Component {
     return (
       <div className={styles.root}>
         <div className={styles.topbar}>
-          <TopNav history={history} menuTitle="My Map">
+          <TopNav history={history} menuTitle="Profile">
             <div className={styles.section}>
               <h2 className={styles["project-name"]}>Alpha Project</h2>
             </div>
           </TopNav>
         </div>
         <div className={styles["setting-container"]}>
-          <TabPanel
+          <Account />
+          {/* <TabPanel
             selectedTab={tab}
             data={[
               {
@@ -49,7 +50,7 @@ class Settings extends React.Component {
                 content: <Project history={history} />,
               },
             ]}
-          ></TabPanel>
+          ></TabPanel> */}
         </div>
       </div>
     );
