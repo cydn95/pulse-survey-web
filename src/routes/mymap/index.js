@@ -21,7 +21,12 @@ import {
   addStakeholder,
 } from "Redux/actions";
 
-import { KGraph, AoSurvey, KGraphNavControls } from "Components/MyMap";
+import {
+  KGraph,
+  AoSurvey,
+  KGraphNavControls,
+  StakeholderManager,
+} from "Components/MyMap";
 import { NewStakeholder } from "Components/Survey";
 import SearchBar from "Components/search-bar";
 import Button from "Components/Button";
@@ -71,6 +76,9 @@ class MyMap extends React.Component {
       search: "",
 
       searchFullHeight: false,
+
+      myMapStakeholderList: [],
+      projectMapStakeholderList: [],
     };
 
     this.defaultStakeholder = {
@@ -622,6 +630,34 @@ class MyMap extends React.Component {
         }
       }
 
+      let myMapStakeholderList = [];
+      if (kMapData.length > 0 && stakeholderList.length > 0) {
+        let mapUserList = kMapData[0].projectUser;
+        for (let i = 0; i < mapUserList.length; i++) {
+          for (let j = 0; j < stakeholderList.length; j++) {
+            if (mapUserList[i] === stakeholderList[j].projectUserId) {
+              myMapStakeholderList.push(stakeholderList[j]);
+              break;
+            }
+          }
+        }
+      }
+
+      let projectMapStakeholderList = [];
+      if (projectMapData.length > 0 && stakeholderList.length > 0) {
+        let mapUserList = projectMapData[0].projectUser;
+        for (let i = 0; i < mapUserList.length; i++) {
+          for (let j = 0; j < stakeholderList.length; j++) {
+            if (mapUserList[i] === stakeholderList[j].projectUserId) {
+              projectMapStakeholderList.push(stakeholderList[j]);
+              break;
+            }
+          }
+        }
+      }
+
+      console.log(myMapStakeholderList);
+      console.log(projectMapStakeholderList);
       // Project Map
       // const projectArchitecture = {
       //   main: {
@@ -656,6 +692,8 @@ class MyMap extends React.Component {
         screen: "list",
         mapSaveLoading,
         mapGetLoading,
+        myMapStakeholderList,
+        projectMapStakeholderList
       });
     }
   }
@@ -842,6 +880,8 @@ class MyMap extends React.Component {
       currentSurveyUser,
       searchFullHeight,
       mapStyle,
+      myMapStakeholderList,
+      projectMapStakeholderList
     } = this.state;
 
     const mapHeaderVisible = toggleGraph
@@ -940,27 +980,31 @@ class MyMap extends React.Component {
                 searchFullHeight && !toggleGraph && screen === "list",
             })}
           >
-            <ButtonGroup
-              size="small"
-              className={styles["map-selector"]}
-              color="primary"
-              aria-label="outlined primary button group"
-            >
-              <MButton
-                variant={mapStyle === "my-map" ? "contained" : "outlined"}
+            {toggleGraph && (
+              <ButtonGroup
+                size="small"
+                className={classnames(styles["map-selector"])}
                 color="primary"
-                onClick={(e) => this.handleSelectMapStyle("my-map")}
+                aria-label="outlined primary button group"
               >
-                My Map
-              </MButton>
-              <MButton
-                variant={mapStyle === "project-map" ? "contained" : "outlined"}
-                color="primary"
-                onClick={(e) => this.handleSelectMapStyle("project-map")}
-              >
-                Project Map
-              </MButton>
-            </ButtonGroup>
+                <MButton
+                  variant={mapStyle === "my-map" ? "contained" : "outlined"}
+                  color="primary"
+                  onClick={(e) => this.handleSelectMapStyle("my-map")}
+                >
+                  My Map
+                </MButton>
+                <MButton
+                  variant={
+                    mapStyle === "project-map" ? "contained" : "outlined"
+                  }
+                  color="primary"
+                  onClick={(e) => this.handleSelectMapStyle("project-map")}
+                >
+                  Project Map
+                </MButton>
+              </ButtonGroup>
+            )}
             {mapStyle === "my-map" && (
               <Droppable
                 className={mapContentVisible}
@@ -1018,7 +1062,8 @@ class MyMap extends React.Component {
               })}
             >
               {screen === "list" && shCategoryList.length > 0 && (
-                <SearchBar
+                <StakeholderManager
+                  projectTitle={projectTitle}
                   searchKey={searchKey}
                   decisionMakers={decisionMakerList}
                   onClickDecisionMaker={(id) => this.handleStartOtherSurvey(id)}
@@ -1026,7 +1071,18 @@ class MyMap extends React.Component {
                   addNewStakeholder={(e) => this.handleShowAddPage(e)}
                   onSearchFocus={(e) => this.handleSearchFocus()}
                   onSearchBlur={(e) => this.handleSearchBlur()}
+                  myMapStakeholderList={myMapStakeholderList}
+                  projectMapStakeholderList={projectMapStakeholderList}
                 />
+                // <SearchBar
+                //   searchKey={searchKey}
+                //   decisionMakers={decisionMakerList}
+                //   onClickDecisionMaker={(id) => this.handleStartOtherSurvey(id)}
+                //   allStakeholders={stakeholderList}
+                //   addNewStakeholder={(e) => this.handleShowAddPage(e)}
+                //   onSearchFocus={(e) => this.handleSearchFocus()}
+                //   onSearchBlur={(e) => this.handleSearchBlur()}
+                // />
               )}
               {screen === "add" && shCategoryList.length > 0 && (
                 <NewStakeholder
