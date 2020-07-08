@@ -6,6 +6,7 @@ import { faChevronLeft, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import Button from "Components/Button";
 import MapStakeholderList from "./MapStakholderList";
+import AllStakeholderList from "./AllStakeholderList";
 import { updateStakeholder } from "Redux/actions";
 
 import classnames from "classnames";
@@ -67,15 +68,34 @@ class StakeholderManager extends Component {
     });
   };
 
+  handleSearchView = () => {
+    this.setState({
+      view: "search",
+    });
+  };
+
+  handleMapView = () => {
+    this.setState({
+      view: "manage",
+    });
+  };
+
   render() {
     const {
+      surveyUserId,
+      surveyId,
+      projectId,
+      userId,
       projectTitle,
       myMapStakeholderList,
       projectMapStakeholderList,
       shCategoryList,
       projectMapShCategoryList,
+      allStakeholders,
+      teamList,
       onClickDecisionMaker,
       addNewStakeholder,
+      updateStakeholder,
     } = this.props;
 
     const {
@@ -87,7 +107,7 @@ class StakeholderManager extends Component {
 
     const userCount =
       myMapStakeholderList.length + projectMapStakeholderList.length;
-
+    console.log(allStakeholders);
     return (
       <div className={styles.root}>
         <div className={styles["project-title"]}>
@@ -96,7 +116,10 @@ class StakeholderManager extends Component {
         <div className={styles["nav"]}>
           <div className={styles["nav-title"]}>
             <FontAwesomeIcon icon={faChevronLeft} />
-            <span>{view === "manage" && `Manage Stakeholders`}</span>
+            <span>
+              {view === "manage" && `Manage Stakeholders`}
+              {view === "search" && `Search Stakeholders`}
+            </span>
           </div>
           <div className={styles["nav-controls"]}>
             <div className={styles["nav-buttons"]}>
@@ -112,14 +135,34 @@ class StakeholderManager extends Component {
                 />
                 <span>Filter</span>
               </div>
-              {/* <div className={styles["nav-icons-wrapper"]}>
-                <img
-                  className={styles["nav-icons"]}
-                  src="/assets/img/survey/mapview.svg"
-                  alt="filter"
-                />
-                <span>Map View</span>
-              </div> */}
+              {view === "manage" && (
+                <div
+                  className={styles["nav-icons-wrapper"]}
+                  role="button"
+                  onClick={(e) => this.handleSearchView()}
+                >
+                  <img
+                    className={styles["nav-icons"]}
+                    src="/assets/img/survey/search.svg"
+                    alt="filter"
+                  />
+                  <span>Search</span>
+                </div>
+              )}
+              {view === "search" && (
+                <div
+                  className={styles["nav-icons-wrapper"]}
+                  role="button"
+                  onClick={(e) => this.handleMapView()}
+                >
+                  <img
+                    className={styles["nav-icons"]}
+                    src="/assets/img/survey/mapview.svg"
+                    alt="filter"
+                  />
+                  <span>Map View</span>
+                </div>
+              )}
             </div>
             <div className={styles["user-count"]}>
               {`${userCount} stakeholders`}
@@ -206,6 +249,23 @@ class StakeholderManager extends Component {
                 selectedProjectCategoryList={projectCategoryList}
                 onMapStakeholderClick={(userId) =>
                   onClickDecisionMaker(`${userId}_`)
+                }
+              />
+            )}
+            {view === "search" && (
+              <AllStakeholderList
+                allStakeholders={allStakeholders}
+                surveyUserId={surveyUserId}
+                projectId={projectId}
+                surveyId={surveyId}
+                userId={userId}
+                shCategoryList={shCategoryList}
+                projectMapShCategoryList={projectMapShCategoryList}
+                selectedMyCategoryList={myCategoryList}
+                selectedProjectCategoryList={projectCategoryList}
+                teamList={teamList}
+                onUpdateStakeholder={(projectId, surveyId, stakeholder) =>
+                  updateStakeholder(projectId, surveyId, stakeholder)
                 }
               />
             )}
