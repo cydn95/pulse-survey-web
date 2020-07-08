@@ -107,7 +107,7 @@ class StakeholderManager extends Component {
 
     const userCount =
       myMapStakeholderList.length + projectMapStakeholderList.length;
-    console.log(allStakeholders);
+
     return (
       <div className={styles.root}>
         <div className={styles["project-title"]}>

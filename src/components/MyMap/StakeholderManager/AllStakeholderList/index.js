@@ -55,14 +55,29 @@ class AllStakeholderList extends Component {
     const {
       allStakeholders,
       surveyUserId,
+      projectId,
+      surveyId,
       shCategoryList,
       projectMapShCategoryList,
+      selectedMyCategoryList,
+      selectedProjectCategoryList,
       teamList,
     } = this.props;
 
+    const filteredStakeholderList = [];
+    for (let i = 0; i < allStakeholders.length; i++) {
+      const i1 = allStakeholders[i].shCategory.filter(value => selectedMyCategoryList.includes(value));
+      const i2 = allStakeholders[i].shCategory.filter((value) =>
+        selectedProjectCategoryList.includes(value)
+      );
+      if ((i1.length > 0 || i2.length > 0) && allStakeholders[i].projectId == projectId) {
+        filteredStakeholderList.push(allStakeholders[i]);
+      }
+    }
+
     const { viewType, selectedStakeholder } = this.state;
     let userCount = allStakeholders.length;
-    console.log(allStakeholders);
+
     return (
       <div className={styles.root}>
         {userCount === 0 && (
@@ -77,7 +92,7 @@ class AllStakeholderList extends Component {
         {userCount > 0 && viewType === "search" && (
           <div className={styles["stakeholder-list"]}>
             <div className={styles["shcategory"]}>
-              {allStakeholders.map((d) => {
+              {filteredStakeholderList.map((d) => {
                 let title =
                   d.projectUserTitle === "" ? d.userTitle : d.projectUserTitle;
                 let description =

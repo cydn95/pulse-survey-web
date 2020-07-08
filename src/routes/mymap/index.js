@@ -656,8 +656,8 @@ class MyMap extends React.Component {
         }
       }
 
-      console.log(myMapStakeholderList);
-      console.log(projectMapStakeholderList);
+      // console.log(myMapStakeholderList);
+      // console.log(projectMapStakeholderList);
       // Project Map
       // const projectArchitecture = {
       //   main: {
