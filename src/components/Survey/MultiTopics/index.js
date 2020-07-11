@@ -125,7 +125,7 @@ class MultiTopics extends Component {
           this.state.newTopic,
           this.state.newComment,
           this.props.question.id,
-          this.props.projectUserId,
+          this.props.surveyUserId,
           this.props.question.answer.pageIndex,
           this.props.question.answer.questionIndex,
           this.callbackSaveTopicMe
@@ -135,7 +135,7 @@ class MultiTopics extends Component {
           this.state.newTopic,
           this.state.newComment,
           this.props.question.id,
-          this.props.projectUserId,
+          this.props.surveyUserId,
           this.props.question.answer.questionIndex,
           this.callbackSaveTopicOther
         );
@@ -223,7 +223,7 @@ class MultiTopics extends Component {
         topicName,
         topicComment,
         this.props.question.id,
-        this.props.projectUserId,
+        this.props.surveyUserId,
         this.props.question.answer.pageIndex,
         this.props.question.answer.questionIndex,
         this.callbackUpdateTopicMe
@@ -388,10 +388,10 @@ class MultiTopics extends Component {
 }
 
 const mapStateToProps = ({ authUser }) => {
-  const { projectUserId } = authUser;
+  const { surveyUserId } = authUser;
 
   return {
-    projectUserId,
+    surveyUserId,
   };
 };
 
