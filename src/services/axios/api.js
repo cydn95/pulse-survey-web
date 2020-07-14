@@ -100,16 +100,21 @@ const userListAPI = () => {
   return getClient(true).get("/users/");
 };
 
-const myMapAPI = (projectUserId) => {
-  return getClient(true).get(
-    `/mymaplayouts/?format=json&myProjectUser=${projectUserId}`
-  );
+const myMapAPI = (projectUserId, userId = 0) => {
+  var url = `/mymaplayouts/?format=json&myProjectUser=${projectUserId}`;
+  if (userId > 0) {
+    url += `&user=${userId}`;
+  }
+
+  return getClient(true).get(url);
 };
 
-const projectMapAPI = (projectUserId) => {
-  return getClient(true).get(
-    `/projectmaplayouts/?format=json&myProjectUser=${projectUserId}`
-  );
+const projectMapAPI = (projectUserId, userId = 0) => {
+  var url = `/projectmaplayouts/?format=json&myProjectUser=${projectUserId}`;
+  if (userId > 0) {
+    url += `&user=${userId}`;
+  }
+  return getClient(true).get(url);
 };
 
 // const aoQuestionListAPI = (projectUserId) => {

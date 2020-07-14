@@ -12,6 +12,9 @@ import {
   setMainMenuClassName,
   setSubMenuClassName,
   projectListByUser,
+  surveyListByProject,
+  setProjectID,
+  setSurveyID,
   guideShowStatus,
   tooltipTourContent,
 } from "Redux/actions";
@@ -39,6 +42,33 @@ class BottomBar extends Component {
     this.setState({
       run: false,
     });
+  };
+
+  handleClickProject = (e, projectId) => {
+    e.preventDefault();
+
+    this.setState({
+      subMenuOpen: false,
+    });
+
+    const { getSurveyListByProject } = this.props;
+    getSurveyListByProject(projectId, this.callbackSelectProject);
+  };
+
+  callbackSelectProject = (data) => {
+    const activeSurveys = data.filter((d) => d.isActive === true);
+    if (activeSurveys.length > 0) {
+      const survey = activeSurveys[0];
+
+      const { actionSetProjectID, actionSetSurveyID, user } = this.props;
+      actionSetProjectID(survey.project);
+      actionSetSurveyID(user.userId, survey.id, this.callbackClickProject);
+    }
+  };
+
+  callbackClickProject = () => {
+    const { history } = this.props;
+    history.push("/app/about-me");
   };
 
   componentWillReceiveProps(props) {
@@ -303,17 +333,13 @@ class BottomBar extends Component {
                 {projectList.map((project, index) => (
                   <li key={index} className={styles["nav--item"]}>
                     <BottomBarMenuItem
-                      to={`/app/my-project/${project.project.projectName}`}
-                      menuKey={project.project.projectName}
-                      menuTitle={project.project.projectName}
+                      to=""
+                      menuKey={project.projectName}
+                      menuTitle={project.projectName}
                       className={styles["nav--item--link"]}
                       mainMenuClassName={subMenuClassName}
                       onClickMenu={(e, menuKey) =>
-                        this.handleClickSubMenu(
-                          e,
-                          menuKey,
-                          `/app/my-project/${project.project.projectName}`
-                        )
+                        this.handleClickProject(e, project.id)
                       }
                     ></BottomBarMenuItem>
                   </li>
@@ -511,6 +537,9 @@ export default withRouter(
     setMainMenuClassName,
     setSubMenuClassName,
     getProjectListByUser: projectListByUser,
+    getSurveyListByProject: surveyListByProject,
+    actionSetProjectID: setProjectID,
+    actionSetSurveyID: setSurveyID,
     setGuideShowStatus: guideShowStatus,
     getTooltipTourContent: tooltipTourContent,
   })(BottomBar)

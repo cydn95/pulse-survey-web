@@ -210,7 +210,7 @@ class NewStakeholder extends Component {
     return (
       <div className={styles.root}>
         <div>
-          <h1 className={styles.title}>Add New StakeHolder</h1>
+          <h1 className={styles.title}>{`${update ? 'Update' : 'Add '}`} StakeHolder</h1>
         </div>
         <div className={styles.form}>
           <FormControl className={styles["input-field"]}>

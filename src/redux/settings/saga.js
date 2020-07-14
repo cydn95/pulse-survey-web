@@ -12,7 +12,7 @@ import {
 import {
   projectListByUserSuccess,
   surveyListByProjectSuccess,
-} from "./actions";
+} from "Redux/actions";
 
 const getProjectListByUserAsync = async (userId) =>
   await projectListByUserAPI(userId)
@@ -39,11 +39,14 @@ const getSurveyListByProjectAsync = async (projectId) =>
 
 function* getSurveyListByProject({ payload }) {
   try {
-    const { projectId } = payload;
+    const { projectId, callback } = payload;
     const result = yield call(getSurveyListByProjectAsync, projectId);
-
+    
     if (result.status === 200) {
       yield put(surveyListByProjectSuccess(result.data));
+      if (callback !== undefined) {
+        callback(result.data);
+      }
     }
   } catch (error) {
     console.log("error : ", error);

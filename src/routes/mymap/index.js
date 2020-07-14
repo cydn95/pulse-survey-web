@@ -21,7 +21,12 @@ import {
   addStakeholder,
 } from "Redux/actions";
 
-import { KGraph, AoSurvey, KGraphNavControls } from "Components/MyMap";
+import {
+  KGraph,
+  AoSurvey,
+  KGraphNavControls,
+  StakeholderManager,
+} from "Components/MyMap";
 import { NewStakeholder } from "Components/Survey";
 import SearchBar from "Components/search-bar";
 import Button from "Components/Button";
@@ -71,6 +76,9 @@ class MyMap extends React.Component {
       search: "",
 
       searchFullHeight: false,
+
+      myMapStakeholderList: [],
+      projectMapStakeholderList: [],
     };
 
     this.defaultStakeholder = {
@@ -271,7 +279,7 @@ class MyMap extends React.Component {
   };
 
   componentWillMount() {
-    const { surveyId, surveyUserId, history } = this.props;
+    const { userId, surveyId, surveyUserId, history } = this.props;
 
     if (
       surveyId == undefined ||
@@ -285,8 +293,8 @@ class MyMap extends React.Component {
       return;
     }
 
-    this.props.getKMapData(surveyUserId);
-    this.props.getProjectMapData(surveyUserId);
+    this.props.getKMapData(surveyUserId, userId);
+    this.props.getProjectMapData(surveyUserId, userId);
     this.props.getShCategoryList(surveyId, 0);
     this.props.getStakeholderList(surveyUserId, surveyId);
     this.props.getTeamList();
@@ -471,6 +479,9 @@ class MyMap extends React.Component {
           for (let i = 0; i < userList.length; i++) {
             if (userList[i].id === mapUser.projectUserId) {
               for (let j = 0; j < userList[i].shCategory.length; j++) {
+                if (!userList[i].team) {
+                  continue;
+                }
                 if (userList[i].shCategory[j] === mapUser.shCategory) {
                   individualUser.id = `S_${userList[i].user.id}_SHC_${userList[i].shCategory[j]}`;
                   individualUser.avatar =
@@ -619,6 +630,34 @@ class MyMap extends React.Component {
         }
       }
 
+      let myMapStakeholderList = [];
+      if (kMapData.length > 0 && stakeholderList.length > 0) {
+        let mapUserList = kMapData[0].projectUser;
+        for (let i = 0; i < mapUserList.length; i++) {
+          for (let j = 0; j < stakeholderList.length; j++) {
+            if (mapUserList[i] === stakeholderList[j].projectUserId) {
+              myMapStakeholderList.push(stakeholderList[j]);
+              break;
+            }
+          }
+        }
+      }
+
+      let projectMapStakeholderList = [];
+      if (projectMapData.length > 0 && stakeholderList.length > 0) {
+        let mapUserList = projectMapData[0].projectUser;
+        for (let i = 0; i < mapUserList.length; i++) {
+          for (let j = 0; j < stakeholderList.length; j++) {
+            if (mapUserList[i] === stakeholderList[j].projectUserId) {
+              projectMapStakeholderList.push(stakeholderList[j]);
+              break;
+            }
+          }
+        }
+      }
+
+      // console.log(myMapStakeholderList);
+      // console.log(projectMapStakeholderList);
       // Project Map
       // const projectArchitecture = {
       //   main: {
@@ -653,6 +692,8 @@ class MyMap extends React.Component {
         screen: "list",
         mapSaveLoading,
         mapGetLoading,
+        myMapStakeholderList,
+        projectMapStakeholderList
       });
     }
   }
@@ -813,7 +854,7 @@ class MyMap extends React.Component {
       skipQuestionList,
       history,
     } = this.props;
-console.log(aoQuestionList);
+
     const {
       enableLayout,
       viewDropDownOpen,
@@ -839,6 +880,8 @@ console.log(aoQuestionList);
       currentSurveyUser,
       searchFullHeight,
       mapStyle,
+      myMapStakeholderList,
+      projectMapStakeholderList
     } = this.state;
 
     const mapHeaderVisible = toggleGraph
@@ -937,27 +980,31 @@ console.log(aoQuestionList);
                 searchFullHeight && !toggleGraph && screen === "list",
             })}
           >
-            <ButtonGroup
-              size="small"
-              className={styles["map-selector"]}
-              color="primary"
-              aria-label="outlined primary button group"
-            >
-              <MButton
-                variant={mapStyle === "my-map" ? "contained" : "outlined"}
+            {toggleGraph && (
+              <ButtonGroup
+                size="small"
+                className={classnames(styles["map-selector"])}
                 color="primary"
-                onClick={(e) => this.handleSelectMapStyle("my-map")}
+                aria-label="outlined primary button group"
               >
-                My Map
-              </MButton>
-              <MButton
-                variant={mapStyle === "project-map" ? "contained" : "outlined"}
-                color="primary"
-                onClick={(e) => this.handleSelectMapStyle("project-map")}
-              >
-                Project Map
-              </MButton>
-            </ButtonGroup>
+                <MButton
+                  variant={mapStyle === "my-map" ? "contained" : "outlined"}
+                  color="primary"
+                  onClick={(e) => this.handleSelectMapStyle("my-map")}
+                >
+                  My Map
+                </MButton>
+                <MButton
+                  variant={
+                    mapStyle === "project-map" ? "contained" : "outlined"
+                  }
+                  color="primary"
+                  onClick={(e) => this.handleSelectMapStyle("project-map")}
+                >
+                  Project Map
+                </MButton>
+              </ButtonGroup>
+            )}
             {mapStyle === "my-map" && (
               <Droppable
                 className={mapContentVisible}
@@ -1015,7 +1062,8 @@ console.log(aoQuestionList);
               })}
             >
               {screen === "list" && shCategoryList.length > 0 && (
-                <SearchBar
+                <StakeholderManager
+                  projectTitle={projectTitle}
                   searchKey={searchKey}
                   decisionMakers={decisionMakerList}
                   onClickDecisionMaker={(id) => this.handleStartOtherSurvey(id)}
@@ -1023,7 +1071,18 @@ console.log(aoQuestionList);
                   addNewStakeholder={(e) => this.handleShowAddPage(e)}
                   onSearchFocus={(e) => this.handleSearchFocus()}
                   onSearchBlur={(e) => this.handleSearchBlur()}
+                  myMapStakeholderList={myMapStakeholderList}
+                  projectMapStakeholderList={projectMapStakeholderList}
                 />
+                // <SearchBar
+                //   searchKey={searchKey}
+                //   decisionMakers={decisionMakerList}
+                //   onClickDecisionMaker={(id) => this.handleStartOtherSurvey(id)}
+                //   allStakeholders={stakeholderList}
+                //   addNewStakeholder={(e) => this.handleShowAddPage(e)}
+                //   onSearchFocus={(e) => this.handleSearchFocus()}
+                //   onSearchBlur={(e) => this.handleSearchBlur()}
+                // />
               )}
               {screen === "add" && shCategoryList.length > 0 && (
                 <NewStakeholder
@@ -1070,7 +1129,14 @@ const mapStateToProps = ({
   aosurvey,
   authUser,
 }) => {
-  const { projectId, projectTitle, surveyId, surveyTitle, surveyUserId, user } = authUser;
+  const {
+    projectId,
+    projectTitle,
+    surveyId,
+    surveyTitle,
+    surveyUserId,
+    user,
+  } = authUser;
   const { locale } = settings;
   const { kMapData, projectMapData, mapSaveLoading, mapGetLoading } = kmap;
   const {
