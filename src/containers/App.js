@@ -57,6 +57,19 @@ class App extends Component {
 		if (!oldUser || user.userId !== oldUser.userId || user.userId > 0) {
 			getProfile(user.userId);
 		}
+
+		const { setMainMenuClassName, location } = props;
+		if (location.pathname !== this.props.location.pathname) {
+			if (location.pathname.startsWith('/app/dashboard')) {
+				setMainMenuClassName('dashboard');
+			} else if (location.pathname.startsWith('/app/about-me')) {
+				setMainMenuClassName('about-me');
+			} else if (location.pathname.startsWith('/app/about-others')) {
+				setMainMenuClassName('about-others');
+			} else if (location.pathname.startsWith('/app/project-map')) {
+				setMainMenuClassName('project-map');
+			}
+		}
 	}
 
 	render() {
@@ -95,10 +108,11 @@ class App extends Component {
 	}
 }
 
-const mapStateToProps = ({ authUser, settings }) => {
+const mapStateToProps = ({ authUser, settings, menu }) => {
 	const { user } = authUser;
 	const { locale } = settings;
-	return { user, locale };
+	const { mainMenuClassName } = menu;
+	return { user, locale, mainMenuClassName };
 };
 
 export default connect(mapStateToProps,{ setMainMenuClassName, getProfile })(App);

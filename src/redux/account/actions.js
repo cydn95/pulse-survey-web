@@ -4,6 +4,8 @@ import {
   GET_PROFILE_SUCCESS,
   CHANGE_PROFILE,
   CHANGE_AVATAR,
+  UPDATE_GUIDE_STATUS,
+  UPDATE_GUIDE_STATUS_SUCCESS,
 } from "Constants/actionTypes";
 
 export const changePassword = (token, email, password, callback) => ({
@@ -37,4 +39,14 @@ export const changeProfile = (
 export const changeAvatar = (avatarId, data, callback) => ({
   type: CHANGE_AVATAR,
   payload: { avatarId, data, callback },
+});
+
+export const updateGuideStatus = (token, status) => ({
+  type: UPDATE_GUIDE_STATUS,
+  payload: { token, status },
+});
+
+export const updateGuideStatusSuccess = (status) => ({
+  type: UPDATE_GUIDE_STATUS_SUCCESS,
+  payload: { status },
 });

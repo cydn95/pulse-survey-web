@@ -4,6 +4,7 @@ import {
   getProfileAPI,
   changeProfileAPI,
   changeAvatarAPI,
+  updateUserGuideAPI,
 } from "../../services/axios/api";
 
 import {
@@ -11,9 +12,10 @@ import {
   GET_PROFILE,
   CHANGE_PROFILE,
   CHANGE_AVATAR,
+  UPDATE_GUIDE_STATUS,
 } from "Constants/actionTypes";
 
-import { getProfileSuccess } from "./actions";
+import { getProfileSuccess, updateGuideStatusSuccess } from "./actions";
 
 const changePasswordAsync = async (token, email, password) =>
   await changePasswordAPI(token, email, password)
@@ -50,7 +52,8 @@ function* getProfile({ payload }) {
         team: result.data.userteam ? result.data.userteam.name : "",
         organization: result.data.organization.name,
         avatarId: result.data.avatar ? result.data.avatar.id : 0,
-        avatar: result.data.avatar ? result.data.avatar.name : '',
+        avatar: result.data.avatar ? result.data.avatar.name : "",
+        guide: result.data.guide,
       };
 
       yield put(getProfileSuccess(profile));
@@ -83,6 +86,7 @@ function* changeProfile({ payload }) {
       organization,
       callback,
     } = payload;
+
     const result = yield call(
       changeProfileAsync,
       token,
@@ -114,6 +118,22 @@ function* changeAvatar({ payload }) {
   }
 }
 
+const updateGuideStatusAsync = async (token, status) =>
+  await updateUserGuideAPI(token, status)
+    .then((data) => data)
+    .catch((error) => error);
+
+function* updateGuideStatus({ payload }) {
+  try {
+    const { token, status } = payload;
+    yield call(updateGuideStatusAsync, token, status);
+    yield put(updateGuideStatusSuccess(status));
+
+  } catch (error) {
+    console.log("error : ", error);
+  }
+}
+
 export function* watchChangePassword() {
   yield takeEvery(CHANGE_PASSWORD, changePassword);
 }
@@ -130,11 +150,16 @@ export function* watchChangeAvatar() {
   yield takeEvery(CHANGE_AVATAR, changeAvatar);
 }
 
+export function* watchUpdateGuideStatus() {
+  yield takeEvery(UPDATE_GUIDE_STATUS, updateGuideStatus);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchChangePassword),
     fork(watchGetProfile),
     fork(watchChangeProfile),
     fork(watchChangeAvatar),
+    fork(watchUpdateGuideStatus),
   ]);
 }

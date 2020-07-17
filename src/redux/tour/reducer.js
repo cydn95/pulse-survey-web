@@ -1,5 +1,4 @@
 import {
-  GUIDE_SHOW_STATUS,
   NIKEL_TOUR_CONTENT_SUCCESS,
   TOOLTIP_TOUR_CONTENT_SUCCESS,
   PAGE_CONTENT_SUCCESS,
@@ -14,8 +13,6 @@ const INIT_STATE = {
 
 export default (state = INIT_STATE, action) => {
   switch (action.type) {
-    case GUIDE_SHOW_STATUS:
-      return { ...state, guide: action.payload.status };
     case NIKEL_TOUR_CONTENT_SUCCESS:
       const { content } = action.payload;
       const nikelContent = [];

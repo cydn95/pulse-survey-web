@@ -23,7 +23,7 @@ import Tooltip from "./tour/tooltip";
 
 import styles from "./styles.scss";
 
-const MainApp = ({ history, match }) => {
+const MainApp = ({ history, location, match }) => {
   const [screenMode, setScreenMode] = useState("desktop");
 
   const [open, setOpen] = useState(false);

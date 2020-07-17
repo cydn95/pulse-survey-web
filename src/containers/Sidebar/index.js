@@ -1,4 +1,4 @@
-import React, { Component, Fragement, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
@@ -20,7 +20,7 @@ import {
   surveyListByProject,
   setProjectID,
   setSurveyID,
-  guideShowStatus,
+  updateGuideStatus,
   tooltipTourContent,
   pageContent,
 } from "Redux/actions";
@@ -35,7 +35,7 @@ class Sidebar extends Component {
     this.state = {
       subMenuOpen: false,
       tourViewOpen: false,
-      guide: localStorage.getItem("guide") === "true",
+      // guide: false,
       run: false,
       stepIndex: 0,
       steps: [],
@@ -49,9 +49,12 @@ class Sidebar extends Component {
   };
 
   handleStartGuide = () => {
-    this.setState({
-      run: true,
-    });
+    if (!this.state.subMenuOpen) {
+      this.setState({
+        run: true,
+        subMenuOpen: false,
+      });
+    }
   };
 
   handleStopGuide = () => {
@@ -77,15 +80,22 @@ class Sidebar extends Component {
 
   componentWillReceiveProps(props) {
     const {
+      user,
       surveyId,
       screenMode,
       guide,
-      setGuideShowStatus,
+      actionUpdateGuideStatus,
       tooltipContent,
       getPageContent,
     } = props;
 
     // a11yChecker();
+
+    // if (guide !== this.props.guide) {
+    //   this.setState({
+    //     guide: guide
+    //   });
+    // }
 
     if (surveyId > 0 && surveyId !== this.props.surveyId) {
       getPageContent(surveyId);
@@ -109,7 +119,7 @@ class Sidebar extends Component {
           if (screenMode === "desktop") {
             if (guide) {
               setTimeout(this.handleStartGuide, 1000);
-              setGuideShowStatus(false);
+              // actionUpdateGuideStatus(user.accessToken, false);
             }
           } else {
             setTimeout(this.handleStopGuide, 500);
@@ -193,6 +203,7 @@ class Sidebar extends Component {
     });
 
     const { getSurveyListByProject } = this.props;
+    setMainMenuClassName("about-me");
     getSurveyListByProject(projectId, this.callbackSelectProject);
   };
 
@@ -230,11 +241,14 @@ class Sidebar extends Component {
   };
 
   handleSetGuideShowStatus = () => {
-    const { guide } = this.state;
-    localStorage.setItem("guide", !guide);
-    this.setState({
-      guide: !guide,
-    });
+    // const { guide } = this.state;
+    const { user, guide, actionUpdateGuideStatus } = this.props;
+
+    // this.setState({
+    //   guide: !guide,
+    // });
+
+    actionUpdateGuideStatus(user.accessToken, !guide);
   };
 
   render() {
@@ -243,8 +257,9 @@ class Sidebar extends Component {
       subMenuClassName,
       projectList,
       pageContent,
+      guide,
     } = this.props;
-    const { subMenuOpen, run, steps, guide } = this.state;
+    const { subMenuOpen, run, steps } = this.state;
 
     return (
       <div className={styles.root}>
@@ -593,20 +608,23 @@ class Sidebar extends Component {
                     left={false}
                   >
                     <span>{`Turn On Guide Mode `}</span>
-                    <Switch
-                      checked={guide}
-                      onChange={(e) => this.handleSetGuideShowStatus()}
-                      onColor="#7fcdc1"
-                      onHandleColor="#4cb9a8"
-                      handleDiameter={20}
-                      uncheckedIcon={false}
-                      checkedIcon={false}
-                      boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-                      activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-                      height={20}
-                      width={38}
-                      className="react-switch"
-                    />
+
+                    {guide !== undefined && (
+                      <Switch
+                        checked={guide}
+                        onChange={(e) => this.handleSetGuideShowStatus()}
+                        onColor="#7fcdc1"
+                        onHandleColor="#4cb9a8"
+                        handleDiameter={20}
+                        uncheckedIcon={false}
+                        checkedIcon={false}
+                        boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                        activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                        height={20}
+                        width={38}
+                        className="react-switch"
+                      />
+                    )}
                   </SideBarMenuItem>
                 </li>
                 {pageContent.length > 0 &&
@@ -650,11 +668,12 @@ class Sidebar extends Component {
   }
 }
 
-const mapStateToProps = ({ menu, settings, authUser, tour }) => {
+const mapStateToProps = ({ menu, settings, authUser, tour, account }) => {
   const { mainMenuClassName, subMenuClassName } = menu;
   const { projectList } = settings;
   const { user, surveyId } = authUser;
-  const { guide, pageContent, tooltipContent } = tour;
+  const { pageContent, tooltipContent } = tour;
+  const { profile } = account;
 
   return {
     user,
@@ -662,7 +681,7 @@ const mapStateToProps = ({ menu, settings, authUser, tour }) => {
     projectList,
     mainMenuClassName,
     subMenuClassName,
-    guide,
+    guide: profile.guide,
     pageContent,
     tooltipContent,
   };
@@ -677,7 +696,7 @@ export default withRouter(
     getSurveyListByProject: surveyListByProject,
     actionSetProjectID: setProjectID,
     actionSetSurveyID: setSurveyID,
-    setGuideShowStatus: guideShowStatus,
+    actionUpdateGuideStatus: updateGuideStatus,
     getPageContent: pageContent,
     getTooltipTourContent: tooltipTourContent,
   })(Sidebar)
