@@ -1,4 +1,7 @@
 import React from "react";
+import { connect } from "react-redux";
+
+import { updateGuideStatus } from "Redux/actions";
 
 import styles from "./MobileGuide.scss";
 import classnames from "classnames";
@@ -12,7 +15,13 @@ const MobileGuide = ({
   primaryProps,
   skipProps,
   tooltipProps,
+  user,
+  actionUpdateGuideStatus,
 }) => {
+  const handleSkip = () => {
+    actionUpdateGuideStatus(user.accessToken, false);
+  };
+
   return (
     <div className={styles.body} {...tooltipProps}>
       {step.title && <h2 className={styles.title}>{step.title}</h2>}
@@ -24,6 +33,7 @@ const MobileGuide = ({
             className={classnames(styles.button, styles.off)}
             {...skipProps}
             value="Turn Off"
+            onClick={(e) => handleSkip()}
           />
         )}
         {/* {index > 0 && (
@@ -45,4 +55,14 @@ const MobileGuide = ({
   );
 };
 
-export default MobileGuide;
+const mapStateToProps = ({ authUser }) => {
+  const { user } = authUser;
+
+  return {
+    user,
+  };
+};
+
+export default connect(mapStateToProps, {
+  actionUpdateGuideStatus: updateGuideStatus,
+})(MobileGuide);

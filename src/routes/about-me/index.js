@@ -130,10 +130,11 @@ class AboutMeSurvey extends React.Component {
   handleAnswer = (answer) => {
     const { pageIndex } = this.state;
     const answerData = { ...answer };
+
     this.setState((state) => {
       const questionIndex = state.driverList[pageIndex].amquestion.findIndex(
         (element) => {
-          return element.answer.questionIndex === answerData.questionIndex;
+          return element.answer.amQuestion === answerData.amQuestion;
         }
       );
       state.driverList[pageIndex].amquestion[questionIndex].answer = answerData;
@@ -202,6 +203,7 @@ class AboutMeSurvey extends React.Component {
       fullName: "Mike Smith",
       team: "Pulse",
     };
+    // console.log(driverList);
     return (
       <div className={styles.root}>
         <div className={styles.topbar}>

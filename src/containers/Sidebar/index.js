@@ -97,6 +97,12 @@ class Sidebar extends Component {
     //   });
     // }
 
+    if (!props.guide) {
+      this.setState({
+        run: false
+      });
+    }
+
     if (surveyId > 0 && surveyId !== this.props.surveyId) {
       getPageContent(surveyId);
     }
