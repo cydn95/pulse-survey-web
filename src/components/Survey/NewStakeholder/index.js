@@ -210,7 +210,9 @@ class NewStakeholder extends Component {
     return (
       <div className={styles.root}>
         <div>
-          <h1 className={styles.title}>{`${update ? 'Update' : 'Add '}`} StakeHolder</h1>
+          <h1 className={styles.title}>
+            {`${update ? "Update" : "Add "}`} StakeHolder
+          </h1>
         </div>
         <div className={styles.form}>
           <FormControl className={styles["input-field"]}>
@@ -280,59 +282,67 @@ class NewStakeholder extends Component {
               ))}
             </Select>
           </FormControl>
-          <div className={styles["category-wrapper"]}>
-            <div className={styles["category-type"]}>
-              <strong>My Map: </strong>How does this person relate to you?
+          {shCategoryList && myCategoryList && (
+            <div className={styles["category-wrapper"]}>
+              <div className={styles["category-type"]}>
+                <strong>My Map: </strong>How does this person relate to you?
+              </div>
+              <div className={styles["category-section"]}>
+                {shCategoryList.map((category) => {
+                  const gray =
+                    myCategoryList.indexOf(category.id) >= 0 ? true : false;
+                  return (
+                    <div
+                      className={styles.category}
+                      key={`category_${category.id}`}
+                    >
+                      <img
+                        src={category.icon}
+                        alt=""
+                        className={classnames({ [styles.gray]: !gray })}
+                        onClick={(e) =>
+                          this.handleSelectMyCategory(category.id)
+                        }
+                      />
+                      <span>{category.SHCategoryName}</span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-            <div className={styles["category-section"]}>
-              {shCategoryList.map((category) => {
-                const gray =
-                  myCategoryList.indexOf(category.id) >= 0 ? true : false;
-                return (
-                  <div
-                    className={styles.category}
-                    key={`category_${category.id}`}
-                  >
-                    <img
-                      src={category.icon}
-                      alt=""
-                      className={classnames({ [styles.gray]: !gray })}
-                      onClick={(e) => this.handleSelectMyCategory(category.id)}
-                    />
-                    <span>{category.SHCategoryName}</span>
-                  </div>
-                );
-              })}
+          )}
+          {projectMapShCategoryList && projectCategoryList && (
+            <div className={styles["category-wrapper"]}>
+              <div className={styles["category-type"]}>
+                <strong>Project Map: </strong>How does this person relate to the
+                project?
+              </div>
+              <div className={styles["category-section"]}>
+                {projectMapShCategoryList.map((category) => {
+                  const gray =
+                    projectCategoryList.indexOf(category.id) >= 0
+                      ? true
+                      : false;
+                  return (
+                    <div
+                      className={styles.category}
+                      key={`category_${category.id}`}
+                    >
+                      <img
+                        src={category.icon}
+                        alt=""
+                        className={classnames({ [styles.gray]: !gray })}
+                        onClick={(e) =>
+                          this.handleSelectProjectCategory(category.id)
+                        }
+                      />
+                      <span>{category.SHCategoryName}</span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-          <div className={styles["category-wrapper"]}>
-            <div className={styles["category-type"]}>
-              <strong>Project Map: </strong>How does this person relate to the
-              project?
-            </div>
-            <div className={styles["category-section"]}>
-              {projectMapShCategoryList.map((category) => {
-                const gray =
-                  projectCategoryList.indexOf(category.id) >= 0 ? true : false;
-                return (
-                  <div
-                    className={styles.category}
-                    key={`category_${category.id}`}
-                  >
-                    <img
-                      src={category.icon}
-                      alt=""
-                      className={classnames({ [styles.gray]: !gray })}
-                      onClick={(e) =>
-                        this.handleSelectProjectCategory(category.id)
-                      }
-                    />
-                    <span>{category.SHCategoryName}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          )}
           <FormControl className={styles["input-field"]}>
             <div className={styles.label}>
               {`How would you describe this person’s role on the project?​`}
@@ -352,13 +362,14 @@ class NewStakeholder extends Component {
               variant="contained"
               color="secondary"
               onClick={(e) => this.props.onCancel(e)}
+              className={styles.btn}
             >
               Back
             </Button>
             <div className={styles.space}></div>
             <Button
               variant="contained"
-              className={styles.green}
+              className={classnames(styles.green, styles.btn)}
               disabled={btnAddDisabled}
               onClick={(e) => this.handleAddStakeholder()}
             >

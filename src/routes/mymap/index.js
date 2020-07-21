@@ -315,7 +315,10 @@ class MyMap extends React.Component {
       mapSaveLoading,
       mapGetLoading,
     } = props;
-
+console.log('--------------------------------------');
+console.log(stakeholderList);
+console.log(userList);
+console.log("--------------------------------------");
     /*
      * ------------------------------------------------------------------------------
      * For MyMap Layouts

@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 
 import TopNav from "Containers/TopNav";
 import TabPanel from "Components/TabPanel";
@@ -20,7 +21,7 @@ class Settings extends React.Component {
   }
 
   render() {
-    const { history } = this.props;
+    const { history, projectTitle } = this.props;
     const { tab } = this.state;
 
     return (
@@ -28,7 +29,7 @@ class Settings extends React.Component {
         <div className={styles.topbar}>
           <TopNav history={history} menuTitle="Profile">
             <div className={styles.section}>
-              <h2 className={styles["project-name"]}>Alpha Project</h2>
+              <h2 className={styles["project-name"]}>{projectTitle}</h2>
             </div>
           </TopNav>
         </div>
@@ -57,4 +58,13 @@ class Settings extends React.Component {
   }
 }
 
-export default Settings;
+const mapStateToProps = ({ authUser }) => {
+  const { projectTitle, surveyTitle } = authUser;
+
+  return {
+    projectTitle,
+    surveyTitle,
+  };
+};
+
+export default connect(mapStateToProps, {})(Settings);

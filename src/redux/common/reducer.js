@@ -62,8 +62,8 @@ export default (state = INIT_STATE, action) => {
     case STAKEHOLDER_LIST_SUCCESS:
       return {
         ...state,
-        stakeholderList: action.payload.stakeholderList,
-        userList: action.payload.userList,
+        stakeholderList: [...action.payload.stakeholderList],
+        userList: [...action.payload.userList],
       };
     case SHCATEGORY_LIST:
       return { ...state };

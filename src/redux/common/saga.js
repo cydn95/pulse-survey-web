@@ -251,7 +251,7 @@ function* addStakeholder({ payload }) {
       const result2 = yield call(addStakeholderAsync, projectUser);
 
       if (result2.status === 201) {
-        yield put(stakeholderList(surveyId));
+        yield put(stakeholderList(stakeholder.myProjectUser, surveyId));
       }
     }
   } catch (error) {
@@ -287,8 +287,8 @@ function* updateStakeholder({ payload }) {
       projectUser
     );
 
-    if (result.status === 201) {
-      yield put(stakeholderList(stakeholder.projectId));
+    if (result.status === 200) {
+      yield put(stakeholderList(stakeholder.myProjectUser, surveyId));
     }
   } catch (error) {
     console.log("error : ", error);
