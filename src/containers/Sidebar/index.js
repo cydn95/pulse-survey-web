@@ -67,14 +67,10 @@ class Sidebar extends Component {
     const {
       getProjectListByUser,
       user,
-      projectList,
       getTooltipTourContent,
     } = this.props;
 
-    if (projectList.length === 0) {
-      getProjectListByUser(user.userId);
-    }
-
+    getProjectListByUser(user.userId);
     getTooltipTourContent();
   }
 
@@ -99,7 +95,7 @@ class Sidebar extends Component {
 
     if (!props.guide) {
       this.setState({
-        run: false
+        run: false,
       });
     }
 
