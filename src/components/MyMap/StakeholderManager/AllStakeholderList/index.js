@@ -47,8 +47,8 @@ class AllStakeholderList extends Component {
     const { projectId, surveyId, onUpdateStakeholder } = this.props;
     onUpdateStakeholder(projectId, surveyId, stakeholder);
     this.setState({
-      viewType: "search"
-    })
+      viewType: "search",
+    });
   };
 
   render() {
@@ -64,15 +64,27 @@ class AllStakeholderList extends Component {
       teamList,
     } = this.props;
 
-    const filteredStakeholderList = [];
-    for (let i = 0; i < allStakeholders.length; i++) {
-      const i1 = allStakeholders[i].shCategory.filter(value => selectedMyCategoryList.includes(value));
-      const i2 = allStakeholders[i].shCategory.filter((value) =>
-        selectedProjectCategoryList.includes(value)
-      );
-      if ((i1.length > 0 || i2.length > 0) && allStakeholders[i].projectId == projectId) {
-        filteredStakeholderList.push(allStakeholders[i]);
+    let filteredStakeholderList = [];
+    if (
+      selectedMyCategoryList.length > 0 ||
+      selectedProjectCategoryList.length > 0
+    ) {
+      for (let i = 0; i < allStakeholders.length; i++) {
+        const i1 = allStakeholders[i].shCategory.filter((value) =>
+          selectedMyCategoryList.includes(value)
+        );
+        const i2 = allStakeholders[i].shCategory.filter((value) =>
+          selectedProjectCategoryList.includes(value)
+        );
+        if (
+          (i1.length > 0 || i2.length > 0) &&
+          allStakeholders[i].projectId == projectId
+        ) {
+          filteredStakeholderList.push(allStakeholders[i]);
+        }
       }
+    } else {
+      filteredStakeholderList = [...allStakeholders];
     }
 
     const { viewType, selectedStakeholder } = this.state;

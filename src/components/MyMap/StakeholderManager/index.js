@@ -31,8 +31,8 @@ class StakeholderManager extends Component {
     this.state = {
       view: "manage",
       filterView: false,
-      myCategoryList: myCategoryList,
-      projectCategoryList: projectCategoryList,
+      myCategoryList: [],
+      projectCategoryList: [],
     };
   }
 

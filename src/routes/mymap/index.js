@@ -33,6 +33,12 @@ import Button from "Components/Button";
 
 import { serverUrl } from "Constants/defaultValues";
 
+import "react-notifications/lib/notifications.css";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+
 import styles from "./styles.scss";
 import classnames from "classnames";
 
@@ -104,7 +110,23 @@ class MyMap extends React.Component {
 
   handleAddNewStakeholder = (stakeholder) => {
     const { projectId, surveyId } = this.props;
-    this.props.addStakeholder(projectId, surveyId, stakeholder);
+    this.props.addStakeholder(
+      projectId,
+      surveyId,
+      stakeholder,
+      this.callbackAddNewStakeholder
+    );
+  };
+
+  callbackAddNewStakeholder = (code) => {
+    if (code === 400) {
+      console.log("Code is ", code);
+      NotificationManager.error(
+        "Stakeholder is already existed",
+        "Error",
+        2000
+      );
+    }
   };
 
   handleShowAddPage = () => {
@@ -114,6 +136,10 @@ class MyMap extends React.Component {
   };
 
   handleAddStackholderToGraph = (data, e = {}) => {
+    console.log(this.myMapProjectUserList);
+    console.log(data);
+    console.log(this.state.apList);
+    console.log(this.state.esList);
     const projectUserId = data.stakeholder;
     const { stakeholderList } = this.state;
     let projectUser = stakeholderList.filter((e) => {
@@ -167,8 +193,12 @@ class MyMap extends React.Component {
         },
       ],
     };
-
+    // console.log('*********************************');
+    //       console.log(newElem);
+    //       console.log(this.myMapProjectUserList);
+    // console.log("*********************************");
     this.setState({ newStakeholder: newElem }, () => {
+
       if (!newElem.individuals[0].sh_category) return;
       const newProjectUserId = projectUser.projectUserId;
       const newShCategory = newElem.individuals[0].sh_category.current.split(
@@ -179,8 +209,10 @@ class MyMap extends React.Component {
 
       for (let i = 0; i < this.myMapProjectUserList.length; i++) {
         if (
-          this.myMapProjectUserList[i].projectUserId === newProjectUserId &&
-          this.myMapProjectUserList[i].shCategory === newShCategory
+          parseInt(this.myMapProjectUserList[i].projectUserId, 10) ===
+            parseInt(newProjectUserId, 10) &&
+          parseInt(this.myMapProjectUserList[i].shCategory, 10) ===
+            parseInt(newShCategory, 10)
         ) {
           bExist = true;
           break;
@@ -315,10 +347,10 @@ class MyMap extends React.Component {
       mapSaveLoading,
       mapGetLoading,
     } = props;
-console.log('--------------------------------------');
-console.log(stakeholderList);
-console.log(userList);
-console.log("--------------------------------------");
+    console.log('--------------------------------------');
+    console.log(stakeholderList);
+    console.log(userList);
+    console.log("--------------------------------------");
     /*
      * ------------------------------------------------------------------------------
      * For MyMap Layouts
@@ -696,7 +728,7 @@ console.log("--------------------------------------");
         mapSaveLoading,
         mapGetLoading,
         myMapStakeholderList,
-        projectMapStakeholderList
+        projectMapStakeholderList,
       });
     }
   }
@@ -884,9 +916,9 @@ console.log("--------------------------------------");
       searchFullHeight,
       mapStyle,
       myMapStakeholderList,
-      projectMapStakeholderList
+      projectMapStakeholderList,
     } = this.state;
-
+// console.log(myMapStakeholderList);
     const mapHeaderVisible = toggleGraph
       ? classnames(styles["map-header"])
       : classnames(styles["map-header"], styles["mobile-hide"]);
@@ -1119,6 +1151,7 @@ console.log("--------------------------------------");
             </div>
           </div>
         </div>
+        <NotificationContainer />
       </div>
     );
   }

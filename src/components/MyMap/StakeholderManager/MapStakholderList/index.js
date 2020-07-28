@@ -19,15 +19,25 @@ class MapStakeholderList extends Component {
       onMapStakeholderClick,
     } = this.props;
 
-    let  userCount = 0;
+    let userCount = 0;
 
     let groupedMyStakeholderList = {};
     for (let i = 0; i < shCategoryList.length; i++) {
       for (let j = 0; j < myMapStakeholderList.length; j++) {
+        let bAdd = false;
         if (
           myMapStakeholderList[j].shCategory.includes(shCategoryList[i].id) &&
-          selectedMyCategoryList.includes(shCategoryList[i].id)
+          selectedMyCategoryList.includes(shCategoryList[i].id) &&
+          shCategoryList.length > 0
         ) {
+          bAdd = true;
+        }
+
+        if (shCategoryList.length === 0) {
+          bAdd = true;
+        }
+
+        if (bAdd) {
           if (`sh_${shCategoryList[i].id}` in groupedMyStakeholderList) {
             groupedMyStakeholderList[
               `sh_${shCategoryList[i].id}`
@@ -53,12 +63,22 @@ class MapStakeholderList extends Component {
     let groupedProjectStakeholderList = {};
     for (let i = 0; i < projectMapShCategoryList.length; i++) {
       for (let j = 0; j < projectMapStakeholderList.length; j++) {
+        let bAdd = false;
         if (
           projectMapStakeholderList[j].shCategory.includes(
             projectMapShCategoryList[i].id
           ) &&
-          selectedProjectCategoryList.includes(projectMapShCategoryList[i].id)
+          selectedProjectCategoryList.includes(projectMapShCategoryList[i].id) &&
+          projectMapShCategoryList.length > 0
         ) {
+          bAdd = true;
+        }
+
+        if (projectMapShCategoryList.length === 0) {
+          bAdd = false;
+        }
+
+        if (bAdd) {
           if (
             `sh_${projectMapShCategoryList[i].id}` in
             groupedProjectStakeholderList

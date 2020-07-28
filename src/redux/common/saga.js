@@ -208,10 +208,12 @@ function* getShCategoryList({ payload }) {
   }
 }
 
-const addUserAsync = async (user) =>
+const addUserAsync = async (user, callback) =>
   await addUserAPI(user)
     .then((data) => data)
-    .catch((error) => error);
+    .catch((error) => {
+      callback(error.response.status);
+    });
 
 const addStakeholderAsync = async (projectUser) =>
   await addStakeholderAPI(projectUser)
@@ -220,7 +222,7 @@ const addStakeholderAsync = async (projectUser) =>
 
 function* addStakeholder({ payload }) {
   try {
-    const { projectId, surveyId, stakeholder } = payload;
+    const { projectId, surveyId, stakeholder, callback } = payload;
 
     const user = {
       user: {
@@ -232,7 +234,7 @@ function* addStakeholder({ payload }) {
       name: stakeholder.organisationId,
     };
 
-    const result = yield call(addUserAsync, user);
+    const result = yield call(addUserAsync, user, callback);
 
     if (result.status === 201) {
       const userId = result.data;
@@ -253,9 +255,11 @@ function* addStakeholder({ payload }) {
       if (result2.status === 201) {
         yield put(stakeholderList(stakeholder.myProjectUser, surveyId));
       }
+    } else {
+      callback(result.status);
     }
   } catch (error) {
-    console.log("error : ", error);
+    console.log(error);
   }
 }
 
