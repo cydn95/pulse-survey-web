@@ -32,7 +32,10 @@ const KGraphNavControls = (props) => {
     saveLoading,
   } = props;
 
-  const [selectedViewMode, setSelectedViewMode] = useState(null);
+  const [selectedViewMode, setSelectedViewMode] = useState({
+    key: 2,
+    title: "SH only",
+  });
   const [selectedLayoutMode, setSelectedLayoutMode] = useState(null);
 
   useEffect(() => {
@@ -47,6 +50,8 @@ const KGraphNavControls = (props) => {
         updateMap(["Team"], "viewMode");
       }
     }
+    console.log("****************");
+    console.log(selectedViewMode);
   }, [selectedViewMode]);
 
   useEffect(() => {
@@ -85,7 +90,7 @@ const KGraphNavControls = (props) => {
           selectedItem={selectedViewMode}
           onSelect={setSelectedViewMode}
         >
-          {selectedViewMode ? selectedViewMode.title : "Org/ Team/ SH"}
+          {selectedViewMode ? selectedViewMode.title : "SH only"}
         </DropDown>
       </div>
       <div className={styles.dropdown}>

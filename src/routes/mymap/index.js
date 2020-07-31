@@ -64,7 +64,7 @@ class MyMap extends React.Component {
       layoutDropDownOpen: false,
       enableLayout: true,
       layout: "Standard",
-      viewMode: "Org/ Team/ SH",
+      viewMode: "SH only",
       layoutUpdated: false,
       apList: null,
       esList: null,
@@ -918,7 +918,8 @@ class MyMap extends React.Component {
       myMapStakeholderList,
       projectMapStakeholderList,
     } = this.state;
-// console.log(myMapStakeholderList);
+console.log(viewMode);
+console.log(layout);
     const mapHeaderVisible = toggleGraph
       ? classnames(styles["map-header"])
       : classnames(styles["map-header"], styles["mobile-hide"]);

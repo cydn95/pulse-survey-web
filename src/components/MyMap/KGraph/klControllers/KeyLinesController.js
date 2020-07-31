@@ -429,7 +429,7 @@ class BaseController {
     window.chart = this.chart;
     this.highLevelNodes = {};
     this.comboMap = {};
-    this.viewMode = ["Org", "Team"];
+    this.viewMode = [];  // ["Org", "Team"];
     this.setupUI();
   }
 

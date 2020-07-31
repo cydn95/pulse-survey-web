@@ -207,9 +207,6 @@ class AboutMeSurvey extends React.Component {
     // console.log("Driver --------------------------");
     // console.log(driver);
 
-    if (driver && driver.driverId === 8) {
-      console.log(driver.amquestion);
-    }
     return (
       <div className={styles.root}>
         <div className={styles.topbar}>
