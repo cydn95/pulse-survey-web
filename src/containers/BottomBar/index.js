@@ -15,7 +15,6 @@ import {
   surveyListByProject,
   setProjectID,
   setSurveyID,
-  guideShowStatus,
   tooltipTourContent,
 } from "Redux/actions";
 
@@ -72,7 +71,7 @@ class BottomBar extends Component {
   };
 
   componentWillReceiveProps(props) {
-    const { screenMode, guide, setGuideShowStatus, tooltipContent } = props;
+    const { screenMode, guide, tooltipContent } = props;
 
     // a11yChecker();
 
@@ -94,7 +93,6 @@ class BottomBar extends Component {
           if (screenMode === "mobile") {
             if (guide) {
               setTimeout(this.handleStartGuide, 1000);
-              setGuideShowStatus(false);
             }
           } else {
             setTimeout(this.handleStopGuide, 500);
@@ -516,11 +514,12 @@ class BottomBar extends Component {
   }
 }
 
-const mapStateToProps = ({ menu, settings, authUser, tour }) => {
+const mapStateToProps = ({ menu, settings, authUser, tour, account }) => {
   const { mainMenuClassName, subMenuClassName } = menu;
   const { projectList } = settings;
   const { user } = authUser;
-  const { guide, tooltipContent } = tour;
+  const { tooltipContent } = tour;
+  const { profile } = account;
 
   return {
     user,
@@ -528,7 +527,7 @@ const mapStateToProps = ({ menu, settings, authUser, tour }) => {
     mainMenuClassName,
     subMenuClassName,
     tooltipContent,
-    guide,
+    guide: profile.guide
   };
 };
 
@@ -540,7 +539,6 @@ export default withRouter(
     getSurveyListByProject: surveyListByProject,
     actionSetProjectID: setProjectID,
     actionSetSurveyID: setSurveyID,
-    setGuideShowStatus: guideShowStatus,
     getTooltipTourContent: tooltipTourContent,
   })(BottomBar)
 );

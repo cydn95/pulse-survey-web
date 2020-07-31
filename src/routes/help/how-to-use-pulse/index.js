@@ -6,14 +6,22 @@ import { Button } from "reactstrap";
 import styles from "./styles.scss";
 import classnames from "classnames";
 
-const HowToUsePulse = ({ history, surveyUserId }) => {
+import { updateGuideStatusSuccess } from "Redux/actions";
+
+const HowToUsePulse = ({
+  history,
+  surveyUserId,
+  actionUpdateGuideStatusSuccess,
+}) => {
   const handleContinue = (e) => {
     if (
       surveyUserId == undefined ||
       surveyUserId == null ||
       surveyUserId <= 0
     ) {
-      history.push("/app/settings/projects");
+      // history.push("/app/settings/projects");
+      actionUpdateGuideStatusSuccess(false);
+      actionUpdateGuideStatusSuccess(true);
       return;
     } else {
       history.push("/app/about-me");
@@ -107,4 +115,6 @@ const mapStateToProps = ({ authUser }) => {
   };
 };
 
-export default connect(mapStateToProps, {})(HowToUsePulse);
+export default connect(mapStateToProps, {
+  actionUpdateGuideStatusSuccess: updateGuideStatusSuccess,
+})(HowToUsePulse);

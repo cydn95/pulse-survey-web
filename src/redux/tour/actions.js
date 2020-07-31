@@ -1,5 +1,4 @@
 import {
-  GUIDE_SHOW_STATUS,
   NIKEL_TOUR_CONTENT,
   NIKEL_TOUR_CONTENT_SUCCESS,
   TOOLTIP_TOUR_CONTENT,
@@ -7,11 +6,6 @@ import {
   PAGE_CONTENT,
   PAGE_CONTENT_SUCCESS,
 } from "Constants/actionTypes";
-
-export const guideShowStatus = (status) => ({
-  type: GUIDE_SHOW_STATUS,
-  payload: { status },
-});
 
 export const nikelTourContent = () => ({
   type: NIKEL_TOUR_CONTENT,

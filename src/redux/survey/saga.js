@@ -47,6 +47,12 @@ function* getPageList({ payload }) {
       const questionList = [...result.data];
 
       for (let i = 0; i < questionList.length; i++) {
+        
+        // Ordering by questionSequence
+        questionList[i].amquestion = questionList[i].amquestion.sort((a, b) =>
+          a.questionSequence > b.questionSequence ? 1 : -1
+        );
+
         for (let j = 0; j < questionList[i].amquestion.length; j++) {
           if (
             questionList[i].amquestion[j].controlType ===
@@ -102,11 +108,6 @@ function* getPageList({ payload }) {
             };
           }
         }
-
-        // Ordering by questionSequence
-        questionList[i].amquestion = questionList[i].amquestion.sort((a, b) =>
-          a.questionSequence > b.questionSequence ? 1 : -1
-        );
       }
       const result_option = yield call(getOptionListAsync);
       if (result_option.status === 200) {
@@ -128,7 +129,6 @@ function* getPageList({ payload }) {
         }
       }
       yield put(driverListSuccess(driverList));
-
     } else {
       console.log("survey error :", result.statusText);
     }

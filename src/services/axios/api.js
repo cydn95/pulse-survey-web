@@ -262,6 +262,13 @@ const changeAvatarAPI = (avatarId, data) => {
   });
 };
 
+const updateUserGuideAPI = (token, guide) => {
+  return getClient(true).post("/userguidemode", {
+    token: token,
+    guidemode: guide,
+  });
+};
+
 /**
  * deprecated...
  */
@@ -315,4 +322,5 @@ export {
   getProfileAPI,
   changeProfileAPI,
   changeAvatarAPI,
+  updateUserGuideAPI,
 };
