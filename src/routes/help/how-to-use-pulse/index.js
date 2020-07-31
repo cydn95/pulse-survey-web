@@ -19,7 +19,6 @@ const HowToUsePulse = ({
       surveyUserId == null ||
       surveyUserId <= 0
     ) {
-      console.log('ffff');
       // history.push("/app/settings/projects");
       actionUpdateGuideStatusSuccess(false);
       actionUpdateGuideStatusSuccess(true);
