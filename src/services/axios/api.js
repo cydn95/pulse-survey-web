@@ -121,9 +121,9 @@ const projectMapAPI = (projectUserId, userId = 0) => {
 //   return getClient(true).get("/aoquestion/?format=json&projectuser=" + projectUserId)
 // }
 
-const aoQuestionListAPI = (projectUserId) => {
+const aoQuestionListAPI = (projectUserId, surveyId = 1) => {
   return getClient(true).get(
-    "/pages/?format=json&survey=1&projectuser=" + projectUserId
+    `/pages/?format=json&survey=${surveyId}&projectuser=${projectUserId}`
   );
 };
 

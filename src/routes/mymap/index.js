@@ -195,7 +195,6 @@ class MyMap extends React.Component {
     //       console.log(this.myMapProjectUserList);
     // console.log("*********************************");
     this.setState({ newStakeholder: newElem }, () => {
-
       if (!newElem.individuals[0].sh_category) return;
       const newProjectUserId = projectUser.projectUserId;
       const newShCategory = newElem.individuals[0].sh_category.current.split(
@@ -329,13 +328,14 @@ class MyMap extends React.Component {
     this.props.getShCategoryList(surveyId, 0);
     this.props.getStakeholderList(surveyUserId, surveyId);
     this.props.getTeamList();
-    this.props.getAoQuestionList(surveyUserId);
+    this.props.getAoQuestionList(surveyUserId, surveyId);
     this.props.getDriverList(surveyId);
     this.props.getSkipQuestionList();
   }
 
   componentWillReceiveProps(props) {
     const {
+      projectId,
       stakeholderList,
       teamList,
       shCategoryList,
@@ -351,6 +351,16 @@ class MyMap extends React.Component {
     // console.log(userList);
     // console.log(kMapData);
     // console.log("--------------------------------------");
+
+    const kMapDataForCurrentProject =
+      kMapData.length > 0
+        ? kMapData.filter((map) => map.project == projectId)
+        : [];
+
+    const projectMapDataForCurrentProject =
+      projectMapData.length > 0
+        ? projectMapData.filter((map) => map.project == projectId)
+        : [];
     /*
      * ------------------------------------------------------------------------------
      * For MyMap Layouts
@@ -464,12 +474,17 @@ class MyMap extends React.Component {
       projectMapIndividual.organisations = organizationList;
 
       let individualList = [];
-      if (kMapData.length > 0) {
+      if (kMapDataForCurrentProject.length > 0) {
         let mapUserList = [];
-        for (let i = 0; i < kMapData[0].pu_category.length; i++) {
+        for (
+          let i = 0;
+          i < kMapDataForCurrentProject[0].pu_category.length;
+          i++
+        ) {
           mapUserList.push({
-            projectUserId: kMapData[0].pu_category[i].projectUser,
-            shCategory: kMapData[0].pu_category[i].category,
+            projectUserId:
+              kMapDataForCurrentProject[0].pu_category[i].projectUser,
+            shCategory: kMapDataForCurrentProject[0].pu_category[i].category,
           });
         }
 
@@ -527,8 +542,10 @@ class MyMap extends React.Component {
                   individualUser.team.current = `T_${userList[i].team.id}`;
                   individualUser.organisation.current = `O_${userList[i].user.organization.name}`;
                   individualUser.sh_category.current = `SHC_${userList[i].shCategory[j]}`;
-                  individualUser.survey_completion =
-                    ((userList[i].ao_answered / userList[i].ao_total) * 100).toFixed(2);
+                  individualUser.survey_completion = (
+                    (userList[i].ao_answered / userList[i].ao_total) *
+                    100
+                  ).toFixed(2);
 
                   bAdd = true;
 
@@ -559,12 +576,18 @@ class MyMap extends React.Component {
 
       // Project Map Individuals
       individualList = [];
-      if (projectMapData.length > 0) {
+      if (projectMapDataForCurrentProject.length > 0) {
         let mapUserList = [];
-        for (let i = 0; i < projectMapData[0].pu_category.length; i++) {
+        for (
+          let i = 0;
+          i < projectMapDataForCurrentProject[0].pu_category.length;
+          i++
+        ) {
           mapUserList.push({
-            projectUserId: projectMapData[0].pu_category[i].projectUser,
-            shCategory: projectMapData[0].pu_category[i].category,
+            projectUserId:
+              projectMapDataForCurrentProject[0].pu_category[i].projectUser,
+            shCategory:
+              projectMapDataForCurrentProject[0].pu_category[i].category,
           });
         }
 
@@ -653,8 +676,8 @@ class MyMap extends React.Component {
       //--------------------------------------------------------------------
 
       let decisionMakerList = [];
-      if (kMapData.length > 0 && stakeholderList.length > 0) {
-        let mapUserList = kMapData[0].projectUser;
+      if (kMapDataForCurrentProject.length > 0 && stakeholderList.length > 0) {
+        let mapUserList = kMapDataForCurrentProject[0].projectUser;
         for (let i = 0; i < mapUserList.length; i++) {
           for (let j = 0; j < stakeholderList.length; j++) {
             if (mapUserList[i] === stakeholderList[j].projectUserId) {
@@ -666,8 +689,8 @@ class MyMap extends React.Component {
       }
 
       let myMapStakeholderList = [];
-      if (kMapData.length > 0 && stakeholderList.length > 0) {
-        let mapUserList = kMapData[0].projectUser;
+      if (kMapDataForCurrentProject.length > 0 && stakeholderList.length > 0) {
+        let mapUserList = kMapDataForCurrentProject[0].projectUser;
         for (let i = 0; i < mapUserList.length; i++) {
           for (let j = 0; j < stakeholderList.length; j++) {
             if (mapUserList[i] === stakeholderList[j].projectUserId) {
@@ -679,8 +702,8 @@ class MyMap extends React.Component {
       }
 
       let projectMapStakeholderList = [];
-      if (projectMapData.length > 0 && stakeholderList.length > 0) {
-        let mapUserList = projectMapData[0].projectUser;
+      if (projectMapDataForCurrentProject.length > 0 && stakeholderList.length > 0) {
+        let mapUserList = projectMapDataForCurrentProject[0].projectUser;
         for (let i = 0; i < mapUserList.length; i++) {
           for (let j = 0; j < stakeholderList.length; j++) {
             if (mapUserList[i] === stakeholderList[j].projectUserId) {
@@ -757,9 +780,9 @@ class MyMap extends React.Component {
   handleStartOtherSurvey = (id) => {
     if (id.startsWith("S_")) {
       let user = {};
-      for (let i = 0; i < this.state.decisionMakerList.length; i++) {
-        if (id.includes(`${this.state.decisionMakerList[i].userId}_`)) {
-          user = this.state.decisionMakerList[i];
+      for (let i = 0; i < this.state.stakeholderList.length; i++) {
+        if (id.includes(`${this.state.stakeholderList[i].userId}_`)) {
+          user = this.state.stakeholderList[i];
           break;
         }
       }
@@ -928,7 +951,7 @@ class MyMap extends React.Component {
     const stakeholderVisible = !toggleGraph
       ? classnames(styles["map-stakeholder"])
       : classnames(styles["map-stakeholder"], styles["mobile-hide"]);
-// console.log(esList);
+    // console.log(esList);
     return (
       <div>
         {(!searchFullHeight || toggleGraph) && (

@@ -21,8 +21,8 @@ import {
 
 import { controlType, controlTypeText } from "Constants/defaultValues";
 
-const getAoQuestionListAsync = async (projectUserId) =>
-  await aoQuestionListAPI(projectUserId)
+const getAoQuestionListAsync = async (projectUserId, surveyId) =>
+  await aoQuestionListAPI(projectUserId, surveyId)
     .then((result) => result)
     .catch((error) => error);
 
@@ -32,9 +32,10 @@ const getOptionListAsync = async () =>
     .catch((error) => error);
 
 function* getAoQuestionList({ payload }) {
-  const { projectUserId } = payload;
+  console.log(payload);
+  const { projectUserId, surveyId } = payload;
   try {
-    const result = yield call(getAoQuestionListAsync, projectUserId);
+    const result = yield call(getAoQuestionListAsync, projectUserId, surveyId);
 
     if (result.status === 200) {
       const result_option = yield call(getOptionListAsync);

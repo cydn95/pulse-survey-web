@@ -7,9 +7,9 @@ import {
   ADD_ABOUT_OTHER_TOPIC_SUCCESS,
 } from "Constants/actionTypes";
 
-export const aoQuestionList = (projectUserId) => ({
+export const aoQuestionList = (projectUserId, surveyId) => ({
   type: AOQUESTION_LIST,
-  payload: { projectUserId },
+  payload: { projectUserId, surveyId },
 });
 
 export const aoQuestionListSuccess = (aoQuestionList, optionList) => ({
