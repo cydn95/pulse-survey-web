@@ -78,8 +78,8 @@ class BaseController {
         props.push({
           id: item.id,
           donut: {
-            v: [segment, 100 - segment],
-            c: [segmentColor, "#00d3b2"],
+            v: [100 - segment, segment],
+            c: [segmentColor, "#c0c0c0"],
             b: "#3b4f81",
             w: 5,
             bw: 0,

@@ -120,7 +120,6 @@ class MyMap extends React.Component {
 
   callbackAddNewStakeholder = (code) => {
     if (code === 400) {
-      console.log("Code is ", code);
       NotificationManager.error(
         "Stakeholder is already existed",
         "Error",
@@ -136,10 +135,6 @@ class MyMap extends React.Component {
   };
 
   handleAddStackholderToGraph = (data, e = {}) => {
-    console.log(this.myMapProjectUserList);
-    console.log(data);
-    console.log(this.state.apList);
-    console.log(this.state.esList);
     const projectUserId = data.stakeholder;
     const { stakeholderList } = this.state;
     let projectUser = stakeholderList.filter((e) => {
@@ -158,8 +153,10 @@ class MyMap extends React.Component {
           color: "transparent",
           icon: "fa-user",
           avatar: projectUser.userAvatar,
-          survey_completion:
-            (projectUser.aoAnswered / projectUser.aoTotal) * 100,
+          survey_completion: (
+            (projectUser.aoAnswered / projectUser.aoTotal) *
+            100
+          ).toFixed(2),
           iconColor: "rgb(0, 0, 0)",
           team: {
             current: projectUser.teamId,
@@ -188,7 +185,7 @@ class MyMap extends React.Component {
       organisations: [
         {
           id: projectUser.organisationId,
-          icon: "fa-building",
+          icon: "fa-sitemap",
           name: projectUser.organisation,
         },
       ],
@@ -246,8 +243,10 @@ class MyMap extends React.Component {
           color: "transparent",
           icon: "fa-user",
           avatar: projectUser.userAvatar,
-          survey_completion:
-            (projectUser.aoAnswered / projectUser.aoTotal) * 100,
+          survey_completion: (
+            (projectUser.aoAnswered / projectUser.aoTotal) *
+            100
+          ).toFixed(2),
           iconColor: "rgb(0, 0, 0)",
           team: {
             current: projectUser.teamId,
@@ -276,7 +275,7 @@ class MyMap extends React.Component {
       organisations: [
         {
           id: projectUser.organisationId,
-          icon: "fa-building",
+          icon: "fa-sitemap",
           name: projectUser.organisation,
         },
       ],
@@ -347,10 +346,11 @@ class MyMap extends React.Component {
       mapSaveLoading,
       mapGetLoading,
     } = props;
-    console.log('--------------------------------------');
-    console.log(stakeholderList);
-    console.log(userList);
-    console.log("--------------------------------------");
+    // console.log('--------------------------------------');
+    // console.log(stakeholderList);
+    // console.log(userList);
+    // console.log(kMapData);
+    // console.log("--------------------------------------");
     /*
      * ------------------------------------------------------------------------------
      * For MyMap Layouts
@@ -440,7 +440,7 @@ class MyMap extends React.Component {
         if (organizationList.length === 0) {
           organizationList.push({
             id: "O_" + user.user.organization.name,
-            icon: "fa-building",
+            icon: "fa-sitemap",
             name: user.user.organization.name,
           });
         } else {
@@ -453,7 +453,7 @@ class MyMap extends React.Component {
           if (bExist === false) {
             organizationList.push({
               id: "O_" + user.user.organization.name,
-              icon: "fa-building",
+              icon: "fa-sitemap",
               name: user.user.organization.name,
             });
           }
@@ -528,7 +528,7 @@ class MyMap extends React.Component {
                   individualUser.organisation.current = `O_${userList[i].user.organization.name}`;
                   individualUser.sh_category.current = `SHC_${userList[i].shCategory[j]}`;
                   individualUser.survey_completion =
-                    (userList[i].ao_answered / userList[i].ao_total) * 100;
+                    ((userList[i].ao_answered / userList[i].ao_total) * 100).toFixed(2);
 
                   bAdd = true;
 
@@ -918,8 +918,7 @@ class MyMap extends React.Component {
       myMapStakeholderList,
       projectMapStakeholderList,
     } = this.state;
-console.log(viewMode);
-console.log(layout);
+
     const mapHeaderVisible = toggleGraph
       ? classnames(styles["map-header"])
       : classnames(styles["map-header"], styles["mobile-hide"]);
@@ -929,7 +928,7 @@ console.log(layout);
     const stakeholderVisible = !toggleGraph
       ? classnames(styles["map-stakeholder"])
       : classnames(styles["map-stakeholder"], styles["mobile-hide"]);
-
+// console.log(esList);
     return (
       <div>
         {(!searchFullHeight || toggleGraph) && (

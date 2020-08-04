@@ -50,8 +50,6 @@ const KGraphNavControls = (props) => {
         updateMap(["Team"], "viewMode");
       }
     }
-    console.log("****************");
-    console.log(selectedViewMode);
   }, [selectedViewMode]);
 
   useEffect(() => {
