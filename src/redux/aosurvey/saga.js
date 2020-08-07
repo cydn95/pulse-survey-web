@@ -17,7 +17,8 @@ import {
   aoQuestionListSuccess,
   submitAoQuestionSuccess,
   addAboutOtherTopicSuccess,
-} from "./actions";
+  stakeholderList,
+} from "Redux/actions";
 
 import { controlType, controlTypeText } from "Constants/defaultValues";
 
@@ -145,7 +146,7 @@ const submitAoQuestionAsync = async (answerData) =>
     .catch((error) => error);
 
 function* submitAoQuestion({ payload }) {
-  const { questionList, history, currentSurveyUser, projectUserId } = payload;
+  const { questionList, history, currentSurveyUser, projectUserId, surveyId } = payload;
 
   let answerList = [];
 
@@ -196,6 +197,7 @@ function* submitAoQuestion({ payload }) {
 
     if (result.status === 201) {
       yield put(submitAoQuestionSuccess());
+      yield put(stakeholderList(projectUserId, surveyId));
       history.push("/app/dashboard");
     } else {
       console.log("submit failed");

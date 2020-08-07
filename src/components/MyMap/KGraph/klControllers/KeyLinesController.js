@@ -72,13 +72,14 @@ class BaseController {
     // create the donuts
     this.chart.each({ type: "node", items: "underlying" }, (item) => {
       if (item.d.survey_completion) {
-        let percentage = item.d.survey_completion;
-        let segment = Math.abs(percentage - 50) * 2;
+        let percentage = Math.abs(parseFloat(item.d.survey_completion).toFixed(2));
+        console.log(percentage);
+        // let segment = Math.abs(percentage - 50) * 2;
         let segmentColor = percentage <= 50 ? "#ff5500" : "#1f45b8";
         props.push({
           id: item.id,
           donut: {
-            v: [100 - segment, segment],
+            v: [percentage, 100 - percentage],
             c: [segmentColor, "#c0c0c0"],
             b: "#3b4f81",
             w: 5,

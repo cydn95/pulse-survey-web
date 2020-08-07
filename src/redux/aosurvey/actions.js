@@ -21,10 +21,11 @@ export const submitAoQuestion = (
   questionList,
   history,
   currentSurveyUser,
-  projectUserId
+  projectUserId,
+  surveyId
 ) => ({
   type: SUBMIT_AOQUESTION,
-  payload: { questionList, history, currentSurveyUser, projectUserId },
+  payload: { questionList, history, currentSurveyUser, projectUserId, surveyId },
 });
 
 export const submitAoQuestionSuccess = () => ({
