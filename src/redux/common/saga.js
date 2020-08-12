@@ -141,7 +141,8 @@ function* getStakeholderList({ payload }) {
     const { projectUserId, surveyId } = payload;
     const result = yield call(getStakeholderListAysnc, projectUserId, surveyId);
 
-    let stakeholderList = [];
+    const stakeholderList = [];
+    const userList = [];
     if (result.status === 200) {
       result.data.forEach((sh) => {
         if (parseInt(sh.id, 10) === parseInt(projectUserId, 10)) {
@@ -157,6 +158,12 @@ function* getStakeholderList({ payload }) {
         // console.log(shAoResponse);
         // console.log(filteredAoResponse);
         // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^");
+
+        if (sh.team === null || sh.user.organization === null) {
+          return;
+        }
+
+        userList.push(sh);
 
         stakeholderList.push({
           projectUserId: sh.id,
@@ -183,7 +190,8 @@ function* getStakeholderList({ payload }) {
         });
       });
 
-      yield put(stakeholderListSuccess(stakeholderList, result.data));
+      
+      yield put(stakeholderListSuccess(stakeholderList, userList));
     }
   } catch (error) {
     console.log("error : ", error);

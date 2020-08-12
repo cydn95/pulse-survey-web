@@ -347,7 +347,7 @@ class MyMap extends React.Component {
       mapGetLoading,
     } = props;
     // console.log('--------------------------------------');
-    console.log("StakeholderList:=", stakeholderList);
+    // console.log("StakeholderList:=", stakeholderList);
     // console.log(userList);
     // console.log(kMapData);
     // console.log("--------------------------------------");
@@ -400,7 +400,7 @@ class MyMap extends React.Component {
       organisations: [],
     };
 
-    console.log("shCategoryList:=", shCategoryList);
+    // console.log("shCategoryList:=", shCategoryList);
 
     if (
       teamList.length > 0 &&
@@ -475,7 +475,7 @@ class MyMap extends React.Component {
       individual.organisations = organizationList;
       projectMapIndividual.organisations = organizationList;
 
-      console.log("kMapDataForCurrentProject:=", kMapDataForCurrentProject);
+      // console.log("kMapDataForCurrentProject:=", kMapDataForCurrentProject);
 
       let individualList = [];
       if (kMapDataForCurrentProject.length > 0) {
@@ -499,7 +499,7 @@ class MyMap extends React.Component {
           }
         }
 
-        console.log("MyMapProjectUserList:=", this.myMapProjectUserList);
+        // console.log("MyMapProjectUserList:=", this.myMapProjectUserList);
 
         mapUserList.forEach((mapUser) => {
           let bExist = false;
@@ -751,8 +751,10 @@ class MyMap extends React.Component {
       //     individualCount: 0,
       //   });
       // }
-      console.log(architecture);
-      console.log(individual);
+
+      // console.log(architecture);
+      // console.log(individual);
+
       this.setState({
         stakeholderList,
         decisionMakerList,
@@ -823,12 +825,20 @@ class MyMap extends React.Component {
   handleSubmitSurvey = (e, answerData) => {
     this.props.submitAoQuestion(
       answerData,
-      this.props.history,
       this.state.currentSurveyUser,
       this.props.surveyUserId,
-      this.props.surveyId
+      this.props.surveyId,
+      this.callbackSubmitSurvey
     );
   };
+
+  callbackSubmitSurvey = () => {
+    this.setState({
+      screen: "list",
+      currentSurveyUserId: 0,
+      currentSurveyUser: {},
+    });
+  }
 
   handleToggleMapModeDropdown = () => {
     this.setState({
@@ -889,7 +899,9 @@ class MyMap extends React.Component {
       pu_category: mapProjectUserList,
       layout_json: {},
     };
+
     // console.log(newMapData); return;
+
     if (mapStyle === "my-map") {
       this.props.saveKMapData(newMapData, surveyUserId, userId);
     } else {

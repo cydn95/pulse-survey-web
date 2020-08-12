@@ -33,7 +33,6 @@ const getOptionListAsync = async () =>
     .catch((error) => error);
 
 function* getAoQuestionList({ payload }) {
-  console.log(payload);
   const { projectUserId, surveyId } = payload;
   try {
     const result = yield call(getAoQuestionListAsync, projectUserId, surveyId);
@@ -146,7 +145,13 @@ const submitAoQuestionAsync = async (answerData) =>
     .catch((error) => error);
 
 function* submitAoQuestion({ payload }) {
-  const { questionList, history, currentSurveyUser, projectUserId, surveyId } = payload;
+  const {
+    questionList,
+    currentSurveyUser,
+    projectUserId,
+    surveyId,
+    callback,
+  } = payload;
 
   let answerList = [];
 
@@ -198,7 +203,7 @@ function* submitAoQuestion({ payload }) {
     if (result.status === 201) {
       yield put(submitAoQuestionSuccess());
       yield put(stakeholderList(projectUserId, surveyId));
-      history.push("/app/dashboard");
+      callback();
     } else {
       console.log("submit failed");
     }

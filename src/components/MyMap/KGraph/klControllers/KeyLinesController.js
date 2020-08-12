@@ -73,7 +73,9 @@ class BaseController {
     this.chart.each({ type: "node", items: "underlying" }, (item) => {
       if (item.d.survey_completion) {
         let percentage = Math.abs(parseFloat(item.d.survey_completion).toFixed(2));
-        console.log(percentage);
+
+        // console.log(percentage);
+
         // let segment = Math.abs(percentage - 50) * 2;
         let segmentColor = percentage <= 50 ? "#ff5500" : "#1f45b8";
         props.push({
