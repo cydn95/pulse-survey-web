@@ -154,17 +154,6 @@ class AoSurvey extends React.Component {
         <div className={styles.questions}>
           {driver.questions.map((control, index) => {
             switch (control.controlType) {
-              case controlType.TEXT:
-                return (
-                  <FreeText
-                    user={user}
-                    skipQuestionList={skipQuestionList}
-                    key={`${index}`}
-                    question={control}
-                    onAnswer={(answer) => this.handleAnswer(answer)}
-                    projectTitle={projectTitle}
-                  />
-                );
               case controlType.SLIDER:
                 return (
                   <RangeSlider
@@ -176,20 +165,6 @@ class AoSurvey extends React.Component {
                     projectTitle={projectTitle}
                   />
                 );
-
-              case controlType.TWO_OPTIONS:
-                return (
-                  <TwoOptions
-                    user={user}
-                    skipQuestionList={skipQuestionList}
-                    key={`${index}`}
-                    options={options}
-                    question={control}
-                    onAnswer={(answer) => this.handleAnswer(answer)}
-                    projectTitle={projectTitle}
-                  />
-                );
-
               case controlType.MULTI_OPTIONS:
                 return (
                   <MultipleOptions
@@ -203,7 +178,29 @@ class AoSurvey extends React.Component {
                     projectTitle={projectTitle}
                   />
                 );
-
+              case controlType.TWO_OPTIONS:
+                return (
+                  <TwoOptions
+                    user={user}
+                    skipQuestionList={skipQuestionList}
+                    key={`${index}`}
+                    options={options}
+                    question={control}
+                    onAnswer={(answer) => this.handleAnswer(answer)}
+                    projectTitle={projectTitle}
+                  />
+                );
+              case controlType.TEXT:
+                return (
+                  <FreeText
+                    user={user}
+                    skipQuestionList={skipQuestionList}
+                    key={`${index}`}
+                    question={control}
+                    onAnswer={(answer) => this.handleAnswer(answer)}
+                    projectTitle={projectTitle}
+                  />
+                );
               case controlType.SMART_TEXT:
                 return (
                   <SmartText

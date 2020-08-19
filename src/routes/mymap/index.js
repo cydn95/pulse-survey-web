@@ -108,206 +108,6 @@ class MyMap extends React.Component {
     };
   }
 
-  handleAddNewStakeholder = (stakeholder) => {
-    const { projectId, surveyId } = this.props;
-    this.props.addStakeholder(
-      projectId,
-      surveyId,
-      stakeholder,
-      this.callbackAddNewStakeholder
-    );
-  };
-
-  callbackAddNewStakeholder = (code) => {
-    if (code === 400) {
-      NotificationManager.error(
-        "Stakeholder is already existed",
-        "Error",
-        2000
-      );
-    }
-  };
-
-  handleShowAddPage = () => {
-    this.setState({
-      screen: "add",
-    });
-  };
-
-  handleAddStackholderToGraph = (data, e = {}) => {
-    const projectUserId = data.stakeholder;
-    const { stakeholderList } = this.state;
-    let projectUser = stakeholderList.filter((e) => {
-      return parseInt(e.projectUserId, 10) === parseInt(projectUserId, 10);
-    });
-
-    if (projectUser.length === 0) return;
-
-    projectUser = projectUser[0];
-
-    let newElem = {
-      individuals: [
-        {
-          id: projectUser.userId + "_" + uuid(),
-          name: projectUser.fullName,
-          color: "transparent",
-          icon: "fa-user",
-          avatar: projectUser.userAvatar,
-          survey_completion: (
-            (projectUser.aoAnswered / projectUser.aoTotal) *
-            100
-          ).toFixed(2),
-          iconColor: "rgb(0, 0, 0)",
-          team: {
-            current: projectUser.teamId,
-            changeable: true,
-          },
-          organisation: {
-            current: projectUser.organisationId,
-            changeable: true,
-          },
-          viewCoordinates:
-            Object.keys(e).length > 0
-              ? {
-                  clientX: e.clientX,
-                  clientY: e.clientY,
-                }
-              : {},
-        },
-      ],
-      teams: [
-        {
-          id: projectUser.teamId,
-          name: projectUser.team,
-          icon: "fa-users",
-        },
-      ],
-      organisations: [
-        {
-          id: projectUser.organisationId,
-          icon: "fa-sitemap",
-          name: projectUser.organisation,
-        },
-      ],
-    };
-    // console.log('*********************************');
-    //       console.log(newElem);
-    //       console.log(this.myMapProjectUserList);
-    // console.log("*********************************");
-    this.setState({ newStakeholder: newElem }, () => {
-      if (!newElem.individuals[0].sh_category) return;
-      const newProjectUserId = projectUser.projectUserId;
-      const newShCategory = newElem.individuals[0].sh_category.current.split(
-        "_"
-      )[1];
-
-      let bExist = false;
-
-      for (let i = 0; i < this.myMapProjectUserList.length; i++) {
-        if (
-          parseInt(this.myMapProjectUserList[i].projectUserId, 10) ===
-            parseInt(newProjectUserId, 10) &&
-          parseInt(this.myMapProjectUserList[i].shCategory, 10) ===
-            parseInt(newShCategory, 10)
-        ) {
-          bExist = true;
-          break;
-        }
-      }
-      if (!bExist) {
-        this.myMapProjectUserList.push({
-          projectUserId: newProjectUserId,
-          shCategory: parseInt(newShCategory, 10),
-        });
-      }
-    });
-  };
-
-  handleAddStackholderToProjectGraph = (data, e = {}) => {
-    const projectUserId = data.stakeholder;
-    const { stakeholderList } = this.state;
-    let projectUser = stakeholderList.filter((e) => {
-      return parseInt(e.projectUserId, 10) === parseInt(projectUserId, 10);
-    });
-
-    if (projectUser.length === 0) return;
-
-    projectUser = projectUser[0];
-
-    let newElem = {
-      individuals: [
-        {
-          id: projectUser.userId + "_" + uuid(),
-          name: projectUser.fullName,
-          color: "transparent",
-          icon: "fa-user",
-          avatar: projectUser.userAvatar,
-          survey_completion: (
-            (projectUser.aoAnswered / projectUser.aoTotal) *
-            100
-          ).toFixed(2),
-          iconColor: "rgb(0, 0, 0)",
-          team: {
-            current: projectUser.teamId,
-            changeable: true,
-          },
-          organisation: {
-            current: projectUser.organisationId,
-            changeable: true,
-          },
-          viewCoordinates:
-            Object.keys(e).length > 0
-              ? {
-                  clientX: e.clientX,
-                  clientY: e.clientY,
-                }
-              : {},
-        },
-      ],
-      teams: [
-        {
-          id: projectUser.teamId,
-          name: projectUser.team,
-          icon: "fa-users",
-        },
-      ],
-      organisations: [
-        {
-          id: projectUser.organisationId,
-          icon: "fa-sitemap",
-          name: projectUser.organisation,
-        },
-      ],
-    };
-
-    this.setState({ newStakeholder: newElem }, () => {
-      if (!newElem.individuals[0].sh_category) return;
-      const newProjectUserId = projectUser.projectUserId;
-      const newShCategory = newElem.individuals[0].sh_category.current.split(
-        "_"
-      )[1];
-
-      let bExist = false;
-
-      for (let i = 0; i < this.projectMapProjectUserList.length; i++) {
-        if (
-          this.projectMapProjectUserList[i].projectUserId ===
-            newProjectUserId &&
-          this.projectMapProjectUserList[i].shCategory === newShCategory
-        ) {
-          bExist = true;
-          break;
-        }
-      }
-      if (!bExist) {
-        this.projectMapProjectUserList.push({
-          projectUserId: newProjectUserId,
-          shCategory: parseInt(newShCategory, 10),
-        });
-      }
-    });
-  };
-
   componentWillMount() {
     const { userId, surveyId, surveyUserId, history } = this.props;
 
@@ -730,31 +530,6 @@ class MyMap extends React.Component {
         }
       }
 
-      // console.log(myMapStakeholderList);
-      // console.log(projectMapStakeholderList);
-      // Project Map
-      // const projectArchitecture = {
-      //   main: {
-      //     ...architecture.main
-      //   },
-      //   sh_categories: []
-      // }
-
-      // projectArchitecture.main.name = projectTitle;
-      // projectArchitecture.main.icon = `${serverUrl}/media/uploads/shcategory/project.svg`;
-      // projectArchitecture.main.color = "#7030a0";
-      // projectArchitecture.main.iconColor = "#fefefa";
-
-      // for (let i = 0; i < architecture.sh_categories.length; i++) {
-      //   projectArchitecture.sh_categories.push({
-      //     ...architecture.sh_categories[i],
-      //     individualCount: 0,
-      //   });
-      // }
-
-      // console.log(architecture);
-      // console.log(individual);
-
       this.setState({
         stakeholderList,
         decisionMakerList,
@@ -774,6 +549,206 @@ class MyMap extends React.Component {
       });
     }
   }
+
+  handleAddNewStakeholder = (stakeholder) => {
+    const { projectId, surveyId } = this.props;
+    this.props.addStakeholder(
+      projectId,
+      surveyId,
+      stakeholder,
+      this.callbackAddNewStakeholder
+    );
+  };
+
+  callbackAddNewStakeholder = (code) => {
+    if (code === 400) {
+      NotificationManager.error(
+        "Stakeholder is already existed",
+        "Error",
+        2000
+      );
+    }
+  };
+
+  handleShowAddPage = () => {
+    this.setState({
+      screen: "add",
+    });
+  };
+
+  handleAddStackholderToGraph = (data, e = {}) => {
+    const projectUserId = data.stakeholder;
+    const { stakeholderList } = this.state;
+    let projectUser = stakeholderList.filter((e) => {
+      return parseInt(e.projectUserId, 10) === parseInt(projectUserId, 10);
+    });
+
+    if (projectUser.length === 0) return;
+
+    projectUser = projectUser[0];
+
+    let newElem = {
+      individuals: [
+        {
+          id: projectUser.userId + "_" + uuid(),
+          name: projectUser.fullName,
+          color: "transparent",
+          icon: "fa-user",
+          avatar: projectUser.userAvatar,
+          survey_completion: (
+            (projectUser.aoAnswered / projectUser.aoTotal) *
+            100
+          ).toFixed(2),
+          iconColor: "rgb(0, 0, 0)",
+          team: {
+            current: projectUser.teamId,
+            changeable: true,
+          },
+          organisation: {
+            current: projectUser.organisationId,
+            changeable: true,
+          },
+          viewCoordinates:
+            Object.keys(e).length > 0
+              ? {
+                  clientX: e.clientX,
+                  clientY: e.clientY,
+                }
+              : {},
+        },
+      ],
+      teams: [
+        {
+          id: projectUser.teamId,
+          name: projectUser.team,
+          icon: "fa-users",
+        },
+      ],
+      organisations: [
+        {
+          id: projectUser.organisationId,
+          icon: "fa-sitemap",
+          name: projectUser.organisation,
+        },
+      ],
+    };
+    // console.log('*********************************');
+    //       console.log(newElem);
+    //       console.log(this.myMapProjectUserList);
+    // console.log("*********************************");
+    this.setState({ newStakeholder: newElem }, () => {
+      if (!newElem.individuals[0].sh_category) return;
+      const newProjectUserId = projectUser.projectUserId;
+      const newShCategory = newElem.individuals[0].sh_category.current.split(
+        "_"
+      )[1];
+
+      let bExist = false;
+
+      for (let i = 0; i < this.myMapProjectUserList.length; i++) {
+        if (
+          parseInt(this.myMapProjectUserList[i].projectUserId, 10) ===
+            parseInt(newProjectUserId, 10) &&
+          parseInt(this.myMapProjectUserList[i].shCategory, 10) ===
+            parseInt(newShCategory, 10)
+        ) {
+          bExist = true;
+          break;
+        }
+      }
+      if (!bExist) {
+        this.myMapProjectUserList.push({
+          projectUserId: newProjectUserId,
+          shCategory: parseInt(newShCategory, 10),
+        });
+      }
+    });
+  };
+
+  handleAddStackholderToProjectGraph = (data, e = {}) => {
+    const projectUserId = data.stakeholder;
+    const { stakeholderList } = this.state;
+    let projectUser = stakeholderList.filter((e) => {
+      return parseInt(e.projectUserId, 10) === parseInt(projectUserId, 10);
+    });
+
+    if (projectUser.length === 0) return;
+
+    projectUser = projectUser[0];
+
+    let newElem = {
+      individuals: [
+        {
+          id: projectUser.userId + "_" + uuid(),
+          name: projectUser.fullName,
+          color: "transparent",
+          icon: "fa-user",
+          avatar: projectUser.userAvatar,
+          survey_completion: (
+            (projectUser.aoAnswered / projectUser.aoTotal) *
+            100
+          ).toFixed(2),
+          iconColor: "rgb(0, 0, 0)",
+          team: {
+            current: projectUser.teamId,
+            changeable: true,
+          },
+          organisation: {
+            current: projectUser.organisationId,
+            changeable: true,
+          },
+          viewCoordinates:
+            Object.keys(e).length > 0
+              ? {
+                  clientX: e.clientX,
+                  clientY: e.clientY,
+                }
+              : {},
+        },
+      ],
+      teams: [
+        {
+          id: projectUser.teamId,
+          name: projectUser.team,
+          icon: "fa-users",
+        },
+      ],
+      organisations: [
+        {
+          id: projectUser.organisationId,
+          icon: "fa-sitemap",
+          name: projectUser.organisation,
+        },
+      ],
+    };
+
+    this.setState({ newStakeholder: newElem }, () => {
+      if (!newElem.individuals[0].sh_category) return;
+      const newProjectUserId = projectUser.projectUserId;
+      const newShCategory = newElem.individuals[0].sh_category.current.split(
+        "_"
+      )[1];
+
+      let bExist = false;
+
+      for (let i = 0; i < this.projectMapProjectUserList.length; i++) {
+        if (
+          this.projectMapProjectUserList[i].projectUserId ===
+            newProjectUserId &&
+          this.projectMapProjectUserList[i].shCategory === newShCategory
+        ) {
+          bExist = true;
+          break;
+        }
+      }
+      if (!bExist) {
+        this.projectMapProjectUserList.push({
+          projectUserId: newProjectUserId,
+          shCategory: parseInt(newShCategory, 10),
+        });
+      }
+    });
+  };
 
   handleFilter = (search) => {
     const filter = search;
@@ -838,7 +813,7 @@ class MyMap extends React.Component {
       currentSurveyUserId: 0,
       currentSurveyUser: {},
     });
-  }
+  };
 
   handleToggleMapModeDropdown = () => {
     this.setState({
@@ -988,11 +963,11 @@ class MyMap extends React.Component {
           <div className={styles.topbar}>
             <TopNav history={history} menuTitle="My Map">
               {/* {screen === "aosurvey" && ( */}
-                <div className={styles.section}>
-                  <div className={styles["graph-toggle"]}>
-                    <h2 className={styles["project-name"]}>{projectTitle}</h2>
-                  </div>
+              <div className={styles.section}>
+                <div className={styles["graph-toggle"]}>
+                  <h2 className={styles["project-name"]}>{projectTitle}</h2>
                 </div>
+              </div>
               {/* )} */}
               {screen !== "aosurvey" && (
                 <div className={styles.section}>
