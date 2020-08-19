@@ -987,13 +987,13 @@ class MyMap extends React.Component {
         {(!searchFullHeight || toggleGraph) && (
           <div className={styles.topbar}>
             <TopNav history={history} menuTitle="My Map">
-              {screen === "aosurvey" && (
+              {/* {screen === "aosurvey" && ( */}
                 <div className={styles.section}>
                   <div className={styles["graph-toggle"]}>
                     <h2 className={styles["project-name"]}>{projectTitle}</h2>
                   </div>
                 </div>
-              )}
+              {/* )} */}
               {screen !== "aosurvey" && (
                 <div className={styles.section}>
                   <h2 className={styles["project-name"]}>{projectTitle}</h2>
