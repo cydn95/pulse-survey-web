@@ -18,14 +18,14 @@ export const aoQuestionListSuccess = (aoQuestionList, optionList) => ({
 });
 
 export const submitAoQuestion = (
-  questionList,
+  answers,
   currentSurveyUser,
   projectUserId,
   surveyId,
   callback
 ) => ({
   type: SUBMIT_AOQUESTION,
-  payload: { questionList, currentSurveyUser, projectUserId, surveyId, callback },
+  payload: { answers, currentSurveyUser, projectUserId, surveyId, callback },
 });
 
 export const submitAoQuestionSuccess = () => ({

@@ -145,13 +145,15 @@ class MyMap extends React.Component {
       projectMapData,
       mapSaveLoading,
       mapGetLoading,
+      aoQuestionList
     } = props;
     // console.log('--------------------------------------');
     // console.log("StakeholderList:=", stakeholderList);
     // console.log(userList);
     // console.log(kMapData);
+    // console.log(aoQuestionList);
     // console.log("--------------------------------------");
-
+    
     const kMapDataForCurrentProject =
       kMapData.length > 0
         ? kMapData.filter((map) => map.project == projectId)
@@ -205,8 +207,12 @@ class MyMap extends React.Component {
     if (
       teamList.length > 0 &&
       userList.length > 0 &&
-      (shCategoryList.length > 0 || projectMapShCategoryList.length > 0)
+      (shCategoryList.length > 0 || projectMapShCategoryList.length > 0) &&
+      aoQuestionList.length > 0
     ) {
+
+      const totalQuestions = aoQuestionList.length;
+
       // Make Architecture For My Map
       shCategoryList.forEach((shCategory) => {
         architecture.sh_categories.push({
@@ -355,8 +361,20 @@ class MyMap extends React.Component {
                   individualUser.team.current = `T_${userList[i].team.id}`;
                   individualUser.organisation.current = `O_${userList[i].user.organization.name}`;
                   individualUser.sh_category.current = `SHC_${userList[i].shCategory[j]}`;
+                  
+                  // Calculate Survey Completion - MyMap
+                  let totalAnsweredQuestion = 0;
+                  for (let k = 0; k < aoQuestionList.length; k++) {
+                    const tempLen = aoQuestionList[k].response.filter(
+                      (resp) =>
+                        resp.shCategory == userList[i].shCategory[j] &&
+                        resp.subProjectUser == userList[i].id
+                    ).length;
+                    if (tempLen > 0) totalAnsweredQuestion++;
+                  }
+
                   individualUser.survey_completion = (
-                    (userList[i].ao_answered / userList[i].ao_total) *
+                    (totalAnsweredQuestion / totalQuestions) *
                     100
                   ).toFixed(2);
 
@@ -453,9 +471,23 @@ class MyMap extends React.Component {
                   individualUser.team.current = `T_${userList[i].team.id}`;
                   individualUser.organisation.current = `O_${userList[i].user.organization.name}`;
                   individualUser.sh_category.current = `SHC_${userList[i].shCategory[j]}`;
-                  individualUser.survey_completion =
-                    (userList[i].ao_answered / userList[i].ao_total) * 100;
+                  
+                  // Calculate Survey Completion - ProjectMap
+                  let totalAnsweredQuestion = 0;
+                  for (let k = 0; k < aoQuestionList.length; k++) {
+                    const tempLen = aoQuestionList[k].response.filter(
+                      (resp) =>
+                        resp.shCategory == userList[i].shCategory[j] &&
+                        resp.subProjectUser == userList[i].id
+                    ).length;
+                    if (tempLen > 0) totalAnsweredQuestion++;
+                  }
 
+                  individualUser.survey_completion = (
+                    (totalAnsweredQuestion / totalQuestions) *
+                    100
+                  ).toFixed(2);
+                  
                   bAdd = true;
 
                   break;
@@ -808,11 +840,12 @@ class MyMap extends React.Component {
   };
 
   callbackSubmitSurvey = () => {
-    this.setState({
-      screen: "list",
-      currentSurveyUserId: 0,
-      currentSurveyUser: {},
-    });
+    // this.setState({
+    //   screen: "list",
+    //   currentSurveyUserId: 0,
+    //   currentSurveyUser: {},
+    // });
+    window.location.reload(false);
   };
 
   handleToggleMapModeDropdown = () => {
@@ -945,6 +978,7 @@ class MyMap extends React.Component {
       mapStyle,
       myMapStakeholderList,
       projectMapStakeholderList,
+      currentSurveyUserId,
     } = this.state;
 
     const mapHeaderVisible = toggleGraph
@@ -1170,6 +1204,7 @@ class MyMap extends React.Component {
                     drivers={driverList}
                     user={currentSurveyUser}
                     skipQuestionList={skipQuestionList}
+                    currentSurveyUserId={currentSurveyUserId}
                     onSubmit={(e, answerData) =>
                       this.handleSubmitSurvey(e, answerData)
                     }
