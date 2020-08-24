@@ -20,6 +20,7 @@ import {
   SURVEY_NOT_STARTED,
   SURVEY_IN_PROGRESS,
   SURVEY_COMPLETED,
+  controlTypeText,
 } from "Constants/defaultValues";
 
 import styles from "./styles.scss";
@@ -30,7 +31,17 @@ class AoSurvey extends React.Component {
   constructor(props) {
     super(props);
 
-    const { questions, options, drivers, pageIndex, user } = this.props;
+    const {
+      questions,
+      options,
+      drivers,
+      pageIndex,
+      user,
+      currentSurveyUserId,
+    } = this.props;
+
+    let totalQuestions = 0;
+    let totalAnswers = 0;
 
     for (let i = 0; i < drivers.length; i++) {
       drivers[i] = {
@@ -52,34 +63,180 @@ class AoSurvey extends React.Component {
       return item.questions.length > 0 ? true : false;
     });
 
+    const shCategoryId = currentSurveyUserId.split("_SHC_")[1];
+
+    const answers = [];
+    for (let i = 0; i < orderedDrivers.length; i++) {
+      for (let j = 0; j < orderedDrivers[i].questions.length; j++) {
+        totalQuestions++;
+
+        const temp = orderedDrivers[i].questions[j].response.filter(
+          (resp) =>
+            resp.shCategory == shCategoryId &&
+            resp.subProjectUser == user.projectUserId
+        );
+
+        totalAnswers += temp.length;
+
+        if (temp.length === 0) {
+          answers.push({
+            pageIndex: i,
+            questionIndex: j,
+            integerValue: 0,
+            topicValue: "",
+            commentValue: "",
+            skipValue: "",
+            topicTags: "",
+            commentTags: "",
+            user: 0,
+            subjectUser: 0,
+            survey: orderedDrivers[i].questions[j].survey,
+            amQuestion: orderedDrivers[i].questions[j].id,
+            type: "other",
+            controlType: controlTypeText(
+              orderedDrivers[i].questions[j].controlType
+            ),
+            shCategory: shCategoryId
+          });
+        } else {
+          answers.push({
+            amQuestion: orderedDrivers[i].questions[j].id,
+            pageIndex: i,
+            questionIndex: j,
+            integerValue: temp[0].integerValue,
+            topicValue: temp[0].topicValue,
+            commentValue: temp[0].commentValue,
+            skipValue: temp[0].skipValue,
+            topicTags: temp[0].topicValue,
+            commentTags: temp[0].commentTags,
+            user: temp[0].projectUser,
+            subjectUser: temp[0].subProjectUser,
+            survey: orderedDrivers[i].questions[j].survey,
+            type: "other",
+            controlType: controlTypeText(
+              orderedDrivers[i].questions[j].controlType
+            ),
+            shCategory: shCategoryId,
+          });
+        }
+      }
+    }
+
     this.state = {
       questions,
       options,
       drivers: orderedDrivers,
       pageIndex,
       currentUser: user,
+      answers,
+      totalAnswers,
+      totalQuestions,
     };
   }
 
   componentWillReceiveProps(props) {
-    const { pageIndex } = props;
+    const { pageIndex, currentSurveyUserId, user } = props;
 
-    this.setState({
-      pageIndex,
-    });
+    if (currentSurveyUserId != this.props.currentSurveyUserId) {
+      const { drivers } = this.state;
+
+      const shCategoryId = currentSurveyUserId.split("_SHC_")[1];
+
+      let totalQuestions = 0;
+      let totalAnswers = 0;
+
+      const answers = [];
+      for (let i = 0; i < drivers.length; i++) {
+        for (let j = 0; j < drivers[i].questions.length; j++) {
+          totalQuestions++;
+
+          const temp = drivers[i].questions[j].response.filter(
+            (resp) =>
+              resp.shCategory == shCategoryId &&
+              resp.subProjectUser == user.projectUserId
+          );
+
+          totalAnswers += temp.length;
+
+          if (temp.length === 0) {
+            answers.push({
+              pageIndex: i,
+              questionIndex: j,
+              integerValue: 0,
+              topicValue: "",
+              commentValue: "",
+              skipValue: "",
+              topicTags: "",
+              commentTags: "",
+              user: 0,
+              subjectUser: 0,
+              survey: drivers[i].questions[j].survey,
+              amQuestion: drivers[i].questions[j].id,
+              type: "other",
+              controlType: controlTypeText(drivers[i].questions[j].controlType),
+              shCategory: shCategoryId,
+            });
+          } else {
+            answers.push({
+              amQuestion: drivers[i].questions[j].id,
+              pageIndex: i,
+              questionIndex: j,
+              integerValue: temp[0].integerValue,
+              topicValue: temp[0].topicValue,
+              commentValue: temp[0].commentValue,
+              skipValue: temp[0].skipValue,
+              topicTags: temp[0].topicValue,
+              commentTags: temp[0].commentTags,
+              user: temp[0].projectUser,
+              subjectUser: temp[0].subProjectUser,
+              survey: drivers[i].questions[j].survey,
+              type: "other",
+              controlType: controlTypeText(drivers[i].questions[j].controlType),
+              shCategory: shCategoryId,
+            });
+          }
+        }
+      }
+
+      this.setState({
+        pageIndex,
+        answers,
+        totalAnswers,
+        totalQuestions,
+      });
+    } else {
+      this.setState({
+        pageIndex,
+      });
+    }
+    
   }
 
-  handleAnswer = (answer) => {
-    this.setState((state) => {
-      state.questions[answer.questionIndex].answer = {
+  handleAnswer = async (answer) => {
+    const indexOf = this.state.answers.findIndex(
+      (a) =>
+        a.pageIndex == answer.pageIndex &&
+        a.questionIndex == answer.questionIndex
+    );
+
+    await this.setState((state) => {
+      state.answers[indexOf] = {
         ...answer,
       };
       return state;
     });
-    this.props.stakeholderAnswer(
-      this.state.currentUser.projectUserId,
-      answer.amQuestion
-    );
+
+    const totalAnswers = this.state.answers.filter(
+      (answer) =>
+        answer.integerValue != 0 ||
+        answer.topicValue != "" ||
+        answer.commentValue != "" ||
+        answer.skipValue != ""
+    ).length;
+
+    this.setState({
+      totalAnswers
+    });
   };
 
   handleCancel = (e) => {
@@ -87,7 +244,7 @@ class AoSurvey extends React.Component {
   };
 
   handleSubmit = (e) => {
-    this.props.onSubmit(e, this.state.questions);
+    this.props.onSubmit(e, this.state.answers);
   };
 
   handleClickDriver = (driverId) => {
@@ -100,24 +257,30 @@ class AoSurvey extends React.Component {
   };
 
   render() {
-    const { options, currentUser } = this.state;
+    const {
+      options,
+      answers,
+      pageIndex,
+      totalAnswers,
+      totalQuestions,
+    } = this.state;
     const { skipQuestionList, user, projectTitle } = this.props;
 
     const drivers = [...this.state.drivers];
 
-    const defaultDrvierId = drivers.length
-      ? drivers[this.state.pageIndex].driverId
-      : 0;
+    const defaultDrvierId = drivers.length ? drivers[pageIndex].driverId : 0;
     const driver = drivers.filter((d) => d.driverId === defaultDrvierId)[0];
+
     for (let i = 0; i < drivers.length; i++) {
-      let answeredCount = 0;
-      for (let j = 0; j < drivers[i].questions.length; j++) {
-        if (currentUser.aoResponse instanceof Array) {
-          if (currentUser.aoResponse.indexOf(drivers[i].questions[j].id) >= 0) {
-            answeredCount++;
-          }
-        }
-      }
+      const answeredCount = answers.filter(
+        (answer) =>
+          answer.pageIndex == i &&
+          (answer.integerValue != 0 ||
+            answer.topicValue != "" ||
+            answer.commentValue != "" ||
+            answer.skipValue != "")
+      ).length;
+
       if (answeredCount === 0) {
         drivers[i].progress = SURVEY_NOT_STARTED;
       } else if (answeredCount < drivers[i].questions.length) {
@@ -126,6 +289,10 @@ class AoSurvey extends React.Component {
         drivers[i].progress = SURVEY_COMPLETED;
       }
     }
+
+    // console.log(driver);
+    // console.log(answers);
+
     return (
       <div className={styles.root}>
         <div className={styles.user}>
@@ -136,7 +303,7 @@ class AoSurvey extends React.Component {
             username={user.fullName}
             description={user.organisation + " / " + user.team}
             profilePicUrl={user.userAvatar}
-            userProgress={(user.aoAnswered / user.aoTotal) * 100}
+            userProgress={((totalAnswers / totalQuestions) * 100).toFixed(2)}
             donut={true}
           />
         </div>
@@ -153,6 +320,11 @@ class AoSurvey extends React.Component {
         </div>
         <div className={styles.questions}>
           {driver.questions.map((control, index) => {
+            const answer = answers.filter(
+              (answer) =>
+                answer.pageIndex == pageIndex && answer.questionIndex == index
+            )[0];
+
             switch (control.controlType) {
               case controlType.SLIDER:
                 return (
@@ -161,6 +333,7 @@ class AoSurvey extends React.Component {
                     skipQuestionList={skipQuestionList}
                     key={`${index}`}
                     question={control}
+                    answer={answer}
                     onAnswer={(answer) => this.handleAnswer(answer)}
                     projectTitle={projectTitle}
                   />
@@ -174,6 +347,7 @@ class AoSurvey extends React.Component {
                     key={`${index}`}
                     options={options}
                     question={control}
+                    answer={answer}
                     onAnswer={(answer) => this.handleAnswer(answer)}
                     projectTitle={projectTitle}
                   />
@@ -186,6 +360,7 @@ class AoSurvey extends React.Component {
                     key={`${index}`}
                     options={options}
                     question={control}
+                    answer={answer}
                     onAnswer={(answer) => this.handleAnswer(answer)}
                     projectTitle={projectTitle}
                   />
@@ -197,6 +372,7 @@ class AoSurvey extends React.Component {
                     skipQuestionList={skipQuestionList}
                     key={`${index}`}
                     question={control}
+                    answer={answer}
                     onAnswer={(answer) => this.handleAnswer(answer)}
                     projectTitle={projectTitle}
                   />
@@ -208,6 +384,7 @@ class AoSurvey extends React.Component {
                     skipQuestionList={skipQuestionList}
                     key={`${index}`}
                     question={control}
+                    answer={answer}
                     onAnswer={(answer) => this.handleAnswer(answer)}
                     projectTitle={projectTitle}
                   />

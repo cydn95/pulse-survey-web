@@ -12,20 +12,20 @@ class FreeText extends Component {
   constructor(props) {
     super(props);
 
-    const { question } = this.props;
+    const { answer } = this.props;
 
     this.state = {
       answer: {
-        ...question.answer,
+        ...answer,
       },
     };
   }
 
   componentWillReceiveProps(props) {
-    const { question } = props;
+    const { answer } = props;
     this.setState({
       answer: {
-        ...question.answer,
+        ...answer,
         controlType: "TEXT",
       },
     });

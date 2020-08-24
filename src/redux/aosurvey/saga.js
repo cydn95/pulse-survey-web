@@ -18,6 +18,7 @@ import {
   submitAoQuestionSuccess,
   addAboutOtherTopicSuccess,
   stakeholderList,
+  aoQuestionList,
 } from "Redux/actions";
 
 import { controlType, controlTypeText } from "Constants/defaultValues";
@@ -146,7 +147,7 @@ const submitAoQuestionAsync = async (answerData) =>
 
 function* submitAoQuestion({ payload }) {
   const {
-    questionList,
+    answers,
     currentSurveyUser,
     projectUserId,
     surveyId,
@@ -155,12 +156,12 @@ function* submitAoQuestion({ payload }) {
 
   let answerList = [];
 
-  for (let i = 0; i < questionList.length; i++) {
+  for (let i = 0; i < answers.length; i++) {
     // if (surveyUserId.split('_').length !== 2) {
     //   continue;
     // }
 
-    let integerValue = questionList[i].answer.integerValue;
+    let integerValue = answers[i].integerValue;
     let isTopic = false;
     if (integerValue.toString().includes("T-")) {
       integerValue = integerValue.toString().replace("T-", "");
@@ -169,20 +170,19 @@ function* submitAoQuestion({ payload }) {
     integerValue = Math.floor(parseInt(integerValue, 10));
 
     let answer = {
-      controlType: controlTypeText(questionList[i].controlType),
       integerValue: integerValue,
-      topicValue: questionList[i].answer.topicValue,
-      commentValue: questionList[i].answer.commentValue,
-      skipValue: questionList[i].answer.skipValue,
-      topicTags: isTopic
-        ? questionList[i].answer.topicValue
-        : questionList[i].answer.topicTags,
-      commentTags: questionList[i].answer.commentTags,
+      topicValue: answers[i].topicValue,
+      commentValue: answers[i].commentValue,
+      skipValue: answers[i].skipValue,
+      topicTags: isTopic ? answers[i].topicValue : answers[i].topicTags,
+      commentTags: answers[i].commentTags,
       projectUser: projectUserId,
       subProjectUser: currentSurveyUser.projectUserId,
-      survey: questionList[i].answer.survey.id,
-      project: questionList[i].answer.survey.project,
-      aoQuestion: questionList[i].answer.amQuestion,
+      survey: answers[i].survey.id,
+      project: answers[i].survey.project,
+      aoQuestion: answers[i].amQuestion,
+      shCategory: answers[i].shCategory,
+      controlType: answers[i].controlType,
     };
 
     if (
@@ -203,6 +203,7 @@ function* submitAoQuestion({ payload }) {
     if (result.status === 201) {
       yield put(submitAoQuestionSuccess());
       yield put(stakeholderList(projectUserId, surveyId));
+      yield put(aoQuestionList(currentSurveyUser, surveyId))
       callback();
     } else {
       console.log("submit failed");

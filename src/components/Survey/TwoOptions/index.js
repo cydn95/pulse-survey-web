@@ -11,7 +11,7 @@ class TwoOptions extends Component {
   constructor(props) {
     super(props);
 
-    const { question, options } = props;
+    const { question, options, answer } = props;
 
     let optionList = [];
 
@@ -26,18 +26,18 @@ class TwoOptions extends Component {
 
     this.state = {
       answer: {
-        ...question.answer,
+        ...answer,
       },
       optionList,
     };
   }
 
   componentWillReceiveProps(props) {
-    const { question } = props;
+    const { answer } = props;
 
     this.setState({
       answer: {
-        ...question.answer,
+        ...answer,
         controlType: "TWO_OPTIONS",
       },
     });
