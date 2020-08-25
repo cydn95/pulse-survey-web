@@ -9,7 +9,9 @@ class RangeSlider extends Component {
   constructor(props) {
     super(props);
 
-    const { answer } = this.props;
+    const { surveyType } = props;
+
+    const answer = surveyType === "me" ? props.question.answer : props.answer;
     this.state = {
       answer: {
         ...answer,
@@ -18,7 +20,10 @@ class RangeSlider extends Component {
   }
 
   componentWillReceiveProps(props) {
-    const { answer } = props;
+    const { surveyType } = props;
+
+    const answer = surveyType === "me" ? props.question.answer : props.answer;
+
     this.setState({
       answer: {
         ...answer,

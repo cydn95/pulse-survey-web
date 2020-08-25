@@ -35,14 +35,15 @@ import {
   shCategoryListSuccess,
 } from "./actions";
 
-const getTeamListAysnc = async () =>
-  await teamListAPI()
+const getTeamListAysnc = async (projectId) =>
+  await teamListAPI(projectId)
     .then((data) => data)
     .catch((error) => error);
 
-function* getTeamList() {
+function* getTeamList({ payload }) {
   try {
-    const result = yield call(getTeamListAysnc);
+    const { projectId } = payload;
+    const result = yield call(getTeamListAysnc, projectId);
 
     if (result.status === 200) {
       yield put(teamListSuccess(result.data));
@@ -147,7 +148,7 @@ function* getStakeholderList({ payload }) {
       result.data.forEach((sh) => {
         if (parseInt(sh.id, 10) === parseInt(projectUserId, 10)) {
           return; // logged user must not shown on the stackholder list
-        } 
+        }
 
         const shAoResponse = sh.ao_response;
         const filteredAoResponse = shAoResponse.filter((item, index) => {
@@ -190,7 +191,6 @@ function* getStakeholderList({ payload }) {
         });
       });
 
-      
       yield put(stakeholderListSuccess(stakeholderList, userList));
     }
   } catch (error) {

@@ -250,6 +250,7 @@ class AboutMeSurvey extends React.Component {
                                     }
                                     skipQuestionList={skipQuestionList}
                                     projectTitle={projectTitle}
+                                    surveyType="me"
                                   />
                                 </div>
                               );
@@ -267,6 +268,7 @@ class AboutMeSurvey extends React.Component {
                                     }
                                     skipQuestionList={skipQuestionList}
                                     projectTitle={projectTitle}
+                                    surveyType="me"
                                   />
                                 </div>
                               );
@@ -286,6 +288,7 @@ class AboutMeSurvey extends React.Component {
                                     }
                                     skipQuestionList={skipQuestionList}
                                     projectTitle={projectTitle}
+                                    surveyType="me"
                                   />
                                 </div>
                               );
@@ -306,6 +309,7 @@ class AboutMeSurvey extends React.Component {
                                     }
                                     skipQuestionList={skipQuestionList}
                                     projectTitle={projectTitle}
+                                    surveyType="me"
                                   />
                                 </div>
                               );
@@ -326,6 +330,7 @@ class AboutMeSurvey extends React.Component {
                                     }
                                     skipQuestionList={skipQuestionList}
                                     projectTitle={projectTitle}
+                                    surveyType="me"
                                   />
                                 </div>
                               );
@@ -344,6 +349,7 @@ class AboutMeSurvey extends React.Component {
                                     }
                                     skipQuestionList={skipQuestionList}
                                     projectTitle={projectTitle}
+                                    surveyType="me"
                                   />
                                 </div>
                               );

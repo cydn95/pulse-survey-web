@@ -109,7 +109,7 @@ class MyMap extends React.Component {
   }
 
   componentWillMount() {
-    const { userId, surveyId, surveyUserId, history } = this.props;
+    const { userId, surveyId, surveyUserId, projectId, history } = this.props;
 
     if (
       surveyId == undefined ||
@@ -127,7 +127,7 @@ class MyMap extends React.Component {
     this.props.getProjectMapData(surveyUserId, userId);
     this.props.getShCategoryList(surveyId, 0);
     this.props.getStakeholderList(surveyUserId, surveyId);
-    this.props.getTeamList();
+    this.props.getTeamList(projectId);
     this.props.getAoQuestionList(surveyUserId, surveyId);
     this.props.getDriverList(surveyId);
     this.props.getSkipQuestionList();

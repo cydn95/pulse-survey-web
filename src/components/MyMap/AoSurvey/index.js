@@ -336,6 +336,7 @@ class AoSurvey extends React.Component {
                     answer={answer}
                     onAnswer={(answer) => this.handleAnswer(answer)}
                     projectTitle={projectTitle}
+                    surveyType="other"
                   />
                 );
               case controlType.MULTI_OPTIONS:
@@ -350,6 +351,7 @@ class AoSurvey extends React.Component {
                     answer={answer}
                     onAnswer={(answer) => this.handleAnswer(answer)}
                     projectTitle={projectTitle}
+                    surveyType="other"
                   />
                 );
               case controlType.TWO_OPTIONS:
@@ -363,6 +365,7 @@ class AoSurvey extends React.Component {
                     answer={answer}
                     onAnswer={(answer) => this.handleAnswer(answer)}
                     projectTitle={projectTitle}
+                    surveyType="other"
                   />
                 );
               case controlType.TEXT:
@@ -375,6 +378,7 @@ class AoSurvey extends React.Component {
                     answer={answer}
                     onAnswer={(answer) => this.handleAnswer(answer)}
                     projectTitle={projectTitle}
+                    surveyType="other"
                   />
                 );
               case controlType.SMART_TEXT:
@@ -387,6 +391,7 @@ class AoSurvey extends React.Component {
                     answer={answer}
                     onAnswer={(answer) => this.handleAnswer(answer)}
                     projectTitle={projectTitle}
+                    surveyType="other"
                   />
                 );
 

@@ -76,8 +76,12 @@ const submitSurveyAPI = (answerData) => {
   return getClient(true).post("/amresponse/", answerData);
 };
 
-const teamListAPI = () => {
-  return getClient(true).get("/team/?format=json");
+const teamListAPI = (projectId) => {
+  if (projectId == 0) {
+    return getClient(true).get("/team/?format=json");
+  } else {
+    return getClient(true).get("/team/?format=json&project=" + projectId);
+  }
 };
 
 const shgroupListAPI = (surveyId = 1) => {
