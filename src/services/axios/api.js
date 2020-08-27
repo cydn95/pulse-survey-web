@@ -20,10 +20,14 @@ const projectListByUserAPI = (userId) => {
   return getClient(true).get("/projectbyuser/?format=json&user=" + userId);
 };
 
-const surveyListByProjectAPI = (projectId) => {
-  return getClient(true).get(
-    "/surveybyproject/?format=json&project=" + projectId
-  );
+const surveyListByProjectAPI = (projectId = 0) => {
+  if (projectId === 0) {
+    return getClient(true).get("/surveybyproject/?format=json");
+  } else {
+    return getClient(true).get(
+      "/surveybyproject/?format=json&project=" + projectId
+    );
+  }
 };
 
 const getSurveyUserAPI = (userId, surveyId) => {
