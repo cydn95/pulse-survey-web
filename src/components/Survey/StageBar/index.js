@@ -1,7 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Row } from "reactstrap";
-import { Colxx, Separator } from "Components/CustomBootstrap";
+import { Colxx } from "Components/CustomBootstrap";
 import IntlMessages from "Util/IntlMessages";
 import { connect } from "react-redux";
 
@@ -11,16 +10,6 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-const DropDownMennu = (props) => {
-  return (
-    <div>
-      <Link to="" tooltip="Settings">
-        <i className="fas fa-sliders-h right"></i>
-      </Link>
-    </div>
-  );
-};
 
 class StageBar extends React.Component {
   onClickPage = (e, pageIndex) => {

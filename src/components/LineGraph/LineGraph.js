@@ -9,7 +9,6 @@ import styles from "./styles.scss";
 function renderGraph(node, props) {
   const {
     data,
-    onClick,
     keySelector,
     labelSelector,
     valueSelector,

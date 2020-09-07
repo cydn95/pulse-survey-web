@@ -14,8 +14,10 @@ import {
 } from "Constants/actionTypes";
 
 import {
+  kMapData,
   kMapDataSuccess,
   kMapSaveSuccess,
+  projectMapData,
   projectMapDataSuccess,
   projectMapSaveSuccess,
 } from "./actions";
@@ -64,13 +66,14 @@ const saveKMapDataAysnc = async (mapData) =>
     .catch((error) => error);
 
 function* saveKMapData({ payload }) {
-  const { mapData } = payload;
+  const { mapData, projectUserId, userId } = payload;
 
   try {
     const result = yield call(saveKMapDataAysnc, mapData);
 
     if (result.status === 201) {
       yield put(kMapSaveSuccess(result.data));
+      setTimeout(yield put(kMapData(projectUserId, userId)), 5000);
     }
   } catch (error) {
     console.log("error : ", error);
@@ -83,13 +86,14 @@ const saveProjectMapDataAysnc = async (mapData) =>
     .catch((error) => error);
 
 function* saveProjectMapData({ payload }) {
-  const { mapData } = payload;
+  const { mapData, projectUserId, userId } = payload;
 
   try {
     const result = yield call(saveProjectMapDataAysnc, mapData);
 
     if (result.status === 201) {
       yield put(projectMapSaveSuccess(result.data));
+      yield put(projectMapData(projectUserId, userId));
     }
   } catch (error) {
     console.log("error : ", error);

@@ -1,17 +1,4 @@
 import React, { useState, useEffect } from "react";
-import {
-  ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Row,
-  Col,
-  ButtonGroup,
-  Form,
-  FormGroup,
-  Input,
-  Label,
-} from "reactstrap";
 
 import Button from "@material-ui/core/Button";
 import DropDown from "Components/dropdown";
@@ -20,14 +7,7 @@ import styles from "./styles.scss";
 
 const KGraphNavControls = (props) => {
   const {
-    viewDropDownOpen,
-    layoutDropDownOpen,
-    updateViewDisplay,
-    updateLayoutDisplay,
     updateMap,
-    // selectedLayout,
-    // selectedViewMode,
-    enableLayout,
     saveGraph,
     saveLoading,
   } = props;
@@ -50,8 +30,6 @@ const KGraphNavControls = (props) => {
         updateMap(["Team"], "viewMode");
       }
     }
-    console.log("****************");
-    console.log(selectedViewMode);
   }, [selectedViewMode]);
 
   useEffect(() => {

@@ -24,13 +24,13 @@ KeyLines.promisify();
 class BaseController {
   constructor(setState, clickNodeListener, apList, esList) {
     // for access through console
-    let chart;
-    let container;
-    let overElem;
-    let highLevelNodes;
-    let viewMode;
-    let layoutName;
-    let comboMap;
+    // let chart;
+    // let container;
+    // let overElem;
+    // let highLevelNodes;
+    // let viewMode;
+    // let layoutName;
+    // let comboMap;
     this.dataStore = new DataStore(apList, esList);
     window.keyLinesController = this;
     this.setContainerState = setState;
@@ -72,14 +72,17 @@ class BaseController {
     // create the donuts
     this.chart.each({ type: "node", items: "underlying" }, (item) => {
       if (item.d.survey_completion) {
-        let percentage = item.d.survey_completion;
-        let segment = Math.abs(percentage - 50) * 2;
+        let percentage = Math.abs(parseFloat(item.d.survey_completion).toFixed(2));
+
+        // console.log(percentage);
+
+        // let segment = Math.abs(percentage - 50) * 2;
         let segmentColor = percentage <= 50 ? "#ff5500" : "#1f45b8";
         props.push({
           id: item.id,
           donut: {
-            v: [segment, 100 - segment],
-            c: [segmentColor, "#00d3b2"],
+            v: [percentage, 100 - percentage],
+            c: [segmentColor, "#c0c0c0"],
             b: "#3b4f81",
             w: 5,
             bw: 0,
@@ -419,7 +422,7 @@ class BaseController {
       imageAlignment,
     };
 
-    let { newItems, highLevelNodes } = await this.dataStore.getCoreStructure();
+    let { newItems /* highLevelNodes */} = await this.dataStore.getCoreStructure();
     this.chart = await KeyLines.create([
       { container: chartContainer, options: chartOptions, type: "chart" },
     ]);

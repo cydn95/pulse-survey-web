@@ -32,7 +32,7 @@ class Account extends React.Component {
       NotificationManager.error("Password must be required", "Info", 2000);
       return;
     }
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       NotificationManager.error("Password does not match", "Info", 2000);
       return;
     }

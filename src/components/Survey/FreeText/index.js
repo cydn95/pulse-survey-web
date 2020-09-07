@@ -12,20 +12,23 @@ class FreeText extends Component {
   constructor(props) {
     super(props);
 
-    const { question } = this.props;
+    const { surveyType } = props;
+    const answer = surveyType === "me" ? props.question.answer : props.answer;
 
     this.state = {
       answer: {
-        ...question.answer,
+        ...answer,
       },
     };
   }
 
   componentWillReceiveProps(props) {
-    const { question } = props;
+    const { surveyType } = props;
+    const answer = surveyType === "me" ? props.question.answer : props.answer;
+    
     this.setState({
       answer: {
-        ...question.answer,
+        ...answer,
         controlType: "TEXT",
       },
     });

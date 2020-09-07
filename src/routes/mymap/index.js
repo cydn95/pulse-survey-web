@@ -28,7 +28,6 @@ import {
   StakeholderManager,
 } from "Components/MyMap";
 import { NewStakeholder } from "Components/Survey";
-import SearchBar from "Components/search-bar";
 import Button from "Components/Button";
 
 import { serverUrl } from "Constants/defaultValues";
@@ -108,210 +107,8 @@ class MyMap extends React.Component {
     };
   }
 
-  handleAddNewStakeholder = (stakeholder) => {
-    const { projectId, surveyId } = this.props;
-    this.props.addStakeholder(
-      projectId,
-      surveyId,
-      stakeholder,
-      this.callbackAddNewStakeholder
-    );
-  };
-
-  callbackAddNewStakeholder = (code) => {
-    if (code === 400) {
-      console.log("Code is ", code);
-      NotificationManager.error(
-        "Stakeholder is already existed",
-        "Error",
-        2000
-      );
-    }
-  };
-
-  handleShowAddPage = () => {
-    this.setState({
-      screen: "add",
-    });
-  };
-
-  handleAddStackholderToGraph = (data, e = {}) => {
-    console.log(this.myMapProjectUserList);
-    console.log(data);
-    console.log(this.state.apList);
-    console.log(this.state.esList);
-    const projectUserId = data.stakeholder;
-    const { stakeholderList } = this.state;
-    let projectUser = stakeholderList.filter((e) => {
-      return parseInt(e.projectUserId, 10) === parseInt(projectUserId, 10);
-    });
-
-    if (projectUser.length === 0) return;
-
-    projectUser = projectUser[0];
-
-    let newElem = {
-      individuals: [
-        {
-          id: projectUser.userId + "_" + uuid(),
-          name: projectUser.fullName,
-          color: "transparent",
-          icon: "fa-user",
-          avatar: projectUser.userAvatar,
-          survey_completion:
-            (projectUser.aoAnswered / projectUser.aoTotal) * 100,
-          iconColor: "rgb(0, 0, 0)",
-          team: {
-            current: projectUser.teamId,
-            changeable: true,
-          },
-          organisation: {
-            current: projectUser.organisationId,
-            changeable: true,
-          },
-          viewCoordinates:
-            Object.keys(e).length > 0
-              ? {
-                  clientX: e.clientX,
-                  clientY: e.clientY,
-                }
-              : {},
-        },
-      ],
-      teams: [
-        {
-          id: projectUser.teamId,
-          name: projectUser.team,
-          icon: "fa-users",
-        },
-      ],
-      organisations: [
-        {
-          id: projectUser.organisationId,
-          icon: "fa-building",
-          name: projectUser.organisation,
-        },
-      ],
-    };
-    // console.log('*********************************');
-    //       console.log(newElem);
-    //       console.log(this.myMapProjectUserList);
-    // console.log("*********************************");
-    this.setState({ newStakeholder: newElem }, () => {
-
-      if (!newElem.individuals[0].sh_category) return;
-      const newProjectUserId = projectUser.projectUserId;
-      const newShCategory = newElem.individuals[0].sh_category.current.split(
-        "_"
-      )[1];
-
-      let bExist = false;
-
-      for (let i = 0; i < this.myMapProjectUserList.length; i++) {
-        if (
-          parseInt(this.myMapProjectUserList[i].projectUserId, 10) ===
-            parseInt(newProjectUserId, 10) &&
-          parseInt(this.myMapProjectUserList[i].shCategory, 10) ===
-            parseInt(newShCategory, 10)
-        ) {
-          bExist = true;
-          break;
-        }
-      }
-      if (!bExist) {
-        this.myMapProjectUserList.push({
-          projectUserId: newProjectUserId,
-          shCategory: parseInt(newShCategory, 10),
-        });
-      }
-    });
-  };
-
-  handleAddStackholderToProjectGraph = (data, e = {}) => {
-    const projectUserId = data.stakeholder;
-    const { stakeholderList } = this.state;
-    let projectUser = stakeholderList.filter((e) => {
-      return parseInt(e.projectUserId, 10) === parseInt(projectUserId, 10);
-    });
-
-    if (projectUser.length === 0) return;
-
-    projectUser = projectUser[0];
-
-    let newElem = {
-      individuals: [
-        {
-          id: projectUser.userId + "_" + uuid(),
-          name: projectUser.fullName,
-          color: "transparent",
-          icon: "fa-user",
-          avatar: projectUser.userAvatar,
-          survey_completion:
-            (projectUser.aoAnswered / projectUser.aoTotal) * 100,
-          iconColor: "rgb(0, 0, 0)",
-          team: {
-            current: projectUser.teamId,
-            changeable: true,
-          },
-          organisation: {
-            current: projectUser.organisationId,
-            changeable: true,
-          },
-          viewCoordinates:
-            Object.keys(e).length > 0
-              ? {
-                  clientX: e.clientX,
-                  clientY: e.clientY,
-                }
-              : {},
-        },
-      ],
-      teams: [
-        {
-          id: projectUser.teamId,
-          name: projectUser.team,
-          icon: "fa-users",
-        },
-      ],
-      organisations: [
-        {
-          id: projectUser.organisationId,
-          icon: "fa-building",
-          name: projectUser.organisation,
-        },
-      ],
-    };
-
-    this.setState({ newStakeholder: newElem }, () => {
-      if (!newElem.individuals[0].sh_category) return;
-      const newProjectUserId = projectUser.projectUserId;
-      const newShCategory = newElem.individuals[0].sh_category.current.split(
-        "_"
-      )[1];
-
-      let bExist = false;
-
-      for (let i = 0; i < this.projectMapProjectUserList.length; i++) {
-        if (
-          this.projectMapProjectUserList[i].projectUserId ===
-            newProjectUserId &&
-          this.projectMapProjectUserList[i].shCategory === newShCategory
-        ) {
-          bExist = true;
-          break;
-        }
-      }
-      if (!bExist) {
-        this.projectMapProjectUserList.push({
-          projectUserId: newProjectUserId,
-          shCategory: parseInt(newShCategory, 10),
-        });
-      }
-    });
-  };
-
   componentWillMount() {
-    const { userId, surveyId, surveyUserId, history } = this.props;
+    const { userId, surveyId, surveyUserId, projectId, history } = this.props;
 
     if (
       surveyId == undefined ||
@@ -329,14 +126,15 @@ class MyMap extends React.Component {
     this.props.getProjectMapData(surveyUserId, userId);
     this.props.getShCategoryList(surveyId, 0);
     this.props.getStakeholderList(surveyUserId, surveyId);
-    this.props.getTeamList();
-    this.props.getAoQuestionList(surveyUserId);
+    this.props.getTeamList(projectId);
+    this.props.getAoQuestionList(surveyUserId, surveyId);
     this.props.getDriverList(surveyId);
     this.props.getSkipQuestionList();
   }
 
   componentWillReceiveProps(props) {
     const {
+      projectId,
       stakeholderList,
       teamList,
       shCategoryList,
@@ -346,11 +144,24 @@ class MyMap extends React.Component {
       projectMapData,
       mapSaveLoading,
       mapGetLoading,
+      aoQuestionList
     } = props;
-    console.log('--------------------------------------');
-    console.log(stakeholderList);
-    console.log(userList);
-    console.log("--------------------------------------");
+    // console.log('--------------------------------------');
+    // console.log("StakeholderList:=", stakeholderList);
+    // console.log(userList);
+    // console.log(kMapData);
+    // console.log(aoQuestionList);
+    // console.log("--------------------------------------");
+    
+    const kMapDataForCurrentProject =
+      kMapData.length > 0
+        ? kMapData.filter((map) => map.project.toString() === projectId.toString())
+        : [];
+
+    const projectMapDataForCurrentProject =
+      projectMapData.length > 0
+        ? projectMapData.filter((map) => map.project.toString() === projectId.toString())
+        : [];
     /*
      * ------------------------------------------------------------------------------
      * For MyMap Layouts
@@ -390,11 +201,17 @@ class MyMap extends React.Component {
       organisations: [],
     };
 
+    // console.log("shCategoryList:=", shCategoryList);
+
     if (
       teamList.length > 0 &&
       userList.length > 0 &&
-      (shCategoryList.length > 0 || projectMapShCategoryList.length > 0)
+      (shCategoryList.length > 0 || projectMapShCategoryList.length > 0) &&
+      aoQuestionList.length > 0
     ) {
+
+      const totalQuestions = aoQuestionList.length;
+
       // Make Architecture For My Map
       shCategoryList.forEach((shCategory) => {
         architecture.sh_categories.push({
@@ -440,7 +257,7 @@ class MyMap extends React.Component {
         if (organizationList.length === 0) {
           organizationList.push({
             id: "O_" + user.user.organization.name,
-            icon: "fa-building",
+            icon: "fa-sitemap",
             name: user.user.organization.name,
           });
         } else {
@@ -453,7 +270,7 @@ class MyMap extends React.Component {
           if (bExist === false) {
             organizationList.push({
               id: "O_" + user.user.organization.name,
-              icon: "fa-building",
+              icon: "fa-sitemap",
               name: user.user.organization.name,
             });
           }
@@ -463,14 +280,28 @@ class MyMap extends React.Component {
       individual.organisations = organizationList;
       projectMapIndividual.organisations = organizationList;
 
+      // console.log("kMapDataForCurrentProject:=", kMapDataForCurrentProject);
+
       let individualList = [];
-      if (kMapData.length > 0) {
+      if (kMapDataForCurrentProject.length > 0) {
         let mapUserList = [];
-        for (let i = 0; i < kMapData[0].pu_category.length; i++) {
-          mapUserList.push({
-            projectUserId: kMapData[0].pu_category[i].projectUser,
-            shCategory: kMapData[0].pu_category[i].category,
-          });
+        for (
+          let i = 0;
+          i < kMapDataForCurrentProject[0].pu_category.length;
+          i++
+        ) {
+          if (
+            shCategoryList.filter(
+              (sc) =>
+                sc.id.toString() === kMapDataForCurrentProject[0].pu_category[i].category.toString()
+            ).length > 0
+          ) {
+            mapUserList.push({
+              projectUserId:
+                kMapDataForCurrentProject[0].pu_category[i].projectUser,
+              shCategory: kMapDataForCurrentProject[0].pu_category[i].category,
+            });
+          }
         }
 
         mapUserList.forEach((mapUser) => {
@@ -527,8 +358,22 @@ class MyMap extends React.Component {
                   individualUser.team.current = `T_${userList[i].team.id}`;
                   individualUser.organisation.current = `O_${userList[i].user.organization.name}`;
                   individualUser.sh_category.current = `SHC_${userList[i].shCategory[j]}`;
-                  individualUser.survey_completion =
-                    (userList[i].ao_answered / userList[i].ao_total) * 100;
+                  
+                  // Calculate Survey Completion - MyMap
+                  let totalAnsweredQuestion = 0;
+                  for (let k = 0; k < aoQuestionList.length; k++) {
+                    const tempLen = aoQuestionList[k].response.filter(
+                      (resp) =>
+                        resp.shCategory.toString() === userList[i].shCategory[j].toString() &&
+                        resp.subProjectUser.toString() === userList[i].id.toString()
+                    ).length;
+                    if (tempLen > 0) totalAnsweredQuestion++;
+                  }
+
+                  individualUser.survey_completion = (
+                    (totalAnsweredQuestion / totalQuestions) *
+                    100
+                  ).toFixed(2);
 
                   bAdd = true;
 
@@ -559,12 +404,18 @@ class MyMap extends React.Component {
 
       // Project Map Individuals
       individualList = [];
-      if (projectMapData.length > 0) {
+      if (projectMapDataForCurrentProject.length > 0) {
         let mapUserList = [];
-        for (let i = 0; i < projectMapData[0].pu_category.length; i++) {
+        for (
+          let i = 0;
+          i < projectMapDataForCurrentProject[0].pu_category.length;
+          i++
+        ) {
           mapUserList.push({
-            projectUserId: projectMapData[0].pu_category[i].projectUser,
-            shCategory: projectMapData[0].pu_category[i].category,
+            projectUserId:
+              projectMapDataForCurrentProject[0].pu_category[i].projectUser,
+            shCategory:
+              projectMapDataForCurrentProject[0].pu_category[i].category,
           });
         }
 
@@ -617,9 +468,23 @@ class MyMap extends React.Component {
                   individualUser.team.current = `T_${userList[i].team.id}`;
                   individualUser.organisation.current = `O_${userList[i].user.organization.name}`;
                   individualUser.sh_category.current = `SHC_${userList[i].shCategory[j]}`;
-                  individualUser.survey_completion =
-                    (userList[i].ao_answered / userList[i].ao_total) * 100;
+                  
+                  // Calculate Survey Completion - ProjectMap
+                  let totalAnsweredQuestion = 0;
+                  for (let k = 0; k < aoQuestionList.length; k++) {
+                    const tempLen = aoQuestionList[k].response.filter(
+                      (resp) =>
+                        resp.shCategory.toString() === userList[i].shCategory[j].toString() &&
+                        resp.subProjectUser.toString() === userList[i].id.toString()
+                    ).length;
+                    if (tempLen > 0) totalAnsweredQuestion++;
+                  }
 
+                  individualUser.survey_completion = (
+                    (totalAnsweredQuestion / totalQuestions) *
+                    100
+                  ).toFixed(2);
+                  
                   bAdd = true;
 
                   break;
@@ -653,8 +518,8 @@ class MyMap extends React.Component {
       //--------------------------------------------------------------------
 
       let decisionMakerList = [];
-      if (kMapData.length > 0 && stakeholderList.length > 0) {
-        let mapUserList = kMapData[0].projectUser;
+      if (kMapDataForCurrentProject.length > 0 && stakeholderList.length > 0) {
+        let mapUserList = kMapDataForCurrentProject[0].projectUser;
         for (let i = 0; i < mapUserList.length; i++) {
           for (let j = 0; j < stakeholderList.length; j++) {
             if (mapUserList[i] === stakeholderList[j].projectUserId) {
@@ -666,8 +531,8 @@ class MyMap extends React.Component {
       }
 
       let myMapStakeholderList = [];
-      if (kMapData.length > 0 && stakeholderList.length > 0) {
-        let mapUserList = kMapData[0].projectUser;
+      if (kMapDataForCurrentProject.length > 0 && stakeholderList.length > 0) {
+        let mapUserList = kMapDataForCurrentProject[0].projectUser;
         for (let i = 0; i < mapUserList.length; i++) {
           for (let j = 0; j < stakeholderList.length; j++) {
             if (mapUserList[i] === stakeholderList[j].projectUserId) {
@@ -679,8 +544,11 @@ class MyMap extends React.Component {
       }
 
       let projectMapStakeholderList = [];
-      if (projectMapData.length > 0 && stakeholderList.length > 0) {
-        let mapUserList = projectMapData[0].projectUser;
+      if (
+        projectMapDataForCurrentProject.length > 0 &&
+        stakeholderList.length > 0
+      ) {
+        let mapUserList = projectMapDataForCurrentProject[0].projectUser;
         for (let i = 0; i < mapUserList.length; i++) {
           for (let j = 0; j < stakeholderList.length; j++) {
             if (mapUserList[i] === stakeholderList[j].projectUserId) {
@@ -690,28 +558,6 @@ class MyMap extends React.Component {
           }
         }
       }
-
-      // console.log(myMapStakeholderList);
-      // console.log(projectMapStakeholderList);
-      // Project Map
-      // const projectArchitecture = {
-      //   main: {
-      //     ...architecture.main
-      //   },
-      //   sh_categories: []
-      // }
-
-      // projectArchitecture.main.name = projectTitle;
-      // projectArchitecture.main.icon = `${serverUrl}/media/uploads/shcategory/project.svg`;
-      // projectArchitecture.main.color = "#7030a0";
-      // projectArchitecture.main.iconColor = "#fefefa";
-
-      // for (let i = 0; i < architecture.sh_categories.length; i++) {
-      //   projectArchitecture.sh_categories.push({
-      //     ...architecture.sh_categories[i],
-      //     individualCount: 0,
-      //   });
-      // }
 
       this.setState({
         stakeholderList,
@@ -733,33 +579,212 @@ class MyMap extends React.Component {
     }
   }
 
-  handleFilter = (search) => {
-    const filter = search;
+  handleAddNewStakeholder = (stakeholder) => {
+    const { projectId, surveyId } = this.props;
+    this.props.addStakeholder(
+      projectId,
+      surveyId,
+      stakeholder,
+      this.callbackAddNewStakeholder
+    );
+  };
 
-    this.setState((state) => {
-      for (let i = 0; i < state.stakeholderList.length; i++) {
-        if (search === "") {
-          state.stakeholderList[i].show = true;
-          continue;
-        }
-        const index = state.stakeholderList[i].fullName.indexOf(filter);
+  callbackAddNewStakeholder = (code) => {
+    if (code === 400) {
+      NotificationManager.error(
+        "Stakeholder is already existed",
+        "Error",
+        2000
+      );
+    }
+  };
 
-        if (index < 0) {
-          state.stakeholderList[i].show = false;
+  handleAddStackholderToGraph = (data, e = {}) => {
+    const projectUserId = data.stakeholder;
+    const { stakeholderList } = this.state;
+    let projectUser = stakeholderList.filter((e) => {
+      return parseInt(e.projectUserId, 10) === parseInt(projectUserId, 10);
+    });
+
+    if (projectUser.length === 0) return;
+
+    projectUser = projectUser[0];
+
+    let newElem = {
+      individuals: [
+        {
+          id: projectUser.userId + "_" + uuid(),
+          name: projectUser.fullName,
+          color: "transparent",
+          icon: "fa-user",
+          avatar: projectUser.userAvatar,
+          survey_completion: (
+            (projectUser.aoAnswered / projectUser.aoTotal) *
+            100
+          ).toFixed(2),
+          iconColor: "rgb(0, 0, 0)",
+          team: {
+            current: projectUser.teamId,
+            changeable: true,
+          },
+          organisation: {
+            current: projectUser.organisationId,
+            changeable: true,
+          },
+          viewCoordinates:
+            Object.keys(e).length > 0
+              ? {
+                  clientX: e.clientX,
+                  clientY: e.clientY,
+                }
+              : {},
+        },
+      ],
+      teams: [
+        {
+          id: projectUser.teamId,
+          name: projectUser.team,
+          icon: "fa-users",
+        },
+      ],
+      organisations: [
+        {
+          id: projectUser.organisationId,
+          icon: "fa-sitemap",
+          name: projectUser.organisation,
+        },
+      ],
+    };
+    // console.log('*********************************');
+    //       console.log(newElem);
+    //       console.log(this.myMapProjectUserList);
+    // console.log("*********************************");
+    this.setState({ newStakeholder: newElem }, () => {
+      if (!newElem.individuals[0].sh_category) return;
+      const newProjectUserId = projectUser.projectUserId;
+      const newShCategory = newElem.individuals[0].sh_category.current.split(
+        "_"
+      )[1];
+
+      let bExist = false;
+
+      for (let i = 0; i < this.myMapProjectUserList.length; i++) {
+        if (
+          parseInt(this.myMapProjectUserList[i].projectUserId, 10) ===
+            parseInt(newProjectUserId, 10) &&
+          parseInt(this.myMapProjectUserList[i].shCategory, 10) ===
+            parseInt(newShCategory, 10)
+        ) {
+          bExist = true;
+          break;
         }
       }
-      return {
-        stakeholderList: state.stakeholderList,
-      };
+      if (!bExist) {
+        this.myMapProjectUserList.push({
+          projectUserId: newProjectUserId,
+          shCategory: parseInt(newShCategory, 10),
+        });
+      }
+    });
+  };
+
+  handleShowAddPage = () => {
+    this.setState({
+      screen: "add",
+    });
+  };
+
+  handleAddStackholderToProjectGraph = (data, e = {}) => {
+    const projectUserId = data.stakeholder;
+    const { stakeholderList } = this.state;
+    let projectUser = stakeholderList.filter((e) => {
+      return parseInt(e.projectUserId, 10) === parseInt(projectUserId, 10);
+    });
+
+    if (projectUser.length === 0) return;
+
+    projectUser = projectUser[0];
+
+    let newElem = {
+      individuals: [
+        {
+          id: projectUser.userId + "_" + uuid(),
+          name: projectUser.fullName,
+          color: "transparent",
+          icon: "fa-user",
+          avatar: projectUser.userAvatar,
+          survey_completion: (
+            (projectUser.aoAnswered / projectUser.aoTotal) *
+            100
+          ).toFixed(2),
+          iconColor: "rgb(0, 0, 0)",
+          team: {
+            current: projectUser.teamId,
+            changeable: true,
+          },
+          organisation: {
+            current: projectUser.organisationId,
+            changeable: true,
+          },
+          viewCoordinates:
+            Object.keys(e).length > 0
+              ? {
+                  clientX: e.clientX,
+                  clientY: e.clientY,
+                }
+              : {},
+        },
+      ],
+      teams: [
+        {
+          id: projectUser.teamId,
+          name: projectUser.team,
+          icon: "fa-users",
+        },
+      ],
+      organisations: [
+        {
+          id: projectUser.organisationId,
+          icon: "fa-sitemap",
+          name: projectUser.organisation,
+        },
+      ],
+    };
+
+    this.setState({ newStakeholder: newElem }, () => {
+      if (!newElem.individuals[0].sh_category) return;
+      const newProjectUserId = projectUser.projectUserId;
+      const newShCategory = newElem.individuals[0].sh_category.current.split(
+        "_"
+      )[1];
+
+      let bExist = false;
+
+      for (let i = 0; i < this.projectMapProjectUserList.length; i++) {
+        if (
+          this.projectMapProjectUserList[i].projectUserId ===
+            newProjectUserId &&
+          this.projectMapProjectUserList[i].shCategory === newShCategory
+        ) {
+          bExist = true;
+          break;
+        }
+      }
+      if (!bExist) {
+        this.projectMapProjectUserList.push({
+          projectUserId: newProjectUserId,
+          shCategory: parseInt(newShCategory, 10),
+        });
+      }
     });
   };
 
   handleStartOtherSurvey = (id) => {
     if (id.startsWith("S_")) {
       let user = {};
-      for (let i = 0; i < this.state.decisionMakerList.length; i++) {
-        if (id.includes(`${this.state.decisionMakerList[i].userId}_`)) {
-          user = this.state.decisionMakerList[i];
+      for (let i = 0; i < this.state.stakeholderList.length; i++) {
+        if (id.includes(`${this.state.stakeholderList[i].userId}_`)) {
+          user = this.state.stakeholderList[i];
           break;
         }
       }
@@ -783,10 +808,41 @@ class MyMap extends React.Component {
   handleSubmitSurvey = (e, answerData) => {
     this.props.submitAoQuestion(
       answerData,
-      this.props.history,
       this.state.currentSurveyUser,
-      this.props.surveyUserId
+      this.props.surveyUserId,
+      this.props.surveyId,
+      this.callbackSubmitSurvey
     );
+  };
+
+  callbackSubmitSurvey = () => {
+    // this.setState({
+    //   screen: "list",
+    //   currentSurveyUserId: 0,
+    //   currentSurveyUser: {},
+    // });
+    window.location.reload(false);
+  };
+
+  handleFilter = (search) => {
+    const filter = search;
+
+    this.setState((state) => {
+      for (let i = 0; i < state.stakeholderList.length; i++) {
+        if (search === "") {
+          state.stakeholderList[i].show = true;
+          continue;
+        }
+        const index = state.stakeholderList[i].fullName.indexOf(filter);
+
+        if (index < 0) {
+          state.stakeholderList[i].show = false;
+        }
+      }
+      return {
+        stakeholderList: state.stakeholderList,
+      };
+    });
   };
 
   handleToggleMapModeDropdown = () => {
@@ -848,11 +904,13 @@ class MyMap extends React.Component {
       pu_category: mapProjectUserList,
       layout_json: {},
     };
+
     // console.log(newMapData); return;
+
     if (mapStyle === "my-map") {
-      this.props.saveKMapData(newMapData);
+      this.props.saveKMapData(newMapData, surveyUserId, userId);
     } else {
-      this.props.saveProjectMapData(newMapData);
+      this.props.saveProjectMapData(newMapData, surveyUserId, userId);
     }
   };
 
@@ -917,9 +975,9 @@ class MyMap extends React.Component {
       mapStyle,
       myMapStakeholderList,
       projectMapStakeholderList,
+      currentSurveyUserId,
     } = this.state;
-console.log(viewMode);
-console.log(layout);
+
     const mapHeaderVisible = toggleGraph
       ? classnames(styles["map-header"])
       : classnames(styles["map-header"], styles["mobile-hide"]);
@@ -929,19 +987,19 @@ console.log(layout);
     const stakeholderVisible = !toggleGraph
       ? classnames(styles["map-stakeholder"])
       : classnames(styles["map-stakeholder"], styles["mobile-hide"]);
-
+    // console.log(esList);
     return (
       <div>
         {(!searchFullHeight || toggleGraph) && (
           <div className={styles.topbar}>
             <TopNav history={history} menuTitle="My Map">
-              {screen === "aosurvey" && (
-                <div className={styles.section}>
-                  <div className={styles["graph-toggle"]}>
-                    <h2 className={styles["project-name"]}>{projectTitle}</h2>
-                  </div>
+              {/* {screen === "aosurvey" && ( */}
+              <div className={styles.section}>
+                <div className={styles["graph-toggle"]}>
+                  <h2 className={styles["project-name"]}>{projectTitle}</h2>
                 </div>
-              )}
+              </div>
+              {/* )} */}
               {screen !== "aosurvey" && (
                 <div className={styles.section}>
                   <h2 className={styles["project-name"]}>{projectTitle}</h2>
@@ -1110,15 +1168,6 @@ console.log(layout);
                   myMapStakeholderList={myMapStakeholderList}
                   projectMapStakeholderList={projectMapStakeholderList}
                 />
-                // <SearchBar
-                //   searchKey={searchKey}
-                //   decisionMakers={decisionMakerList}
-                //   onClickDecisionMaker={(id) => this.handleStartOtherSurvey(id)}
-                //   allStakeholders={stakeholderList}
-                //   addNewStakeholder={(e) => this.handleShowAddPage(e)}
-                //   onSearchFocus={(e) => this.handleSearchFocus()}
-                //   onSearchBlur={(e) => this.handleSearchBlur()}
-                // />
               )}
               {screen === "add" && shCategoryList.length > 0 && (
                 <NewStakeholder
@@ -1143,6 +1192,7 @@ console.log(layout);
                     drivers={driverList}
                     user={currentSurveyUser}
                     skipQuestionList={skipQuestionList}
+                    currentSurveyUserId={currentSurveyUserId}
                     onSubmit={(e, answerData) =>
                       this.handleSubmitSurvey(e, answerData)
                     }

@@ -11,7 +11,7 @@ class MultipleOptions extends Component {
   constructor(props) {
     super(props);
 
-    const { question, options } = props;
+    const { question, options, surveyType } = props;
 
     let optionList = [];
 
@@ -24,20 +24,23 @@ class MultipleOptions extends Component {
       }
     }
 
+    const answer = surveyType === "me" ? props.question.answer : props.answer;
     this.state = {
       answer: {
-        ...question.answer,
+        ...answer,
       },
       optionList,
     };
   }
 
   componentWillReceiveProps(props) {
-    const { question } = props;
+    const { surveyType } = props;
+
+    const answer = surveyType === "me" ? props.question.answer : props.answer;
 
     this.setState({
       answer: {
-        ...question.answer,
+        ...answer,
         controlType: "TWO_OPTIONS",
       },
     });

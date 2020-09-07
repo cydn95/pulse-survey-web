@@ -56,7 +56,6 @@ class AllStakeholderList extends Component {
       allStakeholders,
       surveyUserId,
       projectId,
-      surveyId,
       shCategoryList,
       projectMapShCategoryList,
       selectedMyCategoryList,
@@ -78,7 +77,7 @@ class AllStakeholderList extends Component {
         );
         if (
           (i1.length > 0 || i2.length > 0) &&
-          allStakeholders[i].projectId == projectId
+          allStakeholders[i].projectId.toString() === projectId.toString()
         ) {
           filteredStakeholderList.push(allStakeholders[i]);
         }

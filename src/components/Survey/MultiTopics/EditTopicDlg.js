@@ -36,7 +36,7 @@ class EditTopicDialog extends React.Component {
     }
   };
   render() {
-    const { open, onClose, onSave } = this.props;
+    const { open, onClose } = this.props;
     return (
       <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Topic</DialogTitle>

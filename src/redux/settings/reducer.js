@@ -11,7 +11,7 @@ import {
 const INIT_STATE = {
   locale:
     localStorage.getItem("currentLanguage") &&
-    localeOptions.filter((x) => x.id == localStorage.getItem("currentLanguage"))
+    localeOptions.filter((x) => x.id.toString() === localStorage.getItem("currentLanguage").toString())
       .length > 0
       ? localStorage.getItem("currentLanguage")
       : defaultLocale,

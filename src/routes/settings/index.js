@@ -2,10 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 
 import TopNav from "Containers/TopNav";
-import TabPanel from "Components/TabPanel";
 
 import Account from "./account";
-import Project from "./project";
 
 import styles from "./styles.scss";
 
@@ -22,7 +20,6 @@ class Settings extends React.Component {
 
   render() {
     const { history, projectTitle } = this.props;
-    const { tab } = this.state;
 
     return (
       <div className={styles.root}>

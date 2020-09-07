@@ -22,8 +22,9 @@ import {
   STAKEHOLDER_ANSWER,
 } from "Constants/actionTypes";
 
-export const teamList = () => ({
+export const teamList = (projectId = 0) => ({
   type: TEAM_LIST,
+  payload: { projectId },
 });
 
 export const teamListSuccess = (teamList) => ({

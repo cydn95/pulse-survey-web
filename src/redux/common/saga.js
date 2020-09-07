@@ -35,14 +35,15 @@ import {
   shCategoryListSuccess,
 } from "./actions";
 
-const getTeamListAysnc = async () =>
-  await teamListAPI()
+const getTeamListAysnc = async (projectId) =>
+  await teamListAPI(projectId)
     .then((data) => data)
     .catch((error) => error);
 
-function* getTeamList() {
+function* getTeamList({ payload }) {
   try {
-    const result = yield call(getTeamListAysnc);
+    const { projectId } = payload;
+    const result = yield call(getTeamListAysnc, projectId);
 
     if (result.status === 200) {
       yield put(teamListSuccess(result.data));
@@ -141,12 +142,13 @@ function* getStakeholderList({ payload }) {
     const { projectUserId, surveyId } = payload;
     const result = yield call(getStakeholderListAysnc, projectUserId, surveyId);
 
-    let stakeholderList = [];
+    const stakeholderList = [];
+    const userList = [];
     if (result.status === 200) {
       result.data.forEach((sh) => {
         if (parseInt(sh.id, 10) === parseInt(projectUserId, 10)) {
           return; // logged user must not shown on the stackholder list
-        } 
+        }
 
         const shAoResponse = sh.ao_response;
         const filteredAoResponse = shAoResponse.filter((item, index) => {
@@ -157,6 +159,12 @@ function* getStakeholderList({ payload }) {
         // console.log(shAoResponse);
         // console.log(filteredAoResponse);
         // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^");
+
+        if (sh.team === null || sh.user.organization === null) {
+          return;
+        }
+
+        userList.push(sh);
 
         stakeholderList.push({
           projectUserId: sh.id,
@@ -183,7 +191,7 @@ function* getStakeholderList({ payload }) {
         });
       });
 
-      yield put(stakeholderListSuccess(stakeholderList, result.data));
+      yield put(stakeholderListSuccess(stakeholderList, userList));
     }
   } catch (error) {
     console.log("error : ", error);

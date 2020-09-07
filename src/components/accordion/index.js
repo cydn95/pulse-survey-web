@@ -9,7 +9,7 @@ import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import styles from "./styles.scss";
 
 function AccordionComponent(props) {
-  const { icon, children } = props;
+  const { children } = props;
 
   const ref = useRef(null);
 

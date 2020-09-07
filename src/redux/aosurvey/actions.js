@@ -7,9 +7,9 @@ import {
   ADD_ABOUT_OTHER_TOPIC_SUCCESS,
 } from "Constants/actionTypes";
 
-export const aoQuestionList = (projectUserId) => ({
+export const aoQuestionList = (projectUserId, surveyId) => ({
   type: AOQUESTION_LIST,
-  payload: { projectUserId },
+  payload: { projectUserId, surveyId },
 });
 
 export const aoQuestionListSuccess = (aoQuestionList, optionList) => ({
@@ -18,13 +18,14 @@ export const aoQuestionListSuccess = (aoQuestionList, optionList) => ({
 });
 
 export const submitAoQuestion = (
-  questionList,
-  history,
+  answers,
   currentSurveyUser,
-  projectUserId
+  projectUserId,
+  surveyId,
+  callback
 ) => ({
   type: SUBMIT_AOQUESTION,
-  payload: { questionList, history, currentSurveyUser, projectUserId },
+  payload: { answers, currentSurveyUser, projectUserId, surveyId, callback },
 });
 
 export const submitAoQuestionSuccess = () => ({

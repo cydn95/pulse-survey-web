@@ -17,12 +17,14 @@ import {
   aoQuestionListSuccess,
   submitAoQuestionSuccess,
   addAboutOtherTopicSuccess,
-} from "./actions";
+  stakeholderList,
+  aoQuestionList,
+} from "Redux/actions";
 
-import { controlType, controlTypeText } from "Constants/defaultValues";
+import { controlType } from "Constants/defaultValues";
 
-const getAoQuestionListAsync = async (projectUserId) =>
-  await aoQuestionListAPI(projectUserId)
+const getAoQuestionListAsync = async (projectUserId, surveyId) =>
+  await aoQuestionListAPI(projectUserId, surveyId)
     .then((result) => result)
     .catch((error) => error);
 
@@ -32,9 +34,9 @@ const getOptionListAsync = async () =>
     .catch((error) => error);
 
 function* getAoQuestionList({ payload }) {
-  const { projectUserId } = payload;
+  const { projectUserId, surveyId } = payload;
   try {
-    const result = yield call(getAoQuestionListAsync, projectUserId);
+    const result = yield call(getAoQuestionListAsync, projectUserId, surveyId);
 
     if (result.status === 200) {
       const result_option = yield call(getOptionListAsync);
@@ -144,16 +146,22 @@ const submitAoQuestionAsync = async (answerData) =>
     .catch((error) => error);
 
 function* submitAoQuestion({ payload }) {
-  const { questionList, history, currentSurveyUser, projectUserId } = payload;
+  const {
+    answers,
+    currentSurveyUser,
+    projectUserId,
+    surveyId,
+    callback,
+  } = payload;
 
   let answerList = [];
 
-  for (let i = 0; i < questionList.length; i++) {
+  for (let i = 0; i < answers.length; i++) {
     // if (surveyUserId.split('_').length !== 2) {
     //   continue;
     // }
 
-    let integerValue = questionList[i].answer.integerValue;
+    let integerValue = answers[i].integerValue;
     let isTopic = false;
     if (integerValue.toString().includes("T-")) {
       integerValue = integerValue.toString().replace("T-", "");
@@ -162,27 +170,26 @@ function* submitAoQuestion({ payload }) {
     integerValue = Math.floor(parseInt(integerValue, 10));
 
     let answer = {
-      controlType: controlTypeText(questionList[i].controlType),
       integerValue: integerValue,
-      topicValue: questionList[i].answer.topicValue,
-      commentValue: questionList[i].answer.commentValue,
-      skipValue: questionList[i].answer.skipValue,
-      topicTags: isTopic
-        ? questionList[i].answer.topicValue
-        : questionList[i].answer.topicTags,
-      commentTags: questionList[i].answer.commentTags,
+      topicValue: answers[i].topicValue,
+      commentValue: answers[i].commentValue,
+      skipValue: answers[i].skipValue,
+      topicTags: isTopic ? answers[i].topicValue : answers[i].topicTags,
+      commentTags: answers[i].commentTags,
       projectUser: projectUserId,
       subProjectUser: currentSurveyUser.projectUserId,
-      survey: questionList[i].answer.survey.id,
-      project: questionList[i].answer.survey.project,
-      aoQuestion: questionList[i].answer.amQuestion,
+      survey: answers[i].survey.id,
+      project: answers[i].survey.project,
+      aoQuestion: answers[i].amQuestion,
+      shCategory: answers[i].shCategory,
+      controlType: answers[i].controlType,
     };
 
     if (
-      answer.integerValue == 0 &&
-      answer.topicValue == "" &&
-      answer.commentValue == "" &&
-      answer.skipValue == ""
+      parseInt(answer.integerValue, 10) === 0 &&
+      answer.topicValue.toString() === "" &&
+      answer.commentValue.toString() === "" &&
+      answer.skipValue.toString() === ""
     ) {
       continue;
     }
@@ -195,7 +202,9 @@ function* submitAoQuestion({ payload }) {
 
     if (result.status === 201) {
       yield put(submitAoQuestionSuccess());
-      history.push("/app/dashboard");
+      yield put(stakeholderList(projectUserId, surveyId));
+      yield put(aoQuestionList(currentSurveyUser, surveyId))
+      callback();
     } else {
       console.log("submit failed");
     }

@@ -20,10 +20,14 @@ const projectListByUserAPI = (userId) => {
   return getClient(true).get("/projectbyuser/?format=json&user=" + userId);
 };
 
-const surveyListByProjectAPI = (projectId) => {
-  return getClient(true).get(
-    "/surveybyproject/?format=json&project=" + projectId
-  );
+const surveyListByProjectAPI = (projectId = 0) => {
+  if (projectId === 0) {
+    return getClient(true).get("/surveybyproject/?format=json");
+  } else {
+    return getClient(true).get(
+      "/surveybyproject/?format=json&project=" + projectId
+    );
+  }
 };
 
 const getSurveyUserAPI = (userId, surveyId) => {
@@ -76,8 +80,12 @@ const submitSurveyAPI = (answerData) => {
   return getClient(true).post("/amresponse/", answerData);
 };
 
-const teamListAPI = () => {
-  return getClient(true).get("/team/?format=json");
+const teamListAPI = (projectId) => {
+  if (parseInt(projectId, 10) === 0) {
+    return getClient(true).get("/team/?format=json");
+  } else {
+    return getClient(true).get("/team/?format=json&project=" + projectId);
+  }
 };
 
 const shgroupListAPI = (surveyId = 1) => {
@@ -121,9 +129,9 @@ const projectMapAPI = (projectUserId, userId = 0) => {
 //   return getClient(true).get("/aoquestion/?format=json&projectuser=" + projectUserId)
 // }
 
-const aoQuestionListAPI = (projectUserId) => {
+const aoQuestionListAPI = (projectUserId, surveyId = 1) => {
   return getClient(true).get(
-    "/pages/?format=json&survey=1&projectuser=" + projectUserId
+    `/pages/?format=json&survey=${surveyId}&projectuser=${projectUserId}`
   );
 };
 

@@ -26,7 +26,7 @@ class MultiTopics extends Component {
   constructor(props) {
     super(props);
 
-    const { question, options } = props;
+    const { question, options, surveyType } = props;
 
     let optionList = [];
 
@@ -39,9 +39,11 @@ class MultiTopics extends Component {
       }
     }
 
+    const answer = surveyType === "me" ? props.question.answer : props.answer;
+
     this.state = {
       answer: {
-        ...question.answer,
+        ...answer,
       },
       optionList,
       input: false,
@@ -57,11 +59,13 @@ class MultiTopics extends Component {
   }
 
   componentWillReceiveProps(props) {
-    const { question } = props;
+    const { surveyType } = props;
+
+    const answer = surveyType === "me" ? props.question.answer : props.answer;
 
     this.setState({
       answer: {
-        ...question.answer,
+        ...answer,
         controlType: "MULTI_TOPICS",
       },
     });
