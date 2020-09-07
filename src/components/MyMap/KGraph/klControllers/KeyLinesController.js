@@ -24,13 +24,13 @@ KeyLines.promisify();
 class BaseController {
   constructor(setState, clickNodeListener, apList, esList) {
     // for access through console
-    let chart;
-    let container;
-    let overElem;
-    let highLevelNodes;
-    let viewMode;
-    let layoutName;
-    let comboMap;
+    // let chart;
+    // let container;
+    // let overElem;
+    // let highLevelNodes;
+    // let viewMode;
+    // let layoutName;
+    // let comboMap;
     this.dataStore = new DataStore(apList, esList);
     window.keyLinesController = this;
     this.setContainerState = setState;
@@ -422,7 +422,7 @@ class BaseController {
       imageAlignment,
     };
 
-    let { newItems, highLevelNodes } = await this.dataStore.getCoreStructure();
+    let { newItems /* highLevelNodes */} = await this.dataStore.getCoreStructure();
     this.chart = await KeyLines.create([
       { container: chartContainer, options: chartOptions, type: "chart" },
     ]);

@@ -81,7 +81,7 @@ const submitSurveyAPI = (answerData) => {
 };
 
 const teamListAPI = (projectId) => {
-  if (projectId == 0) {
+  if (parseInt(projectId, 10) === 0) {
     return getClient(true).get("/team/?format=json");
   } else {
     return getClient(true).get("/team/?format=json&project=" + projectId);

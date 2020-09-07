@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { NavLink } from "react-router-dom";
 
 import {
   InputLabel,
@@ -9,7 +8,6 @@ import {
   NativeSelect,
 } from "@material-ui/core";
 
-import Switch from "rc-switch";
 import "rc-switch/assets/index.css";
 
 import Button from "Components/Button";
@@ -90,7 +88,7 @@ class Project extends Component {
   };
 
   render() {
-    const { projectList, surveyList } = this.props;
+    const { projectList } = this.props;
     const { projectId, surveyId } = this.state;
 
     return (
@@ -115,28 +113,6 @@ class Project extends Component {
           </NativeSelect>
           <FormHelperText>Please select a Project</FormHelperText>
         </FormControl>
-        {/* {surveyList.length > 0 && false && 
-          surveyList.map((item) => {
-            return (
-              <div key={`survey_${item.id}`}>
-                <NavLink
-                  to="#"
-                  className="list-item-heading mb-1 truncate w-40 w-xs-100"
-                >
-                  {item.surveyTitle}
-                </NavLink>
-                <div className="w-15 w-xs-100 text-right">
-                  <Switch
-                    className="custom-switch custom-switch-primary"
-                    checked={item.id == surveyId ? true : false}
-                    onChange={(status) =>
-                      this.handleSelectSurvey(item.id, status)
-                    }
-                  />
-                </div>
-              </div>
-            );
-          })} */}
         {surveyId > 0 && (
           <div className={styles.actions}>
             <Button default={true} onClick={(e) => this.handleGotoSurvey()}>

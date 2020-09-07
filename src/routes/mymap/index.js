@@ -28,7 +28,6 @@ import {
   StakeholderManager,
 } from "Components/MyMap";
 import { NewStakeholder } from "Components/Survey";
-import SearchBar from "Components/search-bar";
 import Button from "Components/Button";
 
 import { serverUrl } from "Constants/defaultValues";
@@ -156,12 +155,12 @@ class MyMap extends React.Component {
     
     const kMapDataForCurrentProject =
       kMapData.length > 0
-        ? kMapData.filter((map) => map.project == projectId)
+        ? kMapData.filter((map) => map.project.toString() === projectId.toString())
         : [];
 
     const projectMapDataForCurrentProject =
       projectMapData.length > 0
-        ? projectMapData.filter((map) => map.project == projectId)
+        ? projectMapData.filter((map) => map.project.toString() === projectId.toString())
         : [];
     /*
      * ------------------------------------------------------------------------------
@@ -294,7 +293,7 @@ class MyMap extends React.Component {
           if (
             shCategoryList.filter(
               (sc) =>
-                sc.id == kMapDataForCurrentProject[0].pu_category[i].category
+                sc.id.toString() === kMapDataForCurrentProject[0].pu_category[i].category.toString()
             ).length > 0
           ) {
             mapUserList.push({
@@ -304,8 +303,6 @@ class MyMap extends React.Component {
             });
           }
         }
-
-        // console.log("MyMapProjectUserList:=", this.myMapProjectUserList);
 
         mapUserList.forEach((mapUser) => {
           let bExist = false;
@@ -367,8 +364,8 @@ class MyMap extends React.Component {
                   for (let k = 0; k < aoQuestionList.length; k++) {
                     const tempLen = aoQuestionList[k].response.filter(
                       (resp) =>
-                        resp.shCategory == userList[i].shCategory[j] &&
-                        resp.subProjectUser == userList[i].id
+                        resp.shCategory.toString() === userList[i].shCategory[j].toString() &&
+                        resp.subProjectUser.toString() === userList[i].id.toString()
                     ).length;
                     if (tempLen > 0) totalAnsweredQuestion++;
                   }
@@ -477,8 +474,8 @@ class MyMap extends React.Component {
                   for (let k = 0; k < aoQuestionList.length; k++) {
                     const tempLen = aoQuestionList[k].response.filter(
                       (resp) =>
-                        resp.shCategory == userList[i].shCategory[j] &&
-                        resp.subProjectUser == userList[i].id
+                        resp.shCategory.toString() === userList[i].shCategory[j].toString() &&
+                        resp.subProjectUser.toString() === userList[i].id.toString()
                     ).length;
                     if (tempLen > 0) totalAnsweredQuestion++;
                   }
@@ -602,12 +599,6 @@ class MyMap extends React.Component {
     }
   };
 
-  handleShowAddPage = () => {
-    this.setState({
-      screen: "add",
-    });
-  };
-
   handleAddStackholderToGraph = (data, e = {}) => {
     const projectUserId = data.stakeholder;
     const { stakeholderList } = this.state;
@@ -697,6 +688,12 @@ class MyMap extends React.Component {
     });
   };
 
+  handleShowAddPage = () => {
+    this.setState({
+      screen: "add",
+    });
+  };
+
   handleAddStackholderToProjectGraph = (data, e = {}) => {
     const projectUserId = data.stakeholder;
     const { stakeholderList } = this.state;
@@ -782,27 +779,6 @@ class MyMap extends React.Component {
     });
   };
 
-  handleFilter = (search) => {
-    const filter = search;
-
-    this.setState((state) => {
-      for (let i = 0; i < state.stakeholderList.length; i++) {
-        if (search === "") {
-          state.stakeholderList[i].show = true;
-          continue;
-        }
-        const index = state.stakeholderList[i].fullName.indexOf(filter);
-
-        if (index < 0) {
-          state.stakeholderList[i].show = false;
-        }
-      }
-      return {
-        stakeholderList: state.stakeholderList,
-      };
-    });
-  };
-
   handleStartOtherSurvey = (id) => {
     if (id.startsWith("S_")) {
       let user = {};
@@ -846,6 +822,27 @@ class MyMap extends React.Component {
     //   currentSurveyUser: {},
     // });
     window.location.reload(false);
+  };
+
+  handleFilter = (search) => {
+    const filter = search;
+
+    this.setState((state) => {
+      for (let i = 0; i < state.stakeholderList.length; i++) {
+        if (search === "") {
+          state.stakeholderList[i].show = true;
+          continue;
+        }
+        const index = state.stakeholderList[i].fullName.indexOf(filter);
+
+        if (index < 0) {
+          state.stakeholderList[i].show = false;
+        }
+      }
+      return {
+        stakeholderList: state.stakeholderList,
+      };
+    });
   };
 
   handleToggleMapModeDropdown = () => {
@@ -1171,15 +1168,6 @@ class MyMap extends React.Component {
                   myMapStakeholderList={myMapStakeholderList}
                   projectMapStakeholderList={projectMapStakeholderList}
                 />
-                // <SearchBar
-                //   searchKey={searchKey}
-                //   decisionMakers={decisionMakerList}
-                //   onClickDecisionMaker={(id) => this.handleStartOtherSurvey(id)}
-                //   allStakeholders={stakeholderList}
-                //   addNewStakeholder={(e) => this.handleShowAddPage(e)}
-                //   onSearchFocus={(e) => this.handleSearchFocus()}
-                //   onSearchBlur={(e) => this.handleSearchBlur()}
-                // />
               )}
               {screen === "add" && shCategoryList.length > 0 && (
                 <NewStakeholder

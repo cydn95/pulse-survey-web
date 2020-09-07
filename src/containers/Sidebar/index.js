@@ -76,22 +76,12 @@ class Sidebar extends Component {
 
   componentWillReceiveProps(props) {
     const {
-      user,
       surveyId,
       screenMode,
       guide,
-      actionUpdateGuideStatus,
       tooltipContent,
       getPageContent,
     } = props;
-
-    // a11yChecker();
-
-    // if (guide !== this.props.guide) {
-    //   this.setState({
-    //     guide: guide
-    //   });
-    // }
 
     if (!props.guide) {
       this.setState({
@@ -226,16 +216,12 @@ class Sidebar extends Component {
   };
 
   handleJoyrideCallback = (data) => {
-    const { status, type } = data;
+    const { status } = data;
     const finishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED];
 
     if (finishedStatuses.includes(status)) {
       this.setState({ run: false });
     }
-
-    // console.groupCollapsed(type);
-    // console.log(data);
-    // console.groupEnd();
   };
 
   getHelpers = (helpers) => {

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { connect } from "react-redux";
 
 import { controlType } from "Constants/defaultValues";
@@ -72,8 +72,8 @@ class AoSurvey extends React.Component {
 
         const temp = orderedDrivers[i].questions[j].response.filter(
           (resp) =>
-            resp.shCategory == shCategoryId &&
-            resp.subProjectUser == user.projectUserId
+            resp.shCategory.toString() === shCategoryId.toString() &&
+            resp.subProjectUser.toString() === user.projectUserId.toString()
         );
 
         totalAnswers += temp.length;
@@ -137,7 +137,7 @@ class AoSurvey extends React.Component {
   componentWillReceiveProps(props) {
     const { pageIndex, currentSurveyUserId, user } = props;
 
-    if (currentSurveyUserId != this.props.currentSurveyUserId) {
+    if (currentSurveyUserId.toString() !== this.props.currentSurveyUserId.toString()) {
       const { drivers } = this.state;
 
       const shCategoryId = currentSurveyUserId.split("_SHC_")[1];
@@ -152,8 +152,8 @@ class AoSurvey extends React.Component {
 
           const temp = drivers[i].questions[j].response.filter(
             (resp) =>
-              resp.shCategory == shCategoryId &&
-              resp.subProjectUser == user.projectUserId
+              resp.shCategory.toString() === shCategoryId.toString() &&
+              resp.subProjectUser.toString() === user.projectUserId.toString()
           );
 
           totalAnswers += temp.length;
@@ -215,8 +215,8 @@ class AoSurvey extends React.Component {
   handleAnswer = async (answer) => {
     const indexOf = this.state.answers.findIndex(
       (a) =>
-        a.pageIndex == answer.pageIndex &&
-        a.questionIndex == answer.questionIndex
+        a.pageIndex.toString() === answer.pageIndex.toString() &&
+        a.questionIndex.toString() === answer.questionIndex.toString()
     );
 
     await this.setState((state) => {
@@ -228,10 +228,10 @@ class AoSurvey extends React.Component {
 
     const totalAnswers = this.state.answers.filter(
       (answer) =>
-        answer.integerValue != 0 ||
-        answer.topicValue != "" ||
-        answer.commentValue != "" ||
-        answer.skipValue != ""
+        parseInt(answer.integerValue, 10) !== 0 ||
+        answer.topicValue.toString() !== "" ||
+        answer.commentValue.toString() !== "" ||
+        answer.skipValue.toString() !== ""
     ).length;
 
     this.setState({
@@ -251,7 +251,7 @@ class AoSurvey extends React.Component {
     const { setSurveyPage } = this.props;
     const { drivers } = this.state;
     var pageIndex = drivers.findIndex((element) => {
-      return element.driverId == driverId;
+      return element.driverId.toString() === driverId.toString();
     });
     setSurveyPage(pageIndex);
   };
@@ -274,11 +274,11 @@ class AoSurvey extends React.Component {
     for (let i = 0; i < drivers.length; i++) {
       const answeredCount = answers.filter(
         (answer) =>
-          answer.pageIndex == i &&
-          (answer.integerValue != 0 ||
-            answer.topicValue != "" ||
-            answer.commentValue != "" ||
-            answer.skipValue != "")
+          parseInt(answer.pageIndex, 10) === i &&
+          (parseInt(answer.integerValue, 10) !== 0 ||
+            answer.topicValue.toString() !== "" ||
+            answer.commentValue.toString() !== "" ||
+            answer.skipValue.toString() !== "")
       ).length;
 
       if (answeredCount === 0) {
@@ -322,7 +322,7 @@ class AoSurvey extends React.Component {
           {driver.questions.map((control, index) => {
             const answer = answers.filter(
               (answer) =>
-                answer.pageIndex == pageIndex && answer.questionIndex == index
+                answer.pageIndex.toString() === pageIndex.toString() && answer.questionIndex.toString() === index.toString()
             )[0];
 
             switch (control.controlType) {

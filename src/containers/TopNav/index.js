@@ -99,7 +99,7 @@ class TopNav extends Component {
                 alt="avatar"
               />
             )}
-            {(!profile.avatar || profile.avatar == "") && (
+            {(!profile.avatar || profile.avatar === "") && (
               <img
                 className={styles.avatar}
                 src="/assets/img/survey/menu-aboutme.png"

@@ -21,7 +21,7 @@ import {
   aoQuestionList,
 } from "Redux/actions";
 
-import { controlType, controlTypeText } from "Constants/defaultValues";
+import { controlType } from "Constants/defaultValues";
 
 const getAoQuestionListAsync = async (projectUserId, surveyId) =>
   await aoQuestionListAPI(projectUserId, surveyId)
@@ -186,10 +186,10 @@ function* submitAoQuestion({ payload }) {
     };
 
     if (
-      answer.integerValue == 0 &&
-      answer.topicValue == "" &&
-      answer.commentValue == "" &&
-      answer.skipValue == ""
+      parseInt(answer.integerValue, 10) === 0 &&
+      answer.topicValue.toString() === "" &&
+      answer.commentValue.toString() === "" &&
+      answer.skipValue.toString() === ""
     ) {
       continue;
     }

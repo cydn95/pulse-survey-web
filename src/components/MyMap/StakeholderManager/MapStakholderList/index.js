@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 
 import AvatarComponent from "Components/avatar/Component";
-import { Draggable } from "react-drag-and-drop";
-
-import { updateStakeholder } from "Redux/actions";
 
 import styles from "./styles.scss";
 

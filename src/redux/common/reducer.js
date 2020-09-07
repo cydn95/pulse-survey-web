@@ -96,7 +96,7 @@ export default (state = INIT_STATE, action) => {
     case STAKEHOLDER_ANSWER:
       const { projectUserId, questionId } = action.payload;
       for (let i = 0; i < state.stakeholderList.length; i++) {
-        if (state.stakeholderList[i].projectUserId == projectUserId) {
+        if (state.stakeholderList[i].projectUserId.toString() === projectUserId.toString()) {
           state.stakeholderList[i].aoResponse.push(questionId);
           state.stakeholderList[i].aoResponse = state.stakeholderList[
             i

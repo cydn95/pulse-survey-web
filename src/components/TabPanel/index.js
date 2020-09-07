@@ -118,7 +118,7 @@ class TabPanel extends React.Component {
                           }
                           className={classnames(styles["menu-item"], {
                             [styles.selected]:
-                              this.state.selectedMenu == item.id ? true : false,
+                              this.state.selectedMenu.toString() === item.id.toString() ? true : false,
                           })}
                         >
                           {item.SHCategoryName}
