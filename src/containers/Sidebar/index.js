@@ -28,6 +28,17 @@ import {
 import styles from "./styles.scss";
 import classnames from "classnames";
 
+const MENU_REPORT = [
+  'People',
+  'Sentiment',
+  'Engagement',
+  'Interest',
+  'Confidence',
+  'Culture',
+  'Relationships',
+  'Improvement'
+];
+
 class Sidebar extends Component {
   constructor(props) {
     super(props);
@@ -510,38 +521,24 @@ class Sidebar extends Component {
           <div className={styles["sub-menu"]}>
             <div className={styles.link}>
               <ul className={styles.nav}>
-                <li className={styles["nav--item"]}>
-                  <SideBarMenuItem
-                    to="/app/dashboard"
-                    menuKey="report-1"
-                    menuTitle="Report 1"
-                    className={styles["nav--item--link"]}
-                    mainMenuClassName={subMenuClassName}
-                    onClickMenu={(e, menuKey) =>
-                      this.handleClickSubMenu(
-                        e,
-                        menuKey,
-                        "/app/dashboard/report-1"
-                      )
-                    }
-                  ></SideBarMenuItem>
-                </li>
-                <li className={styles["nav--item"]}>
-                  <SideBarMenuItem
-                    to="/app/dashboard"
-                    menuKey="report-2"
-                    menuTitle="Report 2"
-                    className={styles["nav--item--link"]}
-                    mainMenuClassName={subMenuClassName}
-                    onClickMenu={(e, menuKey) =>
-                      this.handleClickSubMenu(
-                        e,
-                        menuKey,
-                        "/app/dashboard/report-2"
-                      )
-                    }
-                  ></SideBarMenuItem>
-                </li>
+                {MENU_REPORT.map((menu) => (
+                  <li key={`submenu-report-menu`} className={styles["nav--item"]}>
+                    <SideBarMenuItem
+                      to="/app/dashboard"
+                      menuKey={menu.toLowerCase()}
+                      menuTitle={menu}
+                      className={styles["nav--item--link"]}
+                      mainMenuClassName={subMenuClassName}
+                      onClickMenu={(e, menuKey) =>
+                        this.handleClickSubMenu(
+                          e,
+                          menu.toLowerCase(),
+                          `/app/dashboard/${menu.toLowerCase()}`
+                        )
+                      }
+                    ></SideBarMenuItem>
+                  </li>
+                ))}
               </ul>
             </div>
             <div className={styles.space}></div>
