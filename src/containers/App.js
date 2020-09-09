@@ -7,7 +7,6 @@ import { defaultStartPath } from 'Constants/defaultValues'
 import AppLocale from '../lang';
 import MainRoute from 'Routes';
 import login from 'Routes/login'
-import register from 'Routes/register'
 import error from 'Routes/error'
 import coming from 'Routes/coming'
 import forgotPassword from 'Routes/forgot-password'
@@ -93,7 +92,6 @@ class App extends Component {
 								component={MainRoute}
 							/>
 							<Route path={`/login`} component={login} />
-							<Route path={`/register`} component={register} />
 							<Route path={`/forgot-password`} component={forgotPassword} />
 							<Route path={`/error`} component={error} />
 							<Route path={`/coming-soon`} component={coming} />

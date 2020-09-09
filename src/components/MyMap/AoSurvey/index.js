@@ -12,6 +12,7 @@ import {
   FreeText,
   SmartText,
   RangeSlider,
+  MultiTopics
 } from "Components/Survey";
 
 import DriverPanel from "Components/driver";
@@ -394,7 +395,21 @@ class AoSurvey extends React.Component {
                     surveyType="other"
                   />
                 );
-
+              case controlType.MULTI_TOPICS:
+                return (
+                  <MultiTopics
+                    user={user}
+                    type="ao"
+                    skipQuestionList={skipQuestionList}
+                    key={`${index}`}
+                    options={options}
+                    question={control}
+                    answer={answer}
+                    onAnswer={(answer) => this.handleAnswer(answer)}
+                    projectTitle={projectTitle}
+                    surveyType="other"
+                  />
+                );
               default:
                 return <div key={`${index}`}></div>;
             }
