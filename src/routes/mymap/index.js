@@ -601,6 +601,8 @@ class MyMap extends React.Component {
         "Error",
         2000
       );
+    } else {
+      window.location.reload(false);
     }
   };
 
@@ -913,11 +915,25 @@ class MyMap extends React.Component {
     // console.log(newMapData); return;
 
     if (mapStyle === "my-map") {
-      this.props.saveKMapData(newMapData, surveyUserId, userId);
+      this.props.saveKMapData(
+        newMapData,
+        surveyUserId,
+        userId,
+        this.callbackSaveGraph
+      );
     } else {
-      this.props.saveProjectMapData(newMapData, surveyUserId, userId);
+      this.props.saveProjectMapData(
+        newMapData,
+        surveyUserId,
+        userId,
+        this.callbackSaveGraph
+      );
     }
   };
+
+  callbackSaveGraph = () => {
+    window.location.reload(false);
+  }
 
   toggleGraph = (e) => {
     this.setState({

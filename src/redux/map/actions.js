@@ -19,9 +19,9 @@ export const kMapDataSuccess = (kMapData) => ({
   payload: { kMapData },
 });
 
-export const kMapSave = (mapData, projectUserId, userId = 0) => ({
+export const kMapSave = (mapData, projectUserId, userId = 0, callback = null) => ({
   type: KMAP_SAVE,
-  payload: { mapData, projectUserId, userId },
+  payload: { mapData, projectUserId, userId, callback },
 });
 
 export const kMapSaveSuccess = () => ({
@@ -38,9 +38,9 @@ export const projectMapDataSuccess = (projectMapData) => ({
   payload: { projectMapData },
 });
 
-export const projectMapSave = (mapData, projectUserId, userId = 0) => ({
+export const projectMapSave = (mapData, projectUserId, userId = 0, callback = null) => ({
   type: PROJECTMAP_SAVE,
-  payload: { mapData, projectUserId, userId },
+  payload: { mapData, projectUserId, userId, callback },
 });
 
 export const projectMapSaveSuccess = () => ({

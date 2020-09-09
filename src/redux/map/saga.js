@@ -66,14 +66,18 @@ const saveKMapDataAysnc = async (mapData) =>
     .catch((error) => error);
 
 function* saveKMapData({ payload }) {
-  const { mapData, projectUserId, userId } = payload;
+  const { mapData, projectUserId, userId, callback } = payload;
 
   try {
     const result = yield call(saveKMapDataAysnc, mapData);
 
     if (result.status === 201) {
       yield put(kMapSaveSuccess(result.data));
-      setTimeout(yield put(kMapData(projectUserId, userId)), 5000);
+      if (callback) {
+        callback()
+      } else {
+        setTimeout(yield put(kMapData(projectUserId, userId)), 5000);
+      }
     }
   } catch (error) {
     console.log("error : ", error);
@@ -86,14 +90,18 @@ const saveProjectMapDataAysnc = async (mapData) =>
     .catch((error) => error);
 
 function* saveProjectMapData({ payload }) {
-  const { mapData, projectUserId, userId } = payload;
+  const { mapData, projectUserId, userId, callback } = payload;
 
   try {
     const result = yield call(saveProjectMapDataAysnc, mapData);
 
     if (result.status === 201) {
       yield put(projectMapSaveSuccess(result.data));
-      yield put(projectMapData(projectUserId, userId));
+      if (callback) {
+        callback();
+      } else {
+        yield put(projectMapData(projectUserId, userId));
+      }
     }
   } catch (error) {
     console.log("error : ", error);
