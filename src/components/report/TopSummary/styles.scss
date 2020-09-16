@@ -1,0 +1,17 @@
+.top-summary-root {
+  width: 100%;
+  margin-top: 10px;
+
+  .item {
+    padding: 8px 12px;
+    box-sizing: border-box;
+    font-size: 13px;
+
+    &.positive {
+      border-left: 8px solid #15bb59;
+    }
+    &.negative {
+      border-left: 8px solid #e50909;
+    }
+  }
+}
