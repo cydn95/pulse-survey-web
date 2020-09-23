@@ -141,7 +141,7 @@ class MapStakeholderList extends Component {
                         username={d.fullName}
                         userId={d.userId}
                         onClick={(userId) =>
-                          onMapStakeholderClick(`${userId}_`)
+                          onMapStakeholderClick(`${userId}_SHC_${groupSh.id}`)
                         }
                         title={title}
                         description={description}
@@ -174,6 +174,7 @@ class MapStakeholderList extends Component {
                       " / " +
                       (d.team === "" ? d.userTeam : d.team);
                     let percentage = (d.aoAnswered / d.aoTotal) * 100;
+
                     return (
                       <AvatarComponent
                         key={`my_${key}_${d.projectUserId}`}
@@ -181,7 +182,7 @@ class MapStakeholderList extends Component {
                         username={d.fullName}
                         userId={d.userId}
                         onClick={(userId) =>
-                          onMapStakeholderClick(`${userId}_`)
+                          onMapStakeholderClick(`${userId}_SHC_${groupSh.id}`)
                         }
                         title={title}
                         description={description}

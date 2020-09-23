@@ -90,10 +90,10 @@ const teamListAPI = (projectId) => {
 
 const shgroupListAPI = (surveyId = 1) => {
   if (!surveyId || surveyId === undefined) {
-    surveyId = 1;
+    return getClient(true).get(`/shgroup/?format=json`);
+  } else {
+    return getClient(true).get(`/shgroup/?format=json&survey=${surveyId}`);
   }
-
-  return getClient(true).get("/shgroup/?format=json");
 };
 
 const skipQuestionListAPI = () => {
@@ -278,6 +278,22 @@ const updateUserGuideAPI = (token, guide) => {
 };
 
 /**
+ * Report
+ */
+const getOverallSentimentAPI = (surveyId) => {
+  return getClient(true).get(`/overallsentimentreport/?survey=${surveyId}`);
+};
+
+const getTopPositiveAndNegativeAPI = (surveyId) => {
+  return getClient(true).get(`/aoresponsereport/?survey=${surveyId}`);
+};
+
+const getFeedbackSummaryAPI = (surveyId) => {
+  return getClient(true).get(`/feedbacksummaryreport/?survey=${surveyId}`);
+};
+
+
+/**
  * deprecated...
  */
 const projectUserListAPI = () => {
@@ -331,4 +347,7 @@ export {
   changeProfileAPI,
   changeAvatarAPI,
   updateUserGuideAPI,
+  getOverallSentimentAPI,
+  getTopPositiveAndNegativeAPI,
+  getFeedbackSummaryAPI,
 };
