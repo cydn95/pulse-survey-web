@@ -47,7 +47,7 @@ const FeedbackSummary = ({ data }) => {
                     borderClass
                   )}
                 >
-                  {c}
+                  {c > 100 ? 100 : c}
                 </div>
               );
             })}
