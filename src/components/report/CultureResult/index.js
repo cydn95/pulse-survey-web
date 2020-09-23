@@ -15,8 +15,8 @@ const CultureResult = ({ data }) => {
             <div
               className={styles.progress}
               style={{
-                width: `${d.result * 100}%`,
-                background: d.result >= 0.7 ? "#15bb59" : "#e50909",
+                width: `${d.result > 100 ? 100 : d.result}%`,
+                background: d.result = 70 ? "#15bb59" : "#e50909",
               }}
             ></div>
           </div>

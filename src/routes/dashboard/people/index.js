@@ -13,6 +13,12 @@ import CultureResult from "Components/report/CultureResult";
 import LineChart from "Components/report/LineChart";
 import SentimentResult from "Components/report/SentimentResult";
 
+import {
+  overallSentiment,
+  topPositiveNegative,
+  feedbackSummary,
+} from "Redux/actions";
+
 import TopNav from "Containers/TopNav";
 
 const donutData = [
@@ -22,46 +28,46 @@ const donutData = [
   { name: "Pie3", count: 30 },
 ];
 
-const sentimentResult = [
-  [
-    { name: "Pie1", count: 35 },
-    { name: "Pie2", count: 65 },
-  ],
-  [
-    { name: "Pie1", count: 45 },
-    { name: "Pie2", count: 55 },
-  ],
-  [
-    { name: "Pie1", count: 20 },
-    { name: "Pie2", count: 80 },
-  ],
-  [
-    { name: "Pie1", count: 70 },
-    { name: "Pie2", count: 30 },
-  ],
-  [
-    { name: "Pie1", count: 64 },
-    { name: "Pie2", count: 36 },
-  ],
-];
+// const sentimentResult = [
+//   [
+//     { name: "Pie1", count: 35 },
+//     { name: "Pie2", count: 65 },
+//   ],
+//   [
+//     { name: "Pie1", count: 45 },
+//     { name: "Pie2", count: 55 },
+//   ],
+//   [
+//     { name: "Pie1", count: 20 },
+//     { name: "Pie2", count: 80 },
+//   ],
+//   [
+//     { name: "Pie1", count: 70 },
+//     { name: "Pie2", count: 30 },
+//   ],
+//   [
+//     { name: "Pie1", count: 64 },
+//     { name: "Pie2", count: 36 },
+//   ],
+// ];
 
-const summary = {
-  column: [
-    "GROUP",
-    "ENGAGEMENT",
-    "INFLUENCE",
-    "INTEREST",
-    "SENTIMENT",
-    "CONFIDENCE",
-  ],
-  data: [
-    ["Team Members Overall", 7.2, 2.2, 6.0, 6.0, 7.9],
-    ["Stakeholder Overall", 3.1, 8.4, 1.8, 4.7, 8.1],
-    ["Most Influential People", 7.2, 2.2, 6.0, 6.0, 7.9],
-    ["Decision Makers", 3.1, 2.2, 6.0, 6.0, 7.9],
-    ["Working on Critical Path", 3.1, 5.2, 1.0, 9.0, 7.9],
-  ],
-};
+// const summary = {
+//   column: [
+//     "GROUP",
+//     "ENGAGEMENT",
+//     "INFLUENCE",
+//     "INTEREST",
+//     "SENTIMENT",
+//     "CONFIDENCE",
+//   ],
+//   data: [
+//     ["Team Members Overall", 7.2, 2.2, 6.0, 6.0, 7.9],
+//     ["Stakeholder Overall", 3.1, 8.4, 1.8, 4.7, 8.1],
+//     ["Most Influential People", 7.2, 2.2, 6.0, 6.0, 7.9],
+//     ["Decision Makers", 3.1, 2.2, 6.0, 6.0, 7.9],
+//     ["Working on Critical Path", 3.1, 5.2, 1.0, 9.0, 7.9],
+//   ],
+// };
 
 const lineChartData = [
   { a: 1, b: 3 },
@@ -71,37 +77,91 @@ const lineChartData = [
   { a: 5, b: 8 },
 ];
 
-const positive = [
-  "Working on Critical Path",
-  "Safety",
-  "Acme Ltd",
-  "Electical",
-  "Engineering Team",
-];
+// const positive = [
+//   "Working on Critical Path",
+//   "Safety",
+//   "Acme Ltd",
+//   "Electical",
+//   "Engineering Team",
+// ];
 
-const negative = [
-  "Working on Critical Path",
-  "Safety",
-  "Acme Ltd",
-  "Electical",
-  "Engineering Team",
-];
+// const negative = [
+//   "Working on Critical Path",
+//   "Safety",
+//   "Acme Ltd",
+//   "Electical",
+//   "Engineering Team",
+// ];
 
-const cultureResult = [
-  { culture: "Safe to Speak", result: 0.8 },
-  { culture: "Planning", result: 0.7 },
-  { culture: "Preparation", result: 0.3 },
-  { culture: "Collaboration", result: 0.9 },
-  { culture: "Workload", result: 0.4 },
-  { culture: "Innovation", result: 0.7 },
-  { culture: "Agility", result: 0.6 },
-  { culture: "Experience", result: 0.5 },
-  { culture: "Diversity", result: 0.8 },
-];
+// const cultureResult = [
+//   { culture: "Safe to Speak", result: 0.8 },
+//   { culture: "Planning", result: 0.7 },
+//   { culture: "Preparation", result: 0.3 },
+//   { culture: "Collaboration", result: 0.9 },
+//   { culture: "Workload", result: 0.4 },
+//   { culture: "Innovation", result: 0.7 },
+//   { culture: "Agility", result: 0.6 },
+//   { culture: "Experience", result: 0.5 },
+//   { culture: "Diversity", result: 0.8 },
+// ];
 
 class ReportPeople extends React.Component {
+  state = {
+    overallSentiment: -1,
+    topPositives: [],
+    topNegatives: [],
+    feedbackSummary: {
+      column: [],
+      data: [],
+    },
+    cultureResult: [],
+    sentimentResult: []
+  };
+
+  componentDidMount() {
+    const {
+      surveyId,
+      actionOverallSentiment,
+      actionTopPositiveNegative,
+      actionFeedbackSummary,
+    } = this.props;
+
+    if (surveyId) {
+      actionOverallSentiment(surveyId, (data) => {
+        if (data.length > 0) {
+          this.setState({
+            overallSentiment: Math.round(data[0].value),
+          });
+        }
+      });
+
+      actionTopPositiveNegative(surveyId, (positive, negative) => {
+        this.setState({
+          topPositives: [...positive],
+          topNegatives: [...negative],
+        });
+      });
+
+      actionFeedbackSummary(surveyId, (feedbackSummaryRet, cultureRet, sentimentRet) => {
+        this.setState({
+          feedbackSummary: feedbackSummaryRet,
+          cultureResult: cultureRet,
+          sentimentResult: sentimentRet,
+        });
+      });
+    }
+  }
+
   render() {
     const { history, projectTitle } = this.props;
+    const {
+      overallSentiment,
+      topPositives,
+      topNegatives,
+      feedbackSummary,
+      cultureResult,
+      sentimentResult
+    } = this.state;
 
     return (
       <div className={styles.root}>
@@ -168,7 +228,7 @@ class ReportPeople extends React.Component {
               <div className={styles.block}>
                 <span className={styles["block__title"]}>Feedback Summary</span>
                 <div className={styles.content}>
-                  <FeedbackSummary data={summary} />
+                  <FeedbackSummary data={feedbackSummary} />
                 </div>
               </div>
             </div>
@@ -182,7 +242,7 @@ class ReportPeople extends React.Component {
                         Top Positive
                       </span>
                       <div className={styles.content}>
-                        <TopSummary data={positive} type="positive" />
+                        <TopSummary data={topPositives} type="positive" />
                       </div>
                     </div>
                     <div className={styles.block}>
@@ -190,7 +250,7 @@ class ReportPeople extends React.Component {
                         Top Negative
                       </span>
                       <div className={styles.content}>
-                        <TopSummary data={negative} type="negative" />
+                        <TopSummary data={topNegatives} type="negative" />
                       </div>
                     </div>
                   </div>
@@ -207,7 +267,7 @@ class ReportPeople extends React.Component {
           <div className={classnames(styles.right)}>
             <div className={classnames("row", styles["donut-container"])}>
               <h2 className={styles.title}>Overall Sentiment</h2>
-              <Emoji satisfaction={71} />
+              <Emoji satisfaction={overallSentiment} />
             </div>
             <div className={classnames("row", styles["sentiment-result"])}>
               <SentimentResult data={sentimentResult} />
@@ -220,11 +280,16 @@ class ReportPeople extends React.Component {
 }
 
 const mapStateToProps = ({ authUser }) => {
-  const { projectTitle } = authUser;
+  const { projectTitle, surveyId } = authUser;
 
   return {
     projectTitle,
+    surveyId,
   };
 };
 
-export default connect(mapStateToProps, {})(ReportPeople);
+export default connect(mapStateToProps, {
+  actionOverallSentiment: overallSentiment,
+  actionTopPositiveNegative: topPositiveNegative,
+  actionFeedbackSummary: feedbackSummary,
+})(ReportPeople);

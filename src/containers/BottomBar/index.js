@@ -75,6 +75,12 @@ class BottomBar extends Component {
 
     // a11yChecker();
 
+    if (!props.guide) {
+      this.setState({
+        run: false,
+      });
+    }
+
     if (tooltipContent.menu && tooltipContent.menu.length > 0) {
       const steps = [];
       for (let i = 0; i < tooltipContent.menu.length; i++) {

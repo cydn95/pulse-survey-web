@@ -42,3 +42,7 @@ export const addCommas = (nStr) => {
   }
   return x1 + x2;
 };
+
+export const createMarkup = (html) => {
+  return { __html: html };
+};

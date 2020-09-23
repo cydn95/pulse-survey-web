@@ -4,10 +4,11 @@ import classnames from "classnames";
 import styles from "./styles.scss";
 
 const Emoji = ({ satisfaction }) => {
-
   let emoji = "";
 
-  if (satisfaction <= 40) {
+  if (satisfaction === -1) {
+    emoji = "/assets/img/emoji/flat.png";
+  } else if (satisfaction <= 40) {
     emoji = "/assets/img/emoji/angry.png";
   } else if (satisfaction > 40 && satisfaction <= 50) {
     emoji = "/assets/img/emoji/worry.png";
@@ -24,15 +25,14 @@ const Emoji = ({ satisfaction }) => {
   const rootStyle = {
     width: 200,
     height: 200,
-    background: `url(${emoji})`,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    backgroundSize: "contain"
-  }
+    background: `url(${emoji}) center center / 100% 100% no-repeat`,
+  };
 
   return (
     <div className={styles["emoji-root"]} style={rootStyle}>
-      <div className={styles.percentage}>{`${satisfaction}%`}</div>
+      {satisfaction !== -1 && (
+        <div className={styles.percentage}>{satisfaction}%</div>
+      )}
     </div>
   );
 };

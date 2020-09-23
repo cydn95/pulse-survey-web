@@ -211,7 +211,7 @@ class MyMap extends React.Component {
     ) {
 
       // const totalQuestions = aoQuestionList.length;
-      console.log(aoQuestionList);
+      // console.log(aoQuestionList);
 
       // Make Architecture For My Map
       shCategoryList.forEach((shCategory) => {

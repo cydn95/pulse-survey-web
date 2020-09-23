@@ -63,7 +63,7 @@ class AoSurvey extends React.Component {
     const orderedDrivers = drivers.filter((item) => {
       return item.questions.length > 0 ? true : false;
     });
-
+console.log("******************", currentSurveyUserId);
     const shCategoryId = currentSurveyUserId.split("_SHC_")[1];
 
     const answers = [];

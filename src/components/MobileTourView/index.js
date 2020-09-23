@@ -5,6 +5,7 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "reactstrap";
 
 import SlideNavigator from "Components/SlideNavigator";
+import { createMarkup } from "Util/Utils";
 
 import styles from "./styles.scss";
 import classnames from "classnames";
@@ -33,7 +34,10 @@ const MobileTourView = ({ tour, length, index, onBack, onNext, onSelect }) => {
           style={imgBackgroundStyle}
         ></div>
         <h1>{tour.title}</h1>
-        <p>{tour.content}</p>
+        <div
+          className={styles.content}
+          dangerouslySetInnerHTML={createMarkup(tour.content)}
+        />
       </div>
       <div className={styles.footer}>
         <SlideNavigator

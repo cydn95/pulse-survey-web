@@ -10,6 +10,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 
 import SlideNavigator from "Components/SlideNavigator";
+import { createMarkup } from "Util/Utils";
 
 import { nikelTourContent } from "Redux/actions";
 
@@ -145,7 +146,10 @@ const DialogTourView = ({
               </div>
               <div className={dlgStyles.description}>
                 <h1>{tour.title}</h1>
-                <p>{tour.content}</p>
+                <div
+                  className={styles.content}
+                  dangerouslySetInnerHTML={createMarkup(tour.content)}
+                />
               </div>
               <div className={dlgStyles.control}>
                 <input

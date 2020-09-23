@@ -11,7 +11,7 @@ const TopSummary = ({ data, type }) => {
           key={`top-summary-${type}-${index}`}
           className={classnames(styles.item, styles[type])}
         >
-          {d}
+          {d.topicValue}
         </div>
       ))}
     </div>

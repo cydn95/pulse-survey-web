@@ -26,9 +26,9 @@ const FeedbackSummary = ({ data }) => {
             {row.map((c, colNum) => {
               let borderClass = "";
 
-              if (c >= 7) {
+              if (c >= 80) {
                 borderClass = styles.high;
-              } else if (c >= 4) {
+              } else if (c >= 50) {
                 borderClass = styles.medium;
               } else {
                 borderClass = styles.low;
