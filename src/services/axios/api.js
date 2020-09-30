@@ -292,6 +292,10 @@ const getFeedbackSummaryAPI = (surveyId) => {
   return getClient(true).get(`/feedbacksummaryreport/?survey=${surveyId}`);
 };
 
+const getParticipationAPI = (surveyId) => {
+  return getClient(true).get(`/userbysurvey/?survey=${surveyId}`);
+};
+
 
 /**
  * deprecated...
@@ -350,4 +354,5 @@ export {
   getOverallSentimentAPI,
   getTopPositiveAndNegativeAPI,
   getFeedbackSummaryAPI,
+  getParticipationAPI,
 };

@@ -31,6 +31,11 @@ export const getCurrentTime = () => {
   return now.getHours() + ":" + now.getMinutes();
 };
 
+export const getCurrentYear = () => {
+  const now = new Date();
+  return now.getFullYear();
+}
+
 export const addCommas = (nStr) => {
   nStr += "";
   var x = nStr.split(".");
@@ -46,3 +51,39 @@ export const addCommas = (nStr) => {
 export const createMarkup = (html) => {
   return { __html: html };
 };
+
+export const MONTH = (month) => {
+  switch (month) {
+    case 1:
+      return "Jan";
+    case 2:
+      return "Feb";
+    case 3:
+      return "Mar";
+    case 4:
+      return "Apr";
+    case 5:
+      return "May";
+    case 6:
+      return "Jun";
+    case 7:
+      return "Jul";
+    case 8:
+      return "Aug";
+    case 9:
+      return "Sep";
+    case 10:
+      return "Oct";
+    case 11:
+      return "Nov";
+    case 12:
+      return "Dec";
+    default:
+      return "";
+  }
+}
+
+export const getAverage = (nums) => {
+  if (nums.length === 0) return 0;
+  return nums.reduce((a, b) => a + b) / nums.length;
+}

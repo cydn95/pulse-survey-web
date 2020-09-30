@@ -4,7 +4,7 @@ import { ResponsiveSmile as Smile } from "Components/report/Smile";
 
 import styles from "./styles.scss";
 
-const SentimentResult = ({ data }) => {
+const SentimentResult = ({ data, labels }) => {
   return (
     <div className={styles["sentiment-result-root"]}>
       <div className={styles.top}>
@@ -20,6 +20,7 @@ const SentimentResult = ({ data }) => {
             width={100}
             height={100}
             sentiment={"happy"}
+            subDriver={labels[index]}
             data={d}
           />
         ))}

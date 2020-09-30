@@ -15,13 +15,19 @@ svg {
   }
 }
 
+.text {
+  fill: #fff;
+  text-align: center;
+  font-size: 11px;
+}
+
 .eye {
   &.sad {
-    fill: grey;
+    fill: #fff;
   }
 
   &.happy {
-    fill: #7fcdc1;
+    fill: #fff;
   }
 }
 

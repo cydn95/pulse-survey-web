@@ -15,18 +15,24 @@ svg {
   }
 }
 
+.text {
+  fill: #fff;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .eye {
   &.sad {
-    fill: grey;
+    fill: #fff;
   }
 
   &.happy {
-    fill: #7fcdc1;
+    fill: #fff;
   }
 }
 
 .face {
-  color: #fff;
   stroke-linecap: round;
 
   path {
@@ -39,6 +45,6 @@ svg {
   }
 
   path.happy {
-    stroke: white;
+    stroke: #7fcdc1;
   }
 }

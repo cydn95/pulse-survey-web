@@ -87,7 +87,7 @@ function renderGraph(node, props) {
     .enter()
     .append("path")
     .attr("class", styles.pie)
-    .attr("fill", (d, i) => `#${r()}${r()}${r()}`)
+    .attr("fill", (d, i) => `${fillColors[i]}`)
     .attr("d", arc)
     .attr("stroke", "none")
     .attr("stroke-width", "2px");

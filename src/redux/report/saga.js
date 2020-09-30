@@ -5,14 +5,17 @@ import {
   getTopPositiveAndNegativeAPI,
   getFeedbackSummaryAPI,
   shgroupListAPI,
+  getParticipationAPI,
 } from "../../services/axios/api";
 
 import {
   REPORT_OVERALL_SENTIMENT,
   REPORT_TOP_POSITIVE_NEGATIVE,
   REPORT_FEEDBACK_SUMMARY,
+  REPORT_PARTICIPATION,
 } from "Constants/actionTypes";
 
+import { getCurrentYear, getAverage } from "Util/Utils";
 import { controlType, controlTypeText } from "Constants/defaultValues";
 
 const getOverallSentimentAsync = async (surveyId) =>
@@ -32,6 +35,11 @@ const getShGroupListAsync = async (surveyId) =>
 
 const getFeedbackSummaryAsync = async (surveyId) =>
   await getFeedbackSummaryAPI(surveyId)
+    .then((result) => result)
+    .catch((error) => error);
+
+const getParticipationAsync = async (surveyId) =>
+  await getParticipationAPI(surveyId)
     .then((result) => result)
     .catch((error) => error);
 
@@ -119,6 +127,10 @@ function* getFeedbackSummary({ payload }) {
       const cultureRet = {};
       const sentimentRet = {};
 
+      const overallTrendsRet = {};
+
+      const currentYear = getCurrentYear();
+
       if (result.status === 200) {
         for (let i = 0; i < result.data.length; i++) {
           const question = result.data[i];
@@ -178,6 +190,39 @@ function* getFeedbackSummary({ payload }) {
               );
               if (filteredShGroupList.length > 0) {
                 const shGroupName = filteredShGroupList[0].SHGroupName;
+
+                /* OverallTrend Start */
+
+                const questionUpdatedDate = question.updated_at;
+                const questionYear = questionUpdatedDate.split("-")[0];
+
+                if (parseInt(questionYear, 10) === parseInt(currentYear, 10)) {
+                  const questionMonth =
+                    parseInt(questionUpdatedDate.split("-")[1], 10) - 1;
+
+                  if (!(shGroupName in overallTrendsRet)) {
+                    overallTrendsRet[shGroupName] = [
+                      { month: 1, value: [] },
+                      { month: 2, value: [] },
+                      { month: 3, value: [] },
+                      { month: 4, value: [] },
+                      { month: 5, value: [] },
+                      { month: 6, value: [] },
+                      { month: 7, value: [] },
+                      { month: 8, value: [] },
+                      { month: 9, value: [] },
+                      { month: 10, value: [] },
+                      { month: 11, value: [] },
+                      { month: 12, value: [] },
+                    ];
+                  }
+
+                  overallTrendsRet[shGroupName][questionMonth].value.push(
+                    intValue
+                  );
+                }
+
+                /* OverallTrend End */
 
                 if (shGroupName in ret) {
                   if (driverName in ret[shGroupName]) {
@@ -245,13 +290,9 @@ function* getFeedbackSummary({ payload }) {
         }
 
         const filteredSentiment = [];
-        // const sentimentResult = [
-        //   [
-        //     { name: "Pie1", count: 35 },
-        //     { name: "Pie2", count: 65 },
-        //   ],
-
+        const filteredSentimentKeyList = [];
         for (const key in sentimentRet) {
+          filteredSentimentKeyList.push(key);
           filteredSentiment.push([
             {
               name: "Pie1",
@@ -270,8 +311,123 @@ function* getFeedbackSummary({ payload }) {
           ]);
         }
 
-        callback(filteredRet, filteredCulture, filteredSentiment);
+        const filteredOverallTrend = [];
+        const filteredOverallTrendShGroupList = [];
+
+        for (const key in overallTrendsRet) {
+          filteredOverallTrendShGroupList.push(key);
+
+          const temp = [];
+          for (let i = 0; i < overallTrendsRet[key].length; i++) {
+            temp.push({
+              month: overallTrendsRet[key][i].month,
+              overall: parseFloat(
+                getAverage(overallTrendsRet[key][i].value)
+              ).toFixed(2),
+            });
+          }
+
+          filteredOverallTrend.push(temp);
+        }
+
+        callback(
+          filteredRet,
+          filteredCulture,
+          filteredSentiment,
+          filteredSentimentKeyList,
+          filteredOverallTrend,
+          filteredOverallTrendShGroupList
+        );
       }
+    }
+  } catch (error) {}
+}
+
+function* getParticipation({ payload }) {
+  try {
+    const { surveyId, callback } = payload;
+    const result = yield call(getParticipationAsync, surveyId);
+
+    if (result.status === 200) {
+      const participationRet = {
+        notIssued: 0,
+        rejected: 0,
+        awaiting: 0,
+        completed: 0,
+      };
+
+      const teamParticipationRet = {
+        notIssued: 0,
+        rejected: 0,
+        awaiting: 0,
+        completed: 0,
+      };
+
+      let allUserCount = 0;
+      let teamUserCount = 1;
+
+      for (let i = 0; i < result.data.length; i++) {
+
+        allUserCount++;
+         if (result.data[i].team !== null) {
+           teamUserCount++;
+         }
+
+        if (result.data[i].am_total === result.data[i].am_answered) {
+          participationRet.completed += 1;
+
+          if (result.data[i].team !== null) {
+            teamParticipationRet.completed += 1;
+          }
+        } else {
+          participationRet.awaiting += 1;
+
+          if (result.data[i].team !== null) {
+            teamParticipationRet.awaiting += 1;
+          }
+        }
+
+        if (result.data[i].sendInvite === false) {
+          participationRet.notIssued += 1;
+
+          if (result.data[i].team !== null) {
+            teamParticipationRet.notIssued += 1;
+          }
+        }
+
+        if (result.data[i].accept_status === false) {
+          participationRet.rejected += 1;
+
+          if (result.data[i].team !== null) {
+            teamParticipationRet.rejected += 1;
+          }
+        }
+      }
+
+      const filteredParticipationRet = [];
+      const filteredTeamParticipationRet = [];
+
+      filteredParticipationRet.push(
+        ...[
+          { name: "Pie1", count: participationRet.notIssued * 100 },
+          { name: "Pie2", count: participationRet.rejected * 100 },
+          { name: "Pie3", count: participationRet.awaiting * 100 },
+          { name: "Pie3", count: participationRet.completed * 100 },
+        ]
+      );
+
+      filteredTeamParticipationRet.push(
+        ...[
+          { name: "Pie1", count: teamParticipationRet.notIssued * 100 },
+          { name: "Pie2", count: teamParticipationRet.rejected * 100 },
+          { name: "Pie3", count: teamParticipationRet.awaiting * 100 },
+          { name: "Pie3", count: teamParticipationRet.completed * 100 },
+        ]
+      );
+      console.log(filteredParticipationRet);
+      console.log(filteredTeamParticipationRet);
+      
+      callback(filteredParticipationRet, filteredTeamParticipationRet, allUserCount, teamUserCount);
     }
   } catch (error) {}
 }
@@ -288,10 +444,15 @@ export function* watchGetFeedbackSummary() {
   yield takeEvery(REPORT_FEEDBACK_SUMMARY, getFeedbackSummary);
 }
 
+export function* watchGetParticipation() {
+  yield takeEvery(REPORT_PARTICIPATION, getParticipation);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetOverallSentiment),
     fork(watchGetTopPositiveNegative),
     fork(watchGetFeedbackSummary),
+    fork(watchGetParticipation),
   ]);
 }

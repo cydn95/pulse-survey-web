@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
-import ReportCircularChart from "./ReportCircularChart";
+import Smile from "./Smile";
 
-function ResponsiveReportCircularChart(props) {
+function ResponsiveSmile(props) {
   const ref = useRef(null);
   const [width, setWidth] = useState(null);
   const [height, setHeight] = useState(null);
@@ -20,10 +20,8 @@ function ResponsiveReportCircularChart(props) {
     };
   }, []);
 
-  return (
-    <ReportCircularChart ref={ref} width={width} height={height} {...props} />
-  );
+  return <Smile ref={ref} width={width} height={height} {...props} />;
 }
 
-export default ReportCircularChart;
-export { ResponsiveReportCircularChart };
+export default Smile;
+export { ResponsiveSmile };

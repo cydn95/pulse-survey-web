@@ -6,7 +6,7 @@ import styles from "./styles.scss";
 import classnames from "classnames";
 
 import Emoji from "Components/report/Emoji";
-import { ResponsiveReportCircularChart as ReportCircularChart } from "Components/report/CircularChart";
+import Participation from "Components/report/Participation";
 import FeedbackSummary from "Components/report/FeedbackSummary";
 import TopSummary from "Components/report/TopSummary";
 import CultureResult from "Components/report/CultureResult";
@@ -17,15 +17,16 @@ import {
   overallSentiment,
   topPositiveNegative,
   feedbackSummary,
+  participation,
 } from "Redux/actions";
 
 import TopNav from "Containers/TopNav";
 
 const donutData = [
-  { name: "Pie1", count: 15 },
-  { name: "Pie2", count: 20 },
-  { name: "Pie3", count: 35 },
-  { name: "Pie3", count: 30 },
+  { name: "Pie1", count: 0 },
+  { name: "Pie2", count: 0 },
+  { name: "Pie3", count: 1100 },
+  { name: "Pie3", count: 200 },
 ];
 
 // const sentimentResult = [
@@ -70,11 +71,34 @@ const donutData = [
 // };
 
 const lineChartData = [
-  { a: 1, b: 3 },
-  { a: 2, b: 6 },
-  { a: 3, b: 2 },
-  { a: 4, b: 12 },
-  { a: 5, b: 8 },
+  [
+    { month: 1, overall: 3 },
+    { month: 2, overall: 6 },
+    { month: 3, overall: 2 },
+    { month: 4, overall: 12 },
+    { month: 5, overall: 8 },
+    { month: 6, overall: 3 },
+    { month: 7, overall: 6 },
+    { month: 8, overall: 2 },
+    { month: 9, overall: 12 },
+    { month: 10, overall: 8 },
+    { month: 11, overall: 3 },
+    { month: 12, overall: 6 },
+  ],
+  [
+    { month: 1, overall: 7 },
+    { month: 2, overall: 9 },
+    { month: 3, overall: 2 },
+    { month: 4, overall: -4 },
+    { month: 5, overall: 9 },
+    { month: 6, overall: 11 },
+    { month: 7, overall: 5 },
+    { month: 8, overall: 5 },
+    { month: 9, overall: 12 },
+    { month: 10, overall: 5 },
+    { month: 11, overall: 4 },
+    { month: 12, overall: 1 },
+  ],
 ];
 
 // const positive = [
@@ -115,7 +139,14 @@ class ReportPeople extends React.Component {
       data: [],
     },
     cultureResult: [],
-    sentimentResult: []
+    sentimentResult: [],
+    sentimentKey: [],
+    overallTrendResult: [],
+    overallTrendKey: [],
+    participationResult: [],
+    teamParticipationResult: [],
+    participationCount: 0,
+    teamParticipationCount: 0,
   };
 
   componentDidMount() {
@@ -124,6 +155,7 @@ class ReportPeople extends React.Component {
       actionOverallSentiment,
       actionTopPositiveNegative,
       actionFeedbackSummary,
+      actionParticipation,
     } = this.props;
 
     if (surveyId) {
@@ -142,13 +174,38 @@ class ReportPeople extends React.Component {
         });
       });
 
-      actionFeedbackSummary(surveyId, (feedbackSummaryRet, cultureRet, sentimentRet) => {
-        this.setState({
-          feedbackSummary: feedbackSummaryRet,
-          cultureResult: cultureRet,
-          sentimentResult: sentimentRet,
-        });
-      });
+      actionFeedbackSummary(
+        surveyId,
+        (
+          feedbackSummaryRet,
+          cultureRet,
+          sentimentRet,
+          sentimentKey,
+          overallTrendRet,
+          overallTrendKey
+        ) => {
+          this.setState({
+            feedbackSummary: feedbackSummaryRet,
+            cultureResult: cultureRet,
+            sentimentResult: sentimentRet,
+            sentimentKey: sentimentKey,
+            overallTrendResult: overallTrendRet,
+            overallTrendKey: overallTrendKey,
+          });
+        }
+      );
+
+      actionParticipation(
+        surveyId,
+        (participationRet, teamParticipationRet, allUserCount, teamUserCount) => {
+          this.setState({
+            participationResult: participationRet,
+            teamParticipationResult: teamParticipationRet,
+            participationCount: allUserCount,
+            teamParticipationCount: teamUserCount
+          });
+        }
+      );
     }
   }
 
@@ -160,8 +217,17 @@ class ReportPeople extends React.Component {
       topNegatives,
       feedbackSummary,
       cultureResult,
-      sentimentResult
+      sentimentResult,
+      sentimentKey,
+      overallTrendResult,
+      overallTrendKey,
+      participationResult,
+      teamParticipationResult,
+      participationCount,
+      teamParticipationCount
     } = this.state;
+    // console.log(participationResult);
+    // console.log(teamParticipationResult);
 
     return (
       <div className={styles.root}>
@@ -185,28 +251,15 @@ class ReportPeople extends React.Component {
                   )}
                 >
                   <div className={styles.donuts}>
-                    <div className={styles.donut}>
-                      <ReportCircularChart
-                        className={styles.donut}
-                        keySelector={(d) => d.name}
-                        valueSelector={(d) => d.count}
-                        sentiment={"happy"}
-                        width={150}
-                        height={150}
-                        data={donutData}
-                      />
-                    </div>
-                    <div className={styles.donut}>
-                      <ReportCircularChart
-                        className={styles.donut}
-                        keySelector={(d) => d.name}
-                        valueSelector={(d) => d.count}
-                        width={150}
-                        height={150}
-                        sentiment={"happy"}
-                        data={donutData}
-                      />
-                    </div>
+                    {participationResult.length > 0 &&
+                      teamParticipationResult.length > 0 && (
+                        <Participation
+                          allData={participationResult}
+                          allCount={participationCount}
+                          teamData={teamParticipationResult}
+                          teamCount={teamParticipationCount}
+                        />
+                      )}
                   </div>
                   <div className={styles.info}></div>
                 </div>
@@ -216,10 +269,13 @@ class ReportPeople extends React.Component {
                 <div className={styles.content}>
                   <LineChart
                     key="linechart"
-                    data={lineChartData}
+                    shGroups={overallTrendKey}
+                    data={overallTrendResult}
+                    xRange={[1, 12]}
+                    yRange={[0, 100]}
                     width={400}
                     height={180}
-                    margin={20}
+                    margin={30}
                   />
                 </div>
               </div>
@@ -270,7 +326,7 @@ class ReportPeople extends React.Component {
               <Emoji satisfaction={overallSentiment} />
             </div>
             <div className={classnames("row", styles["sentiment-result"])}>
-              <SentimentResult data={sentimentResult} />
+              <SentimentResult data={sentimentResult} labels={sentimentKey} />
             </div>
           </div>
         </div>
@@ -292,4 +348,5 @@ export default connect(mapStateToProps, {
   actionOverallSentiment: overallSentiment,
   actionTopPositiveNegative: topPositiveNegative,
   actionFeedbackSummary: feedbackSummary,
+  actionParticipation: participation,
 })(ReportPeople);
