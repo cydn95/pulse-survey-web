@@ -295,7 +295,7 @@ class Sidebar extends Component {
                 <SideBarMenuItem
                   to="/app/my-project"
                   menuKey="my-project"
-                  menuTitle="My Project"
+                  menuTitle="My Projects"
                   className={styles["nav--item--link"]}
                   mainMenuClassName={mainMenuClassName}
                   onClickMenu={(e, menuKey) =>

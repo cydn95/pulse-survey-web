@@ -22,112 +22,24 @@ import {
 
 import TopNav from "Containers/TopNav";
 
-const donutData = [
-  { name: "Pie1", count: 0 },
-  { name: "Pie2", count: 0 },
-  { name: "Pie3", count: 1100 },
-  { name: "Pie3", count: 200 },
+const participationCategories = [
+  {
+    text: "Not Issued",
+    background: "#263968",
+  },
+  {
+    text: "Rejected",
+    background: "#ff0000",
+  },
+  {
+    text: "Awaiting",
+    background: "#f1c742",
+  },
+  {
+    text: "Completed",
+    background: "#00c855",
+  },
 ];
-
-// const sentimentResult = [
-//   [
-//     { name: "Pie1", count: 35 },
-//     { name: "Pie2", count: 65 },
-//   ],
-//   [
-//     { name: "Pie1", count: 45 },
-//     { name: "Pie2", count: 55 },
-//   ],
-//   [
-//     { name: "Pie1", count: 20 },
-//     { name: "Pie2", count: 80 },
-//   ],
-//   [
-//     { name: "Pie1", count: 70 },
-//     { name: "Pie2", count: 30 },
-//   ],
-//   [
-//     { name: "Pie1", count: 64 },
-//     { name: "Pie2", count: 36 },
-//   ],
-// ];
-
-// const summary = {
-//   column: [
-//     "GROUP",
-//     "ENGAGEMENT",
-//     "INFLUENCE",
-//     "INTEREST",
-//     "SENTIMENT",
-//     "CONFIDENCE",
-//   ],
-//   data: [
-//     ["Team Members Overall", 7.2, 2.2, 6.0, 6.0, 7.9],
-//     ["Stakeholder Overall", 3.1, 8.4, 1.8, 4.7, 8.1],
-//     ["Most Influential People", 7.2, 2.2, 6.0, 6.0, 7.9],
-//     ["Decision Makers", 3.1, 2.2, 6.0, 6.0, 7.9],
-//     ["Working on Critical Path", 3.1, 5.2, 1.0, 9.0, 7.9],
-//   ],
-// };
-
-const lineChartData = [
-  [
-    { month: 1, overall: 3 },
-    { month: 2, overall: 6 },
-    { month: 3, overall: 2 },
-    { month: 4, overall: 12 },
-    { month: 5, overall: 8 },
-    { month: 6, overall: 3 },
-    { month: 7, overall: 6 },
-    { month: 8, overall: 2 },
-    { month: 9, overall: 12 },
-    { month: 10, overall: 8 },
-    { month: 11, overall: 3 },
-    { month: 12, overall: 6 },
-  ],
-  [
-    { month: 1, overall: 7 },
-    { month: 2, overall: 9 },
-    { month: 3, overall: 2 },
-    { month: 4, overall: -4 },
-    { month: 5, overall: 9 },
-    { month: 6, overall: 11 },
-    { month: 7, overall: 5 },
-    { month: 8, overall: 5 },
-    { month: 9, overall: 12 },
-    { month: 10, overall: 5 },
-    { month: 11, overall: 4 },
-    { month: 12, overall: 1 },
-  ],
-];
-
-// const positive = [
-//   "Working on Critical Path",
-//   "Safety",
-//   "Acme Ltd",
-//   "Electical",
-//   "Engineering Team",
-// ];
-
-// const negative = [
-//   "Working on Critical Path",
-//   "Safety",
-//   "Acme Ltd",
-//   "Electical",
-//   "Engineering Team",
-// ];
-
-// const cultureResult = [
-//   { culture: "Safe to Speak", result: 0.8 },
-//   { culture: "Planning", result: 0.7 },
-//   { culture: "Preparation", result: 0.3 },
-//   { culture: "Collaboration", result: 0.9 },
-//   { culture: "Workload", result: 0.4 },
-//   { culture: "Innovation", result: 0.7 },
-//   { culture: "Agility", result: 0.6 },
-//   { culture: "Experience", result: 0.5 },
-//   { culture: "Diversity", result: 0.8 },
-// ];
 
 class ReportPeople extends React.Component {
   state = {
@@ -197,12 +109,17 @@ class ReportPeople extends React.Component {
 
       actionParticipation(
         surveyId,
-        (participationRet, teamParticipationRet, allUserCount, teamUserCount) => {
+        (
+          participationRet,
+          teamParticipationRet,
+          allUserCount,
+          teamUserCount
+        ) => {
           this.setState({
             participationResult: participationRet,
             teamParticipationResult: teamParticipationRet,
             participationCount: allUserCount,
-            teamParticipationCount: teamUserCount
+            teamParticipationCount: teamUserCount,
           });
         }
       );
@@ -224,7 +141,7 @@ class ReportPeople extends React.Component {
       participationResult,
       teamParticipationResult,
       participationCount,
-      teamParticipationCount
+      teamParticipationCount,
     } = this.state;
     // console.log(participationResult);
     // console.log(teamParticipationResult);
@@ -261,7 +178,22 @@ class ReportPeople extends React.Component {
                         />
                       )}
                   </div>
-                  <div className={styles.info}></div>
+                  <div className={styles.info}>
+                    {participationCategories.map((p, index) => (
+                      <div
+                        key={`info_category_${index}`}
+                        className={styles["info__category"]}
+                      >
+                        <div
+                          className={styles["info__category__rect"]}
+                          style={{ background: p.background }}
+                        >{` `}</div>
+                        <span className={styles["info__category__text"]}>
+                          {p.text}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
               <div className={styles.block}>
@@ -274,7 +206,7 @@ class ReportPeople extends React.Component {
                     xRange={[1, 12]}
                     yRange={[0, 100]}
                     width={400}
-                    height={180}
+                    height={220}
                     margin={30}
                   />
                 </div>

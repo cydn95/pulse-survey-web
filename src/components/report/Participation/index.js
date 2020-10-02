@@ -14,9 +14,9 @@ const Participation = ({ allData, allCount, teamData, teamCount, labels }) => {
           valueSelector={(data) => data.count}
           width={100}
           height={100}
-          sentiment={"happy"}
-          subDriver={allCount}
-          data={allData}
+          type="Participations"
+          subDriver={teamCount}
+          data={teamData}
         />
         <Smile
           className={styles.donut}
@@ -24,9 +24,9 @@ const Participation = ({ allData, allCount, teamData, teamCount, labels }) => {
           valueSelector={(data) => data.count}
           width={100}
           height={100}
-          sentiment={"happy"}
-          subDriver={teamCount}
-          data={teamData}
+          subDriver={allCount}
+          type="Total"
+          data={allData}
         />
       </div>
     </div>

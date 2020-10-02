@@ -424,9 +424,7 @@ function* getParticipation({ payload }) {
           { name: "Pie3", count: teamParticipationRet.completed * 100 },
         ]
       );
-      console.log(filteredParticipationRet);
-      console.log(filteredTeamParticipationRet);
-      
+
       callback(filteredParticipationRet, filteredTeamParticipationRet, allUserCount, teamUserCount);
     }
   } catch (error) {}

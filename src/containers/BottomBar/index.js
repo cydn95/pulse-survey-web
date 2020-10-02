@@ -20,6 +20,17 @@ import {
 
 import styles from "./styles.scss";
 
+const MENU_REPORT = [
+  "People",
+  "Sentiment",
+  "Engagement",
+  "Interest",
+  "Confidence",
+  "Culture",
+  "Relationships",
+  "Improvement",
+];
+
 class BottomBar extends Component {
   constructor(props) {
     super(props);
@@ -211,7 +222,7 @@ class BottomBar extends Component {
                 <BottomBarMenuItem
                   to="/app/my-project"
                   menuKey="my-project"
-                  menuTitle="My Project"
+                  menuTitle="My Projects"
                   className={styles["nav--item--link"]}
                   mainMenuClassName={mainMenuClassName}
                   onClickMenu={(e, menuKey) =>
@@ -393,7 +404,28 @@ class BottomBar extends Component {
           <div className={styles["sub-menu"]}>
             <div className={styles.link}>
               <ul className={styles.nav}>
-                <li className={styles["nav--item"]}>
+                {MENU_REPORT.map((menu) => (
+                  <li
+                    key={`submenu-report-menu`}
+                    className={styles["nav--item"]}
+                  >
+                    <BottomBarMenuItem
+                      to="/app/dashboard"
+                      menuKey={menu.toLowerCase()}
+                      menuTitle={menu}
+                      className={styles["nav--item--link"]}
+                      mainMenuClassName={subMenuClassName}
+                      onClickMenu={(e, menuKey) =>
+                        this.handleClickSubMenu(
+                          e,
+                          menu.toLowerCase(),
+                          `/app/dashboard/${menu.toLowerCase()}`
+                        )
+                      }
+                    ></BottomBarMenuItem>
+                  </li>
+                ))}
+                {/* <li className={styles["nav--item"]}>
                   <BottomBarMenuItem
                     to="/app/dashboard/report-1"
                     menuKey="report-1"
@@ -424,7 +456,7 @@ class BottomBar extends Component {
                       )
                     }
                   ></BottomBarMenuItem>
-                </li>
+                </li> */}
               </ul>
             </div>
             <div className={styles.space}></div>

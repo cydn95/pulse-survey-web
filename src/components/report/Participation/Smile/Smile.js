@@ -10,7 +10,14 @@ import styles from "./styles.scss";
 const fillColors = ["#263968", "#ff0000", "#f1c742", "#00c855"];
 
 function renderGraph(node, props) {
-  const { data, subDriver, keySelector, valueSelector, sentiment } = props;
+  const {
+    data,
+    subDriver,
+    type,
+    keySelector,
+    valueSelector,
+    sentiment,
+  } = props;
 
   const bounds = node.parentNode.getBoundingClientRect();
 
@@ -44,9 +51,17 @@ function renderGraph(node, props) {
 
     face
       .append("text")
+      .text(subDriver)
       .attr("text-anchor", "middle")
-      .attr("class", styles.text)
-      .text(subDriver);
+      .attr("class", styles.title)
+      .attr("dy", "20");
+
+    face
+      .append("text")
+      .text(type)
+      .attr("text-anchor", "middle")
+      .attr("class", styles["sub-title"])
+      .attr("dy", "45");
   }
 
   // centerize the face
