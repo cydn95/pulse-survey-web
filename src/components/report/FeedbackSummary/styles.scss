@@ -13,15 +13,15 @@
     color: #888888;
 
     &__col1 {
-      width: 200px;
       text-align: left;
+      word-wrap: break-word;
     }
 
     &__col2 {
-      flex: 1;
       text-align: center;
       overflow-wrap: break-word;
       font-size: 12px;
+      word-wrap: break-word;
     }
   }
 
@@ -36,17 +36,17 @@
       color: #515151;
 
       &__col1 {
-        width: 200px !important;
         text-align: left !important;
         padding: 8px 0px;
+        word-wrap: break-word;
       }
 
       &__col2 {
-        flex: 1;
         text-align: center;
         box-sizing: border-box;
         overflow-wrap: break-word;
         padding: 8px 0px;
+        word-wrap: break-word;
 
         &.low {
           border-left: 7px solid #ff0000;

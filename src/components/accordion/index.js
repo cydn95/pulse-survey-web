@@ -26,7 +26,6 @@ function AccordionComponent(props) {
     >
       <div className={styles.component}>
         <div className={styles.icon}>
-          {/* <FontAwesomeIcon className={styles.icon} icon={icon} /> */}
         </div>
         <div className={styles["component-content"]}>{children}</div>
       </div>

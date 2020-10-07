@@ -4,6 +4,9 @@ import classnames from "classnames";
 import styles from "./styles.scss";
 
 const FeedbackSummary = ({ data }) => {
+  const percent = 97 / (data.column.length - 1);
+  const offset = 200 / (data.column.length - 1);
+
   return (
     <div className={styles["table"]}>
       <div className={styles["table__header"]}>
@@ -15,6 +18,7 @@ const FeedbackSummary = ({ data }) => {
                 ? styles["table__header__col1"]
                 : styles["table__header__col2"]
             }
+            style={{width: index === 0 ? "200px" : `calc(${percent}% - ${offset}px)` }}
           >
             {c}
           </div>
@@ -46,6 +50,10 @@ const FeedbackSummary = ({ data }) => {
                     },
                     borderClass
                   )}
+                  style={{
+                    width:
+                      colNum === 0 ? "200px" : `calc(${percent}% - ${offset}px)`,
+                  }}
                 >
                   {c > 100 ? 100 : c}
                 </div>

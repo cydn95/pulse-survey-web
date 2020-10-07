@@ -7,7 +7,24 @@ import * as d3 from "d3";
 
 import styles from "./styles.scss";
 
-const fillColors = ["#263968", "#ff0000", "#f1c742", "#00c855"];
+const fillColors = {
+  low: "#da0f15",
+  medium: "#d2dde1",
+  high: "#14be6b",
+  none: "#233a70",
+};
+
+function getFillColors(d) {
+  let fill = "";
+  if (d.data.count > 51) {
+    fill = fillColors.high;
+  } else if (d.data.count > 26) {
+    fill = fillColors.medium;
+  } else {
+    fill = fillColors.low;
+  }
+  return [fill, fillColors.none];
+}
 
 function renderGraph(node, props) {
   const { data, subDriver, keySelector, valueSelector, sentiment } = props;
@@ -87,7 +104,7 @@ function renderGraph(node, props) {
     .enter()
     .append("path")
     .attr("class", styles.pie)
-    .attr("fill", (d, i) => `#${r()}${r()}${r()}`)
+    .attr("fill", (d, i) => getFillColors(d)[i])
     .attr("d", arc)
     .attr("stroke", "none")
     .attr("stroke-width", "2px");

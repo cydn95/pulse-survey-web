@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ResponsiveSmile as Smile } from "Components/report/Smile";
+import { ResponsiveSmile as Smile } from "./Smile";
 
 import styles from "./styles.scss";
 
