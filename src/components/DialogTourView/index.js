@@ -26,7 +26,7 @@ const styles = (theme) => ({
     right: theme.spacing(1),
     top: theme.spacing(1),
     // color: theme.palette.grey[500],
-    color: "white",
+    color: "rgb(42, 55, 71)",
   },
 });
 
@@ -89,13 +89,15 @@ const DialogTourView = ({
 
   const containerBackgroundStyle = () => {
     return {
-      background: `${tour.background}`,
+      // background: `${tour.background}`,
+      background: `#fff`,
     };
   };
 
   const imgBackgroundStyle = () => {
     return {
-      background: `${tour.background} url('${tour.img}') center/contain no-repeat`,
+      // background: `${tour.background} url('${tour.img}') center/contain no-repeat`,
+      background: `#fff url('${tour.img}') center/contain no-repeat`,
     };
   };
 
@@ -130,7 +132,7 @@ const DialogTourView = ({
         <Fragment>
           <DialogTitle
             id="customized-dialog-title"
-            background={tour.background}
+            background="#fff"
             onClose={(e) => onClose(e)}
           ></DialogTitle>
           <DialogContent>

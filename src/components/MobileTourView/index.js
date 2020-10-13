@@ -11,14 +11,11 @@ import styles from "./styles.scss";
 import classnames from "classnames";
 
 const MobileTourView = ({ tour, length, index, onBack, onNext, onSelect }) => {
-  const divStyle = {
-    background: tour.background,
-  };
   const imgBackgroundStyle = {
     background: `url('${tour.img}') center/contain no-repeat`,
   };
   return (
-    <div className={classnames(styles.root)} style={divStyle}>
+    <div className={classnames(styles.root)}>
       <div className={styles.header}>
         {index > 0 && (
           <FontAwesomeIcon
@@ -40,12 +37,6 @@ const MobileTourView = ({ tour, length, index, onBack, onNext, onSelect }) => {
         />
       </div>
       <div className={styles.footer}>
-        <SlideNavigator
-          onSelect={(position) => onSelect(position)}
-          cnt={length}
-          position={index}
-        />
-        <div className={styles.space}></div>
         <Button
           type="button"
           className={styles.next}
@@ -53,6 +44,12 @@ const MobileTourView = ({ tour, length, index, onBack, onNext, onSelect }) => {
         >
           NEXT
         </Button>
+        <div className={styles.space}></div>
+        <SlideNavigator
+          onSelect={(position) => onSelect(position)}
+          cnt={length}
+          position={index}
+        />
       </div>
     </div>
   );

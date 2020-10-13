@@ -8,7 +8,11 @@ import { loginErrorType, loginErrorTypeText } from "Constants/defaultValues";
 import LeftRightContainer from "../../components/LeftRightContainer";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faChevronDown,
+  faEye,
+  faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { Link } from "react-scroll";
 
@@ -21,6 +25,7 @@ class LoginLayout extends Component {
       username: "",
       password: "",
       error: "",
+      passwordShow: false,
     };
   }
   onUserLogin() {
@@ -65,6 +70,12 @@ class LoginLayout extends Component {
     }
   };
 
+  handleShowPassword = (e) => {
+    this.setState((state) => ({
+      passwordShow: !state.passwordShow,
+    }));
+  };
+
   componentWillReceiveProps(props) {
     const { authStatus } = props;
 
@@ -74,18 +85,19 @@ class LoginLayout extends Component {
   }
 
   render() {
-    const { username, password, error } = this.state;
+    const { username, password, error, passwordShow } = this.state;
     const { authStatus } = this.props;
 
     return (
       <LeftRightContainer>
-        <h2 id="login">Log into your account</h2>
+        <h2 id="login" className="title">Login</h2>
+        <span className="sub-title">Access account</span>
         {authStatus !== loginErrorType.AUTH_SUCCESS && (
           <span className="login-container__right--login-panel--error">
             {error}
           </span>
         )}
-        <label>EMAIL</label>
+        <label>Email</label>
         <Input
           type="text"
           value={username}
@@ -93,23 +105,41 @@ class LoginLayout extends Component {
           onChange={(e) => this.inputChange(e)}
           onKeyUp={(e) => this.inputKeyUp(e)}
         />
-        <label>PASSWORD</label>
-        <Input
-          type="password"
-          value={password}
-          name="password"
-          onChange={(e) => this.inputChange(e)}
-          onKeyUp={(e) => this.inputKeyUp(e)}
-        />
-        <a href="/forgot-password" className="forgot-password">
-          Forgot your password?
-        </a>
+        <label>Password</label>
+        <div className="password-wrapper">
+          <FontAwesomeIcon
+            icon={faEye}
+            className="login-eye"
+            onClick={this.handleShowPassword}
+          />
+          {passwordShow ? (
+            <Input
+              type="text"
+              value={password}
+              name="password"
+              onChange={(e) => this.inputChange(e)}
+              onKeyUp={(e) => this.inputKeyUp(e)}
+            />
+          ) : (
+            <Input
+              type="password"
+              value={password}
+              name="password"
+              onChange={(e) => this.inputChange(e)}
+              onKeyUp={(e) => this.inputKeyUp(e)}
+            />
+          )}
+        </div>
         <Button
           className="login-container__right--login-panel--submit round-btn green"
           onClick={(e) => this.onUserLogin()}
         >
-          Login
+          Sign In
         </Button>
+        <a href="/forgot-password" className="forgot-password">
+          Forgot your password?
+        </a>
+
         <div className={styles.down}>
           <Link to="login" spy={true} smooth={true} offset={-70} duration={500}>
             <FontAwesomeIcon icon={faChevronDown} />
