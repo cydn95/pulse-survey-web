@@ -1,0 +1,31 @@
+.root {
+  .icon {
+    display: inline-block;
+    width: 19px;
+    height: 18px;
+    fill: #bababa;
+  }
+
+  .name {
+    display: inline-block;
+    margin-left: 23px;
+    line-height: 2;
+  }
+
+  &:hover {
+    color: #7eccbf;
+
+    .icon {
+      fill: #73ccbf;
+    }
+  }
+
+  &.active {
+    .icon {
+      fill: #7eccbf;
+    }
+    .name {
+      color: #7eccbf;
+    }
+  }
+}

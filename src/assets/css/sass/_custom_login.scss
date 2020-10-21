@@ -101,7 +101,15 @@
           }
 
           @media screen and (max-width: 430px) {
-            margin-right: 12%;
+            margin-right: 13.7%;
+          }
+
+          @media screen and (max-width: 400px) {
+            margin-right: 14%;
+          }
+
+          @media screen and (max-width: 320px) {
+            margin-right: 16%;
           }
         }
       }

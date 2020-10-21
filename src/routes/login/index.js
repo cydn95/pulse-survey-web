@@ -90,7 +90,9 @@ class LoginLayout extends Component {
 
     return (
       <LeftRightContainer>
-        <h2 id="login" className="title">Login</h2>
+        <h2 id="login" className="title">
+          Login
+        </h2>
         <span className="sub-title">Access account</span>
         {authStatus !== loginErrorType.AUTH_SUCCESS && (
           <span className="login-container__right--login-panel--error">
@@ -107,11 +109,19 @@ class LoginLayout extends Component {
         />
         <label>Password</label>
         <div className="password-wrapper">
-          <FontAwesomeIcon
-            icon={faEye}
-            className="login-eye"
-            onClick={this.handleShowPassword}
-          />
+          {passwordShow ? (
+            <FontAwesomeIcon
+              icon={faEyeSlash}
+              className="login-eye"
+              onClick={this.handleShowPassword}
+            />
+          ) : (
+            <FontAwesomeIcon
+              icon={faEye}
+              className="login-eye"
+              onClick={this.handleShowPassword}
+            />
+          )}
           {passwordShow ? (
             <Input
               type="text"

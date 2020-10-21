@@ -1,0 +1,105 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  min-height: 100%;
+  background-color: #212529;
+  box-sizing: content-box;
+}
+
+.logo {
+  width: 108px;
+  height: 53px;
+  margin-top: 21px;
+  margin-left: 40px;
+  background: url(/assets/img/login/projecai-logo.png);
+  background-size: cover;
+}
+
+.main-menu {
+  width: 224px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 50px;
+  background-color: #212529;
+}
+
+.link {
+  margin-top: 21px;
+  margin-left: 40px;
+
+  &.bottom {
+    margin-bottom: 20px;
+    display: none;
+  }
+
+  .nav {
+    list-style-type: none;
+    padding: 0px;
+
+    &--item {
+      display: block;
+      padding-top: 17px;
+      padding-bottom: 17px;
+
+      &--link {
+        font-size: 14px;
+        color: #bababa;
+        align-items: center;
+        justify-content: center;
+        width: 150px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+
+        .icon {
+          display: inline-block;
+          width: 19px;
+          height: 18px;
+          fill: #bababa;
+        }
+
+        .name {
+          display: inline-block;
+          margin-left: 23px;
+          line-height: 2;
+        }
+
+        &:hover {
+          color: #7eccbf;
+
+          .icon {
+            fill: #73ccbf;
+          }
+        }
+
+        &.active {
+          .icon {
+            fill: #7eccbf;
+          }
+          .name {
+            color: #7eccbf;
+          }
+        }
+      }
+    }
+  }
+}
+
+.sub-menu {
+  display: flex;
+  flex-direction: column;
+  padding-top: 70px;
+  background-color: #504652;
+  width: 224px;
+  padding-bottom: 30px;
+
+  .link {
+    margin-left: 0px;
+  }
+}
+
+.space {
+  display: flex;
+  flex-grow: 1;
+}

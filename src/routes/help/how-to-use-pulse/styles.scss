@@ -55,7 +55,7 @@
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  background-image: url("/assets/img/email/welcome-2.png");
+  // background-image: url("/assets/img/email/welcome-2.png");
   background-repeat: no-repeat;
   background-position: right bottom;
   background-size: 70%;
@@ -77,14 +77,15 @@
 
     &--title {
       font-weight: bold;
-      font-size: 60px;
-      line-height: 0.82;
-      color: #333;
+      font-size: 32px;
+      line-height: 35px;
+      color: rgb(42, 55, 71);
       margin-top: 29px;
       margin-bottom: 20px;
+      text-align: center;
 
       @media only screen and (max-width: 768px) {
-        font-size: 2.5rem;
+        font-size: 2rem;
       }
     }
 
@@ -94,6 +95,7 @@
       color: #1a1a1a;
       margin-top: 15px;
       width: 100%;
+      text-align: center;
     }
 
     &__about {
@@ -109,6 +111,7 @@
         display: flex;
         flex: 1;
         flex-direction: column;
+        align-items: center;
 
         &--title {
           font-size: 30px;
@@ -122,6 +125,7 @@
           color: #1a1a1a;
           margin-top: 15px;
           width: 80%;
+          text-align: center;
         }
 
         &--img {
@@ -137,6 +141,7 @@
           max-width: 164px;
           margin-top: 16px;
           align-self: flex-end;
+          height: 45px;
         }
       }
     }
