@@ -20,85 +20,46 @@
   width: 224px;
   display: flex;
   flex-direction: column;
-  padding-bottom: 50px;
+  padding-bottom: 30px;
   background-color: #212529;
 }
 
 .link {
   margin-top: 21px;
-  margin-left: 40px;
-
-  &.bottom {
-    margin-bottom: 20px;
-    display: none;
-  }
-
-  .nav {
-    list-style-type: none;
-    padding: 0px;
-
-    &--item {
-      display: block;
-      padding-top: 17px;
-      padding-bottom: 17px;
-
-      &--link {
-        font-size: 14px;
-        color: #bababa;
-        align-items: center;
-        justify-content: center;
-        width: 150px;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-
-        .icon {
-          display: inline-block;
-          width: 19px;
-          height: 18px;
-          fill: #bababa;
-        }
-
-        .name {
-          display: inline-block;
-          margin-left: 23px;
-          line-height: 2;
-        }
-
-        &:hover {
-          color: #7eccbf;
-
-          .icon {
-            fill: #73ccbf;
-          }
-        }
-
-        &.active {
-          .icon {
-            fill: #7eccbf;
-          }
-          .name {
-            color: #7eccbf;
-          }
-        }
-      }
-    }
-  }
+  // margin-left: 40px;
 }
 
-.sub-menu {
-  display: flex;
-  flex-direction: column;
-  padding-top: 70px;
-  background-color: #504652;
-  width: 224px;
-  padding-bottom: 30px;
+/* Customizing Menu Style */
 
-  .link {
-    margin-left: 0px;
-  }
-}
+// .pro-sidebar {
+//   .pro-menu {
+//     .pro-menu-item {
+//       &.pro-sub-menu {
+//         .pro-inner-list-item {
+//           &:before {
+//             content: "";
+//             display: inline-block;
+//             width: 0px !important;
+//             min-width: 0px !important;
+//             height: 4px;
+//             border: 1px solid hsla(0, 0%, 100%, 0.05);
+//             border-radius: 50%;
+//             margin-right: 15px;
+//             position: relative;
+//             box-shadow: 1px 0 0 #adadad, 0 -1px 0 #adadad, 0 1px 0 #adadad,
+//               -1px 0 0 #adadad;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+// .pro-inner-item {
+//   &:before {
+//   }
+// }
 
+/* Old Menu */
 .space {
   display: flex;
   flex-grow: 1;
