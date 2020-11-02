@@ -1212,8 +1212,11 @@ class MyMap extends React.Component {
                     options={optionList}
                     drivers={driverList}
                     user={currentSurveyUser}
+                    myMapCategory={shCategoryList}
+                    projectMapCategory={projectMapShCategoryList}
                     skipQuestionList={skipQuestionList}
                     currentSurveyUserId={currentSurveyUserId}
+                    allStakeholders={stakeholderList}
                     onSubmit={(e, answerData) =>
                       this.handleSubmitSurvey(e, answerData)
                     }

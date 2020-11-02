@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Button from "../../Button";
+
 import styles from "./styles.scss";
 
 class Continue extends Component {
@@ -13,7 +14,7 @@ class Continue extends Component {
 
     return (
       <div className={styles.root}>
-        <Button onClick={(e) => this.handleNextQuestion(e)}>{title}</Button>
+        <Button className={styles.continue} onClick={(e) => this.handleNextQuestion(e)}>{title}</Button>
       </div>
     );
   }

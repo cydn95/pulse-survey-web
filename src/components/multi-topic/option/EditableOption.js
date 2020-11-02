@@ -20,7 +20,7 @@ function EditableOption(props) {
 
   return (
     <div className={classnames(styles.main, styles.editable)}>
-      <div className={styles.bullet}></div>
+      {/* <div className={styles.bullet}></div> */}
       <div className={styles.data}>
         <Input
           onFocus={(e) => onFocus()}

@@ -184,6 +184,14 @@ const updateStakeholderAPI = (projectUserId, projectUser) => {
   );
 };
 
+// Update Stakeholder (dlg)
+const updateStakeholderCategoryAPI = (projectUserId, projectUser) => {
+  return getClient(true).put(
+    `/updatestakeholder/${projectUserId}/`,
+    projectUser
+  );
+};
+
 // Add NewTopic To About Me & Other Question
 const addNewTopicAboutMeAPI = (
   topicName,
@@ -296,7 +304,6 @@ const getParticipationAPI = (surveyId) => {
   return getClient(true).get(`/userbysurvey/?survey=${surveyId}`);
 };
 
-
 /**
  * deprecated...
  */
@@ -355,4 +362,5 @@ export {
   getTopPositiveAndNegativeAPI,
   getFeedbackSummaryAPI,
   getParticipationAPI,
+  updateStakeholderCategoryAPI,
 };

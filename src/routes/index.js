@@ -80,11 +80,11 @@ const MainApp = ({ history, location, match }) => {
           <Sidebar screenMode={screenMode} />
         </div>
       )}
-      {showBottomBar && (
+      {/* {showBottomBar && (
         <div className={styles.bottombar}>
           <BottomBar screenMode={screenMode} />
         </div>
-      )}
+      )} */}
       <div className={styles.container}>
         <div className={styles.main}>
           <Switch>

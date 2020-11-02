@@ -5,6 +5,7 @@ import {
   SUBMIT_AOQUESTION_SUCCESS,
   ADD_ABOUT_OTHER_TOPIC,
   ADD_ABOUT_OTHER_TOPIC_SUCCESS,
+  UPDATE_STAKEHOLDER_CATEGORY,
 } from "Constants/actionTypes";
 
 export const aoQuestionList = (projectUserId, surveyId) => ({
@@ -54,4 +55,13 @@ export const addAboutOtherTopic = (
 export const addAboutOtherTopicSuccess = (topic, questionIndex) => ({
   type: ADD_ABOUT_OTHER_TOPIC_SUCCESS,
   payload: { topic, questionIndex },
+});
+
+export const updateStakeholderCategory = (
+  projectUserId,
+  projectUser,
+  callback
+) => ({
+  type: UPDATE_STAKEHOLDER_CATEGORY,
+  payload: { projectUserId, projectUser, callback },
 });

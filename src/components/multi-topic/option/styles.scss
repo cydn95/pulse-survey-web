@@ -1,7 +1,7 @@
-$color: rgb(26, 26, 26);
-$comment-color: rgb(119, 120, 133);
-// $editable-color: rgb(16, 122, 239);
-$editable-color: #e66864;
+$color: rgb(36, 36, 36);
+$comment-color: rgb(60, 62, 69);
+$editable-color: rgb(51, 141, 155);
+// $editable-color: #e66864;
 @mixin round {
   box-sizing: border-box;
   border-width: 3px;
@@ -12,6 +12,7 @@ $editable-color: #e66864;
 .main {
   color: $color;
   display: flex;
+  width: 100%;
   cursor: pointer;
   > div:not(:first-child) {
     margin-left: 20px;
@@ -23,6 +24,10 @@ $editable-color: #e66864;
         color: $editable-color !important;
       }
     }
+
+    .comment {
+      color: $editable-color;
+    }
   }
 }
 
@@ -33,6 +38,11 @@ $editable-color: #e66864;
   > *:not(:first-child) {
     margin-top: 10px;
   }
+  background: #eeefef;
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  border-radius: 16px;
 }
 
 .bullet {

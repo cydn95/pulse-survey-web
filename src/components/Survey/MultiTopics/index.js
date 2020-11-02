@@ -7,6 +7,9 @@ import Option from "Components/multi-topic/option";
 import { EditableOption } from "Components/multi-topic/option";
 import Button from "Components/Button";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
 import EditTopicDialog from "./EditTopicDlg";
 import MButton from "@material-ui/core/Button";
 
@@ -305,13 +308,11 @@ class MultiTopics extends Component {
                   comment={item.topicComment}
                 />
                 <div className={styles.space}>
-                  <MButton
+                  <a
+                    role="button"
                     className={classnames(styles["edit-btn"], {
-                      [styles["green"]]: active,
+                      [styles["active"]]: active,
                     })}
-                    variant={active ? "contained" : "outlined"}
-                    color="primary"
-                    size="small"
                     onClick={(e) =>
                       this.handleEditTopic(
                         item.id,
@@ -321,17 +322,18 @@ class MultiTopics extends Component {
                     }
                   >
                     Edit
-                  </MButton>
-                  <MButton
-                    className={styles["edit-btn"]}
-                    variant={active ? "contained" : "outlined"}
-                    color="secondary"
+                  </a>
+                  <a
+                    role="button"
+                    className={classnames(styles["edit-btn"], {
+                      [styles["active"]]: active,
+                    })}
                     size="small"
                     disabled={this.state.btnDeleteDisable}
                     onClick={(e) => this.handleDeleteTopic(item.id)}
                   >
                     Delete
-                  </MButton>
+                  </a>
                 </div>
               </div>
             );
@@ -354,7 +356,8 @@ class MultiTopics extends Component {
                 className={styles["add-topic"]}
                 onClick={(e) => this.handleAddPanel()}
               >
-                ADD NEW TOPIC
+                <FontAwesomeIcon icon={faPlus} />
+                {` `}ADD NEW TOPIC
               </Button>
             )}
             {this.state.input && (
