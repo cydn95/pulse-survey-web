@@ -15,13 +15,8 @@ import IconAboutOthers from "./Icons/IconAboutOthers";
 import IconMyProject from "./Icons/IconMyProject";
 import IconDashboard from "./Icons/IconDashboard";
 
-import SideBarMenuItem from "./SideBarMenuItem";
-
 import {
   ProSidebar,
-  SidebarHeader,
-  SidebarContent,
-  SidebarFooter,
   Menu,
   MenuItem,
   SubMenu,
@@ -40,6 +35,8 @@ import {
   tooltipTourContent,
   pageContent,
 } from "Redux/actions";
+
+
 
 import styles from "./styles.scss";
 import classnames from "classnames";

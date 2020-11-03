@@ -12,6 +12,9 @@ import { withRouter } from "react-router-dom";
 
 import { setMainMenuClassName, logoutUser } from "Redux/actions";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+
 class TopNav extends Component {
   constructor(props) {
     super(props);
@@ -77,6 +80,14 @@ class TopNav extends Component {
           onClose={this.toggleDrawer(null, false)}
           onKeyDown={(e) => this.toggleDrawer(e, false)}
         >
+          <div
+            style={{ position: "absolute", marginLeft: 190, top: 15 }}
+            className={styles["hide-icon-wrapper"]}
+            onClick={(e) => this.toggleDrawer(e, false)}
+            role="button"
+          >
+            <FontAwesomeIcon className="fa-lg" size={70} color="#fff" icon={faTimes} />
+          </div>
           <Sidebar />
         </Drawer>
         <div className={styles.project}>
