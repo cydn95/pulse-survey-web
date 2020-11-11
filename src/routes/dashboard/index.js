@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 
 import DashboardGeneral from "./general";
 import ReportPeople from "./people";
+import ReportSentiment from "./sentiment";
 
 import styles from "./styles.scss";
 
@@ -14,6 +15,7 @@ const Dashboard = ({ history, location, match }) => {
       <div className={styles.container}>
         <div className={styles.main}>
           <Switch>
+            <Route path={`${match.url}/sentiment`} component={ReportSentiment} />
             <Route path={`${match.url}/people`} component={ReportPeople} />
             <Route path={`${match.url}`} component={DashboardGeneral} />
             <Redirect to="/error" />
