@@ -1,0 +1,31 @@
+.sentiment-result-root {
+  width: 350px;
+  background: #273a6a;
+  border-radius: 8px;
+  color: #fff;
+
+  .top {
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 10px;
+  }
+
+  .content {
+    min-height: 100px;
+    background: #4262b1;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding: 0px 40px;
+    
+    .donut {
+      width: 130px
+    }
+  }
+}

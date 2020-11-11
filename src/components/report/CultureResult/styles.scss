@@ -1,0 +1,27 @@
+.top-culture-result-root {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+
+  .item {
+    padding: 8px 0px;
+    box-sizing: border-box;
+    font-size: 13px;
+    width: 30%;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .bar {
+    height: 5px;
+    margin-top: 5px;
+    width: 100%;
+    background: #f3edef;
+    
+    .progress {
+      height: 5px;
+    }
+  }
+}

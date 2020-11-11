@@ -12,6 +12,7 @@ import {
   FreeText,
   SmartText,
   RangeSlider,
+  MultiTopics,
 } from "Components/Survey";
 
 import DriverPanel from "Components/driver";
@@ -26,6 +27,7 @@ import {
 import styles from "./styles.scss";
 
 import { selectPage, stakeholderAnswer } from "Redux/actions";
+import StakeholderUpdateModal from "../StakeholderUpdateModal";
 
 class AoSurvey extends React.Component {
   constructor(props) {
@@ -96,7 +98,7 @@ class AoSurvey extends React.Component {
             controlType: controlTypeText(
               orderedDrivers[i].questions[j].controlType
             ),
-            shCategory: shCategoryId
+            shCategory: shCategoryId,
           });
         } else {
           answers.push({
@@ -131,13 +133,17 @@ class AoSurvey extends React.Component {
       answers,
       totalAnswers,
       totalQuestions,
+      editModal: false,
     };
   }
 
   componentWillReceiveProps(props) {
     const { pageIndex, currentSurveyUserId, user } = props;
 
-    if (currentSurveyUserId.toString() !== this.props.currentSurveyUserId.toString()) {
+    if (
+      currentSurveyUserId.toString() !==
+      this.props.currentSurveyUserId.toString()
+    ) {
       const { drivers } = this.state;
 
       const shCategoryId = currentSurveyUserId.split("_SHC_")[1];
@@ -209,7 +215,6 @@ class AoSurvey extends React.Component {
         pageIndex,
       });
     }
-    
   }
 
   handleAnswer = async (answer) => {
@@ -235,7 +240,7 @@ class AoSurvey extends React.Component {
     ).length;
 
     this.setState({
-      totalAnswers
+      totalAnswers,
     });
   };
 
@@ -256,6 +261,18 @@ class AoSurvey extends React.Component {
     setSurveyPage(pageIndex);
   };
 
+  handleOpenEditModal = () => {
+    this.setState({
+      editModal: true,
+    });
+  };
+
+  handleCloseEditModal = () => {
+    this.setState({
+      editModal: false,
+    });
+  };
+
   render() {
     const {
       options,
@@ -263,8 +280,19 @@ class AoSurvey extends React.Component {
       pageIndex,
       totalAnswers,
       totalQuestions,
+      editModal,
     } = this.state;
-    const { skipQuestionList, user, projectTitle } = this.props;
+    const {
+      skipQuestionList,
+      user,
+      projectTitle,
+      myMapCategory,
+      projectMapCategory,
+    } = this.props;
+
+    console.log(myMapCategory);
+    console.log(projectMapCategory);
+    console.log(user);
 
     const drivers = [...this.state.drivers];
 
@@ -296,7 +324,16 @@ class AoSurvey extends React.Component {
     return (
       <div className={styles.root}>
         <div className={styles.user}>
-          <div className={styles.title}>About Others:</div>
+          <div className={styles.title}>
+            <span>About Others:</span>
+            <span
+              role="button"
+              className={styles.edit}
+              onClick={(e) => this.handleOpenEditModal()}
+            >
+              Edit
+            </span>
+          </div>
           <AvatarComponent
             className={styles["avatar-comp"]}
             userId={user.id}
@@ -322,7 +359,8 @@ class AoSurvey extends React.Component {
           {driver.questions.map((control, index) => {
             const answer = answers.filter(
               (answer) =>
-                answer.pageIndex.toString() === pageIndex.toString() && answer.questionIndex.toString() === index.toString()
+                answer.pageIndex.toString() === pageIndex.toString() &&
+                answer.questionIndex.toString() === index.toString()
             )[0];
 
             switch (control.controlType) {
@@ -394,7 +432,21 @@ class AoSurvey extends React.Component {
                     surveyType="other"
                   />
                 );
-
+              case controlType.MULTI_TOPICS:
+                return (
+                  <MultiTopics
+                    user={user}
+                    type="ao"
+                    skipQuestionList={skipQuestionList}
+                    key={`${index}`}
+                    options={options}
+                    question={control}
+                    answer={answer}
+                    onAnswer={(answer) => this.handleAnswer(answer)}
+                    projectTitle={projectTitle}
+                    surveyType="other"
+                  />
+                );
               default:
                 return <div key={`${index}`}></div>;
             }
@@ -417,6 +469,13 @@ class AoSurvey extends React.Component {
             Submit
           </Button>
         </div>
+        <StakeholderUpdateModal
+          open={editModal}
+          currentUser={user}
+          myMapCategory={myMapCategory}
+          projectMapCategory={projectMapCategory}
+          onClose={(e) => this.handleCloseEditModal()}
+        />
       </div>
     );
   }

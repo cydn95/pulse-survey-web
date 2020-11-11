@@ -1,0 +1,27 @@
+.participation-root {
+  width: 90%;
+  border-radius: 8px;
+  color: #fff;
+
+  .content {
+    min-height: 100px;
+    background: #4262b1;
+    border-radius: 8px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding: 0px 0px;
+
+    @media only screen and (max-width: 768px) {
+      // flex-direction: column;
+    }
+
+    .donut {
+      width: 50%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+}

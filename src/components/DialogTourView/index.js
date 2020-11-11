@@ -10,6 +10,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 
 import SlideNavigator from "Components/SlideNavigator";
+import { createMarkup } from "Util/Utils";
 
 import { nikelTourContent } from "Redux/actions";
 
@@ -25,7 +26,7 @@ const styles = (theme) => ({
     right: theme.spacing(1),
     top: theme.spacing(1),
     // color: theme.palette.grey[500],
-    color: "white",
+    color: "rgb(42, 55, 71)",
   },
 });
 
@@ -88,13 +89,15 @@ const DialogTourView = ({
 
   const containerBackgroundStyle = () => {
     return {
-      background: `${tour.background}`,
+      // background: `${tour.background}`,
+      background: `#fff`,
     };
   };
 
   const imgBackgroundStyle = () => {
     return {
-      background: `${tour.background} url('${tour.img}') center/contain no-repeat`,
+      // background: `${tour.background} url('${tour.img}') center/contain no-repeat`,
+      background: `#fff url('${tour.img}') center/contain no-repeat`,
     };
   };
 
@@ -129,7 +132,7 @@ const DialogTourView = ({
         <Fragment>
           <DialogTitle
             id="customized-dialog-title"
-            background={tour.background}
+            background="#fff"
             onClose={(e) => onClose(e)}
           ></DialogTitle>
           <DialogContent>
@@ -145,7 +148,10 @@ const DialogTourView = ({
               </div>
               <div className={dlgStyles.description}>
                 <h1>{tour.title}</h1>
-                <p>{tour.content}</p>
+                <div
+                  className={styles.content}
+                  dangerouslySetInnerHTML={createMarkup(tour.content)}
+                />
               </div>
               <div className={dlgStyles.control}>
                 <input

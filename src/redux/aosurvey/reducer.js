@@ -28,8 +28,8 @@ export default (state = INIT_STATE, action) => {
     case SUBMIT_AOQUESTION_SUCCESS:
       return { ...state, loading: false };
     case ADD_ABOUT_OTHER_TOPIC_SUCCESS:
-      const { topic, pageIndex } = action.payload;
-      state.aoQuestionList[pageIndex].topic.push(topic);
+      const { topic, questionIndex } = action.payload;
+      state.aoQuestionList[questionIndex].topic.push(topic);
       return { ...state };
     default:
       return { ...state };

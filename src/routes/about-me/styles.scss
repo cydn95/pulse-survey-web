@@ -1,6 +1,7 @@
 .root {
   width: 100%;
-  background-color: #eff1f4;
+  // background-color: #eff1f4;
+  background: #fff;
 }
 
 .topbar {
@@ -42,7 +43,6 @@
   display: flex;
   flex-flow: row wrap;
   width: 100%;
-  padding: 19px;
   box-sizing: border-box;
 }
 
@@ -50,26 +50,31 @@
   width: calc(100vw - 262px);
 
   @media only screen and (max-width: 880px) {
-    width: calc(100vw - 38px);
+    width: 100vw;
+    padding-left: 19px;
+    padding-right: 19px;
   }
 
   .driver-section {
     position: fixed;
-    left: 244px;
+    // left: 244px;
     top: 80px;
-    padding-top: 19px;
+    padding-top: 8px;
+    border-top: 2px solid #eff1f4;
     z-index: 300;
-    width: calc(100vw - 281px);
+    width: calc(100vw - 225px);
     height: 67px;
     overflow: hidden;
-    background-color: #eff1f4;
+    // background-color: #eff1f4;
+    background: #fff;
+    padding-right: 19px;
 
     @media only screen and (max-width: 880px) {
       position: fixed;
-      left: 19px;
+      left: 0px;
       top: 100px;
       height: 60px;
-      width: calc(100% - 38px);
+      width: 100%;
     }
   }
 }

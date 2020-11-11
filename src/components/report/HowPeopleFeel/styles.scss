@@ -1,0 +1,23 @@
+.how-people-feel {
+  padding-top: 16px;
+  border-left: 2px solid #d1d1d1;
+
+  .wrapper {
+    .title {
+      color: #7e7e7e;
+      font-size: 1.3rem;
+      margin-left: 5px;
+      margin-bottom: 10px;
+    }
+
+    .chart {
+      width: 100%;
+      background: #f2f2f2;
+      height: 40px;
+
+      .percent {
+        height: 40px;
+      }
+    }
+  }
+}

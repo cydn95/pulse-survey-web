@@ -210,7 +210,8 @@ class MyMap extends React.Component {
       aoQuestionList.length > 0
     ) {
 
-      const totalQuestions = aoQuestionList.length;
+      // const totalQuestions = aoQuestionList.length;
+      // console.log(aoQuestionList);
 
       // Make Architecture For My Map
       shCategoryList.forEach((shCategory) => {
@@ -359,21 +360,23 @@ class MyMap extends React.Component {
                   individualUser.organisation.current = `O_${userList[i].user.organization.name}`;
                   individualUser.sh_category.current = `SHC_${userList[i].shCategory[j]}`;
                   
-                  // Calculate Survey Completion - MyMap
-                  let totalAnsweredQuestion = 0;
+                  // Calculate Survey Completion - MyMap (Sentiment Answer should be completion rate)
+                  let sentimentAnswer = 0;
                   for (let k = 0; k < aoQuestionList.length; k++) {
-                    const tempLen = aoQuestionList[k].response.filter(
+                    if (aoQuestionList[k].driver.driverName !== "Sentiment") {
+                      continue;
+                    }
+                    const answer = aoQuestionList[k].response.filter(
                       (resp) =>
                         resp.shCategory.toString() === userList[i].shCategory[j].toString() &&
                         resp.subProjectUser.toString() === userList[i].id.toString()
-                    ).length;
-                    if (tempLen > 0) totalAnsweredQuestion++;
+                    );
+                    if (answer.length > 0) {
+                      sentimentAnswer = answer[0].integerValue;
+                    }
                   }
 
-                  individualUser.survey_completion = (
-                    (totalAnsweredQuestion / totalQuestions) *
-                    100
-                  ).toFixed(2);
+                  individualUser.survey_completion = sentimentAnswer.toFixed(2);
 
                   bAdd = true;
 
@@ -469,21 +472,23 @@ class MyMap extends React.Component {
                   individualUser.organisation.current = `O_${userList[i].user.organization.name}`;
                   individualUser.sh_category.current = `SHC_${userList[i].shCategory[j]}`;
                   
-                  // Calculate Survey Completion - ProjectMap
-                  let totalAnsweredQuestion = 0;
+                  // Calculate Survey Completion - ProjectMap (Sentiment answer should be completion rate)
+                  let sentimentAnswer = 0;
                   for (let k = 0; k < aoQuestionList.length; k++) {
-                    const tempLen = aoQuestionList[k].response.filter(
+                    if (aoQuestionList[k].driver.driverName !== 'Sentiment') {
+                      continue;
+                    }
+                    const answer = aoQuestionList[k].response.filter(
                       (resp) =>
                         resp.shCategory.toString() === userList[i].shCategory[j].toString() &&
                         resp.subProjectUser.toString() === userList[i].id.toString()
-                    ).length;
-                    if (tempLen > 0) totalAnsweredQuestion++;
+                    );
+                    if (answer > 0) {
+                      sentimentAnswer = answer[0].integerValue;
+                    }
                   }
 
-                  individualUser.survey_completion = (
-                    (totalAnsweredQuestion / totalQuestions) *
-                    100
-                  ).toFixed(2);
+                  individualUser.survey_completion = sentimentAnswer.toFixed(2);
                   
                   bAdd = true;
 
@@ -596,6 +601,8 @@ class MyMap extends React.Component {
         "Error",
         2000
       );
+    } else {
+      window.location.reload(false);
     }
   };
 
@@ -908,11 +915,25 @@ class MyMap extends React.Component {
     // console.log(newMapData); return;
 
     if (mapStyle === "my-map") {
-      this.props.saveKMapData(newMapData, surveyUserId, userId);
+      this.props.saveKMapData(
+        newMapData,
+        surveyUserId,
+        userId,
+        this.callbackSaveGraph
+      );
     } else {
-      this.props.saveProjectMapData(newMapData, surveyUserId, userId);
+      this.props.saveProjectMapData(
+        newMapData,
+        surveyUserId,
+        userId,
+        this.callbackSaveGraph
+      );
     }
   };
+
+  callbackSaveGraph = () => {
+    window.location.reload(false);
+  }
 
   toggleGraph = (e) => {
     this.setState({
@@ -1191,8 +1212,11 @@ class MyMap extends React.Component {
                     options={optionList}
                     drivers={driverList}
                     user={currentSurveyUser}
+                    myMapCategory={shCategoryList}
+                    projectMapCategory={projectMapShCategoryList}
                     skipQuestionList={skipQuestionList}
                     currentSurveyUserId={currentSurveyUserId}
+                    allStakeholders={stakeholderList}
                     onSubmit={(e, answerData) =>
                       this.handleSubmitSurvey(e, answerData)
                     }

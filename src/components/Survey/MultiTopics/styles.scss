@@ -19,26 +19,62 @@
   display: flex;
   flex-flow: row wrap;
   align-items: center;
+  background: #eeefef;
+  border-radius: 16px;
+
+  &:hover {
+    .edit-btn {
+      visibility: visible !important;
+    }
+  }
+
   .space {
     flex: 1;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 0px 16px 16px 16px;
   }
+
   .edit-btn {
-    margin-left: 20px;
-    border-color: #7fcdc1;
-    &.green {
-      background: #7fcdc1;
+    border: none;
+    border-bottom: 1px solid rgb(60, 62, 69);
+    color: rgb(60, 62, 69);
+    visibility: hidden;
+
+    &.active {
+      visibility: visible;
     }
   }
 }
 
 .topic-wrapper {
   margin-top: 15px;
+  text-align: right;
 
   .save-topic {
     margin-top: 10px;
+  }
+}
+
+@media only screen and (max-width: 880px) {
+  .add-topic {
+    color: rgb(36, 36, 36) !important;
+    background: #eeefef !important;
+    font-weight: bold;
+    width: 100%;
+    border-radius: 16px;
+    height: 40px;
+  }
+
+  .save-topic {
+    color: rgb(36, 36, 36) !important;
+    background: #eeefef !important;
+    font-weight: bold;
+    width: 100%;
+    border-radius: 16px;
+    height: 40px;
   }
 }
 

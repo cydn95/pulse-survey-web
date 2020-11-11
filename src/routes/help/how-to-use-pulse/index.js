@@ -33,7 +33,7 @@ const HowToUsePulse = ({
       <div className={styles["welcome"]}>
         <div className={styles["welcome__content"]}>
           <h1 className={styles["welcome__content--title"]}>
-            So much more than a survey.
+            Pulse is more than a survey
           </h1>
           <p className={styles["welcome__content--description"]}>
             This platform has been taught many of the important concepts​
@@ -43,17 +43,22 @@ const HowToUsePulse = ({
             combined with others to guide managers on new focus areas to improve
             team/stakeholder engagement and project performance.​
           </p>
-          <p className={styles["welcome__content--description"]}>
+          {/* <p className={styles["welcome__content--description"]}>
             The questions are divided into two parts:
-          </p>
+          </p> */}
           <div className={styles["welcome__content__about"]}>
             <div className={styles["welcome__content__about__section"]}>
+              <img
+                className={styles["welcome__content__about__section--img"]}
+                src="/assets/img/how-to-use-pulse-about-me.png"
+                alt=""
+              />
               <h2
                 className={
                   styles["welcome__content__about__section--subtitle2"]
                 }
               >
-                About Me
+                About You
               </h2>
               <p
                 className={
@@ -62,13 +67,13 @@ const HowToUsePulse = ({
               >
                 What you think / feel about the project.​
               </p>
-              <img
-                className={styles["welcome__content__about__section--img"]}
-                src="/assets/img/email/main-1.png"
-                alt=""
-              />
             </div>
             <div className={styles["welcome__content__about__section"]}>
+              <img
+                className={styles["welcome__content__about__section--img"]}
+                src="/assets/img/how-to-use-pulse-about-others.png"
+                alt=""
+              />
               <h2
                 className={
                   styles["welcome__content__about__section--subtitle2"]
@@ -84,11 +89,6 @@ const HowToUsePulse = ({
                 What you assume other people are thinking​ or feeling about the
                 project.​​
               </p>
-              <img
-                className={styles["welcome__content__about__section--img"]}
-                src="/assets/img/email/main-2.png"
-                alt=""
-              />
               <Button
                 className={classnames(
                   styles["welcome__content__about__section--continue"],

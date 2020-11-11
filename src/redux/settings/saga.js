@@ -52,8 +52,6 @@ function* getProjectListByUser({ payload }) {
       }
     }
 
-    console.log(validProjectIdList);
-
     const { userId } = payload;
     const result = yield call(getProjectListByUserAsync, userId);
 

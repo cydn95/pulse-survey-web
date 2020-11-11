@@ -1,0 +1,128 @@
+.root {
+  min-height: 85vh;
+  max-height: 85vh;
+}
+
+.content {
+  height: calc(85vh - 32px);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 30px;
+
+  .description {
+    padding: 20px 40px;
+    text-align: center;
+
+    h1 {
+      color: rgb(36, 36, 36);
+      font-size: 17px;
+      line-height: 28px;
+    }
+  }
+
+  .stakeholders {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    width: 100%;
+
+    .stakeholder {
+      width: 130px;
+      background: #eaeaee;
+      border-radius: 8px;
+      margin: 8px;
+      display: flex;
+      justify-content: flex-end;
+      padding-bottom: 8px;
+      cursor: pointer;
+
+      &.green {
+        background: #62b5a6;
+        color: #fff;
+      }
+
+      .stakeholder-content {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        width: 100%;
+        align-items: center;
+
+        img {
+          width: 40px;
+        }
+
+        span {
+          font-size: 12px;
+          line-height: 15px;
+        }
+      }
+
+      .stakeholder-mark {
+        position: absolute;
+
+        .circle {
+          width: 16px;
+          height: 16px;
+          border-radius: 8px;
+          background: #fff;
+          margin-right: 7px;
+          margin-top: 7px;
+          display: flex;
+          justify-content: center;
+          align-content: center;
+          align-items: center;
+
+          svg {
+            width: 12px;
+            height: 12px;
+
+            path {
+              fill: #62b5a6;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .sub-title {
+    font-size: 14px;
+    line-height: 19px;
+    color: rgb(36, 36, 36);
+    padding: 20px 40px;
+  }
+
+  .control {
+    text-align: center;
+    margin-bottom: 30px;
+
+    input {
+      border: none;
+      width: 130px;
+      height: 40px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0px 8px 8px 8px;
+      font-weight: 600;
+    }
+
+    .next {
+      background: #62b6a8;
+      color: #fff;
+    }
+
+    .back {
+      background: none;
+      border: 1px solid #eef0f3;
+      color: #aab3ba;
+    }
+  }
+  .navigator {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+  }
+}

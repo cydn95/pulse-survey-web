@@ -65,14 +65,53 @@
     &--login-panel {
       display: flex;
       flex-direction: column;
-      width: 64%;
-      margin-left: 18%;
-
-      &--title {
-        font-size: 22px;
-        font-weight: 500;
-        line-height: 1.73;
+      width: 76%;
+      margin-left: 12%;
+      box-sizing: border-box;
+      
+      .title {
+        font-size: 27px;
+        line-height: 32px;
+        font-weight: 700;
         color: #141c3a;
+        text-align: center;
+      }
+
+      .sub-title {
+        font-size: 16px;
+        line-height: 14px;
+        color: rgb(77, 77, 77);
+        text-align: center;
+        text-align: center;
+        padding-top: 12px;
+      }
+
+      .password-wrapper {
+        width: 100%;
+
+        .login-eye {
+          position: absolute;
+          margin-top:20px;
+          right: 0px;
+          margin-right: 7.7%;
+          cursor: pointer;
+
+          @media screen and (max-width: 768px) {
+            margin-right: 13.7%;
+          }
+
+          @media screen and (max-width: 430px) {
+            margin-right: 13.7%;
+          }
+
+          @media screen and (max-width: 400px) {
+            margin-right: 14%;
+          }
+
+          @media screen and (max-width: 320px) {
+            margin-right: 16%;
+          }
+        }
       }
 
       &--error {
@@ -97,12 +136,13 @@
       }
 
       .forgot-password {
-        margin-top: 12px;
+        margin-top: 32px;
         font-size: 14px;
         font-weight: normal;
         line-height: 2.71;
         letter-spacing: normal;
         color: #00d2b1;
+        text-align: center;
 
         &:hover {
           color: #78c8ba;
@@ -110,8 +150,8 @@
       }
 
       &--submit {
-        margin-top: 61px;
-        width: 182px;
+        margin-top: 41px;
+        width: 100%;
       }
     }
   }

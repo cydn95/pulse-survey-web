@@ -1,0 +1,57 @@
+.main {
+  overflow: hidden;
+}
+
+svg {
+  display: block;
+}
+
+.pie {
+  cursor: pointer;
+
+  &:hover {
+    stroke: none;
+    stroke-width: 2px;
+  }
+}
+
+.title {
+  fill: #fff;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.sub-title {
+  fill: #fff;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.eye {
+  &.sad {
+    fill: #fff;
+  }
+
+  &.happy {
+    fill: #fff;
+  }
+}
+
+.face {
+  stroke-linecap: round;
+
+  path {
+    stroke-linejoin: round;
+    fill: none;
+  }
+
+  path.sad {
+    stroke: grey;
+  }
+
+  path.happy {
+    stroke: #7fcdc1;
+  }
+}

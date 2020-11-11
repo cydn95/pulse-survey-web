@@ -5,12 +5,14 @@ import {
   optionListAPI,
   submitAoQuestionAPI,
   addNewTopicAboutOtherAPI,
+  updateStakeholderCategoryAPI,
 } from "../../services/axios/api";
 
 import {
   AOQUESTION_LIST,
   SUBMIT_AOQUESTION,
   ADD_ABOUT_OTHER_TOPIC,
+  UPDATE_STAKEHOLDER_CATEGORY,
 } from "Constants/actionTypes";
 
 import {
@@ -203,7 +205,7 @@ function* submitAoQuestion({ payload }) {
     if (result.status === 201) {
       yield put(submitAoQuestionSuccess());
       yield put(stakeholderList(projectUserId, surveyId));
-      yield put(aoQuestionList(currentSurveyUser, surveyId))
+      yield put(aoQuestionList(currentSurveyUser, surveyId));
       callback();
     } else {
       console.log("submit failed");
@@ -256,6 +258,29 @@ function* addAboutOtherTopic({ payload }) {
   }
 }
 
+const updateStakeholderCategoryAsync = async (projectUserId, projectUser) =>
+  await updateStakeholderCategoryAPI(projectUserId, projectUser)
+    .then((data) => data)
+    .catch((error) => error);
+
+function* updateStakeholderCategory({ payload }) {
+  try {
+    const { projectUserId, projectUser, callback } = payload;
+
+    const result = yield call(
+      updateStakeholderCategoryAsync,
+      parseInt(projectUserId, 10),
+      projectUser
+    );
+
+    if (result.status == 200) {
+      callback();
+    }
+  } catch (error) {
+    console.log("error : ", error);
+  }
+}
+
 export function* watchAoQuestionList() {
   yield takeEvery(AOQUESTION_LIST, getAoQuestionList);
 }
@@ -268,10 +293,15 @@ export function* watchAddAboutOtherTopic() {
   yield takeEvery(ADD_ABOUT_OTHER_TOPIC, addAboutOtherTopic);
 }
 
+export function* watchUpdateStakeholderCategory() {
+  yield takeEvery(UPDATE_STAKEHOLDER_CATEGORY, updateStakeholderCategory);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchAoQuestionList),
     fork(watchAoQuestionSubmit),
     fork(watchAddAboutOtherTopic),
+    fork(watchUpdateStakeholderCategory),
   ]);
 }

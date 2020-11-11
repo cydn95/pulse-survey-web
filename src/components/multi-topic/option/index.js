@@ -13,7 +13,7 @@ function Option(props) {
       onClick={(e) => onSelectTopic()}
       className={classnames(styles.main, { [styles["editable"]]: checked })}
     >
-      <div className={styles.bullet}></div>
+      {/* <div className={styles.bullet}></div> */}
       <div className={styles.data}>
         <div className={styles.topic}>{topic}</div>
         <div className={styles.comment}>{comment}</div>
