@@ -1,13 +1,19 @@
 .driver-component {
-  font-size: 1rem;
-  border-radius: 40px;
+  font-size: 14px;
+  border-radius: 10px;
+  width: 140px;
   cursor: pointer;
-  width: 120px;
   background: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 700;
+
+  @media only screen and (max-width: 768px) {
+    font-size: 1rem;
+    border-radius: 40px;
+    width: 120px;
+  }
 
   &.mobile-finished {
     margin-top: -10px;
@@ -23,13 +29,25 @@
 
   .icon {
     width: 25px;
+
+    @media only screen and (max-width: 768px) {
+      display: none;
+    }
   }
 
   &.selected {
-    background: #212529;
-    &.green {
+    background: #77c8bb;
+    @media only screen and (max-width: 768px) {
       background: #212529;
     }
+
+    &.green {
+      background: #77c8bb;
+      @media only screen and (max-width: 768px) {
+        background: #212529;
+      }
+    }
+
     &.black {
       background: #545666;
     }
@@ -130,6 +148,14 @@
   height: 16px;
   margin-bottom: -17px;
   z-index: 300;
+
+  background-image: url("/assets/img/survey/check-gray.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  @media only screen and (max-width: 768px) {
+    background-image: url("/assets/img/survey/check.png");
+  }
 }
 
 .progress-icon-mobile {
@@ -137,6 +163,14 @@
   width: 16px;
   height: 16px;
   z-index: 3000;
+
+  background-image: url("/assets/img/survey/check-gray.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  @media only screen and (max-width: 768px) {
+    background-image: url("/assets/img/survey/check.png");
+  }
 }
 
 @media only screen and (max-width: 880px) {
