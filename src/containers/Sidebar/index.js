@@ -315,7 +315,7 @@ class Sidebar extends Component {
                   About Me
                 </MenuItem>
               </Menu>
-              <Menu iconShape="square">
+              <Menu iconShape="square" className="s-menu-about-others">
                 <MenuItem
                   icon={<IconAboutOthers />}
                   onClick={(e) =>
