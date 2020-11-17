@@ -25,7 +25,7 @@ class FreeText extends Component {
   componentWillReceiveProps(props) {
     const { surveyType } = props;
     const answer = surveyType === "me" ? props.question.answer : props.answer;
-    
+
     this.setState({
       answer: {
         ...answer,

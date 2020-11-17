@@ -130,16 +130,28 @@ class AboutMeSurvey extends React.Component {
     const { pageIndex } = this.state;
     const answerData = { ...answer };
 
+    console.log(answerData);
+    
     this.setState((state) => {
       const questionIndex = state.driverList[pageIndex].amquestion.findIndex(
         (element) => {
           return element.answer.amQuestion === answerData.amQuestion;
         }
       );
+
       state.driverList[pageIndex].amquestion[questionIndex].answer = answerData;
+
+      // For <FreeText> component, set response_status to false if no answers
+      let responsestatus = true;
+      if (state.driverList[pageIndex].amquestion[questionIndex].controlType === controlType.TEXT) {
+        if (answerData.topicValue === "" && answerData.commentValue === "" && answerData.skipValue === "") {
+          responsestatus = false;          
+        }
+      }
+      
       state.driverList[pageIndex].amquestion[
         questionIndex
-      ].responsestatus = true;
+      ].responsestatus = responsestatus;
 
       let answeredCount = 0;
       for (let i = 0; i < state.driverList[pageIndex].amquestion.length; i++) {
