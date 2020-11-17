@@ -59,11 +59,21 @@ function renderGraph(node, props) {
     // TODO: make responsive to changes
     face = root.append("g").attr("class", styles.face);
 
-    face
-      .append("text")
-      .attr("text-anchor", "middle")
-      .attr("class", styles.text)
-      .text(subDriver);
+    let textList = [];
+    if (subDriver.length > 13) {
+      textList = subDriver.split(" ");
+    } else {
+      textList.push(subDriver);
+    }
+
+    for (let i = 0; i < textList.length; i++) {
+      face
+        .append("text")
+        .attr("text-anchor", "middle")
+        .attr("class", styles.text)
+        .text(textList[i])
+        .attr("dy", 0 + 20 * i);
+    }
   }
 
   // centerize the face
