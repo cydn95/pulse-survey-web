@@ -20,7 +20,16 @@ import {
   addAboutOtherTopic,
 } from "Redux/actions";
 
-import { replaceQuestionTextKeyWord } from "Constants/defaultValues";
+import {
+  replaceQuestionTextKeyWord,
+  TOPIC_LIMIT,
+} from "Constants/defaultValues";
+
+import "react-notifications/lib/notifications.css";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
 
 import styles from "./mobile.scss";
 import classnames from "classnames";
@@ -127,6 +136,23 @@ class MobileComponent extends Component {
 
   handleSaveTopic = () => {
     if (this.state.newTopic.trim() !== "") {
+      const { topicList } = this.state;
+      let bExist = false;
+      for (let i = 0; i < topicList.length; i++) {
+        if (
+          topicList[i].topicName.toLowerCase().trim() ===
+          this.state.newTopic.toLowerCase().trim()
+        ) {
+          bExist = true;
+          break;
+        }
+      }
+
+      if (bExist) {
+        NotificationManager.error("Topic is already existed", "Info", 2000);
+        return;
+      }
+
       if (this.props.type === "am") {
         this.props.addAboutMeTopic(
           this.state.newTopic,
@@ -224,6 +250,25 @@ class MobileComponent extends Component {
   };
 
   handleUpdateTopic = (topicName, topicComment) => {
+    const { topicList } = this.state;
+
+    let bExist = false;
+    for (let i = 0; i < topicList.length; i++) {
+      if (
+        topicList[i].topicName.trim().toLowerCase() ===
+          topicName.trim().toLowerCase() &&
+        this.state.editId !== topicList[i].id
+      ) {
+        bExist = true;
+        break;
+      }
+    }
+
+    if (bExist) {
+      NotificationManager.error("Topic is already existed", "Info", 2000);
+      return;
+    }
+
     if (this.props.type === "am") {
       this.props.updateAboutMeTopic(
         this.state.editId,
@@ -260,7 +305,7 @@ class MobileComponent extends Component {
 
   render() {
     const { question, skipQuestionList, user, projectTitle } = this.props;
-    const { optionList } = this.state;
+    const { optionList, topicList } = this.state;
 
     return (
       <div className={styles.main}>
@@ -287,7 +332,7 @@ class MobileComponent extends Component {
               </div>
             );
           })}
-          {this.state.topicList.map((item) => {
+          {topicList.map((item) => {
             let selectedValue = 0;
             if (this.state.answer.integerValue.toString().includes("T-")) {
               selectedValue = this.state.answer.integerValue
@@ -351,7 +396,7 @@ class MobileComponent extends Component {
                 commentPlaceholder={question.commentPrompt}
               />
             )}
-            {!this.state.input && (
+            {!this.state.input && topicList.length < TOPIC_LIMIT && (
               <Button
                 className={styles["add-topic"]}
                 onClick={(e) => this.handleAddPanel()}
@@ -360,7 +405,7 @@ class MobileComponent extends Component {
                 {` `}ADD NEW TOPIC
               </Button>
             )}
-            {this.state.input && (
+            {this.state.input && topicList.length < TOPIC_LIMIT && (
               <Button
                 className={styles["save-topic"]}
                 onClick={(e) => this.handleSaveTopic()}
@@ -389,6 +434,7 @@ class MobileComponent extends Component {
           topicName={this.state.editName}
           topicComment={this.state.editComment}
         />
+        <NotificationContainer />
       </div>
     );
   }
