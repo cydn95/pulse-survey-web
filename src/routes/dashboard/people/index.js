@@ -160,7 +160,7 @@ class ReportPeople extends React.Component {
           <div className={styles.left}>
             <div className={styles.row}>
               <div className={styles.block}>
-                <span className={styles["block__title"]}>Paticipation</span>
+                <span className={styles["block__title"]}>Participation</span>
                 <div
                   className={classnames(
                     styles["block__content"],
