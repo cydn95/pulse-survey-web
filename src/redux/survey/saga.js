@@ -82,6 +82,8 @@ function* getPageList({ payload }) {
               answer: {
                 ...questionList[i].amquestion[j].response,
                 survey: questionList[i].amquestion[j].survey,
+                pageIndex: i,
+                questionIndex: j,
               },
             };
           } else {
