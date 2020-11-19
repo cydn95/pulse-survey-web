@@ -1,10 +1,24 @@
 .table {
   width: 100%;
+  overflow-x: auto;
+
+  scrollbar-color: rgb(82, 86, 110) transparent;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f9f9f9;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #bbb;
+  }
 
   &__header {
     width: 100%;
-    display: flex;
-    flex-direction: row;
     background: #f9f9f9;
     border-bottom: 2px solid #e8e8e8;
     box-sizing: border-box;
@@ -15,9 +29,11 @@
     &__col1 {
       text-align: left;
       word-wrap: break-word;
+      display: inline-block;
     }
 
     &__col2 {
+      display: inline-block;
       text-align: center;
       overflow-wrap: break-word;
       font-size: 12px;
@@ -28,20 +44,20 @@
   &__content {
     &__row {
       width: 100%;
-      display: flex;
-      flex-direction: row;
       border-bottom: 2px solid #e8e8e8;
       box-sizing: border-box;
       font-size: 13px;
       color: #515151;
 
       &__col1 {
+        display: inline-block;
         text-align: left !important;
         padding: 8px 0px;
         word-wrap: break-word;
       }
 
       &__col2 {
+        display: inline-block;
         text-align: center;
         box-sizing: border-box;
         overflow-wrap: break-word;

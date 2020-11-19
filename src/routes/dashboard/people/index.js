@@ -96,6 +96,7 @@ class ReportPeople extends React.Component {
           overallTrendRet,
           overallTrendKey
         ) => {
+          console.log(feedbackSummaryRet);
           this.setState({
             feedbackSummary: feedbackSummaryRet,
             cultureResult: cultureRet,
@@ -213,9 +214,9 @@ class ReportPeople extends React.Component {
               </div>
             </div>
             <div className={styles.row}>
-              <div className={styles.block}>
+              <div className={styles.block} style={{ width: "100%" }}>
                 <span className={styles["block__title"]}>Feedback Summary</span>
-                <div className={styles.content}>
+                <div className={styles.content} style={{ width: "100%" }}>
                   <FeedbackSummary data={feedbackSummary} />
                 </div>
               </div>

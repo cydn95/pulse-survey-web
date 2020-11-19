@@ -56,21 +56,22 @@ class Account extends React.Component {
   };
 
   handleChangeProfile = (profile) => {
+
     const { firstName, lastName, email, team, organization } = profile;
     const { userToken, changeProfile } = this.props;
 
     if (firstName === "") {
-      NotificationManager.error("First name must be required", "Info", 2000);
+      NotificationManager.error("First name is required", "Info", 2000);
       return;
     }
 
     if (lastName === "") {
-      NotificationManager.error("Last name must be required", "Info", 2000);
+      NotificationManager.error("Last name is required", "Info", 2000);
       return;
     }
 
     if (email === "") {
-      NotificationManager.error("Email must be required", "Info", 2000);
+      NotificationManager.error("Email is required", "Info", 2000);
       return;
     }
 
@@ -80,12 +81,12 @@ class Account extends React.Component {
     }
 
     if (team === "") {
-      NotificationManager.error("Team must be required", "Info", 2000);
+      NotificationManager.error("Team is required", "Info", 2000);
       return;
     }
 
     if (organization === "") {
-      NotificationManager.error("Organization must be required", "Info", 2000);
+      NotificationManager.error("Organization is required", "Info", 2000);
       return;
     }
 
