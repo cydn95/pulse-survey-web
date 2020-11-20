@@ -1,6 +1,7 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import {
   loginAPI,
+  getCRSFTokenAPI,
   setPasswordAPI,
   getSurveyUserAPI,
   getProjectAPI,
@@ -24,8 +25,13 @@ import {
 
 import { loginErrorType } from "Constants/defaultValues";
 
-const loginWithUsernamePasswordAsync = async (username, password) =>
-  await loginAPI(username, password)
+const getCSRFTokenAsync = async () =>
+  await getCRSFTokenAPI()
+    .then((token) => token)
+    .catch((error) => error);
+
+const loginWithUsernamePasswordAsync = async (username, password, csrf) =>
+  await loginAPI(username, password, csrf)
     .then((authUser) => authUser)
     .catch((error) => error);
 
@@ -34,10 +40,14 @@ function* loginWithUsernamePassword({ payload }) {
   const { history } = payload;
 
   try {
+    const csrfTokenRes = yield call(getCSRFTokenAsync);
+    const csrfToken = csrfTokenRes.data;
+
     const loginUser = yield call(
       loginWithUsernamePasswordAsync,
       username,
-      password
+      password,
+      csrfToken
     );
 
     if (loginUser.data) {

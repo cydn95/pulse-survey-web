@@ -1,10 +1,22 @@
 import { getClient, getLambdaClient } from "./apiConfig";
 
-const loginAPI = (username, password) => {
-  return getClient(false).post("api-token-auth/", {
-    username: username,
-    password: password,
-  });
+const getCRSFTokenAPI = () => {
+  return getClient(false).get("get_csrf/");
+};
+
+const loginAPI = (username, password, csrf) => {
+  return getClient(false).post(
+    "api-token-auth/",
+    {
+      username: username,
+      password: password,
+    },
+    {
+      headers: {
+        "X-CSRFToken": csrf,
+      },
+    }
+  );
 };
 
 const setPasswordAPI = (email, password, token) => {
@@ -318,6 +330,7 @@ const getKeyDataFromLambda = () => {
 };
 
 export {
+  getCRSFTokenAPI,
   loginAPI,
   setPasswordAPI,
   projectListByUserAPI,
