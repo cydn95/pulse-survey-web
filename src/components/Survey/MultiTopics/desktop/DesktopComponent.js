@@ -304,6 +304,12 @@ class DesktopComponent extends Component {
     const { question, skipQuestionList, user, projectTitle } = this.props;
     const { optionList, topicList } = this.state;
 
+    const sortedTopicList = topicList.sort((a, b) => {
+      const titleA = a.topicName.toString().toLowerCase();
+      const titleB = b.topicName.toString().toLowerCase();
+      return titleA.localeCompare(titleB);
+    });
+
     return (
       <div className={styles.main}>
         <div>
@@ -329,7 +335,7 @@ class DesktopComponent extends Component {
               </div>
             );
           })}
-          {topicList.map((item) => {
+          {sortedTopicList.map((item) => {
             let selectedValue = 0;
             if (this.state.answer.integerValue.toString().includes("T-")) {
               selectedValue = this.state.answer.integerValue
