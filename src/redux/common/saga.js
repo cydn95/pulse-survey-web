@@ -260,9 +260,10 @@ function* addStakeholder({ payload }) {
 
       const result2 = yield call(addStakeholderAsync, projectUser);
 
-      if (result2.status === 201) {
-        yield put(stakeholderList(stakeholder.myProjectUser, surveyId));
-      }
+      // if (result2.status === 201) {
+      //   yield put(stakeholderList(stakeholder.myProjectUser, surveyId));
+      // }
+      callback(result2.status);
     } else {
       callback(result.status);
     }

@@ -70,16 +70,6 @@ console.log(profile);
       return;
     }
 
-    if (email.trim() === "") {
-      NotificationManager.error("Email is required", "Info", 2000);
-      return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      NotificationManager.error("Invalid email address", "Info", 2000);
-      return;
-    }
-
     if (team.trim() === "") {
       NotificationManager.error("Team is required", "Info", 2000);
       return;

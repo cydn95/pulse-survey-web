@@ -595,6 +595,7 @@ class MyMap extends React.Component {
   };
 
   callbackAddNewStakeholder = (code) => {
+    console.log('code', code);
     if (code === 400) {
       NotificationManager.error(
         "Stakeholder is already existed",

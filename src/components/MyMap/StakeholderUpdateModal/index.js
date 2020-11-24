@@ -153,7 +153,8 @@ const StakeholderUpdateModal = ({
 
   const callbackUpdate = () => {
     console.log('callback');
-    onClose();
+    window.location.reload(false);
+    // onClose();
   };
 
   return (
