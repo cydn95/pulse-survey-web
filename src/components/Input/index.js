@@ -27,7 +27,7 @@ const Input = ({
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value, e)}
         onKeyUp={(e) => (onKeyUp ? onKeyUp(e) : {})}
-        defaultValue={value}
+        value={value}
         onFocus={(e) => (onFocus ? onFocus(e) : {})}
         onBlur={(e) => (onBlur ? onBlur(e) : {})}
       />

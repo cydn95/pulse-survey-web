@@ -56,7 +56,7 @@ class Account extends React.Component {
   };
 
   handleChangeProfile = (profile) => {
-console.log(profile);
+
     const { firstName, lastName, email, team, organization } = profile;
     const { userToken, changeProfile } = this.props;
 
