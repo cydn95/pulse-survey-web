@@ -285,9 +285,15 @@ const changeProfileAPI = (
 };
 
 const changeAvatarAPI = (avatarId, data) => {
-  return getClient(true).put("/useravatar/" + avatarId + "/", data, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  if (avatarId == 0) {
+    return getClient(true).post("/useravatar/", data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  } else {
+    return getClient(true).put("/useravatar/" + avatarId + "/", data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  }
 };
 
 const updateUserGuideAPI = (token, guide) => {
