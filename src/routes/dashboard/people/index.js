@@ -64,6 +64,7 @@ class ReportPeople extends React.Component {
   componentDidMount() {
     const {
       surveyId,
+      surveyUserId,
       actionOverallSentiment,
       actionTopPositiveNegative,
       actionFeedbackSummary,
@@ -88,6 +89,7 @@ class ReportPeople extends React.Component {
 
       actionFeedbackSummary(
         surveyId,
+        surveyUserId,
         (
           feedbackSummaryRet,
           cultureRet,
@@ -269,11 +271,12 @@ class ReportPeople extends React.Component {
 }
 
 const mapStateToProps = ({ authUser }) => {
-  const { projectTitle, surveyId } = authUser;
+  const { projectTitle, surveyId, surveyUserId } = authUser;
 
   return {
     projectTitle,
     surveyId,
+    surveyUserId
   };
 };
 

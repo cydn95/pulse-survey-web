@@ -33,8 +33,8 @@ const getShGroupListAsync = async (surveyId) =>
     .then((result) => result)
     .catch((error) => error);
 
-const getFeedbackSummaryAsync = async (surveyId) =>
-  await getFeedbackSummaryAPI(surveyId)
+const getFeedbackSummaryAsync = async (surveyId, subProjectUser) =>
+  await getFeedbackSummaryAPI(surveyId, subProjectUser)
     .then((result) => result)
     .catch((error) => error);
 
@@ -114,7 +114,7 @@ function* getTopPositiveNegative({ payload }) {
 
 function* getFeedbackSummary({ payload }) {
   try {
-    const { surveyId, callback } = payload;
+    const { surveyId, subProjectUser, callback } = payload;
     const shGroupResult = yield call(getShGroupListAsync, surveyId);
 
     if (shGroupResult.status === 200) {
@@ -122,7 +122,7 @@ function* getFeedbackSummary({ payload }) {
       const drivers = [];
       const ret = {};
 
-      const result = yield call(getFeedbackSummaryAsync, surveyId);
+      const result = yield call(getFeedbackSummaryAsync, surveyId, subProjectUser);
 
       const cultureRet = {};
       const sentimentRet = {};

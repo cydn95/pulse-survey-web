@@ -15,9 +15,9 @@ export const topPositiveNegative = (surveyId, callback) => ({
   payload: { surveyId, callback },
 });
 
-export const feedbackSummary = (surveyId, callback) => ({
+export const feedbackSummary = (surveyId, subProjectUser, callback) => ({
   type: REPORT_FEEDBACK_SUMMARY,
-  payload: { surveyId, callback },
+  payload: { surveyId, subProjectUser, callback },
 });
 
 export const participation = (surveyId, callback) => ({

@@ -314,8 +314,8 @@ const getTopPositiveAndNegativeAPI = (surveyId) => {
   return getClient(true).get(`/aoresponsereport/?survey=${surveyId}`);
 };
 
-const getFeedbackSummaryAPI = (surveyId) => {
-  return getClient(true).get(`/feedbacksummaryreport/?survey=${surveyId}`);
+const getFeedbackSummaryAPI = (surveyId, subProjectUser) => {
+  return getClient(true).get(`/feedbacksummaryreport/?survey=${surveyId}&subProjectUser=${subProjectUser}`);
 };
 
 const getParticipationAPI = (surveyId) => {
