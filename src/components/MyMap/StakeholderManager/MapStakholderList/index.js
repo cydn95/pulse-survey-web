@@ -146,7 +146,7 @@ class MapStakeholderList extends Component {
                         title={title}
                         description={description}
                         profilePicUrl={d.userAvatar}
-                        userProgress={percentage}
+                        userProgress={percentage ? Number(percentage) : 0}
                         donut={true}
                       />
                     );
@@ -187,7 +187,7 @@ class MapStakeholderList extends Component {
                         title={title}
                         description={description}
                         profilePicUrl={d.userAvatar}
-                        userProgress={percentage}
+                        userProgress={percentage ? Number(percentage) : 0}
                         donut={true}
                       />
                     );

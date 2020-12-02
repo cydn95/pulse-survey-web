@@ -40,6 +40,7 @@ class AoSurvey extends React.Component {
       pageIndex,
       user,
       currentSurveyUserId,
+      lastAddedShCategory
     } = this.props;
 
     let totalQuestions = 0;
@@ -65,13 +66,15 @@ class AoSurvey extends React.Component {
       return item.questions.length > 0 ? true : false;
     });
 
-    const shCategoryId = currentSurveyUserId.split("_SHC_")[1];
+    let shCategoryId = currentSurveyUserId.split("_SHC_")[1];
+    if (shCategoryId == undefined) {
+      shCategoryId = lastAddedShCategory;
+    }
 
     const answers = [];
     for (let i = 0; i < orderedDrivers.length; i++) {
       for (let j = 0; j < orderedDrivers[i].questions.length; j++) {
         totalQuestions++;
-
         const temp = orderedDrivers[i].questions[j].response.filter(
           (resp) =>
             resp.shCategory.toString() === shCategoryId.toString() &&
@@ -290,9 +293,9 @@ class AoSurvey extends React.Component {
       projectMapCategory,
     } = this.props;
 
-    console.log(myMapCategory);
-    console.log(projectMapCategory);
-    console.log(user);
+    // console.log(myMapCategory);
+    // console.log(projectMapCategory);
+    // console.log(user);
 
     const drivers = [...this.state.drivers];
 

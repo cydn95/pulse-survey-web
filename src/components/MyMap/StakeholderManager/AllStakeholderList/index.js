@@ -121,7 +121,7 @@ class AllStakeholderList extends Component {
                         title={title}
                         description={description}
                         profilePicUrl={d.userAvatar}
-                        userProgress={percentage}
+                        userProgress={percentage ? Number(percentage) : 0}
                         arrow={true}
                         stakeholder={{
                           ...d,
