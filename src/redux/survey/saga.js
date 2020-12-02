@@ -220,7 +220,7 @@ function* submitSurvey({ payload }) {
 
       localStorage.setItem("surveyId", surveyId);
       yield put(submitSurveySuccess(surveyId));
-      history.push("/app/dashboard");
+      history.push("/app/about-others");
     } else {
       console.log("submit failed");
     }

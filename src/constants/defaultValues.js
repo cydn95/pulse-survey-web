@@ -3,6 +3,8 @@ export const defaultSubMenuClassName = "dashboard";
 
 export const defaultStartPath = "/app/help/how-to-use-pulse";
 
+export const defaultPassword = "p#vh#@3jkda3$";
+
 export const defaultLocale = "en";
 export const localeOptions = [
   { id: "en", name: "English" },

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 
 import DriverPanel from "Components/driver";
@@ -33,26 +33,29 @@ import {
 
 import styles from "./styles.scss";
 
-class AboutMeSurvey extends React.Component {
-  constructor(props) {
-    super(props);
+const AboutMeSurvey = ({
+  optionList,
+  aboutMe,
+  surveyList,
+  pageIndex,
+  skipQuestionList,
+  projectId,
+  projectTitle,
+  surveyTitle,
+  surveyUserId,
+  surveyId, history,
 
-    this.state = {
-      pageIndex: props.pageIndex,
-      driverList: [],
-    };
+  getPageList,
+  getSkipQuestionList,
+  setSurveyPage,
+  continueSurvey,
+  submitSurvey,
+}) => {
 
-    this.scrollTop = false;
-  }
+  // const [pageIndex , setPageIndex] = useState(pageIndex);
+  const [driverList, setDriverList] = useState([]);
 
-  componentWillMount() {
-    const {
-      surveyId,
-      surveyUserId,
-      getPageList,
-      getSkipQuestionList,
-      history,
-    } = this.props;
+  useEffect(() => {
     if (
       surveyUserId == undefined ||
       surveyUserId == null ||
@@ -64,17 +67,12 @@ class AboutMeSurvey extends React.Component {
 
     getPageList(surveyId, surveyUserId);
     getSkipQuestionList();
-  }
 
-  componentWillReceiveProps(props) {
-    const { pageIndex, surveyList } = props;
+  }, [surveyId, surveyUserId])
 
+  useEffect(() => {
     if (surveyList.length > 0) {
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-      }, 100);
-
-      const driverList = [];
+      const driverListTemp = [];
 
       for (let i = 0; i < surveyList.length; i++) {
         let answeredCount = 0;
@@ -103,84 +101,62 @@ class AboutMeSurvey extends React.Component {
             progress: driverProgress,
             amquestion: [...surveyList[i].amquestion],
           };
-          driverList.push(driver);
+          driverListTemp.push(driver);
         }
       }
 
-      this.setState({
-        driverList,
-      });
+      setDriverList([...driverListTemp])
     }
+  }, [pageIndex, surveyList])
 
-    this.setState({
-      pageIndex,
-    });
-  }
-
-  handleClickDriver = (driverId) => {
-    const { setSurveyPage } = this.props;
-    const { driverList } = this.state;
+  const handleClickDriver = (driverId) => {
     var pageIndex = driverList.findIndex((element) => {
       return element.driverId === driverId;
     });
     setSurveyPage(pageIndex);
   };
 
-  handleAnswer = (answer) => {
-    const { pageIndex } = this.state;
+  const handleAnswer = (answer) => {
     const answerData = { ...answer };
 
-    console.log(answerData);
-    
-    this.setState((state) => {
-      const questionIndex = state.driverList[pageIndex].amquestion.findIndex(
-        (element) => {
-          return element.answer.amQuestion === answerData.amQuestion;
-        }
-      );
+    const oldDriverList = [...driverList];
 
-      state.driverList[pageIndex].amquestion[questionIndex].answer = answerData;
-
-      // For <FreeText> component, set response_status to false if no answers
-      let responsestatus = true;
-      if (state.driverList[pageIndex].amquestion[questionIndex].controlType === controlType.TEXT) {
-        if (answerData.topicValue === "" && answerData.commentValue === "" && answerData.skipValue === "") {
-          responsestatus = false;          
-        }
+    const questionIndex = oldDriverList[pageIndex].amquestion.findIndex(
+      (element) => {
+        return element.answer.amQuestion === answerData.amQuestion;
       }
-      
-      state.driverList[pageIndex].amquestion[
-        questionIndex
-      ].responsestatus = responsestatus;
+    );
 
-      let answeredCount = 0;
-      for (let i = 0; i < state.driverList[pageIndex].amquestion.length; i++) {
-        if (state.driverList[pageIndex].amquestion[i].responsestatus === true) {
-          answeredCount++;
-        }
-      }
+    oldDriverList[pageIndex].amquestion[questionIndex].answer = answerData;
 
-      if (answeredCount === state.driverList[pageIndex].amquestion.length) {
-        state.driverList[pageIndex].progress = SURVEY_COMPLETED;
-      } else {
-        state.driverList[pageIndex].progress = SURVEY_IN_PROGRESS;
+    // For <FreeText> component, set response_status to false if no answers
+    let responsestatus = true;
+    if (oldDriverList[pageIndex].amquestion[questionIndex].controlType === controlType.TEXT) {
+      if (answerData.topicValue === "" && answerData.commentValue === "" && answerData.skipValue === "") {
+        responsestatus = false;
       }
-      return state;
-    });
+    }
+
+    oldDriverList[pageIndex].amquestion[questionIndex].responsestatus = responsestatus;
+
+    let answeredCount = 0;
+    for (let i = 0; i < oldDriverList[pageIndex].amquestion.length; i++) {
+      if (oldDriverList[pageIndex].amquestion[i].responsestatus === true) {
+        answeredCount++;
+      }
+    }
+
+    if (answeredCount === oldDriverList[pageIndex].amquestion.length) {
+      oldDriverList[pageIndex].progress = SURVEY_COMPLETED;
+    } else {
+      oldDriverList[pageIndex].progress = SURVEY_IN_PROGRESS;
+    }
+
+    setDriverList([...oldDriverList]);
   };
 
-  handleContinue = (e) => {
+  const handleContinue = (e) => {
     e.preventDefault();
-
-    const { driverList, pageIndex } = this.state;
-    const {
-      projectId,
-      surveyUserId,
-      aboutMe,
-      history,
-      continueSurvey,
-      submitSurvey,
-    } = this.props;
 
     if (pageIndex === driverList.length - 1) {
       submitSurvey(driverList, aboutMe, projectId, surveyUserId, history);
@@ -193,209 +169,172 @@ class AboutMeSurvey extends React.Component {
     }
   };
 
-  render() {
-    const {
-      surveyList,
-      optionList,
-      projectTitle,
-      skipQuestionList,
-      history,
-    } = this.props;
+  const defaultDrvierId = driverList.length ? driverList[pageIndex].driverId : 0;
+  const driver = driverList.filter((d) => d.driverId === defaultDrvierId)[0];
+  const user = { fullName: "Mike Smith", team: "Pulse", };
 
-    const { driverList, pageIndex } = this.state;
+  return (
+    <div className={styles.root}>
+      <div className={styles.topbar}>
+        <TopNav history={history} menuTitle="About Me">
+          <div className={styles.section}>
+            <h2 className={styles["project-name"]}>{projectTitle}</h2>
+          </div>
+        </TopNav>
+      </div>
+      {surveyList.length > 0 && (
+        <div className={styles["main-content"]}>
+          {driverList.length > 0 && skipQuestionList.length > 0 && (
+            <Fragment>
+              <div className={styles["driver-scroll"]}>
+                <div className={styles["driver-section"]}>
+                  <DriverPanel
+                    defaultDriverId={defaultDrvierId}
+                    data={driverList}
+                    color="green"
+                    onClick={(e, driverId) => handleClickDriver(driverId)}
+                  />
+                </div>
+                <div className={styles["survey-container"]}>
+                  <div className={styles["survey-driver-container"]}>
+                    <div className={styles["question-driver-container"]}>
+                      {driver.amquestion.map((question) => {
+                        switch (question.controlType) {
+                          case controlType.TEXT:
+                            return (
+                              <div
+                                key={`question-page-${question.id}`}
+                                className={styles["control-container"]}
+                              >
+                                <FreeText
+                                  user={user}
+                                  question={question}
+                                  onAnswer={(answer) => handleAnswer(answer)}
+                                  skipQuestionList={skipQuestionList}
+                                  projectTitle={projectTitle}
+                                  surveyType="me"
+                                />
+                              </div>
+                            );
+                          case controlType.SLIDER:
+                            return (
+                              <div
+                                key={`question-page-${question.id}`}
+                                className={styles["control-container"]}
+                              >
+                                <RangeSlider
+                                  user={user}
+                                  question={question}
+                                  onAnswer={(answer) => handleAnswer(answer)}
+                                  skipQuestionList={skipQuestionList}
+                                  projectTitle={projectTitle}
+                                  surveyType="me"
+                                />
+                              </div>
+                            );
 
-    const defaultDrvierId = driverList.length
-      ? driverList[pageIndex].driverId
-      : 0;
+                          case controlType.TWO_OPTIONS:
+                            return (
+                              <div
+                                key={`question-page-${question.id}`}
+                                className={styles["control-container"]}
+                              >
+                                <TwoOptions
+                                  user={user}
+                                  options={optionList}
+                                  question={question}
+                                  onAnswer={(answer) => handleAnswer(answer)}
+                                  skipQuestionList={skipQuestionList}
+                                  projectTitle={projectTitle}
+                                  surveyType="me"
+                                />
+                              </div>
+                            );
 
-    const driver = driverList.filter((d) => d.driverId === defaultDrvierId)[0];
+                          case controlType.MULTI_OPTIONS:
+                            return (
+                              <div
+                                key={`question-page-${question.id}`}
+                                className={styles["control-container"]}
+                              >
+                                <MultipleOptions
+                                  type="am"
+                                  user={user}
+                                  options={optionList}
+                                  question={question}
+                                  onAnswer={(answer) => handleAnswer(answer)}
+                                  skipQuestionList={skipQuestionList}
+                                  projectTitle={projectTitle}
+                                  surveyType="me"
+                                />
+                              </div>
+                            );
 
-    const user = {
-      fullName: "Mike Smith",
-      team: "Pulse",
-    };
-    // console.log("Driver List----------------------");
-    // console.log(driverList);
-    // console.log("Driver --------------------------");
-    // console.log(driver);
+                          case controlType.MULTI_TOPICS:
+                            return (
+                              <div
+                                key={`question-page-${question.id}`}
+                                className={styles["control-container"]}
+                              >
+                                <MultiTopics
+                                  type="am"
+                                  user={user}
+                                  options={optionList}
+                                  question={question}
+                                  onAnswer={(answer) => handleAnswer(answer)}
+                                  skipQuestionList={skipQuestionList}
+                                  projectTitle={projectTitle}
+                                  surveyType="me"
+                                />
+                              </div>
+                            );
 
-    return (
-      <div className={styles.root}>
-        <div className={styles.topbar}>
-          <TopNav history={history} menuTitle="About Me">
-            <div className={styles.section}>
-              <h2 className={styles["project-name"]}>{projectTitle}</h2>
-            </div>
-          </TopNav>
-        </div>
-        {surveyList.length > 0 && (
-          <div className={styles["main-content"]}>
-            {driverList.length > 0 && skipQuestionList.length > 0 && (
-              <Fragment>
-                <div className={styles["driver-scroll"]}>
-                  <div className={styles["driver-section"]}>
-                    <DriverPanel
-                      defaultDriverId={defaultDrvierId}
-                      data={driverList}
-                      color="green"
-                      onClick={(e, driverId) =>
-                        this.handleClickDriver(driverId)
+                          case controlType.SMART_TEXT:
+                            return (
+                              <div
+                                key={`question-page-${question.id}`}
+                                className={styles["control-container"]}
+                              >
+                                <SmartText
+                                  user={user}
+                                  question={question}
+                                  onAnswer={(answer) => handleAnswer(answer)}
+                                  skipQuestionList={skipQuestionList}
+                                  projectTitle={projectTitle}
+                                  surveyType="me"
+                                />
+                              </div>
+                            );
+
+                          default:
+                            return (
+                              <div key={`question-page-${question.id}`}></div>
+                            );
+                        }
+                      })}
+                    </div>
+                    <Continue
+                      onContinue={(e) => handleContinue(e)}
+                      history={history}
+                      title={
+                        pageIndex === driverList.length - 1
+                          ? "Submit"
+                          : "Continue"
                       }
                     />
                   </div>
-                  <div className={styles["survey-container"]}>
-                    <div className={styles["survey-driver-container"]}>
-                      <div className={styles["question-driver-container"]}>
-                        {driver.amquestion.map((question) => {
-                          switch (question.controlType) {
-                            case controlType.TEXT:
-                              return (
-                                <div
-                                  key={`question-page-${question.id}`}
-                                  className={styles["control-container"]}
-                                >
-                                  <FreeText
-                                    user={user}
-                                    question={question}
-                                    onAnswer={(answer) =>
-                                      this.handleAnswer(answer)
-                                    }
-                                    skipQuestionList={skipQuestionList}
-                                    projectTitle={projectTitle}
-                                    surveyType="me"
-                                  />
-                                </div>
-                              );
-                            case controlType.SLIDER:
-                              return (
-                                <div
-                                  key={`question-page-${question.id}`}
-                                  className={styles["control-container"]}
-                                >
-                                  <RangeSlider
-                                    user={user}
-                                    question={question}
-                                    onAnswer={(answer) =>
-                                      this.handleAnswer(answer)
-                                    }
-                                    skipQuestionList={skipQuestionList}
-                                    projectTitle={projectTitle}
-                                    surveyType="me"
-                                  />
-                                </div>
-                              );
-
-                            case controlType.TWO_OPTIONS:
-                              return (
-                                <div
-                                  key={`question-page-${question.id}`}
-                                  className={styles["control-container"]}
-                                >
-                                  <TwoOptions
-                                    user={user}
-                                    options={optionList}
-                                    question={question}
-                                    onAnswer={(answer) =>
-                                      this.handleAnswer(answer)
-                                    }
-                                    skipQuestionList={skipQuestionList}
-                                    projectTitle={projectTitle}
-                                    surveyType="me"
-                                  />
-                                </div>
-                              );
-
-                            case controlType.MULTI_OPTIONS:
-                              return (
-                                <div
-                                  key={`question-page-${question.id}`}
-                                  className={styles["control-container"]}
-                                >
-                                  <MultipleOptions
-                                    type="am"
-                                    user={user}
-                                    options={optionList}
-                                    question={question}
-                                    onAnswer={(answer) =>
-                                      this.handleAnswer(answer)
-                                    }
-                                    skipQuestionList={skipQuestionList}
-                                    projectTitle={projectTitle}
-                                    surveyType="me"
-                                  />
-                                </div>
-                              );
-
-                            case controlType.MULTI_TOPICS:
-                              return (
-                                <div
-                                  key={`question-page-${question.id}`}
-                                  className={styles["control-container"]}
-                                >
-                                  <MultiTopics
-                                    type="am"
-                                    user={user}
-                                    options={optionList}
-                                    question={question}
-                                    onAnswer={(answer) =>
-                                      this.handleAnswer(answer)
-                                    }
-                                    skipQuestionList={skipQuestionList}
-                                    projectTitle={projectTitle}
-                                    surveyType="me"
-                                  />
-                                </div>
-                              );
-
-                            case controlType.SMART_TEXT:
-                              return (
-                                <div
-                                  key={`question-page-${question.id}`}
-                                  className={styles["control-container"]}
-                                >
-                                  <SmartText
-                                    user={user}
-                                    question={question}
-                                    onAnswer={(answer) =>
-                                      this.handleAnswer(answer)
-                                    }
-                                    skipQuestionList={skipQuestionList}
-                                    projectTitle={projectTitle}
-                                    surveyType="me"
-                                  />
-                                </div>
-                              );
-
-                            default:
-                              return (
-                                <div key={`question-page-${question.id}`}></div>
-                              );
-                          }
-                        })}
-                      </div>
-                      <Continue
-                        onContinue={(e) => this.handleContinue(e)}
-                        history={this.props.history}
-                        title={
-                          pageIndex === driverList.length - 1
-                            ? "Submit"
-                            : "Continue"
-                        }
-                      />
-                    </div>
-                  </div>
                 </div>
-              </Fragment>
-            )}
-            {driverList.length === 0 && (
-              <h2 className={styles["no-questions"]}>No Questions</h2>
-            )}
-          </div>
-        )}
-        {surveyList.length === 0 && <Loading description="" />}
-      </div>
-    );
-  }
+              </div>
+            </Fragment>
+          )}
+          {driverList.length === 0 && (
+            <h2 className={styles["no-questions"]}>No Questions</h2>
+          )}
+        </div>
+      )}
+      {surveyList.length === 0 && <Loading description="" />}
+    </div>
+  );
 }
 
 const mapStateToProps = ({ survey, common, authUser }) => {
