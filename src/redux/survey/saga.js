@@ -47,7 +47,6 @@ function* getPageList({ payload }) {
       const questionList = [...result.data];
 
       for (let i = 0; i < questionList.length; i++) {
-        
         // Ordering by questionSequence
         questionList[i].amquestion = questionList[i].amquestion.sort((a, b) =>
           a.questionSequence > b.questionSequence ? 1 : -1
@@ -171,7 +170,8 @@ function* submitSurvey({ payload }) {
           amquestions[j].answer.integerValue === 0) &&
         amquestions[j].answer.topicValue === "" &&
         amquestions[j].answer.commentValue === "" &&
-        amquestions[j].answer.skipValue === ""
+        amquestions[j].answer.skipValue === "" &&
+        !amquestions[j].responsestatus
       ) {
         continue;
       }
