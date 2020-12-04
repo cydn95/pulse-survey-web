@@ -74,8 +74,6 @@ class BaseController {
       if (item.d.survey_completion) {
         let percentage = Math.abs(parseFloat(item.d.survey_completion).toFixed(2));
 
-        // console.log(percentage);
-
         // let segment = Math.abs(percentage - 50) * 2;
         let segmentColor = percentage <= 50 ? "#ff5500" : "#1f45b8";
         props.push({
@@ -267,9 +265,11 @@ class BaseController {
       "ap1",
       this.viewMode
     );
+    
     this.highLevelNodes = { ...this.highLevelNodes, ...highLevelNodes };
     // ammend the glyph count of the existing elements
     await this.recalculateGlyphs(clickedId, newItems, "expand");
+    
     await this.chart.expand(newItems, {
       layout: {
         name: this.layoutName,
@@ -281,17 +281,50 @@ class BaseController {
       },
       arrange: { name: "concentric" },
     });
+
     // add donuts in the underlying nodes
     await this.constructDonuts(newItems);
-    // the element has expanded so set the expanded flag
-    let clickedElement = this.chart.getItem(clickedId);
-    await this.chart.setProperties({
-      id: clickedElement.id,
-      d: {
-        ...clickedElement.d,
-        expanded: true,
-      },
+
+    // Noah
+    let shCategoryIds = [];
+    Object.keys(highLevelNodes).map((key) => {
+      let str = key;
+      let underlineCnt = 0;
+      for (let i = 0; i < str.length; i++) {
+        if (str[i] == "_") {
+          if (underlineCnt === 0)
+            underlineCnt++;
+          else {
+            let shCategoryId = str.substr(0, i);
+            if (!shCategoryIds.includes(shCategoryId)) {
+              shCategoryIds.push(shCategoryId)
+            }
+            break;
+          }
+        }
+      } 
+    })
+
+    shCategoryIds.forEach(async (itemId) => {
+      let clickedElement = this.chart.getItem(itemId);
+      await this.chart.setProperties({
+        id: clickedElement.id,
+        d: {
+          ...clickedElement.d,
+          expanded: true,
+        },
+      });
     });
+    
+    // the element has expanded so set the expanded flag
+    // let clickedElement = this.chart.getItem(clickedId);
+    // await this.chart.setProperties({
+    //   id: clickedElement.id,
+    //   d: {
+    //     ...clickedElement.d,
+    //     expanded: true,
+    //   },
+    // });
   };
 
   toggleChart = async (clickedId) => {
