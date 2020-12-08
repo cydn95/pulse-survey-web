@@ -19,12 +19,20 @@ const loginAPI = (username, password, csrf) => {
   );
 };
 
-const setPasswordAPI = (email, password, token) => {
-  return getClient(false).post("setpassword/", {
-    email,
-    password,
-    token,
-  });
+const setPasswordAPI = (email, password, token, csrf) => {
+  return getClient(false).post(
+    "setpassword/",
+    {
+      email,
+      password,
+      token,
+    },
+    {
+      headers: {
+        "X-CSRFToken": csrf,
+      },
+    }
+  );
 };
 
 /* Settings -> Project */
@@ -315,7 +323,9 @@ const getTopPositiveAndNegativeAPI = (surveyId) => {
 };
 
 const getFeedbackSummaryAPI = (surveyId, subProjectUser) => {
-  return getClient(true).get(`/feedbacksummaryreport/?survey=${surveyId}&subProjectUser=${subProjectUser}`);
+  return getClient(true).get(
+    `/feedbacksummaryreport/?survey=${surveyId}&subProjectUser=${subProjectUser}`
+  );
 };
 
 const getParticipationAPI = (surveyId) => {

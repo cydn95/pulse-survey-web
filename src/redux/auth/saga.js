@@ -94,16 +94,19 @@ function* logout({ payload }) {
   } catch (error) {}
 }
 
-const setPasswordAsync = async (email, password, token) =>
-  await setPasswordAPI(email, password, token)
+const setPasswordAsync = async (email, password, token, csrf) =>
+  await setPasswordAPI(email, password, token, csrf)
     .then((authUser) => authUser)
     .catch((error) => error);
 
 function* setPassword({ payload }) {
   const { email, password, token, history } = payload;
 
+  const csrfTokenRes = yield call(getCSRFTokenAsync);
+  const csrfToken = csrfTokenRes.data;
+
   try {
-    const result = yield call(setPasswordAsync, email, password, token);
+    const result = yield call(setPasswordAsync, email, password, token, csrfToken);
 
     if (result.data) {
       localStorage.removeItem("accessToken");
