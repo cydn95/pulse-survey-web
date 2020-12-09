@@ -269,7 +269,11 @@ class BaseController {
     this.highLevelNodes = { ...this.highLevelNodes, ...highLevelNodes };
     // ammend the glyph count of the existing elements
     await this.recalculateGlyphs(clickedId, newItems, "expand");
-    
+
+    newItems.forEach((itemId, key) => {
+       newItems[key].hi = true;
+    });
+
     await this.chart.expand(newItems, {
       layout: {
         name: this.layoutName,
@@ -315,16 +319,8 @@ class BaseController {
         },
       });
     });
-    
-    // the element has expanded so set the expanded flag
-    // let clickedElement = this.chart.getItem(clickedId);
-    // await this.chart.setProperties({
-    //   id: clickedElement.id,
-    //   d: {
-    //     ...clickedElement.d,
-    //     expanded: true,
-    //   },
-    // });
+
+    await this.toggleChart(clickedId);
   };
 
   toggleChart = async (clickedId) => {
@@ -345,7 +341,7 @@ class BaseController {
     });
 
     // shrink the element
-    if (!clickedElement.d.shrunk) {
+    if (clickedElement.d.shrunk === false) {
       await this.chart.animateProperties(props, { time: 400 });
       // hide the elements to move
       await this.chart.hide(elementsToMove);
@@ -396,14 +392,14 @@ class BaseController {
     this.enableLayoutOptions();
   };
 
-  handleDblClick = (id) => {
+  handleDblClick = async (id) => {
     let clickedElement = this.chart.getItem(id);
     if (
       clickedElement.d.coreEntity &&
       !clickedElement.d.expanded &&
       clickedElement.d.individualCount > 0
     ) {
-      this.expandChart(id);
+      await this.expandChart(id);
     } else if (clickedElement.d.coreEntity && clickedElement.d.expanded) {
       this.toggleChart(id);
     }
