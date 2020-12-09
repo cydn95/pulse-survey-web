@@ -153,7 +153,7 @@ class SkipQuestion extends Component {
       if (optionList.length > 0) {
         btnsToDraw.push(
           <div key="skip" className="skip">
-            Why are you skiping this question?{" "}
+            Why are you skipping this question?{" "}
             <a href="/" onClick={(e) => this.onSkipQuestion(e)}>
               <strong>Cancel skip</strong>
             </a>

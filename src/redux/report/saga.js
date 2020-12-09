@@ -33,8 +33,8 @@ const getShGroupListAsync = async (surveyId) =>
     .then((result) => result)
     .catch((error) => error);
 
-const getFeedbackSummaryAsync = async (surveyId) =>
-  await getFeedbackSummaryAPI(surveyId)
+const getFeedbackSummaryAsync = async (surveyId, subProjectUser) =>
+  await getFeedbackSummaryAPI(surveyId, subProjectUser)
     .then((result) => result)
     .catch((error) => error);
 
@@ -114,7 +114,7 @@ function* getTopPositiveNegative({ payload }) {
 
 function* getFeedbackSummary({ payload }) {
   try {
-    const { surveyId, callback } = payload;
+    const { surveyId, subProjectUser, callback } = payload;
     const shGroupResult = yield call(getShGroupListAsync, surveyId);
 
     if (shGroupResult.status === 200) {
@@ -122,7 +122,7 @@ function* getFeedbackSummary({ payload }) {
       const drivers = [];
       const ret = {};
 
-      const result = yield call(getFeedbackSummaryAsync, surveyId);
+      const result = yield call(getFeedbackSummaryAsync, surveyId, subProjectUser);
 
       const cultureRet = {};
       const sentimentRet = {};
@@ -136,12 +136,12 @@ function* getFeedbackSummary({ payload }) {
           const question = result.data[i];
           const intValue = question.integerValue;
 
-          for (let j = 0; j < question.amQuestionData.length; j++) {
-            const driverName = question.amQuestionData[j].driver.driverName;
+          for (let j = 0; j < question.aoQuestionData.length; j++) {
+            const driverName = question.aoQuestionData[j].driver.driverName;
 
             /* Culture Result Start */
             if (driverName === "Culture") {
-              const subDriver = question.amQuestionData[j].subdriver;
+              const subDriver = question.aoQuestionData[j].subdriver;
               if (subDriver in cultureRet) {
                 cultureRet[subDriver].value += parseInt(
                   question.integerValue,
@@ -159,7 +159,7 @@ function* getFeedbackSummary({ payload }) {
 
             /* Sentiment Result Start */
             if (driverName === "Sentiment") {
-              const subDriver = question.amQuestionData[j].subdriver;
+              const subDriver = question.aoQuestionData[j].subdriver;
               if (subDriver in sentimentRet) {
                 sentimentRet[subDriver].value += parseInt(
                   question.integerValue,
@@ -181,10 +181,10 @@ function* getFeedbackSummary({ payload }) {
 
             for (
               let k = 0;
-              k < question.amQuestionData[j].shGroup.length;
+              k < question.aoQuestionData[j].shGroup.length;
               k++
             ) {
-              const shGroupId = question.amQuestionData[j].shGroup[k];
+              const shGroupId = question.aoQuestionData[j].shGroup[k];
               const filteredShGroupList = shGroupList.filter(
                 (sh) => parseInt(sh.id, 10) === parseInt(shGroupId, 10)
               );

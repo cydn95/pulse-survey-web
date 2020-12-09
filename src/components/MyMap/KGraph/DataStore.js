@@ -7,8 +7,6 @@ export default class DataStore {
   coreStructure = {};
 
   constructor(structureData, data) {
-    // console.log(structureData);
-    // console.log(data);
     this.structureData = structureData;
     this.data = data;
   }

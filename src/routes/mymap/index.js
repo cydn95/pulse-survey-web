@@ -84,6 +84,8 @@ class MyMap extends React.Component {
 
       myMapStakeholderList: [],
       projectMapStakeholderList: [],
+
+      lastAddedShCategory: null
     };
 
     this.defaultStakeholder = {
@@ -595,6 +597,7 @@ class MyMap extends React.Component {
   };
 
   callbackAddNewStakeholder = (code) => {
+    console.log('code', code);
     if (code === 400) {
       NotificationManager.error(
         "Stakeholder is already existed",
@@ -692,6 +695,9 @@ class MyMap extends React.Component {
           shCategory: parseInt(newShCategory, 10),
         });
       }
+      this.setState({
+        lastAddedShCategory: parseInt(newShCategory, 10)
+      });
     });
   };
 
@@ -813,6 +819,15 @@ class MyMap extends React.Component {
   };
 
   handleSubmitSurvey = (e, answerData) => {
+    // console.log(answerData);
+
+    const { lastAddedShCategory } = this.state;
+    for (let i = 0; i < answerData.length; i++) {
+      if (answerData[i].shCategory == undefined) {
+        answerData[i].shCategory = lastAddedShCategory;
+      }
+    }
+
     this.props.submitAoQuestion(
       answerData,
       this.state.currentSurveyUser,
@@ -828,7 +843,8 @@ class MyMap extends React.Component {
     //   currentSurveyUserId: 0,
     //   currentSurveyUser: {},
     // });
-    window.location.reload(false);
+    this.handleSaveGraph(null);
+    // window.location.reload(false);
   };
 
   handleFilter = (search) => {
@@ -997,6 +1013,7 @@ class MyMap extends React.Component {
       myMapStakeholderList,
       projectMapStakeholderList,
       currentSurveyUserId,
+      lastAddedShCategory
     } = this.state;
 
     const mapHeaderVisible = toggleGraph
@@ -1216,6 +1233,7 @@ class MyMap extends React.Component {
                     projectMapCategory={projectMapShCategoryList}
                     skipQuestionList={skipQuestionList}
                     currentSurveyUserId={currentSurveyUserId}
+                    lastAddedShCategory={lastAddedShCategory}
                     allStakeholders={stakeholderList}
                     onSubmit={(e, answerData) =>
                       this.handleSubmitSurvey(e, answerData)

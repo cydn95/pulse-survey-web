@@ -1,104 +1,96 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import Input from "Components/Input";
 import Button from "Components/Button";
 
 import styles from "./form.scss";
 
-class ProfileInfo extends React.Component {
-  constructor(props) {
-    super(props);
+const ProfileInfo = ({ profile, onChangeProfile }) => {
+  const [id, setId] = useState(0);
+  const [firstName, setFirstName] = useState("");
+  const [email, setEmail] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [team, setTeam] = useState("");
+  const [organization, setOrganization] = useState("");
 
-    this.state = {
-      id: 0,
-      firstName: "",
-      lastName: "",
-      team: "",
-      organization: "",
-    };
-  }
+  useEffect(() => {
+    setId(profile ? profile.id : 0);
+    setFirstName(profile ? profile.firstName : "");
+    setLastName(profile ? profile.lastName : "");
+    setEmail(profile ? profile.email : "");
+    setTeam(profile ? profile.team : "");
+    setOrganization(profile ? profile.organization : "");
+  }, [profile]);
 
-  componentWillReceiveProps(props) {
-    this.setState({
-      ...props.profile,
-    });
-  }
-
-  handleReset = (e) => {
-    this.setState({
-      id: 0,
-      firstName: "",
-      lastName: "",
-      team: "",
-      organization: "",
-    });
+  const handleReset = (e) => {
+    setId(profile ? profile.id : 0);
+    setFirstName(profile ? profile.firstName : "");
+    setLastName(profile ? profile.lastName : "");
+    setEmail(profile ? profile.email : "");
+    setTeam(profile ? profile.team : "");
+    setOrganization(profile ? profile.organization : "");
   };
 
-  handleSubmit = () => {
-    const { onChangeProfile } = this.props;
+  const handleSubmit = () => {
     onChangeProfile({
-      ...this.state,
+      id,
+      firstName,
+      lastName,
+      email,
+      team,
+      organization,
     });
   };
 
-  handleInputChange = (value, e) => {
-    this.setState({
-      [e.target.name]: value,
-    });
-  };
-
-  render() {
-    return (
-      <div className={styles["form-wrapper"]}>
-        <h2>Edit your profile</h2>
-        <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
-          <Input
-            className={styles.input}
-            label="First Name"
-            name="firstName"
-            value={this.state.firstName}
-            onChange={(value, e) => this.handleInputChange(value, e)}
-          />
-          <Input
-            className={styles.input}
-            label="Last Name"
-            name="lastName"
-            value={this.state.lastName}
-            onChange={(value, e) => this.handleInputChange(value, e)}
-          />
-          <Input
+  return (
+    <div className={styles["form-wrapper"]}>
+      <h2>Edit your profile</h2>
+      <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+        <Input
+          className={styles.input}
+          label="First Name"
+          name="firstName"
+          value={firstName}
+          onChange={(value, e) => setFirstName(value)}
+        />
+        <Input
+          className={styles.input}
+          label="Last Name"
+          name="lastName"
+          value={lastName}
+          onChange={(value, e) => setLastName(value)}
+        />
+        {/* <Input
             className={styles.input}
             label="Email"
             name="email"
-            value={this.state.email}
-            onChange={(value, e) => this.handleInputChange(value, e)}
-          />
-          <Input
-            className={styles.input}
-            label="Team"
-            name="team"
-            value={this.state.team}
-            onChange={(value, e) => this.handleInputChange(value, e)}
-          />
-          <Input
-            className={styles.input}
-            label="Organization"
-            name="organization"
-            value={this.state.organization}
-            onChange={(value, e) => this.handleInputChange(value, e)}
-          />
-          <div className={styles.actions}>
-            <Button default={false} onClick={(e) => this.handleReset()}>
-              Cancel
-            </Button>
-            <Button type="submit" onClick={(e) => this.handleSubmit()}>
-              Update
-            </Button>
-          </div>
-        </form>
-      </div>
-    );
-  }
-}
+            value={email}
+          /> */}
+        <Input
+          className={styles.input}
+          label="Team"
+          name="team"
+          value={team}
+          onChange={(value, e) => setTeam(value)}
+        />
+        <Input
+          className={styles.input}
+          label="Organization"
+          name="organization"
+          value={organization}
+          onChange={(value, e) => setOrganization(value)}
+        />
+        <div className={styles.actions}>
+          <Button default={false} onClick={handleReset}>
+            Cancel
+          </Button>
+          <Button type="submit" onClick={handleSubmit}>
+            Update
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
+};
 
 export default ProfileInfo;

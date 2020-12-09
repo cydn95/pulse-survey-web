@@ -139,7 +139,7 @@ function SearchBar(props) {
                               title={title}
                               description={description}
                               profilePicUrl={d.userAvatar}
-                              userProgress={percentage}
+                              userProgress={percentage ? Number(percentage) : 0}
                               donut={true}
                             />
                           );

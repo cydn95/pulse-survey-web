@@ -24,6 +24,8 @@ import {
   UPDATE_STAKEHOLDER,
 } from "Constants/actionTypes";
 
+import { defaultPassword } from "Constants/defaultValues";
+
 import {
   teamListSuccess,
   shgroupListSuccess,
@@ -238,6 +240,7 @@ function* addStakeholder({ payload }) {
         first_name: stakeholder.firstName,
         last_name: stakeholder.lastName,
         email: stakeholder.email,
+        password: defaultPassword
       },
       name: stakeholder.organisationId,
     };
@@ -260,9 +263,10 @@ function* addStakeholder({ payload }) {
 
       const result2 = yield call(addStakeholderAsync, projectUser);
 
-      if (result2.status === 201) {
-        yield put(stakeholderList(stakeholder.myProjectUser, surveyId));
-      }
+      // if (result2.status === 201) {
+      //   yield put(stakeholderList(stakeholder.myProjectUser, surveyId));
+      // }
+      callback(result2.status);
     } else {
       callback(result.status);
     }

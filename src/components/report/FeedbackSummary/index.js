@@ -9,7 +9,10 @@ const FeedbackSummary = ({ data }) => {
 
   return (
     <div className={styles["table"]}>
-      <div className={styles["table__header"]}>
+      <div
+        className={styles["table__header"]}
+        style={{ minWidth: `${200 + (data.column.length - 1) * 120}px` }}
+      >
         {data.column.map((c, index) => (
           <div
             key={`hc-${index}`}
@@ -18,13 +21,18 @@ const FeedbackSummary = ({ data }) => {
                 ? styles["table__header__col1"]
                 : styles["table__header__col2"]
             }
-            style={{width: index === 0 ? "200px" : `calc(${percent}% - ${offset}px)` }}
+            style={{
+              width: index === 0 ? "200px" : `calc(${percent}% - ${offset}px)`,
+            }}
           >
             {c}
           </div>
         ))}
       </div>
-      <div className={styles["table__content"]}>
+      <div
+        className={styles["table__content"]}
+        style={{ minWidth: `${200 + (data.column.length - 1) * 120}px` }}
+      >
         {data.data.map((row, rowNum) => (
           <div key={`cr-${rowNum}`} className={styles["table__content__row"]}>
             {row.map((c, colNum) => {
@@ -52,7 +60,9 @@ const FeedbackSummary = ({ data }) => {
                   )}
                   style={{
                     width:
-                      colNum === 0 ? "200px" : `calc(${percent}% - ${offset}px)`,
+                      colNum === 0
+                        ? "200px"
+                        : `calc(${percent}% - ${offset}px)`,
                   }}
                 >
                   {c > 100 ? 100 : c}

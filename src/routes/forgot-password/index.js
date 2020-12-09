@@ -13,21 +13,11 @@ function ForgotPasswordLayout() {
       <h2>Reset password</h2>
       <p className="white">
         Enter your username or email to reset your password. You will receive an
-        email with instructions on how to reset your password. If you are
-        experiencing problems resetting your password&nbsp;
-        <a href="" className={styles.link}>
-          contact us
+        email with instructions on how to reset your password.<br/>
+        If you are still experiencing difficulties please drop us a direct email{` `}
+        <a href="mailto:support@projectai.com" className={styles.link}>
+          support@projectai.com
         </a>{" "}
-        or{" "}
-        <a className={styles.link} href="">
-          send us an email
-        </a>
-        .<br></br>
-        <br></br>
-        If you are not a member, please{" "}
-        <NavLink to={`/register`} className={classnames("white", styles.link)}>
-          register
-        </NavLink>
       </p>
       <label>USERNAME or EMAIL</label>
       <Input

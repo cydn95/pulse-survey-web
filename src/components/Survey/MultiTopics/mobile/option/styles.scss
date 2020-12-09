@@ -1,0 +1,75 @@
+$color: rgb(36, 36, 36);
+$comment-color: rgb(60, 62, 69);
+$editable-color: rgb(51, 141, 155);
+// $editable-color: #e66864;
+@mixin round {
+  box-sizing: border-box;
+  border-width: 3px;
+  border-style: solid;
+  border-radius: 50%;
+}
+
+.main {
+  color: $color;
+  display: flex;
+  width: 100%;
+  cursor: pointer;
+  > div:not(:first-child) {
+    margin-left: 20px;
+  }
+  &.editable {
+    color: $editable-color;
+    input {
+      &::placeholder {
+        color: $editable-color !important;
+      }
+    }
+
+    .comment {
+      color: $editable-color;
+    }
+  }
+}
+
+.data {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  > *:not(:first-child) {
+    margin-top: 10px;
+  }
+  background: #eeefef;
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  border-radius: 16px;
+}
+
+.bullet {
+  @include round;
+  margin-top: 2px;
+  width: 20px;
+  height: 20px;
+  position: relative;
+  &::after {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    @include round;
+  }
+}
+
+.topic {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.comment {
+  font-size: 14px;
+  color: $comment-color;
+}

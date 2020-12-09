@@ -1,18 +1,38 @@
 import { getClient, getLambdaClient } from "./apiConfig";
 
-const loginAPI = (username, password) => {
-  return getClient(false).post("api-token-auth/", {
-    username: username,
-    password: password,
-  });
+const getCRSFTokenAPI = () => {
+  return getClient(false).get("get_csrf/");
 };
 
-const setPasswordAPI = (email, password, token) => {
-  return getClient(false).post("setpassword/", {
-    email,
-    password,
-    token,
-  });
+const loginAPI = (username, password, csrf) => {
+  return getClient(false).post(
+    "api-token-auth/",
+    {
+      username: username,
+      password: password,
+    },
+    {
+      headers: {
+        "X-CSRFToken": csrf,
+      },
+    }
+  );
+};
+
+const setPasswordAPI = (email, password, token, csrf) => {
+  return getClient(false).post(
+    "setpassword/",
+    {
+      email,
+      password,
+      token,
+    },
+    {
+      headers: {
+        "X-CSRFToken": csrf,
+      },
+    }
+  );
 };
 
 /* Settings -> Project */
@@ -273,9 +293,15 @@ const changeProfileAPI = (
 };
 
 const changeAvatarAPI = (avatarId, data) => {
-  return getClient(true).put("/useravatar/" + avatarId + "/", data, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  if (avatarId == 0) {
+    return getClient(true).post("/useravatar/", data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  } else {
+    return getClient(true).put("/useravatar/" + avatarId + "/", data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  }
 };
 
 const updateUserGuideAPI = (token, guide) => {
@@ -296,8 +322,10 @@ const getTopPositiveAndNegativeAPI = (surveyId) => {
   return getClient(true).get(`/aoresponsereport/?survey=${surveyId}`);
 };
 
-const getFeedbackSummaryAPI = (surveyId) => {
-  return getClient(true).get(`/feedbacksummaryreport/?survey=${surveyId}`);
+const getFeedbackSummaryAPI = (surveyId, subProjectUser) => {
+  return getClient(true).get(
+    `/feedbacksummaryreport/?survey=${surveyId}&subProjectUser=${subProjectUser}`
+  );
 };
 
 const getParticipationAPI = (surveyId) => {
@@ -318,6 +346,7 @@ const getKeyDataFromLambda = () => {
 };
 
 export {
+  getCRSFTokenAPI,
   loginAPI,
   setPasswordAPI,
   projectListByUserAPI,

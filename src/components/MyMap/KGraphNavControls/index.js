@@ -34,7 +34,7 @@ const KGraphNavControls = (props) => {
 
   useEffect(() => {
     if (selectedLayoutMode) {
-      if (selectedLayoutMode.title === "standard") {
+      if (selectedLayoutMode.title === "Standard") {
         updateMap("Standard", "layout");
       } else if (selectedLayoutMode.title === "Radial") {
         updateMap("Radial", "layout");

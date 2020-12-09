@@ -56,36 +56,27 @@ class Account extends React.Component {
   };
 
   handleChangeProfile = (profile) => {
+
     const { firstName, lastName, email, team, organization } = profile;
     const { userToken, changeProfile } = this.props;
 
-    if (firstName === "") {
-      NotificationManager.error("First name must be required", "Info", 2000);
+    if (firstName.trim() === "") {
+      NotificationManager.error("First name is required", "Info", 2000);
       return;
     }
 
-    if (lastName === "") {
-      NotificationManager.error("Last name must be required", "Info", 2000);
+    if (lastName.trim() === "") {
+      NotificationManager.error("Last name is required", "Info", 2000);
       return;
     }
 
-    if (email === "") {
-      NotificationManager.error("Email must be required", "Info", 2000);
+    if (team.trim() === "") {
+      NotificationManager.error("Team is required", "Info", 2000);
       return;
     }
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      NotificationManager.error("Invalid email address", "Info", 2000);
-      return;
-    }
-
-    if (team === "") {
-      NotificationManager.error("Team must be required", "Info", 2000);
-      return;
-    }
-
-    if (organization === "") {
-      NotificationManager.error("Organization must be required", "Info", 2000);
+    if (organization.trim() === "") {
+      NotificationManager.error("Organization is required", "Info", 2000);
       return;
     }
 

@@ -47,7 +47,6 @@ function* getPageList({ payload }) {
       const questionList = [...result.data];
 
       for (let i = 0; i < questionList.length; i++) {
-        
         // Ordering by questionSequence
         questionList[i].amquestion = questionList[i].amquestion.sort((a, b) =>
           a.questionSequence > b.questionSequence ? 1 : -1
@@ -82,6 +81,8 @@ function* getPageList({ payload }) {
               answer: {
                 ...questionList[i].amquestion[j].response,
                 survey: questionList[i].amquestion[j].survey,
+                pageIndex: i,
+                questionIndex: j,
               },
             };
           } else {
@@ -169,7 +170,8 @@ function* submitSurvey({ payload }) {
           amquestions[j].answer.integerValue === 0) &&
         amquestions[j].answer.topicValue === "" &&
         amquestions[j].answer.commentValue === "" &&
-        amquestions[j].answer.skipValue === ""
+        amquestions[j].answer.skipValue === "" &&
+        !amquestions[j].responsestatus
       ) {
         continue;
       }
@@ -218,7 +220,7 @@ function* submitSurvey({ payload }) {
 
       localStorage.setItem("surveyId", surveyId);
       yield put(submitSurveySuccess(surveyId));
-      history.push("/app/dashboard");
+      history.push("/app/about-others");
     } else {
       console.log("submit failed");
     }

@@ -64,6 +64,7 @@ class ReportPeople extends React.Component {
   componentDidMount() {
     const {
       surveyId,
+      surveyUserId,
       actionOverallSentiment,
       actionTopPositiveNegative,
       actionFeedbackSummary,
@@ -88,6 +89,7 @@ class ReportPeople extends React.Component {
 
       actionFeedbackSummary(
         surveyId,
+        surveyUserId,
         (
           feedbackSummaryRet,
           cultureRet,
@@ -96,6 +98,7 @@ class ReportPeople extends React.Component {
           overallTrendRet,
           overallTrendKey
         ) => {
+          console.log(feedbackSummaryRet);
           this.setState({
             feedbackSummary: feedbackSummaryRet,
             cultureResult: cultureRet,
@@ -160,7 +163,7 @@ class ReportPeople extends React.Component {
           <div className={styles.left}>
             <div className={styles.row}>
               <div className={styles.block}>
-                <span className={styles["block__title"]}>Paticipation</span>
+                <span className={styles["block__title"]}>Participation</span>
                 <div
                   className={classnames(
                     styles["block__content"],
@@ -204,7 +207,7 @@ class ReportPeople extends React.Component {
                     shGroups={overallTrendKey}
                     data={overallTrendResult}
                     xRange={[1, 12]}
-                    yRange={[0, 100]}
+                    yRange={[0, 300]}
                     width={400}
                     height={220}
                     margin={30}
@@ -213,9 +216,9 @@ class ReportPeople extends React.Component {
               </div>
             </div>
             <div className={styles.row}>
-              <div className={styles.block}>
+              <div className={styles.block} style={{ width: "100%" }}>
                 <span className={styles["block__title"]}>Feedback Summary</span>
-                <div className={styles.content}>
+                <div className={styles.content} style={{ width: "100%" }}>
                   <FeedbackSummary data={feedbackSummary} />
                 </div>
               </div>
@@ -268,11 +271,12 @@ class ReportPeople extends React.Component {
 }
 
 const mapStateToProps = ({ authUser }) => {
-  const { projectTitle, surveyId } = authUser;
+  const { projectTitle, surveyId, surveyUserId } = authUser;
 
   return {
     projectTitle,
     surveyId,
+    surveyUserId
   };
 };
 

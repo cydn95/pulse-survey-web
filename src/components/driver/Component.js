@@ -51,7 +51,7 @@ function DriverComponent(props) {
   return (
     <div className={styles.wrapper}>
       {progress === SURVEY_COMPLETED && (
-        <img className={iconStyle} src="/assets/img/survey/check.png" alt="" />
+        <div className={iconStyle} alt=""></div>
       )}
       <div
         onClick={() => onClick(driverId)}
@@ -70,12 +70,13 @@ function DriverComponent(props) {
           }
         )}
       >
-        {driverName}
-        {/* <img
+        <img
           src={selected ? getIcon(icon, "light") : getIcon(icon, "dark")}
           alt="icon"
           className={styles.icon}
         />
+        <div>{driverName}</div>
+        {/* 
         <div>
           <div>{driverName}</div>
           <div className={styles.progress}>{progressLabel}</div>

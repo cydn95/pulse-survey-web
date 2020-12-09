@@ -27,6 +27,13 @@ class ChangePassword extends React.Component {
     });
   };
 
+  handleReset = () => {
+    this.setState({
+      password: "",
+      confirmPassword: "",
+    });
+  }
+
   render() {
     return (
       <div className={styles["form-wrapper"]}>
@@ -40,6 +47,7 @@ class ChangePassword extends React.Component {
             onChange={(value, e) => this.handleInputChange(value, e)}
             onFocus={() => {}}
             onBlur={() => {}}
+            value={this.state.password}
           />
           <Input
             type="password"
@@ -49,6 +57,7 @@ class ChangePassword extends React.Component {
             onChange={(value, e) => this.handleInputChange(value, e)}
             onFocus={() => {}}
             onBlur={() => {}}
+            value={this.state.confirmPassword}
           />
           <div className={styles.actions}>
             <Button default={false} onClick={(e) => this.handleReset()}>
