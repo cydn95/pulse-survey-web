@@ -55,6 +55,14 @@ const AboutMeSurvey = ({
   // const [pageIndex , setPageIndex] = useState(pageIndex);
   const [driverList, setDriverList] = useState([]);
 
+  const moveScrollToTop = () => {
+    const divRef = document.querySelector("#back-to-top-anchor");
+
+    if (divRef) {
+      divRef.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }
+
   useEffect(() => {
     if (
       surveyUserId == undefined ||
@@ -72,6 +80,10 @@ const AboutMeSurvey = ({
 
   useEffect(() => {
     if (surveyList.length > 0) {
+      setTimeout(() => {
+        moveScrollToTop();
+      }, 100);
+      
       const driverListTemp = [];
 
       for (let i = 0; i < surveyList.length; i++) {
@@ -113,6 +125,7 @@ const AboutMeSurvey = ({
     var pageIndex = driverList.findIndex((element) => {
       return element.driverId === driverId;
     });
+
     setSurveyPage(pageIndex);
   };
 
@@ -198,6 +211,7 @@ const AboutMeSurvey = ({
                 <div className={styles["survey-container"]}>
                   <div className={styles["survey-driver-container"]}>
                     <div className={styles["question-driver-container"]}>
+                      <div id="back-to-top-anchor"></div>
                       {driver.amquestion.map((question) => {
                         switch (question.controlType) {
                           case controlType.TEXT:
