@@ -14,6 +14,7 @@ class MapStakeholderList extends Component {
       selectedMyCategoryList,
       selectedProjectCategoryList,
       onMapStakeholderClick,
+      onShowSearchStakeholder
     } = this.props;
 
     let userCount = 0;
@@ -109,7 +110,7 @@ class MapStakeholderList extends Component {
             <span>
               <strong>No Stakeholders Selected.</strong>
             </span>
-            <span>Click “Search Stakeholders” to add your first one!</span>
+            <span>Click “<strong onClick={e => onShowSearchStakeholder()} style={{cursor: 'pointer'}}>Search Stakeholders</strong>” to add your first one!</span>
           </div>
         )}
         {userCount > 0 && (

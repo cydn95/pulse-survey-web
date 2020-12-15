@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
@@ -12,6 +12,8 @@ import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
+
+import AvatarComponent from "Components/avatar/Component";
 
 import styles from "./styles.scss";
 import classnames from "classnames";
@@ -136,11 +138,7 @@ class NewStakeholder extends Component {
         }
 
         if (stakeholder.organisationId.trim() === "") {
-          NotificationManager.error(
-            "Organisation is required",
-            "Info",
-            2000
-          );
+          NotificationManager.error("Organisation is required", "Info", 2000);
           this.setState({
             btnAddDisabled: false,
           });
@@ -207,77 +205,91 @@ class NewStakeholder extends Component {
       <div className={styles.root}>
         <div>
           <h1 className={styles.title}>
-            {`${update ? "Update" : "Add "}`} StakeHolder
+            {`${update ? "Edit" : "Add "}`} StakeHolder
           </h1>
         </div>
         <div className={styles.form}>
-          <FormControl className={styles["input-field"]}>
-            <TextField
-              className={styles.input}
-              label="First Name*"
-              name="firstName"
-              value={this.state.stakeholder.firstName}
-              onChange={(e) => this.handleInputChange(e)}
-              disabled={update}
+          {update ? (
+            <AvatarComponent
+              className={styles["avatar-comp"]}
+              userId={stakeholder.id}
+              username={stakeholder.fullName}
+              description={stakeholder.organisation + " / " + stakeholder.team}
+              profilePicUrl={this.props.stakeholder.userAvatar}
+              userProgress={0}
+              donut={true}
             />
-          </FormControl>
-          <FormControl className={styles["input-field"]}>
-            <TextField
-              className={styles.input}
-              label="Last Name*"
-              name="lastName"
-              value={this.state.stakeholder.lastName}
-              onChange={(e) => this.handleInputChange(e)}
-              disabled={update}
-            />
-          </FormControl>
-          <FormControl className={styles["input-field"]}>
-            <TextField
-              className={styles.input}
-              name="email"
-              label="Email*"
-              value={this.state.stakeholder.email}
-              onChange={(e) => this.handleInputChange(e)}
-              disabled={update}
-            />
-          </FormControl>
-          <FormControl className={styles["input-field"]}>
-            <TextField
-              className={styles.input}
-              label="Organisation*"
-              name="organisationId"
-              value={this.state.stakeholder.organisationId}
-              onChange={(e) => this.handleInputChange(e)}
-              disabled={update}
-            />
-          </FormControl>
-          <FormControl className={styles["input-field"]}>
-            <TextField
-              className={styles.input}
-              label="Project Title"
-              name="projectUserTitle"
-              value={this.state.stakeholder.projectUserTitle}
-              onChange={(e) => this.handleInputChange(e)}
-              disabled={update}
-            />
-          </FormControl>
-          <FormControl className={styles["input-field"]}>
-            <InputLabel id="team_label">Team*</InputLabel>
-            <Select
-              value={this.state.stakeholder.teamId}
-              className={styles.select}
-              name="teamId"
-              label="Team*"
-              disabled={update}
-              onChange={(e) => this.handleInputChange(e)}
-            >
-              {teamList.map((team, index) => (
-                <MenuItem key={team.id} value={team.id}>
-                  {team.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          ) : (
+            <Fragment>
+              <FormControl className={styles["input-field"]}>
+                <TextField
+                  className={styles.input}
+                  label="First Name*"
+                  name="firstName"
+                  value={this.state.stakeholder.firstName}
+                  onChange={(e) => this.handleInputChange(e)}
+                  disabled={update}
+                />
+              </FormControl>
+              <FormControl className={styles["input-field"]}>
+                <TextField
+                  className={styles.input}
+                  label="Last Name*"
+                  name="lastName"
+                  value={this.state.stakeholder.lastName}
+                  onChange={(e) => this.handleInputChange(e)}
+                  disabled={update}
+                />
+              </FormControl>
+              <FormControl className={styles["input-field"]}>
+                <TextField
+                  className={styles.input}
+                  name="email"
+                  label="Email*"
+                  value={this.state.stakeholder.email}
+                  onChange={(e) => this.handleInputChange(e)}
+                  disabled={update}
+                />
+              </FormControl>
+              <FormControl className={styles["input-field"]}>
+                <TextField
+                  className={styles.input}
+                  label="Organisation*"
+                  name="organisationId"
+                  value={this.state.stakeholder.organisationId}
+                  onChange={(e) => this.handleInputChange(e)}
+                  disabled={update}
+                />
+              </FormControl>
+              <FormControl className={styles["input-field"]}>
+                <TextField
+                  className={styles.input}
+                  label="Project Title"
+                  name="projectUserTitle"
+                  value={this.state.stakeholder.projectUserTitle}
+                  onChange={(e) => this.handleInputChange(e)}
+                  disabled={update}
+                />
+              </FormControl>
+              <FormControl className={styles["input-field"]}>
+                <InputLabel id="team_label">Team*</InputLabel>
+                <Select
+                  value={this.state.stakeholder.teamId}
+                  className={styles.select}
+                  name="teamId"
+                  label="Team*"
+                  disabled={update}
+                  onChange={(e) => this.handleInputChange(e)}
+                >
+                  {teamList.map((team, index) => (
+                    <MenuItem key={team.id} value={team.id}>
+                      {team.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Fragment>
+          )}
           {shCategoryList && myCategoryList && (
             <div className={styles["category-wrapper"]}>
               <div className={styles["category-type"]}>

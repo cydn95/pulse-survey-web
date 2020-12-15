@@ -28,9 +28,16 @@ function AvatarComponent(props) {
     donut,
   } = props;
 
+  const handleClick = (e) => {
+    if (arrow) {
+      onArrowClick(e, stakeholder);
+    } else {
+      onClick(userId);
+    }
+  };
   return (
     <div
-      onClick={() => onClick(userId)}
+      onClick={(e) => handleClick(e)}
       className={classnames(styles["avatar-component"], className)}
     >
       <div className={styles.avatar}>
@@ -55,10 +62,7 @@ function AvatarComponent(props) {
         <div className={styles.description}>{description}</div>
       </div>
       {arrow && (
-        <div
-          className={styles.open}
-          onClick={(e) => onArrowClick(e, stakeholder)}
-        >
+        <div className={styles.open}>
           <FontAwesomeIcon icon={faAngleRight} />
         </div>
       )}
