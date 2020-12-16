@@ -205,20 +205,24 @@ class NewStakeholder extends Component {
       <div className={styles.root}>
         <div>
           <h1 className={styles.title}>
-            {`${update ? "Edit" : "Add "}`} StakeHolder
+            {`${update ? "Edit" : "Add "}`} Stakeholder
           </h1>
         </div>
         <div className={styles.form}>
           {update ? (
-            <AvatarComponent
-              className={styles["avatar-comp"]}
-              userId={stakeholder.id}
-              username={stakeholder.fullName}
-              description={stakeholder.organisation + " / " + stakeholder.team}
-              profilePicUrl={this.props.stakeholder.userAvatar}
-              userProgress={0}
-              donut={true}
-            />
+            <div className={styles["avatar-wrapper"]}>
+              <AvatarComponent
+                className={styles["avatar-comp"]}
+                userId={stakeholder.id}
+                username={stakeholder.fullName}
+                description={
+                  stakeholder.organisation + " / " + stakeholder.team
+                }
+                profilePicUrl={this.props.stakeholder.userAvatar}
+                userProgress={0}
+                donut={true}
+              />
+            </div>
           ) : (
             <Fragment>
               <FormControl className={styles["input-field"]}>
@@ -351,20 +355,24 @@ class NewStakeholder extends Component {
               </div>
             </div>
           )}
-          <FormControl className={styles["input-field"]}>
-            <div className={styles.label}>
-              {`How would you describe this person’s role on the project?​`}
-            </div>
-            <TextField
-              className={styles.input}
-              label=""
-              name="projectUserRoleDesc"
-              value={this.state.stakeholder.projectUserRoleDesc}
-              disabled={update}
-              onChange={(e) => this.handleInputChange(e)}
-            />
-          </FormControl>
-          <br />
+          {!update && (
+            <Fragment>
+              <FormControl className={styles["input-field"]}>
+                <div className={styles.label}>
+                  {`How would you describe this person’s role on the project?​`}
+                </div>
+                <TextField
+                  className={styles.input}
+                  label=""
+                  name="projectUserRoleDesc"
+                  value={this.state.stakeholder.projectUserRoleDesc}
+                  disabled={update}
+                  onChange={(e) => this.handleInputChange(e)}
+                />
+              </FormControl>
+              <br />
+            </Fragment>
+          )}
           <div className={styles["form-button"]}>
             <Button
               variant="contained"
