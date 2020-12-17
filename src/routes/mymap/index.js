@@ -137,6 +137,7 @@ class MyMap extends React.Component {
   componentWillReceiveProps(props) {
     const {
       projectId,
+      projectTitle,
       stakeholderList,
       teamList,
       shCategoryList,
@@ -189,7 +190,7 @@ class MyMap extends React.Component {
     let projectMapArchitecture = {
       main: {
         id: "ap1",
-        name: "projectTitle",
+        name: projectTitle,
         icon: `${serverUrl}/media/uploads/shcategory/project.svg`,
         color: "#7030a0",
         iconColor: "#fefefa",
