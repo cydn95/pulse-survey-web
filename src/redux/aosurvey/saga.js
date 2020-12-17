@@ -198,14 +198,18 @@ function* submitAoQuestion({ payload }) {
 
     answerList.push(answer);
   }
-
+  console.log('projectUserId', projectUserId);
+  console.log('surveyId', surveyId);
+  console.log('currentSurveyUser', currentSurveyUser);
+  console.log('answers', answerList);
+  // return;
   try {
     let result = yield call(submitAoQuestionAsync, answerList);
 
     if (result.status === 201) {
-      yield put(submitAoQuestionSuccess());
-      yield put(stakeholderList(projectUserId, surveyId));
-      yield put(aoQuestionList(currentSurveyUser, surveyId));
+      // yield put(submitAoQuestionSuccess());
+      // yield put(stakeholderList(projectUserId, surveyId));
+      // yield put(aoQuestionList(currentSurveyUser.projectUserId, surveyId));
       callback();
     } else {
       console.log("submit failed");

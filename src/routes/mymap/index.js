@@ -370,7 +370,7 @@ class MyMap extends React.Component {
                     }
                     const answer = aoQuestionList[k].response.filter(
                       (resp) =>
-                        resp.shCategory.toString() === userList[i].shCategory[j].toString() &&
+                        /*resp.shCategory.toString() === userList[i].shCategory[j].toString() &&*/
                         resp.subProjectUser.toString() === userList[i].id.toString()
                     );
                     if (answer.length > 0) {
@@ -482,7 +482,7 @@ class MyMap extends React.Component {
                     }
                     const answer = aoQuestionList[k].response.filter(
                       (resp) =>
-                        resp.shCategory.toString() === userList[i].shCategory[j].toString() &&
+                        /*resp.shCategory.toString() === userList[i].shCategory[j].toString() &&*/
                         resp.subProjectUser.toString() === userList[i].id.toString()
                     );
                     if (answer > 0) {

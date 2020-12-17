@@ -74,6 +74,7 @@ AvatarComponent.defaultProps = {
   onClick: () => null,
   // conic gradient vs discrete progress
   progressStyle: "smooth",
+  userProgress: 0
 };
 
 AvatarComponent.propTypes = {

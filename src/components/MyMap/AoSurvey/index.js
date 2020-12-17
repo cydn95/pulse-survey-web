@@ -77,7 +77,7 @@ class AoSurvey extends React.Component {
         totalQuestions++;
         const temp = orderedDrivers[i].questions[j].response.filter(
           (resp) =>
-            resp.shCategory.toString() === shCategoryId.toString() &&
+            /*resp.shCategory.toString() === shCategoryId.toString() &&*/
             resp.subProjectUser.toString() === user.projectUserId.toString()
         );
 
@@ -161,7 +161,7 @@ class AoSurvey extends React.Component {
 
           const temp = drivers[i].questions[j].response.filter(
             (resp) =>
-              resp.shCategory.toString() === shCategoryId.toString() &&
+              /*resp.shCategory.toString() === shCategoryId.toString() &&*/
               resp.subProjectUser.toString() === user.projectUserId.toString()
           );
 
@@ -252,6 +252,7 @@ class AoSurvey extends React.Component {
   };
 
   handleSubmit = (e) => {
+    console.log(this.state.answers);
     this.props.onSubmit(e, this.state.answers);
   };
 
@@ -285,6 +286,7 @@ class AoSurvey extends React.Component {
       totalQuestions,
       editModal,
     } = this.state;
+
     const {
       skipQuestionList,
       user,
@@ -322,7 +324,7 @@ class AoSurvey extends React.Component {
     }
 
     // console.log(driver);
-    // console.log(answers);
+    // console.log('answers', answers);
 
     return (
       <div className={styles.root}>
@@ -343,7 +345,7 @@ class AoSurvey extends React.Component {
             username={user.fullName}
             description={user.organisation + " / " + user.team}
             profilePicUrl={user.userAvatar}
-            userProgress={((totalAnswers / totalQuestions) * 100).toFixed(2)}
+            userProgress={Number(((totalAnswers / totalQuestions) * 100).toFixed(2))}
             donut={true}
           />
         </div>

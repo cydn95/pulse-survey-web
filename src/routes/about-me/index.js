@@ -43,7 +43,8 @@ const AboutMeSurvey = ({
   projectTitle,
   surveyTitle,
   surveyUserId,
-  surveyId, history,
+  surveyId,
+  history,
 
   getPageList,
   getSkipQuestionList,
@@ -51,7 +52,6 @@ const AboutMeSurvey = ({
   continueSurvey,
   submitSurvey,
 }) => {
-
   // const [pageIndex , setPageIndex] = useState(pageIndex);
   const [driverList, setDriverList] = useState([]);
 
@@ -61,7 +61,7 @@ const AboutMeSurvey = ({
     if (divRef) {
       divRef.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-  }
+  };
 
   useEffect(() => {
     if (
@@ -75,15 +75,14 @@ const AboutMeSurvey = ({
 
     getPageList(surveyId, surveyUserId);
     getSkipQuestionList();
-
-  }, [surveyId, surveyUserId])
+  }, [surveyId, surveyUserId]);
 
   useEffect(() => {
     if (surveyList.length > 0) {
       setTimeout(() => {
         moveScrollToTop();
       }, 100);
-      
+
       const driverListTemp = [];
 
       for (let i = 0; i < surveyList.length; i++) {
@@ -117,9 +116,9 @@ const AboutMeSurvey = ({
         }
       }
 
-      setDriverList([...driverListTemp])
+      setDriverList([...driverListTemp]);
     }
-  }, [pageIndex, surveyList])
+  }, [pageIndex, surveyList]);
 
   const handleClickDriver = (driverId) => {
     var pageIndex = driverList.findIndex((element) => {
@@ -144,13 +143,22 @@ const AboutMeSurvey = ({
 
     // For <FreeText> component, set response_status to false if no answers
     let responsestatus = true;
-    if (oldDriverList[pageIndex].amquestion[questionIndex].controlType === controlType.TEXT) {
-      if (answerData.topicValue === "" && answerData.commentValue === "" && answerData.skipValue === "") {
+    if (
+      oldDriverList[pageIndex].amquestion[questionIndex].controlType ===
+      controlType.TEXT
+    ) {
+      if (
+        answerData.topicValue === "" &&
+        answerData.commentValue === "" &&
+        answerData.skipValue === ""
+      ) {
         responsestatus = false;
       }
     }
 
-    oldDriverList[pageIndex].amquestion[questionIndex].responsestatus = responsestatus;
+    oldDriverList[pageIndex].amquestion[
+      questionIndex
+    ].responsestatus = responsestatus;
 
     let answeredCount = 0;
     for (let i = 0; i < oldDriverList[pageIndex].amquestion.length; i++) {
@@ -172,7 +180,7 @@ const AboutMeSurvey = ({
     e.preventDefault();
 
     if (pageIndex === driverList.length - 1) {
-      submitSurvey(driverList, aboutMe, projectId, surveyUserId, history);
+      submitSurvey(driverList, aboutMe, projectId, surveyUserId, surveyId, history);
     }
 
     if (pageIndex < driverList.length - 1) {
@@ -182,9 +190,11 @@ const AboutMeSurvey = ({
     }
   };
 
-  const defaultDrvierId = driverList.length ? driverList[pageIndex].driverId : 0;
+  const defaultDrvierId = driverList.length
+    ? driverList[pageIndex].driverId
+    : 0;
   const driver = driverList.filter((d) => d.driverId === defaultDrvierId)[0];
-  const user = { fullName: "Mike Smith", team: "Pulse", };
+  const user = { fullName: "Mike Smith", team: "Pulse" };
 
   return (
     <div className={styles.root}>
@@ -349,7 +359,7 @@ const AboutMeSurvey = ({
       {surveyList.length === 0 && <Loading description="" />}
     </div>
   );
-}
+};
 
 const mapStateToProps = ({ survey, common, authUser }) => {
   const { pageList, pageIndex, optionList, aboutMe } = survey;

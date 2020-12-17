@@ -158,7 +158,7 @@ const submitSurveyAsync = async (answerData) =>
   }]
 */
 function* submitSurvey({ payload }) {
-  const { surveyList, projectId, surveyUserId, history } = payload;
+  const { surveyList, projectId, surveyUserId, surveyId, history } = payload;
   let answerList = [];
 
   for (let i = 0; i < surveyList.length; i++) {
@@ -216,8 +216,6 @@ function* submitSurvey({ payload }) {
     let result = yield call(submitSurveyAsync, answerList);
 
     if (result.status === 201) {
-      var surveyId = projectId;
-
       localStorage.setItem("surveyId", surveyId);
       yield put(submitSurveySuccess(surveyId));
       history.push("/app/about-others");

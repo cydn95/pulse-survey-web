@@ -86,7 +86,7 @@ class TopNav extends Component {
             onClick={(e) => this.toggleDrawer(e, false)}
             role="button"
           >
-            <FontAwesomeIcon className="fa-lg" size={70} color="#fff" icon={faTimes} />
+            <FontAwesomeIcon className="fa-lg" size="lg" color="#fff" icon={faTimes} />
           </div>
           <Sidebar />
         </Drawer>
