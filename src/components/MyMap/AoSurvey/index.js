@@ -463,7 +463,7 @@ class AoSurvey extends React.Component {
             color="default"
             onClick={(e) => this.handleCancel(e)}
           >
-            Cancel
+            Back
           </Button>
           &nbsp;&nbsp;
           <Button
