@@ -805,7 +805,7 @@ class MyMap extends React.Component {
 
       this.setState((state) => ({
         screen: "aosurvey",
-        toggleGraph: !state.toggleGraph,
+        toggleGraph: false,
         currentSurveyUserId: id,
         currentSurveyUser: user,
       }));
@@ -1033,18 +1033,18 @@ class MyMap extends React.Component {
         {(!searchFullHeight || toggleGraph) && (
           <div className={styles.topbar}>
             <TopNav history={history} menuTitle="My Map">
-              {/* {screen === "aosurvey" && ( */}
-              <div className={styles.section}>
-                <div className={styles["graph-toggle"]}>
-                  <h2 className={styles["project-name"]}>{projectTitle}</h2>
+              {screen === "aosurvey" && (
+                <div className={styles.section}>
+                  <div className={styles["graph-toggle"]}>
+                    <h2 className={styles["project-name"]}>{projectTitle}</h2>
+                  </div>
                 </div>
-              </div>
-              {/* )} */}
+              )}
               {screen !== "aosurvey" && (
                 <div className={styles.section}>
                   <h2 className={styles["project-name"]}>{projectTitle}</h2>
                   <div className={styles["graph-toggle"]}>
-                    <Button onClick={(e) => this.toggleGraph(e)}>
+                    <Button onClick={(e) => this.toggleGraph(e)} style={{width: 160}}>
                       {!toggleGraph ? "GRAPH VIEW" : "STAKEHOLDER"}
                     </Button>
                   </div>
