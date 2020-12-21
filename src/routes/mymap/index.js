@@ -803,11 +803,12 @@ class MyMap extends React.Component {
         }
       }
 
-      this.setState({
+      this.setState((state) => ({
         screen: "aosurvey",
+        toggleGraph: !state.toggleGraph,
         currentSurveyUserId: id,
         currentSurveyUser: user,
-      });
+      }));
     }
   };
 
@@ -953,9 +954,9 @@ class MyMap extends React.Component {
   }
 
   toggleGraph = (e) => {
-    this.setState({
-      toggleGraph: !this.state.toggleGraph,
-    });
+    this.setState((state) => ({
+      toggleGraph: !state.toggleGraph,
+    }));
   };
 
   handleSearchFocus = () => {
