@@ -715,15 +715,12 @@ const MyMap = (props) => {
       
   }, [newElem])
 
-  handleShowAddPage = () => {
-    this.setState({
-      screen: "add",
-    });
+  const handleShowAddPage = () => {
+    setScreen("add");
   };
 
-  handleAddStackholderToProjectGraph = (data, e = {}) => {
+  const handleAddStackholderToProjectGraph = (data, e = {}) => {
     const projectUserId = data.stakeholder;
-    const { stakeholderList } = this.state;
     let projectUser = stakeholderList.filter((e) => {
       return parseInt(e.projectUserId, 10) === parseInt(projectUserId, 10);
     });
@@ -731,6 +728,7 @@ const MyMap = (props) => {
     if (projectUser.length === 0) return;
 
     projectUser = projectUser[0];
+    newProjectUser = { ...projectUser };
 
     let newElem = {
       individuals: [
@@ -777,6 +775,8 @@ const MyMap = (props) => {
         },
       ],
     };
+
+    setNewStakeholder(newElem);
 
     this.setState({ newStakeholder: newElem }, () => {
       if (!newElem.individuals[0].sh_category) return;
