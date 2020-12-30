@@ -1,0 +1,118 @@
+{
+  "cellSelectionData": [
+    [2.9, 5.2, 3.4, 5.6, 4.4],
+    [6.6, 4.8, 8, 3.9, 6.5],
+    [5.1, 4.6, 5.4, 3.9, 4.3],
+    [5.2, 4.3, 3.9, 6.2, 6.4],
+    [7, 3, 1.9, 5.9, 3.5],
+    [7.8, 5.9, 3.9, 4.3, 4.3],
+    [6.5, 4.3, 3.9, 5.2, 3.9]
+  ],
+  "chartData": [
+    {
+      "type": "Column",
+      "xName": "x",
+      "width": 2,
+      "yName": "y",
+      "name": "Part of the Pulse team",
+      "dataSource": [
+        { "x": "Overall Sentiment", "y": 2.9 },
+        { "x": "Desired Engagement", "y": 5.2 },
+        { "x": "Actual Engagement", "y": 3.4 },
+        { "x": "Overall Influence", "y": 5.6 },
+        { "x": "Team Culture", "y": 4.4 }
+      ],
+      "marker": { "dataLabel": { "visible": false } }
+    },
+    {
+      "type": "Column",
+      "xName": "x",
+      "width": 2,
+      "yName": "y",
+      "name": "Electrical Team",
+      "dataSource": [
+        { "x": "Overall Sentiment", "y": 6.6 },
+        { "x": "Desired Engagement", "y": 4.8 },
+        { "x": "Actual Engagement", "y": 8 },
+        { "x": "Overall Influence", "y": 3.9 },
+        { "x": "Team Culture", "y": 6.5 }
+      ],
+      "marker": { "dataLabel": { "visible": false } }
+    },
+    {
+      "type": "Column",
+      "xName": "x",
+      "width": 2,
+      "yName": "y",
+      "name": "Structural Team",
+      "dataSource": [
+        { "x": "Overall Sentiment", "y": 5.1 },
+        { "x": "Desired Engagement", "y": 4.6 },
+        { "x": "Actual Engagement", "y": 5.4 },
+        { "x": "Overall Influence", "y": 3.9 },
+        { "x": "Team Culture", "y": 4.3 }
+      ],
+      "marker": { "dataLabel": { "visible": false } }
+    },
+    {
+      "type": "Column",
+      "xName": "x",
+      "width": 2,
+      "yName": "y",
+      "name": "Management Team",
+      "dataSource": [
+        { "x": "Overall Sentiment", "y": 5.2 },
+        { "x": "Desired Engagement", "y": 4.3 },
+        { "x": "Actual Engagement", "y": 3.9 },
+        { "x": "Overall Influence", "y": 6.2 },
+        { "x": "Team Culture", "y": 6.4 }
+      ],
+      "marker": { "dataLabel": { "visible": false } }
+    },
+    {
+      "type": "Column",
+      "xName": "x",
+      "width": 2,
+      "yName": "y",
+      "name": "Owner's Team",
+      "dataSource": [
+        { "x": "Overall Sentiment", "y": 7.2 },
+        { "x": "Desired Engagement", "y": 3 },
+        { "x": "Actual Engagement", "y": 1.9 },
+        { "x": "Overall Influence", "y": 5.2 },
+        { "x": "Team Culture", "y": 3.4 }
+      ],
+      "marker": { "dataLabel": { "visible": false } }
+    },
+    {
+      "type": "Column",
+      "xName": "x",
+      "width": 2,
+      "yName": "y",
+      "name": "Product Team",
+      "dataSource": [
+        { "x": "Overall Sentiment", "y": 7.8 },
+        { "x": "Desired Engagement", "y": 5.9 },
+        { "x": "Actual Engagement", "y": 3.9 },
+        { "x": "Overall Influence", "y": 4.3 },
+        { "x": "Team Culture", "y": 4.5 }
+      ],
+      "marker": { "dataLabel": { "visible": false } }
+    },
+    {
+      "type": "Column",
+      "xName": "x",
+      "width": 2,
+      "yName": "y",
+      "name": "Internal",
+      "dataSource": [
+        { "x": "Overall Sentiment", "y": 6.5 },
+        { "x": "Desired Engagement", "y": 4.3 },
+        { "x": "Actual Engagement", "y": 3.9 },
+        { "x": "Overall Influence", "y": 5.2 },
+        { "x": "Team Culture", "y": 3.9 }
+      ],
+      "marker": { "dataLabel": { "visible": false } }
+    }
+  ]
+}
