@@ -163,7 +163,11 @@ class Sidebar extends Component {
       this.setState({
         subMenuOpen: false,
       });
-      history.push("/app/" + menu);
+      if (menu === "about-others") {
+        window.location = "/app/" + menu;
+      } else {
+        history.push("/app/" + menu);
+      }
     } else {
       if (menu === mainMenuClassName) {
         this.setState({
