@@ -50,6 +50,10 @@ ul {
   height: 100vh;
 }
 
+.control-fluid {
+  padding: 0px;
+}
+
 // .pro-sidebar
 //   .pro-menu
 //   .pro-menu-item.pro-sub-menu
@@ -67,3 +71,9 @@ ul {
 //   box-shadow: 1px 0px 0px #adadad, 0px -1px 0px #adadad, 0px 1px 0px #adadad,
 //     -1px 0px 0px #adadad;
 // }
+
+.trend-line-chart {
+  rect {
+    fill: #e9eaf1;
+  }
+}

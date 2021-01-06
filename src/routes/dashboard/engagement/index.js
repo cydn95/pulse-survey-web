@@ -6,7 +6,8 @@ import {
   Tooltip,
   Inject,
 } from "@syncfusion/ej2-react-heatmap";
-import * as data from "./cell-seletion-data.json";
+
+// import * as data from "./cell-seletion-data.json";
 import { SampleBase } from "../common/sample-base";
 import { PropertyPane } from "../common/property-pane";
 import {
@@ -19,10 +20,23 @@ import {
 } from "@syncfusion/ej2-react-charts";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 
+import HeatMap from "Components/report/HeatMap";
+
 import TopNav from "Containers/TopNav";
 
 import styles from "./styles.scss";
 // import classnames from "classnames";
+
+const data = {
+  "Engagement": ["Engineering", "Project Controls", "Drilling & Completions", "External Stakeholders"],
+  "Response Rate": ["80%", "100%", "50%", "30%"],
+  "Actual Engagement": [4.4, 6.5, 4.3, 6.4],
+  "Necessary Engagement": [4.4, 6.5, 4.3, 6.4],
+  "Communication Volume": [5.6, 3.9, 3.9, 6.2],
+  "Communication Trust": [3.4, 8, 5.4, 3.9],
+  "Project Understanding": [5.2, 4.8, 4.6, 4.3],
+  "Team Understanding": [2.9, 6.6, 5.1, 5.2],
+};
 
 class ReportEngagement extends SampleBase {
   render() {
@@ -38,156 +52,10 @@ class ReportEngagement extends SampleBase {
           </TopNav>
         </div>
         <div className={styles["main-content"]}>
-          <div className="col-md-9 control-section">
-            <HeatMapComponent
-              id="heatmap-container"
-              style={{ height: "300px" }}
-              ref={(t) => (this.heatmap = t)}
-              titleSettings={{
-                text: "Engagement Chart",
-              }}
-              xAxis={{
-                labels: [
-                  "Part of the Pulse team",
-                  "Electrical Team",
-                  "Structural Team",
-                  "Management Team",
-                  "Owner's Team",
-                  "Product Team",
-                  "Internal",
-                ],
-              }}
-              yAxis={{
-                labels: ["Overall Sentiment", "Desired Engagement", "Actual Engagement", "Overall Influence", "Team Culture"],
-              }}
-              dataSource={data.cellSelectionData}
-              allowSelection={true}
-              showTooltip={true}
-              load={this.loads.bind(this)}
-              cellSelected={this.cellSelected.bind(this)}
-              paletteSettings={{
-                palette: [{ color: "#3C5E62 " }, { color: "#86C843 " }],
-              }}
-            >
-              <Inject services={[Tooltip]} />
-            </HeatMapComponent>
-            <ChartComponent
-              id="container1"
-              style={{ height: "300px" }}
-              ref={(t) => (this.chart = t)}
-              primaryXAxis={{
-                valueType: "Category",
-                interval: 1,
-                majorGridLines: { width: 0 },
-              }}
-              chartArea={{ border: { width: 0 } }}
-              primaryYAxis={{
-                majorGridLines: { width: 0 },
-                majorTickLines: { width: 0 },
-                lineStyle: { width: 0 },
-                labelStyle: { color: "transparent" },
-              }}
-              series={data.chartData}
-              load={this.load.bind(this)}
-              tooltip={{
-                enable: true,
-              }}
-            >
-              <Inject
-                services={[
-                  ColumnSeries,
-                  Legend,
-                  DataLabel,
-                  Category,
-                  chartTooltip,
-                ]}
-              />
-            </ChartComponent>
-          </div>
-          <div className="col-md-3 property-section">
-            <PropertyPane title="Properties">
-              <table
-                id="property"
-                title="Properties"
-                className="property-panel-table"
-                style={{ width: "100%" }}
-              >
-                <tbody>
-                  <tr style={{ height: "50px" }}>
-                    <td style={{ width: "40%" }}>
-                      <div>
-                        <ButtonComponent
-                          id="clearSelection"
-                          onClick={this.Change.bind(this)}
-                        >
-                          Clear Selection
-                        </ButtonComponent>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </PropertyPane>
-          </div>
+          <HeatMap data={data} />
         </div>
       </div>
     );
-  }
-  cellSelected(args) {
-    let data = args.data;
-    let length = data.length;
-    let xAxis = [];
-    let flag = [];
-    let series = [];
-    let i;
-    let columnData = {};
-    for (i = 0; i < length; i++) {
-      if (xAxis.indexOf(data[i].xLabel) === -1) {
-        xAxis.push(data[i].xLabel);
-        flag.push(false);
-      }
-    }
-    for (i = 0; i < length; i++) {
-      let index = xAxis.indexOf(data[i].xLabel);
-      if (!flag[index]) {
-        flag[index] = true;
-        let column = {};
-        column.type = "Column";
-        column.xName = "x";
-        column.yName = "y";
-        column.width = 2;
-        column.name = data[i].xLabel;
-        column.marker = { dataLabel: { visible: false } };
-        column.dataSource = [];
-        columnData = {};
-        columnData.x = data[i].yLabel;
-        columnData.y = data[i].value;
-        column.dataSource.push(columnData);
-        series.push(column);
-      } else {
-        columnData = {};
-        columnData.x = data[i].yLabel;
-        columnData.y = data[i].value;
-        series[index].dataSource.push(columnData);
-      }
-    }
-    this.chart.series = series;
-    this.chart.refresh();
-  }
-  load(args) {
-    const selectedTheme = "Material";
-    args.chart.theme =
-      selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1);
-  }
-  loads(args) {
-    const selectedTheme = "Material";
-    args.heatmap.theme =
-      selectedTheme.charAt(0).toUpperCase() + selectedTheme.slice(1);
-  }
-  Change(args) {
-    this.heatmap.clearSelection();
-    this.chart.series = data.chartData;
-    this.chart.refresh();
   }
 }
 
