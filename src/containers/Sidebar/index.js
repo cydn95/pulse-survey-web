@@ -36,8 +36,6 @@ import {
   pageContent,
 } from "Redux/actions";
 
-
-
 import styles from "./styles.scss";
 import classnames from "classnames";
 

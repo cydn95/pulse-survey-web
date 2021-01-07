@@ -14,3 +14,7 @@ export function getToken() {
     return null;
   }
 }
+
+export function removeSpace(str) {
+  return str.replace(/\s/g, '');
+}
