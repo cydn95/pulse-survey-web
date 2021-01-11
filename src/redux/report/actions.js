@@ -3,6 +3,7 @@ import {
   REPORT_TOP_POSITIVE_NEGATIVE,
   REPORT_FEEDBACK_SUMMARY,
   REPORT_PARTICIPATION,
+  REPORT_ENGAGEMENT_TREND
 } from "Constants/actionTypes";
 
 export const overallSentiment = (surveyId, callback) => ({
@@ -23,4 +24,9 @@ export const feedbackSummary = (surveyId, subProjectUser, callback) => ({
 export const participation = (surveyId, callback) => ({
   type: REPORT_PARTICIPATION,
   payload: { surveyId, callback },
+});
+
+export const engagementTrend = (surveyId, startDate, endDate, callback) => ({
+  type: REPORT_ENGAGEMENT_TREND,
+  payload: { surveyId, startDate, endDate, callback },
 });

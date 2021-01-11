@@ -7,26 +7,46 @@ import styles from "./styles.scss";
 import classnames from "classnames";
 
 const getColor = (val) => {
-  if (val <= 4) {
-    return "#c00000";
+  if (val <= 10) {
+    return "#ec644b";
   }
 
-  if (val <= 5) {
-    return "#e56965";
+  if (val <= 20) {
+    return "#385e61";
   }
 
-  if (val <= 7) {
-    return "#4da9ef";
+  if (val <= 30) {
+    return "#436f5e";
   }
 
-  if (val <= 8) {
-    return "#8acbc1";
+  if (val <= 40) {
+    return "#4e815a";
+  }
+
+  if (val <= 50) {
+    return "#548958";
+  }
+
+  if (val <= 60) {
+    return "#639e54";
+  }
+
+  if (val <= 70) {
+    return "#6eb052";
+  }
+
+  if (val <= 80) {
+    return "#73b851";
+  }
+
+  if (val <= 90) {
+    return "#3498db";
   }
 
   return "#00b7a2";
 };
 
-const HeatMap = ({ data }) => {
+const HeatMap = ({ data, chartWidth }) => {
   const colP = useMemo(() => {
     if (Object.keys(data).length > 0) {
       return 100 / (data[Object.keys(data)[0]].length + 1);
@@ -43,7 +63,7 @@ const HeatMap = ({ data }) => {
         temp[removeSpace(key)] = false;
       }
     });
-    console.log(temp);
+    // console.log(temp);
     setTrendVisible({ ...temp });
   }, [data]);
 
@@ -74,14 +94,14 @@ const HeatMap = ({ data }) => {
               </div>
               {data[key].map((d, index) => {
                 const style =
-                  rowNum >= 2 ? { background: getColor(Number(d)) } : {};
+                  rowNum >= 2 ? { background: getColor(Number(d.value)) } : {};
                 return (
                   <div
                     key={`heatmap-col-${keyValue}-${index}`}
                     className={styles["map-col"]}
                     style={{ width: `${colP}%`, ...style }}
                   >
-                    {d}
+                    {d.value}
                   </div>
                 );
               })}
@@ -103,14 +123,14 @@ const HeatMap = ({ data }) => {
                 </div>
                 {data[key].map((d, index) => {
                   const style =
-                    rowNum >= 2 ? { background: getColor(Number(d)) } : {};
+                    rowNum >= 2 ? { background: getColor(Number(d.value)) } : {};
                   return (
                     <div
                       key={`heatmap-col-trend-${keyValue}-${index}`}
                       className={classnames(styles["map-col-trend"])}
                       style={{ width: `${colP}%` }}
                     >
-                      <TrendLine num={`${keyValue}-${index}`} />
+                      {chartWidth > 0 && <TrendLine data={d.trend} num={`${keyValue}-${index}`} width={chartWidth} />}
                     </div>
                   );
                 })}

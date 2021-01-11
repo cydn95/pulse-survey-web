@@ -22,13 +22,14 @@ export let data1 = [
 ];
 class TrendLine extends SampleBase {
   render() {
-    const { num } = this.props;
+    const { data, num, width } = this.props;
+    // console.log(data);
     return (
       <div className="control-pane">
         <div className="control-section trend-line-chart">
           <ChartComponent
             id={`charts_${num}`}
-            style={{ textAlign: "center", height: 100, width: 240 }}
+            style={{ textAlign: "center", height: 100, width: width }}
             // primaryXAxis={{
             //   valueType: "DateTime",
             //   labelFormat: "y",
@@ -51,14 +52,14 @@ class TrendLine extends SampleBase {
             chartArea={{ border: { width: 0 } }}
             tooltip={{ enable: true }}
             // width={Browser.isDevice ? "100%" : "60%"}
-            width={"240px"}
+            width={width + "px"}
             title=""
             loaded={this.onChartLoad.bind(this)}
           >
             <Inject services={[LineSeries, DateTime, Legend, Tooltip]} />
             <SeriesCollectionDirective>
               <SeriesDirective
-                dataSource={data1}
+                dataSource={data}
                 xName="x"
                 yName="y"
                 name=""

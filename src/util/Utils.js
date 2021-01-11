@@ -87,3 +87,11 @@ export const getAverage = (nums) => {
   if (nums.length === 0) return 0;
   return nums.reduce((a, b) => a + b) / nums.length;
 }
+
+export const randomNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min) + min);
+};
+
+export const arrayAverage = (nums) => {
+  return nums.reduce((a, b) => (a + b)) / nums.length;
+}

@@ -332,6 +332,12 @@ const getParticipationAPI = (surveyId) => {
   return getClient(true).get(`/userbysurvey/?survey=${surveyId}`);
 };
 
+const getEngagementTrendAPI = (surveyId, startDate = "2020-01-01", endDate = "2021-12-31") => {
+  return getClient(true).get(
+    `/engagementtrend/?survey=${surveyId}&stdt=${startDate}&eddt=${endDate}`
+  );
+}
+
 /**
  * deprecated...
  */
@@ -392,4 +398,5 @@ export {
   getFeedbackSummaryAPI,
   getParticipationAPI,
   updateStakeholderCategoryAPI,
+  getEngagementTrendAPI
 };
