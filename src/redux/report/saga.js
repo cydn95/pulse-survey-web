@@ -6,6 +6,7 @@ import {
   getFeedbackSummaryAPI,
   shgroupListAPI,
   getParticipationAPI,
+  getEngagementTrendAPI,
 } from "../../services/axios/api";
 
 import {
@@ -13,9 +14,15 @@ import {
   REPORT_TOP_POSITIVE_NEGATIVE,
   REPORT_FEEDBACK_SUMMARY,
   REPORT_PARTICIPATION,
+  REPORT_ENGAGEMENT_TREND,
 } from "Constants/actionTypes";
 
-import { getCurrentYear, getAverage } from "Util/Utils";
+import {
+  getCurrentYear,
+  getAverage,
+  arrayAverage,
+  randomNumber,
+} from "Util/Utils";
 import { controlType, controlTypeText } from "Constants/defaultValues";
 
 const getOverallSentimentAsync = async (surveyId) =>
@@ -40,6 +47,11 @@ const getFeedbackSummaryAsync = async (surveyId, subProjectUser) =>
 
 const getParticipationAsync = async (surveyId) =>
   await getParticipationAPI(surveyId)
+    .then((result) => result)
+    .catch((error) => error);
+
+const getEngagementTrendAsync = async (surveyId, startDate, endDate) =>
+  await getEngagementTrendAPI(surveyId)
     .then((result) => result)
     .catch((error) => error);
 
@@ -122,7 +134,11 @@ function* getFeedbackSummary({ payload }) {
       const drivers = [];
       const ret = {};
 
-      const result = yield call(getFeedbackSummaryAsync, surveyId, subProjectUser);
+      const result = yield call(
+        getFeedbackSummaryAsync,
+        surveyId,
+        subProjectUser
+      );
 
       const cultureRet = {};
       const sentimentRet = {};
@@ -132,6 +148,7 @@ function* getFeedbackSummary({ payload }) {
       const currentYear = getCurrentYear();
 
       if (result.status === 200) {
+        console.log(result.data);
         for (let i = 0; i < result.data.length; i++) {
           const question = result.data[i];
           const intValue = question.integerValue;
@@ -367,11 +384,10 @@ function* getParticipation({ payload }) {
       let teamUserCount = 1;
 
       for (let i = 0; i < result.data.length; i++) {
-
         allUserCount++;
-         if (result.data[i].team !== null) {
-           teamUserCount++;
-         }
+        if (result.data[i].team !== null) {
+          teamUserCount++;
+        }
 
         if (result.data[i].am_total === result.data[i].am_answered) {
           participationRet.completed += 1;
@@ -425,7 +441,104 @@ function* getParticipation({ payload }) {
         ]
       );
 
-      callback(filteredParticipationRet, filteredTeamParticipationRet, allUserCount, teamUserCount);
+      callback(
+        filteredParticipationRet,
+        filteredTeamParticipationRet,
+        allUserCount,
+        teamUserCount
+      );
+    }
+  } catch (error) {}
+}
+
+function* getEngagementTrend({ payload }) {
+  try {
+    const { surveyId, startDate, endDate, callback } = payload;
+
+    const shGroupResult = yield call(getShGroupListAsync, surveyId);
+
+    const engagementRet = {
+      Engagement: [],
+      "Response Rate": [],
+    };
+
+    if (shGroupResult.status === 200) {
+      const shGroupList = [...shGroupResult.data];
+
+      shGroupList.forEach((sg) => {
+        engagementRet.Engagement.push({
+          value: sg.SHGroupName,
+        });
+        engagementRet["Response Rate"].push({ value: randomNumber(50, 100) });
+      });
+      const result = yield call(
+        getEngagementTrendAsync,
+        surveyId,
+        startDate,
+        endDate
+      );
+
+      const subDriverRet = {};
+
+      if (result.status === 200) {
+        // console.log(result.data);
+
+        result.data.forEach((data) => {
+          data.amQuestionData.forEach((aq) => {
+            if (!(aq.subdriver in subDriverRet)) {
+              subDriverRet[aq.subdriver] = [];
+            }
+          });
+        });
+
+        for (let i = 0; i < Object.keys(subDriverRet).length; i++) {
+          const currentKey = Object.keys(subDriverRet)[i];
+
+          for (let j = 0; j < shGroupList.length; j++) {
+            const currentShGroup = shGroupList[j];
+
+            let cnt = 0;
+            let sum = 0;
+            let trend = {};
+            result.data.forEach((data) => {
+              data.amQuestionData.forEach((aq) => {
+                if (
+                  aq.shGroup.includes(currentShGroup.id) &&
+                  aq.subdriver === currentKey
+                ) {
+                  cnt++;
+                  sum += data.integerValue;
+                  // console.log(data.updated_at.split("-"));
+                  const dateStr = data.updated_at.split("-");
+                  const dateKey = dateStr[0] + "-" + dateStr[1];
+
+                  if (dateKey in trend) {
+                    trend[dateKey].push(data.integerValue);
+                  } else {
+                    trend[dateKey] = [];
+                  }
+                }
+              });
+            });
+
+            const newTrend = [];
+
+            Object.keys(trend).forEach((t, index) => {
+              newTrend.push({
+                x: index + 1,
+                y: arrayAverage(trend[t]),
+              });
+            });
+
+            subDriverRet[currentKey].push({
+              value: cnt > 0 ? (sum / cnt).toFixed(2) : 0,
+              trend: newTrend,
+            });
+          }
+        }
+      }
+      // console.log("result", { ...engagementRet, ...subDriverRet });
+      callback({ ...engagementRet, ...subDriverRet });
     }
   } catch (error) {}
 }
@@ -446,11 +559,16 @@ export function* watchGetParticipation() {
   yield takeEvery(REPORT_PARTICIPATION, getParticipation);
 }
 
+export function* watchGetEngagementTrend() {
+  yield takeEvery(REPORT_ENGAGEMENT_TREND, getEngagementTrend);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetOverallSentiment),
     fork(watchGetTopPositiveNegative),
     fork(watchGetFeedbackSummary),
     fork(watchGetParticipation),
+    fork(watchGetEngagementTrend),
   ]);
 }

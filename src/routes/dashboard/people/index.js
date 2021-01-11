@@ -98,7 +98,7 @@ class ReportPeople extends React.Component {
           overallTrendRet,
           overallTrendKey
         ) => {
-          console.log(feedbackSummaryRet);
+          // console.log(feedbackSummaryRet);
           this.setState({
             feedbackSummary: feedbackSummaryRet,
             cultureResult: cultureRet,
