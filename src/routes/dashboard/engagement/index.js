@@ -84,6 +84,7 @@ const ReportEngagement = ({
 
             return (
               <CardMap
+                key={`card-map-${key}`}
                 title={key}
                 data={engagementData[key]}
                 field={engagementData["Engagement"]}
