@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { connect } from "react-redux";
 
 import { engagementTrend } from "Redux/actions";
 
 import HeatMap from "Components/report/HeatMap";
+import CardMap from "Components/report/CardMap";
 import TopNav from "Containers/TopNav";
+
+import { isMobile } from "react-device-detect";
 
 import styles from "./styles.scss";
 // import classnames from "classnames";
@@ -41,6 +44,7 @@ const ReportEngagement = ({
   }, [surveyId, actionEngagementTrend]);
 
   const callback = (ret) => {
+    // console.log(ret);
     setEngagementData({ ...ret });
   };
 
@@ -64,13 +68,28 @@ const ReportEngagement = ({
           const width =
             engagementData.Engagement.length === 0
               ? 0
-              : ((el.getBoundingClientRect().width - 40) /
-                (engagementData.Engagement.length + 1)) - 10;
+              : (el.getBoundingClientRect().width - 40) /
+                  (engagementData.Engagement.length + 1) -
+                10;
           // console.log('c wid', width);
           setChartWidth(width);
         }}
       >
-        <HeatMap data={engagementData} chartWidth={chartWidth} />
+        {!isMobile && <HeatMap data={engagementData} chartWidth={chartWidth} />}
+        {isMobile &&
+          Object.keys(engagementData).map((key) => {
+            if (key === "Engagement" || key === "Response Rate") {
+              return null;
+            }
+
+            return (
+              <CardMap
+                title={key}
+                data={engagementData[key]}
+                field={engagementData["Engagement"]}
+              />
+            );
+          })}
       </div>
     </div>
   );

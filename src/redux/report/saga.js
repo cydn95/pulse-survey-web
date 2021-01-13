@@ -531,7 +531,8 @@ function* getEngagementTrend({ payload }) {
             });
 
             subDriverRet[currentKey].push({
-              value: cnt > 0 ? (sum / cnt).toFixed(2) : 0,
+              value: cnt > 0 ? Math.round(sum / cnt) : 0,
+              cnt,
               trend: newTrend,
             });
           }
