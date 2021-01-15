@@ -68,27 +68,27 @@ class AllStakeholderList extends Component {
     } = this.props;
 
     let filteredStakeholderList = [];
-    if (
-      selectedMyCategoryList.length > 0 ||
-      selectedProjectCategoryList.length > 0
-    ) {
+    // if (
+    //   selectedMyCategoryList.length > 0 ||
+    //   selectedProjectCategoryList.length > 0
+    // ) {
       for (let i = 0; i < allStakeholders.length; i++) {
-        const i1 = allStakeholders[i].shCategory.filter((value) =>
-          selectedMyCategoryList.includes(value)
-        );
-        const i2 = allStakeholders[i].shCategory.filter((value) =>
-          selectedProjectCategoryList.includes(value)
-        );
-        if (
-          (i1.length > 0 || i2.length > 0) &&
-          allStakeholders[i].projectId.toString() === projectId.toString()
-        ) {
+        // const i1 = allStakeholders[i].shCategory.filter((value) =>
+        //   selectedMyCategoryList.includes(value)
+        // );
+        // const i2 = allStakeholders[i].shCategory.filter((value) =>
+        //   selectedProjectCategoryList.includes(value)
+        // );
+        // if (
+        //   (i1.length > 0 || i2.length > 0) &&
+        //   allStakeholders[i].projectId.toString() === projectId.toString()
+        // ) {
           filteredStakeholderList.push(allStakeholders[i]);
-        }
+        // }
       }
-    } else {
-      filteredStakeholderList = [...allStakeholders];
-    }
+    // } else {
+    //   filteredStakeholderList = [...allStakeholders];
+    // }
 
     filteredStakeholderList = filteredStakeholderList.filter(
       (s) => s.fullName.toLowerCase().indexOf(search.toLowerCase()) >= 0

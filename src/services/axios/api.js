@@ -124,8 +124,12 @@ const submitAboutMeAPI = (data) => {
   return getClient(true).post("/projectuser/", data);
 };
 
-const userListAPI = () => {
-  return getClient(true).get("/users/");
+const userListAPI = (email = '') => {
+  if (email !== '') {
+    return getClient(true).get(`/users?/?format=json&email=${email}`);  
+  } else {
+    return getClient(true).get("/users/");
+  }
 };
 
 const myMapAPI = (projectUserId, userId = 0) => {
