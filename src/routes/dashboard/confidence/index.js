@@ -55,7 +55,7 @@ const howPeopleFeelData = [
   },
 ];
 
-class ReportSentiment extends React.Component {
+class ReportConfidence extends React.Component {
   state = {
     overallSentiment: -1,
     topPositives: [],
@@ -78,7 +78,6 @@ class ReportSentiment extends React.Component {
   componentDidMount() {
     const {
       surveyId,
-      surveyUserId,
       actionOverallSentiment,
       actionTopPositiveNegative,
       actionFeedbackSummary,
@@ -103,7 +102,6 @@ class ReportSentiment extends React.Component {
 
       actionFeedbackSummary(
         surveyId,
-        surveyUserId,
         (
           feedbackSummaryRet,
           cultureRet,
@@ -241,12 +239,11 @@ class ReportSentiment extends React.Component {
 }
 
 const mapStateToProps = ({ authUser }) => {
-  const { projectTitle, surveyId, surveyUserId } = authUser;
+  const { projectTitle, surveyId } = authUser;
 
   return {
     projectTitle,
     surveyId,
-    surveyUserId
   };
 };
 
@@ -255,4 +252,4 @@ export default connect(mapStateToProps, {
   actionTopPositiveNegative: topPositiveNegative,
   actionFeedbackSummary: feedbackSummary,
   actionParticipation: participation,
-})(ReportSentiment);
+})(ReportConfidence);

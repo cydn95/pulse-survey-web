@@ -671,7 +671,9 @@ class MyMap extends React.Component {
     //       console.log(this.myMapProjectUserList);
     // console.log("*********************************");
     this.setState({ newStakeholder: newElem }, () => {
+      console.log('33442354332', newElem);
       if (!newElem.individuals[0].sh_category) return;
+      console.log('hhhkkksdddd');
       const newProjectUserId = projectUser.projectUserId;
       const newShCategory = newElem.individuals[0].sh_category.current.split(
         "_"
@@ -690,6 +692,7 @@ class MyMap extends React.Component {
           break;
         }
       }
+      console.log('new', newShCategory);
       if (!bExist) {
         this.myMapProjectUserList.push({
           projectUserId: newProjectUserId,
@@ -824,6 +827,7 @@ class MyMap extends React.Component {
     // console.log(answerData);
 
     const { lastAddedShCategory } = this.state;
+    console.log(lastAddedShCategory);
     for (let i = 0; i < answerData.length; i++) {
       if (answerData[i].shCategory == undefined) {
         answerData[i].shCategory = lastAddedShCategory;
