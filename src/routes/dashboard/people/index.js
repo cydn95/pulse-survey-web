@@ -207,7 +207,7 @@ class ReportPeople extends React.Component {
                     shGroups={overallTrendKey}
                     data={overallTrendResult}
                     xRange={[1, 12]}
-                    yRange={[0, 300]}
+                    yRange={[0, 100]}
                     width={400}
                     height={220}
                     margin={30}
