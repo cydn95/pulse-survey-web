@@ -293,6 +293,7 @@ class AoSurvey extends React.Component {
       projectTitle,
       myMapCategory,
       projectMapCategory,
+      submitLoading
     } = this.props;
 
     // console.log(myMapCategory);
@@ -470,8 +471,9 @@ class AoSurvey extends React.Component {
             variant="contained"
             className={styles.green}
             onClick={(e) => this.handleSubmit(e)}
+            disabled={submitLoading}
           >
-            Submit
+            {submitLoading ? 'Loading' : 'Submit' }
           </Button>
         </div>
         <StakeholderUpdateModal

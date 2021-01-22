@@ -85,7 +85,9 @@ class MyMap extends React.Component {
       myMapStakeholderList: [],
       projectMapStakeholderList: [],
 
-      lastAddedShCategory: null
+      lastAddedShCategory: null,
+
+      aoSurveySubmitLoading: false
     };
 
     this.defaultStakeholder = {
@@ -834,6 +836,10 @@ class MyMap extends React.Component {
       }
     }
 
+    this.setState({
+      aoSurveySubmitLoading: true
+    });
+
     this.props.submitAoQuestion(
       answerData,
       this.state.currentSurveyUser,
@@ -849,6 +855,9 @@ class MyMap extends React.Component {
     //   currentSurveyUserId: 0,
     //   currentSurveyUser: {},
     // });
+    this.setState({
+      aoSurveySubmitLoading: false
+    });
     this.handleSaveGraph(null);
     // window.location.reload(false);
   };
@@ -1231,6 +1240,7 @@ class MyMap extends React.Component {
                 driverList.length > 0 &&
                 skipQuestionList.length > 0 && (
                   <AoSurvey
+                    submitLoading={this.state.aoSurveySubmitLoading}
                     questions={aoQuestionList}
                     options={optionList}
                     drivers={driverList}
