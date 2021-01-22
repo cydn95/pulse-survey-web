@@ -473,7 +473,7 @@ class AoSurvey extends React.Component {
             onClick={(e) => this.handleSubmit(e)}
             disabled={submitLoading}
           >
-            {submitLoading ? 'Loading' : 'Submit' }
+            {submitLoading ? 'In progress...' : 'Submit' }
           </Button>
         </div>
         <StakeholderUpdateModal
