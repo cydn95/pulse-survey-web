@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
 import Drawer from "@material-ui/core/Drawer";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -15,17 +15,17 @@ import { setMainMenuClassName, logoutUser } from "Redux/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-class TopNav extends Component {
-  constructor(props) {
-    super(props);
+const TopNav = ({
+  menuTitle,
+  profile,
+  children,
+  setMainMenuClassName,
+  history,
+}) => {
+  const [toggle, setToggle] = useState(false);
+  const [menu, setMenu] = useState(false);
 
-    this.state = {
-      toggle: false,
-      menu: false,
-    };
-  }
-
-  toggleDrawer = (event, open) => {
+  const toggleDrawer = (event, open) => {
     if (event === null) {
       return;
     }
@@ -36,112 +36,105 @@ class TopNav extends Component {
       return;
     }
 
-    this.setState({
-      toggle: open,
-    });
+    setToggle("open");
   };
 
-  logOut = (e) => {
+  const logOut = (e) => {
     e.preventDefault();
-
-    this.props.logoutUser();
+    logoutUser();
   };
 
-  toggleMenu = (e) => {
-    if (!this.state.menu) {
+  const toggleMenu = (e) => {
+    if (!menu) {
       // attach/remove event handler
-      document.addEventListener("click", this.handleOutsideClick, false);
+      document.addEventListener("click", handleOutsideClick, false);
     } else {
-      document.removeEventListener("click", this.handleOutsideClick, false);
+      document.removeEventListener("click", handleOutsideClick, false);
     }
 
-    this.setState((prevState) => ({
-      menu: !prevState.menu,
-    }));
+    setMenu(!menu);
   };
 
-  handleOutsideClick = (e) => {
-    this.toggleMenu(e);
+  const handleOutsideClick = (e) => {
+    toggleMenu(e);
   };
 
-  navigateSetting = (e) => {
+  const navigateSetting = (e) => {
     e.preventDefault();
 
-    this.props.setMainMenuClassName("settings");
-    this.props.history.push("/app/settings");
+    setMainMenuClassName("settings");
+    history.push("/app/settings");
   };
 
-  render() {
-    const { menuTitle, profile, children } = this.props;
-    return (
-      <div className={styles.root}>
-        <Drawer
-          open={this.state.toggle}
-          onClose={this.toggleDrawer(null, false)}
-          onKeyDown={(e) => this.toggleDrawer(e, false)}
+  return (
+    <div className={styles.root}>
+      <Drawer
+        open={toggle}
+        onClose={toggleDrawer(null, false)}
+        onKeyDown={(e) => toggleDrawer(e, false)}
+      >
+        <div
+          style={{ position: "absolute", marginLeft: 190, top: 15 }}
+          className={styles["hide-icon-wrapper"]}
+          onClick={(e) => toggleDrawer(e, false)}
+          role="button"
         >
-          <div
-            style={{ position: "absolute", marginLeft: 190, top: 15 }}
-            className={styles["hide-icon-wrapper"]}
-            onClick={(e) => this.toggleDrawer(e, false)}
-            role="button"
-          >
-            <FontAwesomeIcon className="fa-lg" size="lg" color="#fff" icon={faTimes} />
-          </div>
-          <Sidebar />
-        </Drawer>
-        <div className={styles.project}>
-          <div className={styles["drawer-section"]}>
-            <MenuIcon
-              className={styles["drawer-toggle"]}
-              onClick={(e) => this.toggleDrawer(e, true)}
-              onKeyDown={(e) => this.toggleDrawer(e, true)}
-            />
-            <h1 className={styles.title}>{menuTitle}</h1>
-          </div>
-          <div className={styles.section}>{children}</div>
+          <FontAwesomeIcon
+            className="fa-lg"
+            size="lg"
+            color="#fff"
+            icon={faTimes}
+          />
         </div>
-        <div id="menu" className={styles.control}>
-          <div className={styles.dropdown} onClick={(e) => this.toggleMenu(e)}>
-            {profile.avatar && (
-              <img
-                className={styles.avatar}
-                src={profile.avatar}
-                alt="avatar"
-              />
-            )}
-            {(!profile.avatar || profile.avatar === "") && (
-              <img
-                className={styles.avatar}
-                src="/assets/img/survey/menu-aboutme.png"
-                alt="avatar"
-              />
-            )}
-            <span
-              className={styles.username}
-            >{`${profile.firstName} ${profile.lastName}`}</span>
-          </div>
-          {this.state.menu && (
-            <div className={styles["dropdown-menu"]}>
-              <div
-                className={styles["dropdown-menu-item"]}
-                onClick={(e) => this.navigateSetting(e)}
-              >
-                <a href="">Settings</a>
-              </div>
-              <div
-                className={styles["dropdown-menu-item"]}
-                onClick={(e) => this.logOut(e)}
-              >
-                <a href="">Log Out</a>
-              </div>
-            </div>
-          )}
+        <Sidebar />
+      </Drawer>
+      <div className={styles.project}>
+        <div className={styles["drawer-section"]}>
+          <MenuIcon
+            className={styles["drawer-toggle"]}
+            onClick={(e) => toggleDrawer(e, true)}
+            onKeyDown={(e) => toggleDrawer(e, true)}
+          />
+          <h1 className={styles.title}>{menuTitle}</h1>
         </div>
+        <div className={styles.section}>{children}</div>
       </div>
-    );
-  }
-}
+      <div id="menu" className={styles.control}>
+        <div className={styles.dropdown} onClick={(e) => toggleMenu(e)}>
+          {profile.avatar && (
+            <img className={styles.avatar} src={profile.avatar} alt="avatar" />
+          )}
+          {(!profile.avatar || profile.avatar === "") && (
+            <img
+              className={styles.avatar}
+              src="/assets/img/survey/menu-aboutme.png"
+              alt="avatar"
+            />
+          )}
+          <span
+            className={styles.username}
+          >{`${profile.firstName} ${profile.lastName}`}</span>
+        </div>
+        {menu && (
+          <div className={styles["dropdown-menu"]}>
+            <div
+              className={styles["dropdown-menu-item"]}
+              onClick={(e) => navigateSetting(e)}
+            >
+              <a href="">Settings</a>
+            </div>
+            <div
+              className={styles["dropdown-menu-item"]}
+              onClick={(e) => logOut(e)}
+            >
+              <a href="">Log Out</a>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 
 const mapStateToProps = ({ account }) => {
   const { profile } = account;
