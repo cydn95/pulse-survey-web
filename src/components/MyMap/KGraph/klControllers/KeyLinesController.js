@@ -193,15 +193,18 @@ class BaseController {
           console.log("steptest1")
           await this.expandChart(currentOverElement.id);
           // await this.toggleChart(currentOverElement.id);
+          
+
           animate = true;
         } // if the sh category is shrunk, show it before adding
         else if (
           currentOverElement.d.individualCount > 0 &&
-          currentOverElement.d.shrunk
+          (currentOverElement.d.shrunk || currentOverElement.d.shrunk === undefined)
         ) {
           console.log("steptest2")
+
           await this.toggleChart(currentOverElement.id);
-          animate = false;
+          animate = true;
         }
 
         node.individuals[0].sh_category = {
