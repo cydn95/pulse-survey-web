@@ -192,7 +192,7 @@ class BaseController {
         ) {
           console.log("steptest1")
           await this.expandChart(currentOverElement.id);
-          await this.toggleChart(currentOverElement.id);
+          // await this.toggleChart(currentOverElement.id);
           animate = true;
         } // if the sh category is shrunk, show it before adding
         else if (
@@ -200,7 +200,6 @@ class BaseController {
           currentOverElement.d.shrunk
         ) {
           console.log("steptest2")
-          await this.expandChart(currentOverElement.id);
           await this.toggleChart(currentOverElement.id);
           animate = false;
         }
@@ -375,6 +374,7 @@ class BaseController {
   };
 
   toggleChart = async (clickedId) => {
+    console.log(clickedId);
     let clickedElement = this.chart.getItem(clickedId);
     let elementsToMove = [];
     let props = [];
@@ -398,7 +398,10 @@ class BaseController {
     });
 
     // shrink the element
-    if (!clickedElement.d.shrunk) {
+    // if (!clickedElement.d.shrunk) {
+    console.log(clickedElement.d);
+    if (clickedElement.d.shrunk === false) {
+      console.log('shrunk')
       await this.chart.animateProperties(props, {
         time: 400
       });
@@ -479,10 +482,11 @@ class BaseController {
     ) {
       this.expandChart(id);
       console.log("test dbclick");
-      this.toggleChart(id);
+      // this.toggleChart(id);
     } else if (clickedElement.d.coreEntity && clickedElement.d.expanded) {
       console.log("test toggle");
       this.toggleChart(id);
+    
     }
 
     if (this.chart.combo().isCombo(id)) {
