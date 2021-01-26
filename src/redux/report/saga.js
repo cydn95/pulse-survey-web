@@ -336,11 +336,17 @@ function* getFeedbackSummary({ payload }) {
 
           const temp = [];
           for (let i = 0; i < overallTrendsRet[key].length; i++) {
+            // temp.push({
+            //   month: overallTrendsRet[key][i].month,
+            //   overall: parseFloat(
+            //     getAverage(overallTrendsRet[key][i].value)
+            //   ).toFixed(2),
+            // });
             temp.push({
-              month: overallTrendsRet[key][i].month,
-              overall: parseFloat(
+              x: overallTrendsRet[key][i].month,
+              y: Math.round(parseFloat(
                 getAverage(overallTrendsRet[key][i].value)
-              ).toFixed(2),
+              ).toFixed(2)),
             });
           }
 

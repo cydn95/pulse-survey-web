@@ -10,7 +10,7 @@ import Participation from "Components/report/Participation";
 import FeedbackSummary from "Components/report/FeedbackSummary";
 import TopSummary from "Components/report/TopSummary";
 import CultureResult from "Components/report/CultureResult";
-import LineChart from "Components/report/LineChart";
+import OverallTrend from "Components/report/OverallTrend";
 import SentimentResult from "Components/report/SentimentResult";
 
 import {
@@ -99,6 +99,8 @@ class ReportPeople extends React.Component {
           overallTrendKey
         ) => {
           // console.log(feedbackSummaryRet);
+          console.log(overallTrendRet);
+          console.log(overallTrendKey);
           this.setState({
             feedbackSummary: feedbackSummaryRet,
             cultureResult: cultureRet,
@@ -148,7 +150,8 @@ class ReportPeople extends React.Component {
     } = this.state;
     // console.log(participationResult);
     // console.log(teamParticipationResult);
-
+    // console.log(overallTrendResult);
+    // console.log(overallTrendKey);
     return (
       <div className={styles.root}>
         <div className={styles.topbar}>
@@ -202,7 +205,7 @@ class ReportPeople extends React.Component {
               <div className={styles.block}>
                 <span className={styles["block__title"]}>Overall Trends</span>
                 <div className={styles.content}>
-                  <LineChart
+                  <OverallTrend
                     key="linechart"
                     shGroups={overallTrendKey}
                     data={overallTrendResult}
