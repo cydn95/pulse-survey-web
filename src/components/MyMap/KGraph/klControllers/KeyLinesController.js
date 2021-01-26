@@ -102,12 +102,16 @@ class BaseController {
     let propsToUpdate = [];
     if (action === "add") {
       // increate the value of the glyph of the baseId node
+      console.log("SELECTEDSH");
+      console.log(selectedSH, baseId);
+      console.log(newItems);
       let currentGlyph = selectedSH.g;
       if (currentGlyph) {
         propsToUpdate.push({
           id: baseId,
           g: [{
             ...currentGlyph[0],
+            // t: parseInt(currentGlyph[0].t, 10) + 1
             t: parseInt(currentGlyph[0].t, 10) + 1
           }],
         });
@@ -173,20 +177,30 @@ class BaseController {
       let currentOverElement = this.chart.getItem(this.overElem);
       let itemExists = this.chart.getItem(node.individuals[0].id);
       let animate = true;
+
+      console.log("itemExist");
+      console.log(itemExists);
+      console.log("CurrentoverElement");
+      console.log(currentOverElement);
       // check if there are already elements with that id in the vis and that you are over an sh category
       if (currentOverElement.d.coreEntity && !itemExists) {
         // if the sh category has not been expanded yet, expand it before adding the element
+        
         if (
           currentOverElement.d.individualCount > 0 &&
           !currentOverElement.d.expanded
         ) {
+          console.log("steptest1")
           await this.expandChart(currentOverElement.id);
-          animate = false;
+          await this.toggleChart(currentOverElement.id);
+          animate = true;
         } // if the sh category is shrunk, show it before adding
         else if (
           currentOverElement.d.individualCount > 0 &&
           currentOverElement.d.shrunk
         ) {
+          console.log("steptest2")
+          await this.expandChart(currentOverElement.id);
           await this.toggleChart(currentOverElement.id);
           animate = false;
         }
@@ -257,6 +271,8 @@ class BaseController {
         await this.chart.ping(node.individuals[0].id);
       }
     }
+
+
   };
 
   endDrag = async (data) => {
@@ -273,6 +289,7 @@ class BaseController {
       mouseViewCoords.y >= 0 && mouseViewCoords.y <= klRect.height;
     const mouseIsOverChart = withinChartX && withinChartY;
     if (mouseIsOverChart) {
+      console.log("enddrag");
       await this.createNode(data, mouseViewCoords);
     }
     this.chart.selection([]);
@@ -293,6 +310,11 @@ class BaseController {
     };
     // ammend the glyph count of the existing elements
     await this.recalculateGlyphs(clickedId, newItems, "expand");
+
+    await newItems.forEach((itemId, key) => {
+      newItems[key].hi = true;
+    });
+
     await this.chart.expand(newItems, {
       layout: {
         name: this.layoutName,
@@ -348,6 +370,8 @@ class BaseController {
         },
       });
     });
+
+    await this.toggleChart(clickedId);
   };
 
   toggleChart = async (clickedId) => {
@@ -454,7 +478,10 @@ class BaseController {
       clickedElement.d.individualCount > 0
     ) {
       this.expandChart(id);
+      console.log("test dbclick");
+      this.toggleChart(id);
     } else if (clickedElement.d.coreEntity && clickedElement.d.expanded) {
+      console.log("test toggle");
       this.toggleChart(id);
     }
 
