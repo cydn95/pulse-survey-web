@@ -111,6 +111,7 @@
     "rc-switch": "^1.9.0",
     "react": "^16.4.1",
     "react-circular-progressbar": "^2.0.2",
+    "react-d3-cloud": "^0.7.0",
     "react-device-detect": "^1.12.1",
     "react-dom": "^16.4.1",
     "react-drag-and-drop": "^3.0.0",
