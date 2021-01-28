@@ -40,25 +40,16 @@ export default class KGraph extends Component {
   async componentDidUpdate(prevProps) {
     let { newStakeholder, layout, viewMode, layoutUpdated } = this.props;
 
-    console.log("PROPS");
-    console.log(newStakeholder);
-    console.log(prevProps.newStakeholder);
     if (Object.keys(newStakeholder).length > 0 && newStakeholder != prevProps.newStakeholder) {
       await this.keyLinesController.endDrag(newStakeholder);
     }
 
     if (layoutUpdated) {
-      console.log("layoutupdate");
-      console.log(layoutUpdated);
-      console.log(layout);
       layout = layout === "standard" ? "organic" : layout;
       await this.keyLinesController.runLayout(layout);
     }
 
     if (viewMode !== prevProps.viewMode) {
-      console.log("viewmode");
-      console.log(viewMode);
-      console.log(prevProps.viewMode);
       await this.keyLinesController.updateVisualisationMode(viewMode);
     }
   }
