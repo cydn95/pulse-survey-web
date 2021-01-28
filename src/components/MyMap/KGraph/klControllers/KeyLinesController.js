@@ -77,8 +77,6 @@ class BaseController {
       if (item.d.survey_completion) {
         let percentage = Math.abs(parseFloat(item.d.survey_completion).toFixed(2));
 
-        // console.log(percentage);
-
         // let segment = Math.abs(percentage - 50) * 2;
         let segmentColor = percentage <= 50 ? "#ff5500" : "#1f45b8";
         props.push({
@@ -102,9 +100,6 @@ class BaseController {
     let propsToUpdate = [];
     if (action === "add") {
       // increate the value of the glyph of the baseId node
-      console.log("SELECTEDSH");
-      console.log(selectedSH, baseId);
-      console.log(newItems);
       let currentGlyph = selectedSH.g;
       if (currentGlyph) {
         propsToUpdate.push({
@@ -178,10 +173,6 @@ class BaseController {
       let itemExists = this.chart.getItem(node.individuals[0].id);
       let animate = true;
 
-      console.log("itemExist");
-      console.log(itemExists);
-      console.log("CurrentoverElement");
-      console.log(currentOverElement);
       // check if there are already elements with that id in the vis and that you are over an sh category
       if (currentOverElement.d.coreEntity && !itemExists) {
         // if the sh category has not been expanded yet, expand it before adding the element
@@ -190,7 +181,6 @@ class BaseController {
           currentOverElement.d.individualCount > 0 &&
           !currentOverElement.d.expanded
         ) {
-          console.log("steptest1")
           await this.expandChart(currentOverElement.id);
           // await this.toggleChart(currentOverElement.id);
           
@@ -201,8 +191,6 @@ class BaseController {
           currentOverElement.d.individualCount > 0 &&
           (currentOverElement.d.shrunk || currentOverElement.d.shrunk === undefined)
         ) {
-          console.log("steptest2")
-
           await this.toggleChart(currentOverElement.id);
           animate = true;
         }
@@ -291,7 +279,6 @@ class BaseController {
       mouseViewCoords.y >= 0 && mouseViewCoords.y <= klRect.height;
     const mouseIsOverChart = withinChartX && withinChartY;
     if (mouseIsOverChart) {
-      console.log("enddrag");
       await this.createNode(data, mouseViewCoords);
     }
     this.chart.selection([]);
@@ -377,7 +364,6 @@ class BaseController {
   };
 
   toggleChart = async (clickedId) => {
-    console.log(clickedId);
     let clickedElement = this.chart.getItem(clickedId);
     let elementsToMove = [];
     let props = [];
@@ -402,9 +388,7 @@ class BaseController {
 
     // shrink the element
     // if (!clickedElement.d.shrunk) {
-    console.log(clickedElement.d);
     if (clickedElement.d.shrunk === false) {
-      console.log('shrunk')
       await this.chart.animateProperties(props, {
         time: 400
       });
@@ -484,10 +468,7 @@ class BaseController {
       clickedElement.d.individualCount > 0
     ) {
       this.expandChart(id);
-      console.log("test dbclick");
-      // this.toggleChart(id);
     } else if (clickedElement.d.coreEntity && clickedElement.d.expanded) {
-      console.log("test toggle");
       this.toggleChart(id);
     
     }
@@ -568,7 +549,8 @@ class BaseController {
    * Positions nodes on the chart according to the given layout
    * @param {String} layoutName One of the KeyLines chart layouts
    */
-  async runLayout(layoutName = "organic", consistent = false, extra = {}) {
+  // async runLayout(layoutName = "organic", consistent = false, extra = {}) {
+  async runLayout(layoutName = "organic", consistent = true, extra = {}) {
     this.layoutName = layoutName;
     const options = {
       tightness: 3,
