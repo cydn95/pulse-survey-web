@@ -48,11 +48,17 @@ export default class KGraph extends Component {
     }
 
     if (layoutUpdated) {
+      console.log("layoutupdate");
+      console.log(layoutUpdated);
+      console.log(layout);
       layout = layout === "standard" ? "organic" : layout;
       await this.keyLinesController.runLayout(layout);
     }
 
     if (viewMode !== prevProps.viewMode) {
+      console.log("viewmode");
+      console.log(viewMode);
+      console.log(prevProps.viewMode);
       await this.keyLinesController.updateVisualisationMode(viewMode);
     }
   }

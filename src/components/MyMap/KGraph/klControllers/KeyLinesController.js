@@ -568,8 +568,11 @@ class BaseController {
    * Positions nodes on the chart according to the given layout
    * @param {String} layoutName One of the KeyLines chart layouts
    */
-  async runLayout(layoutName = "organic", consistent = false, extra = {}) {
+  // async runLayout(layoutName = "organic", consistent = false, extra = {}) {
+  async runLayout(layoutName = "organic", consistent = true, extra = {}) {
+    console.log(consistent, extra);
     this.layoutName = layoutName;
+    console.log(this);
     const options = {
       tightness: 3,
       top: ["radial", "sequential"].includes(layoutName) ?
