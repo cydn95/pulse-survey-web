@@ -124,9 +124,9 @@ const submitAboutMeAPI = (data) => {
   return getClient(true).post("/projectuser/", data);
 };
 
-const userListAPI = (email = '') => {
-  if (email !== '') {
-    return getClient(true).get(`/users?/?format=json&email=${email}`);  
+const userListAPI = (email = "") => {
+  if (email !== "") {
+    return getClient(true).get(`/users?/?format=json&email=${email}`);
   } else {
     return getClient(true).get("/users/");
   }
@@ -336,11 +336,27 @@ const getParticipationAPI = (surveyId) => {
   return getClient(true).get(`/userbysurvey/?survey=${surveyId}`);
 };
 
-const getEngagementTrendAPI = (surveyId, startDate = "2020-01-01", endDate = "2021-12-31") => {
+const getEngagementTrendAPI = (
+  surveyId,
+  startDate = "2020-01-01",
+  endDate = "2021-12-31"
+) => {
   return getClient(true).get(
     `/engagementtrend/?survey=${surveyId}&stdt=${startDate}&eddt=${endDate}`
   );
-}
+};
+
+const getWordCloudAPI = (surveyId = 0, projectUser = 0) => {
+  let url = `/wordcloud/?`;
+  if (surveyId > 0) {
+    url += `survey=${surveyId}&`;
+  }
+  if (projectUser > 0) {
+    url += `projectUser=${projectUser}`;
+  }
+
+  return getClient(true).get(url);
+};
 
 /**
  * deprecated...
@@ -402,5 +418,6 @@ export {
   getFeedbackSummaryAPI,
   getParticipationAPI,
   updateStakeholderCategoryAPI,
-  getEngagementTrendAPI
+  getEngagementTrendAPI,
+  getWordCloudAPI
 };

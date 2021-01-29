@@ -7,6 +7,7 @@ import {
   shgroupListAPI,
   getParticipationAPI,
   getEngagementTrendAPI,
+  getWordCloudAPI,
 } from "../../services/axios/api";
 
 import {
@@ -15,6 +16,7 @@ import {
   REPORT_FEEDBACK_SUMMARY,
   REPORT_PARTICIPATION,
   REPORT_ENGAGEMENT_TREND,
+  REPORT_WORDCLOUD
 } from "Constants/actionTypes";
 
 import {
@@ -52,6 +54,11 @@ const getParticipationAsync = async (surveyId) =>
 
 const getEngagementTrendAsync = async (surveyId, startDate, endDate) =>
   await getEngagementTrendAPI(surveyId)
+    .then((result) => result)
+    .catch((error) => error);
+
+const getWordCloudAsync = async (surveyId, projectUserId) =>
+  await getWordCloudAPI(surveyId, projectUserId)
     .then((result) => result)
     .catch((error) => error);
 
@@ -550,6 +557,24 @@ function* getEngagementTrend({ payload }) {
   } catch (error) {}
 }
 
+function* getWordCloud({ payload }) {
+  try {
+    const { surveyId, projectUserId, callback } = payload;
+
+    const result = yield call(getWordCloudAsync, surveyId, projectUserId);
+
+    if (result.status === 200) {
+      const ret = []
+      
+      result.data.forEach((data) => {
+       ret.push({ text: data[1], value: data[0]})
+      });
+
+      callback(ret);
+    }
+  } catch (error) { }
+}
+
 export function* watchGetOverallSentiment() {
   yield takeEvery(REPORT_OVERALL_SENTIMENT, getOverallSentiment);
 }
@@ -570,6 +595,10 @@ export function* watchGetEngagementTrend() {
   yield takeEvery(REPORT_ENGAGEMENT_TREND, getEngagementTrend);
 }
 
+export function* watchGetWordCloud() {
+  yield takeEvery(REPORT_WORDCLOUD, getWordCloud);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetOverallSentiment),
@@ -577,5 +606,6 @@ export default function* rootSaga() {
     fork(watchGetFeedbackSummary),
     fork(watchGetParticipation),
     fork(watchGetEngagementTrend),
+    fork(watchGetWordCloud)
   ]);
 }

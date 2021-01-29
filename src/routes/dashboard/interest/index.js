@@ -6,17 +6,14 @@ import {
   topPositiveNegative,
   feedbackSummary,
   participation,
+  wordcloud
 } from "Redux/actions";
 
-import HeatMap from "Components/report/HeatMap";
-import CardMap from "Components/report/CardMap";
 import BubbleChart from "Components/report/BubbleChart";
 import WordCloud from "Components/report/WordCloud";
 import Perception from "Components/report/Perception";
 import TopSummary from "Components/report/TopSummary";
 import TopNav from "Containers/TopNav";
-
-import { isMobile } from "react-device-detect";
 
 import styles from "./styles.scss";
 import classnames from "classnames";
@@ -27,20 +24,24 @@ const ReportInterest = ({
   surveyId,
   surveyUserId,
   actionTopPositiveNegative,
+  actionWordCloud
 }) => {
   const [topPositives, setTopPositives] = useState([]);
   const [topNegatives, setTopNegatives] = useState([]);
+  const [wordData, setWordData] = useState([]);
 
   const [chartWidth, setChartWidth] = useState(100);
 
-  // useEffect(() => {
-  //   actionTopPositiveNegative(surveyId, (positive, negative) => {
-  //     console.log("positive", positive);
-  //     console.log("negative", negative);
-  //     setTopPositives(positive);
-  //     setTopNegatives(negative);
-  //   });
-  // }, [actionTopPositiveNegative]);
+  useEffect(() => {
+    actionTopPositiveNegative(surveyId, (positive, negative) => {
+      setTopPositives(positive);
+      setTopNegatives(negative);
+    });
+
+    actionWordCloud(surveyId, 0,  (ret) => {
+      setWordData(ret);
+    });
+  }, [actionTopPositiveNegative, actionWordCloud]);
 
   return (
     <div className={styles.root}>
@@ -74,7 +75,7 @@ const ReportInterest = ({
               setChartWidth(width);
             }}
           >
-            <WordCloud chartWidth={chartWidth}/>
+            <WordCloud chartWidth={chartWidth} data={wordData}/>
           </div>
         </div>
         <div className={styles["content-row"]}>
@@ -113,4 +114,5 @@ const mapStateToProps = ({ authUser }) => {
 
 export default connect(mapStateToProps, {
   actionTopPositiveNegative: topPositiveNegative,
+  actionWordCloud: wordcloud
 })(ReportInterest);

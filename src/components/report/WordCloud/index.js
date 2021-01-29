@@ -15,10 +15,10 @@ const data = [
   { text: "Agile", value: 8000 },
 ];
 
-const fontSizeMapper = (word) => Math.log2(word.value) * 5;
+const fontSizeMapper = (word) => Math.log2(word.value) * 15;
 const rotate = (word) => word.value % 360;
 
-const ReportWordCloud = ({ chartWidth }) => {
+const ReportWordCloud = ({ chartWidth, data }) => {
   return (
     <div>
       <WordCloud
