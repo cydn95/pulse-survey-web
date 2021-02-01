@@ -20,6 +20,7 @@ const TopNav = ({
   profile,
   children,
   setMainMenuClassName,
+  logoutUser,
   history,
 }) => {
   const [toggle, setToggle] = useState(false);
@@ -41,6 +42,7 @@ const TopNav = ({
 
   const logOut = (e) => {
     e.preventDefault();
+    console.log('ffdd')
     logoutUser();
   };
 

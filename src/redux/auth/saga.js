@@ -80,6 +80,7 @@ function* loginWithUsernamePassword({ payload }) {
 function* logout({ payload }) {
   const { history } = payload;
   try {
+    console.log("fhsdjkfhkdsfa");
     // yield call(logoutAsync, history);
     localStorage.removeItem("tour");
     localStorage.removeItem("projectId");
@@ -89,7 +90,7 @@ function* logout({ payload }) {
     localStorage.removeItem("surveyUserId");
     localStorage.removeItem("surveyId");
     localStorage.removeItem("userId");
-    yield call(logoutUser, history);
+    // yield call(logoutUser, history);
     history.push("/");
   } catch (error) {}
 }

@@ -183,7 +183,7 @@ function* submitAoQuestion({ payload }) {
       survey: answers[i].survey.id,
       project: answers[i].survey.project,
       aoQuestion: answers[i].amQuestion,
-      shCategory: answers[i].shCategory,
+      shCategory: parseInt(answers[i].shCategory),
       controlType: answers[i].controlType,
     };
 

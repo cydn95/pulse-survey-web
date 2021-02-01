@@ -826,8 +826,6 @@ class MyMap extends React.Component {
   };
 
   handleSubmitSurvey = (e, answerData) => {
-    // console.log(answerData);
-
     const { lastAddedShCategory } = this.state;
     console.log(lastAddedShCategory);
     for (let i = 0; i < answerData.length; i++) {
