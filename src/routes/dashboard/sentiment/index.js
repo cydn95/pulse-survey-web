@@ -14,6 +14,7 @@ import LineChart from "Components/report/LineChart";
 import SentimentResult from "Components/report/SentimentResult";
 import HowPeopleFeel from "Components/report/HowPeopleFeel";
 import Perception from "Components/report/Perception";
+import OwnWords from "Components/report/OwnWords";
 
 import {
   overallSentiment,
@@ -53,6 +54,14 @@ const howPeopleFeelData = [
     key: "Optimism",
     value: 70,
   },
+];
+
+const ownWordsData = [
+  "I fell like I am part of something special. Really produ to be part of this project",
+  "Second Text",
+  "Third Text",
+  "Fourth Text",
+  "Fifth Text",
 ];
 
 class ReportSentiment extends React.Component {
@@ -207,6 +216,10 @@ class ReportSentiment extends React.Component {
                 height={220}
                 margin={30}
               />
+            </div>
+            <div className={classnames("row", styles["donut-container"])}>
+              <h2 className={styles.title}>In there own words</h2>
+              <OwnWords data={ownWordsData} />
             </div>
             <div className={styles.row}>
               <div className={styles.block}>
