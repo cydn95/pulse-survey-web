@@ -8,6 +8,7 @@ import {
   getParticipationAPI,
   getEngagementTrendAPI,
   getWordCloudAPI,
+  getSentimentReportAPI,
 } from "../../services/axios/api";
 
 import {
@@ -16,7 +17,8 @@ import {
   REPORT_FEEDBACK_SUMMARY,
   REPORT_PARTICIPATION,
   REPORT_ENGAGEMENT_TREND,
-  REPORT_WORDCLOUD
+  REPORT_WORDCLOUD,
+  REPORT_SENTIMENT
 } from "Constants/actionTypes";
 
 import {
@@ -59,6 +61,11 @@ const getEngagementTrendAsync = async (surveyId, startDate, endDate) =>
 
 const getWordCloudAsync = async (surveyId, projectUserId) =>
   await getWordCloudAPI(surveyId, projectUserId)
+    .then((result) => result)
+    .catch((error) => error);
+
+const getSentimentReportAsync = async (surveyId, startDate, endDate) =>
+  await getSentimentReportAPI(surveyId)
     .then((result) => result)
     .catch((error) => error);
 
@@ -155,7 +162,6 @@ function* getFeedbackSummary({ payload }) {
       const currentYear = getCurrentYear();
 
       if (result.status === 200) {
-        console.log(result.data);
         for (let i = 0; i < result.data.length; i++) {
           const question = result.data[i];
           const intValue = question.integerValue;
@@ -575,6 +581,48 @@ function* getWordCloud({ payload }) {
   } catch (error) { }
 }
 
+function* getSentimentReport({ payload }) {
+  try {
+    const { surveyId, startDate, endDate, callback } = payload;
+
+    const result = yield call(
+      getSentimentReportAsync,
+      surveyId,
+      startDate,
+      endDate
+    );
+
+    const subDriverRet = {};
+
+    if (result.status === 200) {
+      result.data.forEach((data) => {
+        data.amQuestionData.forEach((aq) => {
+          if (aq.subdriver in subDriverRet) {
+            subDriverRet[aq.subdriver].cnt += 1;
+            subDriverRet[aq.subdriver].sum += parseInt(data.integerValue, 10);
+          } else {
+            subDriverRet[aq.subdriver] = {
+              sum: data.integerValue,
+              cnt: 1
+            }
+          }
+        });
+      });
+    }
+
+    const ret = [];
+    Object.keys(subDriverRet).forEach((key) => {
+      ret.push({
+        key,
+        value: subDriverRet[key].sum / subDriverRet[key].cnt
+      })
+    })
+
+    console.log(ret);
+    callback(ret);
+  } catch (error) { }
+}
+
 export function* watchGetOverallSentiment() {
   yield takeEvery(REPORT_OVERALL_SENTIMENT, getOverallSentiment);
 }
@@ -599,6 +647,10 @@ export function* watchGetWordCloud() {
   yield takeEvery(REPORT_WORDCLOUD, getWordCloud);
 }
 
+export function* watchGetSentimentReport() {
+  yield takeEvery(REPORT_SENTIMENT, getSentimentReport);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetOverallSentiment),
@@ -606,6 +658,7 @@ export default function* rootSaga() {
     fork(watchGetFeedbackSummary),
     fork(watchGetParticipation),
     fork(watchGetEngagementTrend),
-    fork(watchGetWordCloud)
+    fork(watchGetWordCloud),
+    fork(watchGetSentimentReport)
   ]);
 }

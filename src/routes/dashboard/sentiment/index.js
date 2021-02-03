@@ -21,40 +21,10 @@ import {
   topPositiveNegative,
   feedbackSummary,
   participation,
+  sentimentReport
 } from "Redux/actions";
 
 import TopNav from "Containers/TopNav";
-
-const howPeopleFeelData = [
-  {
-    key: "Hapiness",
-    value: 50,
-  },
-  {
-    key: "Pride",
-    value: 30,
-  },
-  {
-    key: "Inclusiveness",
-    value: 20,
-  },
-  {
-    key: "Safety",
-    value: 90,
-  },
-  {
-    key: "Support",
-    value: 15,
-  },
-  {
-    key: "Confidence",
-    value: 40,
-  },
-  {
-    key: "Optimism",
-    value: 70,
-  },
-];
 
 const ownWordsData = [
   "I fell like I am part of something special. Really produ to be part of this project",
@@ -82,25 +52,21 @@ class ReportSentiment extends React.Component {
     teamParticipationResult: [],
     participationCount: 0,
     teamParticipationCount: 0,
+    sentimentReportResult: [],
   };
 
   componentDidMount() {
     const {
       surveyId,
-      surveyUserId,
-      actionOverallSentiment,
       actionTopPositiveNegative,
-      actionFeedbackSummary,
-      actionParticipation,
+      actionSentimentReport
     } = this.props;
 
     if (surveyId) {
-      actionOverallSentiment(surveyId, (data) => {
-        if (data.length > 0) {
-          this.setState({
-            overallSentiment: Math.round(data[0].value),
-          });
-        }
+      actionSentimentReport(surveyId, '', '', (data) => {
+        this.setState({
+          sentimentReportResult: data,
+        });
       });
 
       actionTopPositiveNegative(surveyId, (positive, negative) => {
@@ -109,67 +75,18 @@ class ReportSentiment extends React.Component {
           topNegatives: [...negative],
         });
       });
-
-      actionFeedbackSummary(
-        surveyId,
-        surveyUserId,
-        (
-          feedbackSummaryRet,
-          cultureRet,
-          sentimentRet,
-          sentimentKey,
-          overallTrendRet,
-          overallTrendKey
-        ) => {
-          this.setState({
-            feedbackSummary: feedbackSummaryRet,
-            cultureResult: cultureRet,
-            sentimentResult: sentimentRet,
-            sentimentKey: sentimentKey,
-            overallTrendResult: overallTrendRet,
-            overallTrendKey: overallTrendKey,
-          });
-        }
-      );
-
-      actionParticipation(
-        surveyId,
-        (
-          participationRet,
-          teamParticipationRet,
-          allUserCount,
-          teamUserCount
-        ) => {
-          this.setState({
-            participationResult: participationRet,
-            teamParticipationResult: teamParticipationRet,
-            participationCount: allUserCount,
-            teamParticipationCount: teamUserCount,
-          });
-        }
-      );
     }
   }
 
   render() {
     const { history, projectTitle } = this.props;
     const {
-      overallSentiment,
       topPositives,
       topNegatives,
-      feedbackSummary,
-      cultureResult,
-      sentimentResult,
-      sentimentKey,
       overallTrendResult,
       overallTrendKey,
-      participationResult,
-      teamParticipationResult,
-      participationCount,
-      teamParticipationCount,
+      sentimentReportResult
     } = this.state;
-    // console.log(participationResult);
-    // console.log(teamParticipationResult);
 
     return (
       <div className={styles.root}>
@@ -194,7 +111,7 @@ class ReportSentiment extends React.Component {
                   )}
                 >
                   <div className={styles.block}>
-                    <HowPeopleFeel data={howPeopleFeelData} />
+                    <HowPeopleFeel data={sentimentReportResult} />
                   </div>
                   <div className={styles.block}>
                     <Perception min={20} max={80} />
@@ -268,4 +185,5 @@ export default connect(mapStateToProps, {
   actionTopPositiveNegative: topPositiveNegative,
   actionFeedbackSummary: feedbackSummary,
   actionParticipation: participation,
+  actionSentimentReport: sentimentReport
 })(ReportSentiment);

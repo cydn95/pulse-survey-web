@@ -4,7 +4,8 @@ import {
   REPORT_FEEDBACK_SUMMARY,
   REPORT_PARTICIPATION,
   REPORT_ENGAGEMENT_TREND,
-  REPORT_WORDCLOUD
+  REPORT_WORDCLOUD,
+  REPORT_SENTIMENT,
 } from "Constants/actionTypes";
 
 export const overallSentiment = (surveyId, callback) => ({
@@ -35,4 +36,9 @@ export const engagementTrend = (surveyId, startDate, endDate, callback) => ({
 export const wordcloud = (surveyId, projectUserId, callback) => ({
   type: REPORT_WORDCLOUD,
   payload: { surveyId, projectUserId, callback },
+});
+
+export const sentimentReport = (surveyId, startDate, endDate, callback) => ({
+  type: REPORT_SENTIMENT,
+  payload: { surveyId, startDate, endDate, callback },
 });

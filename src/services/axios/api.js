@@ -358,6 +358,16 @@ const getWordCloudAPI = (surveyId = 0, projectUser = 0) => {
   return getClient(true).get(url);
 };
 
+const getSentimentReportAPI = (
+  surveyId,
+  startDate = "2020-01-01",
+  endDate = "2021-12-31"
+) => {
+  return getClient(true).get(
+    `/sentimentreport/?survey=${surveyId}&stdt=${startDate}&eddt=${endDate}`
+  );
+};
+
 /**
  * deprecated...
  */
@@ -419,5 +429,6 @@ export {
   getParticipationAPI,
   updateStakeholderCategoryAPI,
   getEngagementTrendAPI,
-  getWordCloudAPI
+  getWordCloudAPI,
+  getSentimentReportAPI
 };
