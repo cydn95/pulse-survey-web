@@ -15,6 +15,7 @@ import SentimentResult from "Components/report/SentimentResult";
 import HowPeopleFeel from "Components/report/HowPeopleFeel";
 import Perception from "Components/report/Perception";
 import OwnWords from "Components/report/OwnWords";
+import OverallTrend from "Components/report/OverallTrend";
 
 import {
   overallSentiment,
@@ -26,12 +27,21 @@ import {
 
 import TopNav from "Containers/TopNav";
 
+import { getRandomSubArray } from "Util/Utils";
+
 const ownWordsData = [
-  "I fell like I am part of something special. Really produ to be part of this project",
-  "Second Text",
-  "Third Text",
-  "Fourth Text",
-  "Fifth Text",
+  "Actively participate in events or volunteer programs",
+  "Honesty, integrity, trustworthiness, ethics",
+  "Inclusion is ongoing — not one-off training.",
+  "Effective leadership includes exhibiting a strong character. Leaders exhibit honesty, integrity, trustworthiness, and ethics.",
+  "Yes, Teamwork and collaboration valued",
+  "Her interests are surrounding productivity.",
+  "Meeting KPIs.",
+  "Yes. Because the management style is encouraging.",
+  "Not all the time. I have to go and ask for feedback.",
+  "Passionate. I believe the management team is passionate about the project and its objectives.",
+  "Issue escalation processes.",
+  "Quality assuranc",
 ];
 
 class ReportSentiment extends React.Component {
@@ -58,8 +68,10 @@ class ReportSentiment extends React.Component {
   componentDidMount() {
     const {
       surveyId,
+      surveyUserId,
       actionTopPositiveNegative,
-      actionSentimentReport
+      actionSentimentReport,
+      actionFeedbackSummary
     } = this.props;
 
     if (surveyId) {
@@ -75,6 +87,29 @@ class ReportSentiment extends React.Component {
           topNegatives: [...negative],
         });
       });
+
+      actionFeedbackSummary(
+        surveyId,
+        surveyUserId,
+        (
+          feedbackSummaryRet,
+          cultureRet,
+          sentimentRet,
+          sentimentKey,
+          overallTrendRet,
+          overallTrendKey
+        ) => {
+          // console.log(feedbackSummaryRet);
+          this.setState({
+            feedbackSummary: feedbackSummaryRet,
+            cultureResult: cultureRet,
+            sentimentResult: sentimentRet,
+            sentimentKey: sentimentKey,
+            overallTrendResult: overallTrendRet,
+            overallTrendKey: overallTrendKey,
+          });
+        }
+      );
     }
   }
 
@@ -123,20 +158,20 @@ class ReportSentiment extends React.Component {
           <div className={classnames(styles.right)}>
             <div className={classnames("row", styles["donut-container"])}>
               <h2 className={styles.title}>Overall Trends</h2>
-              <LineChart
+              <OverallTrend
                 key="linechart"
                 shGroups={overallTrendKey}
                 data={overallTrendResult}
                 xRange={[1, 12]}
                 yRange={[0, 100]}
-                width={600}
+                width={400}
                 height={220}
                 margin={30}
               />
             </div>
             <div className={classnames("row", styles["donut-container"])}>
               <h2 className={styles.title}>In there own words</h2>
-              <OwnWords data={ownWordsData} />
+              <OwnWords data={getRandomSubArray(ownWordsData, 5)} />
             </div>
             <div className={styles.row}>
               <div className={styles.block}>
