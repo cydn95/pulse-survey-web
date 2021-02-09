@@ -6,9 +6,9 @@ import {
   getFeedbackSummaryAPI,
   shgroupListAPI,
   getParticipationAPI,
-  getEngagementTrendAPI,
   getWordCloudAPI,
-  getSentimentReportAPI,
+  getAmResponseReportAPI,
+  getAoResponseReportAPI
 } from "../../services/axios/api";
 
 import {
@@ -54,18 +54,18 @@ const getParticipationAsync = async (surveyId) =>
     .then((result) => result)
     .catch((error) => error);
 
-const getEngagementTrendAsync = async (surveyId, startDate, endDate) =>
-  await getEngagementTrendAPI(surveyId)
-    .then((result) => result)
-    .catch((error) => error);
-
 const getWordCloudAsync = async (surveyId, projectUserId) =>
   await getWordCloudAPI(surveyId, projectUserId)
     .then((result) => result)
     .catch((error) => error);
 
-const getSentimentReportAsync = async (surveyId, startDate, endDate) =>
-  await getSentimentReportAPI(surveyId)
+const getAoReportAsync = async (surveyId, driverName, startDate, endDate) =>
+  await getAoResponseReportAPI(surveyId, driverName)
+    .then((result) => result)
+    .catch((error) => error);
+
+const getAmReportAsync = async (surveyId, driverName, startDate, endDate) =>
+  await getAmResponseReportAPI(surveyId, driverName)
     .then((result) => result)
     .catch((error) => error);
 
@@ -491,8 +491,9 @@ function* getEngagementTrend({ payload }) {
         engagementRet["Response Rate"].push({ value: randomNumber(50, 100) });
       });
       const result = yield call(
-        getEngagementTrendAsync,
+        getAmReportAsync,
         surveyId,
+        'Engagement',
         startDate,
         endDate
       );
@@ -586,8 +587,9 @@ function* getSentimentReport({ payload }) {
     const { surveyId, startDate, endDate, callback } = payload;
 
     const result = yield call(
-      getSentimentReportAsync,
+      getAmReportAsync,
       surveyId,
+      'Sentiment',
       startDate,
       endDate
     );

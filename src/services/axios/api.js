@@ -318,6 +318,18 @@ const updateUserGuideAPI = (token, guide) => {
 /**
  * Report
  */
+export const getAmResponseReportAPI = (surveyId, driverName, startDate = "2020-01-01", endDate = "2021-12-31") => {
+  return getClient(true).get(
+    `/amresponsereport/?survey=${surveyId}&driver=${driverName}&stdt=${startDate}&eddt=${endDate}`
+  );
+}
+
+export const getAoResponseReportAPI = (surveyId, driverName, startDate = "2020-01-01", endDate = "2021-12-31") => {
+  return getClient(true).get(
+    `/aoresponsereport/?survey=${surveyId}&driver=${driverName}&stdt=${startDate}&eddt=${endDate}`
+  );
+}
+
 const getOverallSentimentAPI = (surveyId) => {
   return getClient(true).get(`/overallsentimentreport/?survey=${surveyId}`);
 };
@@ -336,15 +348,15 @@ const getParticipationAPI = (surveyId) => {
   return getClient(true).get(`/userbysurvey/?survey=${surveyId}`);
 };
 
-const getEngagementTrendAPI = (
-  surveyId,
-  startDate = "2020-01-01",
-  endDate = "2021-12-31"
-) => {
-  return getClient(true).get(
-    `/engagementtrend/?survey=${surveyId}&stdt=${startDate}&eddt=${endDate}`
-  );
-};
+// const getEngagementTrendAPI = (
+//   surveyId,
+//   startDate = "2020-01-01",
+//   endDate = "2021-12-31"
+// ) => {
+//   return getClient(true).get(
+//     `/engagementtrend/?survey=${surveyId}&stdt=${startDate}&eddt=${endDate}`
+//   );
+// };
 
 const getWordCloudAPI = (surveyId = 0, projectUser = 0) => {
   let url = `/wordcloud/?`;
@@ -358,15 +370,15 @@ const getWordCloudAPI = (surveyId = 0, projectUser = 0) => {
   return getClient(true).get(url);
 };
 
-const getSentimentReportAPI = (
-  surveyId,
-  startDate = "2020-01-01",
-  endDate = "2021-12-31"
-) => {
-  return getClient(true).get(
-    `/sentimentreport/?survey=${surveyId}&stdt=${startDate}&eddt=${endDate}`
-  );
-};
+// const getSentimentReportAPI = (
+//   surveyId,
+//   startDate = "2020-01-01",
+//   endDate = "2021-12-31"
+// ) => {
+//   return getClient(true).get(
+//     `/sentimentreport/?survey=${surveyId}&stdt=${startDate}&eddt=${endDate}`
+//   );
+// };
 
 /**
  * deprecated...
@@ -428,7 +440,5 @@ export {
   getFeedbackSummaryAPI,
   getParticipationAPI,
   updateStakeholderCategoryAPI,
-  getEngagementTrendAPI,
   getWordCloudAPI,
-  getSentimentReportAPI
 };
