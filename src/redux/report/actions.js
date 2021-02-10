@@ -28,9 +28,9 @@ export const participation = (surveyId, callback) => ({
   payload: { surveyId, callback },
 });
 
-export const engagementTrend = (surveyId, startDate, endDate, callback) => ({
+export const engagementTrend = (driverName, surveyId, startDate, endDate, callback) => ({
   type: REPORT_ENGAGEMENT_TREND,
-  payload: { surveyId, startDate, endDate, callback },
+  payload: { driverName, surveyId, startDate, endDate, callback },
 });
 
 export const wordcloud = (surveyId, projectUserId, callback) => ({

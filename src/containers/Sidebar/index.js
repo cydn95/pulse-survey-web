@@ -48,6 +48,7 @@ const MENU_REPORT = [
   "Culture",
   "Relationships",
   "Improvement",
+  "Driver-Analysis"
 ];
 
 class Sidebar extends Component {

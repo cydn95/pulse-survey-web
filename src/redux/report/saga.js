@@ -472,12 +472,12 @@ function* getParticipation({ payload }) {
 
 function* getEngagementTrend({ payload }) {
   try {
-    const { surveyId, startDate, endDate, callback } = payload;
+    const { driverName, surveyId, startDate, endDate, callback } = payload;
 
     const shGroupResult = yield call(getShGroupListAsync, surveyId);
 
     const engagementRet = {
-      Engagement: [],
+      [driverName]: [],
       "Response Rate": [],
     };
 
@@ -485,15 +485,16 @@ function* getEngagementTrend({ payload }) {
       const shGroupList = [...shGroupResult.data];
 
       shGroupList.forEach((sg) => {
-        engagementRet.Engagement.push({
+        engagementRet[driverName].push({
           value: sg.SHGroupName,
         });
         engagementRet["Response Rate"].push({ value: randomNumber(50, 100) });
       });
+      // console.log('dfsdfa', surveyId, driverName);
       const result = yield call(
         getAmReportAsync,
         surveyId,
-        'Engagement',
+        driverName,
         startDate,
         endDate
       );

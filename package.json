@@ -103,7 +103,7 @@
     "firebase": "^5.3.0",
     "grommet": "^2.13.0",
     "icomoon-free-npm": "^0.0.0",
-    "keylines": "file:keylines-6.2.0-58045.tar.gz",
+    "keylines": "file:keylines-6.2.1-59417.tar.gz",
     "materialize-css": "^1.0.0-rc.2",
     "package.json": "^2.0.1",
     "query-string": "^6.11.0",
