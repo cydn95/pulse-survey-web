@@ -8,7 +8,8 @@ import {
   getParticipationAPI,
   getWordCloudAPI,
   getAmResponseReportAPI,
-  getAoResponseReportAPI
+  getAoResponseReportAPI,
+  getPerceptionRealityAPI
 } from "../../services/axios/api";
 
 import {
@@ -18,7 +19,8 @@ import {
   REPORT_PARTICIPATION,
   REPORT_ENGAGEMENT_TREND,
   REPORT_WORDCLOUD,
-  REPORT_SENTIMENT
+  REPORT_SENTIMENT,
+  REPORT_PERCEPTION_REALITY
 } from "Constants/actionTypes";
 
 import {
@@ -66,6 +68,11 @@ const getAoReportAsync = async (surveyId, driverName, startDate, endDate) =>
 
 const getAmReportAsync = async (surveyId, driverName, startDate, endDate) =>
   await getAmResponseReportAPI(surveyId, driverName)
+    .then((result) => result)
+    .catch((error) => error);
+
+const getPerceptionRealityAsync = async (surveyId, projectUserId) =>
+  await getPerceptionRealityAPI(surveyId, projectUserId)
     .then((result) => result)
     .catch((error) => error);
 
@@ -552,7 +559,7 @@ function* getEngagementTrend({ payload }) {
             });
 
             subDriverRet[currentKey].push({
-              value: cnt > 0 ? Math.round(sum / cnt) : 0,
+              value: cnt > 0 ? Math.round(sum / cnt / 10) : 0,
               cnt,
               trend: newTrend,
             });
@@ -621,7 +628,22 @@ function* getSentimentReport({ payload }) {
       })
     })
 
-    console.log(ret);
+    callback(ret);
+  } catch (error) { }
+}
+
+function* getPerceptionReality({ payload }) {
+  try {
+    const { surveyId, projectUserId, callback } = payload;
+
+    const result = yield call(getPerceptionRealityAsync, surveyId, projectUserId);
+
+    const ret = { perception: 0, reality: 0 };
+
+    if (result.status === 200) {
+      ret.perception = result.data[0];
+      ret.reality = result.data[1];
+    }
     callback(ret);
   } catch (error) { }
 }
@@ -654,6 +676,10 @@ export function* watchGetSentimentReport() {
   yield takeEvery(REPORT_SENTIMENT, getSentimentReport);
 }
 
+export function* watchGetPerceptionRealityReport() {
+  yield takeEvery(REPORT_PERCEPTION_REALITY, getPerceptionReality);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetOverallSentiment),
@@ -662,6 +688,7 @@ export default function* rootSaga() {
     fork(watchGetParticipation),
     fork(watchGetEngagementTrend),
     fork(watchGetWordCloud),
-    fork(watchGetSentimentReport)
+    fork(watchGetSentimentReport),
+    fork(watchGetPerceptionRealityReport)
   ]);
 }

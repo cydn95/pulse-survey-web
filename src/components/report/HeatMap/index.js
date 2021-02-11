@@ -7,43 +7,23 @@ import styles from "./styles.scss";
 import classnames from "classnames";
 
 const getColor = (val) => {
-  if (val <= 10) {
-    return "#ec644b";
+  if (val < 4) {
+    return "#8b0000";   // dark red
   }
 
-  if (val <= 20) {
-    return "#385e61";
+  if (val < 5) {
+    return "#ffcccb";   // lighter red
   }
 
-  if (val <= 30) {
-    return "#436f5e";
+  if (val < 7) {
+    return "#3775dc";   // blue
   }
 
-  if (val <= 40) {
-    return "#4e815a";
+  if (val < 8) {
+    return "#90ee90";   // lighter green
   }
 
-  if (val <= 50) {
-    return "#548958";
-  }
-
-  if (val <= 60) {
-    return "#639e54";
-  }
-
-  if (val <= 70) {
-    return "#6eb052";
-  }
-
-  if (val <= 80) {
-    return "#73b851";
-  }
-
-  if (val <= 90) {
-    return "#3498db";
-  }
-
-  return "#00b7a2";
+  return "#209546";     // solid green
 };
 
 const HeatMap = ({ data, chartWidth }) => {

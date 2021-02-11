@@ -22,7 +22,8 @@ import {
   topPositiveNegative,
   feedbackSummary,
   participation,
-  sentimentReport
+  sentimentReport,
+  perceptionRealityReport
 } from "Redux/actions";
 
 import TopNav from "Containers/TopNav";
@@ -63,6 +64,8 @@ class ReportSentiment extends React.Component {
     participationCount: 0,
     teamParticipationCount: 0,
     sentimentReportResult: [],
+    perception: 0,
+    reality: 0
   };
 
   componentDidMount() {
@@ -71,7 +74,8 @@ class ReportSentiment extends React.Component {
       surveyUserId,
       actionTopPositiveNegative,
       actionSentimentReport,
-      actionFeedbackSummary
+      actionFeedbackSummary,
+      actionGetPerceptionReality
     } = this.props;
 
     if (surveyId) {
@@ -110,6 +114,13 @@ class ReportSentiment extends React.Component {
           });
         }
       );
+
+      actionGetPerceptionReality(surveyId, surveyUserId, ({ perception, reality }) => {
+        this.setState({
+          perception,
+          reality
+        })
+      });
     }
   }
 
@@ -120,7 +131,9 @@ class ReportSentiment extends React.Component {
       topNegatives,
       overallTrendResult,
       overallTrendKey,
-      sentimentReportResult
+      sentimentReportResult,
+      perception,
+      reality
     } = this.state;
 
     return (
@@ -149,7 +162,7 @@ class ReportSentiment extends React.Component {
                     <HowPeopleFeel data={sentimentReportResult} />
                   </div>
                   <div className={styles.block}>
-                    <Perception min={20} max={80} />
+                    <Perception min={perception} max={reality} />
                   </div>
                 </div>
               </div>
@@ -220,5 +233,6 @@ export default connect(mapStateToProps, {
   actionTopPositiveNegative: topPositiveNegative,
   actionFeedbackSummary: feedbackSummary,
   actionParticipation: participation,
-  actionSentimentReport: sentimentReport
+  actionSentimentReport: sentimentReport,
+  actionGetPerceptionReality: perceptionRealityReport
 })(ReportSentiment);
