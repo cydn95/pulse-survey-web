@@ -8,22 +8,22 @@ import classnames from "classnames";
 
 const getColor = (val) => {
   if (val < 4) {
-    return "#8b0000";   // dark red
+    return "#c00000";   // dark red
   }
 
   if (val < 5) {
-    return "#ffcccb";   // lighter red
+    return "#e56965";   // lighter red
   }
 
   if (val < 7) {
-    return "#3775dc";   // blue
+    return "#4da9ef";   // blue
   }
 
   if (val < 8) {
-    return "#90ee90";   // lighter green
+    return "#8acbc1";   // lighter green
   }
 
-  return "#209546";     // solid green
+  return "#00b7a2";     // solid green
 };
 
 const HeatMap = ({ data, chartWidth }) => {
