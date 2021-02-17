@@ -318,9 +318,9 @@ const updateUserGuideAPI = (token, guide) => {
 /**
  * Report
  */
-export const getAmResponseReportAPI = (surveyId, driverName, startDate = "2020-01-01", endDate = "2021-12-31") => {
+export const getAmResponseReportAPI = (surveyId, driverName, projectUser, startDate = "2020-01-01", endDate = "2021-12-31") => {
   return getClient(true).get(
-    `/amresponsereport/?survey=${surveyId}&driver=${driverName}&stdt=${startDate}&eddt=${endDate}`
+    `/amresponsereport/?survey=${surveyId}&driver=${driverName}&projectUser=${projectUser}&stdt=${startDate}&eddt=${endDate}`
   );
 }
 

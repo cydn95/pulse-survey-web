@@ -17,9 +17,12 @@ const ReportDriverAnalysis = ({
   projectTitle,
   actionEngagementTrend,
   surveyId,
+  surveyUserId
 }) => {
   const [chartWidth, setChartWidth] = useState(100);
+
   const [driverName, setDriverName] = useState("Engagement");
+  const [chartType, setChartType] = useState("SHGroup");
 
   const [engagementData, setEngagementData] = useState({
     [driverName]: [],
@@ -27,8 +30,9 @@ const ReportDriverAnalysis = ({
 
   useEffect(() => {
     setEngagementData({ [driverName]: [] })
-    actionEngagementTrend(driverName, surveyId, "", "", callback);
-  }, [surveyId, actionEngagementTrend, driverName]);
+    console.log('params', surveyId, surveyUserId);
+    actionEngagementTrend(chartType, driverName, surveyId, surveyUserId, "", "", callback);
+  }, [surveyId, surveyUserId, actionEngagementTrend, driverName, chartType]);
 
   const callback = (ret) => {
     // console.log(ret);
@@ -55,6 +59,11 @@ const ReportDriverAnalysis = ({
           setChartWidth(width);
         }}
       >
+        <p>
+          <button onClick={(e) => setChartType('SHGroup')}>SHGroup</button>{` `}
+          <button onClick={(e) => setChartType('Team')}>Team</button>{` `}
+          <button onClick={(e) => setChartType('Organization')}>Organization</button>{` `}
+        </p>
         <p>
           <button onClick={(e) => setDriverName('Engagement')}>Engagement</button>{` `}
           <button onClick={(e) => setDriverName('Culture')}>Culture</button>{` `}

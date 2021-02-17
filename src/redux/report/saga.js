@@ -66,8 +66,8 @@ const getAoReportAsync = async (surveyId, driverName, startDate, endDate) =>
     .then((result) => result)
     .catch((error) => error);
 
-const getAmReportAsync = async (surveyId, driverName, startDate, endDate) =>
-  await getAmResponseReportAPI(surveyId, driverName)
+const getAmReportAsync = async (surveyId, driverName, subProjectUser, startDate, endDate) =>
+  await getAmResponseReportAPI(surveyId, driverName, subProjectUser)
     .then((result) => result)
     .catch((error) => error);
 
@@ -479,8 +479,10 @@ function* getParticipation({ payload }) {
 
 function* getEngagementTrend({ payload }) {
   try {
-    const { driverName, surveyId, startDate, endDate, callback } = payload;
+    const { chartType, driverName, surveyId, subProjectUser, startDate, endDate, callback } = payload;
 
+    console.log(chartType);
+    console.log(payload);
     const shGroupResult = yield call(getShGroupListAsync, surveyId);
 
     const engagementRet = {
@@ -497,11 +499,14 @@ function* getEngagementTrend({ payload }) {
         });
         engagementRet["Response Rate"].push({ value: randomNumber(50, 100) });
       });
-      // console.log('dfsdfa', surveyId, driverName);
+
+      console.log('engagement', engagementRet);
+
       const result = yield call(
         getAmReportAsync,
         surveyId,
         driverName,
+        subProjectUser,
         startDate,
         endDate
       );
@@ -518,6 +523,8 @@ function* getEngagementTrend({ payload }) {
             }
           });
         });
+
+        console.log('subDriverRet', subDriverRet);
 
         for (let i = 0; i < Object.keys(subDriverRet).length; i++) {
           const currentKey = Object.keys(subDriverRet)[i];
@@ -566,7 +573,7 @@ function* getEngagementTrend({ payload }) {
           }
         }
       }
-      // console.log("result", { ...engagementRet, ...subDriverRet });
+      console.log("result", { ...engagementRet, ...subDriverRet });
       callback({ ...engagementRet, ...subDriverRet });
     }
   } catch (error) {}
