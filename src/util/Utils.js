@@ -93,6 +93,9 @@ export const randomNumber = (min, max) => {
 };
 
 export const arrayAverage = (nums) => {
+  if (!nums) return 0;
+  if (nums.length === 0) return 0;
+
   return nums.reduce((a, b) => (a + b)) / nums.length;
 }
 

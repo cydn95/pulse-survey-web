@@ -31,6 +31,8 @@ import {
 } from "Util/Utils";
 import { controlType, controlTypeText } from "Constants/defaultValues";
 
+import { getResultForSHGroup, getResultForTeam, getResultForOrganization } from "./dataProcessor.js";
+
 const getOverallSentimentAsync = async (surveyId) =>
   await getOverallSentimentAPI(surveyId)
     .then((result) => result)
@@ -481,16 +483,12 @@ function* getEngagementTrend({ payload }) {
   try {
     const { chartType, driverName, surveyId, subProjectUser, startDate, endDate, callback } = payload;
 
-    console.log(chartType);
-    console.log(payload);
-    const shGroupResult = yield call(getShGroupListAsync, surveyId);
+    const result = yield call(getAmReportAsync, surveyId, driverName, subProjectUser, startDate, endDate);
 
-    const engagementRet = {
-      [driverName]: [],
-      "Response Rate": [],
-    };
+    if (chartType === "SHGroup") {
 
-    if (shGroupResult.status === 200) {
+      const shGroupResult = yield call(getShGroupListAsync, surveyId);
+      const engagementRet = { [driverName]: [], "Response Rate": [] };
       const shGroupList = [...shGroupResult.data];
 
       shGroupList.forEach((sg) => {
@@ -500,81 +498,52 @@ function* getEngagementTrend({ payload }) {
         engagementRet["Response Rate"].push({ value: randomNumber(50, 100) });
       });
 
-      console.log('engagement', engagementRet);
+      const resultData = getResultForSHGroup(shGroupList, result);
 
-      const result = yield call(
-        getAmReportAsync,
-        surveyId,
-        driverName,
-        subProjectUser,
-        startDate,
-        endDate
-      );
+      callback({ ...engagementRet, ...resultData });
+    }
 
-      const subDriverRet = {};
-
-      if (result.status === 200) {
-        // console.log(result.data);
-
-        result.data.forEach((data) => {
-          data.amQuestionData.forEach((aq) => {
-            if (!(aq.subdriver in subDriverRet)) {
-              subDriverRet[aq.subdriver] = [];
-            }
-          });
-        });
-
-        console.log('subDriverRet', subDriverRet);
-
-        for (let i = 0; i < Object.keys(subDriverRet).length; i++) {
-          const currentKey = Object.keys(subDriverRet)[i];
-
-          for (let j = 0; j < shGroupList.length; j++) {
-            const currentShGroup = shGroupList[j];
-
-            let cnt = 0;
-            let sum = 0;
-            let trend = {};
-            result.data.forEach((data) => {
-              data.amQuestionData.forEach((aq) => {
-                if (
-                  aq.shGroup.includes(currentShGroup.id) &&
-                  aq.subdriver === currentKey
-                ) {
-                  cnt++;
-                  sum += data.integerValue;
-                  // console.log(data.updated_at.split("-"));
-                  const dateStr = data.updated_at.split("-");
-                  const dateKey = dateStr[0] + "-" + dateStr[1];
-
-                  if (dateKey in trend) {
-                    trend[dateKey].push(data.integerValue);
-                  } else {
-                    trend[dateKey] = [];
-                  }
-                }
-              });
-            });
-
-            const newTrend = [];
-
-            Object.keys(trend).forEach((t, index) => {
-              newTrend.push({
-                x: index + 1,
-                y: arrayAverage(trend[t]),
-              });
-            });
-
-            subDriverRet[currentKey].push({
-              value: cnt > 0 ?(sum / cnt / 10).toFixed(1) : 0,
-              cnt,
-              trend: newTrend,
-            });
-          }
+    if (chartType === "Team") {
+      const teamList = []
+      result.data.forEach((d) => {
+        const teamId = d.subProjectUser.team.id;
+        const fIndex = teamList.findIndex((t) => t.id === teamId);
+        if (fIndex < 0) {
+          teamList.push(d.subProjectUser.team);
         }
-      }
-      console.log("result", { ...engagementRet, ...subDriverRet });
-      callback({ ...engagementRet, ...subDriverRet });
+      });
+      const engagementRet = { [driverName]: [], "Response Rate": [] };
+      teamList.forEach((t) => {
+        engagementRet[driverName].push({
+          value: t.name,
+        });
+        engagementRet["Response Rate"].push({ value: randomNumber(50, 100) });
+      })
+
+      const resultData = getResultForTeam(teamList, result);
+      callback({ ...engagementRet, ...resultData });
+    }
+
+    if (chartType === "Organization") {
+      const organizationList = []
+      result.data.forEach((d) => {
+        const organizationId = d.subProjectUser.user.organization.id;
+        const fIndex = organizationList.findIndex((t) => t.id === organizationId);
+        if (fIndex < 0) {
+          organizationList.push(d.subProjectUser.user.organization);
+        }
+      });
+
+      const engagementRet = { [driverName]: [], "Response Rate": [] };
+      organizationList.forEach((t) => {
+        engagementRet[driverName].push({
+          value: t.name,
+        });
+        engagementRet["Response Rate"].push({ value: randomNumber(50, 100) });
+      })
+
+      const resultData = getResultForOrganization(organizationList, result);
+      callback({ ...engagementRet, ...resultData });
     }
   } catch (error) {}
 }

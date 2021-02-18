@@ -30,7 +30,6 @@ const ReportDriverAnalysis = ({
 
   useEffect(() => {
     setEngagementData({ [driverName]: [] })
-    console.log('params', surveyId, surveyUserId);
     actionEngagementTrend(chartType, driverName, surveyId, surveyUserId, "", "", callback);
   }, [surveyId, surveyUserId, actionEngagementTrend, driverName, chartType]);
 
@@ -63,8 +62,7 @@ const ReportDriverAnalysis = ({
           <button onClick={(e) => setChartType('SHGroup')}>SHGroup</button>{` `}
           <button onClick={(e) => setChartType('Team')}>Team</button>{` `}
           <button onClick={(e) => setChartType('Organization')}>Organization</button>{` `}
-        </p>
-        <p>
+          <br />
           <button onClick={(e) => setDriverName('Engagement')}>Engagement</button>{` `}
           <button onClick={(e) => setDriverName('Culture')}>Culture</button>{` `}
           <button onClick={(e) => setDriverName('Sentiment')}>Sentiment</button>{` `}
