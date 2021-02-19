@@ -48,15 +48,15 @@ class BubbleChart extends SampleBase {
             style={{ textAlign: "center" }}
             primaryXAxis={{
               title: "",
-              minimum: 60,
+              minimum: 0,
               maximum: 100,
-              interval: 5,
+              interval: 10,
             }}
             primaryYAxis={{
               title: "",
               minimum: 0,
-              maximum: 10,
-              interval: 2.5,
+              maximum: 100,
+              interval: 10,
             }}
             width={"100%"}
             title=""
@@ -65,22 +65,23 @@ class BubbleChart extends SampleBase {
             loaded={this.onChartLoad.bind(this)}
             tooltip={{
               enable: false,
-              format:
-                "${point.text}<br/>Literacy Rate : <b>${point.x}%</b>" +
-                "<br/>GDP Annual Growth Rate : <b>${point.y}</b><br/>Population : strenthget <b>${point.size} Billion</b>",
+              // format:
+              //   "${point.text}<br/>Literacy Rate : <b>${point.x}%</b>" +
+              //   "<br/>GDP Annual Growth Rate : <b>${point.y}</b><br/>Population : strenthget <b>${point.size} Billion</b>",
+              format: "${point.text}",
             }}
           >
             <Inject services={[BubbleSeries, Tooltip]} />
             <SeriesCollectionDirective>
               <SeriesDirective
-                dataSource={data}
+                dataSource={this.props.data}
                 type="Bubble"
                 minRadius={3}
                 maxRadius={Browser.isDevice ? 6 : 8}
                 xName="x"
                 yName="y"
                 size="size"
-                name="Pound"
+                name=""
                 marker={{ dataLabel: { name: "text" } }}
               ></SeriesDirective>
             </SeriesCollectionDirective>

@@ -9,7 +9,8 @@ import {
   getWordCloudAPI,
   getAmResponseReportAPI,
   getAoResponseReportAPI,
-  getPerceptionRealityAPI
+  getPerceptionRealityAPI,
+  getBubbleChartAPI
 } from "../../services/axios/api";
 
 import {
@@ -20,7 +21,8 @@ import {
   REPORT_ENGAGEMENT_TREND,
   REPORT_WORDCLOUD,
   REPORT_SENTIMENT,
-  REPORT_PERCEPTION_REALITY
+  REPORT_PERCEPTION_REALITY,
+  REPORT_BUBBLECHART
 } from "Constants/actionTypes";
 
 import {
@@ -75,6 +77,11 @@ const getAmReportAsync = async (surveyId, driverName, subProjectUser, startDate,
 
 const getPerceptionRealityAsync = async (surveyId, projectUserId) =>
   await getPerceptionRealityAPI(surveyId, projectUserId)
+    .then((result) => result)
+    .catch((error) => error);
+
+const getBubbleChartAsync = async (surveyId, projectUserId) =>
+  await getBubbleChartAPI(surveyId, projectUserId)
     .then((result) => result)
     .catch((error) => error);
 
@@ -624,6 +631,18 @@ function* getPerceptionReality({ payload }) {
   } catch (error) { }
 }
 
+function* getBubbleChart({ payload }) {
+  try {
+    const { surveyId, projectUserId, callback } = payload;
+
+    const result = yield call(getBubbleChartAsync, surveyId, projectUserId);
+
+    if (result.status === 200) {
+      callback(result.data);
+    }
+  } catch (error) { }
+}
+
 export function* watchGetOverallSentiment() {
   yield takeEvery(REPORT_OVERALL_SENTIMENT, getOverallSentiment);
 }
@@ -656,6 +675,10 @@ export function* watchGetPerceptionRealityReport() {
   yield takeEvery(REPORT_PERCEPTION_REALITY, getPerceptionReality);
 }
 
+export function* watchGetBubbleChartReport() {
+  yield takeEvery(REPORT_BUBBLECHART, getBubbleChart);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetOverallSentiment),
@@ -665,6 +688,7 @@ export default function* rootSaga() {
     fork(watchGetEngagementTrend),
     fork(watchGetWordCloud),
     fork(watchGetSentimentReport),
-    fork(watchGetPerceptionRealityReport)
+    fork(watchGetPerceptionRealityReport),
+    fork(watchGetBubbleChartReport)
   ]);
 }

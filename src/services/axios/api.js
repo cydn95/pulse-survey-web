@@ -374,6 +374,10 @@ export const getPerceptionRealityAPI = (surveyId = 0, projectUser = 0) => {
   return getClient(true).get(`/perceptionreality/?format=json&survey=${surveyId}&projectUser=${projectUser}`);
 };
 
+export const getBubbleChartAPI = (surveyId = 0, projectUser = 0) => {
+  return getClient(true).get(`/bubblechart/?format=json&survey=${surveyId}&projectUser=${projectUser}`);
+};
+
 // const getSentimentReportAPI = (
 //   surveyId,
 //   startDate = "2020-01-01",

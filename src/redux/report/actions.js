@@ -6,7 +6,8 @@ import {
   REPORT_ENGAGEMENT_TREND,
   REPORT_WORDCLOUD,
   REPORT_SENTIMENT,
-  REPORT_PERCEPTION_REALITY
+  REPORT_PERCEPTION_REALITY,
+  REPORT_BUBBLECHART
 } from "Constants/actionTypes";
 
 export const overallSentiment = (surveyId, callback) => ({
@@ -46,5 +47,10 @@ export const sentimentReport = (surveyId, startDate, endDate, callback) => ({
 
 export const perceptionRealityReport = (surveyId, projectUserId, callback) => ({
   type: REPORT_PERCEPTION_REALITY,
+  payload: { surveyId, projectUserId, callback },
+});
+
+export const bubbleChart = (surveyId, projectUserId, callback) => ({
+  type: REPORT_BUBBLECHART,
   payload: { surveyId, projectUserId, callback },
 });

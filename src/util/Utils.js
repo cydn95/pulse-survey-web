@@ -92,6 +92,10 @@ export const randomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
+export const randomFloat = (min, max) => {
+  return (Math.random() * (max - min) + min);
+};
+
 export const arrayAverage = (nums) => {
   if (!nums) return 0;
   if (nums.length === 0) return 0;

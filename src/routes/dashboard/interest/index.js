@@ -6,8 +6,11 @@ import {
   topPositiveNegative,
   feedbackSummary,
   participation,
-  wordcloud
+  wordcloud,
+  bubbleChart
 } from "Redux/actions";
+
+import { randomFloat } from "Util/Utils";
 
 import BubbleChart from "Components/report/BubbleChart";
 import WordCloud from "Components/report/WordCloud";
@@ -24,11 +27,13 @@ const ReportInterest = ({
   surveyId,
   surveyUserId,
   actionTopPositiveNegative,
-  actionWordCloud
+  actionWordCloud,
+  actionBubbleChart
 }) => {
   const [topPositives, setTopPositives] = useState([]);
   const [topNegatives, setTopNegatives] = useState([]);
   const [wordData, setWordData] = useState([]);
+  const [bubbleChartData, setBubbleChartData] = useState([]);
 
   const [chartWidth, setChartWidth] = useState(100);
 
@@ -41,7 +46,19 @@ const ReportInterest = ({
     actionWordCloud(surveyId, 0,  (ret) => {
       setWordData(ret);
     });
-  }, [actionTopPositiveNegative, actionWordCloud]);
+
+    actionBubbleChart(surveyId, surveyUserId, (data) => {
+      const resData = [];
+      data.forEach((d) => {
+        resData.push({
+          ...d.point,
+          size: randomFloat(3, 8),
+          text: d.SHGroupName
+        })
+      });
+      setBubbleChartData(resData);
+    });
+  }, [actionTopPositiveNegative, actionWordCloud, actionBubbleChart, surveyId, surveyUserId]);
 
   return (
     <div className={styles.root}>
@@ -61,7 +78,7 @@ const ReportInterest = ({
               styles["interest-bubble-chart"]
             )}
           >
-            <BubbleChart />
+            <BubbleChart data={bubbleChartData} />
           </div>
           <div
             className={classnames(
@@ -114,5 +131,6 @@ const mapStateToProps = ({ authUser }) => {
 
 export default connect(mapStateToProps, {
   actionTopPositiveNegative: topPositiveNegative,
-  actionWordCloud: wordcloud
+  actionWordCloud: wordcloud,
+  actionBubbleChart: bubbleChart
 })(ReportInterest);
