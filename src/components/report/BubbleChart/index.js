@@ -48,14 +48,14 @@ class BubbleChart extends SampleBase {
             style={{ textAlign: "center" }}
             primaryXAxis={{
               title: "",
-              minimum: 0,
-              maximum: 100,
+              minimum: -50,
+              maximum: 50,
               interval: 10,
             }}
             primaryYAxis={{
               title: "",
-              minimum: 0,
-              maximum: 100,
+              minimum: -50,
+              maximum: 50,
               interval: 10,
             }}
             width={"100%"}

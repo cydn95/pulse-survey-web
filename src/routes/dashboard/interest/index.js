@@ -51,7 +51,8 @@ const ReportInterest = ({
       const resData = [];
       data.forEach((d) => {
         resData.push({
-          ...d.point,
+          x: d.point.x - 50,
+          y: d.point.y - 50,
           size: randomFloat(3, 8),
           text: d.SHGroupName
         })
