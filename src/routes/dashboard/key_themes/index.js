@@ -21,7 +21,7 @@ import TopNav from "Containers/TopNav";
 import styles from "./styles.scss";
 import classnames from "classnames";
 
-const ReportInterest = ({
+const ReportKeyThemes = ({
   history,
   projectTitle,
   surveyId,
@@ -134,4 +134,4 @@ export default connect(mapStateToProps, {
   actionTopPositiveNegative: topPositiveNegative,
   actionWordCloud: wordcloud,
   actionBubbleChart: bubbleChart
-})(ReportInterest);
+})(ReportKeyThemes);
