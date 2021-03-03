@@ -10,6 +10,7 @@ import ReportInterest from "./interest";
 import ReportEngagement from "./engagement";
 import ReportConfidence from "./confidence";
 import ReportDriverAnalysis from "./driver-analysis";
+import ReportKeyThemes from "./key_themes";
 
 import styles from "./styles.scss";
 
@@ -26,6 +27,7 @@ const Dashboard = ({ history, location, match }) => {
             <Route path={`${match.url}/confidence`} component={ReportConfidence} />
             <Route path={`${match.url}/confidence`} component={ReportConfidence} />
             <Route path={`${match.url}/driver-analysis`} component={ReportDriverAnalysis} />
+            <Route path={`${match.url}/key-themes`} component={ReportKeyThemes} />
             <Route path={`${match.url}`} component={DashboardGeneral} />
             <Redirect to="/error" />
           </Switch>

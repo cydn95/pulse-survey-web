@@ -7,7 +7,7 @@ import {
   feedbackSummary,
   participation,
   wordcloud,
-  bubbleChart
+  bubbleChart,
 } from "Redux/actions";
 
 import { randomFloat } from "Util/Utils";
@@ -21,6 +21,17 @@ import TopNav from "Containers/TopNav";
 import styles from "./styles.scss";
 import classnames from "classnames";
 
+import RiskContainer from "./RiskContainer";
+
+const tabMenu = {
+  "risks": { label: "Risks", component: <RiskContainer /> },
+  "overall-sentiment": { label: "Overall Sentiment", component: null },
+  "unspoken-problem": { label: "Unspoken Problem", component: null },
+  "project-interest": { label: "Project Interest", component: null },
+  "personal-interest": { label: "Personal Interest", component: null },
+  "improvement" : { label: "Improvement", component: null }
+};
+
 const ReportKeyThemes = ({
   history,
   projectTitle,
@@ -28,14 +39,20 @@ const ReportKeyThemes = ({
   surveyUserId,
   actionTopPositiveNegative,
   actionWordCloud,
-  actionBubbleChart
+  actionBubbleChart,
 }) => {
+  const [tab, setTab] = useState("risks");
+
   const [topPositives, setTopPositives] = useState([]);
   const [topNegatives, setTopNegatives] = useState([]);
   const [wordData, setWordData] = useState([]);
   const [bubbleChartData, setBubbleChartData] = useState([]);
 
   const [chartWidth, setChartWidth] = useState(100);
+
+  const handleSelectTab = (t) => {
+    setTab(t);
+  }
 
   useEffect(() => {
     actionTopPositiveNegative(surveyId, (positive, negative) => {
@@ -54,17 +71,23 @@ const ReportKeyThemes = ({
           x: d.point.x - 50,
           y: d.point.y - 50,
           size: randomFloat(3, 8),
-          text: d.SHGroupName
-        })
+          text: d.SHGroupName,
+        });
       });
       setBubbleChartData(resData);
     });
-  }, [actionTopPositiveNegative, actionWordCloud, actionBubbleChart, surveyId, surveyUserId]);
+  }, [
+    actionTopPositiveNegative,
+    actionWordCloud,
+    actionBubbleChart,
+    surveyId,
+    surveyUserId,
+  ]);
 
   return (
     <div className={styles.root}>
       <div className={styles.topbar}>
-        <TopNav history={history} menuTitle="Interest Dashboard">
+        <TopNav history={history} menuTitle="KeyThemes">
           <div className={styles.section}>
             <h2 className={styles["page-title"]}>My Profile</h2>
             <h2 className={styles["project-name"]}>{projectTitle}</h2>
@@ -72,49 +95,19 @@ const ReportKeyThemes = ({
         </TopNav>
       </div>
       <div className={styles["main-content"]}>
-        <div className={styles["content-row"]}>
-          <div
-            className={classnames(
-              styles["content-col"],
-              styles["interest-bubble-chart"]
-            )}
-          >
-            <BubbleChart data={bubbleChartData} />
-          </div>
-          <div
-            className={classnames(
-              styles["content-col"],
-              styles["interest-word-cloud"]
-            )}
-            ref={(el) => {
-              if (!el) return;
-
-              const width = el.getBoundingClientRect().width;
-              setChartWidth(width);
-            }}
-          >
-            <WordCloud chartWidth={chartWidth} data={wordData}/>
-          </div>
+        <div className={styles["keythemes-tab-menu"]}>
+          {Object.keys(tabMenu).map((key) => (
+            <div
+              key={`keythemes-tab-${key}`}
+              className={classnames(styles["keythemes-tab-item"], {[styles.active]: key === tab })}
+              role="button"
+              onClick={(e) => handleSelectTab(key)}
+            >
+              {tabMenu[key].label}
+            </div>
+          ))}
         </div>
-        <div className={styles["content-row"]}>
-          <div
-            className={classnames(
-              styles["content-col"],
-              styles["interest-perception"]
-            )}
-          >
-            <Perception min={20} max={80} />
-          </div>
-          <div
-            className={classnames(
-              styles["content-col"],
-              styles["interest-summary"]
-            )}
-          >
-            <TopSummary data={topPositives} type="positive" />
-            <TopSummary data={topNegatives} type="negative" />
-          </div>
-        </div>
+        {tabMenu[tab].component}
       </div>
     </div>
   );
@@ -133,5 +126,5 @@ const mapStateToProps = ({ authUser }) => {
 export default connect(mapStateToProps, {
   actionTopPositiveNegative: topPositiveNegative,
   actionWordCloud: wordcloud,
-  actionBubbleChart: bubbleChart
+  actionBubbleChart: bubbleChart,
 })(ReportKeyThemes);

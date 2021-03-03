@@ -48,7 +48,8 @@ const MENU_REPORT = [
   "Culture",
   "Relationships",
   "Improvement",
-  "Driver-Analysis"
+  "Driver-Analysis",
+  "Key Themes"
 ];
 
 class Sidebar extends Component {
@@ -332,16 +333,16 @@ class Sidebar extends Component {
                 <SubMenu icon={<IconDashboard />} title="Dashboard">
                   {MENU_REPORT.map((menu) => (
                     <MenuItem
-                      key={`submenu-report-${menu.toLowerCase()}`}
+                      key={`submenu-report-${menu.toLowerCase().replace(" ", "-")}`}
                       onClick={(e) =>
                         this.handleClickSubMenu(
                           e,
                           menu.toLocaleLowerCase(),
-                          `/app/dashboard/${menu.toLocaleLowerCase()}`
+                          `/app/dashboard/${menu.toLocaleLowerCase().replace(" ", "-")}`
                         )
                       }
                     >
-                      {menu.toLowerCase()}
+                      {menu}
                     </MenuItem>
                   ))}
                 </SubMenu>

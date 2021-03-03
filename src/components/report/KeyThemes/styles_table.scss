@@ -1,0 +1,51 @@
+.keythemes-table-root {
+  .keythemes-table-header {
+    width: 100%;
+    display: flex;
+
+    &-item {
+      flex: 1;
+      background: #4a66ac;
+      color: #fff;
+      padding: 5px 10px;
+      font-weight: 600;
+      margin: 2px;
+    }
+  }
+  .keythemes-table-content {
+    width: 100%;
+    margin-top: 5px;
+
+    &-row {
+      width: 100%;
+      display: flex;
+    }
+
+    &-col {
+      flex: 1;
+      margin: 2px;
+      color: #3b4658;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      padding: 0px 10px;
+
+      img {
+        margin-right: 12px;
+      }
+
+      &.odd {
+        background: #e9eaf1;
+      }
+
+      &.even {
+        background: #d0d3e3;
+      }
+    }
+  }
+
+  .keythemes-table-percent-bar {
+    height: 12px;
+    background: #4a66ac;
+  }
+}
