@@ -1,6 +1,6 @@
 import React from "react";
 
-import KeyThemsTable from "Components/report/KeyThemes/Table";
+import KeyThemesTable from "Components/report/KeyThemes/Table";
 
 import styles from "./styles.scss";
 
@@ -11,7 +11,7 @@ const RiskContainer = () => {
     <div className={styles["keythemes-content-wrapper"]}>
       <div className={styles["keythemes-content-title"]}>Risks</div>
       <div className={styles["keythemes-content"]}>
-        <KeyThemsTable data={tableData} />
+        <KeyThemesTable data={tableData} />
       </div>
     </div>
   );

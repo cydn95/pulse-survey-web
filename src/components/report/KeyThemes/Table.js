@@ -12,7 +12,7 @@ const PercentBar = ({ value }) => {
   );
 };
 
-const KeyThemsTable = ({ title = "", data = [], className }) => {
+const KeyThemesTable = ({ title = "", data = [], className }) => {
   return (
     <div className={classnames(styles["keythemes-table-root"], className)}>
       <div className={styles["keythemes-table-header"]}>
@@ -74,4 +74,4 @@ const KeyThemsTable = ({ title = "", data = [], className }) => {
   );
 };
 
-export default KeyThemsTable;
+export default KeyThemesTable;

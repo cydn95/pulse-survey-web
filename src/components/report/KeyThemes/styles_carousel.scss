@@ -23,4 +23,38 @@
     justify-content: center;
     align-content: center;
   }
+
+  .content-slider-wrapper {
+    display: flex;
+    width: 100%;
+  }
+
+  .content-slider {
+    flex: 1;
+  }
+
+  .content-icons {
+    display: flex;
+  }
+
+  .content-icon {
+    margin-right: 24px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &-title {
+      font-size: 1rem;
+      padding-right: 4px;
+    }
+    &-desc {
+      background: #bbb;
+      padding: 1px 7px;
+      font-size: 0.8rem
+    }
+    img {
+      margin-right: 5px;
+    }
+  }
 }
+

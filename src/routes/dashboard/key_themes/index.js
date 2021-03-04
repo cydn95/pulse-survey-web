@@ -22,10 +22,11 @@ import styles from "./styles.scss";
 import classnames from "classnames";
 
 import RiskContainer from "./RiskContainer";
+import OverallSentimentContainer from "./OverallSentimentContainer";
 
 const tabMenu = {
   "risks": { label: "Risks", component: <RiskContainer /> },
-  "overall-sentiment": { label: "Overall Sentiment", component: null },
+  "overall-sentiment": { label: "Overall Sentiment", component: <OverallSentimentContainer /> },
   "unspoken-problem": { label: "Unspoken Problem", component: null },
   "project-interest": { label: "Project Interest", component: null },
   "personal-interest": { label: "Personal Interest", component: null },
@@ -41,7 +42,7 @@ const ReportKeyThemes = ({
   actionWordCloud,
   actionBubbleChart,
 }) => {
-  const [tab, setTab] = useState("risks");
+  const [tab, setTab] = useState("overall-sentiment");
 
   const [topPositives, setTopPositives] = useState([]);
   const [topNegatives, setTopNegatives] = useState([]);
