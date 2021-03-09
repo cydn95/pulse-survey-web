@@ -25,8 +25,8 @@ import RiskContainer from "./RiskContainer";
 import OverallSentimentContainer from "./OverallSentimentContainer";
 
 const tabMenu = {
-  "risks": { label: "Risks", component: <RiskContainer /> },
-  "overall-sentiment": { label: "Overall Sentiment", component: <OverallSentimentContainer /> },
+  "risks": { label: "Risks", component: <RiskContainer tab={1}/> },
+  "overall-sentiment": { label: "Overall Sentiment", component: <OverallSentimentContainer tab={2}/> },
   "unspoken-problem": { label: "Unspoken Problem", component: null },
   "project-interest": { label: "Project Interest", component: null },
   "personal-interest": { label: "Personal Interest", component: null },

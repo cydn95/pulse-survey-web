@@ -93,27 +93,30 @@ const optionListAPI = () => {
 };
 
 const driverListAPI = (surveyId = 1) => {
-  return getClient(true).get(`/driver/?format=json&survey_id=${surveyId}`);
+  return getClient(true).get(`/driver/?format=json&survey=${surveyId}`);
 };
 
 const submitSurveyAPI = (answerData) => {
   return getClient(true).post("/amresponse/", answerData);
 };
 
-const teamListAPI = (projectId) => {
-  if (parseInt(projectId, 10) === 0) {
-    return getClient(true).get("/team/?format=json");
-  } else {
-    return getClient(true).get("/team/?format=json&project=" + projectId);
+const teamListAPI = (projectId = 0, surveyId = 0) => {
+  let url = "/team/?format=json";
+  if (parseInt(projectId, 10) > 0) {
+    url += `&project=${projectId}`;
   }
+  if (parseInt(surveyId, 10) > 0) {
+    url += `&survey=${surveyId}`;
+  }
+  return getClient(true).get(url);
 };
 
 const shgroupListAPI = (surveyId = 1) => {
-  if (!surveyId || surveyId === undefined) {
-    return getClient(true).get(`/shgroup/?format=json`);
-  } else {
-    return getClient(true).get(`/shgroup/?format=json&survey=${surveyId}`);
+  let url = "/shgroup/?format=json";
+  if (parseInt(surveyId, 10) > 0) {
+    url += `&survey=${surveyId}`;
   }
+  return getClient(true).get(url);
 };
 
 const skipQuestionListAPI = () => {
@@ -377,6 +380,14 @@ export const getPerceptionRealityAPI = (surveyId = 0, projectUser = 0) => {
 export const getBubbleChartAPI = (surveyId = 0, projectUser = 0) => {
   return getClient(true).get(`/bubblechart/?format=json&survey=${surveyId}&projectUser=${projectUser}`);
 };
+
+export const getMyMatrixAPI = (survey, projectUser) => {
+  return getClient(true).get(`/mymatrix?survey=${survey}&projectuser=${projectUser}`)
+}
+
+export const getProjectMatrixAPI = (survey, projectUser) => {
+  return getClient(true).get(`/projectmatrix?survey=${survey}&projectuser=${projectUser}`)
+}
 
 // const getSentimentReportAPI = (
 //   surveyId,

@@ -10,7 +10,9 @@ import {
   getAmResponseReportAPI,
   getAoResponseReportAPI,
   getPerceptionRealityAPI,
-  getBubbleChartAPI
+  getBubbleChartAPI,
+  getMyMatrixAPI,
+  getProjectMatrixAPI
 } from "../../services/axios/api";
 
 import {
@@ -22,7 +24,9 @@ import {
   REPORT_WORDCLOUD,
   REPORT_SENTIMENT,
   REPORT_PERCEPTION_REALITY,
-  REPORT_BUBBLECHART
+  REPORT_BUBBLECHART,
+  REPORT_MY_MATRIX,
+  REPORT_PROJECT_MATRIX
 } from "Constants/actionTypes";
 
 import {
@@ -82,6 +86,16 @@ const getPerceptionRealityAsync = async (surveyId, projectUserId) =>
 
 const getBubbleChartAsync = async (surveyId, projectUserId) =>
   await getBubbleChartAPI(surveyId, projectUserId)
+    .then((result) => result)
+    .catch((error) => error);
+
+const getMyMatrixAsync = async (surveyId, projectUserId) =>
+  await getMyMatrixAPI(surveyId, projectUserId)
+    .then((result) => result)
+    .catch((error) => error);
+
+const getProjectMatrixAsync = async (surveyId, projectUserId) =>
+  await getProjectMatrixAPI(surveyId, projectUserId)
     .then((result) => result)
     .catch((error) => error);
 
@@ -643,6 +657,30 @@ function* getBubbleChart({ payload }) {
   } catch (error) { }
 }
 
+function* getMyMatrix({ payload }) {
+  try {
+    const { surveyId, projectUserId, callback } = payload;
+
+    const result = yield call(getMyMatrixAsync, surveyId, projectUserId);
+
+    if (result.status === 200) {
+      callback(result.data);
+    }
+  } catch (error) { }
+}
+
+function* getProjectMatrix({ payload }) {
+  try {
+    const { surveyId, projectUserId, callback } = payload;
+
+    const result = yield call(getProjectMatrixAsync, surveyId, projectUserId);
+
+    if (result.status === 200) {
+      callback(result.data);
+    }
+  } catch (error) { }
+}
+
 export function* watchGetOverallSentiment() {
   yield takeEvery(REPORT_OVERALL_SENTIMENT, getOverallSentiment);
 }
@@ -679,6 +717,14 @@ export function* watchGetBubbleChartReport() {
   yield takeEvery(REPORT_BUBBLECHART, getBubbleChart);
 }
 
+export function* watchGetMyMatrix() {
+  yield takeEvery(REPORT_MY_MATRIX, getMyMatrix);
+}
+
+export function* watchGetProjectMatrix() {
+  yield takeEvery(REPORT_PROJECT_MATRIX, getProjectMatrix);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetOverallSentiment),
@@ -689,6 +735,8 @@ export default function* rootSaga() {
     fork(watchGetWordCloud),
     fork(watchGetSentimentReport),
     fork(watchGetPerceptionRealityReport),
-    fork(watchGetBubbleChartReport)
+    fork(watchGetBubbleChartReport),
+    fork(watchGetMyMatrix),
+    fork(watchGetProjectMatrix),
   ]);
 }

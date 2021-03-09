@@ -38,15 +38,16 @@ import {
   shCategoryListSuccess,
 } from "./actions";
 
-const getTeamListAysnc = async (projectId) =>
-  await teamListAPI(projectId)
+const getTeamListAysnc = async (projectId, surveyId) =>
+  await teamListAPI(projectId, surveyId)
     .then((data) => data)
     .catch((error) => error);
 
 function* getTeamList({ payload }) {
   try {
-    const { projectId } = payload;
-    const result = yield call(getTeamListAysnc, projectId);
+    const { projectId, surveyId } = payload;
+
+    const result = yield call(getTeamListAysnc, projectId, surveyId);
 
     if (result.status === 200) {
       yield put(teamListSuccess(result.data));
@@ -56,14 +57,15 @@ function* getTeamList({ payload }) {
   }
 }
 
-const getShgroupListAysnc = async () =>
-  await shgroupListAPI()
+const getShgroupListAysnc = async (surveyId) =>
+  await shgroupListAPI(surveyId)
     .then((data) => data)
     .catch((error) => error);
 
-function* getShgroupList() {
+function* getShgroupList({ payload }) {
   try {
-    const result = yield call(getShgroupListAysnc);
+    const { surveyId } = payload;
+    const result = yield call(getShgroupListAysnc, surveyId);
 
     if (result.status === 200) {
       yield put(shgroupListSuccess(result.data));
@@ -111,6 +113,7 @@ function* getDriverList({ payload }) {
           progress: 0,
         });
       });
+      console.log(driverList);
       yield put(driverListSuccess(driverList));
     }
   } catch (error) {

@@ -28,37 +28,81 @@
 
 .main-content {
   display: flex;
-  flex-flow: row wrap;
+  justify-content: space-between;
   width: 100%;
   padding: 20px;
   box-sizing: border-box;
-}
 
-.content-row {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  box-sizing: border-box;
-
-  @media (max-width: 1024px) {
+  @media screen and (max-width: 1024px) {
     flex-direction: column;
   }
 }
 
-.content-col {
+.content-chart {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
-  margin: 20px;
+  margin-right: 20px;
+
+  &-tab {
+    display: flex;
+    padding-left: 30px;
+    margin-bottom: 20px;
+
+    &-item {
+      margin-right: 20px;
+      border-bottom: 2px solid transparent;
+      padding: 0px 5px 5px;
+      cursor: pointer;
+
+      &.active {
+        border-bottom: 2px solid #d5dcec;
+      }
+    }
+  }
 }
 
-.interest-bubble-chart {
-  box-sizing: border-box;
-  border-radius: 8px;
-  box-shadow: 0px 10px 10px #eee;
-}
+.content-control {
+  margin-left: 15px;
+  width: 400px;
+  padding-top: 60px;
 
-.interest-word-cloud {
-  box-sizing: border-box;
-  border-radius: 8px;
-  box-shadow: 0px 10px 10px #eee;
+  &-item {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+
+    &-label {
+      font-size: 12px;
+      color: red;
+    }
+
+    &-value {
+      width: 100%;
+      height: 40px;
+    }
+
+    .content-control-filter {
+      display: flex;
+
+      &-title {
+        font-size: 13px;
+        width: 100px;
+      }
+
+      &-content {
+        flex: 1;
+
+        .filter-chipset {
+          margin-right: 4px;
+          font-size: 12px;
+          cursor: pointer;
+          margin-bottom: 4px;
+          min-width: 50px;
+        }
+      }
+    }
+  }
 }

@@ -42,12 +42,12 @@ import classnames from "classnames";
 const MENU_REPORT = [
   "People",
   "Sentiment",
-  "Engagement",
+  // "Engagement",
   "Interest",
   "Confidence",
   "Culture",
-  "Relationships",
-  "Improvement",
+  // "Relationships",
+  // "Improvement",
   "Driver-Analysis",
   "Key Themes",
   "Matrix"

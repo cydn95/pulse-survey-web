@@ -21,12 +21,6 @@ const KeyThemesCarousel = ({ data }) => {
       <div className={styles["content"]}>
         <p>{data[step]}</p>
         <div className={styles["content-slider-wrapper"]}>
-          <SlideNavigator
-            className={styles["content-slider"]}
-            onSelect={(position) => onSelect(position)}
-            cnt={data.length}
-            position={step}
-          />
           <div className={styles["content-icons"]}>
             <div className={styles["content-icon"]}>
               <span className={styles["content-icon-title"]}>Like</span>
