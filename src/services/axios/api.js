@@ -389,6 +389,22 @@ export const getProjectMatrixAPI = (survey, projectUser) => {
   return getClient(true).get(`/projectmatrix?survey=${survey}&projectuser=${projectUser}`)
 }
 
+export const getTextValueAPI = (survey, tab, projectUser) => {
+  return getClient(true).get(`/keytheme?survey=${survey}&tab=${tab}&projectuser=${projectUser}`)
+}
+
+export const getAcknowledgementAPI = (responseId, projectUser) => {
+  return getClient(true).get(`/acknowledgement?response=${responseId}&projectuser=${projectUser}`)
+}
+
+export const postAcknowledgementAPI = (data) => {
+  return getClient(true).post(`/acknowledgement/`, data)
+}
+
+export const updateAcknowledgementAPI = (responseId, data) => {
+  return getClient(true).put(`/acknowledgement/${responseId}/`, data)
+}
+
 // const getSentimentReportAPI = (
 //   surveyId,
 //   startDate = "2020-01-01",

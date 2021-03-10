@@ -9,7 +9,10 @@ import {
   REPORT_PERCEPTION_REALITY,
   REPORT_BUBBLECHART,
   REPORT_MY_MATRIX,
-  REPORT_PROJECT_MATRIX
+  REPORT_PROJECT_MATRIX,
+  REPORT_TEXT_VALUE,
+  REPORT_GET_ACKNOWLEDGEMENT,
+  REPORT_SET_ACKNOWLEDGEMENT
 } from "Constants/actionTypes";
 
 export const overallSentiment = (surveyId, callback) => ({
@@ -65,4 +68,19 @@ export const myMatrixReport = (surveyId, projectUserId, callback) => ({
 export const projectMatrixReport = (surveyId, projectUserId, callback) => ({
   type: REPORT_PROJECT_MATRIX,
   payload: { surveyId, projectUserId, callback }
+});
+
+export const textValueReport = (surveyId, tab, projectUserId, callback) => ({
+  type: REPORT_TEXT_VALUE,
+  payload: { surveyId, tab, projectUserId, callback }
+});
+
+export const getAcknowledgementReport = (responseId, projectUserId, callback) => ({
+  type: REPORT_GET_ACKNOWLEDGEMENT,
+  payload: { responseId, projectUserId, callback }
+});
+
+export const setAcknowledgementReport = (responseId, data, callback) => ({
+  type: REPORT_SET_ACKNOWLEDGEMENT,
+  payload: { responseId, data, callback }
 });

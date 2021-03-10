@@ -39,7 +39,7 @@ const KeyThemesTable = ({ title = "", data = [], className }) => {
                 [styles.even]: index % 2 === 0,
               })}
             >
-              <PercentBar value={d.frequency} />
+              <PercentBar value={d.freq} />
             </div>
             <div
               className={classnames(styles["keythemes-table-content-col"], {
@@ -47,7 +47,7 @@ const KeyThemesTable = ({ title = "", data = [], className }) => {
                 [styles.even]: index % 2 === 0,
               })}
             >
-              {d.theme}
+              {d.key}
             </div>
             <div
               className={classnames(styles["keythemes-table-content-col"], {
@@ -56,7 +56,7 @@ const KeyThemesTable = ({ title = "", data = [], className }) => {
               })}
             >
               <img src="/assets/img/survey/like.png" width="16" />
-              {d.like}
+              {d.upvoteCount}
             </div>
             <div
               className={classnames(styles["keythemes-table-content-col"], {
@@ -65,7 +65,7 @@ const KeyThemesTable = ({ title = "", data = [], className }) => {
               })}
             >
               <img src="/assets/img/survey/dislike.png" width="16" />
-              {d.dislike}
+              {d.downvoteCount}
             </div>
           </div>
         ))}

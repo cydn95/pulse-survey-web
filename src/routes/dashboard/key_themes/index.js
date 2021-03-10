@@ -1,89 +1,32 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 
-import {
-  overallSentiment,
-  topPositiveNegative,
-  feedbackSummary,
-  participation,
-  wordcloud,
-  bubbleChart,
-} from "Redux/actions";
-
-import { randomFloat } from "Util/Utils";
-
-import BubbleChart from "Components/report/BubbleChart";
-import WordCloud from "Components/report/WordCloud";
-import Perception from "Components/report/Perception";
-import TopSummary from "Components/report/TopSummary";
 import TopNav from "Containers/TopNav";
 
 import styles from "./styles.scss";
 import classnames from "classnames";
 
-import RiskContainer from "./RiskContainer";
-import OverallSentimentContainer from "./OverallSentimentContainer";
+import TableContainer from "./TableContainer";
+import CarouselContainer from "./CarouselContainer";
 
 const tabMenu = {
-  "risks": { label: "Risks", component: <RiskContainer tab={1}/> },
-  "overall-sentiment": { label: "Overall Sentiment", component: <OverallSentimentContainer tab={2}/> },
-  "unspoken-problem": { label: "Unspoken Problem", component: null },
-  "project-interest": { label: "Project Interest", component: null },
-  "personal-interest": { label: "Personal Interest", component: null },
-  "improvement" : { label: "Improvement", component: null }
+  "risks": { label: "Risks", component: <TableContainer tab={1} label="Risks" /> },
+  "overall-sentiment": { label: "Overall Sentiment", component: <CarouselContainer tab={2} label="Overall Sentiment" /> },
+  "unspoken-problem": { label: "Unspoken Problem", component: <CarouselContainer tab={3} label="Unspoken Problem" /> },
+  "project-interest": { label: "Project Interest", component: <TableContainer tab={4} label="Project Interest" /> },
+  "personal-interest": { label: "Personal Interest", component: <TableContainer tab={5} label="Personal Interest" /> },
+  "improvement": { label: "Improvement", component: <TableContainer tab={6} label="Improvement" /> }
 };
 
 const ReportKeyThemes = ({
   history,
-  projectTitle,
-  surveyId,
-  surveyUserId,
-  actionTopPositiveNegative,
-  actionWordCloud,
-  actionBubbleChart,
+  projectTitle
 }) => {
-  const [tab, setTab] = useState("overall-sentiment");
-
-  const [topPositives, setTopPositives] = useState([]);
-  const [topNegatives, setTopNegatives] = useState([]);
-  const [wordData, setWordData] = useState([]);
-  const [bubbleChartData, setBubbleChartData] = useState([]);
-
-  const [chartWidth, setChartWidth] = useState(100);
+  const [tab, setTab] = useState("risks");
 
   const handleSelectTab = (t) => {
     setTab(t);
   }
-
-  useEffect(() => {
-    actionTopPositiveNegative(surveyId, (positive, negative) => {
-      setTopPositives(positive);
-      setTopNegatives(negative);
-    });
-
-    actionWordCloud(surveyId, 0, (ret) => {
-      setWordData(ret);
-    });
-
-    actionBubbleChart(surveyId, surveyUserId, (data) => {
-      const resData = [];
-      data.forEach((d) => {
-        resData.push({
-          x: d.point.x - 50,
-          y: d.point.y - 50,
-          size: randomFloat(3, 8),
-          text: d.SHGroupName,
-        });
-      });
-      setBubbleChartData(resData);
-    });
-  }, [
-    actionTopPositiveNegative,
-    actionWordCloud,
-    actionBubbleChart,
-    surveyId,
-    surveyUserId,
-  ]);
 
   return (
     <div className={styles.root}>
@@ -124,8 +67,4 @@ const mapStateToProps = ({ authUser }) => {
   };
 };
 
-export default connect(mapStateToProps, {
-  actionTopPositiveNegative: topPositiveNegative,
-  actionWordCloud: wordcloud,
-  actionBubbleChart: bubbleChart,
-})(ReportKeyThemes);
+export default connect(mapStateToProps, {})(ReportKeyThemes);

@@ -12,7 +12,11 @@ import {
   getPerceptionRealityAPI,
   getBubbleChartAPI,
   getMyMatrixAPI,
-  getProjectMatrixAPI
+  getProjectMatrixAPI,
+  getTextValueAPI,
+  getAcknowledgementAPI,
+  postAcknowledgementAPI,
+  updateAcknowledgementAPI
 } from "../../services/axios/api";
 
 import {
@@ -26,7 +30,10 @@ import {
   REPORT_PERCEPTION_REALITY,
   REPORT_BUBBLECHART,
   REPORT_MY_MATRIX,
-  REPORT_PROJECT_MATRIX
+  REPORT_PROJECT_MATRIX,
+  REPORT_TEXT_VALUE,
+  REPORT_GET_ACKNOWLEDGEMENT,
+  REPORT_SET_ACKNOWLEDGEMENT
 } from "Constants/actionTypes";
 
 import {
@@ -96,6 +103,26 @@ const getMyMatrixAsync = async (surveyId, projectUserId) =>
 
 const getProjectMatrixAsync = async (surveyId, projectUserId) =>
   await getProjectMatrixAPI(surveyId, projectUserId)
+    .then((result) => result)
+    .catch((error) => error);
+
+const getTextValueAsync = async (surveyId, tab, projectUserId) =>
+  await getTextValueAPI(surveyId, tab, projectUserId)
+    .then((result) => result)
+    .catch((error) => error);
+
+const getAcknowledgementAsync = async (responseId, projectUser) =>
+  await getAcknowledgementAPI(responseId, projectUser)
+    .then((result) => result)
+    .catch((error) => error);
+
+const postAcknowledgementAsync = async (data) =>
+  await postAcknowledgementAPI(data)
+    .then((result) => result)
+    .catch((error) => error);
+
+const updateAcknowledgementAsync = async (responseId, data) =>
+  await updateAcknowledgementAPI(responseId, data)
     .then((result) => result)
     .catch((error) => error);
 
@@ -681,6 +708,36 @@ function* getProjectMatrix({ payload }) {
   } catch (error) { }
 }
 
+function* getTextValue({ payload }) {
+  try {
+    const { surveyId, tab, projectUserId, callback } = payload;
+
+    const result = yield call(getTextValueAsync, surveyId, tab, projectUserId);
+
+    if (result.status === 200) {
+      callback(result.data);
+    }
+  } catch (error) { }
+}
+
+function* setAcknowledgementReport({ payload }) {
+  try {
+    const { responseId, data, callback } = payload;
+
+    let result = null;
+
+    if (responseId > 0) {
+      yield call(updateAcknowledgementAsync, responseId, data);
+    } else {
+      yield call(postAcknowledgementAsync, data);
+      
+    }
+
+    callback();
+  } catch (error) { }
+}
+
+
 export function* watchGetOverallSentiment() {
   yield takeEvery(REPORT_OVERALL_SENTIMENT, getOverallSentiment);
 }
@@ -725,6 +782,14 @@ export function* watchGetProjectMatrix() {
   yield takeEvery(REPORT_PROJECT_MATRIX, getProjectMatrix);
 }
 
+export function* watchGetTextvalue() {
+  yield takeEvery(REPORT_TEXT_VALUE, getTextValue);
+}
+
+export function* watchSetAcknowledgementReport() {
+  yield takeEvery(REPORT_SET_ACKNOWLEDGEMENT, setAcknowledgementReport);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetOverallSentiment),
@@ -738,5 +803,7 @@ export default function* rootSaga() {
     fork(watchGetBubbleChartReport),
     fork(watchGetMyMatrix),
     fork(watchGetProjectMatrix),
+    fork(watchGetTextvalue),
+    fork(watchSetAcknowledgementReport)
   ]);
 }
