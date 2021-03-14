@@ -4,25 +4,43 @@ import styles from "./styles_carousel.scss";
 import classnames from "classnames";
 
 const ack = {
-  1: "/assets/img/report/tick.png",
-  2: "/assets/img/report/lamp.png",
-  3: "/assets/img/report/list.png",
-  4: "/assets/img/report/messaging.png",
-  5: "/assets/img/report/sms.png",
+  1: { img: "/assets/img/report/tick.png", title: "Thanks for sharing" },
+  2: { img: "/assets/img/report/lamp.png", title: "Great idea" },
+  3: { img: "/assets/img/report/list.png", title: "Working on it" },
+  4: {
+    img: "/assets/img/report/messaging.png",
+    title: "Would love to talk in person",
+  },
+  5: { img: "/assets/img/report/sms.png", title: "I agree" },
 };
 
 const flag = {
-  1: "/assets/img/report/identified.png",
-  2: "/assets/img/report/id_scan.png",
-  3: "/assets/img/report/bomb.png",
-  4: "/assets/img/report/close.png",
-  5: "/assets/img/report/angry.png",
+  1: {
+    img: "/assets/img/report/identified.png",
+    title: "Individual can be identified",
+  },
+  2: {
+    img: "/assets/img/report/id_scan.png",
+    title: "Commenter can be identified",
+  },
+  3: { img: "/assets/img/report/bomb.png", title: "Non-Constructive Feedback" },
+  4: { img: "/assets/img/report/close.png", title: "Out of Policy" },
+  5: { img: "/assets/img/report/angry.png", title: "Aggressive or Hostile" },
 };
 
-const KeyThemesCarousel = ({ data, text, value, onAck, onLike, onFlag }) => {
-  const [flagPanelOpen, setFlagPanelOpen] = useState(false);
-  const [ackPanelOpen, setAckPanelOpen] = useState(false);
-
+const KeyThemesCarousel = ({
+  data,
+  text,
+  value,
+  onAck,
+  onLike,
+  onFlag,
+  flagPanelOpen,
+  ackPanelOpen,
+  onToggleFlag,
+  onToggleAck,
+  selectedId,
+}) => {
   return (
     <div className={styles["own-words-root"]}>
       <img
@@ -37,14 +55,16 @@ const KeyThemesCarousel = ({ data, text, value, onAck, onLike, onFlag }) => {
             <div className={styles["content-icon"]} onClick={(e) => onLike(1)}>
               <span className={styles["content-icon-title"]}>Like</span>
               <img src="/assets/img/survey/like2.png" height="20" />
-              <span className={styles["content-icon-desc"]}>{data.likeCount}</span>
+              <span className={styles["content-icon-desc"]}>
+                {data.likeCount}
+              </span>
             </div>
             <div className={styles["content-icon"]}>
               <span
                 className={styles["content-icon-title"]}
                 onClick={(e) => {
-                  setFlagPanelOpen(false);
-                  setAckPanelOpen(!ackPanelOpen)
+                  onToggleFlag();
+                  onToggleAck();
                 }}
               >
                 Acknowledge
@@ -52,15 +72,20 @@ const KeyThemesCarousel = ({ data, text, value, onAck, onLike, onFlag }) => {
               <img
                 src="/assets/img/survey/star.png"
                 height="20"
-                onClick={(e) => setAckPanelOpen(!ackPanelOpen)}
+                onClick={(e) => onToggleAck()}
               />
               <div
                 className={classnames(styles["acknowledge-panel"], {
-                  [styles.hide]: !ackPanelOpen,
+                  [styles.hide]:
+                    selectedId !== data.id ||
+                    (!ackPanelOpen && selectedId === data.id),
                 })}
               >
                 {Object.keys(ack).map((key) => (
-                  <img key={`ack_img_${key}`} src={ack[key]} onClick={(e) => onAck(key)} />
+                  <div className={styles["ack-panel-item"]} key={`ack_img_${key}`}>
+                    <img src={ack[key].img} onClick={(e) => onAck(key)} />
+                    <span>{ack[key].title}</span>
+                  </div>
                 ))}
               </div>
             </div>
@@ -68,8 +93,8 @@ const KeyThemesCarousel = ({ data, text, value, onAck, onLike, onFlag }) => {
               <span
                 className={styles["content-icon-title"]}
                 onClick={(e) => {
-                  setAckPanelOpen(false);
-                  setFlagPanelOpen(!flagPanelOpen)
+                  onToggleAck();
+                  onToggleFlag();
                 }}
               >
                 Flag
@@ -77,15 +102,20 @@ const KeyThemesCarousel = ({ data, text, value, onAck, onLike, onFlag }) => {
               <img
                 src="/assets/img/survey/flag.png"
                 height="20"
-                onClick={(e) => setFlagPanelOpen(!flagPanelOpen)}
+                onClick={(e) => onToggleFlag()}
               />
               <div
                 className={classnames(styles["flag-panel"], {
-                  [styles.hide]: !flagPanelOpen,
+                  [styles.hide]:
+                    selectedId !== data.id ||
+                    (!flagPanelOpen && selectedId === data.id),
                 })}
               >
                 {Object.keys(flag).map((key) => (
-                  <img key={`flag_img_${key}`} src={flag[key]} onClick={(e) => onFlag(key)}/>
+                  <div className={styles["ack-panel-item"]} key={`flag_img_${key}`}>
+                    <img src={flag[key].img} onClick={(e) => onFlag(key)} />
+                    <span>{flag[key].title}</span>
+                  </div>
                 ))}
               </div>
             </div>

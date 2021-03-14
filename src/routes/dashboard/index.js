@@ -22,7 +22,7 @@ const Dashboard = ({ history, location, match }) => {
         <div className={styles.main}>
           <Switch>
             <Route path={`${match.url}/sentiment`} component={ReportSentiment} />
-            <Route path={`${match.url}/people`} component={ReportPeople} />
+            <Route path={`${match.url}/summary`} component={ReportPeople} />
             {/* <Route path={`${match.url}/engagement`} component={ReportEngagement} /> */}
             <Route path={`${match.url}/interest`} component={ReportInterest} />
             <Route path={`${match.url}/confidence`} component={ReportConfidence} />

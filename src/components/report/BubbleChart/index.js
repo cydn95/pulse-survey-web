@@ -7,8 +7,6 @@ import {
   BubbleSeries,
   Tooltip,
 } from "@syncfusion/ej2-react-charts";
-import { Browser } from "@syncfusion/ej2-base";
-import { materialColors } from "../syncfusion/theme-line";
 import SampleBase from "../syncfusion/SampleBase";
 
 const colors = [
@@ -24,6 +22,7 @@ const colors = [
   "#7cccbf",
 ];
 export let pointRender = (args, data) => {
+  if (data.length === 0) return;
   args.fill = colors[data[args.point.index].color];
   args.width = data[args.point.index].size;
   args.height = data[args.point.index].size;

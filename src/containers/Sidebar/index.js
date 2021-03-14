@@ -40,12 +40,12 @@ import styles from "./styles.scss";
 import classnames from "classnames";
 
 const MENU_REPORT = [
-  "People",
-  "Sentiment",
+  "Summary",
+  // "Sentiment",
   // "Engagement",
-  "Interest",
-  "Confidence",
-  "Culture",
+  // "Interest",
+  // "Confidence",
+  // "Culture",
   // "Relationships",
   // "Improvement",
   "Driver-Analysis",

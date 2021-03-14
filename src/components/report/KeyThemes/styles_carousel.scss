@@ -56,9 +56,13 @@
 
   .acknowledge-panel {
     position: absolute;
-    height: 50px;
-    margin-top: 100px;
-    margin-left: -100px;
+    margin-top: 150px;
+    margin-left: -200px;
+    display: flex;
+    background: #fff;
+    border: 1px solid #eee; 
+    height: 90px;
+    border-radius: 4px;
 
     &.hide {
       display: none;
@@ -74,8 +78,13 @@
   .flag-panel {
     position: absolute;
     height: 50px;
-    margin-top: 100px;
-    margin-left: -200px;
+    margin-top: 160px;
+    margin-left: -350px;
+    display: flex;
+    background: #fff;
+    border: 1px solid #eee;
+    height: 110px;
+    border-radius: 4px;
 
     &.hide {
       display: none;
@@ -85,6 +94,23 @@
       margin: 10px;
       width: 40px;
       height: 40px;
+    }
+  }
+
+  .ack-panel-item {
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+    align-items: center;
+
+    img {
+      height: 24px;
+      width: 24px;
+    }
+
+    span {
+      font-size: 12px;
+      text-align: center;
     }
   }
 }

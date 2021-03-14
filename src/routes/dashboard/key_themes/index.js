@@ -10,28 +10,71 @@ import TableContainer from "./TableContainer";
 import CarouselContainer from "./CarouselContainer";
 
 const tabMenu = {
-  "risks": { label: "Risks", component: <TableContainer tab={1} label="Risks" /> },
-  "overall-sentiment": { label: "Overall Sentiment", component: <CarouselContainer tab={2} label="Overall Sentiment" /> },
-  "unspoken-problem": { label: "Unspoken Problem", component: <CarouselContainer tab={3} label="Unspoken Problem" /> },
-  "project-interest": { label: "Project Interest", component: <TableContainer tab={4} label="Project Interest" /> },
-  "personal-interest": { label: "Personal Interest", component: <TableContainer tab={5} label="Personal Interest" /> },
-  "improvement": { label: "Improvement", component: <TableContainer tab={6} label="Improvement" /> }
+  risks: {
+    label: "Risks",
+    question: "",
+    component: <TableContainer tab={1} label="Risks" />,
+  },
+  "overall-sentiment": {
+    label: "Overall Sentiment",
+    component: (
+      <CarouselContainer
+        tab={2}
+        label="How do you think the project is going - in your words:"
+      />
+    ),
+  },
+  "unspoken-problem": {
+    label: "Unspoken Problem",
+    component: (
+      <CarouselContainer
+        tab={3}
+        label="Is there a problem that people aren't discussing openly?"
+      />
+    ),
+  },
+  "project-interest": {
+    label: "Project Interest",
+    component: (
+      <TableContainer
+        tab={4}
+        label="What do you care about the most on this project?"
+      />
+    ),
+  },
+  "personal-interest": {
+    label: "Personal Interest",
+    component: (
+      <TableContainer
+        tab={5}
+        label="What do you personally want to get out of this project?"
+      />
+    ),
+  },
+  improvement: {
+    label: "Improvement",
+    component: (
+      <div style={{width: '100%'}}>
+        <TableContainer tab={6} label="Keep / What's Going Well?" />
+        <TableContainer tab={7} label="Start" />
+        <TableContainer tab={8} label="Change" />
+        <TableContainer tab={9} label="Stop" />
+      </div>
+    ),
+  },
 };
 
-const ReportKeyThemes = ({
-  history,
-  projectTitle
-}) => {
+const ReportKeyThemes = ({ history, projectTitle }) => {
   const [tab, setTab] = useState("risks");
 
   const handleSelectTab = (t) => {
     setTab(t);
-  }
+  };
 
   return (
     <div className={styles.root}>
       <div className={styles.topbar}>
-        <TopNav history={history} menuTitle="KeyThemes">
+        <TopNav history={history} menuTitle="Key Themes">
           <div className={styles.section}>
             <h2 className={styles["page-title"]}>My Profile</h2>
             <h2 className={styles["project-name"]}>{projectTitle}</h2>
@@ -43,7 +86,9 @@ const ReportKeyThemes = ({
           {Object.keys(tabMenu).map((key) => (
             <div
               key={`keythemes-tab-${key}`}
-              className={classnames(styles["keythemes-tab-item"], {[styles.active]: key === tab })}
+              className={classnames(styles["keythemes-tab-item"], {
+                [styles.active]: key === tab,
+              })}
               role="button"
               onClick={(e) => handleSelectTab(key)}
             >

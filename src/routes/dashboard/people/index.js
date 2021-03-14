@@ -261,7 +261,7 @@ class ReportPeople extends React.Component {
           <div className={classnames(styles.right)}>
             <div className={classnames("row", styles["donut-container"])}>
               <h2 className={styles.title}>Overall Sentiment</h2>
-              <Emoji satisfaction={overallSentiment} />
+              <Emoji satisfaction={overallSentiment / 10} />
             </div>
             <div className={classnames("row", styles["sentiment-result"])}>
               <SentimentResult data={sentimentResult} labels={sentimentKey} />

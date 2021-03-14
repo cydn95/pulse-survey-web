@@ -35,12 +35,14 @@ const FeedbackSummary = ({ data }) => {
       >
         {data.data.map((row, rowNum) => (
           <div key={`cr-${rowNum}`} className={styles["table__content__row"]}>
-            {row.map((c, colNum) => {
+            {row.map((value, colNum) => {
               let borderClass = "";
 
-              if (c >= 80) {
+              const c = value / 10;
+
+              if (c >= 8) {
                 borderClass = styles.high;
-              } else if (c >= 50) {
+              } else if (c >= 5) {
                 borderClass = styles.medium;
               } else {
                 borderClass = styles.low;

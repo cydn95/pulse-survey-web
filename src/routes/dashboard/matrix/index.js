@@ -4,10 +4,9 @@ import { connect } from "react-redux";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Chip from "@material-ui/core/Chip";
+import ReactLoading from "react-loading";
 
-import {
-  getAverage,
-} from "Util/Utils";
+import { getAverage } from "Util/Utils";
 
 import {
   driverList,
@@ -15,25 +14,16 @@ import {
   shgroupList,
   myMatrixReport,
   projectMatrixReport,
-  overallSentiment,
   topPositiveNegative,
-  feedbackSummary,
-  participation,
   wordcloud,
   bubbleChart,
 } from "Redux/actions";
 
-import { randomFloat } from "Util/Utils";
-
 import BubbleChart from "Components/report/BubbleChart";
-import WordCloud from "Components/report/WordCloud";
-import Perception from "Components/report/Perception";
-import TopSummary from "Components/report/TopSummary";
 import TopNav from "Containers/TopNav";
 
 import styles from "./styles.scss";
 import classnames from "classnames";
-import { group } from "d3";
 
 const TAB_MY_MATRIX = 1;
 const TAB_PROJECT_MATRIX = 2;
@@ -82,15 +72,12 @@ const ReportMatrix = ({
   surveyUserId,
   teamList,
   shgroupList,
-  actionGetDriverList,
   actionGetShGroupList,
   actionGetTeamList,
-  actionTopPositiveNegative,
-  actionWordCloud,
-  actionBubbleChart,
   actionMyMatrixReport,
-  actionProjectMatrixReport
+  actionProjectMatrixReport,
 }) => {
+  const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState(TAB_MY_MATRIX);
 
   const [reportData, setReportData] = useState(null);
@@ -107,11 +94,9 @@ const ReportMatrix = ({
   const [filterTeam, setFilterTeam] = useState([]);
   const [filterOrganization, setFilterOrganization] = useState([]);
 
-  const [bubbleChartData, setBubbleChartData] = useState([]);
-
-  const [chartWidth, setChartWidth] = useState(100);
-
   const callbackMatrix = (data) => {
+    setLoading(false);
+
     const tempDriverList = [];
     const tempOrganizationList = [];
 
@@ -144,22 +129,24 @@ const ReportMatrix = ({
   };
 
   useEffect(() => {
+    setLoading(true);
     if (tab === TAB_MY_MATRIX) {
       actionMyMatrixReport(surveyId, surveyUserId, callbackMatrix);
     } else {
       actionProjectMatrixReport(surveyId, surveyUserId, callbackMatrix);
     }
-  }, [tab, surveyId, surveyUserId, actionMyMatrixReport, actionProjectMatrixReport])
-  useEffect(() => {
+  }, [
+    tab,
+    surveyId,
+    surveyUserId,
+    actionMyMatrixReport,
+    actionProjectMatrixReport,
+  ]);
 
+  useEffect(() => {
     actionGetTeamList(projectId, surveyId);
     actionGetShGroupList(surveyId);
-  }, [
-    actionGetTeamList,
-    actionGetShGroupList,
-    projectId,
-    surveyId
-  ]);
+  }, [actionGetTeamList, actionGetShGroupList, projectId, surveyId]);
 
   const filteredReportData = useMemo(() => {
     if (!reportData) return null;
@@ -173,19 +160,30 @@ const ReportMatrix = ({
       const aoResponse = data.aoResponseData[0];
 
       if (filterGroup.length > 0) {
-        if (!aoResponse.projectUser.shGroup || !filterGroup.includes(aoResponse.projectUser.shGroup.id)) {
+        if (
+          !aoResponse.projectUser.shGroup ||
+          !filterGroup.includes(aoResponse.projectUser.shGroup.id)
+        ) {
           continue;
         }
       }
 
       if (filterTeam.length > 0) {
-        if (!aoResponse.projectUser.team || !filterTeam.includes(aoResponse.projectUser.team.id)) {
+        if (
+          !aoResponse.projectUser.team ||
+          !filterTeam.includes(aoResponse.projectUser.team.id)
+        ) {
           continue;
         }
       }
 
       if (filterOrganization > 0) {
-        if (!aoResponse.projectUser.user.organization || !filterOrganization.includes(aoResponse.projectUser.user.organization.id)) {
+        if (
+          !aoResponse.projectUser.user.organization ||
+          !filterOrganization.includes(
+            aoResponse.projectUser.user.organization.id
+          )
+        ) {
           continue;
         }
       }
@@ -196,22 +194,22 @@ const ReportMatrix = ({
       let info = {
         id: aoResponse.projectUser.user.id,
         name: `${aoResponse.projectUser.user.first_name} ${aoResponse.projectUser.user.last_name}`,
-      }
+      };
 
       if (groupBy === GROUP_BY_SHGROUP) {
         info = {
           id: aoResponse.projectUser.shGroup.id,
-          name: aoResponse.projectUser.shGroup.SHGroupName
+          name: aoResponse.projectUser.shGroup.SHGroupName,
         };
       } else if (groupBy === GROUP_BY_TEAM) {
         info = {
           id: aoResponse.projectUser.team.id,
-          name: aoResponse.projectUser.team.name
+          name: aoResponse.projectUser.team.name,
         };
       } else if (groupBy === GROUP_BY_ORG) {
         info = {
           id: aoResponse.projectUser.user.organization.id,
-          name: aoResponse.projectUser.user.organization.name
+          name: aoResponse.projectUser.user.organization.name,
         };
       }
 
@@ -221,15 +219,15 @@ const ReportMatrix = ({
         } else {
           tempData[`id_${info.id}`][driverName] = {
             values: [integerValue],
-          }
+          };
         }
       } else {
         tempData[`id_${info.id}`] = {
           name: info.name,
           [driverName]: {
-            values: [integerValue]
-          }
-        }
+            values: [integerValue],
+          },
+        };
       }
     }
 
@@ -239,19 +237,34 @@ const ReportMatrix = ({
     const ret = [];
     Object.keys(tempData).forEach((key) => {
       const data = tempData[key];
-      if (horizontal in data && vertical in data && size in data && color in data) {
+      if (
+        horizontal in data &&
+        vertical in data &&
+        size in data &&
+        color in data
+      ) {
         ret.push({
           x: getAverage(data[horizontal].values) / 10,
           y: getAverage(data[vertical].values) / 10,
           size: getAverage(data[size].values),
           color: Math.floor(getAverage(data[color].values) / 10),
-          text: data.name
+          text: data.name,
         });
       }
-    })
+    });
 
     return ret;
-  }, [reportData, horizontal, vertical, size, color, groupBy, filterGroup, filterTeam, filterOrganization])
+  }, [
+    reportData,
+    horizontal,
+    vertical,
+    size,
+    color,
+    groupBy,
+    filterGroup,
+    filterTeam,
+    filterOrganization,
+  ]);
 
   const handleSelectFilterGroup = (id) => {
     const tempList = [...filterGroup];
@@ -288,6 +301,7 @@ const ReportMatrix = ({
 
     setFilterOrganization(tempList);
   };
+
   return (
     <div className={styles.root}>
       <div className={styles.topbar}>
@@ -321,7 +335,21 @@ const ReportMatrix = ({
             </div>
           </div>
           <div className={styles["content-chart-content"]}>
-            {filteredReportData && <BubbleChart data={filteredReportData} x={horizontal} y={vertical}/>}
+            {loading ? (
+              <ReactLoading
+                className={styles["content-chart-loading"]}
+                type={"bars"}
+                color={"grey"}
+              />
+            ) : (
+              filteredReportData && (
+                <BubbleChart
+                  data={filteredReportData}
+                  x={horizontal}
+                  y={vertical}
+                />
+              )
+            )}
           </div>
         </div>
         <div className={styles["content-control"]}>

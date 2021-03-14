@@ -8,15 +8,15 @@ const Emoji = ({ satisfaction }) => {
 
   if (satisfaction === -1) {
     emoji = "/assets/img/emoji/flat.png";
-  } else if (satisfaction <= 40) {
+  } else if (satisfaction <= 4) {
     emoji = "/assets/img/emoji/angry.png";
-  } else if (satisfaction > 40 && satisfaction <= 50) {
+  } else if (satisfaction > 4 && satisfaction <= 5) {
     emoji = "/assets/img/emoji/worry.png";
-  } else if (satisfaction > 50 && satisfaction <= 60) {
+  } else if (satisfaction > 5 && satisfaction <= 6) {
     emoji = "/assets/img/emoji/flat.png";
-  } else if (satisfaction > 60 && satisfaction <= 70) {
+  } else if (satisfaction > 6 && satisfaction <= 7) {
     emoji = "/assets/img/emoji/smile.png";
-  } else if (satisfaction > 70 && satisfaction <= 80) {
+  } else if (satisfaction > 7 && satisfaction <= 8) {
     emoji = "/assets/img/emoji/laugh.png";
   } else {
     emoji = "/assets/img/emoji/satisfy.png";
@@ -31,7 +31,7 @@ const Emoji = ({ satisfaction }) => {
   return (
     <div className={styles["emoji-root"]} style={rootStyle}>
       {satisfaction !== -1 && (
-        <div className={styles.percentage}>{satisfaction}%</div>
+        <div className={styles.percentage}>{satisfaction}</div>
       )}
     </div>
   );

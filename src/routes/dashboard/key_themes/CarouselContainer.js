@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import ReactLoading from "react-loading";
 
 import KeyThemesCarousel from "Components/report/KeyThemes/Carousel";
 
@@ -9,7 +10,6 @@ import {
   textValueReport,
   getAcknowledgementReport,
   setAcknowledgementReport,
-  // actionSetAcknowledgementReport,
 } from "Redux/actions";
 
 const CarouselContainer = ({
@@ -18,16 +18,42 @@ const CarouselContainer = ({
   actionTextValue,
   surveyId,
   surveyUserId,
-  // actionGetAcknowledgement,
   actionSetAcknowledgementReport,
 }) => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState([]);
+
+  const [flagPanelOpen, setFlagPanelOpen] = useState(false);
+  const [ackPanelOpen, setAckPanelOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(0);
+
+  const handleToggleFlag = (id) => {
+    setAckPanelOpen(false);
+    if (id !== selectedId) {
+      setSelectedId(id);
+      setFlagPanelOpen(true)
+    } else {
+      setFlagPanelOpen(!flagPanelOpen);
+    }
+  }
+
+  const handleToggleAck = (id) => {
+    setFlagPanelOpen(false);
+    if (id !== selectedId) {
+      setSelectedId(id);
+      setAckPanelOpen(true);
+    } else {
+      setAckPanelOpen(!ackPanelOpen)
+    }
+  }
 
   const callback = (res) => {
+    setLoading(false);
     setData(res);
   };
 
   useEffect(() => {
+    setLoading(true);
     actionTextValue(surveyId, tab, surveyUserId, callback);
   }, [tab, actionTextValue, surveyId, surveyUserId]);
 
@@ -82,25 +108,41 @@ const CarouselContainer = ({
   return (
     <div className={styles["keythemes-content-wrapper"]}>
       <div className={styles["keythemes-content-title"]}>{label}</div>
-      <div className={styles["keythemes-content"]}>
-        {data.length > 0 &&
-          data.map((d) => {
-            if (d.topicValue === "") return null;
+      {loading ? (
+        <ReactLoading
+          className={styles["keythemes-content-loading"]}
+          type={"bars"}
+          color={"grey"}
+        />
+      ) : (
+        <div className={styles["keythemes-content"]}>
+          {data.length > 0 ? (
+            data.map((d) => {
+              if (d.topicValue === "") return null;
 
-            return (
-              <KeyThemesCarousel
-                data={d}
-                responseId={d.id}
-                key={`keytheme_carousel_${d.id}`}
-                text={d.topicValue}
-                value={d.integerValue}
-                onAck={(value) => handleAck(d, value)}
-                onFlag={(value) => handleFlag(d, value)}
-                onLike={(value) => handleLike(d, value)}
-              />
-            );
-          })}
-      </div>
+              return (
+                <KeyThemesCarousel
+                  data={d}
+                  responseId={d.id}
+                  key={`keytheme_carousel_${d.id}`}
+                  text={d.topicValue}
+                  value={d.integerValue}
+                  onAck={(value) => handleAck(d, value)}
+                  onFlag={(value) => handleFlag(d, value)}
+                  onLike={(value) => handleLike(d, value)}
+                  flagPanelOpen={flagPanelOpen}
+                  ackPanelOpen={ackPanelOpen}
+                  onToggleFlag={() => handleToggleFlag(d.id)}
+                  onToggleAck={() => handleToggleAck(d.id)}
+                  selectedId={selectedId}
+                />
+              );
+            })
+          ) : (
+            <h2 className={styles["keythemes-content-nodata"]}>No Data</h2>
+          )}
+        </div>
+      )}
     </div>
   );
 };
