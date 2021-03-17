@@ -103,6 +103,10 @@
     width: 100px;
     align-items: center;
 
+    div {
+      display: flex;
+      align-items: center;
+    }
     img {
       height: 24px;
       width: 24px;

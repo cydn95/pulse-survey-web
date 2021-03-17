@@ -30,21 +30,18 @@ export const getResultForSHGroup = (shGroupList, result) => {
           ) {
             cnt++;
             sum += data.integerValue;
-            console.log(data.updated_at.split("-"));
-            console.log(data.integerValue);
             const dateStr = data.updated_at.split("-");
             const dateKey = dateStr[0] + "-" + dateStr[1];
 
             if (dateKey in trend) {
               trend[dateKey].push(data.integerValue);
             } else {
-              trend[dateKey] = [];
+              trend[dateKey] = [data.integerValue];
             }
           }
         });
       });
 
-      console.log('all trend', trend);
       const newTrend = [];
 
       Object.keys(trend).forEach((t, index) => {

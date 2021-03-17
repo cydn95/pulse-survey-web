@@ -81,9 +81,22 @@ const KeyThemesCarousel = ({
                     (!ackPanelOpen && selectedId === data.id),
                 })}
               >
-                {Object.keys(ack).map((key) => (
-                  <div className={styles["ack-panel-item"]} key={`ack_img_${key}`}>
-                    <img src={ack[key].img} onClick={(e) => onAck(key)} />
+                {Object.keys(ack).map((key, index) => (
+                  <div
+                    className={styles["ack-panel-item"]}
+                    key={`ack_img_${key}`}
+                    onClick={(e) => onAck(key)} 
+                  >
+                    <div>
+                      <img src={ack[key].img}/>
+                      <small>
+                        {index === 0 && `${data.thanksForSharingCount}`}
+                        {index === 1 && `${data.greatIdeaCount}`}
+                        {index === 2 && `${data.workingOnItCount}`}
+                        {index === 3 && `${data.loveToTalkCount}`}
+                        {index === 4 && `${data.agreeCount}`}
+                      </small>
+                    </div>
                     <span>{ack[key].title}</span>
                   </div>
                 ))}
@@ -111,9 +124,22 @@ const KeyThemesCarousel = ({
                     (!flagPanelOpen && selectedId === data.id),
                 })}
               >
-                {Object.keys(flag).map((key) => (
-                  <div className={styles["ack-panel-item"]} key={`flag_img_${key}`}>
-                    <img src={flag[key].img} onClick={(e) => onFlag(key)} />
+                {Object.keys(flag).map((key, index) => (
+                  <div
+                    className={styles["ack-panel-item"]}
+                    key={`flag_img_${key}`}
+                    onClick={(e) => onFlag(key)}
+                  >
+                    <div>
+                      <img src={flag[key].img} />
+                      <small>
+                        {index === 0 && `${data.individualCount}`}
+                        {index === 1 && `${data.commenterCount}`}
+                        {index === 2 && `${data.nonConstructiveCount}`}
+                        {index === 3 && `${data.outOfPolicyCount}`}
+                        {index === 4 && `${data.aggressiveCount}`}
+                      </small>
+                    </div>
                     <span>{flag[key].title}</span>
                   </div>
                 ))}
