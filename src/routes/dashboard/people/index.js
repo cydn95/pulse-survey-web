@@ -41,9 +41,19 @@ const participationCategories = [
   },
 ];
 
+const FEEDBACK_SUMMARY_SHGROUP = "ShGroup";
+const FEEDBACK_SUMMARY_TEAM = "Team";
+const FEEDBACK_SUMMARY_ORGANIZATION = "Organization";
+
+const FEEDBACK_SUMMARY_TYPE = [
+  FEEDBACK_SUMMARY_SHGROUP,
+  FEEDBACK_SUMMARY_TEAM,
+  FEEDBACK_SUMMARY_ORGANIZATION,
+];
+
 class ReportPeople extends React.Component {
   state = {
-    overallSentiment: -1,
+    overallSentiment: 0,
     topPositives: [],
     topNegatives: [],
     feedbackSummary: {
@@ -59,8 +69,32 @@ class ReportPeople extends React.Component {
     teamParticipationResult: [],
     participationCount: 0,
     teamParticipationCount: 0,
+    feedbackSummaryType: FEEDBACK_SUMMARY_SHGROUP,
+    teamList: [],
+    organizationList: [],
   };
 
+  callbackFeedbackSummary = (
+    feedbackSummaryRet,
+    cultureRet,
+    sentimentRet,
+    sentimentKey,
+    overallTrendRet,
+    overallTrendKey,
+    teamList,
+    organizationList
+  ) => {
+    this.setState({
+      feedbackSummary: feedbackSummaryRet,
+      cultureResult: cultureRet,
+      sentimentResult: sentimentRet,
+      sentimentKey: sentimentKey,
+      overallTrendResult: overallTrendRet,
+      overallTrendKey: overallTrendKey,
+      teamList,
+      organizationList,
+    });
+  };
   componentDidMount() {
     const {
       surveyId,
@@ -90,26 +124,8 @@ class ReportPeople extends React.Component {
       actionFeedbackSummary(
         surveyId,
         surveyUserId,
-        (
-          feedbackSummaryRet,
-          cultureRet,
-          sentimentRet,
-          sentimentKey,
-          overallTrendRet,
-          overallTrendKey
-        ) => {
-          // console.log(feedbackSummaryRet);
-          console.log(overallTrendRet);
-          console.log(overallTrendKey);
-          this.setState({
-            feedbackSummary: feedbackSummaryRet,
-            cultureResult: cultureRet,
-            sentimentResult: sentimentRet,
-            sentimentKey: sentimentKey,
-            overallTrendResult: overallTrendRet,
-            overallTrendKey: overallTrendKey,
-          });
-        }
+        FEEDBACK_SUMMARY_SHGROUP,
+        this.callbackFeedbackSummary
       );
 
       actionParticipation(
@@ -130,6 +146,17 @@ class ReportPeople extends React.Component {
       );
     }
   }
+
+  hanleChangeFeedbackSummaryGraph = (type) => {
+    const { surveyId, surveyUserId, actionFeedbackSummary } = this.props;
+
+    actionFeedbackSummary(
+      surveyId,
+      surveyUserId,
+      type,
+      this.callbackFeedbackSummary
+    );
+  };
 
   render() {
     const { history, projectTitle } = this.props;
@@ -222,6 +249,16 @@ class ReportPeople extends React.Component {
               <div className={styles.block} style={{ width: "100%" }}>
                 <span className={styles["block__title"]}>Feedback Summary</span>
                 <div className={styles.content} style={{ width: "100%" }}>
+                  {FEEDBACK_SUMMARY_TYPE.map((d) => (
+                    <button
+                      key={`feedback-summary-${d}`}
+                      onClick={(e) => this.hanleChangeFeedbackSummaryGraph(d)}
+                    >
+                      {d}
+                    </button>
+                  ))}
+                </div>
+                <div className={styles.content} style={{ width: "100%" }}>
                   <FeedbackSummary data={feedbackSummary} />
                 </div>
               </div>
@@ -279,7 +316,7 @@ const mapStateToProps = ({ authUser }) => {
   return {
     projectTitle,
     surveyId,
-    surveyUserId
+    surveyUserId,
   };
 };
 

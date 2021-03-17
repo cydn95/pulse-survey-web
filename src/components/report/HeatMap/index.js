@@ -27,6 +27,7 @@ const getColor = (val) => {
 };
 
 const HeatMap = ({ data, chartWidth }) => {
+  console.log(data);
   const colP = useMemo(() => {
     if (Object.keys(data).length > 0) {
       return 100 / (data[Object.keys(data)[0]].length + 1);

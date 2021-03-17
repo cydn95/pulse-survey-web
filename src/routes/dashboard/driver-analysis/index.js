@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { connect } from "react-redux";
 
+import ReactLoading from "react-loading";
+
 import { engagementTrend } from "Redux/actions";
 
 import HeatMap from "Components/report/HeatMap";
@@ -17,8 +19,10 @@ const ReportDriverAnalysis = ({
   projectTitle,
   actionEngagementTrend,
   surveyId,
-  surveyUserId
+  surveyUserId,
 }) => {
+  const [loading, setLoading] = useState(false);
+
   const [chartWidth, setChartWidth] = useState(100);
 
   const [driverName, setDriverName] = useState("Engagement");
@@ -29,12 +33,21 @@ const ReportDriverAnalysis = ({
   });
 
   useEffect(() => {
-    setEngagementData({ [driverName]: [] })
-    actionEngagementTrend(chartType, driverName, surveyId, surveyUserId, "", "", callback);
+    setLoading(true);
+    setEngagementData({ [driverName]: [] });
+    actionEngagementTrend(
+      chartType,
+      driverName,
+      surveyId,
+      surveyUserId,
+      "",
+      "",
+      callback
+    );
   }, [surveyId, surveyUserId, actionEngagementTrend, driverName, chartType]);
 
   const callback = (ret) => {
-    // console.log(ret);
+    setLoading(false);
     setEngagementData({ ...ret });
   };
 
@@ -48,45 +61,85 @@ const ReportDriverAnalysis = ({
           </div>
         </TopNav>
       </div>
+      <div className={styles["main-content"]}>
+        <p>
+          <button onClick={(e) => setChartType("SHGroup")}>SHGroup</button>
+          {` `}
+          <button onClick={(e) => setChartType("Team")}>Team</button>
+          {` `}
+          <button onClick={(e) => setChartType("Organization")}>
+            Organization
+          </button>
+          {` `}
+          <br />
+          <button onClick={(e) => setDriverName("Engagement")}>
+            Engagement
+          </button>
+          {` `}
+          <button onClick={(e) => setDriverName("Culture")}>Culture</button>
+          {` `}
+          <button onClick={(e) => setDriverName("Sentiment")}>Sentiment</button>
+          {` `}
+          <button onClick={(e) => setDriverName("Interest")}>Interest</button>
+          {` `}
+          <button onClick={(e) => setDriverName("Confidence")}>
+            Confidence
+          </button>
+          {` `}
+          <button onClick={(e) => setDriverName("Relationships")}>
+            Relationships
+          </button>
+          {` `}
+          <button onClick={(e) => setDriverName("Improvement")}>
+            Improvement
+          </button>
+        </p>
+      </div>
       <div
         className={styles["main-content"]}
         ref={(el) => {
           if (!el) return;
 
-          const keyData = driverName in engagementData ? engagementData[driverName] : [];
-          const width = keyData.length === 0 ? 0 : (el.getBoundingClientRect().width - 40) / (keyData.length + 1) - 10;
+          const keyData =
+            driverName in engagementData ? engagementData[driverName] : [];
+          const width =
+            keyData.length === 0
+              ? 0
+              : (el.getBoundingClientRect().width - 40) / (keyData.length + 1) -
+                10;
           setChartWidth(width);
         }}
       >
-        <p>
-          <button onClick={(e) => setChartType('SHGroup')}>SHGroup</button>{` `}
-          <button onClick={(e) => setChartType('Team')}>Team</button>{` `}
-          <button onClick={(e) => setChartType('Organization')}>Organization</button>{` `}
-          <br />
-          <button onClick={(e) => setDriverName('Engagement')}>Engagement</button>{` `}
-          <button onClick={(e) => setDriverName('Culture')}>Culture</button>{` `}
-          <button onClick={(e) => setDriverName('Sentiment')}>Sentiment</button>{` `}
-          <button onClick={(e) => setDriverName('Interest')}>Interest</button>{` `}
-          <button onClick={(e) => setDriverName('Confidence')}>Confidence</button>{` `}
-          <button onClick={(e) => setDriverName('Relationships')}>Relationships</button>{` `}
-          <button onClick={(e) => setDriverName('Improvement')}>Improvement</button>
-        </p>
-        {!isMobile && <HeatMap data={engagementData} chartWidth={chartWidth} />}
-        {isMobile &&
-          Object.keys(engagementData).map((key) => {
-            if (key === driverName || key === "Response Rate") {
-              return null;
-            }
+        <div>
+          {loading ? (
+            <ReactLoading
+              className={styles["keythemes-content-loading"]}
+              type={"bars"}
+              color={"grey"}
+            />
+          ) : (
+            <div>
+              {!isMobile && (
+                <HeatMap data={engagementData} chartWidth={chartWidth} />
+              )}
+              {isMobile &&
+                Object.keys(engagementData).map((key) => {
+                  if (key === driverName || key === "Response Rate") {
+                    return null;
+                  }
 
-            return (
-              <CardMap
-                key={`card-map-${key}`}
-                title={key}
-                data={engagementData[key]}
-                field={engagementData[driverName]}
-              />
-            );
-          })}
+                  return (
+                    <CardMap
+                      key={`card-map-${key}`}
+                      title={key}
+                      data={engagementData[key]}
+                      field={engagementData[driverName]}
+                    />
+                  );
+                })}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

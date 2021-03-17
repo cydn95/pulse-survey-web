@@ -30,7 +30,8 @@ export const getResultForSHGroup = (shGroupList, result) => {
           ) {
             cnt++;
             sum += data.integerValue;
-            // console.log(data.updated_at.split("-"));
+            console.log(data.updated_at.split("-"));
+            console.log(data.integerValue);
             const dateStr = data.updated_at.split("-");
             const dateKey = dateStr[0] + "-" + dateStr[1];
 
@@ -43,6 +44,7 @@ export const getResultForSHGroup = (shGroupList, result) => {
         });
       });
 
+      console.log('all trend', trend);
       const newTrend = [];
 
       Object.keys(trend).forEach((t, index) => {
@@ -184,3 +186,4 @@ export const getResultForOrganization = (organizationList, result) => {
 
   return subDriverRet;
 }
+
