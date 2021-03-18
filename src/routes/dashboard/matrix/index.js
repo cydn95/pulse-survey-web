@@ -195,18 +195,20 @@ const ReportMatrix = ({
         id: aoResponse.projectUser.user.id,
         name: `${aoResponse.projectUser.user.first_name} ${aoResponse.projectUser.user.last_name}`,
       };
-
       if (groupBy === GROUP_BY_SHGROUP) {
+        if (aoResponse.projectUser.shGroup === null) continue;
         info = {
           id: aoResponse.projectUser.shGroup.id,
           name: aoResponse.projectUser.shGroup.SHGroupName,
         };
       } else if (groupBy === GROUP_BY_TEAM) {
+        if (aoResponse.projectUser.team === null) continue;
         info = {
           id: aoResponse.projectUser.team.id,
           name: aoResponse.projectUser.team.name,
         };
       } else if (groupBy === GROUP_BY_ORG) {
+        if (aoResponse.projectUser.user.organization === null) continue;
         info = {
           id: aoResponse.projectUser.user.organization.id,
           name: aoResponse.projectUser.user.organization.name,

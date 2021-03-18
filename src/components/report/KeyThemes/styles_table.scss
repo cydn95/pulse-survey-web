@@ -15,14 +15,76 @@
       display: flex;
       align-items: center;
     }
+
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
   }
   .keythemes-table-content {
     width: 100%;
     margin-top: 5px;
 
+    &-mobile {
+      display: none;
+      border: 1px solid #eee;
+      border-radius: 5px;
+      box-sizing: border-box;
+      padding: 10px;
+      margin-bottom: 10px;
+
+      &-key {
+        font-size: 1.2rem;
+        font-weight: 600;
+        padding-bottom: 16px;
+      }
+
+      &-percent {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      &-barc {
+        flex: 1;
+      }
+
+      &-bar {
+        height: 24px !important;
+        border-radius: 12px;
+        margin-left: 20px;
+      }
+
+      &-action {
+        display: flex;
+        justify-content: space-between;
+        
+        img {
+          height: 24px;
+          width: 20px;
+        }
+      }
+
+      &-vote {
+        display: flex;
+        align-items: center;
+
+        span {
+          padding-left: 10px;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        display: block;
+      }
+    }
+
     &-row {
       width: 100%;
       display: flex;
+
+      @media screen and (max-width: 768px) {
+        display: none;
+      }
     }
 
     &-col {

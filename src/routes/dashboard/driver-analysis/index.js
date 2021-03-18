@@ -110,7 +110,7 @@ const ReportDriverAnalysis = ({
           setChartWidth(width);
         }}
       >
-        <div>
+        <div style={{ width: '100%' }}>
           {loading ? (
             <ReactLoading
               className={styles["keythemes-content-loading"]}
@@ -118,7 +118,7 @@ const ReportDriverAnalysis = ({
               color={"grey"}
             />
           ) : (
-            <div>
+            <div style={{width: '100%'}}>
               {!isMobile && (
                 <HeatMap data={engagementData} chartWidth={chartWidth} />
               )}

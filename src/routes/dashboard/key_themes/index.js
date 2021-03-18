@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+
 import TopNav from "Containers/TopNav";
 
 import styles from "./styles.scss";
@@ -54,7 +57,7 @@ const tabMenu = {
   improvement: {
     label: "Improvement",
     component: (
-      <div style={{width: '100%'}}>
+      <div style={{ width: "100%" }}>
         <TableContainer tab={6} label="Keep / What's Going Well?" />
         <TableContainer tab={7} label="Start" />
         <TableContainer tab={8} label="Change" />
@@ -82,6 +85,19 @@ const ReportKeyThemes = ({ history, projectTitle }) => {
         </TopNav>
       </div>
       <div className={styles["main-content"]}>
+        <div className={styles["keythemes-select-menu"]}>
+          <Select
+            style={{width: '100%'}}
+            value={tab}
+            onChange={(e) => handleSelectTab(e.target.value)}
+          >
+            {Object.keys(tabMenu).map((key) => (
+              <MenuItem key={`keythemes-tab-${key}`} value={key}>
+                {tabMenu[key].label}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
         <div className={styles["keythemes-tab-menu"]}>
           {Object.keys(tabMenu).map((key) => (
             <div

@@ -49,105 +49,112 @@ const KeyThemesCarousel = ({
         src="/assets/img/survey/sentiment-smile.png"
       />
       <div className={styles["content"]}>
-        <p>{text}</p>
-        <div className={styles["content-slider-wrapper"]}>
-          <div className={styles["content-icons"]}>
-            <div className={styles["content-icon"]} onClick={(e) => onLike(1)}>
-              <span className={styles["content-icon-title"]}>Like</span>
-              <img src="/assets/img/survey/like2.png" height="20" />
-              <span className={styles["content-icon-desc"]}>
-                {data.likeCount}
-              </span>
-            </div>
-            <div className={styles["content-icon"]}>
-              <span
-                className={styles["content-icon-title"]}
-                onClick={(e) => {
-                  onToggleFlag();
-                  onToggleAck();
-                }}
-              >
-                Acknowledge
-              </span>
-              <img
-                src="/assets/img/survey/star.png"
-                height="20"
-                onClick={(e) => onToggleAck()}
-              />
-              <div
-                className={classnames(styles["acknowledge-panel"], {
-                  [styles.hide]:
-                    selectedId !== data.id ||
-                    (!ackPanelOpen && selectedId === data.id),
-                })}
-              >
-                {Object.keys(ack).map((key, index) => (
-                  <div
-                    className={styles["ack-panel-item"]}
-                    key={`ack_img_${key}`}
-                    onClick={(e) => onAck(key)} 
-                  >
-                    <div>
-                      <img src={ack[key].img}/>
-                      <small>
-                        {index === 0 && `${data.thanksForSharingCount}`}
-                        {index === 1 && `${data.greatIdeaCount}`}
-                        {index === 2 && `${data.workingOnItCount}`}
-                        {index === 3 && `${data.loveToTalkCount}`}
-                        {index === 4 && `${data.agreeCount}`}
-                      </small>
-                    </div>
-                    <span>{ack[key].title}</span>
-                  </div>
-                ))}
+        <div className={styles["content-a"]}>
+          <p>{text}</p>
+          <div className={styles["content-slider-wrapper"]}>
+            <div className={styles["content-icons"]}>
+              <div className={styles["content-icon"]} onClick={(e) => onLike(1)}>
+                <span className={styles["content-icon-title"]}>Like</span>
+                <img src="/assets/img/survey/like2.png" height="20" />
+                <span className={styles["content-icon-desc"]}>
+                  {data.likeCount}
+                </span>
               </div>
-            </div>
-            <div className={styles["content-icon"]}>
-              <span
-                className={styles["content-icon-title"]}
-                onClick={(e) => {
-                  onToggleAck();
-                  onToggleFlag();
-                }}
-              >
-                Flag
-              </span>
-              <img
-                src="/assets/img/survey/flag.png"
-                height="20"
-                onClick={(e) => onToggleFlag()}
-              />
-              <div
-                className={classnames(styles["flag-panel"], {
-                  [styles.hide]:
-                    selectedId !== data.id ||
-                    (!flagPanelOpen && selectedId === data.id),
-                })}
-              >
-                {Object.keys(flag).map((key, index) => (
-                  <div
-                    className={styles["ack-panel-item"]}
-                    key={`flag_img_${key}`}
-                    onClick={(e) => onFlag(key)}
-                  >
-                    <div>
-                      <img src={flag[key].img} />
-                      <small>
-                        {index === 0 && `${data.individualCount}`}
-                        {index === 1 && `${data.commenterCount}`}
-                        {index === 2 && `${data.nonConstructiveCount}`}
-                        {index === 3 && `${data.outOfPolicyCount}`}
-                        {index === 4 && `${data.aggressiveCount}`}
-                      </small>
-                    </div>
-                    <span>{flag[key].title}</span>
-                  </div>
-                ))}
+              <div className={styles["content-icon"]}>
+                <span
+                  className={styles["content-icon-title"]}
+                  onClick={(e) => {
+                    onToggleFlag();
+                    onToggleAck();
+                  }}
+                >
+                  Acknowledge
+                </span>
+                <img
+                  src="/assets/img/survey/star.png"
+                  height="20"
+                  onClick={(e) => onToggleAck()}
+                />
+              </div>
+              <div className={styles["content-icon"]}>
+                <span
+                  className={styles["content-icon-title"]}
+                  onClick={(e) => {
+                    onToggleAck();
+                    onToggleFlag();
+                  }}
+                >
+                  Flag
+                </span>
+                <img
+                  src="/assets/img/survey/flag.png"
+                  height="20"
+                  onClick={(e) => onToggleFlag()}
+                />
               </div>
             </div>
           </div>
         </div>
+        <div className={styles["content-b"]}>
+          <div
+            className={classnames(styles["acknowledge-panel"], {
+              [styles.hide]:
+                selectedId !== data.id ||
+                (!ackPanelOpen && selectedId === data.id),
+            })}
+          >
+            {Object.keys(ack).map((key, index) => (
+              <div
+                className={styles["ack-panel-item"]}
+                key={`ack_img_${key}`}
+                onClick={(e) => onAck(key)}
+              >
+                <div>
+                  <img src={ack[key].img} />
+                  <small>
+                    {index === 0 && `${data.thanksForSharingCount}`}
+                    {index === 1 && `${data.greatIdeaCount}`}
+                    {index === 2 && `${data.workingOnItCount}`}
+                    {index === 3 && `${data.loveToTalkCount}`}
+                    {index === 4 && `${data.agreeCount}`}
+                  </small>
+                </div>
+                <span>{ack[key].title}</span>
+              </div>
+            ))}
+          </div>
+
+          <div
+            className={classnames(styles["flag-panel"], {
+              [styles.hide]:
+                selectedId !== data.id ||
+                (!flagPanelOpen && selectedId === data.id),
+            })}
+          >
+            {Object.keys(flag).map((key, index) => (
+              <div
+                className={styles["ack-panel-item"]}
+                key={`flag_img_${key}`}
+                onClick={(e) => onFlag(key)}
+              >
+                <div>
+                  <img src={flag[key].img} />
+                  <small>
+                    {index === 0 && `${data.individualCount}`}
+                    {index === 1 && `${data.commenterCount}`}
+                    {index === 2 && `${data.nonConstructiveCount}`}
+                    {index === 3 && `${data.outOfPolicyCount}`}
+                    {index === 4 && `${data.aggressiveCount}`}
+                  </small>
+                </div>
+                <span>{flag[key].title}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
+
+
     </div>
   );
 };

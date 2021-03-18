@@ -13,6 +13,11 @@
   .emoji {
     width: 100px;
     height: 100px;
+
+    @media screen and (max-width: 768px) {
+      width: 50px;
+      height: 50px;
+    }
   }
 
   .content {
@@ -22,6 +27,12 @@
     flex-direction: column;
     justify-content: center;
     align-content: center;
+  }
+
+  .content-b {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
   }
 
   .content-slider-wrapper {
@@ -56,13 +67,21 @@
 
   .acknowledge-panel {
     position: absolute;
-    margin-top: 150px;
-    margin-left: -200px;
+    margin-top: 20px;
+    // margin-left: 00px;
     display: flex;
     background: #fff;
     border: 1px solid #eee; 
     height: 90px;
     border-radius: 4px;
+
+    @media screen and (max-width: 768px) {
+      position: relative;
+      margin-top: 20px;
+      margin-left: 0px;
+      width: 100%;
+      border: none;
+    }
 
     &.hide {
       display: none;
@@ -78,13 +97,21 @@
   .flag-panel {
     position: absolute;
     height: 50px;
-    margin-top: 160px;
-    margin-left: -350px;
+    margin-top: 20px;
+    // margin-left: -350px;
     display: flex;
     background: #fff;
     border: 1px solid #eee;
     height: 110px;
     border-radius: 4px;
+
+    @media screen and (max-width: 768px) {
+      position: relative;
+      margin-top: 20px;
+      margin-left: 0px;
+      width: 100%;
+      border: none;
+    }
 
     &.hide {
       display: none;
