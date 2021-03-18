@@ -116,3 +116,43 @@ export const getRandomSubArray = (arr, n) => {
   }
   return result;
 }
+
+// export const getColorFromValue = (val) => {
+//   if (val < 2.5) {
+//     return '#a9709c';
+//   } else if (val < 4) {
+//     return '#8a86b8';
+//   } else if (val < 5) {
+//     return '#838db8';
+//   } else if (val < 6) {
+//     return '#60adb6';
+//   } else if (val < 7) {
+//     return '#52bab5';
+//   } else if (val < 8) {
+//     return '#62bea3';
+//   } else if (val < 9) {
+//     return '#75c290';
+//   } else {
+//     return '#87c67d';
+//   }
+// }
+
+export const getColorFromValue = (val) => {
+  if (val < 2.5) {
+    return '#a9709c';
+  } else if (val < 4) {
+    return '#8a86b8';
+  } else if (val < 5) {
+    return '#838db8';
+  } else if (val < 6) {
+    return '#2b5770';
+  } else if (val < 7) {
+    return '#a0409d';
+  } else if (val < 8) {
+    return '#aa984b';
+  } else if (val < 9) {
+    return '#66931f';
+  } else {
+    return '#14b0bf';
+  }
+}

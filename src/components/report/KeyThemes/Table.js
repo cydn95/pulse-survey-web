@@ -1,18 +1,21 @@
 import React from "react";
 
+import { getColorFromValue } from "Util/Utils";
+
 import classnames from "classnames";
 import styles from "./styles_table.scss";
 
 const PercentBar = ({ value }) => {
+  const bg = getColorFromValue(value * 2);
   return (
     <div
-      style={{ width: `${value}%` }}
+      style={{ width: `${value * 10}%`, background: bg }}
       className={styles["keythemes-table-percent-bar"]}
     ></div>
   );
 };
 
-const KeyThemesTable = ({ title = "", data = [], className }) => {
+const KeyThemesTable = ({ title = "", data = [], onVote, className }) => {
   return (
     <div className={classnames(styles["keythemes-table-root"], className)}>
       <div className={styles["keythemes-table-header"]}>
@@ -55,7 +58,7 @@ const KeyThemesTable = ({ title = "", data = [], className }) => {
                 [styles.even]: index % 2 === 0,
               })}
             >
-              <img src="/assets/img/survey/like.png" width="16" />
+              <img src="/assets/img/survey/like.png" width="16" onClick={(e) => onVote(d.key, 1)}/>
               {d.upvoteCount}
             </div>
             <div
@@ -64,7 +67,7 @@ const KeyThemesTable = ({ title = "", data = [], className }) => {
                 [styles.even]: index % 2 === 0,
               })}
             >
-              <img src="/assets/img/survey/dislike.png" width="16" />
+              <img src="/assets/img/survey/dislike.png" width="16" onClick={(e) => onVote(d.key, -1)}/>
               {d.downvoteCount}
             </div>
           </div>

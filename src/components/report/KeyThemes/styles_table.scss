@@ -36,20 +36,21 @@
 
       img {
         margin-right: 12px;
+        cursor: pointer;
       }
 
       &.odd {
-        background: #62bea3;
+        background: #eef0ef;
       }
 
       &.even {
-        background: #75c290;
+        background: #badbd2;
       }
     }
   }
 
   .keythemes-table-percent-bar {
     height: 12px;
-    background: #a9709c;
+    background: #4a66ac;
   }
 }

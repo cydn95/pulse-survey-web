@@ -12,7 +12,8 @@ import {
   REPORT_PROJECT_MATRIX,
   REPORT_TEXT_VALUE,
   REPORT_GET_ACKNOWLEDGEMENT,
-  REPORT_SET_ACKNOWLEDGEMENT
+  REPORT_SET_ACKNOWLEDGEMENT,
+  REPORT_VOTE_KEYTHEME
 } from "Constants/actionTypes";
 
 export const overallSentiment = (surveyId, callback) => ({
@@ -83,4 +84,9 @@ export const getAcknowledgementReport = (responseId, projectUserId, callback) =>
 export const setAcknowledgementReport = (responseId, data, callback) => ({
   type: REPORT_SET_ACKNOWLEDGEMENT,
   payload: { responseId, data, callback }
+});
+
+export const voteKeyThemeReport = (key, vote, projectUserId, callback) => ({
+  type: REPORT_VOTE_KEYTHEME,
+  payload: {key, vote, projectUserId, callback}
 });

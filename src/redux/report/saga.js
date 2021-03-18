@@ -17,6 +17,7 @@ import {
   getAcknowledgementAPI,
   postAcknowledgementAPI,
   updateAcknowledgementAPI,
+  voteKeyThemesAPI
 } from "../../services/axios/api";
 
 import {
@@ -34,6 +35,7 @@ import {
   REPORT_TEXT_VALUE,
   REPORT_GET_ACKNOWLEDGEMENT,
   REPORT_SET_ACKNOWLEDGEMENT,
+  REPORT_VOTE_KEYTHEME
 } from "Constants/actionTypes";
 
 import {
@@ -140,6 +142,11 @@ const postAcknowledgementAsync = async (data) =>
 
 const updateAcknowledgementAsync = async (responseId, data) =>
   await updateAcknowledgementAPI(responseId, data)
+    .then((result) => result)
+    .catch((error) => error);
+
+const voteKeyThemeAsync = async (data) =>
+  await voteKeyThemesAPI(data)
     .then((result) => result)
     .catch((error) => error);
 
@@ -608,6 +615,21 @@ function* setAcknowledgementReport({ payload }) {
   } catch (error) {}
 }
 
+function* voteKeyThemeReport({ payload }) {
+  try {
+    const { key, vote, projectUserId, callback } = payload;
+
+    const data = {
+      keyTheme: key,
+      voteValue: vote,
+      projectUser: projectUserId
+    }
+    yield call(voteKeyThemeAsync, data);
+
+    callback();
+  } catch (error) { }
+}
+
 export function* watchGetOverallSentiment() {
   yield takeEvery(REPORT_OVERALL_SENTIMENT, getOverallSentiment);
 }
@@ -660,6 +682,10 @@ export function* watchSetAcknowledgementReport() {
   yield takeEvery(REPORT_SET_ACKNOWLEDGEMENT, setAcknowledgementReport);
 }
 
+export function* watchVoteKeyThemeReport() {
+  yield takeEvery(REPORT_VOTE_KEYTHEME, voteKeyThemeReport);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetOverallSentiment),
@@ -675,5 +701,6 @@ export default function* rootSaga() {
     fork(watchGetProjectMatrix),
     fork(watchGetTextvalue),
     fork(watchSetAcknowledgementReport),
+    fork(watchVoteKeyThemeReport)
   ]);
 }

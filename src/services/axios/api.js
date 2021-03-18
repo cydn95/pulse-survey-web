@@ -405,6 +405,10 @@ export const updateAcknowledgementAPI = (responseId, data) => {
   return getClient(true).put(`/acknowledgement/${responseId}/`, data)
 }
 
+export const voteKeyThemesAPI = (data) => {
+  return getClient(true).post(`/keythemeupdownvote/`, data)
+}
+
 // const getSentimentReportAPI = (
 //   surveyId,
 //   startDate = "2020-01-01",

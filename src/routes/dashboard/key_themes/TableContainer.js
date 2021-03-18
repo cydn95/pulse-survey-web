@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import ReactLoading from "react-loading";
 
-import { textValueReport } from "Redux/actions";
+import { textValueReport, voteKeyThemeReport } from "Redux/actions";
 import KeyThemesTable from "Components/report/KeyThemes/Table";
 
 import styles from "./styles.scss";
@@ -11,6 +11,7 @@ const TableContainer = ({
   tab,
   label,
   actionTextValue,
+  actionVoteKeyThemeReport,
   surveyId,
   surveyUserId,
 }) => {
@@ -27,6 +28,15 @@ const TableContainer = ({
     actionTextValue(surveyId, tab, surveyUserId, callback);
   }, [tab, actionTextValue, surveyId, surveyUserId]);
 
+  const callbackVote = () => {
+    setLoading(true);
+    actionTextValue(surveyId, tab, surveyUserId, callback);
+  }
+
+  const handleVote = (key, vote) => {
+    actionVoteKeyThemeReport(key, vote, surveyUserId, callbackVote);
+  }
+
   return (
     <div className={styles["keythemes-content-wrapper"]}>
       <div className={styles["keythemes-content-title"]}>{label}</div>
@@ -38,7 +48,7 @@ const TableContainer = ({
             color={"grey"}
           />
         ) : data.length > 0 ? (
-          <KeyThemesTable data={data} />
+          <KeyThemesTable data={data} onVote={handleVote} />
         ) : (
           <h2 className={styles["keythemes-content-nodata"]}>No Data</h2>
         )}
@@ -58,4 +68,5 @@ const mapStateToProps = ({ authUser }) => {
 
 export default connect(mapStateToProps, {
   actionTextValue: textValueReport,
+  actionVoteKeyThemeReport: voteKeyThemeReport
 })(TableContainer);
