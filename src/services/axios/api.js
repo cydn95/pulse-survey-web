@@ -405,8 +405,12 @@ export const updateAcknowledgementAPI = (responseId, data) => {
   return getClient(true).put(`/acknowledgement/${responseId}/`, data)
 }
 
-export const voteKeyThemesAPI = (data) => {
-  return getClient(true).post(`/keythemeupdownvote/`, data)
+export const voteKeyThemesAPI = (id, data) => {
+  if (id === null) {
+    return getClient(true).post(`/keythemeupdownvote/`, data)
+  } else {
+    return getClient(true).put(`/keythemeupdownvote/${id}/`, data)
+  }
 }
 
 // const getSentimentReportAPI = (

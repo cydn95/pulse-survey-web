@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 
 import styles from "./styles_carousel.scss";
 import classnames from "classnames";
@@ -41,6 +41,33 @@ const KeyThemesCarousel = ({
   onToggleAck,
   selectedId,
 }) => {
+  const likeButtonImage = useMemo(() => {
+    if (data.myStatus.length > 0) {
+      if (data.myStatus[0].likeStatus === 1) {
+        return "/assets/img/survey/like2-solid.png";
+      }
+    }
+    return "/assets/img/survey/like2.png";
+  }, [data]);
+
+  const ackButtonImage = useMemo(() => {
+    if (data.myStatus.length > 0) {
+      if (data.myStatus[0].acknowledgeStatus > 0) {
+        return ack[data.myStatus[0].acknowledgeStatus].img;
+      }
+    }
+    return "/assets/img/survey/star.png";
+  }, [data]);
+
+  const flagButtonImage = useMemo(() => {
+    if (data.myStatus.length > 0) {
+      if (data.myStatus[0].flagStatus > 0) {
+        return flag[data.myStatus[0].flagStatus].img;
+      }
+    }
+    return "/assets/img/survey/flag.png";
+  }, [data]);
+
   return (
     <div className={styles["own-words-root"]}>
       <img
@@ -53,9 +80,12 @@ const KeyThemesCarousel = ({
           <p>{text}</p>
           <div className={styles["content-slider-wrapper"]}>
             <div className={styles["content-icons"]}>
-              <div className={styles["content-icon"]} onClick={(e) => onLike(1)}>
+              <div
+                className={styles["content-icon"]}
+                onClick={(e) => onLike(1)}
+              >
                 <span className={styles["content-icon-title"]}>Like</span>
-                <img src="/assets/img/survey/like2.png" height="20" />
+                <img src={likeButtonImage} height="20" />
                 <span className={styles["content-icon-desc"]}>
                   {data.likeCount}
                 </span>
@@ -71,7 +101,7 @@ const KeyThemesCarousel = ({
                   Acknowledge
                 </span>
                 <img
-                  src="/assets/img/survey/star.png"
+                  src={ackButtonImage}
                   height="20"
                   onClick={(e) => onToggleAck()}
                 />
@@ -87,7 +117,7 @@ const KeyThemesCarousel = ({
                   Flag
                 </span>
                 <img
-                  src="/assets/img/survey/flag.png"
+                  src={flagButtonImage}
                   height="20"
                   onClick={(e) => onToggleFlag()}
                 />
@@ -107,7 +137,10 @@ const KeyThemesCarousel = ({
               <div
                 className={styles["ack-panel-item"]}
                 key={`ack_img_${key}`}
-                onClick={(e) => onAck(key)}
+                onClick={(e) => {
+                  onToggleAck();
+                  onAck(key);
+                }}
               >
                 <div>
                   <img src={ack[key].img} />
@@ -135,7 +168,10 @@ const KeyThemesCarousel = ({
               <div
                 className={styles["ack-panel-item"]}
                 key={`flag_img_${key}`}
-                onClick={(e) => onFlag(key)}
+                onClick={(e) => {
+                  onToggleFlag();
+                  onFlag(key);
+                }}
               >
                 <div>
                   <img src={flag[key].img} />
@@ -153,8 +189,6 @@ const KeyThemesCarousel = ({
           </div>
         </div>
       </div>
-
-
     </div>
   );
 };

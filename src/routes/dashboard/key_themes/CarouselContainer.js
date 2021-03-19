@@ -63,10 +63,11 @@ const CarouselContainer = ({
 
   const handleAck = (d, value) => {
     const responseId = d.myStatus.length > 0 ? d.myStatus[0].id : 0;
+    const oldValue = d.myStatus.length > 0 ? d.myStatus[0].acknowledgeStatus : 0;
     const param = {
       amResponse: d.id,
       projectUser: surveyUserId,
-      acknowledgeStatus: Number(value),
+      acknowledgeStatus: Number(oldValue) === Number(value) ? 0 : Number(value),
     };
     if (responseId === 0) {
       param.likeStatus = 0;
@@ -78,10 +79,11 @@ const CarouselContainer = ({
 
   const handleFlag = (d, value) => {
     const responseId = d.myStatus.length > 0 ? d.myStatus[0].id : 0;
+    const oldValue = d.myStatus.length > 0 ? d.myStatus[0].flagStatus : 0;
     const param = {
       amResponse: d.id,
       projectUser: surveyUserId,
-      flagStatus: Number(value),
+      flagStatus: Number(oldValue) === Number(value) ? 0 : Number(value),
     };
     if (responseId === 0) {
       param.likeStatus = 0;
@@ -93,10 +95,11 @@ const CarouselContainer = ({
 
   const handleLike = (d, value) => {
     const responseId = d.myStatus.length > 0 ? d.myStatus[0].id : 0;
+    const oldValue = d.myStatus.length > 0 ? d.myStatus[0].likeStatus : 0;
     const param = {
       amResponse: d.id,
       projectUser: surveyUserId,
-      likeStatus: Number(value),
+      likeStatus: Number(oldValue) === Number(value) ? 0 : Number(value),
     };
     if (responseId === 0) {
       param.flagStatus = 0;

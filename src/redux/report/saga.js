@@ -145,8 +145,8 @@ const updateAcknowledgementAsync = async (responseId, data) =>
     .then((result) => result)
     .catch((error) => error);
 
-const voteKeyThemeAsync = async (data) =>
-  await voteKeyThemesAPI(data)
+const voteKeyThemeAsync = async (voteId, data) =>
+  await voteKeyThemesAPI(voteId, data)
     .then((result) => result)
     .catch((error) => error);
 
@@ -617,14 +617,14 @@ function* setAcknowledgementReport({ payload }) {
 
 function* voteKeyThemeReport({ payload }) {
   try {
-    const { key, vote, projectUserId, callback } = payload;
+    const { key, vote, projectUserId, voteId, callback } = payload;
 
     const data = {
       keyTheme: key,
       voteValue: vote,
       projectUser: projectUserId
     }
-    yield call(voteKeyThemeAsync, data);
+    yield call(voteKeyThemeAsync, voteId, data);
 
     callback();
   } catch (error) { }

@@ -31,83 +31,100 @@ const KeyThemesTable = ({ title = "", data = [], onVote, className }) => {
         </div>
       </div>
       <div className={styles["keythemes-table-content"]}>
-        {data.map((d, index) =>
-          <React.Fragment key={`keythemes-table-${title}-${index}`}>
-            <div className={styles["keythemes-table-content-mobile"]}>
-              <div className={styles["keythemes-table-content-mobile-key"]}>{d.key}</div>
-              <div className={styles["keythemes-table-content-mobile-percent"]}>
-                <span>Frequency</span>
-                <div className={styles["keythemes-table-content-mobile-barc"]}>
-                  <PercentBar className={styles["keythemes-table-content-mobile-bar"]} value={d.freq} />
+        {data.map((d, index) => {
+          const voteValue = d.myStatus.length > 0 ? d.myStatus[0].voteValue : "0";
+          const id = d.myStatus.length > 0 ? d.myStatus[0].id : null;
+          return (
+            <React.Fragment key={`keythemes-table-${title}-${index}`}>
+              <div className={styles["keythemes-table-content-mobile"]}>
+                <div className={styles["keythemes-table-content-mobile-key"]}>
+                  {d.key}
+                </div>
+                <div
+                  className={styles["keythemes-table-content-mobile-percent"]}
+                >
+                  <span>Frequency</span>
+                  <div
+                    className={styles["keythemes-table-content-mobile-barc"]}
+                  >
+                    <PercentBar
+                      className={styles["keythemes-table-content-mobile-bar"]}
+                      value={d.freq}
+                    />
+                  </div>
+                </div>
+                <div
+                  className={styles["keythemes-table-content-mobile-action"]}
+                >
+                  <div
+                    className={styles["keythemes-table-content-mobile-vote"]}
+                  >
+                    <img
+                      src={voteValue == 1 ? "/assets/img/survey/like-solid.png" : "/assets/img/survey/like.png"}
+                      width="16"
+                      onClick={(e) => onVote(d.key, 1, id, voteValue)}
+                    />
+                    <span>{d.upvoteCount}</span>
+                  </div>
+                  <div
+                    className={styles["keythemes-table-content-mobile-vote"]}
+                  >
+                    <img
+                      src={voteValue === -1 ? "/assets/img/survey/dislike-solid.png" : "/assets/img/survey/dislike.png"}
+                      width="16"
+                      onClick={(e) => onVote(d.key, -1, id, voteValue)}
+                    />
+                    <span>{d.downvoteCount}</span>
+                  </div>
                 </div>
               </div>
-              <div className={styles["keythemes-table-content-mobile-action"]}>
-                <div className={styles["keythemes-table-content-mobile-vote"]}>
+              <div className={styles["keythemes-table-content-row"]}>
+                <div
+                  className={classnames(styles["keythemes-table-content-col"], {
+                    [styles.odd]: index % 2 !== 0,
+                    [styles.even]: index % 2 === 0,
+                  })}
+                >
+                  <PercentBar value={d.freq} />
+                </div>
+                <div
+                  className={classnames(styles["keythemes-table-content-col"], {
+                    [styles.odd]: index % 2 !== 0,
+                    [styles.even]: index % 2 === 0,
+                  })}
+                >
+                  {d.key}
+                </div>
+                <div
+                  className={classnames(styles["keythemes-table-content-col"], {
+                    [styles.odd]: index % 2 !== 0,
+                    [styles.even]: index % 2 === 0,
+                  })}
+                >
                   <img
-                    src="/assets/img/survey/like.png"
+                    src={voteValue == 1 ? "/assets/img/survey/like-solid.png" : "/assets/img/survey/like.png"}
                     width="16"
-                    onClick={(e) => onVote(d.key, 1)}
+                    onClick={(e) => onVote(d.key, 1, id, voteValue)}
                   />
-                  <span>{d.upvoteCount}</span>
+                  {d.upvoteCount}
                 </div>
-                <div className={styles["keythemes-table-content-mobile-vote"]}>
+                <div
+                  className={classnames(styles["keythemes-table-content-col"], {
+                    [styles.odd]: index % 2 !== 0,
+                    [styles.even]: index % 2 === 0,
+                  })}
+                >
                   <img
-                    src="/assets/img/survey/dislike.png"
+                    src={voteValue === -1 ? "/assets/img/survey/dislike-solid.png" : "/assets/img/survey/dislike.png"}
                     width="16"
-                    onClick={(e) => onVote(d.key, -1)}
+                    onClick={(e) => onVote(d.key, -1, id, voteValue)}
                   />
-                  <span>{d.downvoteCount}</span>
+                  {d.downvoteCount}
                 </div>
               </div>
-            </div>
-            <div
-              className={styles["keythemes-table-content-row"]}
-            >
-              <div
-                className={classnames(styles["keythemes-table-content-col"], {
-                  [styles.odd]: index % 2 !== 0,
-                  [styles.even]: index % 2 === 0,
-                })}
-              >
-                <PercentBar value={d.freq} />
-              </div>
-              <div
-                className={classnames(styles["keythemes-table-content-col"], {
-                  [styles.odd]: index % 2 !== 0,
-                  [styles.even]: index % 2 === 0,
-                })}
-              >
-                {d.key}
-              </div>
-              <div
-                className={classnames(styles["keythemes-table-content-col"], {
-                  [styles.odd]: index % 2 !== 0,
-                  [styles.even]: index % 2 === 0,
-                })}
-              >
-                <img
-                  src="/assets/img/survey/like.png"
-                  width="16"
-                  onClick={(e) => onVote(d.key, 1)}
-                />
-                {d.upvoteCount}
-              </div>
-              <div
-                className={classnames(styles["keythemes-table-content-col"], {
-                  [styles.odd]: index % 2 !== 0,
-                  [styles.even]: index % 2 === 0,
-                })}
-              >
-                <img
-                  src="/assets/img/survey/dislike.png"
-                  width="16"
-                  onClick={(e) => onVote(d.key, -1)}
-                />
-                {d.downvoteCount}
-              </div>
-            </div>
-          </React.Fragment>
-        )}
+            </React.Fragment>
+          );
+        })}
       </div>
     </div>
   );
