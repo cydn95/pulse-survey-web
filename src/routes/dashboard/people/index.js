@@ -20,6 +20,8 @@ import {
   participation,
 } from "Redux/actions";
 
+import { getFeedbackSummaryByShGroup, getFeedbackSummaryByTeamOrOrganization } from "Redux/report/summaryFunctions";
+
 import TopNav from "Containers/TopNav";
 
 const participationCategories = [
@@ -53,6 +55,7 @@ const FEEDBACK_SUMMARY_TYPE = [
 
 class ReportPeople extends React.Component {
   state = {
+    allData: [],
     overallSentiment: 0,
     topPositives: [],
     topNegatives: [],
@@ -69,22 +72,27 @@ class ReportPeople extends React.Component {
     teamParticipationResult: [],
     participationCount: 0,
     teamParticipationCount: 0,
-    feedbackSummaryType: FEEDBACK_SUMMARY_SHGROUP,
     teamList: [],
     organizationList: [],
+    shGroupList: []
   };
 
   callbackFeedbackSummary = (
-    feedbackSummaryRet,
+    feedbackSummaryResultData,
     cultureRet,
     sentimentRet,
     sentimentKey,
     overallTrendRet,
     overallTrendKey,
     teamList,
-    organizationList
+    organizationList,
+    shGroupList
   ) => {
+
+    const feedbackSummaryRet = getFeedbackSummaryByShGroup(feedbackSummaryResultData, shGroupList);
+
     this.setState({
+      allData: feedbackSummaryResultData,
       feedbackSummary: feedbackSummaryRet,
       cultureResult: cultureRet,
       sentimentResult: sentimentRet,
@@ -93,6 +101,7 @@ class ReportPeople extends React.Component {
       overallTrendKey: overallTrendKey,
       teamList,
       organizationList,
+      shGroupList
     });
   };
   componentDidMount() {
@@ -148,14 +157,16 @@ class ReportPeople extends React.Component {
   }
 
   hanleChangeFeedbackSummaryGraph = (type) => {
-    const { surveyId, surveyUserId, actionFeedbackSummary } = this.props;
+    const { allData, shGroupList } = this.state;
 
-    actionFeedbackSummary(
-      surveyId,
-      surveyUserId,
-      type,
-      this.callbackFeedbackSummary
-    );
+    const feedbackSummaryRet =
+      type === "ShGroup"
+        ? getFeedbackSummaryByShGroup(allData, shGroupList)
+        : getFeedbackSummaryByTeamOrOrganization(allData, type);
+    
+    this.setState({
+      feedbackSummary: feedbackSummaryRet
+    })
   };
 
   render() {

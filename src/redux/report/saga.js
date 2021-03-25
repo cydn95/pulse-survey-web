@@ -223,7 +223,6 @@ function* getFeedbackSummary({ payload }) {
   try {
     const { surveyId, subProjectUser, graphType, callback } = payload;
 
-    console.log(graphType);
     const shGroupResult = yield call(getShGroupListAsync, surveyId);
 
     if (shGroupResult.status === 200) {
@@ -264,11 +263,12 @@ function* getFeedbackSummary({ payload }) {
          * ShGroup:       group by aoQuestionData.shGroup
          * Team:          group by projectUser.team
          * Organization:  group by projectUser.user.organization
+         * 
          */
-        const filteredRet =
-          graphType === "ShGroup"
-            ? getFeedbackSummaryByShGroup(result.data, shGroupList)
-            : getFeedbackSummaryByTeamOrOrganization(result.data, graphType);
+        // const filteredRet =
+        //   graphType === "ShGroup"
+        //     ? getFeedbackSummaryByShGroup(result.data, shGroupList)
+        //     : getFeedbackSummaryByTeamOrOrganization(result.data, graphType);
 
         const filteredCulture = getCultureResult(result.data);
 
@@ -281,14 +281,15 @@ function* getFeedbackSummary({ payload }) {
         const filteredSentimentKeyList = sentimentData.key;
 
         callback(
-          filteredRet,
+          result.data,
           filteredCulture,
           filteredSentiment,
           filteredSentimentKeyList,
           filteredOverallTrend,
           filteredOverallTrendShGroupList,
           teamList,
-          organizationList
+          organizationList,
+          shGroupList
         );
       }
     }
