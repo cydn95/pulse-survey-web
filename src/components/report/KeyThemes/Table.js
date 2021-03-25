@@ -32,8 +32,8 @@ const KeyThemesTable = ({ title = "", data = [], onVote, className }) => {
       </div>
       <div className={styles["keythemes-table-content"]}>
         {data.map((d, index) => {
-          const voteValue = d.myStatus.length > 0 ? d.myStatus[0].voteValue : "0";
-          const id = d.myStatus.length > 0 ? d.myStatus[0].id : null;
+          const voteValue = d.myStatus && d.myStatus.length > 0 ? d.myStatus[0].voteValue : "0";
+          const id = d.myStatus && d.myStatus.length > 0 ? d.myStatus[0].id : null;
           return (
             <React.Fragment key={`keythemes-table-${title}-${index}`}>
               <div className={styles["keythemes-table-content-mobile"]}>

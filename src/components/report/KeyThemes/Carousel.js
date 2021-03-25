@@ -68,12 +68,32 @@ const KeyThemesCarousel = ({
     return "/assets/img/survey/flag.png";
   }, [data]);
 
+  const emojiImage = useMemo(() => {
+    if (data.integerValue < 30) {
+      return "/assets/img/emoji2/frustrated.png";
+    }
+
+    if (data.integerValue < 50) {
+      return "/assets/img/emoji2/discouraged.png";
+    }
+
+    if (data.integerValue < 70) {
+      return "/assets/img/emoji2/satisfied.png";
+    }
+
+    if (data.integerValue < 80) {
+      return "/assets/img/emoji2/trusting.png";
+    }
+
+    return "/assets/img/emoji2/exited.png";
+  }, [data]);
+
   return (
     <div className={styles["own-words-root"]}>
       <img
         className={styles.emoji}
         alt=""
-        src="/assets/img/survey/sentiment-smile.png"
+        src={emojiImage}
       />
       <div className={styles["content"]}>
         <div className={styles["content-a"]}>
