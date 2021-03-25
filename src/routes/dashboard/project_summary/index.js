@@ -99,8 +99,9 @@ class ReportProjectSummary extends React.Component {
           overallTrendKey
         ) => {
           // console.log(feedbackSummaryRet);
-          console.log(overallTrendRet);
-          console.log(overallTrendKey);
+          // console.log('aaaaaaaaaaaaaaaa');
+          // console.log(overallTrendRet);
+          // console.log(overallTrendKey);
           this.setState({
             feedbackSummary: feedbackSummaryRet,
             cultureResult: cultureRet,

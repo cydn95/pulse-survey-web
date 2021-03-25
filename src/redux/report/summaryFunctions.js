@@ -254,9 +254,9 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
     for (let i = 0; i < drivers.length; i++) {
       if (drivers[i] in ret[key]) {
         row.push(
-          parseFloat(
+          (
             ret[key][drivers[i]].value / ret[key][drivers[i]].count
-          ).toFixed(2)
+          ).toFixed(1)
         );
       } else {
         row.push(0);
@@ -331,9 +331,9 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
     for (let i = 0; i < drivers.length; i++) {
       if (drivers[i] in ret[key]) {
         row.push(
-          parseFloat(
+          (
             ret[key][drivers[i]].value / ret[key][drivers[i]].count
-          ).toFixed(2)
+          ).toFixed(1)
         );
       } else {
         row.push(0);

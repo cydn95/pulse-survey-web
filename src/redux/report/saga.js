@@ -8,7 +8,7 @@ import {
   getParticipationAPI,
   getWordCloudAPI,
   getAmResponseReportAPI,
-  getAoResponseReportAPI,
+  // getAoResponseReportAPI,
   getPerceptionRealityAPI,
   getBubbleChartAPI,
   getMyMatrixAPI,
@@ -89,10 +89,10 @@ const getWordCloudAsync = async (surveyId, projectUserId) =>
     .then((result) => result)
     .catch((error) => error);
 
-const getAoReportAsync = async (surveyId, driverName, startDate, endDate) =>
-  await getAoResponseReportAPI(surveyId, driverName)
-    .then((result) => result)
-    .catch((error) => error);
+// const getAoReportAsync = async (surveyId, driverName, startDate, endDate) =>
+//   await getAoResponseReportAPI(surveyId, driverName)
+//     .then((result) => result)
+//     .catch((error) => error);
 
 const getAmReportAsync = async (
   surveyId,

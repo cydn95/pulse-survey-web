@@ -38,7 +38,7 @@ const FeedbackSummary = ({ data }) => {
             {row.map((value, colNum) => {
               let borderClass = "";
 
-              const c = isNaN(value) ? value : value / 10;
+              const c = isNaN(value) ? value : (value / 10).toFixed(1);
 
               if (c >= 8) {
                 borderClass = styles.high;
