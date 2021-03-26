@@ -86,7 +86,7 @@ export const setAcknowledgementReport = (responseId, data, callback) => ({
   payload: { responseId, data, callback }
 });
 
-export const voteKeyThemeReport = (key, vote, projectUserId, voteId, callback) => ({
+export const voteKeyThemeReport = (key, vote, projectUserId, voteId, surveyId, tab, callback) => ({
   type: REPORT_VOTE_KEYTHEME,
-  payload: {key, vote, projectUserId, voteId, callback}
+  payload: {key, vote, projectUserId, voteId, surveyId, tab, callback}
 });

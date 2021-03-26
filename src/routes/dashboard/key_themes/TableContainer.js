@@ -34,7 +34,7 @@ const TableContainer = ({
   }
 
   const handleVote = (key, vote, voteId, oldVoteValue) => {
-    actionVoteKeyThemeReport(key, vote === oldVoteValue ? 0 : vote, surveyUserId, voteId, callbackVote);
+    actionVoteKeyThemeReport(key, vote === oldVoteValue ? 0 : vote, surveyUserId, voteId, surveyId, tab, callbackVote);
   }
 
   return (

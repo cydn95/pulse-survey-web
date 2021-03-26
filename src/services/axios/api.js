@@ -341,7 +341,7 @@ const getOverallSentimentAPI = (surveyId) => {
 };
 
 const getTopPositiveAndNegativeAPI = (surveyId) => {
-  return getClient(true).get(`/aoresponsereport/?survey=${surveyId}`);
+  return getClient(true).get(`/aoresponsetoppositivenegativereport/?survey=${surveyId}`);
 };
 
 const getFeedbackSummaryAPI = (surveyId, subProjectUser) => {

@@ -167,52 +167,27 @@ function* getTopPositiveNegative({ payload }) {
     const result = yield call(getTopPositiveNegativeAsync, surveyId);
 
     if (result.status === 200) {
-      // callback(result.data);
-      const statisticsData = {};
-
-      for (let i = 0; i < result.data.length; i++) {
-        const question = result.data[i];
-        if (
-          question.controlType === controlTypeText(controlType.TEXT) ||
-          question.controlType === controlTypeText(controlType.MULTI_TOPICS)
-        ) {
-          const topicValue = question.topicValue;
-          if (topicValue === "") {
-            continue;
-          }
-
-          if (topicValue in statisticsData) {
-            statisticsData.positive += parseFloat(
-              question.report.PositiveScore
-            ).toFixed(2);
-            statisticsData.negative += parseFloat(
-              question.report.NegativeScore
-            ).toFixed(2);
-          } else {
-            statisticsData[topicValue] = {
-              topicValue: topicValue,
-              positive: parseFloat(question.report.PositiveScore).toFixed(2),
-              negative: parseFloat(question.report.NegativeScore).toFixed(2),
-            };
-          }
-        }
-      }
 
       const positiveArr = [];
       const negativeArr = [];
 
-      for (const key in statisticsData) {
-        positiveArr.push(statisticsData[key]);
-        negativeArr.push(statisticsData[key]);
+      if ("topPositive" in result.data) {
+        result.data.topPositive.forEach((d) => {
+          positiveArr.push({
+            topicValue: d.topicValue,
+            positive: d.integerValue
+          });
+        })
       }
 
-      positiveArr.sort((a, b) => {
-        return b.positive - a.positive;
-      });
-
-      negativeArr.sort((a, b) => {
-        return b.negative - a.negative;
-      });
+      if ("topNegative" in result.data) {
+        result.data.topNegative.forEach((d) => {
+          negativeArr.push({
+            topicValue: d.topicValue,
+            negative: d.integerValue
+          });
+        })
+      }
 
       callback(positiveArr, negativeArr);
     }
@@ -618,12 +593,14 @@ function* setAcknowledgementReport({ payload }) {
 
 function* voteKeyThemeReport({ payload }) {
   try {
-    const { key, vote, projectUserId, voteId, callback } = payload;
+    const { key, vote, projectUserId, voteId, surveyId, tab, callback } = payload;
 
     const data = {
       keyTheme: key,
       voteValue: vote,
-      projectUser: projectUserId
+      projectUser: projectUserId,
+      survey: surveyId,
+      tab
     }
     yield call(voteKeyThemeAsync, voteId, data);
 
