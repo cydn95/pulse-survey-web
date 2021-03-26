@@ -304,6 +304,7 @@ class DesktopComponent extends Component {
     const { question, skipQuestionList, user, projectTitle } = this.props;
     const { optionList, topicList } = this.state;
 
+    console.log(question, optionList,  topicList);
     const sortedTopicList = topicList.sort((a, b) => {
       const titleA = a.topicName.toString().toLowerCase();
       const titleB = b.topicName.toString().toLowerCase();
@@ -323,7 +324,7 @@ class DesktopComponent extends Component {
         </div>
         <div className={styles["question-selector"]}>
           {optionList.map((item, index) => {
-            const active = item.id === this.state.answer.integerValue;
+            const active = item.optionName === this.state.answer.topicValue;
             return (
               <div key={item.id} className={styles["option-item"]}>
                 <Radio
