@@ -341,7 +341,8 @@ class MobileComponent extends Component {
             } else {
               selectedValue = this.state.answer.integerValue;
             }
-            const active = item.id === parseInt(selectedValue, 10);
+            const active = item.optionName === this.state.answer.topicValue;
+
             return (
               <div key={`topic-${item.id}`} className={styles["option-item"]}>
                 <Option
