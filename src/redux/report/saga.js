@@ -17,7 +17,8 @@ import {
   getAcknowledgementAPI,
   postAcknowledgementAPI,
   updateAcknowledgementAPI,
-  voteKeyThemesAPI
+  voteKeyThemesAPI,
+  getAmQuestionCntAPI,
 } from "../../services/axios/api";
 
 import {
@@ -35,7 +36,8 @@ import {
   REPORT_TEXT_VALUE,
   REPORT_GET_ACKNOWLEDGEMENT,
   REPORT_SET_ACKNOWLEDGEMENT,
-  REPORT_VOTE_KEYTHEME
+  REPORT_VOTE_KEYTHEME,
+  REPORT_AMQUESTIONCNT,
 } from "Constants/actionTypes";
 
 import {
@@ -89,6 +91,11 @@ const getWordCloudAsync = async (surveyId, projectUserId) =>
     .then((result) => result)
     .catch((error) => error);
 
+const getAMQuestionCntAsync = async (surveyId, driverName, projectId, userId) =>
+  await getAmQuestionCntAPI(surveyId, driverName, projectId, userId)
+    .then((result) => result)
+    .catch((error) => error);
+
 // const getAoReportAsync = async (surveyId, driverName, startDate, endDate) =>
 //   await getAoResponseReportAPI(surveyId, driverName)
 //     .then((result) => result)
@@ -102,7 +109,12 @@ const getAmReportAsync = async (
   startDate,
   endDate
 ) =>
-  await getAmResponseReportAPI(surveyId, driverName, subProjectUser, controlType)
+  await getAmResponseReportAPI(
+    surveyId,
+    driverName,
+    subProjectUser,
+    controlType
+  )
     .then((result) => result)
     .catch((error) => error);
 
@@ -168,7 +180,6 @@ function* getTopPositiveNegative({ payload }) {
     const result = yield call(getTopPositiveNegativeAsync, surveyId);
 
     if (result.status === 200) {
-
       const positiveArr = [];
       const negativeArr = [];
 
@@ -176,18 +187,18 @@ function* getTopPositiveNegative({ payload }) {
         result.data.topPositive.forEach((d) => {
           positiveArr.push({
             topicValue: d.topicValue,
-            positive: d.integerValue
+            positive: d.integerValue,
           });
-        })
+        });
       }
 
       if ("topNegative" in result.data) {
         result.data.topNegative.forEach((d) => {
           negativeArr.push({
             topicValue: d.topicValue,
-            negative: d.integerValue
+            negative: d.integerValue,
           });
-        })
+        });
       }
 
       callback(positiveArr, negativeArr);
@@ -239,7 +250,7 @@ function* getFeedbackSummary({ payload }) {
          * ShGroup:       group by aoQuestionData.shGroup
          * Team:          group by projectUser.team
          * Organization:  group by projectUser.user.organization
-         * 
+         *
          */
         // const filteredRet =
         //   graphType === "ShGroup"
@@ -370,12 +381,22 @@ function* getEngagementTrend({ payload }) {
       driverName,
       surveyId,
       subProjectUser,
+      projectId,
+      userId,
       startDate,
       endDate,
       callback,
     } = payload;
 
     const controlType = "SLIDER";
+
+    const questionCntResult = yield call(
+      getAMQuestionCntAsync,
+      surveyId,
+      driverName,
+      projectId,
+      userId
+    );
 
     const result = yield call(
       getAmReportAsync,
@@ -396,10 +417,28 @@ function* getEngagementTrend({ payload }) {
         engagementRet[driverName].push({
           value: sg.SHGroupName,
         });
-        engagementRet["Response Rate"].push({ value: randomNumber(50, 100) });
+        engagementRet["Response Rate"].push({ value: 0 });
       });
 
       const resultData = getResultForSHGroup(shGroupList, result);
+
+      const answerCnt = Array(questionCntResult.data.shgroupData.length).fill(0);
+
+      Object.keys(resultData).forEach((key) => {
+        const data = resultData[key];
+        for (let i = 0; i < data.length; i++) {
+          answerCnt[i] += Number(data[i].cnt);
+        }
+      });
+
+      for (let i = 0; i < engagementRet["Response Rate"].length; i++) {
+        if (questionCntResult.data.shgroupData[i] && answerCnt[i]) {
+          engagementRet["Response Rate"][i].value =
+            questionCntResult.data.shgroupData[i].questionCnt === 0
+              ? 0
+              : Math.round(answerCnt[i] / questionCntResult.data.shgroupData[i].questionCnt * 100)
+        }
+      }
 
       callback({ ...engagementRet, ...resultData });
     }
@@ -418,10 +457,29 @@ function* getEngagementTrend({ payload }) {
         engagementRet[driverName].push({
           value: t.name,
         });
-        engagementRet["Response Rate"].push({ value: randomNumber(50, 100) });
+        engagementRet["Response Rate"].push({ value: 0 });
       });
 
       const resultData = getResultForTeam(teamList, result);
+
+      const answerCnt = Array(questionCntResult.data.teamData.length).fill(0);
+
+      Object.keys(resultData).forEach((key) => {
+        const data = resultData[key];
+        for (let i = 0; i < data.length; i++) {
+          answerCnt[i] += Number(data[i].cnt);
+        }
+      });
+
+      for (let i = 0; i < engagementRet["Response Rate"].length; i++) {
+        if (questionCntResult.data.teamData[i] && answerCnt[i]) {
+          engagementRet["Response Rate"][i].value =
+            questionCntResult.data.teamData[i].questionCnt === 0
+              ? 0
+            : Math.round(answerCnt[i] / questionCntResult.data.teamData[i].questionCnt * 100)
+        }
+      }
+
       callback({ ...engagementRet, ...resultData });
     }
 
@@ -442,10 +500,29 @@ function* getEngagementTrend({ payload }) {
         engagementRet[driverName].push({
           value: t.name,
         });
-        engagementRet["Response Rate"].push({ value: randomNumber(50, 100) });
+        engagementRet["Response Rate"].push({ value: 0 });
       });
 
       const resultData = getResultForOrganization(organizationList, result);
+
+      const answerCnt = Array(questionCntResult.data.organizationData.length).fill(0);
+
+      Object.keys(resultData).forEach((key) => {
+        const data = resultData[key];
+        for (let i = 0; i < data.length; i++) {
+          answerCnt[i] += Number(data[i].cnt);
+        }
+      });
+
+      for (let i = 0; i < engagementRet["Response Rate"].length; i++) {
+        if (questionCntResult.data.organizationData[i] && answerCnt[i]) {
+          engagementRet["Response Rate"][i].value =
+            questionCntResult.data.organizationData[i].questionCnt === 0
+              ? 0
+            : Math.round(answerCnt[i] / questionCntResult.data.organizationData[i].questionCnt * 100)
+        }
+      }
+
       callback({ ...engagementRet, ...resultData });
     }
   } catch (error) {}
@@ -597,19 +674,43 @@ function* setAcknowledgementReport({ payload }) {
 
 function* voteKeyThemeReport({ payload }) {
   try {
-    const { key, vote, projectUserId, voteId, surveyId, tab, callback } = payload;
+    const {
+      key,
+      vote,
+      projectUserId,
+      voteId,
+      surveyId,
+      tab,
+      callback,
+    } = payload;
 
     const data = {
       keyTheme: key,
       voteValue: vote,
       projectUser: projectUserId,
       survey: surveyId,
-      tab
-    }
+      tab,
+    };
     yield call(voteKeyThemeAsync, voteId, data);
 
     callback();
-  } catch (error) { }
+  } catch (error) {}
+}
+
+function* getAMQuestionCnt({ payload }) {
+  try {
+    const { surveyId, driverName, projectId, userId, callback } = payload;
+
+    const result = yield call(
+      getAMQuestionCntAsync,
+      surveyId,
+      driverName,
+      projectId,
+      userId
+    );
+
+    callback(result.data);
+  } catch (error) {}
 }
 
 export function* watchGetOverallSentiment() {
@@ -668,6 +769,10 @@ export function* watchVoteKeyThemeReport() {
   yield takeEvery(REPORT_VOTE_KEYTHEME, voteKeyThemeReport);
 }
 
+export function* watchAMQuestionCnt() {
+  yield takeEvery(REPORT_AMQUESTIONCNT, getAMQuestionCnt);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetOverallSentiment),
@@ -683,6 +788,7 @@ export default function* rootSaga() {
     fork(watchGetProjectMatrix),
     fork(watchGetTextvalue),
     fork(watchSetAcknowledgementReport),
-    fork(watchVoteKeyThemeReport)
+    fork(watchVoteKeyThemeReport),
+    fork(watchAMQuestionCnt),
   ]);
 }

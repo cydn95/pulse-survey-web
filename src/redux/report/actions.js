@@ -13,7 +13,8 @@ import {
   REPORT_TEXT_VALUE,
   REPORT_GET_ACKNOWLEDGEMENT,
   REPORT_SET_ACKNOWLEDGEMENT,
-  REPORT_VOTE_KEYTHEME
+  REPORT_VOTE_KEYTHEME,
+  REPORT_AMQUESTIONCNT
 } from "Constants/actionTypes";
 
 export const overallSentiment = (surveyId, callback) => ({
@@ -36,9 +37,9 @@ export const participation = (surveyId, callback) => ({
   payload: { surveyId, callback },
 });
 
-export const engagementTrend = (chartType, driverName, surveyId, subProjectUser, startDate, endDate, callback) => ({
+export const engagementTrend = (chartType, driverName, surveyId, subProjectUser, projectId, userId, startDate, endDate, callback) => ({
   type: REPORT_ENGAGEMENT_TREND,
-  payload: { chartType, driverName, surveyId, subProjectUser, startDate, endDate, callback },
+  payload: { chartType, driverName, surveyId, subProjectUser, projectId, userId, startDate, endDate, callback },
 });
 
 export const wordcloud = (surveyId, projectUserId, callback) => ({
@@ -89,4 +90,9 @@ export const setAcknowledgementReport = (responseId, data, callback) => ({
 export const voteKeyThemeReport = (key, vote, projectUserId, voteId, surveyId, tab, callback) => ({
   type: REPORT_VOTE_KEYTHEME,
   payload: {key, vote, projectUserId, voteId, surveyId, tab, callback}
+});
+
+export const getAMQuestionCnt = (surveyId, driverName, projectId, userId, callback) => ({
+  type: REPORT_AMQUESTIONCNT,
+  payload: { surveyId, driverName, projectId, userId, callback }
 });

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import ReactLoading from "react-loading";
 
-import { engagementTrend } from "Redux/actions";
+import { engagementTrend, getAMQuestionCnt } from "Redux/actions";
 
 import HeatMap from "Components/report/HeatMap";
 import CardMap from "Components/report/CardMap";
@@ -18,8 +18,11 @@ const ReportDriverAnalysis = ({
   history,
   projectTitle,
   actionEngagementTrend,
+  actionGetAMQuestionCnt,
   surveyId,
   surveyUserId,
+  projectId,
+  userId
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -40,6 +43,8 @@ const ReportDriverAnalysis = ({
       driverName,
       surveyId,
       surveyUserId,
+      projectId,
+      userId,
       "",
       "",
       callback
@@ -146,15 +151,18 @@ const ReportDriverAnalysis = ({
 };
 
 const mapStateToProps = ({ authUser }) => {
-  const { projectTitle, surveyId, surveyUserId } = authUser;
+  const { projectTitle, surveyId, surveyUserId, projectId, user } = authUser;
 
   return {
     projectTitle,
     surveyId,
     surveyUserId,
+    projectId,
+    userId: user.userId
   };
 };
 
 export default connect(mapStateToProps, {
   actionEngagementTrend: engagementTrend,
+  actionGetAMQuestionCnt :getAMQuestionCnt
 })(ReportDriverAnalysis);

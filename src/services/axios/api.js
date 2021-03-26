@@ -330,6 +330,10 @@ export const getAmResponseReportAPI = (surveyId, driverName, projectUser, contro
   return getClient(true).get(url);
 }
 
+export const getAmQuestionCntAPI = (surveyId, driverName, projectId, userId) => {
+  return getClient(true).get(`/amquestioncnt/?survey=${surveyId}&driver=${driverName}&project=${projectId}&user=${userId}`);
+}
+
 export const getAoResponseReportAPI = (surveyId, driverName, startDate = "2020-01-01", endDate = "2021-12-31") => {
   return getClient(true).get(
     `/aoresponsereport/?survey=${surveyId}&driver=${driverName}&stdt=${startDate}&eddt=${endDate}`
