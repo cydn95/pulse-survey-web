@@ -321,7 +321,7 @@ const updateUserGuideAPI = (token, guide) => {
 /**
  * Report
  */
-export const getAmResponseReportAPI = (surveyId, driverName, projectUser, startDate = "2020-01-01", endDate = "2021-12-31", controlType = '') => {
+export const getAmResponseReportAPI = (surveyId, driverName, projectUser, controlType = '', startDate = "2020-01-01", endDate = "2021-12-31") => {
   let url = `/amresponsereport/?survey=${surveyId}&driver=${driverName}&projectUser=${projectUser}&stdt=${startDate}&eddt=${endDate}`;
   if (controlType !== '') {
     url += `&controltype=${controlType}`;

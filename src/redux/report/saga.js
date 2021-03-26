@@ -98,10 +98,11 @@ const getAmReportAsync = async (
   surveyId,
   driverName,
   subProjectUser,
+  controlType,
   startDate,
   endDate
 ) =>
-  await getAmResponseReportAPI(surveyId, driverName, subProjectUser)
+  await getAmResponseReportAPI(surveyId, driverName, subProjectUser, controlType)
     .then((result) => result)
     .catch((error) => error);
 
@@ -374,11 +375,14 @@ function* getEngagementTrend({ payload }) {
       callback,
     } = payload;
 
+    const controlType = "SLIDER";
+
     const result = yield call(
       getAmReportAsync,
       surveyId,
       driverName,
       subProjectUser,
+      controlType,
       startDate,
       endDate
     );
