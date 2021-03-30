@@ -52,7 +52,7 @@ export const getResultForSHGroup = (shGroupList, result) => {
       Object.keys(trend).forEach((t, index) => {
         newTrend.push({
           x: `${MONTH[index]}`,
-          y: arrayAverage(trend[t]),
+          y: arrayAverage(trend[t]) / 10,
         });
       });
 
@@ -113,7 +113,7 @@ export const getResultForTeam = (teamList, result) => {
       Object.keys(trend).forEach((t, index) => {
         newTrend.push({
           x: `${MONTH[index]}`,
-          y: arrayAverage(trend[t]),
+          y: arrayAverage(trend[t]) / 10,
         });
       });
 
@@ -174,7 +174,7 @@ export const getResultForOrganization = (organizationList, result) => {
       Object.keys(trend).forEach((t, index) => {
         newTrend.push({
           x: `${MONTH[index]}`,
-          y: arrayAverage(trend[t]),
+          y: arrayAverage(trend[t]) / 10,
         });
       });
 
