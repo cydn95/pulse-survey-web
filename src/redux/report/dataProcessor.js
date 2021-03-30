@@ -117,7 +117,7 @@ export const getResultForTeam = (teamList, result) => {
           y: arrayAverage(trend[t]) / 10,
         });
       });
-console.log(newTrend);
+
       subDriverRet[currentKey].push({
         value: cnt > 0 ? ((sum / cnt / 10).toFixed(1) > 100 ? 100 : (sum / cnt / 10).toFixed(1)) : 0,
         cnt,
