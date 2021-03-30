@@ -45,15 +45,15 @@ const ReportDriverAnalysis = ({
       surveyUserId,
       projectId,
       userId,
-      "",
-      "",
+      "2021-01-01",
+      "2021-12-31",
       callback
     );
   }, [surveyId, surveyUserId, actionEngagementTrend, driverName, chartType]);
 
   const callback = (ret) => {
     setLoading(false);
-    console.log(ret);
+    // console.log(ret);
     setEngagementData({ ...ret });
   };
 

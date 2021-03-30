@@ -113,7 +113,9 @@ const getAmReportAsync = async (
     surveyId,
     driverName,
     subProjectUser,
-    controlType
+    controlType,
+    startDate,
+    endDate
   )
     .then((result) => result)
     .catch((error) => error);
