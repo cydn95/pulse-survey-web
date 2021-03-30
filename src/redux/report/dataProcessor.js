@@ -36,8 +36,8 @@ export const getResultForSHGroup = (shGroupList, result) => {
             cnt++;
             sum += data.integerValue;
             const dateStr = data.updated_at.split("-");
-            // const dateKey = dateStr[0] + "-" + dateStr[1];  // Year - Month
-            const dateKey = dateStr[1];    // Only Month
+            const dateKey = dateStr[0] + "-" + dateStr[1];  // Year - Month
+            // const dateKey = dateStr[1];    // Only Month
 
             if (dateKey in trend) {
               trend[dateKey].push(data.integerValue);
@@ -52,7 +52,7 @@ export const getResultForSHGroup = (shGroupList, result) => {
 
       Object.keys(trend).forEach((t, index) => {
         newTrend.push({
-          x: MONTH[Number(t) - 1],
+          x: t,
           y: arrayAverage(trend[t]) / 10,
         });
       });
@@ -98,7 +98,7 @@ export const getResultForTeam = (teamList, result) => {
             sum += data.integerValue;
             // console.log(data.updated_at.split("-"));
             const dateStr = data.updated_at.split("-");
-            const dateKey = dateStr[1];
+            const dateKey = dateStr[0] + "-" + dateStr[1];  // Year - Month
 
             if (dateKey in trend) {
               trend[dateKey].push(data.integerValue);
@@ -113,7 +113,7 @@ export const getResultForTeam = (teamList, result) => {
 
       Object.keys(trend).forEach((t, index) => {
         newTrend.push({
-          x: `${MONTH[Number(t) - 1]}`,
+          x: t,
           y: arrayAverage(trend[t]) / 10,
         });
       });
@@ -159,7 +159,7 @@ export const getResultForOrganization = (organizationList, result) => {
             sum += data.integerValue;
             // console.log(data.updated_at.split("-"));
             const dateStr = data.updated_at.split("-");
-            const dateKey = dateStr[1];
+            const dateKey = dateStr[0] + "-" + dateStr[1];  // Year - Month
 
             if (dateKey in trend) {
               trend[dateKey].push(data.integerValue);
@@ -174,7 +174,7 @@ export const getResultForOrganization = (organizationList, result) => {
 
       Object.keys(trend).forEach((t, index) => {
         newTrend.push({
-          x: `${MONTH[Number(t) - 1]}`,
+          x: t,
           y: arrayAverage(trend[t]) / 10,
         });
       });

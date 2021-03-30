@@ -45,7 +45,7 @@ const ReportDriverAnalysis = ({
       surveyUserId,
       projectId,
       userId,
-      "2021-01-01",
+      "2019-01-01",
       "2021-12-31",
       callback
     );
