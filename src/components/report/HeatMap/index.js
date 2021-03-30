@@ -87,7 +87,7 @@ const HeatMap = ({ data, chartWidth }) => {
                 );
               })}
             </div>
-            {rowNum > 0 && (
+            {rowNum > 1 && (
               <div
                 key={`heatmap-row-trend-${keyValue}`}
                 className={classnames(styles["map-row"], {

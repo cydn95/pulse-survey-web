@@ -2,6 +2,8 @@ import {
   arrayAverage,
 } from "Util/Utils";
 
+const MONTH = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 export const getResultForSHGroup = (shGroupList, result) => {
   const subDriverRet = {};
 
@@ -12,6 +14,9 @@ export const getResultForSHGroup = (shGroupList, result) => {
       }
     });
   });
+
+  // const currentDate = new Date();
+  // const currentYear = currentDate.getFullYear();
 
   for (let i = 0; i < Object.keys(subDriverRet).length; i++) {
     const currentKey = Object.keys(subDriverRet)[i];
@@ -46,7 +51,7 @@ export const getResultForSHGroup = (shGroupList, result) => {
 
       Object.keys(trend).forEach((t, index) => {
         newTrend.push({
-          x: index + 1,
+          x: `${MONTH[index]}`,
           y: arrayAverage(trend[t]),
         });
       });
@@ -107,7 +112,7 @@ export const getResultForTeam = (teamList, result) => {
 
       Object.keys(trend).forEach((t, index) => {
         newTrend.push({
-          x: index + 1,
+          x: `${MONTH[index]}`,
           y: arrayAverage(trend[t]),
         });
       });
@@ -168,7 +173,7 @@ export const getResultForOrganization = (organizationList, result) => {
 
       Object.keys(trend).forEach((t, index) => {
         newTrend.push({
-          x: index + 1,
+          x: `${MONTH[index]}`,
           y: arrayAverage(trend[t]),
         });
       });

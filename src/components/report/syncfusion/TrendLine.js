@@ -8,6 +8,7 @@ import {
   DateTime,
   Legend,
   Tooltip,
+  Category
 } from "@syncfusion/ej2-react-charts";
 import { Browser } from "@syncfusion/ej2-base";
 import SampleBase from "./SampleBase";
@@ -30,13 +31,14 @@ class TrendLine extends SampleBase {
           <ChartComponent
             id={`charts_${num}`}
             style={{ textAlign: "center", height: 100, width: width }}
-            // primaryXAxis={{
-            //   valueType: "DateTime",
-            //   labelFormat: "y",
-            //   intervalType: "Years",
-            //   edgeLabelPlacement: "Shift",
-            //   majorGridLines: { width: 0 },
-            // }}
+            primaryXAxis={{
+              valueType: "Category",
+              // labelFormat: "y",
+              // intervalType: "Years",
+              // edgeLabelPlacement: "Shift",
+              interval: 1,
+              majorGridLines: { width: 0 },
+            }}
             // load={this.load.bind(this)}
             primaryYAxis={{
               // labelFormat: "{value}%",
@@ -56,7 +58,7 @@ class TrendLine extends SampleBase {
             title=""
             loaded={this.onChartLoad.bind(this)}
           >
-            <Inject services={[LineSeries, DateTime, Legend, Tooltip]} />
+            <Inject services={[LineSeries, Category, DateTime, Legend, Tooltip]} />
             <SeriesCollectionDirective>
               <SeriesDirective
                 dataSource={data}

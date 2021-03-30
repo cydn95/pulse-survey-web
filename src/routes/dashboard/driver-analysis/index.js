@@ -53,6 +53,7 @@ const ReportDriverAnalysis = ({
 
   const callback = (ret) => {
     setLoading(false);
+    console.log(ret);
     setEngagementData({ ...ret });
   };
 
