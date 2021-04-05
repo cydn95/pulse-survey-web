@@ -856,7 +856,7 @@ class MyMap extends React.Component {
     this.setState({
       aoSurveySubmitLoading: false
     });
-    this.handleSaveGraph(null);
+    // this.handleSaveGraph(null);
     // window.location.reload(false);
   };
 
