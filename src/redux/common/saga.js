@@ -113,7 +113,7 @@ function* getDriverList({ payload }) {
           progress: 0,
         });
       });
-      console.log(driverList);
+      // console.log(driverList);
       yield put(driverListSuccess(driverList));
     }
   } catch (error) {

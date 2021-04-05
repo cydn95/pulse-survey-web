@@ -827,7 +827,7 @@ class MyMap extends React.Component {
 
   handleSubmitSurvey = (e, answerData) => {
     const { lastAddedShCategory } = this.state;
-    console.log(lastAddedShCategory);
+    // console.log(lastAddedShCategory);
     for (let i = 0; i < answerData.length; i++) {
       if (answerData[i].shCategory == undefined) {
         answerData[i].shCategory = lastAddedShCategory;
@@ -961,7 +961,17 @@ class MyMap extends React.Component {
   };
 
   callbackSaveGraph = () => {
-    window.location.reload(false);
+    // window.location.reload(false);
+    const { userId, surveyId, surveyUserId, projectId } = this.props;
+
+    this.props.getKMapData(surveyUserId, userId);
+    this.props.getProjectMapData(surveyUserId, userId);
+    // this.props.getShCategoryList(surveyId, 0);
+    this.props.getStakeholderList(surveyUserId, surveyId);
+    // this.props.getTeamList(projectId);
+    // this.props.getAoQuestionList(surveyUserId, surveyId);
+    // this.props.getDriverList(surveyId);
+    // this.props.getSkipQuestionList();
   }
 
   toggleGraph = (e) => {

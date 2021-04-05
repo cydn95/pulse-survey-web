@@ -252,7 +252,7 @@ class AoSurvey extends React.Component {
   };
 
   handleSubmit = (e) => {
-    console.log(this.state.answers);
+    // console.log(this.state.answers);
     this.props.onSubmit(e, this.state.answers);
   };
 

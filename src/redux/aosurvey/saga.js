@@ -198,10 +198,10 @@ function* submitAoQuestion({ payload }) {
 
     answerList.push(answer);
   }
-  console.log('projectUserId', projectUserId);
-  console.log('surveyId', surveyId);
-  console.log('currentSurveyUser', currentSurveyUser);
-  console.log('answers', answerList);
+  // console.log('projectUserId', projectUserId);
+  // console.log('surveyId', surveyId);
+  // console.log('currentSurveyUser', currentSurveyUser);
+  // console.log('answers', answerList);
   // return;
   try {
     let result = yield call(submitAoQuestionAsync, answerList);
