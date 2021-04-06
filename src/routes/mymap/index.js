@@ -974,7 +974,7 @@ class MyMap extends React.Component {
     // this.props.getDriverList(surveyId);
     // this.props.getSkipQuestionList();
 
-    NotificationManager.success("Map has been saved successfully", "");
+    // NotificationManager.success("Map has been saved successfully", "");
   }
 
   toggleGraph = (e) => {
