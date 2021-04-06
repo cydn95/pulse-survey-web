@@ -856,6 +856,7 @@ class MyMap extends React.Component {
     this.setState({
       aoSurveySubmitLoading: false
     });
+    NotificationManager.success("Survey has been submitted successfully", "");
     // this.handleSaveGraph(null);
     // window.location.reload(false);
   };
@@ -972,6 +973,8 @@ class MyMap extends React.Component {
     // this.props.getAoQuestionList(surveyUserId, surveyId);
     // this.props.getDriverList(surveyId);
     // this.props.getSkipQuestionList();
+
+    NotificationManager.success("Map has been saved successfully", "");
   }
 
   toggleGraph = (e) => {
