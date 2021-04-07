@@ -1,5 +1,13 @@
 import React, { useMemo, useState, useEffect } from "react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronRight,
+  faQuestionCircle,
+  faCheck,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
+
 import { removeSpace } from "../../../services/axios/utility";
 import TrendLine from "Components/report/syncfusion/TrendLine";
 
@@ -8,26 +16,25 @@ import classnames from "classnames";
 
 const getColor = (val) => {
   if (val < 4) {
-    return "#c00000";   // dark red
+    return "#c00000"; // dark red
   }
 
   if (val < 5) {
-    return "#e56965";   // lighter red
+    return "#e56965"; // lighter red
   }
 
   if (val < 7) {
-    return "#4da9ef";   // blue
+    return "#4da9ef"; // blue
   }
 
   if (val < 8) {
-    return "#8acbc1";   // lighter green
+    return "#8acbc1"; // lighter green
   }
 
-  return "#00b7a2";     // solid green
+  return "#00b7a2"; // solid green
 };
 
 const HeatMap = ({ data, chartWidth }) => {
-
   const colP = useMemo(() => {
     if (Object.keys(data).length > 0) {
       return 100 / (data[Object.keys(data)[0]].length + 1);
@@ -65,17 +72,51 @@ const HeatMap = ({ data, chartWidth }) => {
         const keyValue = removeSpace(key);
         return (
           <div key={`heatmap-row-wrapper-${keyValue}`}>
-            <div key={`heatmap-row-${keyValue}`} className={styles["map-row"]}>
-              <div
-                className={styles["map-col"]}
-                style={{ width: `${colP}%`, cursor: 'pointer' }}
-                onClick={(e) => toggleTrendVisible(keyValue)}
-              >
-                {key}
-              </div>
+            <div
+              key={`heatmap-row-${keyValue}`}
+              className={classnames({
+                [styles["map-row"]]: rowNum > 0,
+                [styles["map-header-row"]]: rowNum === 0,
+              })}
+            >
+              {rowNum === 0 ? (
+                <div
+                  className={styles["map-col"]}
+                  style={{ width: `${colP}%` }}
+                >
+                  {key}
+                </div>
+              ) : (
+                <div
+                  className={styles["map-col-title"]}
+                  style={{ width: `${colP}%` }}
+                >
+                  <div
+                    className={styles.left}
+                    role="button"
+                    onClick={(e) => toggleTrendVisible(keyValue)}
+                  >
+                    <span className={styles.title}>{key}</span>
+                    {rowNum > 1 && (
+                      <span className={styles.expand}>
+                        Expand <FontAwesomeIcon icon={faChevronRight} />
+                      </span>
+                    )}
+                  </div>
+                  <div className={styles.right}>
+                    <img
+                      src="/assets/img/report/question-circle.png"
+                      width="16"
+                      height="16"
+                    />
+                  </div>
+                </div>
+              )}
               {data[key].map((d, index) => {
                 const style =
-                  rowNum >= 2 ? { background: getColor(Number(d.value)) } : {};
+                  rowNum >= 2
+                    ? { borderLeft: `3px solid ${getColor(Number(d.value))}` }
+                    : {};
                 return (
                   <div
                     key={`heatmap-col-${keyValue}-${index}`}
@@ -86,37 +127,45 @@ const HeatMap = ({ data, chartWidth }) => {
                   </div>
                 );
               })}
-            </div>
-            {rowNum > 1 && (
-              <div
-                key={`heatmap-row-trend-${keyValue}`}
-                className={classnames(styles["map-row"], {
-                  [styles.show]: trendVisible[keyValue],
-                  [styles.hide]: !trendVisible[keyValue],
-                })}
-              >
+              {/* {rowNum > 1 && (
                 <div
-                  className={styles["map-col-trend"]}
-                  style={{ width: `${colP}%`, cursor: 'pointer' }}
-                  onClick={e => toggleTrendVisible(keyValue)}
+                  key={`heatmap-row-trend-${keyValue}`}
+                  className={classnames(styles["map-row"], {
+                    [styles.show]: trendVisible[keyValue],
+                    [styles.hide]: !trendVisible[keyValue],
+                  })}
                 >
-                  Trend
+                  <div
+                    className={styles["map-col-trend"]}
+                    style={{ width: `${colP}%` }}
+                    onClick={(e) => toggleTrendVisible(keyValue)}
+                  >
+                    Trend
+                  </div>
+                  {data[key].map((d, index) => {
+                    const style =
+                      rowNum >= 2
+                        ? { background: getColor(Number(d.value)) }
+                        : {};
+                    return (
+                      <div
+                        key={`heatmap-col-trend-${keyValue}-${index}`}
+                        className={classnames(styles["map-col-trend"])}
+                        style={{ width: `${colP}%` }}
+                      >
+                        {chartWidth > 0 && (
+                          <TrendLine
+                            data={d.trend}
+                            num={`${keyValue}-${index}`}
+                            width={chartWidth}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
-                {data[key].map((d, index) => {
-                  const style =
-                    rowNum >= 2 ? { background: getColor(Number(d.value)) } : {};
-                  return (
-                    <div
-                      key={`heatmap-col-trend-${keyValue}-${index}`}
-                      className={classnames(styles["map-col-trend"])}
-                      style={{ width: `${colP}%` }}
-                    >
-                      {chartWidth > 0 && <TrendLine data={d.trend} num={`${keyValue}-${index}`} width={chartWidth} />}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+              )} */}
+            </div>
           </div>
         );
       })}

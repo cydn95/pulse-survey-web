@@ -168,7 +168,7 @@ const submitAoQuestionAPI = (answerData) => {
 
 // Get StakeholderList (get users by project id)
 const stakeholderListAPI = (projectUserId, surveyId = 0) => {
-  var url = `/userbysurvey/?format=json&myProjectUser=${projectUserId}`;
+  var url = `/userbysurvey/?format=json&projectuser=${projectUserId}`;
   if (surveyId > 0) {
     url += `&survey=${surveyId}`;
   }

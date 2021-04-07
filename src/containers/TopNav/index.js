@@ -15,6 +15,8 @@ import { setMainMenuClassName, logoutUser } from "Redux/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
+import classnames from "classnames";
+
 const TopNav = ({
   menuTitle,
   profile,
@@ -22,6 +24,7 @@ const TopNav = ({
   setMainMenuClassName,
   logoutUser,
   history,
+  style
 }) => {
   const [toggle, setToggle] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -69,7 +72,7 @@ const TopNav = ({
   };
 
   return (
-    <div className={styles.root}>
+    <div className={classnames(styles.root)} style={style}>
       <Drawer
         open={toggle}
         onClose={toggleDrawer(null, false)}

@@ -3,6 +3,13 @@ import { connect } from "react-redux";
 
 import ReactLoading from "react-loading";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronDown,
+  faCheck,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
+
 import { engagementTrend, getAMQuestionCnt } from "Redux/actions";
 
 import HeatMap from "Components/report/HeatMap";
@@ -12,7 +19,18 @@ import TopNav from "Containers/TopNav";
 import { isMobile } from "react-device-detect";
 
 import styles from "./styles.scss";
-// import classnames from "classnames";
+import classnames from "classnames";
+
+const filters = ["SHGroup", "Team", "Organization"];
+const drivers = [
+  "Engagement",
+  "Culture",
+  "Sentiment",
+  "Interest",
+  "Confidence",
+  "Relationships",
+  "Improvement",
+];
 
 const ReportDriverAnalysis = ({
   history,
@@ -22,24 +40,32 @@ const ReportDriverAnalysis = ({
   surveyId,
   surveyUserId,
   projectId,
-  userId
+  userId,
 }) => {
   const [loading, setLoading] = useState(false);
+
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [filterValue, setFilterValue] = useState(0);
 
   const [chartWidth, setChartWidth] = useState(100);
 
   const [driverName, setDriverName] = useState("Engagement");
-  const [chartType, setChartType] = useState("SHGroup");
+  // const [chartType, setChartType] = useState(filters[0]);
 
   const [engagementData, setEngagementData] = useState({
     [driverName]: [],
   });
 
+  const handleSelectFilter = (index) => {
+    setFilterValue(index);
+    setFilterOpen(false);
+  };
+
   useEffect(() => {
     setLoading(true);
     setEngagementData({ [driverName]: [] });
     actionEngagementTrend(
-      chartType,
+      filters[filterValue],
       driverName,
       surveyId,
       surveyUserId,
@@ -49,7 +75,7 @@ const ReportDriverAnalysis = ({
       "2021-12-31",
       callback
     );
-  }, [surveyId, surveyUserId, actionEngagementTrend, driverName, chartType]);
+  }, [surveyId, surveyUserId, actionEngagementTrend, driverName, filterValue]);
 
   const callback = (ret) => {
     setLoading(false);
@@ -60,7 +86,7 @@ const ReportDriverAnalysis = ({
   return (
     <div className={styles.root}>
       <div className={styles.topbar}>
-        <TopNav history={history} menuTitle="Driver Analysis">
+        <TopNav history={history} menuTitle="Driver Analysis" style={{backgroundColor: "#f5f5f5"}}>
           <div className={styles.section}>
             <h2 className={styles["page-title"]}>My Profile</h2>
             <h2 className={styles["project-name"]}>{projectTitle}</h2>
@@ -68,38 +94,57 @@ const ReportDriverAnalysis = ({
         </TopNav>
       </div>
       <div className={styles["main-content"]}>
-        <p>
-          <button onClick={(e) => setChartType("SHGroup")}>SHGroup</button>
-          {` `}
-          <button onClick={(e) => setChartType("Team")}>Team</button>
-          {` `}
-          <button onClick={(e) => setChartType("Organization")}>
-            Organization
-          </button>
-          {` `}
-          <br />
-          <button onClick={(e) => setDriverName("Engagement")}>
-            Engagement
-          </button>
-          {` `}
-          <button onClick={(e) => setDriverName("Culture")}>Culture</button>
-          {` `}
-          <button onClick={(e) => setDriverName("Sentiment")}>Sentiment</button>
-          {` `}
-          <button onClick={(e) => setDriverName("Interest")}>Interest</button>
-          {` `}
-          <button onClick={(e) => setDriverName("Confidence")}>
-            Confidence
-          </button>
-          {` `}
-          <button onClick={(e) => setDriverName("Relationships")}>
-            Relationships
-          </button>
-          {` `}
-          <button onClick={(e) => setDriverName("Improvement")}>
-            Improvement
-          </button>
-        </p>
+        <div className={styles["filter-content"]}>
+          <div className={styles["filter-select"]}>
+            <div
+              className={styles["filter-select-button"]}
+              role="button"
+              onClick={(e) => setFilterOpen(!filterOpen)}
+            >
+              Filter by
+              <FontAwesomeIcon icon={faChevronDown} />
+            </div>
+            {filterOpen && (
+              <div className={styles["filter-panel"]}>
+                <div className={styles["filter-panel-triangle"]}></div>
+                <div className={styles["filter-panel-content"]}>
+                  {filters.map((f, index) => (
+                    <div
+                      className={styles["filter-panel-item"]}
+                      onClick={(e) => handleSelectFilter(index)}
+                      key={`filter-item-${f}`}
+                    >
+                      {f}{" "}
+                      <FontAwesomeIcon
+                        className={classnames({
+                          [styles.hide]: filterValue !== index,
+                        })}
+                        icon={faCheck}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          <div className={styles["filter-value"]}>{filters[filterValue]}</div>
+        </div>
+        <div className={styles["show-panel"]}>
+          <span>Show: </span>
+          <div className={styles["show-select"]}>
+            {drivers.map((d) => (
+              <div
+                key={`driver-name-${d}`}
+                className={classnames(styles["show-select-item"], {
+                  [styles.active]: driverName === d,
+                })}
+                onClick={(e) => setDriverName(d)}
+              >
+                {d}
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
       <div
         className={styles["main-content"]}
@@ -116,15 +161,15 @@ const ReportDriverAnalysis = ({
           setChartWidth(width);
         }}
       >
-        <div style={{ width: '100%' }}>
+        <div style={{ width: "100%" }}>
           {loading ? (
             <ReactLoading
-              className={styles["keythemes-content-loading"]}
+              className={styles["driver-analysis-loading"]}
               type={"bars"}
               color={"grey"}
             />
           ) : (
-            <div style={{width: '100%'}}>
+            <div style={{ width: "100%" }}>
               {!isMobile && (
                 <HeatMap data={engagementData} chartWidth={chartWidth} />
               )}
@@ -159,11 +204,11 @@ const mapStateToProps = ({ authUser }) => {
     surveyId,
     surveyUserId,
     projectId,
-    userId: user.userId
+    userId: user.userId,
   };
 };
 
 export default connect(mapStateToProps, {
   actionEngagementTrend: engagementTrend,
-  actionGetAMQuestionCnt :getAMQuestionCnt
+  actionGetAMQuestionCnt: getAMQuestionCnt,
 })(ReportDriverAnalysis);
