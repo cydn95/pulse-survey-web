@@ -5,6 +5,7 @@ import {
   SeriesDirective,
   Inject,
   LineSeries,
+  SplineSeries,
   DateTime,
   Legend,
   Tooltip,
@@ -58,7 +59,7 @@ class TrendLine extends SampleBase {
             title=""
             loaded={this.onChartLoad.bind(this)}
           >
-            <Inject services={[LineSeries, Category, DateTime, Legend, Tooltip]} />
+            <Inject services={[LineSeries, SplineSeries, Category, DateTime, Legend, Tooltip]} />
             <SeriesCollectionDirective>
               <SeriesDirective
                 dataSource={data}
@@ -67,7 +68,7 @@ class TrendLine extends SampleBase {
                 name=""
                 width={2}
                 marker={{ visible: true, width: 3, height: 3 }}
-                type="Line"
+                type="Spline"
               ></SeriesDirective>
             </SeriesCollectionDirective>
           </ChartComponent>

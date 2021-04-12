@@ -61,10 +61,12 @@ export const getResultForSHGroup = (shGroupList, result) => {
           ) {
             cnt++;
             sum += data.integerValue;
-            const dateStr = data.created_at.split("-");
+            // const dateStr = data.created_at.split("-");
             // const dateKey = dateStr[0] + "-" + dateStr[1];  // Year - Month
-            const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
+            // const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
             // const dateKey = dateStr[1];    // Only Month
+            const dateStr = data.created_at.split("T");
+            const dateKey = dateStr[0];
 
             if (question === "") {
               question = aq.questionText;
@@ -93,7 +95,7 @@ export const getResultForSHGroup = (shGroupList, result) => {
         question,
         cnt,
         stakeholders,
-        trend: newTrend,
+        trend: newTrend.reverse(),
       });
     }
   }
@@ -155,8 +157,10 @@ export const getResultForTeam = (teamList, result) => {
           ) {
             cnt++;
             sum += data.integerValue;
-            const dateStr = data.created_at.split("-");
-            const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
+            // const dateStr = data.created_at.split("-");
+            // const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
+            const dateStr = data.created_at.split("T");
+            const dateKey = dateStr[0];
 
             if (question === "") {
               question = aq.questionText;
@@ -185,7 +189,7 @@ export const getResultForTeam = (teamList, result) => {
         cnt,
         stakeholders,
         question,
-        trend: newTrend,
+        trend: newTrend.reverse(),
       });
     }
   }
@@ -246,8 +250,10 @@ export const getResultForOrganization = (organizationList, result) => {
           ) {
             cnt++;
             sum += data.integerValue;
-            const dateStr = data.created_at.split("-");
-            const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
+            // const dateStr = data.created_at.split("-");
+            // const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
+            const dateStr = data.created_at.split("T");
+            const dateKey = dateStr[0];
 
             if (question === "") {
               question = aq.questionText;
@@ -276,7 +282,7 @@ export const getResultForOrganization = (organizationList, result) => {
         cnt,
         stakeholders,
         question,
-        trend: newTrend,
+        trend: newTrend.reverse(),
       });
     }
   }
