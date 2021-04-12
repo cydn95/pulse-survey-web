@@ -140,7 +140,14 @@ const HeatMap = ({ shCnt, data, chartWidth }) => {
                       <div className={styles["row-answer"]}>
                         <div className={styles["row-answer-triangle"]}></div>
                         <div className={styles["row-answer-content"]}>
-                          help text help text help text help text help text
+                          {rowNum === 1 &&
+                            `The response rate is ${
+                              data[key].length > 0 ? data[key][0].value : 0
+                            }% out of a total ${shCnt} stakeholders that have been invited to respond`}
+                          {rowNum > 1 &&
+                            ((data[key].length > 0 && data[key][0].question)
+                              ? `Question answered: "${data[key][0].question}"`
+                              : `No question answered`)}
                         </div>
                       </div>
                     )}

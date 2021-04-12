@@ -80,7 +80,6 @@ const ReportDriverAnalysis = ({
 
   const callback = (ret) => {
     setLoading(false);
-    // console.log(ret);
     setTotalStakeholdercnt(ret.shCnt);
     setEngagementData({ ...ret.data });
   };

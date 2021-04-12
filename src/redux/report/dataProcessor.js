@@ -36,7 +36,7 @@ export const getResultForSHGroup = (shGroupList, result) => {
       let cnt = 0;
       let sum = 0;
       let trend = {};
-      let question;
+      let question = "";
       const stakeholders = [];
 
       result.data.forEach((data) => {
@@ -66,7 +66,10 @@ export const getResultForSHGroup = (shGroupList, result) => {
             const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
             // const dateKey = dateStr[1];    // Only Month
 
-            question = aq.questionText;
+            if (question === "") {
+              question = aq.questionText;
+            }
+            
             if (dateKey in trend) {
               trend[dateKey].push(data.integerValue);
             } else {
@@ -126,6 +129,7 @@ export const getResultForTeam = (teamList, result) => {
 
       let cnt = 0;
       const stakeholders = [];
+      let question = "";
       let sum = 0;
       let trend = {};
 
@@ -154,6 +158,10 @@ export const getResultForTeam = (teamList, result) => {
             const dateStr = data.created_at.split("-");
             const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
 
+            if (question === "") {
+              question = aq.questionText;
+            }
+
             if (dateKey in trend) {
               trend[dateKey].push(data.integerValue);
             } else {
@@ -176,6 +184,7 @@ export const getResultForTeam = (teamList, result) => {
         value: cnt > 0 ? ((sum / cnt / 10).toFixed(1) > 100 ? 100 : (sum / cnt / 10).toFixed(1)) : 0,
         cnt,
         stakeholders,
+        question,
         trend: newTrend,
       });
     }
@@ -213,6 +222,8 @@ export const getResultForOrganization = (organizationList, result) => {
       const stakeholders = [];
       let sum = 0;
       let trend = {};
+      let question = "";
+
       result.data.forEach((data) => {
         let questionData = [];
         if ("amQuestionData" in data) {
@@ -238,6 +249,10 @@ export const getResultForOrganization = (organizationList, result) => {
             const dateStr = data.created_at.split("-");
             const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
 
+            if (question === "") {
+              question = aq.questionText;
+            }
+
             if (dateKey in trend) {
               trend[dateKey].push(data.integerValue);
             } else {
@@ -260,6 +275,7 @@ export const getResultForOrganization = (organizationList, result) => {
         value: cnt > 0 ? ((sum / cnt / 10).toFixed(1) > 100 ? 100 : (sum / cnt / 10).toFixed(1)) : 0,
         cnt,
         stakeholders,
+        question,
         trend: newTrend,
       });
     }
