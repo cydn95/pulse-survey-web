@@ -8,13 +8,22 @@ export const getResultForSHGroup = (shGroupList, result) => {
   const subDriverRet = {};
 
   result.data.forEach((data) => {
-    data.amQuestionData.forEach((aq) => {
+    let questionData = [];
+    if ("amQuestionData" in data) {
+      questionData = data.amQuestionData;
+    }
+    if ("aoQuestionData" in data) {
+      questionData = data.aoQuestionData;
+    }
+
+    questionData.forEach((aq) => {
       if (!(aq.subdriver in subDriverRet)) {
         subDriverRet[aq.subdriver] = [];
       }
     });
   });
 
+  // console.log(subDriverRet);
   // const currentDate = new Date();
   // const currentYear = currentDate.getFullYear();
 
@@ -27,19 +36,37 @@ export const getResultForSHGroup = (shGroupList, result) => {
       let cnt = 0;
       let sum = 0;
       let trend = {};
+      let question;
+      const stakeholders = [];
+
       result.data.forEach((data) => {
-        data.amQuestionData.forEach((aq) => {
+        let questionData = [];
+        if ("amQuestionData" in data) {
+          questionData = data.amQuestionData;
+        }
+        if ("aoQuestionData" in data) {
+          questionData = data.aoQuestionData;
+        }
+
+        if ("projectUser" in data) {
+          if (!(stakeholders.includes(data.projectUser.id))) {
+            stakeholders.push(data.projectUser.id)
+          }
+        }
+
+        questionData.forEach((aq) => {
           if (
             aq.shGroup.includes(currentShGroup.id) &&
             aq.subdriver === currentKey
           ) {
             cnt++;
             sum += data.integerValue;
-            const dateStr = data.updated_at.split("-");
+            const dateStr = data.created_at.split("-");
             // const dateKey = dateStr[0] + "-" + dateStr[1];  // Year - Month
             const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
             // const dateKey = dateStr[1];    // Only Month
 
+            question = aq.questionText;
             if (dateKey in trend) {
               trend[dateKey].push(data.integerValue);
             } else {
@@ -60,12 +87,15 @@ export const getResultForSHGroup = (shGroupList, result) => {
 
       subDriverRet[currentKey].push({
         value: cnt > 0 ? ((sum / cnt / 10).toFixed(1) > 100 ? 100 : (sum / cnt / 10).toFixed(1)) : 0,
+        question,
         cnt,
+        stakeholders,
         trend: newTrend,
       });
     }
   }
 
+  // console.log(subDriverRet);
   return subDriverRet;
 }
 
@@ -73,7 +103,15 @@ export const getResultForTeam = (teamList, result) => {
   const subDriverRet = {};
 
   result.data.forEach((data) => {
-    data.amQuestionData.forEach((aq) => {
+    let questionData = [];
+    if ("amQuestionData" in data) {
+      questionData = data.amQuestionData;
+    }
+    if ("aoQuestionData" in data) {
+      questionData = data.aoQuestionData;
+    }
+
+    questionData.forEach((aq) => {
       if (!(aq.subdriver in subDriverRet)) {
         subDriverRet[aq.subdriver] = [];
       }
@@ -87,19 +125,33 @@ export const getResultForTeam = (teamList, result) => {
       const currentTeam = teamList[j];
 
       let cnt = 0;
+      const stakeholders = [];
       let sum = 0;
       let trend = {};
+
       result.data.forEach((data) => {
-        data.amQuestionData.forEach((aq) => {
+        let questionData = [];
+        if ("amQuestionData" in data) {
+          questionData = data.amQuestionData;
+        }
+        if ("aoQuestionData" in data) {
+          questionData = data.aoQuestionData;
+        }
+
+        if ("projectUser" in data) {
+          if (!(stakeholders.includes(data.projectUser.id))) {
+            stakeholders.push(data.projectUser.id)
+          }
+        }
+
+        questionData.forEach((aq) => {
           if (
             data.subProjectUser.team.id === currentTeam.id &&
             aq.subdriver === currentKey
           ) {
             cnt++;
             sum += data.integerValue;
-            // console.log(data.updated_at.split("-"));
-            const dateStr = data.updated_at.split("-");
-            // const dateKey = dateStr[0] + "-" + dateStr[1];  // Year - Month
+            const dateStr = data.created_at.split("-");
             const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
 
             if (dateKey in trend) {
@@ -123,6 +175,7 @@ export const getResultForTeam = (teamList, result) => {
       subDriverRet[currentKey].push({
         value: cnt > 0 ? ((sum / cnt / 10).toFixed(1) > 100 ? 100 : (sum / cnt / 10).toFixed(1)) : 0,
         cnt,
+        stakeholders,
         trend: newTrend,
       });
     }
@@ -135,7 +188,15 @@ export const getResultForOrganization = (organizationList, result) => {
   const subDriverRet = {};
 
   result.data.forEach((data) => {
-    data.amQuestionData.forEach((aq) => {
+    let questionData = [];
+    if ("amQuestionData" in data) {
+      questionData = data.amQuestionData;
+    }
+    if ("aoQuestionData" in data) {
+      questionData = data.aoQuestionData;
+    }
+
+    questionData.forEach((aq) => {
       if (!(aq.subdriver in subDriverRet)) {
         subDriverRet[aq.subdriver] = [];
       }
@@ -149,19 +210,32 @@ export const getResultForOrganization = (organizationList, result) => {
       const currentOrganization = organizationList[j];
 
       let cnt = 0;
+      const stakeholders = [];
       let sum = 0;
       let trend = {};
       result.data.forEach((data) => {
-        data.amQuestionData.forEach((aq) => {
+        let questionData = [];
+        if ("amQuestionData" in data) {
+          questionData = data.amQuestionData;
+        }
+        if ("aoQuestionData" in data) {
+          questionData = data.aoQuestionData;
+        }
+
+        if ("projectUser" in data) {
+          if (!(stakeholders.includes(data.projectUser.id))) {
+            stakeholders.push(data.projectUser.id)
+          }
+        }
+
+        questionData.forEach((aq) => {
           if (
             data.subProjectUser.user.organization.id === currentOrganization.id &&
             aq.subdriver === currentKey
           ) {
             cnt++;
             sum += data.integerValue;
-            // console.log(data.updated_at.split("-"));
-            const dateStr = data.updated_at.split("-");
-            // const dateKey = dateStr[0] + "-" + dateStr[1];  // Year - Month
+            const dateStr = data.created_at.split("-");
             const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
 
             if (dateKey in trend) {
@@ -185,6 +259,7 @@ export const getResultForOrganization = (organizationList, result) => {
       subDriverRet[currentKey].push({
         value: cnt > 0 ? ((sum / cnt / 10).toFixed(1) > 100 ? 100 : (sum / cnt / 10).toFixed(1)) : 0,
         cnt,
+        stakeholders,
         trend: newTrend,
       });
     }

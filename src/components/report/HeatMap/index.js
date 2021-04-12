@@ -1,11 +1,9 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { Fragment, useMemo, useState, useEffect } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronRight,
-  faQuestionCircle,
-  faCheck,
-  faTimes,
+  faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { removeSpace } from "../../../services/axios/utility";
@@ -34,7 +32,7 @@ const getColor = (val) => {
   return "#00b7a2"; // solid green
 };
 
-const HeatMap = ({ data, chartWidth }) => {
+const HeatMap = ({ shCnt, data, chartWidth }) => {
   const colP = useMemo(() => {
     if (Object.keys(data).length > 0) {
       return 100 / (data[Object.keys(data)[0]].length + 1);
@@ -43,6 +41,7 @@ const HeatMap = ({ data, chartWidth }) => {
   }, [data]);
 
   const [trendVisible, setTrendVisible] = useState({});
+  const [answerVisible, setAnswerVisible] = useState([]);
 
   useEffect(() => {
     let temp = {};
@@ -50,6 +49,7 @@ const HeatMap = ({ data, chartWidth }) => {
       if (index > 0) {
         temp[removeSpace(key)] = false;
       }
+      answerVisible.push(false);
     });
     // console.log(temp);
     setTrendVisible({ ...temp });
@@ -66,12 +66,32 @@ const HeatMap = ({ data, chartWidth }) => {
     setTrendVisible({ ...temp });
   };
 
+  const handleClickQuestionIcon = (index) => {
+    if (answerVisible[index]) {
+      answerVisible[index] = false;
+    } else {
+      for (let i = 0; i < answerVisible.length; i++) {
+        answerVisible[i] = false;
+      }
+      answerVisible[index] = true;
+    }
+    setAnswerVisible([...answerVisible]);
+  };
+
   return (
     <div className={styles.root}>
       {Object.keys(data).map((key, rowNum) => {
         const keyValue = removeSpace(key);
+        const headerStyle =
+          rowNum === 0
+            ? { border: "none", background: "none", padding: 0 }
+            : {};
         return (
-          <div key={`heatmap-row-wrapper-${keyValue}`}>
+          <div
+            className={styles["heatmap-row-wrapper"]}
+            key={`heatmap-row-wrapper-${keyValue}`}
+            style={headerStyle}
+          >
             <div
               key={`heatmap-row-${keyValue}`}
               className={classnames({
@@ -99,16 +119,31 @@ const HeatMap = ({ data, chartWidth }) => {
                     <span className={styles.title}>{key}</span>
                     {rowNum > 1 && (
                       <span className={styles.expand}>
-                        Expand <FontAwesomeIcon icon={faChevronRight} />
+                        Expand{" "}
+                        {trendVisible[keyValue] ? (
+                          <FontAwesomeIcon icon={faChevronDown} />
+                        ) : (
+                          <FontAwesomeIcon icon={faChevronRight} />
+                        )}
                       </span>
                     )}
                   </div>
+
                   <div className={styles.right}>
                     <img
                       src="/assets/img/report/question-circle.png"
                       width="16"
                       height="16"
+                      onClick={(e) => handleClickQuestionIcon(rowNum)}
                     />
+                    {answerVisible[rowNum] && (
+                      <div className={styles["row-answer"]}>
+                        <div className={styles["row-answer-triangle"]}></div>
+                        <div className={styles["row-answer-content"]}>
+                          help text help text help text help text help text
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -123,49 +158,52 @@ const HeatMap = ({ data, chartWidth }) => {
                     className={styles["map-col"]}
                     style={{ width: `${colP}%`, ...style }}
                   >
-                    {d.value}
+                    <span>
+                      {rowNum === 0
+                        ? d.value
+                        : rowNum === 1
+                        ? `${d.value} %`
+                        : `${d.value} / 10`}
+                    </span>
+                    {rowNum === 1 && (
+                      <div className={styles["map-col-shcnt"]}>
+                        {`out of ${shCnt} stakeholders`}
+                      </div>
+                    )}
                   </div>
                 );
               })}
-              {/* {rowNum > 1 && (
-                <div
-                  key={`heatmap-row-trend-${keyValue}`}
-                  className={classnames(styles["map-row"], {
-                    [styles.show]: trendVisible[keyValue],
-                    [styles.hide]: !trendVisible[keyValue],
-                  })}
-                >
-                  <div
-                    className={styles["map-col-trend"]}
-                    style={{ width: `${colP}%` }}
-                    onClick={(e) => toggleTrendVisible(keyValue)}
-                  >
-                    Trend
-                  </div>
-                  {data[key].map((d, index) => {
-                    const style =
-                      rowNum >= 2
-                        ? { background: getColor(Number(d.value)) }
-                        : {};
-                    return (
-                      <div
-                        key={`heatmap-col-trend-${keyValue}-${index}`}
-                        className={classnames(styles["map-col-trend"])}
-                        style={{ width: `${colP}%` }}
-                      >
-                        {chartWidth > 0 && (
-                          <TrendLine
-                            data={d.trend}
-                            num={`${keyValue}-${index}`}
-                            width={chartWidth}
-                          />
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              )} */}
             </div>
+            {rowNum > 1 && (
+              <div
+                key={`heatmap-row-trend-${keyValue}`}
+                className={classnames(styles["map-row"], {
+                  [styles.show]: trendVisible[keyValue],
+                  [styles.hide]: !trendVisible[keyValue],
+                })}
+              >
+                <div
+                  className={styles["map-col-trend"]}
+                  style={{ width: `${colP}%` }}
+                  onClick={(e) => toggleTrendVisible(keyValue)}
+                ></div>
+                {data[key].map((d, index) => (
+                  <div
+                    key={`heatmap-col-trend-${keyValue}-${index}`}
+                    className={classnames(styles["map-col-trend"])}
+                    style={{ width: `${colP}%` }}
+                  >
+                    {chartWidth > 0 && (
+                      <TrendLine
+                        data={d.trend}
+                        num={`${keyValue}-${index}`}
+                        width={chartWidth}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         );
       })}

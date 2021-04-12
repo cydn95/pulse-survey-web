@@ -336,6 +336,10 @@ export const getAmQuestionCntAPI = (surveyId, driverName, projectId, userId) => 
   return getClient(true).get(`/amquestioncnt/?survey=${surveyId}&driver=${driverName}&project=${projectId}&user=${userId}`);
 }
 
+export const getTotalStakeholderCntAPI = (surveyId) => {
+  return getClient(true).get(`/totalshcnt/?survey=${surveyId}`);
+}
+
 export const getAoResponseReportAPI = (surveyId, driverName, startDate = "2020-01-01", endDate = "2021-12-31") => {
   return getClient(true).get(
     `/aoresponsereport/?survey=${surveyId}&driver=${driverName}&stdt=${startDate}&eddt=${endDate}`
@@ -360,15 +364,14 @@ const getParticipationAPI = (surveyId) => {
   return getClient(true).get(`/userbysurvey/?survey=${surveyId}`);
 };
 
-// const getEngagementTrendAPI = (
-//   surveyId,
-//   startDate = "2020-01-01",
-//   endDate = "2021-12-31"
-// ) => {
-//   return getClient(true).get(
-//     `/engagementtrend/?survey=${surveyId}&stdt=${startDate}&eddt=${endDate}`
-//   );
-// };
+export const getDriverAnalysisAPI = (surveyId, driverName, projectUser, controlType = '', startDate = "2020-01-01", endDate = "2021-12-31") => {
+  let url = `/driveranalysis/?survey=${surveyId}&driver=${driverName}&projectUser=${projectUser}&stdt=${startDate}&eddt=${endDate}`;
+  if (controlType !== '') {
+    url += `&controltype=${controlType}`;
+  }
+
+  return getClient(true).get(url);
+}
 
 const getWordCloudAPI = (surveyId = 0, projectUser = 0) => {
   let url = `/wordcloud/?`;

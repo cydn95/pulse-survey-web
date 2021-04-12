@@ -52,6 +52,7 @@ const ReportDriverAnalysis = ({
   const [driverName, setDriverName] = useState("Engagement");
   // const [chartType, setChartType] = useState(filters[0]);
 
+  const [totalStakeholderCnt, setTotalStakeholdercnt] = useState(1);
   const [engagementData, setEngagementData] = useState({
     [driverName]: [],
   });
@@ -80,7 +81,8 @@ const ReportDriverAnalysis = ({
   const callback = (ret) => {
     setLoading(false);
     // console.log(ret);
-    setEngagementData({ ...ret });
+    setTotalStakeholdercnt(ret.shCnt);
+    setEngagementData({ ...ret.data });
   };
 
   return (
@@ -171,11 +173,11 @@ const ReportDriverAnalysis = ({
           ) : (
             <div style={{ width: "100%" }}>
               {!isMobile && (
-                <HeatMap data={engagementData} chartWidth={chartWidth} />
+                <HeatMap data={engagementData} shCnt={totalStakeholderCnt} chartWidth={chartWidth} />
               )}
               {isMobile &&
                 Object.keys(engagementData).map((key) => {
-                  if (key === driverName || key === "Response Rate") {
+                  if (key === driverName) {
                     return null;
                   }
 

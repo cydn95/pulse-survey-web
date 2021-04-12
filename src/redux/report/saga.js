@@ -19,6 +19,8 @@ import {
   updateAcknowledgementAPI,
   voteKeyThemesAPI,
   getAmQuestionCntAPI,
+  getDriverAnalysisAPI,
+  getTotalStakeholderCntAPI,
 } from "../../services/axios/api";
 
 import {
@@ -96,6 +98,11 @@ const getAMQuestionCntAsync = async (surveyId, driverName, projectId, userId) =>
     .then((result) => result)
     .catch((error) => error);
 
+const getTotalStakeholderCntAsync = async (surveyId) =>
+  await getTotalStakeholderCntAPI(surveyId)
+    .then((result) => result)
+    .catch((error) => error);
+
 // const getAoReportAsync = async (surveyId, driverName, startDate, endDate) =>
 //   await getAoResponseReportAPI(surveyId, driverName)
 //     .then((result) => result)
@@ -110,6 +117,25 @@ const getAmReportAsync = async (
   endDate
 ) =>
   await getAmResponseReportAPI(
+    surveyId,
+    driverName,
+    subProjectUser,
+    controlType,
+    startDate,
+    endDate
+  )
+    .then((result) => result)
+    .catch((error) => error);
+
+const getDriverAnalysisAsync = async (
+  surveyId,
+  driverName,
+  subProjectUser,
+  controlType,
+  startDate,
+  endDate
+) =>
+  await getDriverAnalysisAPI(
     surveyId,
     driverName,
     subProjectUser,
@@ -392,16 +418,14 @@ function* getEngagementTrend({ payload }) {
 
     const controlType = "SLIDER";
 
-    const questionCntResult = yield call(
-      getAMQuestionCntAsync,
-      surveyId,
-      driverName,
-      projectId,
-      userId
+    const stakeholderCntResult = yield call(
+      getTotalStakeholderCntAsync,
+      surveyId
     );
+    const totalStakeholderCnt = stakeholderCntResult.data.stakeHolderCount;
 
     const result = yield call(
-      getAmReportAsync,
+      getDriverAnalysisAsync,
       surveyId,
       driverName,
       subProjectUser,
@@ -424,25 +448,25 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForSHGroup(shGroupList, result);
 
-      const answerCnt = Array(questionCntResult.data.shgroupData.length).fill(0);
+      const answerCnt = [];
 
       Object.keys(resultData).forEach((key) => {
         const data = resultData[key];
         for (let i = 0; i < data.length; i++) {
-          answerCnt[i] += Number(data[i].cnt);
+          answerCnt.push(data[i].stakeholders.length);
         }
       });
 
       for (let i = 0; i < engagementRet["Response Rate"].length; i++) {
-        if (questionCntResult.data.shgroupData[i] && answerCnt[i]) {
+        if (answerCnt[i]) {
           engagementRet["Response Rate"][i].value =
-            questionCntResult.data.shgroupData[i].questionCnt === 0
+            totalStakeholderCnt === 0
               ? 0
-              : Math.round(answerCnt[i] / questionCntResult.data.shgroupData[i].questionCnt * 100)
+              : Math.round((answerCnt[i] / totalStakeholderCnt) * 100);
         }
       }
 
-      callback({ ...engagementRet, ...resultData });
+      callback({ shCnt: totalStakeholderCnt, data: { ...engagementRet, ...resultData } });
     }
 
     if (chartType === "Team") {
@@ -464,25 +488,25 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForTeam(teamList, result);
 
-      const answerCnt = Array(questionCntResult.data.teamData.length).fill(0);
+      const answerCnt = [];
 
       Object.keys(resultData).forEach((key) => {
         const data = resultData[key];
         for (let i = 0; i < data.length; i++) {
-          answerCnt[i] += Number(data[i].cnt);
+          answerCnt.push(data[i].stakeholders.length);
         }
       });
 
       for (let i = 0; i < engagementRet["Response Rate"].length; i++) {
-        if (questionCntResult.data.teamData[i] && answerCnt[i]) {
+        if (answerCnt[i]) {
           engagementRet["Response Rate"][i].value =
-            questionCntResult.data.teamData[i].questionCnt === 0
+            totalStakeholderCnt === 0
               ? 0
-            : Math.round(answerCnt[i] / questionCntResult.data.teamData[i].questionCnt * 100)
+              : Math.round((answerCnt[i] / totalStakeholderCnt) * 100);
         }
       }
 
-      callback({ ...engagementRet, ...resultData });
+      callback({ shCnt: totalStakeholderCnt, data: { ...engagementRet, ...resultData } });
     }
 
     if (chartType === "Organization") {
@@ -507,25 +531,25 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForOrganization(organizationList, result);
 
-      const answerCnt = Array(questionCntResult.data.organizationData.length).fill(0);
+      const answerCnt = [];
 
       Object.keys(resultData).forEach((key) => {
         const data = resultData[key];
         for (let i = 0; i < data.length; i++) {
-          answerCnt[i] += Number(data[i].cnt);
+          answerCnt.push(data[i].stakeholders.length);
         }
       });
 
       for (let i = 0; i < engagementRet["Response Rate"].length; i++) {
-        if (questionCntResult.data.organizationData[i] && answerCnt[i]) {
+        if (answerCnt[i]) {
           engagementRet["Response Rate"][i].value =
-            questionCntResult.data.organizationData[i].questionCnt === 0
+            totalStakeholderCnt === 0
               ? 0
-            : Math.round(answerCnt[i] / questionCntResult.data.organizationData[i].questionCnt * 100)
+              : Math.round((answerCnt[i] / totalStakeholderCnt) * 100);
         }
       }
 
-      callback({ ...engagementRet, ...resultData });
+      callback({ shCnt: totalStakeholderCnt, data: {...engagementRet, ...resultData } });
     }
   } catch (error) {}
 }
