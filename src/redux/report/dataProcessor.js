@@ -49,7 +49,7 @@ export const getResultForSHGroup = (shGroupList, result) => {
         }
 
         if ("projectUser" in data) {
-          if (!(stakeholders.includes(data.projectUser.id))) {
+          if (!(stakeholders.includes(data.projectUser.id)) && data.projectUser.shGroup.id === currentShGroup.id) {
             stakeholders.push(data.projectUser.id)
           }
         }
@@ -59,6 +59,9 @@ export const getResultForSHGroup = (shGroupList, result) => {
             aq.shGroup.includes(currentShGroup.id) &&
             aq.subdriver === currentKey
           ) {
+            console.log(currentShGroup);
+            console.log(aq.subdriver);
+
             cnt++;
             sum += data.integerValue;
             // const dateStr = data.created_at.split("-");
@@ -145,7 +148,7 @@ export const getResultForTeam = (teamList, result) => {
         }
 
         if ("projectUser" in data) {
-          if (!(stakeholders.includes(data.projectUser.id))) {
+          if (!(stakeholders.includes(data.projectUser.id)) && data.projectUser.team.id === currentTeam.id) {
             stakeholders.push(data.projectUser.id)
           }
         }
@@ -238,7 +241,7 @@ export const getResultForOrganization = (organizationList, result) => {
         }
 
         if ("projectUser" in data) {
-          if (!(stakeholders.includes(data.projectUser.id))) {
+          if (!(stakeholders.includes(data.projectUser.id)) && data.projectUser.user.organization.id === currentOrganization.id) {
             stakeholders.push(data.projectUser.id)
           }
         }
