@@ -39,7 +39,22 @@ export const getResultForSHGroup = (shGroupList, result) => {
       let question = "";
       const stakeholders = [];
 
-      result.data.forEach((data) => {
+      for (let k = 0; k < result.data.length; k++) {
+
+        const data = result.data[k];
+
+        if (!("projectUser" in data)) {
+          continue
+        }
+
+        if (data.projectUser.shGroup === null || data.projectUser.shGroup.id !== currentShGroup.id) {
+          continue;
+        }
+
+        if (!stakeholders.includes(data.projectUser.id)) {
+          stakeholders.push(data.projectUser.id)
+        }
+
         let questionData = [];
         if ("amQuestionData" in data) {
           questionData = data.amQuestionData;
@@ -47,29 +62,21 @@ export const getResultForSHGroup = (shGroupList, result) => {
         if ("aoQuestionData" in data) {
           questionData = data.aoQuestionData;
         }
-
-        if ("projectUser" in data) {
-          if (!(stakeholders.includes(data.projectUser.id)) && data.projectUser.shGroup.id === currentShGroup.id) {
-            stakeholders.push(data.projectUser.id)
-          }
-        }
-
+        
         questionData.forEach((aq) => {
-          if (
-            aq.shGroup.includes(currentShGroup.id) &&
-            aq.subdriver === currentKey
-          ) {
-            console.log(currentShGroup);
-            console.log(aq.subdriver);
-
+          // if (
+          //   aq.shGroup.includes(currentShGroup.id) &&
+          //   aq.subdriver === currentKey
+          // ) {
+          if (aq.subdriver === currentKey) {
             cnt++;
             sum += data.integerValue;
-            // const dateStr = data.created_at.split("-");
+            const dateStr = data.created_at.split("-");
             // const dateKey = dateStr[0] + "-" + dateStr[1];  // Year - Month
-            // const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
+            const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
             // const dateKey = dateStr[1];    // Only Month
-            const dateStr = data.created_at.split("T");
-            const dateKey = dateStr[0];
+            // const dateStr = data.created_at.split("T");
+            // const dateKey = dateStr[0];
 
             if (question === "") {
               question = aq.questionText;
@@ -82,7 +89,7 @@ export const getResultForSHGroup = (shGroupList, result) => {
             }
           }
         });
-      });
+      }
 
       const newTrend = [];
 
@@ -103,7 +110,6 @@ export const getResultForSHGroup = (shGroupList, result) => {
     }
   }
 
-  // console.log(subDriverRet);
   return subDriverRet;
 }
 
@@ -138,7 +144,22 @@ export const getResultForTeam = (teamList, result) => {
       let sum = 0;
       let trend = {};
 
-      result.data.forEach((data) => {
+      for (let k = 0; k < result.data.length; k++) {
+
+        const data = result.data[k];
+
+        if (!("projectUser" in data)) {
+          continue
+        }
+
+        if (data.projectUser.team === null || data.projectUser.team.id !== currentTeam.id) {
+          continue;
+        }
+
+        if (!stakeholders.includes(data.projectUser.id)) {
+          stakeholders.push(data.projectUser.id)
+        }
+
         let questionData = [];
         if ("amQuestionData" in data) {
           questionData = data.amQuestionData;
@@ -147,23 +168,18 @@ export const getResultForTeam = (teamList, result) => {
           questionData = data.aoQuestionData;
         }
 
-        if ("projectUser" in data) {
-          if (!(stakeholders.includes(data.projectUser.id)) && data.projectUser.team.id === currentTeam.id) {
-            stakeholders.push(data.projectUser.id)
-          }
-        }
-
         questionData.forEach((aq) => {
-          if (
-            data.subProjectUser.team.id === currentTeam.id &&
-            aq.subdriver === currentKey
-          ) {
+          // if (
+          //   data.subProjectUser.team.id === currentTeam.id &&
+          //   aq.subdriver === currentKey
+          // ) {
+          if (aq.subdriver === currentKey) {
             cnt++;
             sum += data.integerValue;
-            // const dateStr = data.created_at.split("-");
-            // const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
-            const dateStr = data.created_at.split("T");
-            const dateKey = dateStr[0];
+            const dateStr = data.created_at.split("-");
+            const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
+            // const dateStr = data.created_at.split("T");
+            // const dateKey = dateStr[0];
 
             if (question === "") {
               question = aq.questionText;
@@ -176,7 +192,7 @@ export const getResultForTeam = (teamList, result) => {
             }
           }
         });
-      });
+      }
 
       const newTrend = [];
 
@@ -231,7 +247,22 @@ export const getResultForOrganization = (organizationList, result) => {
       let trend = {};
       let question = "";
 
-      result.data.forEach((data) => {
+      for (let k = 0; k < result.data.length; k++) {
+      
+        const data = result.data[k];
+
+        if (!("projectUser" in data)) {
+          continue
+        }
+
+        if (data.projectUser.user === null || data.projectUser.user.organization === null || data.projectUser.user.organization.id !== currentOrganization.id) {
+          continue;
+        }
+
+        if (!stakeholders.includes(data.projectUser.id)) {
+          stakeholders.push(data.projectUser.id)
+        }
+
         let questionData = [];
         if ("amQuestionData" in data) {
           questionData = data.amQuestionData;
@@ -247,16 +278,17 @@ export const getResultForOrganization = (organizationList, result) => {
         }
 
         questionData.forEach((aq) => {
-          if (
-            data.subProjectUser.user.organization.id === currentOrganization.id &&
-            aq.subdriver === currentKey
-          ) {
+          // if (
+          //   data.subProjectUser.user.organization.id === currentOrganization.id &&
+          //   aq.subdriver === currentKey
+          // ) {
+          if (aq.subdriver === currentKey) {
             cnt++;
             sum += data.integerValue;
-            // const dateStr = data.created_at.split("-");
-            // const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
-            const dateStr = data.created_at.split("T");
-            const dateKey = dateStr[0];
+            const dateStr = data.created_at.split("-");
+            const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
+            // const dateStr = data.created_at.split("T");
+            // const dateKey = dateStr[0];
 
             if (question === "") {
               question = aq.questionText;
@@ -269,7 +301,7 @@ export const getResultForOrganization = (organizationList, result) => {
             }
           }
         });
-      });
+      }
 
       const newTrend = [];
 
