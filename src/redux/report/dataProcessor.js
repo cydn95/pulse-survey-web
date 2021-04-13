@@ -4,10 +4,27 @@ import {
 
 const MONTH = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+const compare = (a, b) => {
+  if (a.created_at > b.created_at) {
+    return 1;
+  } 
+
+  if (a.created_at < b.created_at) {
+    return -1;
+  }
+
+  return 0;
+}
+
 export const getResultForSHGroup = (shGroupList, result) => {
   const subDriverRet = {};
 
-  result.data.forEach((data) => {
+  const resultData = [...result.data];
+  resultData.sort(compare);
+
+  console.log(resultData);
+
+  resultData.forEach((data) => {
     let questionData = [];
     if ("amQuestionData" in data) {
       questionData = data.amQuestionData;
@@ -39,9 +56,9 @@ export const getResultForSHGroup = (shGroupList, result) => {
       let question = "";
       const stakeholders = [];
 
-      for (let k = 0; k < result.data.length; k++) {
+      for (let k = 0; k < resultData.length; k++) {
 
-        const data = result.data[k];
+        const data = resultData[k];
 
         if (!("projectUser" in data)) {
           continue
@@ -105,7 +122,7 @@ export const getResultForSHGroup = (shGroupList, result) => {
         question,
         cnt,
         stakeholders,
-        trend: newTrend.reverse(),
+        trend: newTrend,
       });
     }
   }
@@ -116,7 +133,10 @@ export const getResultForSHGroup = (shGroupList, result) => {
 export const getResultForTeam = (teamList, result) => {
   const subDriverRet = {};
 
-  result.data.forEach((data) => {
+  const resultData = [...result.data];
+  resultData.sort(compare);
+
+  resultData.forEach((data) => {
     let questionData = [];
     if ("amQuestionData" in data) {
       questionData = data.amQuestionData;
@@ -144,9 +164,9 @@ export const getResultForTeam = (teamList, result) => {
       let sum = 0;
       let trend = {};
 
-      for (let k = 0; k < result.data.length; k++) {
+      for (let k = 0; k < resultData.length; k++) {
 
-        const data = result.data[k];
+        const data = resultData[k];
 
         if (!("projectUser" in data)) {
           continue
@@ -208,7 +228,7 @@ export const getResultForTeam = (teamList, result) => {
         cnt,
         stakeholders,
         question,
-        trend: newTrend.reverse(),
+        trend: newTrend,
       });
     }
   }
@@ -219,7 +239,10 @@ export const getResultForTeam = (teamList, result) => {
 export const getResultForOrganization = (organizationList, result) => {
   const subDriverRet = {};
 
-  result.data.forEach((data) => {
+  const resultData = [...result.data];
+  resultData.sort(compare);
+
+  resultData.forEach((data) => {
     let questionData = [];
     if ("amQuestionData" in data) {
       questionData = data.amQuestionData;
@@ -247,9 +270,9 @@ export const getResultForOrganization = (organizationList, result) => {
       let trend = {};
       let question = "";
 
-      for (let k = 0; k < result.data.length; k++) {
+      for (let k = 0; k < resultData.length; k++) {
       
-        const data = result.data[k];
+        const data = resultData[k];
 
         if (!("projectUser" in data)) {
           continue
@@ -317,7 +340,7 @@ export const getResultForOrganization = (organizationList, result) => {
         cnt,
         stakeholders,
         question,
-        trend: newTrend.reverse(),
+        trend: newTrend,
       });
     }
   }
