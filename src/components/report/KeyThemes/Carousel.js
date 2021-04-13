@@ -9,7 +9,7 @@ const ack = {
   3: { img: "/assets/img/report/list.png", title: "Working on it" },
   4: {
     img: "/assets/img/report/messaging.png",
-    title: "Would love to talk in person",
+    title: "Let's talk about it",
   },
   5: { img: "/assets/img/report/sms.png", title: "I agree" },
 };
@@ -168,7 +168,7 @@ const KeyThemesCarousel = ({
                     {index === 0 && `${data.thanksForSharingCount}`}
                     {index === 1 && `${data.greatIdeaCount}`}
                     {index === 2 && `${data.workingOnItCount}`}
-                    {index === 3 && `${data.loveToTalkCount}`}
+                    {index === 3 && `${data.letsTalkAboutItCount}`}
                     {index === 4 && `${data.agreeCount}`}
                   </small>
                 </div>
