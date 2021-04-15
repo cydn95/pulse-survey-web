@@ -21,6 +21,7 @@ import {
   getAmQuestionCntAPI,
   getDriverAnalysisAPI,
   getTotalStakeholderCntAPI,
+  advisorAPI,
 } from "../../services/axios/api";
 
 import {
@@ -40,6 +41,7 @@ import {
   REPORT_SET_ACKNOWLEDGEMENT,
   REPORT_VOTE_KEYTHEME,
   REPORT_AMQUESTIONCNT,
+  REPORT_ADVISOR,
 } from "Constants/actionTypes";
 
 import {
@@ -188,6 +190,11 @@ const updateAcknowledgementAsync = async (responseId, data) =>
 
 const voteKeyThemeAsync = async (voteId, data) =>
   await voteKeyThemesAPI(voteId, data)
+    .then((result) => result)
+    .catch((error) => error);
+
+const advisorAsync = async (surveyId, projectUserId) =>
+  await advisorAPI(surveyId, projectUserId)
     .then((result) => result)
     .catch((error) => error);
 
@@ -466,7 +473,10 @@ function* getEngagementTrend({ payload }) {
         }
       }
 
-      callback({ shCnt: totalStakeholderCnt, data: { ...engagementRet, ...resultData } });
+      callback({
+        shCnt: totalStakeholderCnt,
+        data: { ...engagementRet, ...resultData },
+      });
     }
 
     if (chartType === "Team") {
@@ -506,7 +516,10 @@ function* getEngagementTrend({ payload }) {
         }
       }
 
-      callback({ shCnt: totalStakeholderCnt, data: { ...engagementRet, ...resultData } });
+      callback({
+        shCnt: totalStakeholderCnt,
+        data: { ...engagementRet, ...resultData },
+      });
     }
 
     if (chartType === "Organization") {
@@ -549,7 +562,10 @@ function* getEngagementTrend({ payload }) {
         }
       }
 
-      callback({ shCnt: totalStakeholderCnt, data: {...engagementRet, ...resultData } });
+      callback({
+        shCnt: totalStakeholderCnt,
+        data: { ...engagementRet, ...resultData },
+      });
     }
   } catch (error) {}
 }
@@ -739,6 +755,15 @@ function* getAMQuestionCnt({ payload }) {
   } catch (error) {}
 }
 
+function* advisorReport({ payload }) {
+  try {
+    const { surveyId, projectUserId, callback } = payload;
+
+    const result = yield call(advisorAsync, surveyId, projectUserId);
+    callback(result.data);
+  } catch (error) {}
+}
+
 export function* watchGetOverallSentiment() {
   yield takeEvery(REPORT_OVERALL_SENTIMENT, getOverallSentiment);
 }
@@ -799,6 +824,10 @@ export function* watchAMQuestionCnt() {
   yield takeEvery(REPORT_AMQUESTIONCNT, getAMQuestionCnt);
 }
 
+export function* watchAdvisorReport() {
+  yield takeEvery(REPORT_ADVISOR, advisorReport);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetOverallSentiment),
@@ -816,5 +845,6 @@ export default function* rootSaga() {
     fork(watchSetAcknowledgementReport),
     fork(watchVoteKeyThemeReport),
     fork(watchAMQuestionCnt),
+    fork(watchAdvisorReport),
   ]);
 }

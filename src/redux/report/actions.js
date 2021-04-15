@@ -14,7 +14,8 @@ import {
   REPORT_GET_ACKNOWLEDGEMENT,
   REPORT_SET_ACKNOWLEDGEMENT,
   REPORT_VOTE_KEYTHEME,
-  REPORT_AMQUESTIONCNT
+  REPORT_AMQUESTIONCNT,
+  REPORT_ADVISOR
 } from "Constants/actionTypes";
 
 export const overallSentiment = (surveyId, callback) => ({
@@ -96,3 +97,8 @@ export const getAMQuestionCnt = (surveyId, driverName, projectId, userId, callba
   type: REPORT_AMQUESTIONCNT,
   payload: { surveyId, driverName, projectId, userId, callback }
 });
+
+export const advisorReport = (surveyId, projectUserId, callback) => ({
+  type: REPORT_ADVISOR,
+  payload: { surveyId, projectUserId, callback }
+})

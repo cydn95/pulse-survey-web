@@ -50,7 +50,8 @@ const MENU_REPORT = [
   // "Improvement",
   "Driver-Analysis",
   "Key Themes",
-  "Matrix"
+  "Matrix",
+  "Advisor Insights"
 ];
 
 class Sidebar extends Component {

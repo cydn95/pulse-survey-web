@@ -12,6 +12,7 @@ import ReportConfidence from "./confidence";
 import ReportDriverAnalysis from "./driver-analysis";
 import ReportKeyThemes from "./key_themes";
 import ReportMatrix from "./matrix";
+import AdvisorInsights from "./advisor-insights";
 
 import styles from "./styles.scss";
 
@@ -30,6 +31,7 @@ const Dashboard = ({ history, location, match }) => {
             <Route path={`${match.url}/driver-analysis`} component={ReportDriverAnalysis} />
             <Route path={`${match.url}/key-themes`} component={ReportKeyThemes} />
             <Route path={`${match.url}/matrix`} component={ReportMatrix} />
+            <Route path={`${match.url}/advisor-insights`} component={AdvisorInsights} />
             <Route path={`${match.url}`} component={DashboardGeneral} />
             <Redirect to="/error" />
           </Switch>

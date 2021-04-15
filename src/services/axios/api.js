@@ -425,6 +425,10 @@ export const voteKeyThemesAPI = (id, data) => {
   }
 }
 
+export const advisorAPI = (survey, projectUser) => {
+  return getClient(true).get(`/advisorinsights?survey=${survey}&projectuser=${projectUser}`);
+}
+
 // const getSentimentReportAPI = (
 //   surveyId,
 //   startDate = "2020-01-01",
