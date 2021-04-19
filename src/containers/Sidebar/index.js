@@ -49,7 +49,7 @@ const MENU_REPORT = [
   // "Relationships",
   // "Improvement",
   "Driver-Analysis",
-  "Key Themes",
+  // "Key Themes",
   "Matrix",
   "Advisor Insights"
 ];

@@ -123,7 +123,7 @@ const AdvisorInsights = ({ surveyId, surveyUserId, actionAdvisorReport }) => {
                     styles["content-summary-value"],
                     styles.red
                   )}
-                >{`${data.summary.responseRateFromInvitedTeamMembers}%`}</div>
+                  >{`${Math.round(data.summary.responseRateFromInvitedTeamMembers)}%`}</div>
                 <div className={styles["content-summary-data"]}>
                   <div className={styles["content-summary-title"]}>
                     Response Rate From Invited Team
@@ -139,7 +139,7 @@ const AdvisorInsights = ({ surveyId, surveyUserId, actionAdvisorReport }) => {
                     styles["content-summary-value"],
                     styles.green
                   )}
-                >{`${data.summary.responseRateFromInvitedStakeholders}%`}</div>
+                  >{`${Math.round(data.summary.responseRateFromInvitedStakeholders)}%`}</div>
                 <div className={styles["content-summary-data"]}>
                   <div className={styles["content-summary-title"]}>
                     Response Rate From Invited
@@ -155,7 +155,7 @@ const AdvisorInsights = ({ surveyId, surveyUserId, actionAdvisorReport }) => {
                     styles["content-summary-value"],
                     styles.blue
                   )}
-                >{`${data.summary.totalDepartments}%`}</div>
+                >{`${data.summary.totalDepartments}`}</div>
                 <div className={styles["content-summary-data"]}>
                   <div className={styles["content-summary-title"]}>
                     Departments in Total

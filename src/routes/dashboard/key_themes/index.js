@@ -77,7 +77,7 @@ const ReportKeyThemes = ({ history, projectTitle }) => {
   return (
     <div className={styles.root}>
       <div className={styles.topbar}>
-        <TopNav history={history} menuTitle="Key Themes">
+        <TopNav history={history} menuTitle="Key Themes" style={{ background: '#f5f5f5' }}>
           <div className={styles.section}>
             <h2 className={styles["page-title"]}>My Profile</h2>
             <h2 className={styles["project-name"]}>{projectTitle}</h2>
