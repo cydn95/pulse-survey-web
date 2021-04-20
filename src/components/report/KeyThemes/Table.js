@@ -1,17 +1,21 @@
 import React from "react";
 
-import { getColorFromValue } from "Util/Utils";
-
 import classnames from "classnames";
 import styles from "./styles_table.scss";
 
 const PercentBar = ({ value, className = "" }) => {
-  const bg = getColorFromValue(value * 2);
   return (
     <div
-      style={{ width: `${value * 10}%`, background: bg }}
-      className={classnames(className, styles["keythemes-table-percent-bar"])}
-    ></div>
+      className={classnames(
+        className,
+        styles["keythemes-table-percent-container"]
+      )}
+    >
+      <div
+        style={{ width: `${value * 10}%` }}
+        className={classnames(className, styles["keythemes-table-percent-bar"])}
+      ></div>
+    </div>
   );
 };
 
@@ -19,23 +23,40 @@ const KeyThemesTable = ({ title = "", data = [], onVote, className }) => {
   return (
     <div className={classnames(styles["keythemes-table-root"], className)}>
       <div className={styles["keythemes-table-header"]}>
-        <div className={styles["keythemes-table-header-item"]}>Frequency</div>
-        <div className={styles["keythemes-table-header-item"]}>Theme</div>
-        <div className={styles["keythemes-table-header-item"]}>
-          Like(Upvote)
+        <div
+          className={styles["keythemes-table-header-item"]}
+          style={{ width: "25%" }}
+        >
+          FREQUENCY
         </div>
-        <div className={styles["keythemes-table-header-item"]}>
-          Dislike
-          <br />
-          (Downvote)
+        <div
+          className={styles["keythemes-table-header-item"]}
+          style={{ width: "39%" }}
+        >
+          THEME
+        </div>
+        <div
+          className={styles["keythemes-table-header-item"]}
+          style={{ width: "18%" }}
+        >
+          LIKE(UPVOTE)
+        </div>
+        <div
+          className={styles["keythemes-table-header-item"]}
+          style={{ width: "18%" }}
+        >
+          DISLIKE(DOWNVOTE)
         </div>
       </div>
       <div className={styles["keythemes-table-content"]}>
         {data.map((d, index) => {
-          const voteValue = d.myStatus && d.myStatus.length > 0 ? d.myStatus[0].voteValue : "0";
-          const id = d.myStatus && d.myStatus.length > 0 ? d.myStatus[0].id : null;
+          const voteValue =
+            d.myStatus && d.myStatus.length > 0 ? d.myStatus[0].voteValue : "0";
+          const id =
+            d.myStatus && d.myStatus.length > 0 ? d.myStatus[0].id : null;
           return (
             <React.Fragment key={`keythemes-table-${title}-${index}`}>
+              {/* Mobile View start */}
               <div className={styles["keythemes-table-content-mobile"]}>
                 <div className={styles["keythemes-table-content-mobile-key"]}>
                   {d.key}
@@ -43,24 +64,26 @@ const KeyThemesTable = ({ title = "", data = [], onVote, className }) => {
                 <div
                   className={styles["keythemes-table-content-mobile-percent"]}
                 >
-                  <span>Frequency</span>
-                  <div
-                    className={styles["keythemes-table-content-mobile-barc"]}
-                  >
-                    <PercentBar
-                      className={styles["keythemes-table-content-mobile-bar"]}
-                      value={d.freq}
-                    />
-                  </div>
+                  <PercentBar
+                    className={styles["keythemes-table-content-mobile-bar"]}
+                    value={d.freq}
+                  />
                 </div>
                 <div
                   className={styles["keythemes-table-content-mobile-action"]}
                 >
+                  <div className={styles["keythemes-table-percent-text"]}>
+                    {d.freq * 10}%
+                  </div>
                   <div
                     className={styles["keythemes-table-content-mobile-vote"]}
                   >
                     <img
-                      src={voteValue == 1 ? "/assets/img/survey/like-solid.png" : "/assets/img/survey/like.png"}
+                      src={
+                        voteValue == 1
+                          ? "/assets/img/report/like_on.png"
+                          : "/assets/img/report/like_off.png"
+                      }
                       width="16"
                       onClick={(e) => onVote(d.key, 1, id, voteValue)}
                     />
@@ -70,7 +93,11 @@ const KeyThemesTable = ({ title = "", data = [], onVote, className }) => {
                     className={styles["keythemes-table-content-mobile-vote"]}
                   >
                     <img
-                      src={voteValue === -1 ? "/assets/img/survey/dislike-solid.png" : "/assets/img/survey/dislike.png"}
+                      src={
+                        voteValue === -1
+                          ? "/assets/img/report/dislike_on.png"
+                          : "/assets/img/report/dislike_off.png"
+                      }
                       width="16"
                       onClick={(e) => onVote(d.key, -1, id, voteValue)}
                     />
@@ -78,48 +105,57 @@ const KeyThemesTable = ({ title = "", data = [], onVote, className }) => {
                   </div>
                 </div>
               </div>
+              {/* Mobile View end */}
               <div className={styles["keythemes-table-content-row"]}>
                 <div
-                  className={classnames(styles["keythemes-table-content-col"], {
-                    [styles.odd]: index % 2 !== 0,
-                    [styles.even]: index % 2 === 0,
-                  })}
+                  style={{
+                    width: "25%",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    justifyContent: "center",
+                  }}
+                  className={styles["keythemes-table-content-col"]}
                 >
+                  <div className={styles["keythemes-table-percent-text"]}>
+                    {d.freq * 10}%
+                  </div>
                   <PercentBar value={d.freq} />
                 </div>
                 <div
-                  className={classnames(styles["keythemes-table-content-col"], {
-                    [styles.odd]: index % 2 !== 0,
-                    [styles.even]: index % 2 === 0,
-                  })}
+                  style={{ width: "39%" }}
+                  className={styles["keythemes-table-content-col"]}
                 >
                   {d.key}
                 </div>
                 <div
-                  className={classnames(styles["keythemes-table-content-col"], {
-                    [styles.odd]: index % 2 !== 0,
-                    [styles.even]: index % 2 === 0,
-                  })}
+                  style={{ width: "18%" }}
+                  className={styles["keythemes-table-content-col"]}
                 >
                   <img
-                    src={voteValue == 1 ? "/assets/img/survey/like-solid.png" : "/assets/img/survey/like.png"}
+                    src={
+                      voteValue == 1
+                        ? "/assets/img/report/like_on.png"
+                        : "/assets/img/report/like_off.png"
+                    }
                     width="16"
                     onClick={(e) => onVote(d.key, 1, id, voteValue)}
                   />
-                  {d.upvoteCount}
+                  <span>{d.upvoteCount}</span>
                 </div>
                 <div
-                  className={classnames(styles["keythemes-table-content-col"], {
-                    [styles.odd]: index % 2 !== 0,
-                    [styles.even]: index % 2 === 0,
-                  })}
+                  style={{ width: "18%" }}
+                  className={styles["keythemes-table-content-col"]}
                 >
                   <img
-                    src={voteValue === -1 ? "/assets/img/survey/dislike-solid.png" : "/assets/img/survey/dislike.png"}
+                    src={
+                      voteValue === -1
+                        ? "/assets/img/report/dislike_on.png"
+                        : "/assets/img/report/dislike_off.png"
+                    }
                     width="16"
                     onClick={(e) => onVote(d.key, -1, id, voteValue)}
                   />
-                  {d.downvoteCount}
+                  <span>{d.downvoteCount}</span>
                 </div>
               </div>
             </React.Fragment>

@@ -6,8 +6,6 @@
     display: flex;
 
     &-item {
-      flex: 1;
-      // background: transparent;
       color: #949596;
       padding: 5px 10px;
       font-weight: bold;
@@ -21,53 +19,51 @@
       display: none;
     }
   }
+
   .keythemes-table-content {
     width: 100%;
     margin-top: 5px;
 
     &-mobile {
       display: none;
-      border: 1px solid #eee;
+      border: 1px solid rgb(223, 224, 235);
       border-radius: 5px;
       box-sizing: border-box;
-      padding: 10px;
-      margin-bottom: 10px;
+      padding: 14px 20px;
+      margin-bottom: 13px;
 
       &-key {
-        font-size: 1.2rem;
+        font-size: 14px;
         font-weight: 600;
         padding-bottom: 16px;
       }
 
       &-percent {
         display: flex;
-        align-items: center;
+        flex-direction: column;
         margin-bottom: 10px;
-      }
-
-      &-barc {
-        flex: 1;
+        width: 100%;
       }
 
       &-bar {
-        height: 24px !important;
-        border-radius: 12px;
-        margin-left: 20px;
+        height: 5px !important;
+        border-radius: 2px;
+        margin-bottom: 12px;
       }
 
       &-action {
         display: flex;
-        justify-content: space-between;
         
         img {
-          height: 24px;
           width: 20px;
+          cursor: pointer;
         }
       }
 
       &-vote {
         display: flex;
         align-items: center;
+        margin-left: 20px;
 
         span {
           padding-left: 10px;
@@ -82,6 +78,9 @@
     &-row {
       width: 100%;
       display: flex;
+      border-radius: 8px;
+      background: #fff;
+      margin-bottom: 10px;
 
       @media screen and (max-width: 768px) {
         display: none;
@@ -89,24 +88,53 @@
     }
 
     &-col {
-      flex: 1;
-      margin: 2px;
-      color: #3b4658;
-      height: 60px;
+      color: rgba(0, 0, 0, 0.7);
+      height: 77px;
       display: flex;
       align-items: center;
       padding: 0px 10px;
-      background: #fff;
+      font-size: 15px;
+      font-weight: 500;
 
       img {
         margin-right: 12px;
         cursor: pointer;
       }
+
+      span {
+        font-size: 13px;
+        font-weight: 600;
+        color: #757f88;
+      }
+    }
+  }
+
+  .keythemes-table-percent-container {
+    height: 5px;
+    background: #ebecee;
+    border-radius: 2px;
+    width: 80%;
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
+  }
+
+  .keythemes-table-percent-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: #000;
+    opacity: 0.7;
+    
+    @media screen and (max-width: 768px) {
+      font-size: 16px;
+      flex: 1;
     }
   }
 
   .keythemes-table-percent-bar {
-    height: 12px;
-    background: #4a66ac;
+    height: 5px;
+    background: #15bb59;
+    border-radius: 2px;
   }
 }

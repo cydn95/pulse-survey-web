@@ -16,10 +16,14 @@ const tabMenu = {
   risks: {
     label: "Risks",
     question: "",
+    img_white: "/assets/img/report/tab-risks-white.png",
+    img_grey: "/assets/img/report/tab-risks-grey.png",
     component: <TableContainer tab={1} label="Risks" />,
   },
   "overall-sentiment": {
     label: "Overall Sentiment",
+    img_white: "/assets/img/report/tab-sentiment-white.png",
+    img_grey: "/assets/img/report/tab-sentiment-grey.png",
     component: (
       <CarouselContainer
         tab={2}
@@ -29,6 +33,8 @@ const tabMenu = {
   },
   "unspoken-problem": {
     label: "Unspoken Problem",
+    img_white: "/assets/img/report/tab-unspoken-white.png",
+    img_grey: "/assets/img/report/tab-unspoken-grey.png",
     component: (
       <CarouselContainer
         tab={3}
@@ -38,6 +44,8 @@ const tabMenu = {
   },
   "project-interest": {
     label: "Project Interest",
+    img_white: "/assets/img/report/tab-project-white.png",
+    img_grey: "/assets/img/report/tab-project-grey.png",
     component: (
       <TableContainer
         tab={4}
@@ -47,6 +55,8 @@ const tabMenu = {
   },
   "personal-interest": {
     label: "Personal Interest",
+    img_white: "/assets/img/report/tab-personal-white.png",
+    img_grey: "/assets/img/report/tab-personal-grey.png",
     component: (
       <TableContainer
         tab={5}
@@ -56,6 +66,8 @@ const tabMenu = {
   },
   improvement: {
     label: "Improvement",
+    img_white: "/assets/img/report/tab-improvement-white.png",
+    img_grey: "/assets/img/report/tab-improvement-grey.png",
     component: (
       <div style={{ width: "100%" }}>
         <TableContainer tab={6} label="Keep / What's Going Well?" />
@@ -69,6 +81,7 @@ const tabMenu = {
 
 const ReportKeyThemes = ({ history, projectTitle }) => {
   const [tab, setTab] = useState("risks");
+  // const [tab, setTab] = useState("unspoken-problem");
 
   const handleSelectTab = (t) => {
     setTab(t);
@@ -85,7 +98,7 @@ const ReportKeyThemes = ({ history, projectTitle }) => {
         </TopNav>
       </div>
       <div className={styles["main-content"]}>
-        <div className={styles["keythemes-select-menu"]}>
+        {/* <div className={styles["keythemes-select-menu"]}>
           <Select
             style={{width: '100%'}}
             value={tab}
@@ -97,20 +110,23 @@ const ReportKeyThemes = ({ history, projectTitle }) => {
               </MenuItem>
             ))}
           </Select>
-        </div>
-        <div className={styles["keythemes-tab-menu"]}>
-          {Object.keys(tabMenu).map((key) => (
-            <div
-              key={`keythemes-tab-${key}`}
-              className={classnames(styles["keythemes-tab-item"], {
-                [styles.active]: key === tab,
-              })}
-              role="button"
-              onClick={(e) => handleSelectTab(key)}
-            >
-              {tabMenu[key].label}
-            </div>
-          ))}
+        </div> */}
+        <div className={styles["keytheme-tab-container"]}>
+          <div className={styles["keythemes-tab-menu"]}>
+            {Object.keys(tabMenu).map((key) => (
+              <div
+                key={`keythemes-tab-${key}`}
+                className={classnames(styles["keythemes-tab-item"], {
+                  [styles.active]: key === tab,
+                })}
+                role="button"
+                onClick={(e) => handleSelectTab(key)}
+              >
+                <img src={key === tab ? tabMenu[key].img_white : tabMenu[key].img_grey} />
+                {tabMenu[key].label}
+              </div>
+            ))}
+          </div>
         </div>
         {tabMenu[tab].component}
       </div>
