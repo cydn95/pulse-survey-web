@@ -22,8 +22,6 @@ export const getResultForSHGroup = (shGroupList, result) => {
   const resultData = [...result.data];
   resultData.sort(compare);
 
-  console.log(resultData);
-
   resultData.forEach((data) => {
     let questionData = [];
     if ("amQuestionData" in data) {
