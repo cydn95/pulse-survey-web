@@ -51,7 +51,7 @@ class OverallTrend extends SampleBase {
       <div className="control-pane">
         <div className="control-section">
           <ChartComponent
-            id="charts"
+            id="charts-overall-trend"
             style={{ textAlign: "center" }}
             ref={(charts) => (this.chartInstance = charts)}
             primaryXAxis={{
@@ -104,7 +104,7 @@ class OverallTrend extends SampleBase {
     );
   }
   onChartLoad(args) {
-    let chart = document.getElementById("charts");
+    let chart = document.getElementById("charts-overall-trend");
     chart.setAttribute("title", "");
   }
   animationComplete(args) {

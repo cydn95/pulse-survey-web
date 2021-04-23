@@ -83,3 +83,16 @@ ul {
   right: 50px !important;
   top: unset !important;
 }
+
+.flex-row-flow {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+#charts-feedback-summary_ChartBorder {
+  fill: #f5f5f5 !important;
+}
+
+#charts-overall-trend_ChartBorder {
+  fill: #f5f5f5 !important; 
+}
