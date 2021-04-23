@@ -1,5 +1,5 @@
 import React from "react";
-import WordCloud from "react-d3-cloud";
+// import WordCloud from "react-d3-cloud";
 
 const data = [
   { text: "Hey", value: 1000 },
@@ -21,13 +21,13 @@ const rotate = (word) => word.value % 360;
 const ReportWordCloud = ({ chartWidth, data }) => {
   return (
     <div>
-      <WordCloud
+      {/* <WordCloud
         data={data}
         fontSizeMapper={fontSizeMapper}
         rotate={0}
         width={chartWidth}
         height={chartWidth * 0.75}
-      />
+      /> */}
     </div>
   );
 };
