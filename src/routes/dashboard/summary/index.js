@@ -153,6 +153,8 @@ const ReportSummary = ({
   ) => {
     setParticipationLoading(false);
 
+    // console.log(participationRet, teamParticipationRet, allUserCount, teamUserCount);
+
     setParticipationResult(participationRet);
     setTeamParticipationResult(teamParticipationRet);
     setParticipationCount(allUserCount);

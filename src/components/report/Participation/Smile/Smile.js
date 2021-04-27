@@ -51,17 +51,19 @@ function renderGraph(node, props) {
 
     face
       .append("text")
-      .text(subDriver)
+      .text(props.subDriver)
       .attr("text-anchor", "middle")
       .attr("class", styles.title)
-      .attr("dy", "20");
+      .attr("dy", "25");
 
-    face
-      .append("text")
-      .text(type)
-      .attr("text-anchor", "middle")
-      .attr("class", styles["sub-title"])
-      .attr("dy", "45");
+    // face
+    //   .append("text")
+    //   .text(type)
+    //   .attr("text-anchor", "middle")
+    //   .attr("class", styles["sub-title"])
+    //   .attr("dy", "45");
+  } else {
+    face.remove('text');
   }
 
   // centerize the face
