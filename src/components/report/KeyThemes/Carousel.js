@@ -77,7 +77,7 @@ const KeyThemesCarousel = ({
       }
     }
     return {
-      text: "Acknowledg",
+      text: "Acknowledge",
       status: false,
       icon: "/assets/img/report/btn-star-grey.png",
     };
