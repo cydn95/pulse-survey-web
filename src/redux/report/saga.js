@@ -220,19 +220,23 @@ function* getTopPositiveNegative({ payload }) {
 
       if ("topPositive" in result.data) {
         result.data.topPositive.forEach((d) => {
-          positiveArr.push({
-            topicValue: d.topicValue,
-            positive: d.integerValue,
-          });
+          if (d.length > 1) {
+            positiveArr.push({
+              topicValue: d[1],
+              positive: d[0],
+            });
+          }
         });
       }
 
       if ("topNegative" in result.data) {
         result.data.topNegative.forEach((d) => {
-          negativeArr.push({
-            topicValue: d.topicValue,
-            negative: d.integerValue,
-          });
+          if (d.length > 1) {
+            negativeArr.push({
+              topicValue: d[1],
+              negative: d[0],
+            });
+          }
         });
       }
 

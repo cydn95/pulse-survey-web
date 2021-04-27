@@ -7,7 +7,7 @@ import * as d3 from "d3";
 
 import styles from "./styles.scss";
 
-const fillColors = ["#263968", "#ff0000", "#f1c742", "#00c855"];
+const fillColors = ["#29cc97", "#f12b2c", "#cccccc", "#ffc15c"];
 
 function renderGraph(node, props) {
   const {
