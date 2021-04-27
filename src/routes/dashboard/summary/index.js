@@ -324,7 +324,7 @@ const ReportSummary = ({
             {/** Overall Trends Start */}
             <div
               className={cn(styles.section, styles["section-middle"])}
-              style={{ padding: 0, width: '100%' }}
+              style={{ padding: 0, width: "100%" }}
             >
               <div className={styles["section-overall-trends"]}>
                 <div className={styles["section-title"]}>Overall Trends</div>
@@ -343,18 +343,64 @@ const ReportSummary = ({
                 <div className={styles["section-top-pos"]}>
                   <div className={styles.title}>Top positive:</div>
                   {topPositives.map((item, index) => (
-                    <div className={styles.text} key={`top-positive-${index}`}>{item.topicValue}</div>
+                    <div className={styles.text} key={`top-positive-${index}`}>
+                      {item.topicValue}
+                    </div>
                   ))}
                 </div>
                 <div className={styles["section-top-neg"]}>
                   <div className={styles.title}>Top negative:</div>
                   {topNegatives.map((item, index) => (
-                    <div className={styles.text} key={`top-negative-${index}`}>{item.topicValue}</div>
+                    <div className={styles.text} key={`top-negative-${index}`}>
+                      {item.topicValue}
+                    </div>
                   ))}
                 </div>
               </div>
               <div className={styles["section-participation"]}>
                 <div className={styles["section-title"]}>Participation</div>
+                <div className={styles["section-participation-container"]}>
+                  <div
+                    className={styles["section-participation-item"]}
+                    style={{
+                      background: "#f5f5f5",
+                      border: "solid 1px #b9b9b9",
+                      color: "#757f88",
+                    }}
+                  >
+                    Not issue
+                  </div>
+                    <div
+                      className={styles["section-participation-item"]}
+                      style={{
+                        background: "#fdeeee",
+                        border: "solid 1px #f16868",
+                        color: "#f16868",
+                      }}
+                    >
+                    Rejected
+                  </div>
+                    <div
+                      className={styles["section-participation-item"]}
+                      style={{
+                        background: "#fff6e7",
+                        border: "solid 1px #d18200",
+                        color: "#d18200",
+                      }}
+                    >
+                    Awaiting
+                  </div>
+                    <div
+                      className={styles["section-participation-item"]}
+                      style={{
+                        background: "#e9f7f1",
+                        border: "solid 1px #03bdaf",
+                        color: "#03bdaf",
+                      }}
+                    >
+                    Completed
+                  </div>
+                </div>
                 {participationResult.length > 0 &&
                   teamParticipationResult.length > 0 && (
                     <Participation
