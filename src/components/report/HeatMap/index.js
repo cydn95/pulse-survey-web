@@ -39,7 +39,7 @@ const NoTrendData = () => (
       className={styles["no-trend-img"]}
       src="/assets/img/report/eye-slash.png"
     />
-    <span className={styles["no-trend-text"]}>Anonimity threshold not met</span>
+    <span className={styles["no-trend-text"]}>Anonymity threshold not met</span>
   </div>
 );
 
