@@ -94,7 +94,7 @@
     align-items: flex-start;
     justify-content: center;
     color: #0a0d47;
-    height: 42px;
+    height: 72px;
     padding-left: 26.5px;
     box-sizing: border-box;
     display: flex;
@@ -103,6 +103,21 @@
     &-shcnt {
       font-size: 12px;
     }
+  }
+}
+
+.no-trend {
+  display: flex;
+  flex-direction: column;
+
+  &-img {
+    height: 20px;
+    width: 22px;
+  }
+
+  &-text {
+    font-size: 12px;
+    color: #8a8a8a;
   }
 }
 

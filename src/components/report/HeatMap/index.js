@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronRight,
   faChevronDown,
+  faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { removeSpace } from "../../../services/axios/utility";
@@ -31,6 +32,16 @@ const getColor = (val) => {
 
   return "#00b7a2"; // solid green
 };
+
+const NoTrendData = () => (
+  <div className={styles["no-trend"]}>
+    <img
+      className={styles["no-trend-img"]}
+      src="/assets/img/report/eye-slash.png"
+    />
+    <span className={styles["no-trend-text"]}>Anonimity threshold not met</span>
+  </div>
+);
 
 const HeatMap = ({ shCnt, data, chartWidth }) => {
   const colP = useMemo(() => {
@@ -145,7 +156,7 @@ const HeatMap = ({ shCnt, data, chartWidth }) => {
                               data[key].length > 0 ? data[key][0].value : 0
                             }% out of a total ${shCnt} stakeholders that have been invited to respond`}
                           {rowNum > 1 &&
-                            ((data[key].length > 0 && data[key][0].question)
+                            (data[key].length > 0 && data[key][0].question
                               ? `Question answered: "${data[key][0].question}"`
                               : `No question answered`)}
                         </div>
@@ -156,7 +167,7 @@ const HeatMap = ({ shCnt, data, chartWidth }) => {
               )}
               {data[key].map((d, index) => {
                 const style =
-                  rowNum >= 2
+                  (rowNum >= 2 && d.value > 0)
                     ? { borderLeft: `3px solid ${getColor(Number(d.value))}` }
                     : {};
                 return (
@@ -166,13 +177,17 @@ const HeatMap = ({ shCnt, data, chartWidth }) => {
                     style={{ width: `${colP}%`, ...style }}
                   >
                     <span>
-                      {rowNum === 0
-                        ? d.value
-                        : rowNum === 1
-                        ? `${d.value} %`
-                        : `${d.value} / 10`}
+                      {d.value === 0 ? (
+                        <NoTrendData />
+                      ) : rowNum === 0 ? (
+                        d.value
+                      ) : rowNum === 1 ? (
+                        `${d.value} %`
+                      ) : (
+                        `${d.value} / 10`
+                      )}
                     </span>
-                    {rowNum === 1 && (
+                    {rowNum === 1 && d.value > 0 && (
                       <div className={styles["map-col-shcnt"]}>
                         {`out of ${shCnt} stakeholders`}
                       </div>
@@ -200,7 +215,7 @@ const HeatMap = ({ shCnt, data, chartWidth }) => {
                     className={classnames(styles["map-col-trend"])}
                     style={{ width: `${colP}%` }}
                   >
-                    {chartWidth > 0 && (
+                    {chartWidth > 0 && d.trend.length > 0 && (
                       <TrendLine
                         data={d.trend}
                         num={`${keyValue}-${index}`}
