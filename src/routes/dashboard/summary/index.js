@@ -120,7 +120,7 @@ const ReportSummary = ({
       shGroupList
     );
 
-    console.log(overallTrendRet, overallTrendKey);
+    // console.log(overallTrendRet, overallTrendKey);
 
     setAllData(feedbackSummaryResultData);
     setFeedbackSummary(feedbackSummaryRet);

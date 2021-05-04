@@ -46,7 +46,7 @@ export const getCultureResult = (resData) => {
 
 export const getOverallTrends = (resData, shGroupList) => {
 
-  console.log(shGroupList);
+  // console.log(shGroupList);
   
   const overallTrendsRet = {};
   const currentYear = getCurrentYear();
