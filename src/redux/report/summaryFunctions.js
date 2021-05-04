@@ -45,6 +45,8 @@ export const getCultureResult = (resData) => {
 }
 
 export const getOverallTrends = (resData, shGroupList) => {
+
+  // console.log(shGroupList);
   
   const overallTrendsRet = {};
   const currentYear = getCurrentYear();
@@ -68,10 +70,10 @@ export const getOverallTrends = (resData, shGroupList) => {
           const shGroupName = filteredShGroupList[0].SHGroupName;
 
           /* OverallTrend Start */
-          const questionUpdatedDate = question.updated_at;
+          const questionUpdatedDate = question.created_at;
           const questionYear = questionUpdatedDate.split("-")[0];
 
-          if (parseInt(questionYear, 10) === parseInt(currentYear, 10)) {
+          // if (parseInt(questionYear, 10) === parseInt(currentYear, 10)) {
             const questionMonth =
               parseInt(questionUpdatedDate.split("-")[1], 10) - 1;
 
@@ -95,7 +97,7 @@ export const getOverallTrends = (resData, shGroupList) => {
             overallTrendsRet[shGroupName][questionMonth].value.push(
               intValue
             );
-          }
+          // }
           /* OverallTrend End */
         }
       }
