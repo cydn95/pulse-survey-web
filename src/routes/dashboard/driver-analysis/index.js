@@ -1,19 +1,16 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { connect } from "react-redux";
 
 import ReactLoading from "react-loading";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronDown,
-  faCheck,
-  faTimes,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 import { engagementTrend, getAMQuestionCnt } from "Redux/actions";
 
 import HeatMap from "Components/report/HeatMap";
 import CardMap from "Components/report/CardMap";
+import NoDashboard from "Components/report/NoDashboard";
 import TopNav from "Containers/TopNav";
 
 import { isMobile } from "react-device-detect";
@@ -41,6 +38,7 @@ const ReportDriverAnalysis = ({
   surveyUserId,
   projectId,
   userId,
+  status,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -87,112 +85,131 @@ const ReportDriverAnalysis = ({
   return (
     <div className={styles.root}>
       <div className={styles.topbar}>
-        <TopNav history={history} menuTitle="Driver Analysis" style={{backgroundColor: "#f5f5f5"}}>
+        <TopNav
+          history={history}
+          menuTitle="Driver Analysis"
+          style={{ backgroundColor: "#f5f5f5" }}
+        >
           <div className={styles.section}>
             <h2 className={styles["page-title"]}>My Profile</h2>
             <h2 className={styles["project-name"]}>{projectTitle}</h2>
           </div>
         </TopNav>
       </div>
-      <div className={styles["main-content"]}>
-        <div className={styles["filter-content"]}>
-          <div className={styles["filter-select"]}>
-            <div
-              className={styles["filter-select-button"]}
-              role="button"
-              onClick={(e) => setFilterOpen(!filterOpen)}
-            >
-              Filter by
-              <FontAwesomeIcon icon={faChevronDown} />
-            </div>
-            {filterOpen && (
-              <div className={styles["filter-panel"]}>
-                <div className={styles["filter-panel-triangle"]}></div>
-                <div className={styles["filter-panel-content"]}>
-                  {filters.map((f, index) => (
-                    <div
-                      className={styles["filter-panel-item"]}
-                      onClick={(e) => handleSelectFilter(index)}
-                      key={`filter-item-${f}`}
-                    >
-                      {f}{" "}
-                      <FontAwesomeIcon
-                        className={classnames({
-                          [styles.hide]: filterValue !== index,
-                        })}
-                        icon={faCheck}
-                      />
-                    </div>
-                  ))}
+      {status ? (
+        <Fragment>
+          <div className={styles["main-content"]}>
+            <div className={styles["filter-content"]}>
+              <div className={styles["filter-select"]}>
+                <div
+                  className={styles["filter-select-button"]}
+                  role="button"
+                  onClick={(e) => setFilterOpen(!filterOpen)}
+                >
+                  Filter by
+                  <FontAwesomeIcon icon={faChevronDown} />
                 </div>
+                {filterOpen && (
+                  <div className={styles["filter-panel"]}>
+                    <div className={styles["filter-panel-triangle"]}></div>
+                    <div className={styles["filter-panel-content"]}>
+                      {filters.map((f, index) => (
+                        <div
+                          className={styles["filter-panel-item"]}
+                          onClick={(e) => handleSelectFilter(index)}
+                          key={`filter-item-${f}`}
+                        >
+                          {f}{" "}
+                          <FontAwesomeIcon
+                            className={classnames({
+                              [styles.hide]: filterValue !== index,
+                            })}
+                            icon={faCheck}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-          <div className={styles["filter-value"]}>{filters[filterValue]}</div>
-        </div>
-        <div className={styles["show-panel"]}>
-          <span>Show: </span>
-          <div className={styles["show-select"]}>
-            {drivers.map((d) => (
-              <div
-                key={`driver-name-${d}`}
-                className={classnames(styles["show-select-item"], {
-                  [styles.active]: driverName === d,
-                })}
-                onClick={(e) => setDriverName(d)}
-              >
-                {d}
+              <div className={styles["filter-value"]}>
+                {filters[filterValue]}
               </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div
-        className={styles["main-content"]}
-        ref={(el) => {
-          if (!el) return;
-
-          const keyData =
-            driverName in engagementData ? engagementData[driverName] : [];
-          const width =
-            keyData.length === 0
-              ? 0
-              : (el.getBoundingClientRect().width - 40) / (keyData.length + 1) -
-                10;
-          setChartWidth(width);
-        }}
-      >
-        <div style={{ width: "100%" }}>
-          {loading ? (
-            <ReactLoading
-              className={styles["driver-analysis-loading"]}
-              type={"bars"}
-              color={"grey"}
-            />
-          ) : (
-            <div style={{ width: "100%" }}>
-              {!isMobile && (
-                <HeatMap data={engagementData} shCnt={totalStakeholderCnt} chartWidth={chartWidth} />
-              )}
-              {isMobile &&
-                Object.keys(engagementData).map((key) => {
-                  if (key === driverName) {
-                    return null;
-                  }
-
-                  return (
-                    <CardMap
-                      key={`card-map-${key}`}
-                      title={key}
-                      data={engagementData[key]}
-                      field={engagementData[driverName]}
-                    />
-                  );
-                })}
             </div>
-          )}
+            <div className={styles["show-panel"]}>
+              <span>Show: </span>
+              <div className={styles["show-select"]}>
+                {drivers.map((d) => (
+                  <div
+                    key={`driver-name-${d}`}
+                    className={classnames(styles["show-select-item"], {
+                      [styles.active]: driverName === d,
+                    })}
+                    onClick={(e) => setDriverName(d)}
+                  >
+                    {d}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div
+            className={styles["main-content"]}
+            ref={(el) => {
+              if (!el) return;
+
+              const keyData =
+                driverName in engagementData ? engagementData[driverName] : [];
+              const width =
+                keyData.length === 0
+                  ? 0
+                  : (el.getBoundingClientRect().width - 40) /
+                      (keyData.length + 1) -
+                    10;
+              setChartWidth(width);
+            }}
+          >
+            <div style={{ width: "100%" }}>
+              {loading ? (
+                <ReactLoading
+                  className={styles["driver-analysis-loading"]}
+                  type={"bars"}
+                  color={"grey"}
+                />
+              ) : (
+                <div style={{ width: "100%" }}>
+                  {!isMobile && (
+                    <HeatMap
+                      data={engagementData}
+                      shCnt={totalStakeholderCnt}
+                      chartWidth={chartWidth}
+                    />
+                  )}
+                  {isMobile &&
+                    Object.keys(engagementData).map((key) => {
+                      if (key === driverName) {
+                        return null;
+                      }
+
+                      return (
+                        <CardMap
+                          key={`card-map-${key}`}
+                          title={key}
+                          data={engagementData[key]}
+                          field={engagementData[driverName]}
+                        />
+                      );
+                    })}
+                </div>
+              )}
+            </div>
+          </div>
+        </Fragment>
+      ) : (
+        <div className={styles["main-content"]}>
+          <NoDashboard />
         </div>
-      </div>
+      )}
     </div>
   );
 };

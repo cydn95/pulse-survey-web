@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-
 import TopNav from "Containers/TopNav";
 
 import styles from "./styles.scss";
@@ -11,6 +8,8 @@ import classnames from "classnames";
 
 import TableContainer from "./TableContainer";
 import CarouselContainer from "./CarouselContainer";
+
+import NoDashboard from "Components/report/NoDashboard";
 
 const tabMenu = {
   risks: {
@@ -79,7 +78,7 @@ const tabMenu = {
   },
 };
 
-const ReportKeyThemes = ({ history, projectTitle }) => {
+const ReportKeyThemes = ({ history, projectTitle, status }) => {
   const [tab, setTab] = useState("risks");
   // const [tab, setTab] = useState("unspoken-problem");
 
@@ -90,46 +89,49 @@ const ReportKeyThemes = ({ history, projectTitle }) => {
   return (
     <div className={styles.root}>
       <div className={styles.topbar}>
-        <TopNav history={history} menuTitle="Key Themes" style={{ background: '#f5f5f5' }}>
+        <TopNav
+          history={history}
+          menuTitle="Key Themes"
+          style={{ background: "#f5f5f5" }}
+        >
           <div className={styles.section}>
             <h2 className={styles["page-title"]}>My Profile</h2>
             <h2 className={styles["project-name"]}>{projectTitle}</h2>
           </div>
         </TopNav>
       </div>
-      <div className={styles["main-content"]}>
-        {/* <div className={styles["keythemes-select-menu"]}>
-          <Select
-            style={{width: '100%'}}
-            value={tab}
-            onChange={(e) => handleSelectTab(e.target.value)}
-          >
-            {Object.keys(tabMenu).map((key) => (
-              <MenuItem key={`keythemes-tab-${key}`} value={key}>
-                {tabMenu[key].label}
-              </MenuItem>
-            ))}
-          </Select>
-        </div> */}
-        <div className={styles["keytheme-tab-container"]}>
-          <div className={styles["keythemes-tab-menu"]}>
-            {Object.keys(tabMenu).map((key) => (
-              <div
-                key={`keythemes-tab-${key}`}
-                className={classnames(styles["keythemes-tab-item"], {
-                  [styles.active]: key === tab,
-                })}
-                role="button"
-                onClick={(e) => handleSelectTab(key)}
-              >
-                <img src={key === tab ? tabMenu[key].img_white : tabMenu[key].img_grey} />
-                {tabMenu[key].label}
-              </div>
-            ))}
+      {status ? (
+        <div className={styles["main-content"]}>
+          <div className={styles["keytheme-tab-container"]}>
+            <div className={styles["keythemes-tab-menu"]}>
+              {Object.keys(tabMenu).map((key) => (
+                <div
+                  key={`keythemes-tab-${key}`}
+                  className={classnames(styles["keythemes-tab-item"], {
+                    [styles.active]: key === tab,
+                  })}
+                  role="button"
+                  onClick={(e) => handleSelectTab(key)}
+                >
+                  <img
+                    src={
+                      key === tab
+                        ? tabMenu[key].img_white
+                        : tabMenu[key].img_grey
+                    }
+                  />
+                  {tabMenu[key].label}
+                </div>
+              ))}
+            </div>
           </div>
+          {tabMenu[tab].component}
         </div>
-        {tabMenu[tab].component}
-      </div>
+      ) : (
+        <div className={styles["main-content"]}>
+          <NoDashboard />
+        </div>
+      )}
     </div>
   );
 };

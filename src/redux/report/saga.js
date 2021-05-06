@@ -22,6 +22,7 @@ import {
   getDriverAnalysisAPI,
   getTotalStakeholderCntAPI,
   advisorAPI,
+  checkDashboardStatusAPI
 } from "../../services/axios/api";
 
 import {
@@ -42,6 +43,7 @@ import {
   REPORT_VOTE_KEYTHEME,
   REPORT_AMQUESTIONCNT,
   REPORT_ADVISOR,
+  REPORT_CHECK_DASHBOARD
 } from "Constants/actionTypes";
 
 import {
@@ -102,6 +104,11 @@ const getAMQuestionCntAsync = async (surveyId, driverName, projectId, userId) =>
 
 const getTotalStakeholderCntAsync = async (surveyId) =>
   await getTotalStakeholderCntAPI(surveyId)
+    .then((result) => result)
+    .catch((error) => error);
+
+const checkDashboardAsync = async (surveyId, projectUserId) =>
+  await checkDashboardStatusAPI(surveyId, projectUserId)
     .then((result) => result)
     .catch((error) => error);
 
@@ -772,6 +779,17 @@ function* advisorReport({ payload }) {
   } catch (error) {}
 }
 
+function* checkDashboard({ payload }) {
+  try {
+    const { surveyId, projectUserId, callback } = payload;
+
+    const result = yield call(checkDashboardAsync, surveyId, projectUserId);
+
+    callback(result.status.toString());
+  } catch (error) { }
+}
+
+
 export function* watchGetOverallSentiment() {
   yield takeEvery(REPORT_OVERALL_SENTIMENT, getOverallSentiment);
 }
@@ -836,6 +854,10 @@ export function* watchAdvisorReport() {
   yield takeEvery(REPORT_ADVISOR, advisorReport);
 }
 
+export function* watchCheckDashboard() {
+  yield takeEvery(REPORT_CHECK_DASHBOARD, checkDashboard);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetOverallSentiment),
@@ -854,5 +876,6 @@ export default function* rootSaga() {
     fork(watchVoteKeyThemeReport),
     fork(watchAMQuestionCnt),
     fork(watchAdvisorReport),
+    fork(watchCheckDashboard)
   ]);
 }

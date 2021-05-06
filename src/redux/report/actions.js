@@ -15,7 +15,8 @@ import {
   REPORT_SET_ACKNOWLEDGEMENT,
   REPORT_VOTE_KEYTHEME,
   REPORT_AMQUESTIONCNT,
-  REPORT_ADVISOR
+  REPORT_ADVISOR,
+  REPORT_CHECK_DASHBOARD
 } from "Constants/actionTypes";
 
 export const overallSentiment = (surveyId, callback) => ({
@@ -100,5 +101,10 @@ export const getAMQuestionCnt = (surveyId, driverName, projectId, userId, callba
 
 export const advisorReport = (surveyId, projectUserId, callback) => ({
   type: REPORT_ADVISOR,
+  payload: { surveyId, projectUserId, callback }
+})
+
+export const checkDashboard = (surveyId, projectUserId, callback) => ({
+  type: REPORT_CHECK_DASHBOARD,
   payload: { surveyId, projectUserId, callback }
 })
