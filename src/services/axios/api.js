@@ -429,6 +429,10 @@ export const advisorAPI = (survey, projectUser) => {
   return getClient(true).get(`/advisorinsights?survey=${survey}&projectuser=${projectUser}`);
 }
 
+export const checkDashboardStatusAPI = (survey, projectUser) => {
+  return getClient(true).get(`/checkdashboardstatus?survey=${survey}&projectuser=${projectUser}`);
+}
+
 // const getSentimentReportAPI = (
 //   surveyId,
 //   startDate = "2020-01-01",
