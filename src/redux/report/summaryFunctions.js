@@ -8,7 +8,13 @@ export const getCultureResult = (resData) => {
     const intValue = question.integerValue;
 
     for (let j = 0; j < question.aoQuestionData.length; j++) {
-      const driverName = question.aoQuestionData[j].driver.driverName;
+      const driver = question.aoQuestionData[j].driver;
+
+      if (!driver) {
+        continue;
+      }
+
+      const driverName = driver.driverName;
 
       /* Culture Result Start */
       if (driverName === "Culture") {
@@ -29,7 +35,7 @@ export const getCultureResult = (resData) => {
       /* Culture Result End */
     }
   }
-  
+
   const filteredCulture = [];
 
   for (const key in cultureRet) {
@@ -137,7 +143,13 @@ export const getSentimentResult = (resData) => {
     const intValue = question.integerValue;
 
     for (let j = 0; j < question.aoQuestionData.length; j++) {
-      const driverName = question.aoQuestionData[j].driver.driverName;
+      const driver = question.aoQuestionData[j].driver;
+
+      if (!driver) {
+        continue;
+      }
+
+      const driverName = driver.driverName;
 
       if (driverName === "Sentiment") {
         const subDriver = question.aoQuestionData[j].subdriver;
@@ -196,7 +208,13 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
     const intValue = question.integerValue;
 
     for (let j = 0; j < question.aoQuestionData.length; j++) {
-      const driverName = question.aoQuestionData[j].driver.driverName;
+      const driver = question.aoQuestionData[j].driver;
+
+      if (!driver) {
+        continue;
+      }
+
+      const driverName = driver.driverName;
 
       if (!drivers.includes(driverName)) {
         drivers.push(driverName);
@@ -287,7 +305,13 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
     const group = type === "Team" ? question.projectUser.team : question.projectUser.user.organization;
 
     for (let j = 0; j < question.aoQuestionData.length; j++) {
-      const driverName = question.aoQuestionData[j].driver.driverName;
+      const driver = question.aoQuestionData[j].driver;
+
+      if (!driver) {
+        continue;
+      }
+
+      const driverName = driver.driverName;
 
       if (!drivers.includes(driverName)) {
         drivers.push(driverName);

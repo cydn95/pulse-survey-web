@@ -30,26 +30,6 @@ import {
 
 import cn from "classnames";
 import styles from "./styles.scss";
-import { style } from "d3";
-
-const participationCategories = [
-  {
-    text: "Not Issued",
-    background: "#263968",
-  },
-  {
-    text: "Rejected",
-    background: "#ff0000",
-  },
-  {
-    text: "Awaiting",
-    background: "#f1c742",
-  },
-  {
-    text: "Completed",
-    background: "#00c855",
-  },
-];
 
 const FILTER_SHGROUP = "ShGroup";
 const FILTER_TEAM = "Team";

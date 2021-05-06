@@ -272,6 +272,10 @@ function* getFeedbackSummary({ payload }) {
 
           const projectUser = data.projectUser;
 
+          if (!("team" in projectUser) || !("user" in projectUser)) {
+            continue;
+          }
+
           const team = projectUser.team;
           const organization = projectUser.user.organization;
 
