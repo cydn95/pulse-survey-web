@@ -64,7 +64,7 @@ const AdvisorInsights = ({
           ) : (
             <div className={styles["advisor-insight-content"]}>
               <div className={styles["content-left"]}>
-                <div className={styles["content-header"]}>
+                {/* <div className={styles["content-header"]}>
                   <div className={styles["header-image"]}>
                     <img src="/assets/img/report/people.png" height="30" />
                   </div>
@@ -81,7 +81,7 @@ const AdvisorInsights = ({
                       ))}
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className={styles["content-data"]}>
                   {Object.keys(data.detailedData).map((key) => (
                     <div
