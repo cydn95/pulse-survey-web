@@ -28,6 +28,7 @@ import styles from "./styles.scss";
 
 import { selectPage, stakeholderAnswer } from "Redux/actions";
 import StakeholderUpdateModal from "../StakeholderUpdateModal";
+import StakeholderUpdatePanel from "../StakeholderUpdatePanel";
 
 class AoSurvey extends React.Component {
   constructor(props) {
@@ -40,7 +41,7 @@ class AoSurvey extends React.Component {
       pageIndex,
       user,
       currentSurveyUserId,
-      lastAddedShCategory
+      lastAddedShCategory,
     } = this.props;
 
     let totalQuestions = 0;
@@ -266,9 +267,9 @@ class AoSurvey extends React.Component {
   };
 
   handleOpenEditModal = () => {
-    this.setState({
-      editModal: true,
-    });
+    this.setState((state) => ({
+      editModal: !state.editModal,
+    }));
   };
 
   handleCloseEditModal = () => {
@@ -293,7 +294,7 @@ class AoSurvey extends React.Component {
       projectTitle,
       myMapCategory,
       projectMapCategory,
-      submitLoading
+      submitLoading,
     } = this.props;
 
     // console.log(myMapCategory);
@@ -332,13 +333,21 @@ class AoSurvey extends React.Component {
         <div className={styles.user}>
           <div className={styles.title}>
             <span>About Others:</span>
-            <span
+            <div
               role="button"
               className={styles.edit}
-              onClick={(e) => this.handleOpenEditModal()}
             >
-              Edit
-            </span>
+              <div onClick={(e) => this.handleOpenEditModal()}>Edit</div>
+              {editModal && <div className={styles["stakeholder-update-panel-container"]}>
+                <StakeholderUpdatePanel
+                  open={editModal}
+                  currentUser={user}
+                  myMapCategory={myMapCategory}
+                  projectMapCategory={projectMapCategory}
+                  onClose={(e) => this.handleCloseEditModal()}
+                />
+              </div>}
+            </div>
           </div>
           <AvatarComponent
             className={styles["avatar-comp"]}
@@ -346,7 +355,9 @@ class AoSurvey extends React.Component {
             username={user.fullName}
             description={user.organisation + " / " + user.team}
             profilePicUrl={user.userAvatar}
-            userProgress={Number(((totalAnswers / totalQuestions) * 100).toFixed(2))}
+            userProgress={Number(
+              ((totalAnswers / totalQuestions) * 100).toFixed(2)
+            )}
             donut={true}
           />
         </div>
@@ -473,16 +484,9 @@ class AoSurvey extends React.Component {
             onClick={(e) => this.handleSubmit(e)}
             disabled={submitLoading}
           >
-            {submitLoading ? 'In progress...' : 'Submit' }
+            {submitLoading ? "In progress..." : "Submit"}
           </Button>
         </div>
-        <StakeholderUpdateModal
-          open={editModal}
-          currentUser={user}
-          myMapCategory={myMapCategory}
-          projectMapCategory={projectMapCategory}
-          onClose={(e) => this.handleCloseEditModal()}
-        />
       </div>
     );
   }
