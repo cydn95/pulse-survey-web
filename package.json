@@ -102,7 +102,7 @@
     "express-favicon": "^2.0.1",
     "grommet": "^2.13.0",
     "icomoon-free-npm": "^0.0.0",
-    "keylines": "file:keylines-6.2.1-59417.tar.gz",
+    "keylines": "file:keylines-6.4.0-62068.tar.gz",
     "materialize-css": "^1.0.0-rc.2",
     "package.json": "^2.0.1",
     "query-string": "^6.11.0",

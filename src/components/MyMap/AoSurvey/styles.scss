@@ -67,6 +67,15 @@
   background-color: #fff;
 }
 
+.stakeholder-update-panel-container {
+  position: absolute;
+  min-height: 100px;
+  box-sizing: border-box;
+  width: 100%;
+  z-index: 8000;
+  margin-left: -226px;
+}
+
 .footer {
   padding-top: 20px;
   .green {
