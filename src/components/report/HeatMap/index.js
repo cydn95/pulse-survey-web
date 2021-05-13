@@ -44,6 +44,7 @@ const NoTrendData = () => (
 );
 
 const HeatMap = ({ shCnt, data, chartWidth }) => {
+  console.log(data);
   const colP = useMemo(() => {
     if (Object.keys(data).length > 0) {
       return 100 / (data[Object.keys(data)[0]].length + 1);
@@ -167,7 +168,7 @@ const HeatMap = ({ shCnt, data, chartWidth }) => {
               )}
               {data[key].map((d, index) => {
                 const style =
-                  (rowNum >= 2 && d.value > 0)
+                  rowNum >= 2 && d.value > 0
                     ? { borderLeft: `3px solid ${getColor(Number(d.value))}` }
                     : {};
                 return (
