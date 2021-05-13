@@ -96,7 +96,7 @@ const ReportDriverAnalysis = ({
           </div>
         </TopNav>
       </div>
-      {true ? (
+      {status ? (
         <Fragment>
           <div className={styles["main-content"]}>
             <div className={styles["filter-content"]}>
