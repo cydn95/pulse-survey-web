@@ -10,14 +10,6 @@ import NoDashboard from "Components/report/NoDashboard";
 import styles from "./styles.scss";
 import classnames from "classnames";
 
-// const shCategories = {
-//   myPeersCnt: "My Peers",
-//   whoINeedCnt: "My Direct Reports",
-//   myLeadersCnt: "Who Needs Me",
-//   myDirectReportsCnt: "My Leader",
-//   whoNeedsMeCnt: "Who I Need",
-// };
-
 const AdvisorInsights = ({
   surveyId,
   surveyUserId,
