@@ -33,18 +33,38 @@ const getColor = (val) => {
   return "#00b7a2"; // solid green
 };
 
-const NoTrendData = () => (
-  <div className={styles["no-trend"]}>
-    <img
-      className={styles["no-trend-img"]}
-      src="/assets/img/report/eye-slash.png"
-    />
-    <span className={styles["no-trend-text"]}>Anonymity threshold not met</span>
-  </div>
-);
+const NoTrendData = ({ shCnt = 0 }) => {
+  const [tip, setTip] = useState(false);
+
+  return (
+    <div
+      className={styles["no-trend"]}
+      onMouseEnter={() => setTip(true)}
+      onMouseLeave={() => setTip(false)}
+    >
+      <img
+        className={styles["no-trend-img"]}
+        src="/assets/img/report/eye-slash.png"
+      />
+      <span className={styles["no-trend-text"]}>
+        Anonymity threshold not met
+      </span>
+
+      {tip && (
+        <div className={styles["tip-answer"]}>
+          <div className={styles["tip-answer-triangle"]}></div>
+          <div className={styles["tip-answer-content"]}>
+            {`${shCnt === 0 ? "No" : `Only ${shCnt}`} stakeholder${
+              shCnt === 1 ? "" : "s"
+            } ${shCnt === 1 ? "has" : "have"} responded. We need at least 3.`}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const HeatMap = ({ shCnt, data, chartWidth }) => {
-  console.log(data);
   const colP = useMemo(() => {
     if (Object.keys(data).length > 0) {
       return 100 / (data[Object.keys(data)[0]].length + 1);
@@ -168,29 +188,46 @@ const HeatMap = ({ shCnt, data, chartWidth }) => {
               )}
               {data[key].map((d, index) => {
                 const style =
-                  rowNum >= 2 && d.value > 0
+                  rowNum >= 2 &&
+                  d.value > 0 &&
+                  d.stakeholders &&
+                  d.stakeholders.length >= 3
                     ? { borderLeft: `3px solid ${getColor(Number(d.value))}` }
                     : {};
+
+                let colVal = "";
+                if (rowNum === 0) {
+                  colVal = d.value;
+                } else if (rowNum === 1) {
+                  colVal = `${d.value} %`;
+                } else {
+                  if (
+                    d.value === 0 ||
+                    !d.stakeholders ||
+                    d.stakeholders.length < 3
+                  ) {
+                    colVal = (
+                      <NoTrendData
+                        shCnt={d.stakeholders ? d.stakeholders.length : 0}
+                      />
+                    );
+                  } else {
+                    colVal = `${d.value} / 10`;
+                  }
+                }
+
                 return (
                   <div
                     key={`heatmap-col-${keyValue}-${index}`}
                     className={styles["map-col"]}
                     style={{ width: `${colP}%`, ...style }}
                   >
-                    <span>
-                      {d.value === 0 ? (
-                        <NoTrendData />
-                      ) : rowNum === 0 ? (
-                        d.value
-                      ) : rowNum === 1 ? (
-                        `${d.value} %`
-                      ) : (
-                        `${d.value} / 10`
-                      )}
-                    </span>
+                    <span>{colVal}</span>
                     {rowNum === 1 && d.value > 0 && (
                       <div className={styles["map-col-shcnt"]}>
-                        {`out of ${shCnt} stakeholders`}
+                        {`${Math.round(
+                          (shCnt * d.value) / 100
+                        )} out of ${shCnt} stakeholders`}
                       </div>
                     )}
                   </div>
