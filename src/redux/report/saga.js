@@ -785,7 +785,7 @@ function* checkDashboard({ payload }) {
 
     const result = yield call(checkDashboardAsync, surveyId, projectUserId);
 
-    callback(result.status.toString());
+    callback(result.data);
   } catch (error) { }
 }
 
