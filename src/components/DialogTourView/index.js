@@ -65,6 +65,7 @@ const DialogContent = withStyles((theme) => ({
 const DialogTourView = ({
   open,
   onClose,
+  projectTitle,
   nikelContent,
   actionNikelTourContent,
 }) => {
@@ -72,8 +73,13 @@ const DialogTourView = ({
   const [tour, setTour] = useState(null);
 
   useEffect(() => {
-    setTour(nikelContent.length === 0 ? null : nikelContent[step]);
-  }, [step]);
+    const content = nikelContent.length === 0 ? null : {...nikelContent[step]}
+    if (content) {
+      content.title = content.title.replace(/{{PROJECT}}/i, projectTitle);
+      content.content = content.content.replace(/{{PROJECT}}/i, projectTitle)
+    }
+    setTour(content);
+  }, [step, projectTitle]);
 
   useEffect(() => {
     actionNikelTourContent();
@@ -182,9 +188,10 @@ const DialogTourView = ({
   );
 };
 
-const mapStateToProps = ({ tour }) => {
+const mapStateToProps = ({ authUser, tour }) => {
   const { nikelContent } = tour;
-  return { nikelContent };
+  const { projectTitle } = authUser;
+  return { projectTitle, nikelContent };
 };
 
 export default connect(mapStateToProps, {
