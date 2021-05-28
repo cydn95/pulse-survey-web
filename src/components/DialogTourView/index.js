@@ -67,6 +67,7 @@ const DialogTourView = ({
   onClose,
   projectTitle,
   nikelContent,
+  surveyId,
   actionNikelTourContent,
 }) => {
   const [step, setStep] = useState(0);
@@ -82,8 +83,10 @@ const DialogTourView = ({
   }, [step, projectTitle]);
 
   useEffect(() => {
-    actionNikelTourContent();
-  }, [actionNikelTourContent]);
+    if (surveyId > 0) {
+      actionNikelTourContent(surveyId);
+    }
+  }, [actionNikelTourContent, surveyId]);
 
   useEffect(() => {
     setTour(nikelContent[step]);

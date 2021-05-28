@@ -80,7 +80,6 @@ function* loginWithUsernamePassword({ payload }) {
 function* logout({ payload }) {
   const { history } = payload;
   try {
-    console.log("fhsdjkfhkdsfa");
     // yield call(logoutAsync, history);
     localStorage.removeItem("tour");
     localStorage.removeItem("projectId");
@@ -169,12 +168,19 @@ const getProjectByIdAsync = async (projectId) =>
 
 function* setProjectID({ payload }) {
   const { projectId } = payload;
-  const result = yield call(getProjectByIdAsync, projectId);
-  if (result.status === 200) {
-    localStorage.setItem("projectId", projectId);
-    localStorage.setItem("projectTitle", result.data.projectName);
-    yield put(setProjectIDSuccess(projectId, result.data.projectName));
+  if (projectId > 0) {
+    const result = yield call(getProjectByIdAsync, projectId);
+    if (result.status === 200) {
+      localStorage.setItem("projectId", projectId);
+      localStorage.setItem("projectTitle", result.data.projectName);
+      yield put(setProjectIDSuccess(projectId, result.data.projectName));
+    }
+  } else {
+    localStorage.setItem("projectId", 0);
+    localStorage.setItem("projectTitle", "");
+    yield put(setProjectIDSuccess(0, ""));
   }
+  
 }
 
 export function* watchLoginUser() {
