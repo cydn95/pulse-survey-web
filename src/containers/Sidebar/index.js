@@ -105,7 +105,7 @@ class Sidebar extends Component {
       user,
     } = props;
 
-    if ((projectId !== null || projectId !== 0 || projectId !== "0") && projectList.length > 0){
+    if ((projectId !== null && projectId !== 0 && projectId !== "0") && (projectList && projectList.length > 0)){
       const findIndex = projectList.findIndex(
         (item) => item.id.toString() === projectId.toString()
       );
