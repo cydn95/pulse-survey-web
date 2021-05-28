@@ -65,8 +65,8 @@ const getProjectAPI = (projectId = 0) => {
 };
 
 /* Tour */
-const getNikelTourAPI = () => {
-  return getClient(true).get("/nikelmobilepage/?format=json");
+const getNikelTourAPI = (surveyId) => {
+  return getClient(true).get(`/nikelmobilepage/?format=json&survey=${surveyId}`);
 };
 
 const getTooltipGuideAPI = () => {

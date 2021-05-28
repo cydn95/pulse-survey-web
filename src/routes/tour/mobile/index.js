@@ -7,13 +7,16 @@ import { nikelTourContent } from "Redux/actions";
 
 import styles from "./styles.scss";
 
-const MobileTour = ({ history, projectTitle, nikelContent, actionNikelTourContent }) => {
+const MobileTour = ({ history, projectTitle, nikelContent, actionNikelTourContent, surveyId }) => {
   const [step, setStep] = useState(0);
   const [content, setContent] = useState(null);
 
   useEffect(() => {
-    actionNikelTourContent();
-  }, [actionNikelTourContent]);
+
+    if (surveyId !== null && surveyId > 0) {
+      actionNikelTourContent(surveyId);
+    }
+  }, [actionNikelTourContent, surveyId]);
 
   useEffect(() => {
     const content = nikelContent.length === 0 ? null : { ...nikelContent[step] }
@@ -60,8 +63,8 @@ const MobileTour = ({ history, projectTitle, nikelContent, actionNikelTourConten
 
 const mapStateToProps = ({ authUser, tour }) => {
   const { nikelContent } = tour;
-  const { projectTitle } = authUser;
-  return { projectTitle, nikelContent };
+  const { projectTitle, surveyId } = authUser;
+  return { projectTitle, nikelContent, surveyId };
 };
 
 export default connect(mapStateToProps, {

@@ -15,12 +15,7 @@ import IconAboutOthers from "./Icons/IconAboutOthers";
 import IconMyProject from "./Icons/IconMyProject";
 import IconDashboard from "./Icons/IconDashboard";
 
-import {
-  ProSidebar,
-  Menu,
-  MenuItem,
-  SubMenu,
-} from "react-pro-sidebar";
+import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import "Assets/css/custom/menubar.css";
 
 import {
@@ -51,7 +46,7 @@ const MENU_REPORT = [
   "Driver-Analysis",
   "Key Themes",
   "Matrix",
-  "Advisor Insights"
+  "Advisor Insights",
 ];
 
 class Sidebar extends Component {
@@ -103,7 +98,23 @@ class Sidebar extends Component {
       guide,
       tooltipContent,
       getPageContent,
+      projectList,
+      projectId,
+      actionSetProjectID,
+      actionSetSurveyID,
+      user,
     } = props;
+
+    if ((projectId !== null && projectId !== 0 && projectId !== "0") && (projectList && projectList.length > 0)){
+      const findIndex = projectList.findIndex(
+        (item) => item.id.toString() === projectId.toString()
+      );
+
+      if (findIndex < 0) {
+        actionSetProjectID(0);
+        actionSetSurveyID(user.userId, 0, () => {});
+      }
+    }
 
     if (!props.guide) {
       this.setState({
@@ -272,6 +283,7 @@ class Sidebar extends Component {
       projectList,
       pageContent,
       guide,
+      surveyId,
     } = this.props;
     const { subMenuOpen, run, steps } = this.state;
 
@@ -335,12 +347,16 @@ class Sidebar extends Component {
                 <SubMenu icon={<IconDashboard />} title="Dashboard">
                   {MENU_REPORT.map((menu) => (
                     <MenuItem
-                      key={`submenu-report-${menu.toLowerCase().replace(" ", "-")}`}
+                      key={`submenu-report-${menu
+                        .toLowerCase()
+                        .replace(" ", "-")}`}
                       onClick={(e) =>
                         this.handleClickSubMenu(
                           e,
                           menu.toLocaleLowerCase(),
-                          `/app/dashboard/${menu.toLocaleLowerCase().replace(" ", "-")}`
+                          `/app/dashboard/${menu
+                            .toLocaleLowerCase()
+                            .replace(" ", "-")}`
                         )
                       }
                     >
@@ -421,10 +437,13 @@ class Sidebar extends Component {
             </ProSidebar>
           </div>
         </div>
-        <DialogTourView
-          open={this.state.tourViewOpen}
-          onClose={(e) => this.handleCloseTourDialog()}
-        />
+        {surveyId !== null && surveyId.toString() !== "" && (
+          <DialogTourView
+            surveyId={surveyId}
+            open={this.state.tourViewOpen}
+            onClose={(e) => this.handleCloseTourDialog()}
+          />
+        )}
       </div>
     );
   }
@@ -433,13 +452,14 @@ class Sidebar extends Component {
 const mapStateToProps = ({ menu, settings, authUser, tour, account }) => {
   const { mainMenuClassName, subMenuClassName } = menu;
   const { projectList } = settings;
-  const { user, surveyId } = authUser;
+  const { user, surveyId, projectId } = authUser;
   const { pageContent, tooltipContent } = tour;
   const { profile } = account;
 
   return {
     user,
     surveyId,
+    projectId,
     projectList,
     mainMenuClassName,
     subMenuClassName,

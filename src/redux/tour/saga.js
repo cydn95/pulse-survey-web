@@ -18,14 +18,15 @@ import {
   pageContentSuccess,
 } from "../actions";
 
-const getNikelTourContentAsync = async () =>
-  await getNikelTourAPI()
+const getNikelTourContentAsync = async (surveyId) =>
+  await getNikelTourAPI(surveyId)
     .then((result) => result)
     .catch((error) => error);
 
-function* getNikelTourContent() {
+function* getNikelTourContent({ payload }) {
+  const { surveyId } = payload;
   try {
-    const result = yield call(getNikelTourContentAsync);
+    const result = yield call(getNikelTourContentAsync, surveyId);
 
     if (result.status === 200) {
       yield put(nikelTourContentSuccess(result.data));

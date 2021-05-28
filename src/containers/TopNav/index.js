@@ -45,7 +45,6 @@ const TopNav = ({
 
   const logOut = (e) => {
     e.preventDefault();
-    console.log('ffdd')
     logoutUser();
   };
 
