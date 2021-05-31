@@ -28,7 +28,7 @@
 }
 
 .upload-image {
-  background: #ffc08a;
+  background: #eee;
   cursor: pointer;
   width: 213px;
   height: 213px !important;
@@ -37,8 +37,10 @@
   .input {
     input {
       display: none;
+      border: none;
     }
 
+    border: none;
     cursor: pointer;
   }
 
