@@ -104,7 +104,7 @@ const StakeholderManager = ({
         <div className={styles["nav-title"]}>
           {/* <FontAwesomeIcon icon={faChevronLeft} /> */}
           <span>
-            {view === "manage" && `Manage Stakeholders`}
+            {view === "manage" && `My Stakeholders`}
             {view === "search" && `Search Stakeholders`}
           </span>
         </div>
@@ -147,7 +147,7 @@ const StakeholderManager = ({
                   src="/assets/img/survey/mapview.svg"
                   alt="filter"
                 />
-                <span>Map View</span>
+                <span>My Stakeholders</span>
               </div>
             )}
           </div>

@@ -20,13 +20,13 @@ const KGraphNavControls = (props) => {
 
   useEffect(() => {
     if (selectedViewMode) {
-      if (selectedViewMode.title === "Org/ Team/ SH") {
+      if (selectedViewMode.title === "Org / Team / SH") {
         updateMap(["Org", "Team"], "viewMode");
       } else if (selectedViewMode.title === "SH only") {
         updateMap([], "viewMode");
-      } else if (selectedViewMode.title === "Org/ SH") {
+      } else if (selectedViewMode.title === "Org / SH") {
         updateMap(["Org"], "viewMode");
-      } else if (selectedViewMode.title === "Team/ SH") {
+      } else if (selectedViewMode.title === "Team / SH") {
         updateMap(["Team"], "viewMode");
       }
     }
@@ -58,10 +58,10 @@ const KGraphNavControls = (props) => {
       <div className={styles.dropdown}>
         <DropDown
           data={[
-            { key: 1, title: "Org/ Team/ SH" },
+            { key: 1, title: "Org / Team / SH" },
             { key: 2, title: "SH only" },
-            { key: 3, title: "Org/ SH" },
-            { key: 4, title: "Team/ SH" },
+            { key: 3, title: "Org / SH" },
+            { key: 4, title: "Team / SH" },
           ]}
           keySelector={(d) => d.key}
           valueSelector={(d) => d.title}
