@@ -1069,7 +1069,7 @@ class MyMap extends React.Component {
                   <h2 className={styles["project-name"]}>{projectTitle}</h2>
                   <div className={styles["graph-toggle"]}>
                     <Button onClick={(e) => this.toggleGraph(e)} style={{width: 160}}>
-                      {!toggleGraph ? "GRAPH VIEW" : "STAKEHOLDER"}
+                      {!toggleGraph ? "Map View" : "List View"}
                     </Button>
                   </div>
                 </div>
