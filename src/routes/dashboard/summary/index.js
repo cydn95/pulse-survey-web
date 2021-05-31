@@ -188,7 +188,7 @@ const ReportSummary = ({
         </TopNav>
       </div>
       <div className={styles["main-content"]}>
-        {status ? (
+        {true ? (
           <Fragment>
             {/** Filter section start */}
             <div className={styles["filter-bar"]}>
