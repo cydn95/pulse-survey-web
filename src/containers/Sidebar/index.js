@@ -370,13 +370,13 @@ class Sidebar extends Component {
           <div className={styles.space}></div>
           <div className={styles.link}>
             <ProSidebar width="220px">
-              <Menu iconShape="square">
+              {/* <Menu iconShape="square">
                 <MenuItem
                   onClick={(e) => this.handleClickMainMenu(e, "settings", true)}
                 >
                   Profile
                 </MenuItem>
-              </Menu>
+              </Menu> */}
               <Menu iconShape="square">
                 <SubMenu title="Help">
                   <MenuItem

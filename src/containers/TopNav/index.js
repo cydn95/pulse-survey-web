@@ -125,7 +125,7 @@ const TopNav = ({
               className={styles["dropdown-menu-item"]}
               onClick={(e) => navigateSetting(e)}
             >
-              <a href="">Settings</a>
+              <a href="">Edit Profile</a>
             </div>
             <div
               className={styles["dropdown-menu-item"]}
