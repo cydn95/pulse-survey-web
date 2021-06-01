@@ -64,7 +64,19 @@ const NoTrendData = ({ shCnt = 0 }) => {
   );
 };
 
+const shouldExpand = (data) => {
+  let res = 0;
+  data.forEach((d) => {
+    if (d.stakeholders && d.stakeholders.length >= 3) {
+      res++;
+    }
+  });
+
+  return res;
+}
+
 const HeatMap = ({ shCnt, data, chartWidth }) => {
+
   const colP = useMemo(() => {
     if (Object.keys(data).length > 0) {
       return 100 / (data[Object.keys(data)[0]].length + 1);
@@ -110,6 +122,8 @@ const HeatMap = ({ shCnt, data, chartWidth }) => {
     setAnswerVisible([...answerVisible]);
   };
 
+
+
   return (
     <div className={styles.root}>
       {Object.keys(data).map((key, rowNum) => {
@@ -149,7 +163,7 @@ const HeatMap = ({ shCnt, data, chartWidth }) => {
                     onClick={(e) => toggleTrendVisible(keyValue)}
                   >
                     <span className={styles.title}>{key}</span>
-                    {rowNum > 1 && (
+                    {rowNum > 1 && shouldExpand(data[key]) > 0 && (
                       <span className={styles.expand}>
                         Expand{" "}
                         {trendVisible[keyValue] ? (
@@ -234,7 +248,7 @@ const HeatMap = ({ shCnt, data, chartWidth }) => {
                 );
               })}
             </div>
-            {rowNum > 1 && (
+            {rowNum > 1 && shouldExpand(data[key]) > 0 && (
               <div
                 key={`heatmap-row-trend-${keyValue}`}
                 className={classnames(styles["map-row"], {
@@ -253,7 +267,7 @@ const HeatMap = ({ shCnt, data, chartWidth }) => {
                     className={classnames(styles["map-col-trend"])}
                     style={{ width: `${colP}%` }}
                   >
-                    {chartWidth > 0 && d.trend.length > 0 && (
+                    {chartWidth > 0 && d.trend.length > 0 && d.stakeholders && d.stakeholders.length >= 3 && (
                       <TrendLine
                         data={d.trend}
                         num={`${keyValue}-${index}`}

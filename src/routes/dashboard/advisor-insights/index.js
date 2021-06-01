@@ -11,6 +11,7 @@ import styles from "./styles.scss";
 import classnames from "classnames";
 
 const AdvisorInsights = ({
+  userId,
   surveyId,
   surveyUserId,
   actionAdvisorReport,
@@ -182,59 +183,65 @@ const AdvisorInsights = ({
                 </div>
                 <div className={styles["content-summary"]}>
                   <div className={styles["sub-title"]}>Catch-up with ...</div>
-                  {data.catchupProjectUsers.map((d, index) => {
-                    if (index > 2 && !more) {
-                      return null;
-                    }
+                  {data.catchupProjectUsers
+                    .filter(
+                      (item) => item.user.id.toString() !== userId.toString()
+                    )
+                    .map((d, index) => {
+                      if (index > 2 && !more) {
+                        return null;
+                      }
 
-                    if (index > 19) {
-                      return null;
-                    }
+                      if (index > 19) {
+                        return null;
+                      }
 
-                    const color = !d.user.avatar
-                      ? index % 3 === 0
-                        ? styles.red
-                        : index % 3 === 1
-                        ? styles.green
-                        : styles.blue
-                      : null;
-                    const avatar = d.user.avatar
-                      ? `https://pulse.projectai.com${d.user.avatar.name}`
-                      : "";
+                      const color = !d.user.avatar
+                        ? index % 3 === 0
+                          ? styles.red
+                          : index % 3 === 1
+                          ? styles.green
+                          : styles.blue
+                        : null;
+                      const avatar = d.user.avatar
+                        ? `https://pulse.projectai.com${d.user.avatar.name}`
+                        : "";
 
-                    const nameA = `${d.user.first_name
-                      .substring(0, 1)
-                      .toUpperCase()}${d.user.last_name
-                      .substring(0, 1)
-                      .toUpperCase()}`;
+                      const nameA = `${d.user.first_name
+                        .substring(0, 1)
+                        .toUpperCase()}${d.user.last_name
+                        .substring(0, 1)
+                        .toUpperCase()}`;
 
-                    return (
-                      <div
-                        key={`content-recommend-${index}`}
-                        className={styles["content-summary-item"]}
-                      >
+                      return (
                         <div
-                          className={classnames(
-                            styles["content-summary-avatar"],
-                            color
-                          )}
+                          key={`content-recommend-${index}`}
+                          className={styles["content-summary-item"]}
                         >
-                          {avatar !== "" ? <img src={avatar} /> : nameA}
-                        </div>
-                        <div className={styles["content-summary-data"]}>
-                          <div className={styles["content-summary-title"]}>
-                            {`${d.user.first_name} ${d.user.last_name}`}
-                          </div>
                           <div
-                            className={styles["content-summary-description"]}
+                            className={classnames(
+                              styles["content-summary-avatar"],
+                              color
+                            )}
                           >
-                            {d.team ? d.team.name : ""}
+                            {avatar !== "" ? <img src={avatar} /> : nameA}
+                          </div>
+                          <div className={styles["content-summary-data"]}>
+                            <div className={styles["content-summary-title"]}>
+                              {`${d.user.first_name} ${d.user.last_name}`}
+                            </div>
+                            <div
+                              className={styles["content-summary-description"]}
+                            >
+                              {d.team ? d.team.name : ""}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                  {data.catchupProjectUsers.length > 3 && (
+                      );
+                    })}
+                  {data.catchupProjectUsers.filter(
+                    (item) => item.user.id.toString() !== userId.toString()
+                  ).length > 3 && (
                     <div className={styles["content-more"]}>
                       <button
                         className={styles["content-more-button"]}
@@ -249,50 +256,54 @@ const AdvisorInsights = ({
                   <div className={styles["sub-title"]}>
                     Rate these stakeholders
                   </div>
-                  {data.recommendedProjectUsers.map((d, index) => {
-                    const color = !d.user.avatar
-                      ? index % 3 === 0
-                        ? styles.red
-                        : index % 3 === 1
-                        ? styles.green
-                        : styles.blue
-                      : null;
-                    const avatar = d.user.avatar
-                      ? `https://pulse.projectai.com${d.user.avatar.name}`
-                      : "";
+                  {data.recommendedProjectUsers
+                    .filter(
+                      (item) => item.user.id.toString() !== userId.toString()
+                    )
+                    .map((d, index) => {
+                      const color = !d.user.avatar
+                        ? index % 3 === 0
+                          ? styles.red
+                          : index % 3 === 1
+                          ? styles.green
+                          : styles.blue
+                        : null;
+                      const avatar = d.user.avatar
+                        ? `https://pulse.projectai.com${d.user.avatar.name}`
+                        : "";
 
-                    const nameA = `${d.user.first_name
-                      .substring(0, 1)
-                      .toUpperCase()}${d.user.last_name
-                      .substring(0, 1)
-                      .toUpperCase()}`;
+                      const nameA = `${d.user.first_name
+                        .substring(0, 1)
+                        .toUpperCase()}${d.user.last_name
+                        .substring(0, 1)
+                        .toUpperCase()}`;
 
-                    return (
-                      <div
-                        key={`content-recommend-${index}`}
-                        className={styles["content-summary-item"]}
-                      >
+                      return (
                         <div
-                          className={classnames(
-                            styles["content-summary-avatar"],
-                            color
-                          )}
+                          key={`content-recommend-${index}`}
+                          className={styles["content-summary-item"]}
                         >
-                          {avatar !== "" ? <img src={avatar} /> : nameA}
-                        </div>
-                        <div className={styles["content-summary-data"]}>
-                          <div className={styles["content-summary-title"]}>
-                            {`${d.user.first_name} ${d.user.last_name}`}
-                          </div>
                           <div
-                            className={styles["content-summary-description"]}
+                            className={classnames(
+                              styles["content-summary-avatar"],
+                              color
+                            )}
                           >
-                            {d.team ? d.team.name : ""}
+                            {avatar !== "" ? <img src={avatar} /> : nameA}
+                          </div>
+                          <div className={styles["content-summary-data"]}>
+                            <div className={styles["content-summary-title"]}>
+                              {`${d.user.first_name} ${d.user.last_name}`}
+                            </div>
+                            <div
+                              className={styles["content-summary-description"]}
+                            >
+                              {d.team ? d.team.name : ""}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
                 </div>
               </div>
             </div>
@@ -308,11 +319,13 @@ const AdvisorInsights = ({
 };
 
 const mapStateToProps = ({ authUser }) => {
-  const { surveyId, surveyUserId } = authUser;
+  const { surveyId, surveyUserId, user } = authUser;
+  const { userId } = user;
 
   return {
     surveyId,
     surveyUserId,
+    userId,
   };
 };
 

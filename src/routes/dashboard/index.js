@@ -16,10 +16,19 @@ import { checkDashboard } from "Redux/actions";
 
 import styles from "./styles.scss";
 
-const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard }) => {
+const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard, history }) => {
   const [dashboardStatus, setDashboardStatus] = useState(false);
 
   useEffect(() => {
+    if (
+      surveyUserId == undefined ||
+      surveyUserId == null ||
+      surveyUserId <= 0
+    ) {
+      history.push("/app/project-not-found");
+      return;
+    }
+
     actionCheckDashboard(surveyId, surveyUserId, (result) => {
       console.log(result);
       const { code, data } = result;
@@ -36,7 +45,7 @@ const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard }) => {
         setDashboardStatus(false);
       }
     });
-  }, [surveyId, surveyUserId, actionCheckDashboard]);
+  }, [surveyId, surveyUserId, actionCheckDashboard, history]);
 
   return (
     <div className={styles.root}>
@@ -75,14 +84,6 @@ const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard }) => {
       </div>
     </div>
   );
-};
-
-Dashboard.propTypes = {
-  match: PropTypes.object,
-  history: PropTypes.object,
-  surveyId: PropTypes.string,
-  surveyUserId: PropTypes.string,
-  actionCheckDashboard: PropTypes.func,
 };
 
 const mapStateToProps = ({ authUser }) => {

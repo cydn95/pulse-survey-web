@@ -41,6 +41,11 @@ const getProfileAsync = async (userId) =>
 function* getProfile({ payload }) {
   try {
     const { userId } = payload;
+
+    if (!userId) {
+      return;
+    }
+
     const result = yield call(getProfileAsync, userId);
 
     if (result.data) {

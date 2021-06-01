@@ -29,6 +29,7 @@ import {
   updateGuideStatus,
   tooltipTourContent,
   pageContent,
+  checkDashboard,
 } from "Redux/actions";
 
 import styles from "./styles.scss";
@@ -43,7 +44,7 @@ const MENU_REPORT = [
   // "Culture",
   // "Relationships",
   // "Improvement",
-  "Driver-Analysis",
+  "Driver Analysis",
   "Key Themes",
   "Matrix",
   "Advisor Insights",
@@ -60,6 +61,7 @@ class Sidebar extends Component {
       run: false,
       stepIndex: 0,
       steps: [],
+      isAdmin: false,
     };
   }
 
@@ -94,6 +96,7 @@ class Sidebar extends Component {
   componentWillReceiveProps(props) {
     const {
       surveyId,
+      surveyUserId,
       screenMode,
       guide,
       tooltipContent,
@@ -102,10 +105,29 @@ class Sidebar extends Component {
       projectId,
       actionSetProjectID,
       actionSetSurveyID,
+      actionCheckDashboard,
       user,
     } = props;
 
-    if ((projectId !== null && projectId !== 0 && projectId !== "0") && (projectList && projectList.length > 0)){
+    if (surveyId > 0 && surveyUserId > 0) {
+
+      actionCheckDashboard(surveyId, surveyUserId, (result) => {
+        const { code } = result;
+        if (code === 201) {
+          this.setState({
+            isAdmin: true,
+          });
+        }
+      });
+    }
+
+    if (
+      projectId !== null &&
+      projectId !== 0 &&
+      projectId !== "0" &&
+      projectList &&
+      projectList.length > 0
+    ) {
       const findIndex = projectList.findIndex(
         (item) => item.id.toString() === projectId.toString()
       );
@@ -345,24 +367,30 @@ class Sidebar extends Component {
               </Menu>
               <Menu iconShape="square">
                 <SubMenu icon={<IconDashboard />} title="Dashboard">
-                  {MENU_REPORT.map((menu) => (
-                    <MenuItem
-                      key={`submenu-report-${menu
-                        .toLowerCase()
-                        .replace(" ", "-")}`}
-                      onClick={(e) =>
-                        this.handleClickSubMenu(
-                          e,
-                          menu.toLocaleLowerCase(),
-                          `/app/dashboard/${menu
-                            .toLocaleLowerCase()
-                            .replace(" ", "-")}`
-                        )
-                      }
-                    >
-                      {menu}
-                    </MenuItem>
-                  ))}
+                  {MENU_REPORT.map((menu) => {
+                    if (menu === "Matrix" && this.state.isAdmin === false) {
+                      return null;
+                    }
+
+                    return (
+                      <MenuItem
+                        key={`submenu-report-${menu
+                          .toLowerCase()
+                          .replace(" ", "-")}`}
+                        onClick={(e) =>
+                          this.handleClickSubMenu(
+                            e,
+                            menu.toLocaleLowerCase(),
+                            `/app/dashboard/${menu
+                              .toLocaleLowerCase()
+                              .replace(" ", "-")}`
+                          )
+                        }
+                      >
+                        {menu}
+                      </MenuItem>
+                    );
+                  })}
                 </SubMenu>
               </Menu>
             </ProSidebar>
@@ -452,13 +480,14 @@ class Sidebar extends Component {
 const mapStateToProps = ({ menu, settings, authUser, tour, account }) => {
   const { mainMenuClassName, subMenuClassName } = menu;
   const { projectList } = settings;
-  const { user, surveyId, projectId } = authUser;
+  const { user, surveyId, surveyUserId, projectId } = authUser;
   const { pageContent, tooltipContent } = tour;
   const { profile } = account;
 
   return {
     user,
     surveyId,
+    surveyUserId,
     projectId,
     projectList,
     mainMenuClassName,
@@ -481,5 +510,6 @@ export default withRouter(
     actionUpdateGuideStatus: updateGuideStatus,
     getPageContent: pageContent,
     getTooltipTourContent: tooltipTourContent,
+    actionCheckDashboard: checkDashboard,
   })(Sidebar)
 );
