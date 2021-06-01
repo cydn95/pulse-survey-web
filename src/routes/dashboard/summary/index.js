@@ -43,7 +43,6 @@ const ReportSummary = ({
   actionFeedbackSummary,
   status,
 }) => {
-
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [filter, setFilter] = useState(FILTER_SHGROUP);
   const [startDate, setStartDate] = useState("");
@@ -99,8 +98,6 @@ const ReportSummary = ({
       feedbackSummaryResultData,
       shGroupList
     );
-
-    // console.log(overallTrendRet, overallTrendKey);
 
     setAllData(feedbackSummaryResultData);
     setFeedbackSummary(feedbackSummaryRet);
@@ -273,37 +270,43 @@ const ReportSummary = ({
                       </div>
                     </div>
                   </div>
-                  {sentimentKey.map((item, index) => (
-                    <div
-                      key={`sentiment-result-${item}`}
-                      className={styles["section-sentiment"]}
-                    >
-                      <CircularProgressbar
-                        className={styles["section-sentiment-progress"]}
-                        value={
-                          sentimentResult[index]
-                            ? sentimentResult[index][0].count
-                            : 0
-                        }
-                        text={`${
-                          sentimentResult[index]
-                            ? Math.round(sentimentResult[index][0].count)
-                            : ""
-                        }`}
-                        styles={buildStyles({
-                          trailColor: "#ccc",
-                          pathColor: "#18a0fb",
-                          textSize: "32px",
-                        })}
-                      />
+                  {sentimentKey.map((item, index) => {
+                    return (
                       <div
-                        className={styles["section-sentiment-text"]}
-                        style={{ paddingLeft: 10 }}
+                        key={`sentiment-result-${item}`}
+                        className={styles["section-sentiment"]}
                       >
-                        <div>{item}</div>
+                        <CircularProgressbar
+                          className={styles["section-sentiment-progress"]}
+                          value={
+                            sentimentResult[index]
+                              ? sentimentResult[index][0].count
+                              : 0
+                          }
+                          text={`${
+                            sentimentResult[index]
+                              ? sentimentResult[index][0].count % 10 === 0
+                                ? sentimentResult[index][0].count / 10
+                                : (
+                                    sentimentResult[index][0].count / 10
+                                  ).toFixed(1)
+                              : ""
+                          }`}
+                          styles={buildStyles({
+                            trailColor: "#ccc",
+                            pathColor: "#18a0fb",
+                            textSize: "32px",
+                          })}
+                        />
+                        <div
+                          className={styles["section-sentiment-text"]}
+                          style={{ paddingLeft: 10 }}
+                        >
+                          <div>{item}</div>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
                 {/** Sentiment Result end */}
 
@@ -321,7 +324,7 @@ const ReportSummary = ({
                       shGroups={overallTrendKey}
                       data={overallTrendResult}
                       xRange={[1, 12]}
-                      yRange={[0, 100]}
+                      yRange={[0, 10]}
                       width={400}
                       height={220}
                       margin={30}

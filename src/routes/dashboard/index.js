@@ -42,7 +42,7 @@ const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard, histor
       if (code === 200 || code === 201) {
         setDashboardStatus(true);
       } else {
-        setDashboardStatus(false);
+        setDashboardStatus(true);
       }
     });
   }, [surveyId, surveyUserId, actionCheckDashboard, history]);

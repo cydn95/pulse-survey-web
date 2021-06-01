@@ -41,8 +41,8 @@ class SummaryBarChart extends SampleBase {
       for (let i = 1; i < column.length; i++) {
         subData.push({
           x: column[i],
-          y: values[j][i]
-        })
+          y: values[j][i],
+        });
       }
       chartData.push(subData);
     }
@@ -81,23 +81,32 @@ class SummaryBarChart extends SampleBase {
               services={[ColumnSeries, Legend, Tooltip, Category, DataLabel]}
             />
             <SeriesCollectionDirective>
-              {
-                keys.map((item, index) => <SeriesDirective
-                  key={`feedback-chart-${index}`}
-                  dataSource={chartData[index]}
-                  xName="x"
-                  yName="y"
-                  name={item}
-                  type="Column"
-                  marker={{
-                    dataLabel: {
-                      visible: true,
-                      position: "Top",
-                      font: { fontWeight: "600", color: "#ffffff" },
-                    },
-                  }}
-                ></SeriesDirective>)
-              }
+              {keys.map((item, index) => {
+                const data1 = [];
+                chartData[index].forEach((item) => {
+                  data1.push({
+                    x: item.x,
+                    y: (item.y / 10).toFixed(1)
+                  })
+                })
+                return (
+                  <SeriesDirective
+                    key={`feedback-chart-${index}`}
+                    dataSource={data1}
+                    xName="x"
+                    yName="y"
+                    name={item}
+                    type="Column"
+                    marker={{
+                      dataLabel: {
+                        visible: true,
+                        position: "Top",
+                        font: { fontWeight: "600", color: "#ffffff" },
+                      },
+                    }}
+                  ></SeriesDirective>
+                );
+              })}
             </SeriesCollectionDirective>
           </ChartComponent>
         </div>
