@@ -10,6 +10,7 @@ import {
   Legend,
   Category,
   SplineSeries,
+  LineSeries,
   Tooltip,
 } from "@syncfusion/ej2-react-charts";
 import SampleBase from "../syncfusion/SampleBase";
@@ -82,21 +83,32 @@ class OverallTrend extends SampleBase {
                 Category,
                 Tooltip,
                 ChartAnnotation,
+                LineSeries
               ]}
             />
             <SeriesCollectionDirective>
-              {data.map((d, index) => (
-                <SeriesDirective
-                  key={`overall_trend_line_chart_${index}`}
-                  dataSource={d}
-                  xName="x"
-                  yName="y"
-                  width={2}
-                  name=""
-                  type="Spline"
-                  marker={{ visible: true, width: 10, height: 10 }}
-                ></SeriesDirective>
-              ))}
+              {data.map((d, index) => {
+                const d1 = [];
+                d.forEach((item) => {
+                  d1.push({
+                    x: item.x,
+                    y: parseFloat((item.y / 10).toFixed(1))
+                  })
+                })
+
+                return (
+                  <SeriesDirective
+                    key={`overall_trend_line_chart_${index}`}
+                    dataSource={d1}
+                    xName="x"
+                    yName="y"
+                    width={2}
+                    name=""
+                    type="Line"
+                    marker={{ visible: true, width: 10, height: 10 }}
+                  ></SeriesDirective>
+                );
+              })}
             </SeriesCollectionDirective>
           </ChartComponent>
         </div>

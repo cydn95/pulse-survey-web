@@ -364,6 +364,15 @@ const getParticipationAPI = (surveyId) => {
   return getClient(true).get(`/userbysurvey/?survey=${surveyId}`);
 };
 
+export const getDriverAnalysisCntAPI = (surveyId, projectUser, controlType = '', startDate = "2020-01-01", endDate = "2021-12-31") => {
+  let url = `/danalysiscnt/?survey=${surveyId}&projectuser=${projectUser}&stdt=${startDate}&eddt=${endDate}`;
+  if (controlType !== '') {
+    url += `&controltype=${controlType}`;
+  }
+
+  return getClient(true).get(url);
+}
+
 export const getDriverAnalysisAPI = (surveyId, driverName, projectUser, controlType = '', startDate = "2020-01-01", endDate = "2021-12-31") => {
   let url = `/driveranalysis/?survey=${surveyId}&driver=${driverName}&projectUser=${projectUser}&stdt=${startDate}&eddt=${endDate}`;
   if (controlType !== '') {

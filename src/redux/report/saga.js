@@ -22,7 +22,8 @@ import {
   getDriverAnalysisAPI,
   getTotalStakeholderCntAPI,
   advisorAPI,
-  checkDashboardStatusAPI
+  checkDashboardStatusAPI,
+  getDriverAnalysisCntAPI
 } from "../../services/axios/api";
 
 import {
@@ -43,7 +44,8 @@ import {
   REPORT_VOTE_KEYTHEME,
   REPORT_AMQUESTIONCNT,
   REPORT_ADVISOR,
-  REPORT_CHECK_DASHBOARD
+  REPORT_CHECK_DASHBOARD,
+  REPORT_DRIVER_ANALYSIS_CNT
 } from "Constants/actionTypes";
 
 import {
@@ -66,6 +68,7 @@ import {
   getFeedbackSummaryByShGroup,
   getFeedbackSummaryByTeamOrOrganization,
 } from "./summaryFunctions";
+import { driverAnalysisCnt } from "./actions";
 
 const getOverallSentimentAsync = async (surveyId) =>
   await getOverallSentimentAPI(surveyId)
@@ -147,6 +150,23 @@ const getDriverAnalysisAsync = async (
   await getDriverAnalysisAPI(
     surveyId,
     driverName,
+    subProjectUser,
+    controlType,
+    startDate,
+    endDate
+  )
+    .then((result) => result)
+    .catch((error) => error);
+
+const getDriverAnalysisCntAsync = async (
+  surveyId,
+  subProjectUser,
+  controlType,
+  startDate,
+  endDate
+) =>
+  await getDriverAnalysisCntAPI(
+    surveyId,
     subProjectUser,
     controlType,
     startDate,
@@ -422,6 +442,32 @@ function* getParticipation({ payload }) {
       );
     }
   } catch (error) {}
+}
+
+function* getDriverAnalysisCnt({ payload }) {
+  try {
+    const {
+      surveyId,
+      subProjectUser,
+      startDate,
+      endDate,
+      callback,
+    } = payload;
+
+    const controlType = "SLIDER";
+
+    const result = yield call(
+      getDriverAnalysisCntAsync,
+      surveyId,
+      subProjectUser,
+      controlType,
+      startDate,
+      endDate
+    );
+
+    callback(result.data);
+
+  } catch (error) { }
 }
 
 function* getEngagementTrend({ payload }) {
@@ -858,6 +904,10 @@ export function* watchCheckDashboard() {
   yield takeEvery(REPORT_CHECK_DASHBOARD, checkDashboard);
 }
 
+export function* watchDriverAnalysisCnt() {
+  yield takeEvery(REPORT_DRIVER_ANALYSIS_CNT, getDriverAnalysisCnt);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetOverallSentiment),
@@ -865,6 +915,7 @@ export default function* rootSaga() {
     fork(watchGetFeedbackSummary),
     fork(watchGetParticipation),
     fork(watchGetEngagementTrend),
+    fork(watchDriverAnalysisCnt),
     fork(watchGetWordCloud),
     fork(watchGetSentimentReport),
     fork(watchGetPerceptionRealityReport),
