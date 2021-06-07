@@ -857,7 +857,7 @@ class MyMap extends React.Component {
       aoSurveySubmitLoading: false
     });
     NotificationManager.success("Response submitted successfully", "");
-    // this.handleSaveGraph(null);
+    this.handleSaveGraph(null);
     // window.location.reload(false);
   };
 
