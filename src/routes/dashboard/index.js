@@ -18,6 +18,7 @@ import styles from "./styles.scss";
 
 const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard, history }) => {
   const [dashboardStatus, setDashboardStatus] = useState(false);
+  const [adminStatus, setAdminStatus] = useState(false);
 
   useEffect(() => {
     if (
@@ -41,6 +42,9 @@ const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard, histor
 
       if (code === 200 || code === 201) {
         setDashboardStatus(true);
+        if (code === 201) {
+          setAdminStatus(true);
+        }
       } else {
         setDashboardStatus(true);
       }
@@ -59,7 +63,7 @@ const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard, histor
             <Route
               path={`${match.url}/driver-analysis`}
               component={() => (
-                <ReportDriverAnalysis status={dashboardStatus} />
+                <ReportDriverAnalysis status={dashboardStatus} admin={adminStatus}/>
               )}
             />
             <Route

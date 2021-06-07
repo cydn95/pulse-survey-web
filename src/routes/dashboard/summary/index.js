@@ -271,6 +271,10 @@ const ReportSummary = ({
                     </div>
                   </div>
                   {sentimentKey.map((item, index) => {
+                    if (!sentimentResult[index] || sentimentResult[index][0].count <= 0) {
+                      return null;
+                    }
+
                     return (
                       <div
                         key={`sentiment-result-${item}`}

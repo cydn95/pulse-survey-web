@@ -6,7 +6,7 @@ import ReactLoading from "react-loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faCheck } from "@fortawesome/free-solid-svg-icons";
 
-import { engagementTrend, getAMQuestionCnt } from "Redux/actions";
+import { engagementTrend, getAMQuestionCnt, driverAnalysisCnt } from "Redux/actions";
 
 import HeatMap from "Components/report/HeatMap";
 import CardMap from "Components/report/CardMap";
@@ -33,12 +33,13 @@ const ReportDriverAnalysis = ({
   history,
   projectTitle,
   actionEngagementTrend,
-  actionGetAMQuestionCnt,
+  actionDriverAnalysisCnt,
   surveyId,
   surveyUserId,
   projectId,
   userId,
   status,
+  admin
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -47,7 +48,8 @@ const ReportDriverAnalysis = ({
 
   const [chartWidth, setChartWidth] = useState(100);
 
-  const [driverName, setDriverName] = useState("Engagement");
+  const [driverList, setDriverList] = useState([]);
+  const [driverName, setDriverName] = useState("");
   // const [chartType, setChartType] = useState(filters[0]);
 
   const [totalStakeholderCnt, setTotalStakeholdercnt] = useState(1);
@@ -63,6 +65,32 @@ const ReportDriverAnalysis = ({
   useEffect(() => {
     setLoading(true);
     setEngagementData({ [driverName]: [] });
+    actionDriverAnalysisCnt(
+      surveyId,
+      surveyUserId,
+      "2019-01-01",
+      "2021-12-31",
+      (result) => {
+
+        const driverList = [];
+
+        // console.log(drivers);
+        // console.log(result);
+
+        drivers.forEach((d) => {
+          if (d in result && result[d] > 0) {
+            driverList.push(d);
+          }
+        })
+
+        if (driverList.length > 0) {
+          setDriverName(driverList[0]);
+        }
+
+        setDriverList([...driverList]);
+      }
+    );
+
     actionEngagementTrend(
       filters[filterValue],
       driverName,
@@ -96,7 +124,7 @@ const ReportDriverAnalysis = ({
           </div>
         </TopNav>
       </div>
-      {status ? (
+      {status && driverList.length > 0 ? (
         <Fragment>
           <div className={styles["main-content"]}>
             <div className={styles["filter-content"]}>
@@ -139,7 +167,7 @@ const ReportDriverAnalysis = ({
             <div className={styles["show-panel"]}>
               <span>Show: </span>
               <div className={styles["show-select"]}>
-                {drivers.map((d) => (
+                {driverList.map((d) => (
                   <div
                     key={`driver-name-${d}`}
                     className={classnames(styles["show-select-item"], {
@@ -181,6 +209,7 @@ const ReportDriverAnalysis = ({
                   {!isMobile && (
                     <HeatMap
                       data={engagementData}
+                      admin={admin}
                       shCnt={totalStakeholderCnt}
                       chartWidth={chartWidth}
                     />
@@ -229,4 +258,5 @@ const mapStateToProps = ({ authUser }) => {
 export default connect(mapStateToProps, {
   actionEngagementTrend: engagementTrend,
   actionGetAMQuestionCnt: getAMQuestionCnt,
+  actionDriverAnalysisCnt: driverAnalysisCnt
 })(ReportDriverAnalysis);
