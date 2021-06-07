@@ -11,6 +11,7 @@ import styles from "./styles.scss";
 import classnames from "classnames";
 
 const AdvisorInsights = ({
+  projectTitle,
   userId,
   surveyId,
   surveyUserId,
@@ -42,9 +43,7 @@ const AdvisorInsights = ({
         >
           <div className={styles.section}>
             <h2 className={styles["page-title"]}>My Profile</h2>
-            <h2 className={styles["project-name"]}>
-              What are the key takeaways from this analysis?
-            </h2>
+            <h2 className={styles["project-name"]}>{projectTitle}</h2>
           </div>
         </TopNav>
       </div>
@@ -59,6 +58,12 @@ const AdvisorInsights = ({
           ) : (
             <div className={styles["advisor-insight-content"]}>
               <div className={styles["content-left"]}>
+                <div className={styles["content-header"]}>
+                  <div className={styles["header-content"]}>
+                    <div className={styles["sub-title"]}>What are the key takeaways from this analysis?</div>
+                    <br/>
+                  </div>
+                </div>
                 {/* <div className={styles["content-header"]}>
                   <div className={styles["header-image"]}>
                     <img src="/assets/img/report/people.png" height="30" />
@@ -319,10 +324,11 @@ const AdvisorInsights = ({
 };
 
 const mapStateToProps = ({ authUser }) => {
-  const { surveyId, surveyUserId, user } = authUser;
+  const { surveyId, surveyUserId, user, projectTitle } = authUser;
   const { userId } = user;
 
   return {
+    projectTitle,
     surveyId,
     surveyUserId,
     userId,
