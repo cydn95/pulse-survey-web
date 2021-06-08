@@ -374,41 +374,45 @@ function* getParticipation({ payload }) {
       };
 
       let allUserCount = 0;
-      let teamUserCount = 1;
+      let teamUserCount = 0;
 
       for (let i = 0; i < result.data.length; i++) {
         allUserCount++;
-        if (result.data[i].team !== null) {
+        if (result.data[i].isTeamMember) {
           teamUserCount++;
-        }
-
-        if (result.data[i].am_total === result.data[i].am_answered) {
-          participationRet.completed += 1;
-
-          if (result.data[i].team !== null) {
-            teamParticipationRet.completed += 1;
-          }
-        } else {
-          participationRet.awaiting += 1;
-
-          if (result.data[i].team !== null) {
-            teamParticipationRet.awaiting += 1;
-          }
         }
 
         if (result.data[i].sendInvite === false) {
           participationRet.notIssued += 1;
 
-          if (result.data[i].team !== null) {
+          if (result.data[i].isTeamMember) {
             teamParticipationRet.notIssued += 1;
           }
+
+          continue;
         }
 
         if (result.data[i].accept_status === false) {
           participationRet.rejected += 1;
 
-          if (result.data[i].team !== null) {
+          if (result.data[i].isTeamMember) {
             teamParticipationRet.rejected += 1;
+          }
+
+          continue;
+        }
+
+        if (result.data[i].am_total === result.data[i].am_answered) {
+          participationRet.completed += 1;
+
+          if (result.data[i].isTeamMember) {
+            teamParticipationRet.completed += 1;
+          }
+        } else {
+          participationRet.awaiting += 1;
+
+          if (result.data[i].isTeamMember) {
+            teamParticipationRet.awaiting += 1;
           }
         }
       }
