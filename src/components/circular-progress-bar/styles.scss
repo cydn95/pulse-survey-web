@@ -1,5 +1,5 @@
 $center-color: #f8f8f8 !default;
-$empty-color: rgb(210, 210, 210) !default;
+$empty-color: #fff !default;
 
 $fillStart: #e66864 !default;
 $fillEnd: #00b7a2 !default;
@@ -16,7 +16,8 @@ $progress-inner-height: 80% !default;
   height: $progress-height;
 
   &.smooth {
-    background: conic-gradient($fillStart, $fillMid, $fillEnd);
+    // background: conic-gradient($fillStart, $fillMid, $fillEnd);
+    background: $fillStart;
   }
 
   &.low {
