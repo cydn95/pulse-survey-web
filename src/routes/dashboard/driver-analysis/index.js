@@ -52,7 +52,8 @@ const ReportDriverAnalysis = ({
   const [driverName, setDriverName] = useState("");
   // const [chartType, setChartType] = useState(filters[0]);
 
-  const [totalStakeholderCnt, setTotalStakeholdercnt] = useState(1);
+  const [totalAnswered, setTotalAnswered] = useState(0)
+  const [totalStakeholderCnt, setTotalStakeholdercnt] = useState(0);
   const [engagementData, setEngagementData] = useState({
     [driverName]: [],
   });
@@ -63,8 +64,6 @@ const ReportDriverAnalysis = ({
   };
 
   useEffect(() => {
-    setLoading(true);
-    setEngagementData({ [driverName]: [] });
     actionDriverAnalysisCnt(
       surveyId,
       surveyUserId,
@@ -73,9 +72,6 @@ const ReportDriverAnalysis = ({
       (result) => {
 
         const driverList = [];
-
-        // console.log(drivers);
-        // console.log(result);
 
         drivers.forEach((d) => {
           if (d in result && result[d] > 0) {
@@ -90,6 +86,12 @@ const ReportDriverAnalysis = ({
         setDriverList([...driverList]);
       }
     );
+
+  }, [surveyId, surveyUserId, actionDriverAnalysisCnt]);
+
+  useEffect(() => {
+    setLoading(true);
+    setEngagementData({ [driverName]: [] });
 
     actionEngagementTrend(
       filters[filterValue],
@@ -106,6 +108,8 @@ const ReportDriverAnalysis = ({
 
   const callback = (ret) => {
     setLoading(false);
+
+    setTotalAnswered(ret.totalAnswered);
     setTotalStakeholdercnt(ret.shCnt);
     setEngagementData({ ...ret.data });
   };
@@ -210,6 +214,7 @@ const ReportDriverAnalysis = ({
                     <HeatMap
                       data={engagementData}
                       admin={admin}
+                      totalAnswered={totalAnswered}
                       shCnt={totalStakeholderCnt}
                       chartWidth={chartWidth}
                     />
