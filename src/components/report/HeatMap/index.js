@@ -75,7 +75,7 @@ const shouldExpand = (data) => {
   return res;
 };
 
-const HeatMap = ({ shCnt, data, admin, chartWidth }) => {
+const HeatMap = ({ shCnt, totalAnswered, data, admin, chartWidth }) => {
   const colP = useMemo(() => {
     if (Object.keys(data).length > 0) {
       return 100 / (data[Object.keys(data)[0]].length + 1);
@@ -185,9 +185,7 @@ const HeatMap = ({ shCnt, data, admin, chartWidth }) => {
                         <div className={styles["row-answer-triangle"]}></div>
                         <div className={styles["row-answer-content"]}>
                           {rowNum === 1 &&
-                            `The response rate is ${
-                              data[key].length > 0 ? data[key][0].value : 0
-                            }% out of a total ${shCnt} stakeholders that have been invited to respond`}
+                            `The response rate is ${Math.round(totalAnswered / shCnt * 100)}% out of a total ${shCnt} stakeholders that have been invited to respond`}
                           {rowNum > 1 &&
                             (data[key].length > 0 && data[key][0].question
                               ? `Question answered: "${data[key][0].question}"`
@@ -211,7 +209,11 @@ const HeatMap = ({ shCnt, data, admin, chartWidth }) => {
                 if (rowNum === 0) {
                   colVal = d.value;
                 } else if (rowNum === 1) {
-                  colVal = `${d.value} %`;
+                  colVal = `${
+                    d.totalCnt > 0
+                      ? Math.round((d.stakeholders.length / d.totalCnt) * 100)
+                      : 0
+                  } %`;
                 } else {
                   if (
                     (d.value === 0 ||
@@ -236,11 +238,9 @@ const HeatMap = ({ shCnt, data, admin, chartWidth }) => {
                     style={{ width: `${colP}%`, ...style }}
                   >
                     <span>{colVal}</span>
-                    {rowNum === 1 && d.value > 0 && (
+                    {rowNum === 1 && (
                       <div className={styles["map-col-shcnt"]}>
-                        {`${Math.round(
-                          (shCnt * d.value) / 100
-                        )} out of ${shCnt} stakeholders`}
+                        {`${d.stakeholders.length} out of ${d.totalCnt} stakeholders`}
                       </div>
                     )}
                   </div>
