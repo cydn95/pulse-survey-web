@@ -185,7 +185,9 @@ const HeatMap = ({ shCnt, totalAnswered, data, admin, chartWidth }) => {
                         <div className={styles["row-answer-triangle"]}></div>
                         <div className={styles["row-answer-content"]}>
                           {rowNum === 1 &&
-                            `The response rate is ${Math.round(totalAnswered / shCnt * 100)}% out of a total ${shCnt} stakeholders that have been invited to respond`}
+                            `The response rate is ${Math.round(
+                              (totalAnswered / shCnt) * 100
+                            )}% out of a total ${shCnt} stakeholders that have been invited to respond`}
                           {rowNum > 1 &&
                             (data[key].length > 0 && data[key][0].question
                               ? `Question answered: "${data[key][0].question}"`
@@ -216,18 +218,18 @@ const HeatMap = ({ shCnt, totalAnswered, data, admin, chartWidth }) => {
                   } %`;
                 } else {
                   if (
-                    (d.value === 0 ||
-                      !d.stakeholders ||
-                      d.stakeholders.length < 3) &&
-                    admin === false
+                    (d.value > 0 &&
+                      d.stakeholders &&
+                      d.stakeholders.length > 3) ||
+                    admin
                   ) {
+                    colVal = `${d.value} / 10`;
+                  } else {
                     colVal = (
                       <NoTrendData
                         shCnt={d.stakeholders ? d.stakeholders.length : 0}
                       />
                     );
-                  } else {
-                    colVal = `${d.value} / 10`;
                   }
                 }
 
@@ -269,7 +271,7 @@ const HeatMap = ({ shCnt, totalAnswered, data, admin, chartWidth }) => {
                     {chartWidth > 0 &&
                       d.trend.length > 0 &&
                       d.stakeholders &&
-                      d.stakeholders.length >= 3 && (
+                      (d.stakeholders.length >= 3 || admin) && (
                         <TrendLine
                           data={d.trend}
                           num={`${keyValue}-${index}`}
