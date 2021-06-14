@@ -215,6 +215,7 @@ class NewStakeholder extends Component {
                 className={styles["avatar-comp"]}
                 userId={stakeholder.id}
                 username={stakeholder.fullName}
+                title={stakeholder.projectUserTitle === "" ? stakeholder.userTitle : stakeholder.projectUserTitle}
                 description={
                   stakeholder.organisation + " / " + stakeholder.team
                 }
