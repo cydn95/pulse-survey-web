@@ -673,9 +673,7 @@ class MyMap extends React.Component {
     //       console.log(this.myMapProjectUserList);
     // console.log("*********************************");
     this.setState({ newStakeholder: newElem }, () => {
-      console.log('33442354332', newElem);
       if (!newElem.individuals[0].sh_category) return;
-      console.log('hhhkkksdddd');
       const newProjectUserId = projectUser.projectUserId;
       const newShCategory = newElem.individuals[0].sh_category.current.split(
         "_"

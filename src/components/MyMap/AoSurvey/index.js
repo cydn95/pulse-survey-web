@@ -352,6 +352,7 @@ class AoSurvey extends React.Component {
           <AvatarComponent
             className={styles["avatar-comp"]}
             userId={user.id}
+            title={user.projectUserTitle === "" ? user.userTitle : user.projectUserTitle}
             username={user.fullName}
             description={user.organisation + " / " + user.team}
             profilePicUrl={user.userAvatar}
