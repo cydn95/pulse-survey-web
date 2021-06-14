@@ -27,6 +27,7 @@ class AllStakeholderList extends Component {
       email: "",
       myProjectUser: this.props.surveyUserId,
     };
+
     this.state = {
       shId: 0,
       viewType: "search",
@@ -38,11 +39,13 @@ class AllStakeholderList extends Component {
   }
 
   handleArrowClick = (stakeholder) => {
+
     this.setState({
       viewType: "category",
       selectedStakeholder: stakeholder,
+    }, () => {
+        this.props.onUpdateSubView("category");
     });
-    this.props.onUpdateSubView("category");
   };
 
   handleUpdateStakeholder = (stakeholder) => {
