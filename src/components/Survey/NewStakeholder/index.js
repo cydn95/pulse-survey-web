@@ -57,6 +57,7 @@ class NewStakeholder extends Component {
           projectUserRoleDesc: props.stakeholder.projectUserTitle,
           projectUserTitle: props.stakeholder.projectUserRoleDesc,
         },
+        title: props.title,
         answer: 0,
         btnAddDisabled: false,
       };
@@ -67,6 +68,7 @@ class NewStakeholder extends Component {
           ...props.stakeholder,
         },
         btnAddDisabled: false,
+        title: ""
       };
     }
   }
@@ -198,7 +200,7 @@ class NewStakeholder extends Component {
   render() {
     const { shCategoryList, projectMapShCategoryList, teamList } = this.props;
     const update = this.props.update ? this.props.update : false;
-    const { btnAddDisabled, stakeholder } = this.state;
+    const { btnAddDisabled, stakeholder, title } = this.state;
     const { myCategoryList, projectCategoryList } = stakeholder;
 
     return (
@@ -215,7 +217,7 @@ class NewStakeholder extends Component {
                 className={styles["avatar-comp"]}
                 userId={stakeholder.id}
                 username={stakeholder.fullName}
-                title={stakeholder.projectUserTitle === "" ? stakeholder.userTitle : stakeholder.projectUserTitle}
+                title={title}
                 description={
                   stakeholder.organisation + " / " + stakeholder.team
                 }

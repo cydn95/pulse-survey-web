@@ -35,6 +35,7 @@ class AllStakeholderList extends Component {
       selectedStakeholder: {
         ...this.defaultStakeholder,
       },
+      userTitle: ''
     };
   }
 
@@ -43,9 +44,11 @@ class AllStakeholderList extends Component {
     this.setState({
       viewType: "category",
       selectedStakeholder: stakeholder,
-    }, () => {
-        this.props.onUpdateSubView("category");
+      userTitle: stakeholder.projectUserTitle === "" ? stakeholder.userTitle : stakeholder.projectUserTitle
     });
+
+    this.props.onUpdateSubView("category");
+
   };
 
   handleUpdateStakeholder = (stakeholder) => {
@@ -97,7 +100,7 @@ class AllStakeholderList extends Component {
       (s) => s.fullName.toLowerCase().indexOf(search.toLowerCase()) >= 0
     );
 
-    const { viewType, selectedStakeholder } = this.state;
+    const { viewType, selectedStakeholder, userTitle } = this.state;
     let userCount = allStakeholders.length;
 
     return (
@@ -172,6 +175,7 @@ class AllStakeholderList extends Component {
             }
             update={true}
             stakeholder={selectedStakeholder}
+            title={userTitle}
           />
         )}
       </div>
