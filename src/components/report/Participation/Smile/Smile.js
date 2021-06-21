@@ -62,8 +62,6 @@ function renderGraph(node, props) {
     //   .attr("text-anchor", "middle")
     //   .attr("class", styles["sub-title"])
     //   .attr("dy", "45");
-  } else {
-    face.remove('text');
   }
 
   // centerize the face

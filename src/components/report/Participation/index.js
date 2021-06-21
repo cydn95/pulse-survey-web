@@ -5,7 +5,6 @@ import { ResponsiveSmile as Smile } from "./Smile";
 import styles from "./styles.scss";
 
 const Participation = ({ allData, allCount, teamData, teamCount, labels }) => {
-
   return (
     <div className={styles["participation-root"]}>
       <div className={styles.content}>
