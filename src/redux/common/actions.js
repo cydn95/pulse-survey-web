@@ -70,9 +70,9 @@ export const skipQuestionListSuccess = (skipQuestionList) => ({
   payload: { skipQuestionList },
 });
 
-export const stakeholderList = (projectUserId, surveyId = 0) => ({
+export const stakeholderList = (projectUserId, surveyId = 0, callback = null) => ({
   type: STAKEHOLDER_LIST,
-  payload: { projectUserId, surveyId },
+  payload: { projectUserId, surveyId, callback },
 });
 
 export const stakeholderListSuccess = (stakeholderList, userList) => ({
