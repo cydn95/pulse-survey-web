@@ -377,42 +377,63 @@ function* getParticipation({ payload }) {
       let teamUserCount = 0;
 
       for (let i = 0; i < result.data.length; i++) {
-        allUserCount++;
-        if (result.data[i].isTeamMember) {
+
+        if (!result.data[i].shType) {
+          continue;
+        }
+
+        // User Count
+        if (result.data[i].shType.shTypeName === "Team Member") {
           teamUserCount++;
+        }
+        if (result.data[i].shType.shTypeName === "Stakeholder") {
+          allUserCount++;
         }
 
         if (result.data[i].sendInvite === false) {
-          participationRet.notIssued += 1;
 
-          if (result.data[i].isTeamMember) {
+          if (result.data[i].shType.shTypeName === "Team Member") {
             teamParticipationRet.notIssued += 1;
+          }
+
+          if (result.data[i].shType.shTypeName === "Stakeholder") {
+            participationRet.notIssued += 1;
           }
 
           continue;
         }
 
         if (result.data[i].accept_status === false) {
-          participationRet.rejected += 1;
 
-          if (result.data[i].isTeamMember) {
+          if (result.data[i].shType.shTypeName === "Team Member") {
             teamParticipationRet.rejected += 1;
+          }
+
+          if (result.data[i].shType.shTypeName === "Stakeholder") {
+            participationRet.rejected += 1;
           }
 
           continue;
         }
 
         if (result.data[i].am_total === result.data[i].am_answered) {
-          participationRet.completed += 1;
 
-          if (result.data[i].isTeamMember) {
+          if (result.data[i].shType.shTypeName === "Team Member") {
             teamParticipationRet.completed += 1;
           }
-        } else {
-          participationRet.awaiting += 1;
 
-          if (result.data[i].isTeamMember) {
+          if (result.data[i].shType.shTypeName === "Stakeholder") {
+            participationRet.completed += 1;
+          }
+
+        } else {
+
+          if (result.data[i].shType.shTypeName === "Team Member") {
             teamParticipationRet.awaiting += 1;
+          }
+
+          if (result.data[i].shType.shTypeName === "Stakeholder") {
+            participationRet.awaiting += 1;
           }
         }
       }
