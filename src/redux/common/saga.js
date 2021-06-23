@@ -145,7 +145,7 @@ const getStakeholderListAysnc = async (projectUserId, surveyId) =>
 
 function* getStakeholderList({ payload }) {
   try {
-    const { projectUserId, surveyId } = payload;
+    const { projectUserId, surveyId, callback } = payload;
     const result = yield call(getStakeholderListAysnc, projectUserId, surveyId);
 
     const stakeholderList = [];
@@ -197,7 +197,11 @@ function* getStakeholderList({ payload }) {
         });
       });
 
-      yield put(stakeholderListSuccess(stakeholderList, userList));
+      if (callback) {
+        callback(stakeholderList);
+      } else {
+        yield put(stakeholderListSuccess(stakeholderList, userList));
+      }
     }
   } catch (error) {
     console.log("error : ", error);

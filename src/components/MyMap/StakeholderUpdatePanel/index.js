@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 
-import { updateStakeholderCategory } from "Redux/actions";
+import { updateStakeholderCategory, stakeholderList } from "Redux/actions";
 
 
 import dlgStyles from "./styles.scss";
@@ -19,6 +19,7 @@ const StakeholderUpdatePanel = ({
   surveyId,
   surveyUserId,
   actionUpdateStakeholderCategory,
+  actionStakeholderList
 }) => {
   const [selectedMyCategory, setSelectedMyCategory] = useState([]);
   const [selectedProjectCategory, setSelectedProjectCategory] = useState([]);
@@ -73,6 +74,11 @@ const StakeholderUpdatePanel = ({
     }
   };
 
+  // useEffect(() => {
+  //   console.log("loading");
+  //   actionStakeholderList(surveyUserId, surveyId);
+  // }, [surveyId, surveyUserId]);
+
   useEffect(() => {
     const projectUser = {
       project: parseInt(projectId, 10),
@@ -99,10 +105,9 @@ const StakeholderUpdatePanel = ({
 
   const callbackUpdate = () => {
     console.log("callback");
+    // actionStakeholderList(surveyUserId, surveyId);
     // window.location.reload(false);
     // onClose();
-
-    
   };
 
   return (
@@ -159,4 +164,5 @@ const mapStateToProps = ({ authUser }) => {
 
 export default connect(mapStateToProps, {
   actionUpdateStakeholderCategory: updateStakeholderCategory,
+  actionStakeholderList: stakeholderList
 })(StakeholderUpdatePanel);

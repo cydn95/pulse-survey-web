@@ -26,7 +26,7 @@ import {
 
 import styles from "./styles.scss";
 
-import { selectPage, stakeholderAnswer } from "Redux/actions";
+import { selectPage, stakeholderAnswer, stakeholderList } from "Redux/actions";
 import StakeholderUpdateModal from "../StakeholderUpdateModal";
 import StakeholderUpdatePanel from "../StakeholderUpdatePanel";
 
@@ -138,6 +138,7 @@ class AoSurvey extends React.Component {
       totalAnswers,
       totalQuestions,
       editModal: false,
+      
     };
   }
 
@@ -267,9 +268,33 @@ class AoSurvey extends React.Component {
   };
 
   handleOpenEditModal = () => {
+
+    const { surveyId, surveyUserId, user, currentSurveyUserId, actionStakeholderList } = this.props;
+
+    const { editModal } = this.state;
+    if (editModal) {
+      actionStakeholderList(surveyUserId, surveyId, (shList) => {
+        console.log(currentSurveyUserId);
+        console.log(shList);
+
+        let cUser = null;
+        for (let i = 0; i < shList.length; i++) {
+          if (currentSurveyUserId.includes(`${shList[i].userId}_`)) {
+            cUser = shList[i];
+            break;
+          }
+        }
+
+        this.setState((state) => ({
+          currentUser: cUser ? { ...cUser } : { ...user }
+        }));
+      });
+    }
+
     this.setState((state) => ({
-      editModal: !state.editModal,
+      editModal: !state.editModal
     }));
+    
   };
 
   handleCloseEditModal = () => {
@@ -286,6 +311,7 @@ class AoSurvey extends React.Component {
       totalAnswers,
       totalQuestions,
       editModal,
+      currentUser
     } = this.state;
 
     const {
@@ -296,6 +322,7 @@ class AoSurvey extends React.Component {
       projectMapCategory,
       submitLoading,
     } = this.props;
+
 
     // console.log(myMapCategory);
     // console.log(projectMapCategory);
@@ -341,7 +368,7 @@ class AoSurvey extends React.Component {
               {editModal && <div className={styles["stakeholder-update-panel-container"]}>
                 <StakeholderUpdatePanel
                   open={editModal}
-                  currentUser={user}
+                  currentUser={currentUser}
                   myMapCategory={myMapCategory}
                   projectMapCategory={projectMapCategory}
                   onClose={(e) => this.handleCloseEditModal()}
@@ -496,8 +523,10 @@ class AoSurvey extends React.Component {
 const mapStateToProps = ({ survey, common, authUser }) => {
   const { pageList, pageIndex } = survey;
   const { skipQuestionList } = common;
-  const { projectTitle, projectUserId } = authUser;
+  const { projectTitle, projectUserId, surveyId, surveyUserId } = authUser;
   return {
+    surveyId,
+    surveyUserId,
     surveyList: pageList,
     pageIndex,
     skipQuestionList,
@@ -509,4 +538,5 @@ const mapStateToProps = ({ survey, common, authUser }) => {
 export default connect(mapStateToProps, {
   setSurveyPage: selectPage,
   stakeholderAnswer,
+  actionStakeholderList: stakeholderList
 })(AoSurvey);
