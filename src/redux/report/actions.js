@@ -17,7 +17,8 @@ import {
   REPORT_AMQUESTIONCNT,
   REPORT_ADVISOR,
   REPORT_CHECK_DASHBOARD,
-  REPORT_DRIVER_ANALYSIS_CNT
+  REPORT_DRIVER_ANALYSIS_CNT,
+  REPORT_KEYTHEME_MENU_CNT
 } from "Constants/actionTypes";
 
 export const overallSentiment = (surveyId, callback) => ({
@@ -113,4 +114,9 @@ export const checkDashboard = (surveyId, projectUserId, callback) => ({
 export const driverAnalysisCnt = (surveyId, subProjectUser, startDate, endDate, callback) => ({
   type: REPORT_DRIVER_ANALYSIS_CNT,
   payload: { surveyId, subProjectUser, startDate, endDate, callback }
+})
+
+export const getKeyThemeMenuCnt = (surveyId, projectUserId, callback) => ({
+  type: REPORT_KEYTHEME_MENU_CNT,
+  payload: { surveyId, projectUserId, callback }
 })

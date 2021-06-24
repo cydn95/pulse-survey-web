@@ -24,6 +24,7 @@ import {
   advisorAPI,
   checkDashboardStatusAPI,
   getDriverAnalysisCntAPI,
+  getKeyThemeMenuCntAPI
 } from "../../services/axios/api";
 
 import {
@@ -46,6 +47,7 @@ import {
   REPORT_ADVISOR,
   REPORT_CHECK_DASHBOARD,
   REPORT_DRIVER_ANALYSIS_CNT,
+  REPORT_KEYTHEME_MENU_CNT
 } from "Constants/actionTypes";
 
 import {
@@ -197,6 +199,11 @@ const getProjectMatrixAsync = async (surveyId, projectUserId) =>
 
 const getTextValueAsync = async (surveyId, tab, projectUserId) =>
   await getTextValueAPI(surveyId, tab, projectUserId)
+    .then((result) => result)
+    .catch((error) => error);
+
+const getKeyThemeMenuCntAsync = async (surveyId, projectUserId) =>
+  await getKeyThemeMenuCntAPI(surveyId, projectUserId)
     .then((result) => result)
     .catch((error) => error);
 
@@ -819,6 +826,18 @@ function* getTextValue({ payload }) {
   } catch (error) {}
 }
 
+function* getKeyThemeMenuCnt({ payload }) {
+  try {
+    const { surveyId, projectUserId, callback } = payload;
+
+    const result = yield call(getKeyThemeMenuCntAsync, surveyId, projectUserId);
+
+    if (result.status === 200) {
+      callback(result.data);
+    }
+  } catch (error) { }
+}
+
 function* setAcknowledgementReport({ payload }) {
   try {
     const { responseId, data, callback } = payload;
@@ -967,6 +986,10 @@ export function* watchDriverAnalysisCnt() {
   yield takeEvery(REPORT_DRIVER_ANALYSIS_CNT, getDriverAnalysisCnt);
 }
 
+export function* watchKeyThemeMenuCnt() {
+  yield takeEvery(REPORT_KEYTHEME_MENU_CNT, getKeyThemeMenuCnt);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetOverallSentiment),
@@ -987,5 +1010,6 @@ export default function* rootSaga() {
     fork(watchAMQuestionCnt),
     fork(watchAdvisorReport),
     fork(watchCheckDashboard),
+    fork(watchKeyThemeMenuCnt)
   ]);
 }
