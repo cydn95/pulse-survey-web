@@ -414,6 +414,10 @@ export const getTextValueAPI = (survey, tab, projectUser) => {
   return getClient(true).get(`/keytheme?survey=${survey}&tab=${tab}&projectuser=${projectUser}`)
 }
 
+export const getKeyThemeMenuCntAPI = (survey, projectUser) => {
+  return getClient(true).get(`/keymenucnt?survey=${survey}&projectuser=${projectUser}`)
+}
+
 export const getAcknowledgementAPI = (responseId, projectUser) => {
   return getClient(true).get(`/acknowledgement?response=${responseId}&projectuser=${projectUser}`)
 }

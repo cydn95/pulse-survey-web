@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import TopNav from "Containers/TopNav";
@@ -10,6 +10,8 @@ import TableContainer from "./TableContainer";
 import CarouselContainer from "./CarouselContainer";
 
 import NoDashboard from "Components/report/NoDashboard";
+
+import { getKeyThemeMenuCnt } from "Redux/actions";
 
 const tabMenu = {
   risks: {
@@ -78,9 +80,43 @@ const tabMenu = {
   },
 };
 
-const ReportKeyThemes = ({ history, projectTitle, status }) => {
-  const [tab, setTab] = useState("risks");
-  // const [tab, setTab] = useState("unspoken-problem");
+const ReportKeyThemes = ({
+  history,
+  projectTitle,
+  status,
+  surveyId,
+  surveyUserId,
+  actionGetKeyThemeMenuCnt,
+}) => {
+  const [tab, setTab] = useState("");
+  const [availableMenu, setAvailableMenu] = useState([]);
+
+  useEffect(() => {
+    actionGetKeyThemeMenuCnt(surveyId, surveyUserId, (data) => {
+      const menuCnt = {};
+
+      menuCnt["risks"] = data.risks;
+      menuCnt["overall-sentiment"] = data.overall_sentiment;
+      menuCnt["unspoken-problem"] = data.unspoken_problem;
+      menuCnt["project-interest"] = data.project_interest;
+      menuCnt["personal-interest"] = data.personal_interest;
+      menuCnt["improvement"] =
+        data.improvement_change +
+        data.improvement_keep +
+        data.improvement_start +
+        data.improvement_stop;
+
+      setAvailableMenu(menuCnt);
+
+      const keys = Object.keys(menuCnt);
+      for (let i = 0; i < keys.length; i++) {
+        if (menuCnt[keys[i]] > 0) {
+          setTab(keys[i]);
+          break;
+        }
+      }
+    });
+  }, [surveyId, surveyUserId, actionGetKeyThemeMenuCnt]);
 
   const handleSelectTab = (t) => {
     setTab(t);
@@ -100,29 +136,39 @@ const ReportKeyThemes = ({ history, projectTitle, status }) => {
           </div>
         </TopNav>
       </div>
-      {status ? (
+      {status && tab !== "" ? (
         <div className={styles["main-content"]}>
           <div className={styles["keytheme-tab-container"]}>
             <div className={styles["keythemes-tab-menu"]}>
-              {Object.keys(tabMenu).map((key) => (
-                <div
-                  key={`keythemes-tab-${key}`}
-                  className={classnames(styles["keythemes-tab-item"], {
-                    [styles.active]: key === tab,
-                  })}
-                  role="button"
-                  onClick={(e) => handleSelectTab(key)}
-                >
-                  <img
-                    src={
-                      key === tab
-                        ? tabMenu[key].img_white
-                        : tabMenu[key].img_grey
-                    }
-                  />
-                  {tabMenu[key].label}
-                </div>
-              ))}
+              {Object.keys(tabMenu).map((key) => {
+                if (!(key in availableMenu)) {
+                  return null;
+                }
+
+                if (availableMenu[key] === 0) {
+                  return null;
+                }
+
+                return (
+                  <div
+                    key={`keythemes-tab-${key}`}
+                    className={classnames(styles["keythemes-tab-item"], {
+                      [styles.active]: key === tab,
+                    })}
+                    role="button"
+                    onClick={(e) => handleSelectTab(key)}
+                  >
+                    <img
+                      src={
+                        key === tab
+                          ? tabMenu[key].img_white
+                          : tabMenu[key].img_grey
+                      }
+                    />
+                    {tabMenu[key].label}
+                  </div>
+                );
+              })}
             </div>
           </div>
           {tabMenu[tab].component}
@@ -146,4 +192,7 @@ const mapStateToProps = ({ authUser }) => {
   };
 };
 
-export default connect(mapStateToProps, {})(ReportKeyThemes);
+export default connect(mapStateToProps, {
+  actionGetKeyThemeMenuCnt: getKeyThemeMenuCnt,
+})(ReportKeyThemes);
+``;
