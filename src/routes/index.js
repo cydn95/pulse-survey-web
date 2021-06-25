@@ -16,6 +16,7 @@ import ComingSoon from "./coming";
 import ProjectNotFound from "./project-not-found";
 import Error500 from "./error500";
 import Error404 from "./error404";
+import ConfigPage from "./configpage";
 
 import DialogTourView from "Components/DialogTourView";
 import MobileTour from "./tour/mobile";
@@ -100,6 +101,10 @@ const MainApp = ({ history, location, match }) => {
             <Route path={`${match.url}/help`} component={Help} />
             <Route path={`${match.url}/tour`} component={MobileTour} />
             <Route path={`${match.url}/guide`} component={Tooltip} />
+            <Route
+              path={`${match.url}/moreinfo/config/:pageId`}
+              component={ConfigPage}
+            />
             <Route
               path={`${match.url}/project-not-found`}
               component={ProjectNotFound}
