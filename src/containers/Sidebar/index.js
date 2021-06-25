@@ -109,8 +109,9 @@ class Sidebar extends Component {
       user,
     } = props;
 
-    if (surveyId > 0 && surveyUserId > 0) {
+    const { pageContent } = this.props;
 
+    if (surveyId > 0 && surveyUserId > 0) {
       actionCheckDashboard(surveyId, surveyUserId, (result) => {
         const { code } = result;
         if (code === 201) {
@@ -144,7 +145,7 @@ class Sidebar extends Component {
       });
     }
 
-    if (surveyId > 0 && surveyId !== this.props.surveyId) {
+    if ((surveyId > 0 && surveyId.toString() !== this.props.surveyId.toString()) || pageContent.length === 0) {
       getPageContent(surveyId);
     }
 
@@ -398,13 +399,33 @@ class Sidebar extends Component {
           <div className={styles.space}></div>
           <div className={styles.link}>
             <ProSidebar width="220px">
-              <Menu iconShape="square">
+              {pageContent.length > 0 && (
+                <Menu iconShape="square">
+                  <SubMenu title="More Info">
+                    {pageContent.map((menu) => (
+                      <MenuItem
+                        key={`submenu-configpage-${menu.id}`}
+                        onClick={(e) =>
+                          this.handleClickSubMenu(
+                            e,
+                            `config-page-${menu.id}`,
+                            `/app/moreinfo/config/${menu.id}`
+                          )
+                        }
+                      >
+                        {menu.pageName}
+                      </MenuItem>
+                    ))}
+                  </SubMenu>
+                </Menu>
+              )}
+              {/* <Menu iconShape="square">
                 <MenuItem
                   onClick={(e) => this.handleClickMainMenu(e, "settings", true)}
                 >
                   More Info
                 </MenuItem>
-              </Menu>
+              </Menu> */}
               <Menu iconShape="square">
                 <SubMenu title="Help">
                   <MenuItem
