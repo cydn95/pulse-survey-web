@@ -35,20 +35,21 @@ class AllStakeholderList extends Component {
       selectedStakeholder: {
         ...this.defaultStakeholder,
       },
-      userTitle: ''
+      userTitle: "",
     };
   }
 
   handleArrowClick = (stakeholder) => {
-
     this.setState({
       viewType: "category",
       selectedStakeholder: stakeholder,
-      userTitle: stakeholder.projectUserTitle === "" ? stakeholder.userTitle : stakeholder.projectUserTitle
+      userTitle:
+        stakeholder.projectUserTitle === ""
+          ? stakeholder.userTitle
+          : stakeholder.projectUserTitle,
     });
 
     this.props.onUpdateSubView("category");
-
   };
 
   handleUpdateStakeholder = (stakeholder) => {
@@ -78,20 +79,20 @@ class AllStakeholderList extends Component {
     //   selectedMyCategoryList.length > 0 ||
     //   selectedProjectCategoryList.length > 0
     // ) {
-      for (let i = 0; i < allStakeholders.length; i++) {
-        // const i1 = allStakeholders[i].shCategory.filter((value) =>
-        //   selectedMyCategoryList.includes(value)
-        // );
-        // const i2 = allStakeholders[i].shCategory.filter((value) =>
-        //   selectedProjectCategoryList.includes(value)
-        // );
-        // if (
-        //   (i1.length > 0 || i2.length > 0) &&
-        //   allStakeholders[i].projectId.toString() === projectId.toString()
-        // ) {
-          filteredStakeholderList.push(allStakeholders[i]);
-        // }
-      }
+    for (let i = 0; i < allStakeholders.length; i++) {
+      // const i1 = allStakeholders[i].shCategory.filter((value) =>
+      //   selectedMyCategoryList.includes(value)
+      // );
+      // const i2 = allStakeholders[i].shCategory.filter((value) =>
+      //   selectedProjectCategoryList.includes(value)
+      // );
+      // if (
+      //   (i1.length > 0 || i2.length > 0) &&
+      //   allStakeholders[i].projectId.toString() === projectId.toString()
+      // ) {
+      filteredStakeholderList.push(allStakeholders[i]);
+      // }
+    }
     // } else {
     //   filteredStakeholderList = [...allStakeholders];
     // }
@@ -121,7 +122,9 @@ class AllStakeholderList extends Component {
                 let title =
                   d.projectUserTitle === "" ? d.userTitle : d.projectUserTitle;
                 let description =
-                  d.organisation +
+                  (d.projectOrganization
+                    ? d.projectOrganization
+                    : d.organisation) +
                   " / " +
                   (d.team === "" ? d.userTeam : d.team);
                 let percentage = (d.aoAnswered / d.aoTotal) * 100;

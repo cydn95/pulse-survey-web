@@ -187,6 +187,7 @@ function* getStakeholderList({ payload }) {
           team: sh.team === null ? "" : sh.team.name,
           organisationId: "O_" + sh.user.organization.name,
           organisation: sh.user.organization.name,
+          projectOrganization: sh.projectOrganization,
           shCategory: sh.shCategory == null ? [] : sh.shCategory,
           show: true,
           amTotal: sh.am_total,
