@@ -70,6 +70,8 @@ class OverallTrend extends SampleBase {
               lineStyle: { width: 0 },
               majorTickLines: { width: 0 },
               minorTickLines: { width: 0 },
+              maximum: 10,
+              maximumLabels: 5
             }}
             tooltip={{ enable: false }}
             title=""
