@@ -381,7 +381,7 @@ class AoSurvey extends React.Component {
             userId={user.id}
             title={user.projectUserTitle === "" ? user.userTitle : user.projectUserTitle}
             username={user.fullName}
-            description={user.organisation + " / " + user.team}
+            description={(user.projectOrganization ? user.projectOrganization : user.organisation) + " / " + user.team}
             profilePicUrl={user.userAvatar}
             userProgress={Number(
               ((totalAnswers / totalQuestions) * 100).toFixed(2)

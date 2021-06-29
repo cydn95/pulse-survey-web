@@ -14,7 +14,7 @@ class MapStakeholderList extends Component {
       selectedMyCategoryList,
       selectedProjectCategoryList,
       onMapStakeholderClick,
-      onShowSearchStakeholder
+      onShowSearchStakeholder,
     } = this.props;
 
     let userCount = 0;
@@ -66,7 +66,9 @@ class MapStakeholderList extends Component {
           projectMapStakeholderList[j].shCategory.includes(
             projectMapShCategoryList[i].id
           ) &&
-          selectedProjectCategoryList.includes(projectMapShCategoryList[i].id) &&
+          selectedProjectCategoryList.includes(
+            projectMapShCategoryList[i].id
+          ) &&
           projectMapShCategoryList.length > 0
         ) {
           bAdd = true;
@@ -110,7 +112,16 @@ class MapStakeholderList extends Component {
             <span>
               <strong>No Stakeholders Selected.</strong>
             </span>
-            <span>Click “<strong onClick={e => onShowSearchStakeholder()} style={{cursor: 'pointer'}}>Search Stakeholders</strong>” to add your first one!</span>
+            <span>
+              Click “
+              <strong
+                onClick={(e) => onShowSearchStakeholder()}
+                style={{ cursor: "pointer" }}
+              >
+                Search Stakeholders
+              </strong>
+              ” to add your first one!
+            </span>
           </div>
         )}
         {userCount > 0 && (
@@ -131,9 +142,12 @@ class MapStakeholderList extends Component {
                         ? d.userTitle
                         : d.projectUserTitle;
                     let description =
-                      d.organisation +
+                      (d.projectOrganization
+                        ? d.projectOrganization
+                        : d.organisation) +
                       " / " +
                       (d.team === "" ? d.userTeam : d.team);
+
                     let percentage = (d.aoAnswered / d.aoTotal) * 100;
                     return (
                       <AvatarComponent
@@ -160,7 +174,9 @@ class MapStakeholderList extends Component {
               return (
                 <div className={styles["shcategory"]} key={`project_${key}`}>
                   <div className={styles["project-map"]}>
-                    <span className={styles["map-type"]}>{`PROJECT MAP: `}</span>
+                    <span
+                      className={styles["map-type"]}
+                    >{`PROJECT MAP: `}</span>
                     <span
                       className={styles["map-name"]}
                     >{`${groupSh.name.toUpperCase()}`}</span>
