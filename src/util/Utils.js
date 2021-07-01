@@ -156,3 +156,36 @@ export const getColorFromValue = (val) => {
     return '#14b0bf';
   }
 }
+
+export const isJSONObject = (obj) => {
+  if (obj === null) {
+    return false;
+  }
+
+  if (obj === undefined) {
+    return false;
+  }
+
+  try {
+    const json = JSON.parse(obj);
+
+    const stringConstructor = "test".constructor;
+    const arrayConstructor = [].constructor;
+    const objectConstructor = ({}).constructor;
+
+    if (json.constructor === stringConstructor) {
+      return false;
+    }
+    if (json.constructor === arrayConstructor) {
+      return false;
+    }
+    if (json.constructor === objectConstructor) {
+      return true;
+    }
+
+  } catch (e) {
+    return false;
+  }
+
+  return false;
+}

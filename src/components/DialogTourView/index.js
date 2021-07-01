@@ -94,7 +94,6 @@ const DialogTourView = ({
 
   useEffect(() => {
     if (!nikelContent || nikelContent.length === 0) {
-      onClose();
       return;
     }
 
