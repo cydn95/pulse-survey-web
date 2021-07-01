@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Route, withRouter, Switch, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
 import PropTypes from "prop-types";
 import { isMobile } from "react-device-detect";
 
 import Sidebar from "Containers/Sidebar";
 import BottomBar from "Containers/BottomBar";
+
+import { isJSONObject } from "Util/Utils";
 
 import AboutMeSurvey from "./about-me";
 import MyMap from "./mymap";
@@ -24,10 +27,10 @@ import Tooltip from "./tour/tooltip";
 
 import styles from "./styles.scss";
 
-const MainApp = ({ history, location, match }) => {
+const MainApp = ({ history, location, match, surveyId }) => {
   const [screenMode, setScreenMode] = useState("desktop");
 
-  const [open, setOpen] = useState(false);
+  const [tourOpen, setTourOpen] = useState(false);
   // const showSideBar = history.location.pathname.includes("/tour") ? false : true;
   const showSideBar = true;
   const showBottomBar = history.location.pathname.includes("/tour")
@@ -41,18 +44,23 @@ const MainApp = ({ history, location, match }) => {
       setScreenMode("mobile");
     }
 
-    if (!history.location.pathname.includes("/tour")) {
+    if (!history.location.pathname.includes("/tour") && surveyId !== null && surveyId.toString() !== "") {
       const tourView = localStorage.getItem("tour");
-      if (!tourView) {
+
+      const tourJson = isJSONObject(tourView) === false ? {} : JSON.parse(tourView);
+
+      if (tourJson[surveyId] !== true) {
         if (isMobile) {
           history.push("/app/tour");
         } else {
-          setOpen(true);
+          setTourOpen(true);
         }
-        localStorage.setItem("tour", true);
+
+        tourJson[surveyId] = true;
+        localStorage.setItem("tour", JSON.stringify(tourJson));
       }
     }
-  }, [history.location.pathname]);
+  }, [history.location.pathname, surveyId]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -71,7 +79,7 @@ const MainApp = ({ history, location, match }) => {
   }, []);
 
   const closeTourDialog = () => {
-    setOpen(false);
+    setTourOpen(false);
   };
 
   return (
@@ -116,7 +124,13 @@ const MainApp = ({ history, location, match }) => {
           </Switch>
         </div>
       </div>
-      <DialogTourView open={open} onClose={(e) => closeTourDialog()} />
+      {surveyId !== null && surveyId.toString() !== "" && (
+        <DialogTourView
+          surveyId={surveyId}
+          open={tourOpen}
+          onClose={(e) => closeTourDialog()}
+        />
+      )}
     </div>
   );
 };
@@ -126,4 +140,13 @@ MainApp.propTypes = {
   history: PropTypes.object,
 };
 
-export default withRouter(MainApp);
+const mapStateToProps = ({ authUser }) => {
+  const { projectId, surveyId } = authUser;
+
+  return {
+    projectId,
+    surveyId
+  };
+};
+
+export default withRouter(connect(mapStateToProps, {})(MainApp));
