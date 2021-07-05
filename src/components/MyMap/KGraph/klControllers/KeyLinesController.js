@@ -78,7 +78,8 @@ class BaseController {
         let percentage = Math.abs(parseFloat(item.d.survey_completion).toFixed(2));
 
         // let segment = Math.abs(percentage - 50) * 2;
-        let segmentColor = percentage <= 50 ? "#ff5500" : "#1f45b8";
+        // let segmentColor = percentage <= 50 ? "#ff5500" : "#1f45b8";
+        let segmentColor = "#5194c5";
         props.push({
           id: item.id,
           donut: {

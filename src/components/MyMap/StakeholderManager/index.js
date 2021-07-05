@@ -28,6 +28,8 @@ const StakeholderManager = ({
   onClickDecisionMaker,
   addNewStakeholder,
   updateStakeholder,
+  myMapES,
+  projectMapES
 }) => {
   const [myCategoryList, setMyCategoryList] = useState([]);
   const [projectCategoryList, setProjectCategoryList] = useState([]);
@@ -240,6 +242,8 @@ const StakeholderManager = ({
             <MapStakeholderList
               myMapStakeholderList={myMapStakeholderList}
               projectMapStakeholderList={projectMapStakeholderList}
+              myMapES={myMapES}
+              projectMapES={projectMapES}
               shCategoryList={shCategoryList}
               projectMapShCategoryList={projectMapShCategoryList}
               selectedMyCategoryList={myCategoryList}

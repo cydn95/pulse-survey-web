@@ -42,6 +42,9 @@ class AoSurvey extends React.Component {
       user,
       currentSurveyUserId,
       lastAddedShCategory,
+      myMapES,
+      projectMapES,
+      mapStyle
     } = this.props;
 
     let totalQuestions = 0;
@@ -137,8 +140,7 @@ class AoSurvey extends React.Component {
       answers,
       totalAnswers,
       totalQuestions,
-      editModal: false,
-      
+      editModal: false
     };
   }
 
@@ -311,7 +313,7 @@ class AoSurvey extends React.Component {
       totalAnswers,
       totalQuestions,
       editModal,
-      currentUser
+      currentUser,
     } = this.state;
 
     const {
@@ -321,6 +323,10 @@ class AoSurvey extends React.Component {
       myMapCategory,
       projectMapCategory,
       submitLoading,
+      mapStyle,
+      myMapES,
+      projectMapES,
+      currentSurveyUserId
     } = this.props;
 
 
@@ -355,6 +361,16 @@ class AoSurvey extends React.Component {
     // console.log(driver);
     // console.log('answers', answers);
 
+    // console.log(currentSurveyUserId);
+    const mapES = mapStyle === "my-map" ? myMapES : projectMapES;
+    let surveyCompletion = 0;
+    for (let i = 0; i < mapES.individuals.length; i++) {
+      // console.log(mapES.individuals[i].id);
+      if (mapES.individuals[i].id === currentSurveyUserId) {
+        surveyCompletion = mapES.individuals[i].survey_completion;
+      }
+    }
+
     return (
       <div className={styles.root}>
         <div className={styles.user}>
@@ -383,9 +399,7 @@ class AoSurvey extends React.Component {
             username={user.fullName}
             description={(user.projectOrganization ? user.projectOrganization : user.organisation) + " / " + user.team}
             profilePicUrl={user.userAvatar}
-            userProgress={Number(
-              ((totalAnswers / totalQuestions) * 100).toFixed(2)
-            )}
+            userProgress={Number(surveyCompletion)}
             donut={true}
           />
         </div>
