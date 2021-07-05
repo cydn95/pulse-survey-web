@@ -1229,6 +1229,8 @@ class MyMap extends React.Component {
                   onSearchBlur={(e) => this.handleSearchBlur()}
                   myMapStakeholderList={myMapStakeholderList}
                   projectMapStakeholderList={projectMapStakeholderList}
+                  myMapES={esList}
+                  projectMapES={projectEsList}
                 />
               )}
               {screen === "add" && shCategoryList.length > 0 && (
@@ -1261,8 +1263,11 @@ class MyMap extends React.Component {
                     lastAddedShCategory={lastAddedShCategory}
                     allStakeholders={stakeholderList}
                     onSubmit={(e, answerData) =>
-                      this.handleSubmitSurvey(e, answerData)
+                      this.handleSubmitSurvey(e, answerData) 
                     }
+                    myMapES={esList}
+                    projectMapES={projectEsList}
+                    mapStyle={mapStyle}
                     onCancel={(e) => this.handleCancelSurvey()}
                   />
                 )}

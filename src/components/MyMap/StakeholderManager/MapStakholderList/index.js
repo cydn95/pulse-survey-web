@@ -15,6 +15,8 @@ class MapStakeholderList extends Component {
       selectedProjectCategoryList,
       onMapStakeholderClick,
       onShowSearchStakeholder,
+      myMapES,
+      projectMapES
     } = this.props;
 
     let userCount = 0;
@@ -36,17 +38,36 @@ class MapStakeholderList extends Component {
         }
 
         if (bAdd) {
+          const categoryId = shCategoryList[i].id;
+          const userId = myMapStakeholderList[j].userId
+
+          let surveyCompletion = 0;
+
+          for (let k = 0; k < myMapES.individuals.length; k++) {
+            const myId = myMapES.individuals[k].id;
+            if (myId === `${userId}_SHC_${categoryId}`) {
+              surveyCompletion = myMapES.individuals[k].survey_completion;
+            }
+          }
+
+
           if (`sh_${shCategoryList[i].id}` in groupedMyStakeholderList) {
             groupedMyStakeholderList[
               `sh_${shCategoryList[i].id}`
-            ].stakeholders.push(myMapStakeholderList[j]);
+            ].stakeholders.push({
+              ...myMapStakeholderList[j],
+              surveyCompletion
+            });
           } else {
             userCount++;
             const obj = {
               [`sh_${shCategoryList[i].id}`]: {
                 id: shCategoryList[i].id,
                 name: shCategoryList[i].SHCategoryName,
-                stakeholders: [myMapStakeholderList[j]],
+                stakeholders: [{
+                  ...myMapStakeholderList[j],
+                  surveyCompletion
+                }],
               },
             };
             groupedMyStakeholderList = {
@@ -79,20 +100,38 @@ class MapStakeholderList extends Component {
         }
 
         if (bAdd) {
+          const categoryId = shCategoryList[i].id;
+          const userId = projectMapStakeholderList[j].userId
+
+          let surveyCompletion = 0;
+
+          for (let k = 0; k < projectMapES.individuals.length; k++) {
+            const myId = projectMapES.individuals[k].id;
+            if (myId === `${userId}_SHC_${categoryId}`) {
+              surveyCompletion = projectMapES.individuals[k].survey_completion;
+            }
+          }
+
           if (
             `sh_${projectMapShCategoryList[i].id}` in
             groupedProjectStakeholderList
           ) {
             groupedProjectStakeholderList[
               `sh_${projectMapShCategoryList[i].id}`
-            ].stakeholders.push(projectMapStakeholderList[j]);
+            ].stakeholders.push({
+              ...projectMapStakeholderList[j],
+              surveyCompletion
+            });
           } else {
             userCount++;
             const obj = {
               [`sh_${projectMapShCategoryList[i].id}`]: {
                 id: projectMapShCategoryList[i].id,
                 name: projectMapShCategoryList[i].SHCategoryName,
-                stakeholders: [projectMapStakeholderList[j]],
+                stakeholders: [{
+                  ...projectMapStakeholderList[j],
+                  surveyCompletion
+                }],
               },
             };
             groupedProjectStakeholderList = {
@@ -148,7 +187,9 @@ class MapStakeholderList extends Component {
                       " / " +
                       (d.team === "" ? d.userTeam : d.team);
 
-                    let percentage = (d.aoAnswered / d.aoTotal) * 100;
+                    // let percentage = (d.aoAnswered / d.aoTotal) * 100;
+                    let percentage = d.surveyCompletion;
+
                     return (
                       <AvatarComponent
                         key={`my_${key}_${d.projectUserId}`}
@@ -190,7 +231,8 @@ class MapStakeholderList extends Component {
                       d.organisation +
                       " / " +
                       (d.team === "" ? d.userTeam : d.team);
-                    let percentage = (d.aoAnswered / d.aoTotal) * 100;
+                    // let percentage = (d.aoAnswered / d.aoTotal) * 100;
+                    let percentage = d.surveyCompletion;
 
                     return (
                       <AvatarComponent
