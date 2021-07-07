@@ -1,4 +1,4 @@
-import { getCurrentYear, getAverage } from "Util/Utils";
+import { getCurrentYear, getCurrentMonth, MONTH, getAverage } from "Util/Utils";
 
 export const getCultureResult = (resData) => {
   const cultureRet = {};
@@ -56,6 +56,26 @@ export const getOverallTrends = (resData, shGroupList) => {
   
   const overallTrendsRet = {};
   const currentYear = getCurrentYear();
+  const currentMonth = getCurrentMonth();
+
+  const dateKeys = [];
+  for (let i = 0; i < 6; i++) {
+    let month = currentMonth - i;
+    let year = currentYear;
+    if (month <= 0) {
+      month += 12;
+      year = currentYear - 1;
+    }
+
+    const key = `${MONTH(month)} ${year}`;
+
+    dateKeys.push({
+      key,
+      value: []
+    });
+  }
+
+  // console.log(dateKeys.reverse());
 
   for (let i = 0; i < resData.length; i++) {
     const question = resData[i];
@@ -77,38 +97,36 @@ export const getOverallTrends = (resData, shGroupList) => {
 
           /* OverallTrend Start */
           const questionUpdatedDate = question.created_at;
-          const questionYear = questionUpdatedDate.split("-")[0];
 
-          // if (parseInt(questionYear, 10) === parseInt(currentYear, 10)) {
-            const questionMonth =
-              parseInt(questionUpdatedDate.split("-")[1], 10) - 1;
+          const dateSplits = questionUpdatedDate.split("-");
+          if (dateSplits.length < 2) {
+            continue;
+          }
+          const questionYear = dateSplits[0];
+          const questionMonth = dateSplits[1];
 
-            if (!(shGroupName in overallTrendsRet)) {
-              overallTrendsRet[shGroupName] = [
-                { month: 1, value: [] },
-                { month: 2, value: [] },
-                { month: 3, value: [] },
-                { month: 4, value: [] },
-                { month: 5, value: [] },
-                { month: 6, value: [] },
-                { month: 7, value: [] },
-                { month: 8, value: [] },
-                { month: 9, value: [] },
-                { month: 10, value: [] },
-                { month: 11, value: [] },
-                { month: 12, value: [] },
-              ];
-            }
+          const key = `${MONTH(Number(questionMonth))} ${questionYear}`;
+          
+          // console.log(key);
 
-            overallTrendsRet[shGroupName][questionMonth].value.push(
-              intValue
-            );
-          // }
+          if (!(shGroupName in overallTrendsRet)) {
+            overallTrendsRet[shGroupName] = [
+              ...dateKeys.reverse()
+            ];
+          }
+
+          const findIndex = overallTrendsRet[shGroupName].findIndex((item) => item.key === key);
+          if (findIndex >= 0) {
+            overallTrendsRet[shGroupName][findIndex].value.push(intValue);
+          }
+
           /* OverallTrend End */
         }
       }
     }
   }
+
+  // console.log(overallTrendsRet);
 
   const filteredOverallTrend = [];
   const filteredOverallTrendShGroupList = [];
@@ -119,7 +137,7 @@ export const getOverallTrends = (resData, shGroupList) => {
     const temp = [];
     for (let i = 0; i < overallTrendsRet[key].length; i++) {
       temp.push({
-        x: overallTrendsRet[key][i].month,
+        x: overallTrendsRet[key][i].key,
         y: Math.round(parseFloat(
           getAverage(overallTrendsRet[key][i].value)
         ).toFixed(2)),

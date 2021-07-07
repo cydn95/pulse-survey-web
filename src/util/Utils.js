@@ -36,6 +36,11 @@ export const getCurrentYear = () => {
   return now.getFullYear();
 }
 
+export const getCurrentMonth = () => {
+  const now = new Date();
+  return now.getMonth() + 1;
+}
+
 export const addCommas = (nStr) => {
   nStr += "";
   var x = nStr.split(".");
