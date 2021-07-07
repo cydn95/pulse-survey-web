@@ -344,6 +344,8 @@ function* getFeedbackSummary({ payload }) {
         const filteredSentiment = sentimentData.data;
         const filteredSentimentKeyList = sentimentData.key;
 
+        // console.log(overallTrendData);
+
         callback(
           result.data,
           filteredCulture,

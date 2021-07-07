@@ -261,7 +261,7 @@ const ReportSummary = ({
                 {/** Sentiment Result start */}
                 <div className={cn(styles.section, "flex-row-flow")}>
                   <div className={styles["section-sentiment"]}>
-                    <Emoji satisfaction={overallSentiment / 10} />
+                    <Emoji satisfaction={overallSentiment} />
                     <div className={styles["section-sentiment-text"]}>
                       <div>
                         Overall
@@ -271,7 +271,27 @@ const ReportSummary = ({
                     </div>
                   </div>
                   {sentimentKey.map((item, index) => {
-                    if (!sentimentResult[index] || sentimentResult[index][0].count <= 0) {
+                    let value = sentimentResult[index]
+                      ? sentimentResult[index][0].count
+                      : 0;
+
+                    let text = `${
+                      sentimentResult[index]
+                        ? sentimentResult[index][0].count % 10 === 0
+                          ? sentimentResult[index][0].count / 10
+                          : (sentimentResult[index][0].count / 10).toFixed(1)
+                        : ""
+                    }`;
+
+                    if (item === "Overall Sentiment") {
+                      value = overallSentiment;
+                      text = overallSentiment / 10;
+                    }
+
+                    if (
+                      !sentimentResult[index] ||
+                      sentimentResult[index][0].count <= 0
+                    ) {
                       return null;
                     }
 
@@ -282,20 +302,8 @@ const ReportSummary = ({
                       >
                         <CircularProgressbar
                           className={styles["section-sentiment-progress"]}
-                          value={
-                            sentimentResult[index]
-                              ? sentimentResult[index][0].count
-                              : 0
-                          }
-                          text={`${
-                            sentimentResult[index]
-                              ? sentimentResult[index][0].count % 10 === 0
-                                ? sentimentResult[index][0].count / 10
-                                : (
-                                    sentimentResult[index][0].count / 10
-                                  ).toFixed(1)
-                              : ""
-                          }`}
+                          value={value}
+                          text={text}
                           styles={buildStyles({
                             trailColor: "#ccc",
                             pathColor: "#18a0fb",
