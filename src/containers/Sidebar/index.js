@@ -111,7 +111,15 @@ class Sidebar extends Component {
 
     const { pageContent } = this.props;
 
-    if (surveyId > 0 && surveyUserId > 0) {
+    const oldSurveyId = this.props.surveyId;
+    const oldSurveyUserId = this.props.surveyUserId;
+
+    if (
+      surveyId > 0 &&
+      surveyUserId > 0 &&
+      (surveyId.toString() !== oldSurveyId.toString() ||
+        surveyUserId.toString() !== oldSurveyUserId.toString())
+    ) {
       actionCheckDashboard(surveyId, surveyUserId, (result) => {
         const { code } = result;
         if (code === 201) {
@@ -145,7 +153,10 @@ class Sidebar extends Component {
       });
     }
 
-    if ((surveyId > 0 && surveyId.toString() !== this.props.surveyId.toString()) || pageContent.length === 0) {
+    if (
+      (surveyId > 0 &&
+        surveyId.toString() !== this.props.surveyId.toString())
+    ) {
       getPageContent(surveyId);
     }
 

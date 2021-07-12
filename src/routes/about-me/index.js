@@ -174,13 +174,16 @@ const AboutMeSurvey = ({
     }
 
     setDriverList([...oldDriverList]);
+
+    // Update Survey
+    submitSurvey(oldDriverList, aboutMe, projectId, surveyUserId, surveyId, history, false);
   };
 
   const handleContinue = (e) => {
     e.preventDefault();
 
     if (pageIndex === driverList.length - 1) {
-      submitSurvey(driverList, aboutMe, projectId, surveyUserId, surveyId, history);
+      submitSurvey(driverList, aboutMe, projectId, surveyUserId, surveyId, history, true);
     }
 
     if (pageIndex < driverList.length - 1) {
