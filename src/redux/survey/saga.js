@@ -217,8 +217,8 @@ function* submitSurvey({ payload }) {
 
     if (result.status === 201) {
       localStorage.setItem("surveyId", surveyId);
+      yield put(submitSurveySuccess(surveyId));
       if (navigateToNext) {
-        yield put(submitSurveySuccess(surveyId));
         history.push("/app/about-others");
       }
     } else {
