@@ -110,7 +110,9 @@ function* setPassword({ payload }) {
 
     if (result.data) {
       localStorage.removeItem("accessToken");
-      history.push("/welcome");
+      // history.push("/welcome");
+      // suggested to go to login page instead of welcome page
+      history.push("login");
       return;
     }
   } catch (error) {

@@ -90,7 +90,13 @@ const AboutMeSurvey = ({
         let driverProgress = SURVEY_NOT_STARTED;
 
         for (let j = 0; j < surveyList[i].amquestion.length; j++) {
-          if (surveyList[i].amquestion[j].responsestatus === true) {
+          if (
+            surveyList[i].amquestion[j].responsestatus === true ||
+            (surveyList[i].amquestion[j].controlType ===
+              controlType.MULTI_TOPICS &&
+              surveyList[i].amquestion[j].topic &&
+              surveyList[i].amquestion[j].topic.length > 0)
+          ) {
             answeredCount++;
           }
         }
@@ -176,14 +182,30 @@ const AboutMeSurvey = ({
     setDriverList([...oldDriverList]);
 
     // Update Survey
-    submitSurvey(oldDriverList, aboutMe, projectId, surveyUserId, surveyId, history, false);
+    submitSurvey(
+      oldDriverList,
+      aboutMe,
+      projectId,
+      surveyUserId,
+      surveyId,
+      history,
+      false
+    );
   };
 
   const handleContinue = (e) => {
     e.preventDefault();
 
     if (pageIndex === driverList.length - 1) {
-      submitSurvey(driverList, aboutMe, projectId, surveyUserId, surveyId, history, true);
+      submitSurvey(
+        driverList,
+        aboutMe,
+        projectId,
+        surveyUserId,
+        surveyId,
+        history,
+        true
+      );
     }
 
     if (pageIndex < driverList.length - 1) {

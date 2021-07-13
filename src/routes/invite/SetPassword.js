@@ -14,10 +14,12 @@ class SetPassword extends Component {
     this.state = {
       email: params.email,
       password: "",
+      confirmPassword: "",
       project: params.project,
       token: params.token,
       emailValidator: "",
       passwordValidator: "",
+      confirmPasswordValidator: ""
     };
   }
 
@@ -29,7 +31,7 @@ class SetPassword extends Component {
   };
 
   handleSetPassword = (e) => {
-    const { email, password, token } = this.state;
+    const { email, password, confirmPassword, token } = this.state;
     const { setPassword, history } = this.props;
 
     if (email === "") {
@@ -46,6 +48,20 @@ class SetPassword extends Component {
       return;
     }
 
+    if (confirmPassword === "") {
+      this.setState({
+        confirmPasswordValidator: "error",
+      });
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      this.setState({
+        confirmPasswordValidator: "error",
+      });
+      return;
+    }
+
     setPassword(email, password, token, history);
   };
 
@@ -53,9 +69,11 @@ class SetPassword extends Component {
     const {
       email,
       password,
+      confirmPassword,
       project,
       emailValidator,
       passwordValidator,
+      confirmPasswordValidator
     } = this.state;
     return (
       <div className="set-password">
@@ -116,13 +134,32 @@ class SetPassword extends Component {
               "round-text-field",
               passwordValidator
             )}
+            style={{ marginBottom: 20 }}
             name="password"
             value={password}
+            placeholder="Password"
             onChange={(e) => this.handleInput(e)}
           />
           {passwordValidator !== "" && (
             <span class="set-password__content--error">
               Password is required
+            </span>
+          )}
+          <Input
+            type="password"
+            className={classnames(
+              "set-password__content--input",
+              "round-text-field",
+              confirmPasswordValidator
+            )}
+            name="confirmPassword"
+            value={confirmPassword}
+            placeholder="Confirm Password"
+            onChange={(e) => this.handleInput(e)}
+          />
+          {confirmPasswordValidator !== "" && (
+            <span class="set-password__content--error">
+              Confirm Password is required
             </span>
           )}
           <Button
