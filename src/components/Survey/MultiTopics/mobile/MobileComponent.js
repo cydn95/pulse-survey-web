@@ -185,13 +185,17 @@ class MobileComponent extends Component {
   callbackSaveTopicMe = (data) => {
     this.setState((state) => ({
       topicList: [...state.topicList, data],
-    }));
+    }), () => {
+      this.onSelectAnswer("T-" + data.id, data.topicName);
+    });
   };
 
   callbackSaveTopicOther = (data) => {
     this.setState((state) => ({
       topicList: [...state.topicList, data],
-    }));
+    }), () => {
+      this.onSelectAnswer("T-" + data.id, data.topicName);
+    });
   };
 
   handleInputNewTopic = (value) => {
