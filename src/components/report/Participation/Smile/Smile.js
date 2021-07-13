@@ -7,7 +7,7 @@ import * as d3 from "d3";
 
 import styles from "./styles.scss";
 
-const fillColors = ["#263968", "#ff0000", "#f1c742", "#00c855"];
+const fillColors = ["#29cc97", "#f12b2c", "#cccccc", "#ffc15c"];
 
 function renderGraph(node, props) {
   const {
@@ -51,17 +51,17 @@ function renderGraph(node, props) {
 
     face
       .append("text")
-      .text(subDriver)
+      .text(props.subDriver)
       .attr("text-anchor", "middle")
       .attr("class", styles.title)
-      .attr("dy", "20");
+      .attr("dy", "25");
 
-    face
-      .append("text")
-      .text(type)
-      .attr("text-anchor", "middle")
-      .attr("class", styles["sub-title"])
-      .attr("dy", "45");
+    // face
+    //   .append("text")
+    //   .text(type)
+    //   .attr("text-anchor", "middle")
+    //   .attr("class", styles["sub-title"])
+    //   .attr("dy", "45");
   }
 
   // centerize the face

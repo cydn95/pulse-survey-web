@@ -1,0 +1,231 @@
+.root {
+  width: 100%;
+  // border: 1px solid red;
+  box-sizing: border-box;
+}
+
+.map-header-row {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  overflow-y: hidden;
+
+  .map-col {
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.84;
+    color: #949496;
+  }
+}
+
+.heatmap-row-wrapper {
+  padding: 17px 35px;
+  background: #fff;
+  border-radius: 8px;
+  margin-top: 12px;
+  border: 1px solid #dfe0eb;
+}
+
+.map-row {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  overflow-y: hidden;
+
+  &.show {
+    -webkit-animation: slide-up 0.7s ease forwards;
+    /* Safari 4+ */
+    -moz-animation: slide-up 0.7s ease forwards;
+    /* Fx 5+ */
+    -o-animation: slide-up 0.7s ease forwards;
+    /* Opera 12+ */
+    animation: slide-up 0.7s ease forwards;
+    /* IE 10+ */
+  }
+
+  &.hide {
+    -webkit-animation: slide-down 0.7s ease forwards;
+    /* Safari 4+ */
+    -moz-animation: slide-down 0.7s ease forwards;
+    /* Fx 5+ */
+    -o-animation: slide-down 0.7s ease forwards;
+    /* Opera 12+ */
+    animation: slide-down 0.7s ease forwards;
+    /* IE 10+ */
+  }
+
+  .map-col-title {
+    font-size: 16px;
+    display: flex;
+    color: #0a0d47;
+    font-weight: 500;
+    box-sizing: border-box;
+
+    .left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+
+      .expand {
+        font-size: 11px;
+        color: #82868b;
+        font-weight: 600;
+        margin-top: 6px;
+        cursor: pointer;
+
+        svg {
+          padding-left: 8px;
+        }
+      }
+    }
+
+    .right {
+      padding-right: 13px;
+
+      img {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .map-col {
+    font-size: 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    color: #0a0d47;
+    height: 72px;
+    padding-left: 26.5px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    &-shcnt {
+      font-size: 12px;
+    }
+  }
+}
+
+.no-trend {
+  display: flex;
+  flex-direction: column;
+
+  &-img {
+    height: 20px;
+    width: 22px;
+  }
+
+  &-text {
+    font-size: 12px;
+    color: #8a8a8a;
+  }
+}
+
+/*Animation functionality*/
+@keyframes slide-up {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: 110px;
+  }
+}
+
+@keyframes slide-down {
+  0% {
+    height: 110px;
+  }
+  100% {
+    height: 0px;
+  }
+}
+
+.map-col-trend {
+  height: 110px;
+  box-sizing: border-box;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  border-right: 1px solid white;
+  // padding: 5px 8px 5px 0px;
+  overflow: hidden;
+}
+
+.row-answer {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 250px;
+  margin-left: -203px;
+  z-index: 2500;
+
+  @media only screen and (max-width: 880px) {
+    margin-left: -30px;
+    align-items: flex-start;
+  }
+
+  .row-answer-triangle {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #273645;
+    margin-right: 30px;
+
+    @media only screen and (max-width: 880px) {
+      margin-right: 0px;
+      margin-left: 30px;
+    }
+  }
+
+  .row-answer-content {
+    background: #273645;
+    border-radius: 5px;
+    width: 100%;
+    padding: 19px;
+    font-size: 12px;
+    color: #fff;
+    box-sizing: border-box;
+  }
+}
+
+.tip-answer {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 250px;
+  margin-left: -3px;
+  margin-top: 40px;
+  z-index: 2500;
+
+  @media only screen and (max-width: 880px) {
+    margin-left: -30px;
+    align-items: flex-start;
+  }
+
+  .tip-answer-triangle {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #273645;
+    margin-left: 30px;
+
+    @media only screen and (max-width: 880px) {
+      margin-right: 0px;
+      margin-left: 30px;
+    }
+  }
+
+  .tip-answer-content {
+    background: #273645;
+    border-radius: 5px;
+    width: 100%;
+    padding: 19px;
+    font-size: 12px;
+    color: #fff;
+    box-sizing: border-box;
+  }
+}

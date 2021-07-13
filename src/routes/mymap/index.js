@@ -85,7 +85,9 @@ class MyMap extends React.Component {
       myMapStakeholderList: [],
       projectMapStakeholderList: [],
 
-      lastAddedShCategory: null
+      lastAddedShCategory: null,
+
+      aoSurveySubmitLoading: false
     };
 
     this.defaultStakeholder = {
@@ -137,6 +139,7 @@ class MyMap extends React.Component {
   componentWillReceiveProps(props) {
     const {
       projectId,
+      projectTitle,
       stakeholderList,
       teamList,
       shCategoryList,
@@ -189,7 +192,7 @@ class MyMap extends React.Component {
     let projectMapArchitecture = {
       main: {
         id: "ap1",
-        name: "projectTitle",
+        name: projectTitle,
         icon: `${serverUrl}/media/uploads/shcategory/project.svg`,
         color: "#7030a0",
         iconColor: "#fefefa",
@@ -370,7 +373,7 @@ class MyMap extends React.Component {
                     }
                     const answer = aoQuestionList[k].response.filter(
                       (resp) =>
-                        resp.shCategory.toString() === userList[i].shCategory[j].toString() &&
+                        /*resp.shCategory.toString() === userList[i].shCategory[j].toString() &&*/
                         resp.subProjectUser.toString() === userList[i].id.toString()
                     );
                     if (answer.length > 0) {
@@ -482,7 +485,7 @@ class MyMap extends React.Component {
                     }
                     const answer = aoQuestionList[k].response.filter(
                       (resp) =>
-                        resp.shCategory.toString() === userList[i].shCategory[j].toString() &&
+                        /*resp.shCategory.toString() === userList[i].shCategory[j].toString() &&*/
                         resp.subProjectUser.toString() === userList[i].id.toString()
                     );
                     if (answer > 0) {
@@ -689,6 +692,7 @@ class MyMap extends React.Component {
           break;
         }
       }
+      console.log('new', newShCategory);
       if (!bExist) {
         this.myMapProjectUserList.push({
           projectUserId: newProjectUserId,
@@ -802,11 +806,12 @@ class MyMap extends React.Component {
         }
       }
 
-      this.setState({
+      this.setState((state) => ({
         screen: "aosurvey",
+        toggleGraph: false,
         currentSurveyUserId: id,
         currentSurveyUser: user,
-      });
+      }));
     }
   };
 
@@ -819,14 +824,17 @@ class MyMap extends React.Component {
   };
 
   handleSubmitSurvey = (e, answerData) => {
-    // console.log(answerData);
-
     const { lastAddedShCategory } = this.state;
+    // console.log(lastAddedShCategory);
     for (let i = 0; i < answerData.length; i++) {
       if (answerData[i].shCategory == undefined) {
         answerData[i].shCategory = lastAddedShCategory;
       }
     }
+
+    this.setState({
+      aoSurveySubmitLoading: true
+    });
 
     this.props.submitAoQuestion(
       answerData,
@@ -843,6 +851,10 @@ class MyMap extends React.Component {
     //   currentSurveyUserId: 0,
     //   currentSurveyUser: {},
     // });
+    this.setState({
+      aoSurveySubmitLoading: false
+    });
+    NotificationManager.success("Response submitted successfully", "");
     this.handleSaveGraph(null);
     // window.location.reload(false);
   };
@@ -949,12 +961,24 @@ class MyMap extends React.Component {
 
   callbackSaveGraph = () => {
     window.location.reload(false);
+    // const { userId, surveyId, surveyUserId, projectId } = this.props;
+
+    // this.props.getKMapData(surveyUserId, userId);
+    // this.props.getProjectMapData(surveyUserId, userId);
+    // this.props.getShCategoryList(surveyId, 0);
+    // this.props.getStakeholderList(surveyUserId, surveyId);
+    // this.props.getTeamList(projectId);
+    // this.props.getAoQuestionList(surveyUserId, surveyId);
+    // this.props.getDriverList(surveyId);
+    // this.props.getSkipQuestionList();
+
+    // NotificationManager.success("Map has been saved successfully", "");
   }
 
   toggleGraph = (e) => {
-    this.setState({
-      toggleGraph: !this.state.toggleGraph,
-    });
+    this.setState((state) => ({
+      toggleGraph: !state.toggleGraph,
+    }));
   };
 
   handleSearchFocus = () => {
@@ -1031,19 +1055,19 @@ class MyMap extends React.Component {
         {(!searchFullHeight || toggleGraph) && (
           <div className={styles.topbar}>
             <TopNav history={history} menuTitle="My Map">
-              {/* {screen === "aosurvey" && ( */}
-              <div className={styles.section}>
-                <div className={styles["graph-toggle"]}>
-                  <h2 className={styles["project-name"]}>{projectTitle}</h2>
+              {screen === "aosurvey" && (
+                <div className={styles.section}>
+                  <div className={styles["graph-toggle"]}>
+                    <h2 className={styles["project-name"]}>{projectTitle}</h2>
+                  </div>
                 </div>
-              </div>
-              {/* )} */}
+              )}
               {screen !== "aosurvey" && (
                 <div className={styles.section}>
                   <h2 className={styles["project-name"]}>{projectTitle}</h2>
                   <div className={styles["graph-toggle"]}>
-                    <Button onClick={(e) => this.toggleGraph(e)}>
-                      {!toggleGraph ? "GRAPH VIEW" : "STAKEHOLDER"}
+                    <Button onClick={(e) => this.toggleGraph(e)} style={{width: 160}}>
+                      {!toggleGraph ? "Map View" : "List View"}
                     </Button>
                   </div>
                 </div>
@@ -1205,6 +1229,8 @@ class MyMap extends React.Component {
                   onSearchBlur={(e) => this.handleSearchBlur()}
                   myMapStakeholderList={myMapStakeholderList}
                   projectMapStakeholderList={projectMapStakeholderList}
+                  myMapES={esList}
+                  projectMapES={projectEsList}
                 />
               )}
               {screen === "add" && shCategoryList.length > 0 && (
@@ -1225,6 +1251,7 @@ class MyMap extends React.Component {
                 driverList.length > 0 &&
                 skipQuestionList.length > 0 && (
                   <AoSurvey
+                    submitLoading={this.state.aoSurveySubmitLoading}
                     questions={aoQuestionList}
                     options={optionList}
                     drivers={driverList}
@@ -1236,8 +1263,11 @@ class MyMap extends React.Component {
                     lastAddedShCategory={lastAddedShCategory}
                     allStakeholders={stakeholderList}
                     onSubmit={(e, answerData) =>
-                      this.handleSubmitSurvey(e, answerData)
+                      this.handleSubmitSurvey(e, answerData) 
                     }
+                    myMapES={esList}
+                    projectMapES={projectEsList}
+                    mapStyle={mapStyle}
                     onCancel={(e) => this.handleCancelSurvey()}
                   />
                 )}

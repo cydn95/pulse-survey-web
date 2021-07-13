@@ -22,9 +22,9 @@ import {
   STAKEHOLDER_ANSWER,
 } from "Constants/actionTypes";
 
-export const teamList = (projectId = 0) => ({
+export const teamList = (projectId = 0, surveyId = 0) => ({
   type: TEAM_LIST,
-  payload: { projectId },
+  payload: { projectId, surveyId },
 });
 
 export const teamListSuccess = (teamList) => ({
@@ -32,8 +32,9 @@ export const teamListSuccess = (teamList) => ({
   payload: { teamList },
 });
 
-export const shgroupList = () => ({
+export const shgroupList = (surveyId = 0) => ({
   type: SHGROUP_LIST,
+  payload: { surveyId }
 });
 
 export const shgroupListSuccess = (shgroupList) => ({
@@ -69,9 +70,9 @@ export const skipQuestionListSuccess = (skipQuestionList) => ({
   payload: { skipQuestionList },
 });
 
-export const stakeholderList = (projectUserId, surveyId = 0) => ({
+export const stakeholderList = (projectUserId, surveyId = 0, callback = null) => ({
   type: STAKEHOLDER_LIST,
-  payload: { projectUserId, surveyId },
+  payload: { projectUserId, surveyId, callback },
 });
 
 export const stakeholderListSuccess = (stakeholderList, userList) => ({

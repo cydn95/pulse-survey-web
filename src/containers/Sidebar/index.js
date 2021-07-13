@@ -15,12 +15,7 @@ import IconAboutOthers from "./Icons/IconAboutOthers";
 import IconMyProject from "./Icons/IconMyProject";
 import IconDashboard from "./Icons/IconDashboard";
 
-import {
-  ProSidebar,
-  Menu,
-  MenuItem,
-  SubMenu,
-} from "react-pro-sidebar";
+import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import "Assets/css/custom/menubar.css";
 
 import {
@@ -34,22 +29,25 @@ import {
   updateGuideStatus,
   tooltipTourContent,
   pageContent,
+  checkDashboard,
 } from "Redux/actions";
-
-
 
 import styles from "./styles.scss";
 import classnames from "classnames";
 
 const MENU_REPORT = [
-  "People",
-  "Sentiment",
-  "Engagement",
-  "Interest",
-  "Confidence",
-  "Culture",
-  "Relationships",
-  "Improvement",
+  "Summary",
+  // "Sentiment",
+  // "Engagement",
+  // "Interest",
+  // "Confidence",
+  // "Culture",
+  // "Relationships",
+  // "Improvement",
+  "Driver Analysis",
+  "Key Themes",
+  "Matrix",
+  "Advisor Insights",
 ];
 
 class Sidebar extends Component {
@@ -63,6 +61,7 @@ class Sidebar extends Component {
       run: false,
       stepIndex: 0,
       steps: [],
+      isAdmin: false,
     };
   }
 
@@ -97,11 +96,56 @@ class Sidebar extends Component {
   componentWillReceiveProps(props) {
     const {
       surveyId,
+      surveyUserId,
       screenMode,
       guide,
       tooltipContent,
       getPageContent,
+      projectList,
+      projectId,
+      actionSetProjectID,
+      actionSetSurveyID,
+      actionCheckDashboard,
+      user,
     } = props;
+
+    const { pageContent } = this.props;
+
+    const oldSurveyId = this.props.surveyId;
+    const oldSurveyUserId = this.props.surveyUserId;
+
+    if (
+      surveyId > 0 &&
+      surveyUserId > 0 &&
+      (surveyId.toString() !== oldSurveyId.toString() ||
+        surveyUserId.toString() !== oldSurveyUserId.toString())
+    ) {
+      actionCheckDashboard(surveyId, surveyUserId, (result) => {
+        const { code } = result;
+        if (code === 201) {
+          this.setState({
+            isAdmin: true,
+          });
+        }
+      });
+    }
+
+    if (
+      projectId !== null &&
+      projectId !== 0 &&
+      projectId !== "0" &&
+      projectList &&
+      projectList.length > 0
+    ) {
+      const findIndex = projectList.findIndex(
+        (item) => item.id.toString() === projectId.toString()
+      );
+
+      if (findIndex < 0) {
+        actionSetProjectID(0);
+        actionSetSurveyID(user.userId, 0, () => {});
+      }
+    }
 
     if (!props.guide) {
       this.setState({
@@ -109,7 +153,10 @@ class Sidebar extends Component {
       });
     }
 
-    if (surveyId > 0 && surveyId !== this.props.surveyId) {
+    if (
+      (surveyId > 0 &&
+        surveyId.toString() !== this.props.surveyId.toString())
+    ) {
       getPageContent(surveyId);
     }
 
@@ -163,7 +210,11 @@ class Sidebar extends Component {
       this.setState({
         subMenuOpen: false,
       });
-      history.push("/app/" + menu);
+      if (menu === "about-others") {
+        window.location = "/app/" + menu;
+      } else {
+        history.push("/app/" + menu);
+      }
     } else {
       if (menu === mainMenuClassName) {
         this.setState({
@@ -266,6 +317,7 @@ class Sidebar extends Component {
       projectList,
       pageContent,
       guide,
+      surveyId,
     } = this.props;
     const { subMenuOpen, run, steps } = this.state;
 
@@ -327,20 +379,30 @@ class Sidebar extends Component {
               </Menu>
               <Menu iconShape="square">
                 <SubMenu icon={<IconDashboard />} title="Dashboard">
-                  {MENU_REPORT.map((menu) => (
-                    <MenuItem
-                      key={`submenu-report-${menu.toLowerCase()}`}
-                      onClick={(e) =>
-                        this.handleClickSubMenu(
-                          e,
-                          menu.toLocaleLowerCase(),
-                          `/app/dashboard/${menu.toLocaleLowerCase()}`
-                        )
-                      }
-                    >
-                      {menu.toLowerCase()}
-                    </MenuItem>
-                  ))}
+                  {MENU_REPORT.map((menu) => {
+                    if (menu === "Matrix" && this.state.isAdmin === false) {
+                      return null;
+                    }
+
+                    return (
+                      <MenuItem
+                        key={`submenu-report-${menu
+                          .toLowerCase()
+                          .replace(" ", "-")}`}
+                        onClick={(e) =>
+                          this.handleClickSubMenu(
+                            e,
+                            menu.toLocaleLowerCase(),
+                            `/app/dashboard/${menu
+                              .toLocaleLowerCase()
+                              .replace(" ", "-")}`
+                          )
+                        }
+                      >
+                        {menu}
+                      </MenuItem>
+                    );
+                  })}
                 </SubMenu>
               </Menu>
             </ProSidebar>
@@ -348,13 +410,33 @@ class Sidebar extends Component {
           <div className={styles.space}></div>
           <div className={styles.link}>
             <ProSidebar width="220px">
-              <Menu iconShape="square">
+              {pageContent.length > 0 && (
+                <Menu iconShape="square">
+                  <SubMenu title="More Info">
+                    {pageContent.map((menu) => (
+                      <MenuItem
+                        key={`submenu-configpage-${menu.id}`}
+                        onClick={(e) =>
+                          this.handleClickSubMenu(
+                            e,
+                            `config-page-${menu.id}`,
+                            `/app/moreinfo/config/${menu.id}`
+                          )
+                        }
+                      >
+                        {menu.pageName}
+                      </MenuItem>
+                    ))}
+                  </SubMenu>
+                </Menu>
+              )}
+              {/* <Menu iconShape="square">
                 <MenuItem
                   onClick={(e) => this.handleClickMainMenu(e, "settings", true)}
                 >
-                  Profile
+                  More Info
                 </MenuItem>
-              </Menu>
+              </Menu> */}
               <Menu iconShape="square">
                 <SubMenu title="Help">
                   <MenuItem
@@ -415,10 +497,13 @@ class Sidebar extends Component {
             </ProSidebar>
           </div>
         </div>
-        <DialogTourView
-          open={this.state.tourViewOpen}
-          onClose={(e) => this.handleCloseTourDialog()}
-        />
+        {surveyId !== null && surveyId.toString() !== "" && (
+          <DialogTourView
+            surveyId={surveyId}
+            open={this.state.tourViewOpen}
+            onClose={(e) => this.handleCloseTourDialog()}
+          />
+        )}
       </div>
     );
   }
@@ -427,13 +512,15 @@ class Sidebar extends Component {
 const mapStateToProps = ({ menu, settings, authUser, tour, account }) => {
   const { mainMenuClassName, subMenuClassName } = menu;
   const { projectList } = settings;
-  const { user, surveyId } = authUser;
+  const { user, surveyId, surveyUserId, projectId } = authUser;
   const { pageContent, tooltipContent } = tour;
   const { profile } = account;
 
   return {
     user,
     surveyId,
+    surveyUserId,
+    projectId,
     projectList,
     mainMenuClassName,
     subMenuClassName,
@@ -455,5 +542,6 @@ export default withRouter(
     actionUpdateGuideStatus: updateGuideStatus,
     getPageContent: pageContent,
     getTooltipTourContent: tooltipTourContent,
+    actionCheckDashboard: checkDashboard,
   })(Sidebar)
 );

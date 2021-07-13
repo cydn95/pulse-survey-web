@@ -9,10 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 
-import SlideNavigator from "Components/SlideNavigator";
-import { createMarkup } from "Util/Utils";
-
-import { nikelTourContent, updateStakeholderCategory } from "Redux/actions";
+import { updateStakeholderCategory } from "Redux/actions";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
@@ -152,7 +149,7 @@ const StakeholderUpdateModal = ({
   };
 
   const callbackUpdate = () => {
-    console.log('callback');
+    console.log("callback");
     window.location.reload(false);
     // onClose();
   };
@@ -177,7 +174,7 @@ const StakeholderUpdateModal = ({
             <div className={dlgStyles.description}>
               <h1>
                 To add this stakeholder to your map, select from the options
-                below:​
+                below:
               </h1>
             </div>
 
@@ -198,17 +195,24 @@ const StakeholderUpdateModal = ({
                     onClick={(e) => handleSelectMyCategory(map.id)}
                   >
                     <div className={dlgStyles["stakeholder-content"]}>
-                      <img src={map.icon} alt={map.SHCategoryName} />
-                      <span>{map.SHCategoryName}</span>
-                    </div>
-
-                    {selected && (
-                      <div className={dlgStyles["stakeholder-mark"]}>
-                        <div className={dlgStyles.circle}>
-                          <FontAwesomeIcon icon={faCheck} />
+                      <div className={dlgStyles["stakeholder-content-top"]}>
+                        <div
+                          className={
+                            dlgStyles["stakeholder-content-img-wrapper"]
+                          }
+                        >
+                          <img src={map.icon} alt={map.SHCategoryName} />
+                          {selected && (
+                            <div className={dlgStyles.circle}>
+                              <FontAwesomeIcon icon={faCheck} />
+                            </div>
+                          )}
                         </div>
                       </div>
-                    )}
+                      <div className={dlgStyles["stakeholder-content-bottom"]}>
+                        {map.SHCategoryName}
+                      </div>
+                    </div>
                   </div>
                 );
               })}
@@ -224,23 +228,31 @@ const StakeholderUpdateModal = ({
                 return (
                   <div
                     role="button"
-                    key={`my-map-category-${map.id}`}
+                    key={`project-map-category-${map.id}`}
                     className={classnames(dlgStyles.stakeholder, {
                       [dlgStyles.green]: selected,
                     })}
                     onClick={(e) => handleSelectProjectCategory(map.id)}
                   >
                     <div className={dlgStyles["stakeholder-content"]}>
-                      <img src={map.icon} alt={map.SHCategoryName} />
-                      <span>{map.SHCategoryName}</span>
-                    </div>
-                    {selected && (
-                      <div className={dlgStyles["stakeholder-mark"]}>
-                        <div className={dlgStyles.circle}>
-                          <FontAwesomeIcon icon={faCheck} />
+                      <div className={dlgStyles["stakeholder-content-top"]}>
+                        <div
+                          className={
+                            dlgStyles["stakeholder-content-img-wrapper"]
+                          }
+                        >
+                          <img src={map.icon} alt={map.SHCategoryName} />
+                          {selected && (
+                            <div className={dlgStyles.circle}>
+                              <FontAwesomeIcon icon={faCheck} />
+                            </div>
+                          )}
                         </div>
                       </div>
-                    )}
+                      <div className={dlgStyles["stakeholder-content-bottom"]}>
+                        {map.SHCategoryName}
+                      </div>
+                    </div>
                   </div>
                 );
               })}

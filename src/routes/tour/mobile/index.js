@@ -7,12 +7,25 @@ import { nikelTourContent } from "Redux/actions";
 
 import styles from "./styles.scss";
 
-const MobileTour = ({ history, nikelContent, actionNikelTourContent }) => {
+const MobileTour = ({ history, projectTitle, nikelContent, actionNikelTourContent, surveyId }) => {
   const [step, setStep] = useState(0);
+  const [content, setContent] = useState(null);
 
   useEffect(() => {
-    actionNikelTourContent();
-  }, [actionNikelTourContent]);
+
+    if (surveyId !== null && surveyId > 0) {
+      actionNikelTourContent(surveyId);
+    }
+  }, [actionNikelTourContent, surveyId]);
+
+  useEffect(() => {
+    const content = nikelContent.length === 0 ? null : { ...nikelContent[step] }
+    if (content) {
+      content.title = content.title.replace(/{{PROJECT}}/i, projectTitle);
+      content.content = content.content.replace(/{{PROJECT}}/i, projectTitle)
+    }
+    setContent(content);
+  }, [nikelContent, step, projectTitle])
 
   const handleBack = () => {
     if (step > 0) {
@@ -34,9 +47,9 @@ const MobileTour = ({ history, nikelContent, actionNikelTourContent }) => {
 
   return (
     <div className={styles.root}>
-      {nikelContent.length > 0 && (
+      {content && (
         <MobileTourView
-          tour={nikelContent[step]}
+          tour={content}
           onBack={(e) => handleBack()}
           onNext={(e) => handleNext()}
           onSelect={(position) => handleSelectStep(position)}
@@ -48,9 +61,10 @@ const MobileTour = ({ history, nikelContent, actionNikelTourContent }) => {
   );
 };
 
-const mapStateToProps = ({ tour }) => {
+const mapStateToProps = ({ authUser, tour }) => {
   const { nikelContent } = tour;
-  return { nikelContent };
+  const { projectTitle, surveyId } = authUser;
+  return { projectTitle, nikelContent, surveyId };
 };
 
 export default connect(mapStateToProps, {

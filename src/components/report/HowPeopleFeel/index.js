@@ -31,6 +31,14 @@ const HowPeopleFeel = ({ data }) => {
           </div>
         );
       })}
+      <div className={styles["percent-bar"]}>
+        <div className={styles.percent}>0%</div>
+        <div className={styles.percent}>20%</div>
+        <div className={styles.percent}>40%</div>
+        <div className={styles.percent}>60%</div>
+        <div className={styles.percent}>80%</div>
+        <div className={styles.percent}>100%</div>
+      </div>
     </div>
   );
 };

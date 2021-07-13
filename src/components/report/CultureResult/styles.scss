@@ -9,7 +9,7 @@
     padding: 8px 0px;
     box-sizing: border-box;
     font-size: 13px;
-    width: 30%;
+    width: 48%;
     margin-bottom: 20px;
     text-align: left;
   }
@@ -18,10 +18,12 @@
     height: 5px;
     margin-top: 5px;
     width: 100%;
-    background: #f3edef;
+    background: #ebecee;
+    border-radius: 2px;
     
     .progress {
       height: 5px;
+      border-radius: 2px;
     }
   }
 }

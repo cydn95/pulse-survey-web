@@ -159,10 +159,10 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "assets/css/[name].[hash:8].css",
     }),
-    new MiniCssExtractPlugin({
-      filename: "[name].[hash:8].css",
-      chunkFilename: "[name].[id].[hash:8].css",
-    }),
+    // new MiniCssExtractPlugin({
+    //   filename: "[name].[hash:8].css",
+    //   chunkFilename: "[name].[id].[hash:8].css",
+    // }),
     new Dotenv(),
   ],
 };

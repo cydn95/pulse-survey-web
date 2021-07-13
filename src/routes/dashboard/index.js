@@ -1,23 +1,87 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+
 import { Route, withRouter, Switch, Redirect } from "react-router-dom";
 
 import PropTypes from "prop-types";
 
 import DashboardGeneral from "./general";
-import ReportPeople from "./people";
-import ReportSentiment from "./sentiment";
+import ReportSummary from "./summary";
+import ReportDriverAnalysis from "./driver-analysis";
+import ReportKeyThemes from "./key_themes";
+import ReportMatrix from "./matrix";
+import AdvisorInsights from "./advisor-insights";
+
+import { checkDashboard } from "Redux/actions";
 
 import styles from "./styles.scss";
 
-const Dashboard = ({ history, location, match }) => {
+const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard, history }) => {
+  const [dashboardStatus, setDashboardStatus] = useState(false);
+  const [adminStatus, setAdminStatus] = useState(false);
+
+  useEffect(() => {
+    if (
+      surveyUserId == undefined ||
+      surveyUserId == null ||
+      surveyUserId <= 0
+    ) {
+      history.push("/app/project-not-found");
+      return;
+    }
+
+    actionCheckDashboard(surveyId, surveyUserId, (result) => {
+      console.log(result);
+      const { code, data } = result;
+
+      console.log(data);
+
+      if (!data) {
+        console.log('no data');
+      }
+
+      if (code === 200 || code === 201) {
+        setDashboardStatus(true);
+        if (code === 201) {
+          setAdminStatus(true);
+        }
+      } else {
+        setDashboardStatus(true);
+      }
+    });
+  }, [surveyId, surveyUserId, actionCheckDashboard, history]);
+
   return (
     <div className={styles.root}>
       <div className={styles.container}>
         <div className={styles.main}>
           <Switch>
-            <Route path={`${match.url}/sentiment`} component={ReportSentiment} />
-            <Route path={`${match.url}/people`} component={ReportPeople} />
-            <Route path={`${match.url}`} component={DashboardGeneral} />
+            <Route
+              path={`${match.url}/summary`}
+              component={() => <ReportSummary status={dashboardStatus} />}
+            />
+            <Route
+              path={`${match.url}/driver-analysis`}
+              component={() => (
+                <ReportDriverAnalysis status={dashboardStatus} admin={adminStatus}/>
+              )}
+            />
+            <Route
+              path={`${match.url}/key-themes`}
+              component={() => <ReportKeyThemes status={dashboardStatus} />}
+            />
+            <Route
+              path={`${match.url}/matrix`}
+              component={() => <ReportMatrix status={dashboardStatus} />}
+            />
+            <Route
+              path={`${match.url}/advisor-insights`}
+              component={() => <AdvisorInsights status={dashboardStatus} />}
+            />
+            <Route
+              path={`${match.url}`}
+              component={() => <DashboardGeneral status={dashboardStatus} />}
+            />
             <Redirect to="/error" />
           </Switch>
         </div>
@@ -26,9 +90,17 @@ const Dashboard = ({ history, location, match }) => {
   );
 };
 
-Dashboard.propTypes = {
-  match: PropTypes.object,
-  history: PropTypes.object,
+const mapStateToProps = ({ authUser }) => {
+  const { surveyId, surveyUserId } = authUser;
+
+  return {
+    surveyId,
+    surveyUserId,
+  };
 };
 
-export default withRouter(Dashboard);
+export default withRouter(
+  connect(mapStateToProps, {
+    actionCheckDashboard: checkDashboard,
+  })(Dashboard)
+);

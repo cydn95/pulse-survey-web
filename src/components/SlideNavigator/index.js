@@ -3,9 +3,9 @@ import React from "react";
 import styles from "./styles.scss";
 import classnames from "classnames";
 
-const SlideNavigator = ({ cnt, position, onSelect }) => {
+const SlideNavigator = ({ cnt, position, onSelect, className }) => {
   return (
-    <div className={styles.root}>
+    <div className={classnames(styles.root, className)}>
       {[...new Array(cnt)].map((item, index) => (
         <span
           key={index}

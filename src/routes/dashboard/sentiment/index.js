@@ -14,45 +14,35 @@ import LineChart from "Components/report/LineChart";
 import SentimentResult from "Components/report/SentimentResult";
 import HowPeopleFeel from "Components/report/HowPeopleFeel";
 import Perception from "Components/report/Perception";
+import OwnWords from "Components/report/OwnWords";
+import OverallTrend from "Components/report/OverallTrend";
 
 import {
   overallSentiment,
   topPositiveNegative,
   feedbackSummary,
   participation,
+  sentimentReport,
+  perceptionRealityReport
 } from "Redux/actions";
 
 import TopNav from "Containers/TopNav";
 
-const howPeopleFeelData = [
-  {
-    key: "Hapiness",
-    value: 50,
-  },
-  {
-    key: "Pride",
-    value: 30,
-  },
-  {
-    key: "Inclusiveness",
-    value: 20,
-  },
-  {
-    key: "Safety",
-    value: 90,
-  },
-  {
-    key: "Support",
-    value: 15,
-  },
-  {
-    key: "Confidence",
-    value: 40,
-  },
-  {
-    key: "Optimism",
-    value: 70,
-  },
+import { getRandomSubArray } from "Util/Utils";
+
+const ownWordsData = [
+  "Actively participate in events or volunteer programs",
+  "Honesty, integrity, trustworthiness, ethics",
+  "Inclusion is ongoing — not one-off training.",
+  "Effective leadership includes exhibiting a strong character. Leaders exhibit honesty, integrity, trustworthiness, and ethics.",
+  "Yes, Teamwork and collaboration valued",
+  "Her interests are surrounding productivity.",
+  "Meeting KPIs.",
+  "Yes. Because the management style is encouraging.",
+  "Not all the time. I have to go and ask for feedback.",
+  "Passionate. I believe the management team is passionate about the project and its objectives.",
+  "Issue escalation processes.",
+  "Quality assuranc",
 ];
 
 class ReportSentiment extends React.Component {
@@ -73,24 +63,26 @@ class ReportSentiment extends React.Component {
     teamParticipationResult: [],
     participationCount: 0,
     teamParticipationCount: 0,
+    sentimentReportResult: [],
+    perception: 0,
+    reality: 0
   };
 
   componentDidMount() {
     const {
       surveyId,
-      actionOverallSentiment,
+      surveyUserId,
       actionTopPositiveNegative,
+      actionSentimentReport,
       actionFeedbackSummary,
-      actionParticipation,
+      actionGetPerceptionReality
     } = this.props;
 
     if (surveyId) {
-      actionOverallSentiment(surveyId, (data) => {
-        if (data.length > 0) {
-          this.setState({
-            overallSentiment: Math.round(data[0].value),
-          });
-        }
+      actionSentimentReport(surveyId, '', '', (data) => {
+        this.setState({
+          sentimentReportResult: data,
+        });
       });
 
       actionTopPositiveNegative(surveyId, (positive, negative) => {
@@ -102,6 +94,7 @@ class ReportSentiment extends React.Component {
 
       actionFeedbackSummary(
         surveyId,
+        surveyUserId,
         (
           feedbackSummaryRet,
           cultureRet,
@@ -110,6 +103,7 @@ class ReportSentiment extends React.Component {
           overallTrendRet,
           overallTrendKey
         ) => {
+          // console.log(feedbackSummaryRet);
           this.setState({
             feedbackSummary: feedbackSummaryRet,
             cultureResult: cultureRet,
@@ -121,44 +115,26 @@ class ReportSentiment extends React.Component {
         }
       );
 
-      actionParticipation(
-        surveyId,
-        (
-          participationRet,
-          teamParticipationRet,
-          allUserCount,
-          teamUserCount
-        ) => {
-          this.setState({
-            participationResult: participationRet,
-            teamParticipationResult: teamParticipationRet,
-            participationCount: allUserCount,
-            teamParticipationCount: teamUserCount,
-          });
-        }
-      );
+      actionGetPerceptionReality(surveyId, surveyUserId, ({ perception, reality }) => {
+        this.setState({
+          perception,
+          reality
+        })
+      });
     }
   }
 
   render() {
     const { history, projectTitle } = this.props;
     const {
-      overallSentiment,
       topPositives,
       topNegatives,
-      feedbackSummary,
-      cultureResult,
-      sentimentResult,
-      sentimentKey,
       overallTrendResult,
       overallTrendKey,
-      participationResult,
-      teamParticipationResult,
-      participationCount,
-      teamParticipationCount,
+      sentimentReportResult,
+      perception,
+      reality
     } = this.state;
-    // console.log(participationResult);
-    // console.log(teamParticipationResult);
 
     return (
       <div className={styles.root}>
@@ -183,10 +159,10 @@ class ReportSentiment extends React.Component {
                   )}
                 >
                   <div className={styles.block}>
-                    <HowPeopleFeel data={howPeopleFeelData} />
+                    <HowPeopleFeel data={sentimentReportResult} />
                   </div>
                   <div className={styles.block}>
-                    <Perception min={20} max={80} />
+                    <Perception min={perception} max={reality} />
                   </div>
                 </div>
               </div>
@@ -195,16 +171,20 @@ class ReportSentiment extends React.Component {
           <div className={classnames(styles.right)}>
             <div className={classnames("row", styles["donut-container"])}>
               <h2 className={styles.title}>Overall Trends</h2>
-              <LineChart
+              <OverallTrend
                 key="linechart"
                 shGroups={overallTrendKey}
                 data={overallTrendResult}
                 xRange={[1, 12]}
                 yRange={[0, 100]}
-                width={600}
+                width={400}
                 height={220}
                 margin={30}
               />
+            </div>
+            <div className={classnames("row", styles["donut-container"])}>
+              <h2 className={styles.title}>In there own words</h2>
+              <OwnWords data={getRandomSubArray(ownWordsData, 5)} />
             </div>
             <div className={styles.row}>
               <div className={styles.block}>
@@ -239,11 +219,12 @@ class ReportSentiment extends React.Component {
 }
 
 const mapStateToProps = ({ authUser }) => {
-  const { projectTitle, surveyId } = authUser;
+  const { projectTitle, surveyId, surveyUserId } = authUser;
 
   return {
     projectTitle,
     surveyId,
+    surveyUserId
   };
 };
 
@@ -252,4 +233,6 @@ export default connect(mapStateToProps, {
   actionTopPositiveNegative: topPositiveNegative,
   actionFeedbackSummary: feedbackSummary,
   actionParticipation: participation,
+  actionSentimentReport: sentimentReport,
+  actionGetPerceptionReality: perceptionRealityReport
 })(ReportSentiment);

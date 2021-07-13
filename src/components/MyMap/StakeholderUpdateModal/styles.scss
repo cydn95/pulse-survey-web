@@ -33,7 +33,7 @@
       border-radius: 8px;
       margin: 8px;
       display: flex;
-      justify-content: flex-end;
+      flex-direction: column;
       padding-bottom: 8px;
       cursor: pointer;
 
@@ -49,39 +49,49 @@
         width: 100%;
         align-items: center;
 
-        img {
-          width: 40px;
+        &-top {
+          width: 100%;
         }
 
-        span {
-          font-size: 12px;
-          line-height: 15px;
-        }
-      }
-
-      .stakeholder-mark {
-        position: absolute;
-
-        .circle {
-          width: 16px;
-          height: 16px;
-          border-radius: 8px;
-          background: #fff;
-          margin-right: 7px;
-          margin-top: 7px;
+        &-img-wrapper {
+          width: 50%;
+          margin-left: 50%;
           display: flex;
-          justify-content: center;
-          align-content: center;
-          align-items: center;
+          justify-content: space-between;
 
-          svg {
-            width: 12px;
-            height: 12px;
+          img {
+            width: 40px;
+            margin-left: -20px;
+          }
 
-            path {
-              fill: #62b5a6;
+          .circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 8px;
+            background: #fff;
+            margin-right: 7px;
+            margin-top: 7px;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+
+            svg {
+              width: 12px;
+              height: 12px;
+
+              path {
+                fill: #62b5a6;
+              }
             }
           }
+        }
+
+        &-bottom {
+          width: 100%;
+          text-align: center;
+          font-size: 12px;
+          line-height: 15px;
         }
       }
     }

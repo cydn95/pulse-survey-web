@@ -7,8 +7,9 @@ import {
   PAGE_CONTENT_SUCCESS,
 } from "Constants/actionTypes";
 
-export const nikelTourContent = () => ({
+export const nikelTourContent = (surveyId) => ({
   type: NIKEL_TOUR_CONTENT,
+  payload: { surveyId }
 });
 
 export const nikelTourContentSuccess = (content) => ({

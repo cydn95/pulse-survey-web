@@ -1,5 +1,6 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import {
+  userListAPI,
   teamListAPI,
   shgroupListAPI,
   optionListAPI,
@@ -37,15 +38,16 @@ import {
   shCategoryListSuccess,
 } from "./actions";
 
-const getTeamListAysnc = async (projectId) =>
-  await teamListAPI(projectId)
+const getTeamListAysnc = async (projectId, surveyId) =>
+  await teamListAPI(projectId, surveyId)
     .then((data) => data)
     .catch((error) => error);
 
 function* getTeamList({ payload }) {
   try {
-    const { projectId } = payload;
-    const result = yield call(getTeamListAysnc, projectId);
+    const { projectId, surveyId } = payload;
+
+    const result = yield call(getTeamListAysnc, projectId, surveyId);
 
     if (result.status === 200) {
       yield put(teamListSuccess(result.data));
@@ -55,14 +57,15 @@ function* getTeamList({ payload }) {
   }
 }
 
-const getShgroupListAysnc = async () =>
-  await shgroupListAPI()
+const getShgroupListAysnc = async (surveyId) =>
+  await shgroupListAPI(surveyId)
     .then((data) => data)
     .catch((error) => error);
 
-function* getShgroupList() {
+function* getShgroupList({ payload }) {
   try {
-    const result = yield call(getShgroupListAysnc);
+    const { surveyId } = payload;
+    const result = yield call(getShgroupListAysnc, surveyId);
 
     if (result.status === 200) {
       yield put(shgroupListSuccess(result.data));
@@ -110,6 +113,7 @@ function* getDriverList({ payload }) {
           progress: 0,
         });
       });
+      // console.log(driverList);
       yield put(driverListSuccess(driverList));
     }
   } catch (error) {
@@ -141,7 +145,7 @@ const getStakeholderListAysnc = async (projectUserId, surveyId) =>
 
 function* getStakeholderList({ payload }) {
   try {
-    const { projectUserId, surveyId } = payload;
+    const { projectUserId, surveyId, callback } = payload;
     const result = yield call(getStakeholderListAysnc, projectUserId, surveyId);
 
     const stakeholderList = [];
@@ -183,6 +187,7 @@ function* getStakeholderList({ payload }) {
           team: sh.team === null ? "" : sh.team.name,
           organisationId: "O_" + sh.user.organization.name,
           organisation: sh.user.organization.name,
+          projectOrganization: sh.projectOrganization,
           shCategory: sh.shCategory == null ? [] : sh.shCategory,
           show: true,
           amTotal: sh.am_total,
@@ -193,7 +198,11 @@ function* getStakeholderList({ payload }) {
         });
       });
 
-      yield put(stakeholderListSuccess(stakeholderList, userList));
+      if (callback) {
+        callback(stakeholderList);
+      } else {
+        yield put(stakeholderListSuccess(stakeholderList, userList));
+      }
     }
   } catch (error) {
     console.log("error : ", error);
@@ -230,25 +239,46 @@ const addStakeholderAsync = async (projectUser) =>
     .then((data) => data)
     .catch((error) => error);
 
+const getUserListAsync = async (email) =>
+  await userListAPI(email)
+    .then((data) => data)
+    .catch((error) => error);
+
 function* addStakeholder({ payload }) {
   try {
     const { projectId, surveyId, stakeholder, callback } = payload;
 
-    const user = {
-      user: {
-        username: stakeholder.email,
-        first_name: stakeholder.firstName,
-        last_name: stakeholder.lastName,
-        email: stakeholder.email,
-        password: defaultPassword
-      },
-      name: stakeholder.organisationId,
-    };
+    let userId = 0;
 
-    const result = yield call(addUserAsync, user, callback);
+    const userResult = yield call(getUserListAsync, stakeholder.email);
 
-    if (result.status === 201) {
-      const userId = result.data;
+    if (userResult.status == 200) {
+      const userList = userResult.data;
+      if (userList.length > 0) {
+        userId = userList[0].id;
+      }
+    }
+
+    if (userId == 0) {
+      const user = {
+        user: {
+          username: stakeholder.email,
+          first_name: stakeholder.firstName,
+          last_name: stakeholder.lastName,
+          email: stakeholder.email,
+          password: defaultPassword
+        },
+        name: stakeholder.organisationId,
+      };
+
+      const result = yield call(addUserAsync, user, callback);
+
+      if (result.status == 201) {
+        userId = result.data;
+      }
+    }
+
+    if (userId > 0) {
       const projectUser = {
         project: parseInt(projectId, 10),
         survey: parseInt(surveyId, 10),
@@ -260,18 +290,15 @@ function* addStakeholder({ payload }) {
         shGroup: null,
         myProjectUser: stakeholder.myProjectUser,
       };
-
+      
       const result2 = yield call(addStakeholderAsync, projectUser);
+      console.log(result2);
 
-      // if (result2.status === 201) {
-      //   yield put(stakeholderList(stakeholder.myProjectUser, surveyId));
-      // }
       callback(result2.status);
-    } else {
-      callback(result.status);
     }
+
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 }
 

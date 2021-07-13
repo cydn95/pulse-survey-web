@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import { Draggable } from "react-drag-and-drop";
 
@@ -27,12 +27,15 @@ class AllStakeholderList extends Component {
       email: "",
       myProjectUser: this.props.surveyUserId,
     };
+
     this.state = {
       shId: 0,
       viewType: "search",
+      search: props.search,
       selectedStakeholder: {
         ...this.defaultStakeholder,
       },
+      userTitle: "",
     };
   }
 
@@ -40,7 +43,13 @@ class AllStakeholderList extends Component {
     this.setState({
       viewType: "category",
       selectedStakeholder: stakeholder,
+      userTitle:
+        stakeholder.projectUserTitle === ""
+          ? stakeholder.userTitle
+          : stakeholder.projectUserTitle,
     });
+
+    this.props.onUpdateSubView("category");
   };
 
   handleUpdateStakeholder = (stakeholder) => {
@@ -49,6 +58,7 @@ class AllStakeholderList extends Component {
     this.setState({
       viewType: "search",
     });
+    this.props.onUpdateSubView("search");
   };
 
   render() {
@@ -56,6 +66,7 @@ class AllStakeholderList extends Component {
       allStakeholders,
       surveyUserId,
       projectId,
+      search,
       shCategoryList,
       projectMapShCategoryList,
       selectedMyCategoryList,
@@ -64,29 +75,33 @@ class AllStakeholderList extends Component {
     } = this.props;
 
     let filteredStakeholderList = [];
-    if (
-      selectedMyCategoryList.length > 0 ||
-      selectedProjectCategoryList.length > 0
-    ) {
-      for (let i = 0; i < allStakeholders.length; i++) {
-        const i1 = allStakeholders[i].shCategory.filter((value) =>
-          selectedMyCategoryList.includes(value)
-        );
-        const i2 = allStakeholders[i].shCategory.filter((value) =>
-          selectedProjectCategoryList.includes(value)
-        );
-        if (
-          (i1.length > 0 || i2.length > 0) &&
-          allStakeholders[i].projectId.toString() === projectId.toString()
-        ) {
-          filteredStakeholderList.push(allStakeholders[i]);
-        }
-      }
-    } else {
-      filteredStakeholderList = [...allStakeholders];
+    // if (
+    //   selectedMyCategoryList.length > 0 ||
+    //   selectedProjectCategoryList.length > 0
+    // ) {
+    for (let i = 0; i < allStakeholders.length; i++) {
+      // const i1 = allStakeholders[i].shCategory.filter((value) =>
+      //   selectedMyCategoryList.includes(value)
+      // );
+      // const i2 = allStakeholders[i].shCategory.filter((value) =>
+      //   selectedProjectCategoryList.includes(value)
+      // );
+      // if (
+      //   (i1.length > 0 || i2.length > 0) &&
+      //   allStakeholders[i].projectId.toString() === projectId.toString()
+      // ) {
+      filteredStakeholderList.push(allStakeholders[i]);
+      // }
     }
+    // } else {
+    //   filteredStakeholderList = [...allStakeholders];
+    // }
 
-    const { viewType, selectedStakeholder } = this.state;
+    filteredStakeholderList = filteredStakeholderList.filter(
+      (s) => s.fullName.toLowerCase().indexOf(search.toLowerCase()) >= 0
+    );
+
+    const { viewType, selectedStakeholder, userTitle } = this.state;
     let userCount = allStakeholders.length;
 
     return (
@@ -107,32 +122,37 @@ class AllStakeholderList extends Component {
                 let title =
                   d.projectUserTitle === "" ? d.userTitle : d.projectUserTitle;
                 let description =
-                  d.organisation +
+                  (d.projectOrganization
+                    ? d.projectOrganization
+                    : d.organisation) +
                   " / " +
                   (d.team === "" ? d.userTeam : d.team);
                 let percentage = (d.aoAnswered / d.aoTotal) * 100;
                 return (
                   <div className={styles.stakeholder} key={d.projectUserId}>
-                    <Draggable type="stakeholder" data={d.projectUserId}>
-                      <AvatarComponent
-                        className={styles["avatar-comp"]}
-                        key={d.username}
-                        username={d.fullName}
-                        title={title}
-                        description={description}
-                        profilePicUrl={d.userAvatar}
-                        userProgress={percentage ? Number(percentage) : 0}
-                        arrow={true}
-                        stakeholder={{
-                          ...d,
-                          myProjectUser: surveyUserId,
-                        }}
-                        onArrowClick={(e, stakeholder) =>
-                          this.handleArrowClick(stakeholder)
-                        }
-                        donut={false}
-                      />
-                    </Draggable>
+                    <Fragment>
+                      <Draggable type="stakeholder" data={d.projectUserId}>
+                        <AvatarComponent
+                          className={styles["avatar-comp"]}
+                          key={d.username}
+                          username={d.fullName}
+                          title={title}
+                          description={description}
+                          profilePicUrl={d.userAvatar}
+                          userProgress={percentage ? Number(percentage) : 0}
+                          arrow={true}
+                          stakeholder={{
+                            ...d,
+                            myProjectUser: surveyUserId,
+                          }}
+                          onArrowClick={(e, stakeholder) =>
+                            this.handleArrowClick(stakeholder)
+                          }
+                          donut={false}
+                        />
+                      </Draggable>
+                      <div className={styles.separator}></div>
+                    </Fragment>
                   </div>
                 );
               })}
@@ -144,11 +164,12 @@ class AllStakeholderList extends Component {
             shCategoryList={shCategoryList}
             projectMapShCategoryList={projectMapShCategoryList}
             teamList={teamList}
-            onCancel={(e) =>
+            onCancel={(e) => {
               this.setState({
                 viewType: "search",
-              })
-            }
+              });
+              this.props.onUpdateSubView("search");
+            }}
             onAddStakeholder={(stakeholder) =>
               this.handleUpdateStakeholder({
                 ...stakeholder,
@@ -157,6 +178,7 @@ class AllStakeholderList extends Component {
             }
             update={true}
             stakeholder={selectedStakeholder}
+            title={userTitle}
           />
         )}
       </div>

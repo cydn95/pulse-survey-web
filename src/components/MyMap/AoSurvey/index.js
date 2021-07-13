@@ -26,8 +26,9 @@ import {
 
 import styles from "./styles.scss";
 
-import { selectPage, stakeholderAnswer } from "Redux/actions";
+import { selectPage, stakeholderAnswer, stakeholderList } from "Redux/actions";
 import StakeholderUpdateModal from "../StakeholderUpdateModal";
+import StakeholderUpdatePanel from "../StakeholderUpdatePanel";
 
 class AoSurvey extends React.Component {
   constructor(props) {
@@ -40,7 +41,10 @@ class AoSurvey extends React.Component {
       pageIndex,
       user,
       currentSurveyUserId,
-      lastAddedShCategory
+      lastAddedShCategory,
+      myMapES,
+      projectMapES,
+      mapStyle
     } = this.props;
 
     let totalQuestions = 0;
@@ -77,7 +81,7 @@ class AoSurvey extends React.Component {
         totalQuestions++;
         const temp = orderedDrivers[i].questions[j].response.filter(
           (resp) =>
-            resp.shCategory.toString() === shCategoryId.toString() &&
+            /*resp.shCategory.toString() === shCategoryId.toString() &&*/
             resp.subProjectUser.toString() === user.projectUserId.toString()
         );
 
@@ -136,7 +140,7 @@ class AoSurvey extends React.Component {
       answers,
       totalAnswers,
       totalQuestions,
-      editModal: false,
+      editModal: false
     };
   }
 
@@ -161,7 +165,7 @@ class AoSurvey extends React.Component {
 
           const temp = drivers[i].questions[j].response.filter(
             (resp) =>
-              resp.shCategory.toString() === shCategoryId.toString() &&
+              /*resp.shCategory.toString() === shCategoryId.toString() &&*/
               resp.subProjectUser.toString() === user.projectUserId.toString()
           );
 
@@ -252,6 +256,7 @@ class AoSurvey extends React.Component {
   };
 
   handleSubmit = (e) => {
+    // console.log(this.state.answers);
     this.props.onSubmit(e, this.state.answers);
   };
 
@@ -265,9 +270,33 @@ class AoSurvey extends React.Component {
   };
 
   handleOpenEditModal = () => {
-    this.setState({
-      editModal: true,
-    });
+
+    const { surveyId, surveyUserId, user, currentSurveyUserId, actionStakeholderList } = this.props;
+
+    const { editModal } = this.state;
+    if (editModal) {
+      actionStakeholderList(surveyUserId, surveyId, (shList) => {
+        console.log(currentSurveyUserId);
+        console.log(shList);
+
+        let cUser = null;
+        for (let i = 0; i < shList.length; i++) {
+          if (currentSurveyUserId.includes(`${shList[i].userId}_`)) {
+            cUser = shList[i];
+            break;
+          }
+        }
+
+        this.setState((state) => ({
+          currentUser: cUser ? { ...cUser } : { ...user }
+        }));
+      });
+    }
+
+    this.setState((state) => ({
+      editModal: !state.editModal
+    }));
+    
   };
 
   handleCloseEditModal = () => {
@@ -284,14 +313,22 @@ class AoSurvey extends React.Component {
       totalAnswers,
       totalQuestions,
       editModal,
+      currentUser,
     } = this.state;
+
     const {
       skipQuestionList,
       user,
       projectTitle,
       myMapCategory,
       projectMapCategory,
+      submitLoading,
+      mapStyle,
+      myMapES,
+      projectMapES,
+      currentSurveyUserId
     } = this.props;
+
 
     // console.log(myMapCategory);
     // console.log(projectMapCategory);
@@ -322,28 +359,47 @@ class AoSurvey extends React.Component {
     }
 
     // console.log(driver);
-    // console.log(answers);
+    // console.log('answers', answers);
+
+    // console.log(currentSurveyUserId);
+    const mapES = mapStyle === "my-map" ? myMapES : projectMapES;
+    let surveyCompletion = 0;
+    for (let i = 0; i < mapES.individuals.length; i++) {
+      // console.log(mapES.individuals[i].id);
+      if (mapES.individuals[i].id === currentSurveyUserId) {
+        surveyCompletion = mapES.individuals[i].survey_completion;
+      }
+    }
 
     return (
       <div className={styles.root}>
         <div className={styles.user}>
           <div className={styles.title}>
             <span>About Others:</span>
-            <span
+            <div
               role="button"
               className={styles.edit}
-              onClick={(e) => this.handleOpenEditModal()}
             >
-              Edit
-            </span>
+              <div onClick={(e) => this.handleOpenEditModal()}>Edit</div>
+              {editModal && <div className={styles["stakeholder-update-panel-container"]}>
+                <StakeholderUpdatePanel
+                  open={editModal}
+                  currentUser={currentUser}
+                  myMapCategory={myMapCategory}
+                  projectMapCategory={projectMapCategory}
+                  onClose={(e) => this.handleCloseEditModal()}
+                />
+              </div>}
+            </div>
           </div>
           <AvatarComponent
             className={styles["avatar-comp"]}
             userId={user.id}
+            title={user.projectUserTitle === "" ? user.userTitle : user.projectUserTitle}
             username={user.fullName}
-            description={user.organisation + " / " + user.team}
+            description={(user.projectOrganization ? user.projectOrganization : user.organisation) + " / " + user.team}
             profilePicUrl={user.userAvatar}
-            userProgress={((totalAnswers / totalQuestions) * 100).toFixed(2)}
+            userProgress={Number(surveyCompletion)}
             donut={true}
           />
         </div>
@@ -461,24 +517,18 @@ class AoSurvey extends React.Component {
             color="default"
             onClick={(e) => this.handleCancel(e)}
           >
-            Cancel
+            Back
           </Button>
           &nbsp;&nbsp;
           <Button
             variant="contained"
             className={styles.green}
             onClick={(e) => this.handleSubmit(e)}
+            disabled={submitLoading}
           >
-            Submit
+            {submitLoading ? "In progress..." : "Submit"}
           </Button>
         </div>
-        <StakeholderUpdateModal
-          open={editModal}
-          currentUser={user}
-          myMapCategory={myMapCategory}
-          projectMapCategory={projectMapCategory}
-          onClose={(e) => this.handleCloseEditModal()}
-        />
       </div>
     );
   }
@@ -487,8 +537,10 @@ class AoSurvey extends React.Component {
 const mapStateToProps = ({ survey, common, authUser }) => {
   const { pageList, pageIndex } = survey;
   const { skipQuestionList } = common;
-  const { projectTitle, projectUserId } = authUser;
+  const { projectTitle, projectUserId, surveyId, surveyUserId } = authUser;
   return {
+    surveyId,
+    surveyUserId,
     surveyList: pageList,
     pageIndex,
     skipQuestionList,
@@ -500,4 +552,5 @@ const mapStateToProps = ({ survey, common, authUser }) => {
 export default connect(mapStateToProps, {
   setSurveyPage: selectPage,
   stakeholderAnswer,
+  actionStakeholderList: stakeholderList
 })(AoSurvey);

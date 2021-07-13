@@ -53,12 +53,12 @@ class BaseController {
       b: false,
       bw: 0,
       t: node.name || "",
-      fi: node.icon
-        ? {
-            t: KeyLines.getFontIcon(node.icon),
-            c: node.iconColor || "#414b57",
-          }
-        : {},
+      fi: node.icon ?
+        {
+          t: KeyLines.getFontIcon(node.icon),
+          c: node.iconColor || "#414b57",
+        } :
+        {},
       parentId: node.parentId || "",
       e: !node.icon && !node.name ? 0.1 : node.e || 1,
       d: {
@@ -70,12 +70,16 @@ class BaseController {
   constructDonuts = async (data) => {
     let props = [];
     // create the donuts
-    this.chart.each({ type: "node", items: "underlying" }, (item) => {
+    this.chart.each({
+      type: "node",
+      items: "underlying"
+    }, (item) => {
       if (item.d.survey_completion) {
         let percentage = Math.abs(parseFloat(item.d.survey_completion).toFixed(2));
 
         // let segment = Math.abs(percentage - 50) * 2;
-        let segmentColor = percentage <= 50 ? "#ff5500" : "#1f45b8";
+        // let segmentColor = percentage <= 50 ? "#ff5500" : "#1f45b8";
+        let segmentColor = "#5194c5";
         props.push({
           id: item.id,
           donut: {
@@ -101,24 +105,26 @@ class BaseController {
       if (currentGlyph) {
         propsToUpdate.push({
           id: baseId,
-          g: [{ ...currentGlyph[0], t: parseInt(currentGlyph[0].t, 10) + 1 }],
+          g: [{
+            ...currentGlyph[0],
+            // t: parseInt(currentGlyph[0].t, 10) + 1
+            t: parseInt(currentGlyph[0].t, 10) + 1
+          }],
         });
       } else {
         propsToUpdate.push({
           id: baseId,
-          g: [
-            {
-              b: "#00000000",
-              c: "#1d1d1d",
-              e: 1.1,
-              fc: "#f3f5f9",
-              ff: "sans-serif",
-              p: 45,
-              r: 25,
-              t: 1,
-              w: true,
-            },
-          ],
+          g: [{
+            b: "#00000000",
+            c: "#1d1d1d",
+            e: 1.1,
+            fc: "#f3f5f9",
+            ff: "sans-serif",
+            p: 45,
+            r: 25,
+            t: 1,
+            w: true,
+          }, ],
           d: {
             ...selectedSH.d,
             individualCount: 1,
@@ -146,7 +152,10 @@ class BaseController {
     const y = mouseViewCoords.y;
     const pos = this.chart.worldCoordinates(x, y);
     // find the element on top of which it has landed
-    this.chart.each({ type: "node", items: "all" }, (item) => {
+    this.chart.each({
+      type: "node",
+      items: "all"
+    }, (item) => {
       if (
         item.x <= pos.x + 15 &&
         item.x > pos.x - 15 &&
@@ -164,22 +173,27 @@ class BaseController {
       let currentOverElement = this.chart.getItem(this.overElem);
       let itemExists = this.chart.getItem(node.individuals[0].id);
       let animate = true;
+
       // check if there are already elements with that id in the vis and that you are over an sh category
       if (currentOverElement.d.coreEntity && !itemExists) {
         // if the sh category has not been expanded yet, expand it before adding the element
+        
         if (
           currentOverElement.d.individualCount > 0 &&
           !currentOverElement.d.expanded
         ) {
           await this.expandChart(currentOverElement.id);
-          animate = false;
+          // await this.toggleChart(currentOverElement.id);
+          
+
+          animate = true;
         } // if the sh category is shrunk, show it before adding
         else if (
           currentOverElement.d.individualCount > 0 &&
-          currentOverElement.d.shrunk
+          (currentOverElement.d.shrunk || currentOverElement.d.shrunk === undefined)
         ) {
           await this.toggleChart(currentOverElement.id);
-          animate = false;
+          animate = true;
         }
 
         node.individuals[0].sh_category = {
@@ -187,13 +201,19 @@ class BaseController {
           changeable: false,
         };
 
-        let { newItems, highLevelNodes } = await this.dataStore.structurizeData(
+        let {
+          newItems,
+          highLevelNodes
+        } = await this.dataStore.structurizeData(
           node,
           "ap1",
           "entities",
           this.viewMode
         );
-        this.highLevelNodes = { ...this.highLevelNodes, ...highLevelNodes };
+        this.highLevelNodes = {
+          ...this.highLevelNodes,
+          ...highLevelNodes
+        };
         // adjust the parentIds of the newly addded elements
         if (Object.keys(this.comboMap).length > 0) {
           newItems.forEach((item, index) => {
@@ -209,7 +229,9 @@ class BaseController {
           });
         }
         const newItemsExisting = this.chart.getItem(
-          newItems.map(({ id }) => id)
+          newItems.map(({
+            id
+          }) => id)
         );
         newItems.forEach((item, i) => {
           if (newItemsExisting[i]) {
@@ -225,12 +247,14 @@ class BaseController {
           layout: {
             name: this.layoutName,
             fix: "all",
-            top: ["radial", "sequential"].includes(this.layoutName)
-              ? this.overElem
-              : "",
+            top: ["radial", "sequential"].includes(this.layoutName) ?
+              this.overElem :
+              "",
             tightness: 3,
           },
-          arrange: { name: "concentric" },
+          arrange: {
+            name: "concentric"
+          },
         });
         // add donuts in the underlying nodes
         await this.constructDonuts(newItems);
@@ -238,6 +262,8 @@ class BaseController {
         await this.chart.ping(node.individuals[0].id);
       }
     }
+
+
   };
 
   endDrag = async (data) => {
@@ -260,30 +286,49 @@ class BaseController {
   };
 
   expandChart = async (clickedId) => {
-    let { newItems, highLevelNodes } = await this.dataStore.getEntityNetwork(
+    let {
+      newItems,
+      highLevelNodes
+    } = await this.dataStore.getEntityNetwork(
       clickedId,
       "ap1",
       this.viewMode
     );
-    
-    this.highLevelNodes = { ...this.highLevelNodes, ...highLevelNodes };
+    this.highLevelNodes = {
+      ...this.highLevelNodes,
+      ...highLevelNodes
+    };
     // ammend the glyph count of the existing elements
     await this.recalculateGlyphs(clickedId, newItems, "expand");
-    
+
+    await newItems.forEach((itemId, key) => {
+      newItems[key].hi = true;
+    });
+
     await this.chart.expand(newItems, {
       layout: {
         name: this.layoutName,
         fix: "all",
-        top: ["radial", "sequential"].includes(this.layoutName)
-          ? clickedId
-          : "",
+        top: ["radial", "sequential"].includes(this.layoutName) ?
+          clickedId :
+          "",
         tightness: 3,
       },
-      arrange: { name: "concentric" },
+      arrange: {
+        name: "concentric"
+      },
     });
-
     // add donuts in the underlying nodes
     await this.constructDonuts(newItems);
+    // // the element has expanded so set the expanded flag
+    // let clickedElement = this.chart.getItem(clickedId);
+    // await this.chart.setProperties({
+    //   id: clickedElement.id,
+    //   d: {
+    //     ...clickedElement.d,
+    //     expanded: true,
+    //   },
+    // });
 
     // Noah
     let shCategoryIds = [];
@@ -302,7 +347,7 @@ class BaseController {
             break;
           }
         }
-      } 
+      }
     })
 
     shCategoryIds.forEach(async (itemId) => {
@@ -315,23 +360,17 @@ class BaseController {
         },
       });
     });
-    
-    // the element has expanded so set the expanded flag
-    // let clickedElement = this.chart.getItem(clickedId);
-    // await this.chart.setProperties({
-    //   id: clickedElement.id,
-    //   d: {
-    //     ...clickedElement.d,
-    //     expanded: true,
-    //   },
-    // });
+
+    await this.toggleChart(clickedId);
   };
 
   toggleChart = async (clickedId) => {
     let clickedElement = this.chart.getItem(clickedId);
     let elementsToMove = [];
     let props = [];
-    let neighbours = this.chart.graph().neighbours(clickedId, { all: true });
+    let neighbours = this.chart.graph().neighbours(clickedId, {
+      all: true
+    });
     neighbours.nodes.forEach((nodeId) => {
       let node = this.chart.getItem(nodeId);
       if (!node.d.coreEntity) {
@@ -341,26 +380,41 @@ class BaseController {
 
     // animate the elements to move to the position of the core entity
     elementsToMove.forEach((id) => {
-      props.push({ id, x: clickedElement.x, y: clickedElement.y });
+      props.push({
+        id,
+        x: clickedElement.x,
+        y: clickedElement.y
+      });
     });
 
     // shrink the element
-    if (!clickedElement.d.shrunk) {
-      await this.chart.animateProperties(props, { time: 400 });
+    // if (!clickedElement.d.shrunk) {
+    if (clickedElement.d.shrunk === false) {
+      await this.chart.animateProperties(props, {
+        time: 400
+      });
       // hide the elements to move
       await this.chart.hide(elementsToMove);
       // set the shrunk flag to true
       await this.chart.setProperties({
         id: clickedId,
-        d: { ...clickedElement.d, shrunk: true },
+        d: {
+          ...clickedElement.d,
+          shrunk: true
+        },
       });
     } else {
       // set the fixed nodes for the layout
       const fixed = [];
       const toArrange = [];
-      this.chart.each(
-        { type: "node", items: "toplevel" },
-        ({ id, hi }) => hi || fixed.push(id)
+      this.chart.each({
+          type: "node",
+          items: "toplevel"
+        },
+        ({
+          id,
+          hi
+        }) => hi || fixed.push(id)
       );
       // set the new coordinates of the hidden elements to be those of their sh category
       await this.chart.setProperties(props);
@@ -371,23 +425,34 @@ class BaseController {
         if (this.chart.combo().isCombo(nodeId)) {
           toArrange.push(nodeId);
           const underlyingElems = this.chart.combo().info(nodeId).nodes;
-          underlyingElems.forEach(({ id }) => {
+          underlyingElems.forEach(({
+            id
+          }) => {
             const parentComboId = this.chart
               .combo()
-              .find(id, { parent: "first" });
+              .find(id, {
+                parent: "first"
+              });
             if (parentComboId && !toArrange.includes(parentComboId)) {
               toArrange.push(parentComboId);
             }
           });
         }
       });
-      await this.chart.combo().arrange(toArrange, { name: "concentric" });
+      await this.chart.combo().arrange(toArrange, {
+        name: "concentric"
+      });
       // run the selected layout against the new visible nodes
-      await this.runLayout(this.layoutName, true, { fixed });
+      await this.runLayout(this.layoutName, true, {
+        fixed
+      });
       // set the shrunk flag to false
       await this.chart.setProperties({
         id: clickedId,
-        d: { ...clickedElement.d, shrunk: false },
+        d: {
+          ...clickedElement.d,
+          shrunk: false
+        },
       });
     }
   };
@@ -406,6 +471,7 @@ class BaseController {
       this.expandChart(id);
     } else if (clickedElement.d.coreEntity && clickedElement.d.expanded) {
       this.toggleChart(id);
+    
     }
 
     if (this.chart.combo().isCombo(id)) {
@@ -439,8 +505,12 @@ class BaseController {
   async createChart(chartContainer, defaultView) {
     await fontsLoaded;
     const imageAlignment = {
-      [KeyLines.getFontIcon("fa-project-diagram")]: { e: 0.85 },
-      [KeyLines.getFontIcon("fa-sitemap")]: { e: 0.85 },
+      [KeyLines.getFontIcon("fa-project-diagram")]: {
+        e: 0.85
+      },
+      [KeyLines.getFontIcon("fa-sitemap")]: {
+        e: 0.85
+      },
     };
     const chartOptions = {
       drag: {
@@ -455,17 +525,24 @@ class BaseController {
       imageAlignment,
     };
 
-    let { newItems /* highLevelNodes */} = await this.dataStore.getCoreStructure();
-    this.chart = await KeyLines.create([
-      { container: chartContainer, options: chartOptions, type: "chart" },
-    ]);
-    this.chart.load({ type: "LinkChart", items: newItems });
+    let {
+      newItems /* highLevelNodes */
+    } = await this.dataStore.getCoreStructure();
+    this.chart = await KeyLines.create([{
+      container: chartContainer,
+      options: chartOptions,
+      type: "chart"
+    }, ]);
+    this.chart.load({
+      type: "LinkChart",
+      items: newItems
+    });
     this.chart.zoom("fit");
     this.runLayout();
     window.chart = this.chart;
     this.highLevelNodes = {};
     this.comboMap = {};
-    this.viewMode = [];  // ["Org", "Team"];
+    this.viewMode = []; // ["Org", "Team"];
     this.setupUI();
   }
 
@@ -473,13 +550,14 @@ class BaseController {
    * Positions nodes on the chart according to the given layout
    * @param {String} layoutName One of the KeyLines chart layouts
    */
-  async runLayout(layoutName = "organic", consistent = false, extra = {}) {
+  // async runLayout(layoutName = "organic", consistent = false, extra = {}) {
+  async runLayout(layoutName = "organic", consistent = true, extra = {}) {
     this.layoutName = layoutName;
     const options = {
       tightness: 3,
-      top: ["radial", "sequential"].includes(layoutName)
-        ? this.chart.selection()
-        : [],
+      top: ["radial", "sequential"].includes(layoutName) ?
+        this.chart.selection() :
+        [],
       consistent,
       ...extra,
     };
@@ -490,26 +568,36 @@ class BaseController {
     let toUncombine = [];
     this.viewMode = visMode;
     this.comboMap = {};
-    this.chart.each({ type: "node", items: "all" }, (node) => {
+    this.chart.each({
+      type: "node",
+      items: "all"
+    }, (node) => {
       if (this.chart.combo().isCombo(node.id)) {
         toUncombine.push(node.id);
       }
     });
     await this.chart
       .combo()
-      .uncombine(toUncombine, { full: true, select: false, animate: true });
+      .uncombine(toUncombine, {
+        full: true,
+        select: false,
+        animate: true
+      });
 
     const combineByProperty = async (property, level) => {
       let count = {};
       let newCombos = {};
       let data = {};
       let comboDefs = [];
-      this.chart.each({ type: "node", items: level }, (node) => {
+      this.chart.each({
+        type: "node",
+        items: level
+      }, (node) => {
         if (node.d[property]) {
           let propertyId =
-            visMode.length > 1 && property === "team"
-              ? `${node.d.sh_category.current}_${node.d.organisation.current}_${node.d[property].current}`
-              : `${node.d.sh_category.current}_${node.d[property].current}`;
+            visMode.length > 1 && property === "team" ?
+            `${node.d.sh_category.current}_${node.d.organisation.current}_${node.d[property].current}` :
+            `${node.d.sh_category.current}_${node.d[property].current}`;
           newCombos[propertyId] = newCombos[propertyId] || [];
           newCombos[propertyId].push(node.id);
           count[propertyId] = count[propertyId] || 0;
@@ -519,7 +607,10 @@ class BaseController {
           }
           if (!data[propertyId]) {
             // store the d property for future reference
-            data[propertyId] = { ...node.d, comboProperty: propertyId };
+            data[propertyId] = {
+              ...node.d,
+              comboProperty: propertyId
+            };
           }
         }
       });
@@ -527,31 +618,30 @@ class BaseController {
         if (this.highLevelNodes[id]) {
           let style = {
             fi: {
-              t: this.highLevelNodes[id].d.icon
-                ? KeyLines.getFontIcon(this.highLevelNodes[id].d.icon)
-                : "",
+              t: this.highLevelNodes[id].d.icon ?
+                KeyLines.getFontIcon(this.highLevelNodes[id].d.icon) :
+                "",
               c: this.highLevelNodes[id].d.iconColor || "#414b57",
             },
             c: this.highLevelNodes[id].color || "#d8d8d8",
             b: this.highLevelNodes[id].border || "#3b4f81",
             bw: 1,
-            d: { ...data[id] },
-            g:
-              count[id] === 0
-                ? []
-                : [
-                    {
-                      b: "#4a5c89",
-                      c: "#4966ac",
-                      e: 1.2,
-                      fc: "#f3f5f9",
-                      ff: "sans-serif",
-                      p: 45,
-                      r: 35,
-                      t: count[id],
-                      w: true,
-                    },
-                  ],
+            d: {
+              ...data[id]
+            },
+            g: count[id] === 0 ?
+              [] :
+              [{
+                b: "#4a5c89",
+                c: "#4966ac",
+                e: 1.2,
+                fc: "#f3f5f9",
+                ff: "sans-serif",
+                p: 45,
+                r: 35,
+                t: count[id],
+                w: true,
+              }, ],
             donuts: {},
           };
           comboDefs.push({
@@ -563,7 +653,10 @@ class BaseController {
       });
       const comboIds = await this.chart
         .combo()
-        .combine(comboDefs, { select: false, arrange: "concentric" });
+        .combine(comboDefs, {
+          select: false,
+          arrange: "concentric"
+        });
       comboIds.forEach((comboId) => {
         this.comboMap[this.chart.getItem(comboId).d.comboProperty] = comboId;
       });
@@ -585,12 +678,17 @@ class BaseController {
     // only run the layout for the viewUpdate and not when intialising/ fetching elements
     if (Object.keys(this.highLevelNodes).length > 0) {
       let fixed = [];
-      this.chart.each({ type: "node", items: "toplevel" }, (item) => {
+      this.chart.each({
+        type: "node",
+        items: "toplevel"
+      }, (item) => {
         if (item.d.coreEntity && (!item.d.expanded || item.d.shrunk)) {
           fixed.push(item.id);
         }
       });
-      await this.runLayout(this.layoutName, true, { fixed });
+      await this.runLayout(this.layoutName, true, {
+        fixed
+      });
     }
   }
 }

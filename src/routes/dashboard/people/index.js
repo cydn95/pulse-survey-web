@@ -10,7 +10,7 @@ import Participation from "Components/report/Participation";
 import FeedbackSummary from "Components/report/FeedbackSummary";
 import TopSummary from "Components/report/TopSummary";
 import CultureResult from "Components/report/CultureResult";
-import LineChart from "Components/report/LineChart";
+import OverallTrend from "Components/report/OverallTrend";
 import SentimentResult from "Components/report/SentimentResult";
 
 import {
@@ -19,6 +19,8 @@ import {
   feedbackSummary,
   participation,
 } from "Redux/actions";
+
+import { getFeedbackSummaryByShGroup, getFeedbackSummaryByTeamOrOrganization } from "Redux/report/summaryFunctions";
 
 import TopNav from "Containers/TopNav";
 
@@ -41,9 +43,20 @@ const participationCategories = [
   },
 ];
 
+const FEEDBACK_SUMMARY_SHGROUP = "ShGroup";
+const FEEDBACK_SUMMARY_TEAM = "Team";
+const FEEDBACK_SUMMARY_ORGANIZATION = "Organization";
+
+const FEEDBACK_SUMMARY_TYPE = [
+  FEEDBACK_SUMMARY_SHGROUP,
+  FEEDBACK_SUMMARY_TEAM,
+  FEEDBACK_SUMMARY_ORGANIZATION,
+];
+
 class ReportPeople extends React.Component {
   state = {
-    overallSentiment: -1,
+    allData: [],
+    overallSentiment: 0,
     topPositives: [],
     topNegatives: [],
     feedbackSummary: {
@@ -59,8 +72,38 @@ class ReportPeople extends React.Component {
     teamParticipationResult: [],
     participationCount: 0,
     teamParticipationCount: 0,
+    teamList: [],
+    organizationList: [],
+    shGroupList: []
   };
 
+  callbackFeedbackSummary = (
+    feedbackSummaryResultData,
+    cultureRet,
+    sentimentRet,
+    sentimentKey,
+    overallTrendRet,
+    overallTrendKey,
+    teamList,
+    organizationList,
+    shGroupList
+  ) => {
+
+    const feedbackSummaryRet = getFeedbackSummaryByShGroup(feedbackSummaryResultData, shGroupList);
+
+    this.setState({
+      allData: feedbackSummaryResultData,
+      feedbackSummary: feedbackSummaryRet,
+      cultureResult: cultureRet,
+      sentimentResult: sentimentRet,
+      sentimentKey: sentimentKey,
+      overallTrendResult: overallTrendRet,
+      overallTrendKey: overallTrendKey,
+      teamList,
+      organizationList,
+      shGroupList
+    });
+  };
   componentDidMount() {
     const {
       surveyId,
@@ -90,24 +133,8 @@ class ReportPeople extends React.Component {
       actionFeedbackSummary(
         surveyId,
         surveyUserId,
-        (
-          feedbackSummaryRet,
-          cultureRet,
-          sentimentRet,
-          sentimentKey,
-          overallTrendRet,
-          overallTrendKey
-        ) => {
-          console.log(feedbackSummaryRet);
-          this.setState({
-            feedbackSummary: feedbackSummaryRet,
-            cultureResult: cultureRet,
-            sentimentResult: sentimentRet,
-            sentimentKey: sentimentKey,
-            overallTrendResult: overallTrendRet,
-            overallTrendKey: overallTrendKey,
-          });
-        }
+        FEEDBACK_SUMMARY_SHGROUP,
+        this.callbackFeedbackSummary
       );
 
       actionParticipation(
@@ -129,6 +156,19 @@ class ReportPeople extends React.Component {
     }
   }
 
+  hanleChangeFeedbackSummaryGraph = (type) => {
+    const { allData, shGroupList } = this.state;
+
+    const feedbackSummaryRet =
+      type === "ShGroup"
+        ? getFeedbackSummaryByShGroup(allData, shGroupList)
+        : getFeedbackSummaryByTeamOrOrganization(allData, type);
+    
+    this.setState({
+      feedbackSummary: feedbackSummaryRet
+    })
+  };
+
   render() {
     const { history, projectTitle } = this.props;
     const {
@@ -148,7 +188,8 @@ class ReportPeople extends React.Component {
     } = this.state;
     // console.log(participationResult);
     // console.log(teamParticipationResult);
-
+    // console.log(overallTrendResult);
+    // console.log(overallTrendKey);
     return (
       <div className={styles.root}>
         <div className={styles.topbar}>
@@ -202,12 +243,12 @@ class ReportPeople extends React.Component {
               <div className={styles.block}>
                 <span className={styles["block__title"]}>Overall Trends</span>
                 <div className={styles.content}>
-                  <LineChart
+                  <OverallTrend
                     key="linechart"
                     shGroups={overallTrendKey}
                     data={overallTrendResult}
                     xRange={[1, 12]}
-                    yRange={[0, 300]}
+                    yRange={[0, 100]}
                     width={400}
                     height={220}
                     margin={30}
@@ -218,6 +259,16 @@ class ReportPeople extends React.Component {
             <div className={styles.row}>
               <div className={styles.block} style={{ width: "100%" }}>
                 <span className={styles["block__title"]}>Feedback Summary</span>
+                <div className={styles.content} style={{ width: "100%" }}>
+                  {FEEDBACK_SUMMARY_TYPE.map((d) => (
+                    <button
+                      key={`feedback-summary-${d}`}
+                      onClick={(e) => this.hanleChangeFeedbackSummaryGraph(d)}
+                    >
+                      {d}
+                    </button>
+                  ))}
+                </div>
                 <div className={styles.content} style={{ width: "100%" }}>
                   <FeedbackSummary data={feedbackSummary} />
                 </div>
@@ -258,7 +309,7 @@ class ReportPeople extends React.Component {
           <div className={classnames(styles.right)}>
             <div className={classnames("row", styles["donut-container"])}>
               <h2 className={styles.title}>Overall Sentiment</h2>
-              <Emoji satisfaction={overallSentiment} />
+              <Emoji satisfaction={overallSentiment / 10} />
             </div>
             <div className={classnames("row", styles["sentiment-result"])}>
               <SentimentResult data={sentimentResult} labels={sentimentKey} />
@@ -276,7 +327,7 @@ const mapStateToProps = ({ authUser }) => {
   return {
     projectTitle,
     surveyId,
-    surveyUserId
+    surveyUserId,
   };
 };
 

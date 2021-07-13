@@ -65,25 +65,38 @@ const DialogContent = withStyles((theme) => ({
 const DialogTourView = ({
   open,
   onClose,
+  projectTitle,
   nikelContent,
+  surveyId,
   actionNikelTourContent,
 }) => {
   const [step, setStep] = useState(0);
   const [tour, setTour] = useState(null);
 
   useEffect(() => {
-    setTour(nikelContent.length === 0 ? null : nikelContent[step]);
-  }, [step]);
+    const content = nikelContent.length === 0 ? null : {...nikelContent[step]}
+    if (content) {
+      content.title = content.title.replace(/{{PROJECT}}/i, projectTitle);
+      content.content = content.content.replace(/{{PROJECT}}/i, projectTitle)
+    }
+    setTour(content);
+  }, [step, projectTitle]);
 
   useEffect(() => {
-    actionNikelTourContent();
-  }, [actionNikelTourContent]);
+    if (surveyId > 0) {
+      actionNikelTourContent(surveyId);
+    }
+  }, [actionNikelTourContent, surveyId]);
 
   useEffect(() => {
     setTour(nikelContent[step]);
   }, [nikelContent]);
 
   useEffect(() => {
+    if (!nikelContent || nikelContent.length === 0) {
+      return;
+    }
+
     setStep(0);
   }, [open]);
 
@@ -182,9 +195,10 @@ const DialogTourView = ({
   );
 };
 
-const mapStateToProps = ({ tour }) => {
+const mapStateToProps = ({ authUser, tour }) => {
   const { nikelContent } = tour;
-  return { nikelContent };
+  const { projectTitle } = authUser;
+  return { projectTitle, nikelContent };
 };
 
 export default connect(mapStateToProps, {

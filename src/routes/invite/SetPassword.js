@@ -61,7 +61,7 @@ class SetPassword extends Component {
       <div className="set-password">
         <div className="set-password__left-bg"></div>
         <div className="set-password__content">
-          <h1 className="set-password__content--title">Welcome Project</h1>
+          <h1 className="set-password__content--title">Welcome to {project}</h1>
           <p className="set-password__content--description">
             The {project} project team has nominated you as an important
             stakeholder, and they would like to hear your thoughts, feelings and

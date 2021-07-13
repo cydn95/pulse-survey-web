@@ -36,6 +36,11 @@ export const getCurrentYear = () => {
   return now.getFullYear();
 }
 
+export const getCurrentMonth = () => {
+  const now = new Date();
+  return now.getMonth() + 1;
+}
+
 export const addCommas = (nStr) => {
   nStr += "";
   var x = nStr.split(".");
@@ -86,4 +91,106 @@ export const MONTH = (month) => {
 export const getAverage = (nums) => {
   if (nums.length === 0) return 0;
   return nums.reduce((a, b) => a + b) / nums.length;
+}
+
+export const randomNumber = (min, max) => {
+  return Math.floor(Math.random() * (max - min) + min);
+};
+
+export const randomFloat = (min, max) => {
+  return (Math.random() * (max - min) + min);
+};
+
+export const arrayAverage = (nums) => {
+  if (!nums) return 0;
+  if (nums.length === 0) return 0;
+
+  return nums.reduce((a, b) => (a + b)) / nums.length;
+}
+
+export const getRandomSubArray = (arr, n) => {
+  var result = new Array(n),
+    len = arr.length,
+    taken = new Array(len);
+  if (n > len)
+    throw new RangeError("getRandom: more elements taken than available");
+  while (n--) {
+    var x = Math.floor(Math.random() * len);
+    result[n] = arr[x in taken ? taken[x] : x];
+    taken[x] = --len in taken ? taken[len] : len;
+  }
+  return result;
+}
+
+// export const getColorFromValue = (val) => {
+//   if (val < 2.5) {
+//     return '#a9709c';
+//   } else if (val < 4) {
+//     return '#8a86b8';
+//   } else if (val < 5) {
+//     return '#838db8';
+//   } else if (val < 6) {
+//     return '#60adb6';
+//   } else if (val < 7) {
+//     return '#52bab5';
+//   } else if (val < 8) {
+//     return '#62bea3';
+//   } else if (val < 9) {
+//     return '#75c290';
+//   } else {
+//     return '#87c67d';
+//   }
+// }
+
+export const getColorFromValue = (val) => {
+  if (val < 2.5) {
+    return '#a9709c';
+  } else if (val < 4) {
+    return '#8a86b8';
+  } else if (val < 5) {
+    return '#838db8';
+  } else if (val < 6) {
+    return '#2b5770';
+  } else if (val < 7) {
+    return '#a0409d';
+  } else if (val < 8) {
+    return '#aa984b';
+  } else if (val < 9) {
+    return '#66931f';
+  } else {
+    return '#14b0bf';
+  }
+}
+
+export const isJSONObject = (obj) => {
+  if (obj === null) {
+    return false;
+  }
+
+  if (obj === undefined) {
+    return false;
+  }
+
+  try {
+    const json = JSON.parse(obj);
+
+    const stringConstructor = "test".constructor;
+    const arrayConstructor = [].constructor;
+    const objectConstructor = ({}).constructor;
+
+    if (json.constructor === stringConstructor) {
+      return false;
+    }
+    if (json.constructor === arrayConstructor) {
+      return false;
+    }
+    if (json.constructor === objectConstructor) {
+      return true;
+    }
+
+  } catch (e) {
+    return false;
+  }
+
+  return false;
 }

@@ -65,8 +65,8 @@ const getProjectAPI = (projectId = 0) => {
 };
 
 /* Tour */
-const getNikelTourAPI = () => {
-  return getClient(true).get("/nikelmobilepage/?format=json");
+const getNikelTourAPI = (surveyId) => {
+  return getClient(true).get(`/nikelmobilepage/?format=json&survey=${surveyId}`);
 };
 
 const getTooltipGuideAPI = () => {
@@ -93,27 +93,30 @@ const optionListAPI = () => {
 };
 
 const driverListAPI = (surveyId = 1) => {
-  return getClient(true).get(`/driver/?format=json&survey_id=${surveyId}`);
+  return getClient(true).get(`/driver/?format=json&survey=${surveyId}`);
 };
 
 const submitSurveyAPI = (answerData) => {
   return getClient(true).post("/amresponse/", answerData);
 };
 
-const teamListAPI = (projectId) => {
-  if (parseInt(projectId, 10) === 0) {
-    return getClient(true).get("/team/?format=json");
-  } else {
-    return getClient(true).get("/team/?format=json&project=" + projectId);
+const teamListAPI = (projectId = 0, surveyId = 0) => {
+  let url = "/team/?format=json";
+  if (parseInt(projectId, 10) > 0) {
+    url += `&project=${projectId}`;
   }
+  if (parseInt(surveyId, 10) > 0) {
+    url += `&survey=${surveyId}`;
+  }
+  return getClient(true).get(url);
 };
 
 const shgroupListAPI = (surveyId = 1) => {
-  if (!surveyId || surveyId === undefined) {
-    return getClient(true).get(`/shgroup/?format=json`);
-  } else {
-    return getClient(true).get(`/shgroup/?format=json&survey=${surveyId}`);
+  let url = "/shgroup/?format=json";
+  if (parseInt(surveyId, 10) > 0) {
+    url += `&survey=${surveyId}`;
   }
+  return getClient(true).get(url);
 };
 
 const skipQuestionListAPI = () => {
@@ -124,8 +127,12 @@ const submitAboutMeAPI = (data) => {
   return getClient(true).post("/projectuser/", data);
 };
 
-const userListAPI = () => {
-  return getClient(true).get("/users/");
+const userListAPI = (email = "") => {
+  if (email !== "") {
+    return getClient(true).get(`/users?/?format=json&email=${email}`);
+  } else {
+    return getClient(true).get("/users/");
+  }
 };
 
 const myMapAPI = (projectUserId, userId = 0) => {
@@ -161,7 +168,7 @@ const submitAoQuestionAPI = (answerData) => {
 
 // Get StakeholderList (get users by project id)
 const stakeholderListAPI = (projectUserId, surveyId = 0) => {
-  var url = `/userbysurvey/?format=json&myProjectUser=${projectUserId}`;
+  var url = `/userbysurvey/?format=json&projectuser=${projectUserId}`;
   if (surveyId > 0) {
     url += `&survey=${surveyId}`;
   }
@@ -314,23 +321,140 @@ const updateUserGuideAPI = (token, guide) => {
 /**
  * Report
  */
+export const getAmResponseReportAPI = (surveyId, driverName, projectUser, controlType = '', startDate = "2020-01-01", endDate = "2021-12-31") => {
+  // console.log('startDate', startDate);
+  // console.log('endDate', endDate);
+  let url = `/amresponsereport/?survey=${surveyId}&driver=${driverName}&projectUser=${projectUser}&stdt=${startDate}&eddt=${endDate}`;
+  if (controlType !== '') {
+    url += `&controltype=${controlType}`;
+  }
+
+  return getClient(true).get(url);
+}
+
+export const getAmQuestionCntAPI = (surveyId, driverName, projectId, userId) => {
+  return getClient(true).get(`/amquestioncnt/?survey=${surveyId}&driver=${driverName}&project=${projectId}&user=${userId}`);
+}
+
+export const getTotalStakeholderCntAPI = (surveyId) => {
+  return getClient(true).get(`/totalshcnt/?survey=${surveyId}`);
+}
+
+export const getAoResponseReportAPI = (surveyId, driverName, startDate = "2020-01-01", endDate = "2021-12-31") => {
+  return getClient(true).get(
+    `/aoresponsereport/?survey=${surveyId}&driver=${driverName}&stdt=${startDate}&eddt=${endDate}`
+  );
+}
+
 const getOverallSentimentAPI = (surveyId) => {
   return getClient(true).get(`/overallsentimentreport/?survey=${surveyId}`);
 };
 
 const getTopPositiveAndNegativeAPI = (surveyId) => {
-  return getClient(true).get(`/aoresponsereport/?survey=${surveyId}`);
+  return getClient(true).get(`/aoresponsetoppositivenegativereport/?survey=${surveyId}`);
 };
 
 const getFeedbackSummaryAPI = (surveyId, subProjectUser) => {
   return getClient(true).get(
-    `/feedbacksummaryreport/?survey=${surveyId}&subProjectUser=${subProjectUser}`
+    `/feedbacksummaryreport/?survey=${surveyId}&projectuser=${subProjectUser}`
   );
 };
 
 const getParticipationAPI = (surveyId) => {
   return getClient(true).get(`/userbysurvey/?survey=${surveyId}`);
 };
+
+export const getDriverAnalysisCntAPI = (surveyId, projectUser, controlType = '', startDate = "2020-01-01", endDate = "2021-12-31") => {
+  let url = `/danalysiscnt/?survey=${surveyId}&projectuser=${projectUser}&stdt=${startDate}&eddt=${endDate}`;
+  if (controlType !== '') {
+    url += `&controltype=${controlType}`;
+  }
+
+  return getClient(true).get(url);
+}
+
+export const getDriverAnalysisAPI = (surveyId, driverName, projectUser, controlType = '', startDate = "2020-01-01", endDate = "2021-12-31") => {
+  let url = `/driveranalysis/?survey=${surveyId}&driver=${driverName}&projectUser=${projectUser}&stdt=${startDate}&eddt=${endDate}`;
+  if (controlType !== '') {
+    url += `&controltype=${controlType}`;
+  }
+
+  return getClient(true).get(url);
+}
+
+const getWordCloudAPI = (surveyId = 0, projectUser = 0) => {
+  let url = `/wordcloud/?`;
+  if (surveyId > 0) {
+    url += `survey=${surveyId}&`;
+  }
+  if (projectUser > 0) {
+    url += `projectUser=${projectUser}`;
+  }
+
+  return getClient(true).get(url);
+};
+
+export const getPerceptionRealityAPI = (surveyId = 0, projectUser = 0) => {
+  return getClient(true).get(`/perceptionreality/?format=json&survey=${surveyId}&projectUser=${projectUser}`);
+};
+
+export const getBubbleChartAPI = (surveyId = 0, projectUser = 0) => {
+  return getClient(true).get(`/bubblechart/?format=json&survey=${surveyId}&projectUser=${projectUser}`);
+};
+
+export const getMyMatrixAPI = (survey, projectUser) => {
+  return getClient(true).get(`/mymatrix?survey=${survey}&projectuser=${projectUser}`)
+}
+
+export const getProjectMatrixAPI = (survey, projectUser) => {
+  return getClient(true).get(`/projectmatrix?survey=${survey}&projectuser=${projectUser}`)
+}
+
+export const getTextValueAPI = (survey, tab, projectUser) => {
+  return getClient(true).get(`/keytheme?survey=${survey}&tab=${tab}&projectuser=${projectUser}`)
+}
+
+export const getKeyThemeMenuCntAPI = (survey, projectUser) => {
+  return getClient(true).get(`/keymenucnt?survey=${survey}&projectuser=${projectUser}`)
+}
+
+export const getAcknowledgementAPI = (responseId, projectUser) => {
+  return getClient(true).get(`/acknowledgement?response=${responseId}&projectuser=${projectUser}`)
+}
+
+export const postAcknowledgementAPI = (data) => {
+  return getClient(true).post(`/acknowledgement/`, data)
+}
+
+export const updateAcknowledgementAPI = (responseId, data) => {
+  return getClient(true).put(`/acknowledgement/${responseId}/`, data)
+}
+
+export const voteKeyThemesAPI = (id, data) => {
+  if (id === null) {
+    return getClient(true).post(`/keythemeupdownvote/`, data)
+  } else {
+    return getClient(true).put(`/keythemeupdownvote/${id}/`, data)
+  }
+}
+
+export const advisorAPI = (survey, projectUser) => {
+  return getClient(true).get(`/advisorinsights?survey=${survey}&projectuser=${projectUser}`);
+}
+
+export const checkDashboardStatusAPI = (survey, projectUser) => {
+  return getClient(true).get(`/checkdashboardstatus?survey=${survey}&projectuser=${projectUser}`);
+}
+
+// const getSentimentReportAPI = (
+//   surveyId,
+//   startDate = "2020-01-01",
+//   endDate = "2021-12-31"
+// ) => {
+//   return getClient(true).get(
+//     `/sentimentreport/?survey=${surveyId}&stdt=${startDate}&eddt=${endDate}`
+//   );
+// };
 
 /**
  * deprecated...
@@ -392,4 +516,5 @@ export {
   getFeedbackSummaryAPI,
   getParticipationAPI,
   updateStakeholderCategoryAPI,
+  getWordCloudAPI,
 };

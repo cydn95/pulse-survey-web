@@ -1,0 +1,29 @@
+.no-dashboard-root {
+  width: 100%;
+  padding: 60px 20% 30px;
+  box-sizing: border-box;
+  text-align: center;
+  color: #273645;
+
+  .no-dashboard-image {
+    width: 100%;
+    max-width: 462px;
+  }
+
+  .no-dashboard-title {
+    font-size: 46px;
+    font-weight: 600;
+    line-height: 0.87;
+    letter-spacing: -0.64px;
+    text-align: center;
+    margin-top: 68px;
+  }
+
+  .no-dashboard-text {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.67;
+    letter-spacing: -0.64px;
+    margin-top: 31px;
+  }
+}

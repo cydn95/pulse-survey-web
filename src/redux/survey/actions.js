@@ -46,10 +46,12 @@ export const submitSurvey = (
   aboutMe,
   projectId,
   surveyUserId,
-  history
+  surveyId,
+  history,
+  navigateToNext
 ) => ({
   type: SUBMIT_SURVEY,
-  payload: { surveyList, aboutMe, projectId, surveyUserId, history },
+  payload: { surveyList, aboutMe, projectId, surveyUserId, surveyId, history, navigateToNext },
 });
 
 export const submitSurveySuccess = (surveyId) => ({

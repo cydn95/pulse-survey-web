@@ -68,7 +68,7 @@ const ProfileInfo = ({ profile, onChangeProfile }) => {
           /> */}
         <Input
           className={styles.input}
-          label="Team"
+          label="Department"
           name="team"
           value={team}
           onChange={(value, e) => setTeam(value)}

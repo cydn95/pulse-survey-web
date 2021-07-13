@@ -22,22 +22,19 @@ export default class DataStore {
     const addGlyph = (id, count) => {
       entityNodes[id] = {
         ...entityNodes[id],
-        g:
-          count === 0
-            ? []
-            : [
-                {
-                  b: "#00000000",
-                  c: "#1d1d1d",
-                  e: 1.1,
-                  fc: "#f3f5f9",
-                  ff: "sans-serif",
-                  p: 45,
-                  r: 25,
-                  t: count,
-                  w: true,
-                },
-              ],
+        g: count === 0 ?
+          [] :
+          [{
+            b: "#00000000",
+            c: "#1d1d1d",
+            e: 1.1,
+            fc: "#f3f5f9",
+            ff: "sans-serif",
+            p: 45,
+            r: 25,
+            t: count,
+            w: true,
+          }, ],
       };
     };
 
@@ -105,10 +102,16 @@ export default class DataStore {
     };
 
     const constructCoreStructure = (core) => {
-      let { sh_categories, main } = core;
+      let {
+        sh_categories,
+        main
+      } = core;
       let coreElements = [main].concat(sh_categories);
       coreElements.forEach((item) => {
-        let coreElem = { ...item, coreEntity: true };
+        let coreElem = {
+          ...item,
+          coreEntity: true
+        };
         constructNode(coreElem);
         if (coreElem.individualCount && coreElem.individualCount > 0) {
           addGlyph(coreElem.id, coreElem.individualCount);
@@ -126,7 +129,11 @@ export default class DataStore {
       constructCoreStructure(this.coreStructure[entityId]);
     } else {
       // split the various fetched entities
-      let { individuals, teams, organisations } = entities;
+      let {
+        individuals,
+        teams,
+        organisations
+      } = entities;
       // create the individual nodes and update the team and org nodes
       individuals.forEach((individual) => {
         let currentOrganisation = individual.organisation.current;
@@ -175,13 +182,13 @@ export default class DataStore {
         // create the individual's node and set the parentId depending on the currently selected view
         constructNode(individual);
         entityNodes[individual.id].parentId =
-          currentView.length === 0
-            ? ""
-            : currentView.length > 1
-            ? teamNodeId
-            : currentView[0] === "Team"
-            ? teamSHId
-            : orgNodeId;
+          currentView.length === 0 ?
+          "" :
+          currentView.length > 1 ?
+          teamNodeId :
+          currentView[0] === "Team" ?
+          teamSHId :
+          orgNodeId;
 
         // create the link between the organisation and the relevant sh category
         let link = {};

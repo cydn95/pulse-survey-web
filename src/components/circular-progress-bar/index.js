@@ -16,6 +16,32 @@ const getClass = (percentage, styles) => {
   return styles[type];
 };
 
+const getColor = (val) => {
+  if (val === 0) {
+    return 'transparent';
+  }
+
+  // if (val < 40) {
+  //   return "#c00000"; // dark red
+  // }
+
+  // if (val < 50) {
+  //   return "#e56965"; // lighter red
+  // }
+
+  // if (val < 70) {
+  //   return "#4da9ef"; // blue
+  // }
+
+  // if (val < 80) {
+  //   return "#8acbc1"; // lighter green
+  // }
+
+  // return "#00b7a2"; // solid green
+
+  return "#5194c5";
+};
+
 const conicGradientSupported = CSS.supports(
   "background",
   "conic-gradient(black, red)"
@@ -25,13 +51,17 @@ function CircularProgressBar(props) {
   const { className, percent, style, styles } = props;
 
   const angle = percent * 3.6;
-  const extcls =
-    style === "smooth" && conicGradientSupported
-      ? styles.smooth
-      : getClass(percent, styles);
+  // const extcls =
+  //   style === "smooth" && conicGradientSupported
+  //     ? styles.smooth
+  //     : getClass(percent, styles);
+
+  // const extcls = getClass(percent, styles);
+
+  const bgStyle = { background: `${getColor(percent)}`}
 
   return (
-    <div className={classnames(styles.main, extcls, className)}>
+    <div className={classnames(styles.main, className)} style={bgStyle}>
       <div
         className={classnames(
           styles["slider-wrapper"],

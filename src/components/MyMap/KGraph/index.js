@@ -40,7 +40,7 @@ export default class KGraph extends Component {
   async componentDidUpdate(prevProps) {
     let { newStakeholder, layout, viewMode, layoutUpdated } = this.props;
 
-    if (Object.keys(newStakeholder).length > 0) {
+    if (Object.keys(newStakeholder).length > 0 && newStakeholder != prevProps.newStakeholder) {
       await this.keyLinesController.endDrag(newStakeholder);
     }
 

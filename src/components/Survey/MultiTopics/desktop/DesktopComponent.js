@@ -182,13 +182,17 @@ class DesktopComponent extends Component {
   callbackSaveTopicMe = (data) => {
     this.setState((state) => ({
       topicList: [...state.topicList, data],
-    }));
+    }), () => {
+      this.onSelectAnswer("T-" + data.id, data.topicName);
+    });
   };
 
   callbackSaveTopicOther = (data) => {
     this.setState((state) => ({
       topicList: [...state.topicList, data],
-    }));
+    }), () => {
+      this.onSelectAnswer("T-" + data.id, data.topicName);
+    });
   };
 
   handleInputNewTopic = (value) => {
@@ -304,6 +308,7 @@ class DesktopComponent extends Component {
     const { question, skipQuestionList, user, projectTitle } = this.props;
     const { optionList, topicList } = this.state;
 
+    // console.log(question, optionList,  topicList);
     const sortedTopicList = topicList.sort((a, b) => {
       const titleA = a.topicName.toString().toLowerCase();
       const titleB = b.topicName.toString().toLowerCase();
@@ -323,7 +328,7 @@ class DesktopComponent extends Component {
         </div>
         <div className={styles["question-selector"]}>
           {optionList.map((item, index) => {
-            const active = item.id === this.state.answer.integerValue;
+            const active = item.optionName === this.state.answer.topicValue;
             return (
               <div key={item.id} className={styles["option-item"]}>
                 <Radio
@@ -344,7 +349,7 @@ class DesktopComponent extends Component {
             } else {
               selectedValue = this.state.answer.integerValue;
             }
-            const active = item.id === parseInt(selectedValue, 10);
+            const active = item.id.toString() === selectedValue.toString();
             return (
               <div key={`topic-${item.id}`} className={styles["option-item"]}>
                 <Option

@@ -185,13 +185,17 @@ class MobileComponent extends Component {
   callbackSaveTopicMe = (data) => {
     this.setState((state) => ({
       topicList: [...state.topicList, data],
-    }));
+    }), () => {
+      this.onSelectAnswer("T-" + data.id, data.topicName);
+    });
   };
 
   callbackSaveTopicOther = (data) => {
     this.setState((state) => ({
       topicList: [...state.topicList, data],
-    }));
+    }), () => {
+      this.onSelectAnswer("T-" + data.id, data.topicName);
+    });
   };
 
   handleInputNewTopic = (value) => {
@@ -341,7 +345,8 @@ class MobileComponent extends Component {
             } else {
               selectedValue = this.state.answer.integerValue;
             }
-            const active = item.id === parseInt(selectedValue, 10);
+            const active = item.optionName === this.state.answer.topicValue;
+
             return (
               <div key={`topic-${item.id}`} className={styles["option-item"]}>
                 <Option
