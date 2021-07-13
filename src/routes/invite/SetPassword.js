@@ -134,8 +134,10 @@ class SetPassword extends Component {
               "round-text-field",
               passwordValidator
             )}
+            style={{ marginBottom: 20 }}
             name="password"
             value={password}
+            placeholder="Password"
             onChange={(e) => this.handleInput(e)}
           />
           {passwordValidator !== "" && (
@@ -152,6 +154,7 @@ class SetPassword extends Component {
             )}
             name="confirmPassword"
             value={confirmPassword}
+            placeholder="Confirm Password"
             onChange={(e) => this.handleInput(e)}
           />
           {confirmPasswordValidator !== "" && (
