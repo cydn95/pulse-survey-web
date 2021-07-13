@@ -91,13 +91,22 @@ const AboutMeSurvey = ({
 
         for (let j = 0; j < surveyList[i].amquestion.length; j++) {
           if (
-            surveyList[i].amquestion[j].responsestatus === true ||
-            (surveyList[i].amquestion[j].controlType ===
-              controlType.MULTI_TOPICS &&
-              surveyList[i].amquestion[j].topic &&
-              surveyList[i].amquestion[j].topic.length > 0)
+            surveyList[i].amquestion[j].controlType === controlType.MULTI_TOPICS
           ) {
-            answeredCount++;
+            if (
+              surveyList[i].amquestion[j].topic &&
+              surveyList[i].amquestion[j].topic.length > 0
+            ) {
+              answeredCount++;
+            }
+          }
+
+          if (
+            surveyList[i].amquestion[j].controlType !== controlType.MULTI_TOPICS
+          ) {
+            if (surveyList[i].amquestion[j].responsestatus === true) {
+              answeredCount++;
+            }
           }
         }
 
