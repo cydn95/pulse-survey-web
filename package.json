@@ -103,6 +103,7 @@
     "grommet": "^2.13.0",
     "icomoon-free-npm": "^0.0.0",
     "keylines": "file:keylines-6.5.0-64488.tar.gz",
+    "lodash": "^4.17.21",
     "materialize-css": "^1.0.0-rc.2",
     "package.json": "^2.0.1",
     "query-string": "^6.11.0",
