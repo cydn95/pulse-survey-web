@@ -111,11 +111,15 @@ class Sidebar extends Component {
 
     const { pageContent } = this.props;
 
-    const oldSurveyId = this.props.surveyId;
-    const oldSurveyUserId = this.props.surveyUserId;
+    const oldSurveyId = this.props.surveyId ? this.props.surveyId : "";
+    const oldSurveyUserId = this.props.surveyUserId
+      ? this.props.surveyUserId
+      : "";
 
     if (
+      surveyId &&
       surveyId > 0 &&
+      surveyUserId &&
       surveyUserId > 0 &&
       (surveyId.toString() !== oldSurveyId.toString() ||
         surveyUserId.toString() !== oldSurveyUserId.toString())
@@ -153,10 +157,7 @@ class Sidebar extends Component {
       });
     }
 
-    if (
-      (surveyId > 0 &&
-        surveyId.toString() !== this.props.surveyId.toString())
-    ) {
+    if (surveyId && surveyId > 0 && surveyId.toString() !== oldSurveyId) {
       getPageContent(surveyId);
     }
 
