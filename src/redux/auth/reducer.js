@@ -8,6 +8,9 @@ import {
   PROJECT_ID_SUCCESS,
   SURVEY_ID_SUCCESS,
   SET_PASSWORD,
+  RESET_PASSWORD,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAILED,
 } from "Constants/actionTypes";
 
 import { loginErrorType } from "Constants/defaultValues";
@@ -27,6 +30,7 @@ const INIT_STATE = {
 };
 
 export default (state = INIT_STATE, action) => {
+  console.log('action type => ', action.type);
   switch (action.type) {
     case PROJECT_ID_SUCCESS:
       return {
@@ -43,6 +47,12 @@ export default (state = INIT_STATE, action) => {
       };
     case LOGIN_USER:
       return { ...state, loading: true };
+    case RESET_PASSWORD:
+      return { ...state, loading: true };
+    case RESET_PASSWORD_SUCCESS:
+      return { ...state, loading: false };
+    case RESET_PASSWORD_FAILED:
+      return { ...state, loading: false };
     case LOGIN_USER_SUCCESS:
       return { ...state, loading: false, user: action.payload };
     case LOGIN_USER_FAILED:

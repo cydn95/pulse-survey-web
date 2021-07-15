@@ -1,6 +1,7 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import {
   loginAPI,
+  resetPasswordAPI,
   getCRSFTokenAPI,
   setPasswordAPI,
   getSurveyUserAPI,
@@ -13,6 +14,7 @@ import {
   SET_PASSWORD,
   PROJECT_ID,
   SURVEY_ID,
+  RESET_PASSWORD,
 } from "Constants/actionTypes";
 
 import {
@@ -21,6 +23,8 @@ import {
   loginUserFailed,
   setProjectIDSuccess,
   setSurveyIDSuccess,
+  resetPasswordSuccess,
+  resetPasswordFailed,
 } from "Redux/actions";
 
 import { loginErrorType } from "Constants/defaultValues";
@@ -33,6 +37,11 @@ const getCSRFTokenAsync = async () =>
 const loginWithUsernamePasswordAsync = async (username, password, csrf) =>
   await loginAPI(username, password, csrf)
     .then((authUser) => authUser)
+    .catch((error) => error);
+
+const resetPasswordWithEmailAsync = async (email) =>
+  await resetPasswordAPI(email)
+    .then((response) => response)
     .catch((error) => error);
 
 function* loginWithUsernamePassword({ payload }) {
@@ -74,6 +83,29 @@ function* loginWithUsernamePassword({ payload }) {
   } catch (error) {
     // catch throw
     console.log("login error : ", error);
+  }
+}
+
+function* resetPasswordWithEmail({ payload }) {
+  const { email, callback } = payload;
+
+  console.log('test email', email);
+  try {
+    const resetSendStatus = yield call(resetPasswordWithEmailAsync, email);
+
+    console.log("reset send status", resetSendStatus);
+    if (resetSendStatus.status === 200) {
+      yield put(resetPasswordSuccess());
+      callback(true);
+      return;
+    } else {
+      yield put(resetPasswordFailed());
+      callback(false);
+      return;
+    }
+  } catch (error) {
+    // catch throw
+    console.log("reset password : ", error);
   }
 }
 
@@ -189,6 +221,10 @@ export function* watchLoginUser() {
   yield takeEvery(LOGIN_USER, loginWithUsernamePassword);
 }
 
+export function* watchResetPassword() {
+  yield takeEvery(RESET_PASSWORD, resetPasswordWithEmail);
+}
+
 export function* watchLogoutUser() {
   yield takeEvery(LOGOUT_USER, logout);
 }
@@ -208,6 +244,7 @@ export function* watchSetSurveyID() {
 export default function* rootSaga() {
   yield all([
     fork(watchLoginUser),
+    fork(watchResetPassword),
     fork(watchLogoutUser),
     fork(watchSetPassword),
     fork(watchSetProjectID),

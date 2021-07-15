@@ -7,8 +7,14 @@
 
 .button {
   width: 250px;
+  cursor: pointer;
 }
 
 .link {
   color: #00d2b1;
+}
+
+.error {
+  color: #ce5b30;
+  padding-left: 20px;
 }

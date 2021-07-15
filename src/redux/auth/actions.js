@@ -10,6 +10,9 @@ import {
   SURVEY_ID,
   SURVEY_ID_SUCCESS,
   SET_PASSWORD,
+  RESET_PASSWORD,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAILED
 } from "Constants/actionTypes";
 
 export const setProjectID = (projectId) => ({
@@ -63,4 +66,19 @@ export const logoutUser = (history) => ({
 export const setPassword = (email, password, token, history) => ({
   type: SET_PASSWORD,
   payload: { email, password, token, history },
+});
+
+export const resetPassword = (email, callback) => ({
+  type: RESET_PASSWORD,
+  payload: { email, callback },
+});
+
+export const resetPasswordSuccess = () => ({
+  type: RESET_PASSWORD_SUCCESS,
+  payload: {},
+});
+
+export const resetPasswordFailed = () => ({
+  type: RESET_PASSWORD_FAILED,
+  payload: {},
 });

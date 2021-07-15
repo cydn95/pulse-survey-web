@@ -4,6 +4,10 @@ const getCRSFTokenAPI = () => {
   return getClient(false).get("get_csrf/");
 };
 
+const resetPasswordAPI = (email) => {
+  return getClient(false).post("password_reset/", { email: email });
+};
+
 const loginAPI = (username, password, csrf) => {
   return getClient(false).post(
     "api-token-auth/",
@@ -472,6 +476,7 @@ const getKeyDataFromLambda = () => {
 export {
   getCRSFTokenAPI,
   loginAPI,
+  resetPasswordAPI,
   setPasswordAPI,
   projectListByUserAPI,
   surveyListByProjectAPI,
