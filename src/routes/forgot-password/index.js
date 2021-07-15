@@ -90,7 +90,14 @@ const ForgotPasswordLayout = ({ loading, resetPassword, history }) => {
       </LeftRightContainer>
     );
   } else {
-    return "success"
+    return (
+      <LeftRightContainer>
+        <h2>Reset password</h2>
+        <p className="white">
+          A password reset link was sent. Click the link in the email to create a new password.
+        </p>
+      </LeftRightContainer>
+    )
   }
 }
 
