@@ -11,6 +11,9 @@ import {
   RESET_PASSWORD,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAILED,
+  RESET_PASSWORD_CONFIRM,
+  RESET_PASSWORD_CONFIRM_SUCCESS,
+  RESET_PASSWORD_CONFIRM_FAILED,
 } from "Constants/actionTypes";
 
 import { loginErrorType } from "Constants/defaultValues";
@@ -52,6 +55,12 @@ export default (state = INIT_STATE, action) => {
     case RESET_PASSWORD_SUCCESS:
       return { ...state, loading: false };
     case RESET_PASSWORD_FAILED:
+      return { ...state, loading: false };
+    case RESET_PASSWORD_CONFIRM:
+      return { ...state, loading: true };
+    case RESET_PASSWORD_CONFIRM_SUCCESS:
+      return { ...state, loading: false };
+    case RESET_PASSWORD_CONFIRM_FAILED:
       return { ...state, loading: false };
     case LOGIN_USER_SUCCESS:
       return { ...state, loading: false, user: action.payload };

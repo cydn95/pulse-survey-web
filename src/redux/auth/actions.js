@@ -12,7 +12,10 @@ import {
   SET_PASSWORD,
   RESET_PASSWORD,
   RESET_PASSWORD_SUCCESS,
-  RESET_PASSWORD_FAILED
+  RESET_PASSWORD_FAILED,
+  RESET_PASSWORD_CONFIRM,
+  RESET_PASSWORD_CONFIRM_SUCCESS,
+  RESET_PASSWORD_CONFIRM_FAILED,
 } from "Constants/actionTypes";
 
 export const setProjectID = (projectId) => ({
@@ -80,5 +83,20 @@ export const resetPasswordSuccess = () => ({
 
 export const resetPasswordFailed = () => ({
   type: RESET_PASSWORD_FAILED,
+  payload: {},
+});
+
+export const resetPasswordConfirm = (password, token, callback) => ({
+  type: RESET_PASSWORD_CONFIRM,
+  payload: { password, token, callback },
+});
+
+export const resetPasswordConfirmSuccess = () => ({
+  type: RESET_PASSWORD_CONFIRM_SUCCESS,
+  payload: {},
+});
+
+export const resetPasswordConfirmFailed = () => ({
+  type: RESET_PASSWORD_CONFIRM_FAILED,
   payload: {},
 });

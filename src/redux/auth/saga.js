@@ -2,6 +2,7 @@ import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import {
   loginAPI,
   resetPasswordAPI,
+  resetPasswordConfirmAPI,
   getCRSFTokenAPI,
   setPasswordAPI,
   getSurveyUserAPI,
@@ -15,6 +16,7 @@ import {
   PROJECT_ID,
   SURVEY_ID,
   RESET_PASSWORD,
+  RESET_PASSWORD_CONFIRM,
 } from "Constants/actionTypes";
 
 import {
@@ -25,6 +27,8 @@ import {
   setSurveyIDSuccess,
   resetPasswordSuccess,
   resetPasswordFailed,
+  resetPasswordConfirmSuccess,
+  resetPasswordConfirmFailed,
 } from "Redux/actions";
 
 import { loginErrorType } from "Constants/defaultValues";
@@ -41,6 +45,11 @@ const loginWithUsernamePasswordAsync = async (username, password, csrf) =>
 
 const resetPasswordWithEmailAsync = async (email) =>
   await resetPasswordAPI(email)
+    .then((response) => response)
+    .catch((error) => error);
+
+const resetPasswordConfirmWithTokenAsync = async (password, token) =>
+  await resetPasswordConfirmAPI(password, token)
     .then((response) => response)
     .catch((error) => error);
 
@@ -89,11 +98,11 @@ function* loginWithUsernamePassword({ payload }) {
 function* resetPasswordWithEmail({ payload }) {
   const { email, callback } = payload;
 
-  console.log('test email', email);
+  // console.log('test email', email);
   try {
     const resetSendStatus = yield call(resetPasswordWithEmailAsync, email);
 
-    console.log("reset send status", resetSendStatus);
+    // console.log("reset send status", resetSendStatus);
     if (resetSendStatus.status === 200) {
       yield put(resetPasswordSuccess());
       callback(true);
@@ -106,6 +115,26 @@ function* resetPasswordWithEmail({ payload }) {
   } catch (error) {
     // catch throw
     console.log("reset password : ", error);
+  }
+}
+
+function* resetPasswordConfirmWithToken({ payload }) {
+  const { password, token, callback } = payload;
+
+  try {
+    const resetSendStatus = yield call(resetPasswordConfirmWithTokenAsync, password, token);
+
+    if (resetSendStatus.status === 200) {
+      yield put(resetPasswordConfirmSuccess());
+      callback(true);
+      return;
+    } else {
+      yield put(resetPasswordConfirmFailed());
+      callback(false);
+      return;
+    }
+  } catch (error) {
+    console.log('reset password confirm : ', error);
   }
 }
 
@@ -225,6 +254,10 @@ export function* watchResetPassword() {
   yield takeEvery(RESET_PASSWORD, resetPasswordWithEmail);
 }
 
+export function* watchResetPasswordConfirm() {
+  yield takeEvery(RESET_PASSWORD_CONFIRM, resetPasswordConfirmWithToken);
+}
+
 export function* watchLogoutUser() {
   yield takeEvery(LOGOUT_USER, logout);
 }
@@ -245,6 +278,7 @@ export default function* rootSaga() {
   yield all([
     fork(watchLoginUser),
     fork(watchResetPassword),
+    fork(watchResetPasswordConfirm),
     fork(watchLogoutUser),
     fork(watchSetPassword),
     fork(watchSetProjectID),

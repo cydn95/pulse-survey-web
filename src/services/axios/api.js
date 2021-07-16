@@ -8,6 +8,9 @@ const resetPasswordAPI = (email) => {
   return getClient(false).post("password_reset/", { email: email });
 };
 
+const resetPasswordConfirmAPI = (password, token) => {
+  return getClient(false).post("password_reset/confirm/?token=" + token, {password: password, token: token});
+}
 const loginAPI = (username, password, csrf) => {
   return getClient(false).post(
     "api-token-auth/",
@@ -477,6 +480,7 @@ export {
   getCRSFTokenAPI,
   loginAPI,
   resetPasswordAPI,
+  resetPasswordConfirmAPI,
   setPasswordAPI,
   projectListByUserAPI,
   surveyListByProjectAPI,
