@@ -132,6 +132,7 @@
     "redux-saga": "^0.16.0",
     "styled-components": "^5.1.1",
     "uuidv4": "^6.0.2",
+    "validator": "^13.6.0",
     "webfontloader": "^1.6.28"
   }
 }

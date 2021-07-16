@@ -10,6 +10,7 @@ import login from 'Routes/login'
 import error from 'Routes/error'
 import coming from 'Routes/coming'
 import forgotPassword from 'Routes/forgot-password'
+import ResetPassword from 'Routes/reset-password'
 
 // Invited
 import SetPassword from 'Routes/invite/SetPassword'
@@ -95,7 +96,8 @@ class App extends Component {
 							<Route path={`/forgot-password`} component={forgotPassword} />
 							<Route path={`/error`} component={error} />
 							<Route path={`/coming-soon`} component={coming} />
-							<Route path={`/set-password`} component={SetPassword}/>
+							<Route path={`/set-password`} component={SetPassword} />
+							<Route path={`/reset-password`} component={ResetPassword} />
 							<Route path={`/welcome`} component={Welcome} />
 							<Redirect to="/error" />
 						</Switch>	
