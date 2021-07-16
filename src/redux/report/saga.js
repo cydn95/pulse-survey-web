@@ -70,7 +70,7 @@ import {
   getFeedbackSummaryByShGroup,
   getFeedbackSummaryByTeamOrOrganization,
 } from "./summaryFunctions";
-import { driverAnalysisCnt } from "./actions";
+import { driverAnalysisCnt, participation } from "./actions";
 
 const getOverallSentimentAsync = async (surveyId) =>
   await getOverallSentimentAPI(surveyId)
@@ -399,7 +399,7 @@ function* getParticipation({ payload }) {
           allUserCount++;
         }
 
-        if (result.data[i].sendInvite === false) {
+        if (result.data[i].sendInvite === null || result.data[i].sendInvite === false) {
 
           if (result.data[i].shType.shTypeName === "Team Member") {
             teamParticipationRet.notIssued += 1;
@@ -412,20 +412,22 @@ function* getParticipation({ payload }) {
           continue;
         }
 
-        if (result.data[i].accept_status === false) {
+        // if (result.data[i].accept_status === false) {
 
-          if (result.data[i].shType.shTypeName === "Team Member") {
-            teamParticipationRet.rejected += 1;
-          }
+        //   if (result.data[i].shType.shTypeName === "Team Member") {
+        //     teamParticipationRet.rejected += 1;
+        //   }
 
-          if (result.data[i].shType.shTypeName === "Stakeholder") {
-            participationRet.rejected += 1;
-          }
+        //   if (result.data[i].shType.shTypeName === "Stakeholder") {
+        //     participationRet.rejected += 1;
+        //   }
 
-          continue;
-        }
+        //   continue;
+        // }
 
-        if (result.data[i].am_total === result.data[i].am_answered) {
+        const totalAnswered = Number(result.data[i].am_answered);
+        const totalQuestion = Number(result.data[i].am_total);
+        if (totalAnswered >= (totalQuestion * 0.9)) {
 
           if (result.data[i].shType.shTypeName === "Team Member") {
             teamParticipationRet.completed += 1;
@@ -449,7 +451,7 @@ function* getParticipation({ payload }) {
 
       const filteredParticipationRet = [];
       const filteredTeamParticipationRet = [];
-
+ 
       filteredParticipationRet.push(
         ...[
           { name: "Pie1", count: participationRet.notIssued * 100 },

@@ -143,23 +143,41 @@ export const getRandomSubArray = (arr, n) => {
 // }
 
 export const getColorFromValue = (val) => {
-  if (val < 2.5) {
-    return '#a9709c';
-  } else if (val < 4) {
-    return '#8a86b8';
-  } else if (val < 5) {
-    return '#838db8';
-  } else if (val < 6) {
-    return '#2b5770';
-  } else if (val < 7) {
-    return '#a0409d';
-  } else if (val < 8) {
-    return '#aa984b';
-  } else if (val < 9) {
-    return '#66931f';
-  } else {
-    return '#14b0bf';
+  // if (val < 2.5) {
+  //   return '#a9709c';
+  // } else if (val < 4) {
+  //   return '#8a86b8';
+  // } else if (val < 5) {
+  //   return '#838db8';
+  // } else if (val < 6) {
+  //   return '#2b5770';
+  // } else if (val < 7) {
+  //   return '#a0409d';
+  // } else if (val < 8) {
+  //   return '#aa984b';
+  // } else if (val < 9) {
+  //   return '#66931f';
+  // } else {
+  //   return '#14b0bf';
+  // }
+
+  if (val < 4) {
+    return "#c00000"; // dark red
   }
+
+  if (val < 5) {
+    return "#e56965"; // lighter red
+  }
+
+  if (val < 7) {
+    return "#4da9ef"; // blue
+  }
+
+  if (val < 8) {
+    return "#8acbc1"; // lighter green
+  }
+
+  return "#00b7a2"; // solid green
 }
 
 export const isJSONObject = (obj) => {
