@@ -53,7 +53,7 @@ const KGraphNavControls = (props) => {
         disabled={saveLoading ? true : false}
         onClick={(e) => saveGraph(e)}
       >
-        Save
+        Save Graph
       </Button>
       <div className={styles.dropdown}>
         <DropDown

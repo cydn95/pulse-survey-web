@@ -1,10 +1,17 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import AvatarComponent from "Components/avatar/Component";
+import { stakeholderList } from "Redux/actions";
 
 import styles from "./styles.scss";
 
 class MapStakeholderList extends Component {
+  componentWillMount() {
+    const { surveyId, surveyUserId, actionStakeholderList } = this.props;
+    actionStakeholderList(surveyUserId, surveyId);
+  }
+
   render() {
     const {
       myMapStakeholderList,
@@ -261,4 +268,11 @@ class MapStakeholderList extends Component {
   }
 }
 
-export default MapStakeholderList;
+const mapStateToProps = ({ authUser }) => {
+  const { projectId, surveyId, surveyUserId } = authUser;
+  return { projectId, surveyUserId, surveyId };
+};
+
+export default connect(mapStateToProps, {
+  actionStakeholderList: stakeholderList
+})(MapStakeholderList);
