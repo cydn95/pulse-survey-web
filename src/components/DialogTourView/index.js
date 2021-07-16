@@ -66,34 +66,48 @@ const DialogTourView = ({
   open,
   onClose,
   projectTitle,
-  nikelContent,
   surveyId,
   actionNikelTourContent,
 }) => {
+  const [nikelContent, setNikelContent] = useState([]);
+
   const [step, setStep] = useState(0);
   const [tour, setTour] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const content = nikelContent.length === 0 ? null : {...nikelContent[step]}
+    const content =
+      nikelContent.length === 0 ? null : { ...nikelContent[step] };
     if (content) {
       content.title = content.title.replace(/{{PROJECT}}/i, projectTitle);
-      content.content = content.content.replace(/{{PROJECT}}/i, projectTitle)
+      content.content = content.content.replace(/{{PROJECT}}/i, projectTitle);
     }
     setTour(content);
   }, [step, projectTitle]);
 
   useEffect(() => {
     if (surveyId > 0) {
-      actionNikelTourContent(surveyId);
+      setLoading(true);
+      setNikelContent([]);
+      actionNikelTourContent(surveyId, (content) => {
+        setNikelContent([...content]);
+      });
+    } else {
     }
   }, [actionNikelTourContent, surveyId]);
 
   useEffect(() => {
+    if (loading) {
+      setLoading(false);
+    }
     setTour(nikelContent[step]);
   }, [nikelContent]);
 
   useEffect(() => {
     if (!nikelContent || nikelContent.length === 0) {
+      if (!loading) {
+        // onClose();
+      }
       return;
     }
 
@@ -132,6 +146,14 @@ const DialogTourView = ({
     }
   };
 
+  if (!tour) {
+    return null;
+  }
+
+  if (!("title" in tour) || !("content" in tour)) {
+    return null;
+  }
+
   return (
     <Dialog
       onClose={(e) => onClose(e)}
@@ -141,64 +163,58 @@ const DialogTourView = ({
       fullWidth={true}
       classes={{ paper: dlgStyles.root }}
     >
-      {tour && (
-        <Fragment>
-          <DialogTitle
-            id="customized-dialog-title"
-            background="#fff"
-            onClose={(e) => onClose(e)}
-          ></DialogTitle>
-          <DialogContent>
-            <div className={dlgStyles.content}>
-              <div
-                className={dlgStyles["bg-section"]}
-                style={containerBackgroundStyle()}
-              >
-                <div
-                  className={dlgStyles.img}
-                  style={imgBackgroundStyle()}
-                ></div>
-              </div>
-              <div className={dlgStyles.description}>
-                <h1>{tour.title}</h1>
-                <div
-                  className={styles.content}
-                  dangerouslySetInnerHTML={createMarkup(tour.content)}
-                />
-              </div>
-              <div className={dlgStyles.control}>
-                <input
-                  type="button"
-                  value="Back"
-                  className={dlgStyles.back}
-                  onClick={(e) => onBack()}
-                />
-                <input
-                  type="button"
-                  value="Next"
-                  className={dlgStyles.next}
-                  onClick={(e) => onNext()}
-                />
-              </div>
-              <div className={dlgStyles.navigator}>
-                <SlideNavigator
-                  onSelect={(position) => onSelect(position)}
-                  cnt={nikelContent.length}
-                  position={step}
-                />
-              </div>
+      <Fragment>
+        <DialogTitle
+          id="customized-dialog-title"
+          background="#fff"
+          onClose={(e) => onClose(e)}
+        ></DialogTitle>
+        <DialogContent>
+          <div className={dlgStyles.content}>
+            <div
+              className={dlgStyles["bg-section"]}
+              style={containerBackgroundStyle()}
+            >
+              <div className={dlgStyles.img} style={imgBackgroundStyle()}></div>
             </div>
-          </DialogContent>
-        </Fragment>
-      )}
+            <div className={dlgStyles.description}>
+              <h1>{tour.title}</h1>
+              <div
+                className={styles.content}
+                dangerouslySetInnerHTML={createMarkup(tour.content)}
+              />
+            </div>
+            <div className={dlgStyles.control}>
+              <input
+                type="button"
+                value="Back"
+                className={dlgStyles.back}
+                onClick={(e) => onBack()}
+              />
+              <input
+                type="button"
+                value="Next"
+                className={dlgStyles.next}
+                onClick={(e) => onNext()}
+              />
+            </div>
+            <div className={dlgStyles.navigator}>
+              <SlideNavigator
+                onSelect={(position) => onSelect(position)}
+                cnt={nikelContent.length}
+                position={step}
+              />
+            </div>
+          </div>
+        </DialogContent>
+      </Fragment>
     </Dialog>
   );
 };
 
-const mapStateToProps = ({ authUser, tour }) => {
-  const { nikelContent } = tour;
+const mapStateToProps = ({ authUser }) => {
   const { projectTitle } = authUser;
-  return { projectTitle, nikelContent };
+  return { projectTitle };
 };
 
 export default connect(mapStateToProps, {

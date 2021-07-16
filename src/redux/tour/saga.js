@@ -24,12 +24,22 @@ const getNikelTourContentAsync = async (surveyId) =>
     .catch((error) => error);
 
 function* getNikelTourContent({ payload }) {
-  const { surveyId } = payload;
+  const { surveyId, callback } = payload;
   try {
     const result = yield call(getNikelTourContentAsync, surveyId);
 
     if (result.status === 200) {
       yield put(nikelTourContentSuccess(result.data));
+      const nikelContent = [];
+      for (let i = 0; i < result.data.length; i++) {
+        nikelContent.push({
+          background: result.data[i].backgroundColor,
+          img: result.data[i].img,
+          title: result.data[i].pageName,
+          content: result.data[i].pageContent,
+        });
+      }
+      callback(nikelContent);
     }
   } catch (error) {}
 }
