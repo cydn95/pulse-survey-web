@@ -4,8 +4,12 @@ import { connect } from "react-redux";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 
-import { updateStakeholderCategory, stakeholderList } from "Redux/actions";
-
+import {
+  updateStakeholderCategory,
+  stakeholderList,
+  kMapData,
+  projectMapData,
+} from "Redux/actions";
 
 import dlgStyles from "./styles.scss";
 
@@ -19,7 +23,10 @@ const StakeholderUpdatePanel = ({
   surveyId,
   surveyUserId,
   actionUpdateStakeholderCategory,
-  actionStakeholderList
+  actionStakeholderList,
+  actionKMapData,
+  actionProjectMapData,
+  userId,
 }) => {
   const [selectedMyCategory, setSelectedMyCategory] = useState([]);
   const [selectedProjectCategory, setSelectedProjectCategory] = useState([]);
@@ -98,16 +105,30 @@ const StakeholderUpdatePanel = ({
       projectUser,
       callbackUpdate
     );
-  }, [selectedMyCategory, selectedProjectCategory, projectId, surveyId, currentUser])
+  }, [
+    selectedMyCategory,
+    selectedProjectCategory,
+    projectId,
+    surveyId,
+    currentUser,
+  ]);
   // const handleUpdateCategory = () => {
-    
+
   // };
 
   const callbackUpdate = () => {
-    console.log("callback");
+    // console.log("callback");
     // actionStakeholderList(surveyUserId, surveyId);
     // window.location.reload(false);
     // onClose();
+    // console.log(isStart);
+    // if (isStart) {
+    //   setIsStart(false);
+    //   return;
+    // }
+    // actionKMapData(surveyUserId, userId);
+    // actionProjectMapData(surveyUserId, userId);
+    // actionStakeholderList(surveyUserId, surveyId);
   };
 
   return (
@@ -121,7 +142,7 @@ const StakeholderUpdatePanel = ({
               key={`my-map-category-${map.id}`}
               control={
                 <Checkbox
-                  style={{color: '#fff'}}
+                  style={{ color: "#fff" }}
                   color="primary"
                   checked={selected}
                   name="checkedA"
@@ -142,7 +163,7 @@ const StakeholderUpdatePanel = ({
               key={`project-map-category-${map.id}`}
               control={
                 <Checkbox
-                  style={{ color: '#fff' }}
+                  style={{ color: "#fff" }}
                   checked={selected}
                   name="checkedA"
                   onClick={(e) => handleSelectProjectCategory(map.id)}
@@ -158,11 +179,13 @@ const StakeholderUpdatePanel = ({
 };
 
 const mapStateToProps = ({ authUser }) => {
-  const { projectId, surveyId, surveyUserId } = authUser;
-  return { projectId, surveyUserId, surveyId };
+  const { projectId, surveyId, surveyUserId, user } = authUser;
+  return { projectId, surveyUserId, surveyId, userId: user.userId };
 };
 
 export default connect(mapStateToProps, {
   actionUpdateStakeholderCategory: updateStakeholderCategory,
-  actionStakeholderList: stakeholderList
+  actionStakeholderList: stakeholderList,
+  actionKMapData: kMapData,
+  actionProjectMapData: projectMapData,
 })(StakeholderUpdatePanel);

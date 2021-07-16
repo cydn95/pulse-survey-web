@@ -22,7 +22,7 @@ import {
 } from "Redux/actions";
 
 import {
-  KGraph,
+  KGraphContainer,
   AoSurvey,
   KGraphNavControls,
   StakeholderManager,
@@ -1173,7 +1173,7 @@ class MyMap extends React.Component {
                   teamList.length > 0 &&
                   shCategoryList.length > 0 &&
                   mapGetLoading === false && (
-                    <KGraph
+                    <KGraphContainer
                       setParentState={this.setState.bind(this)}
                       apList={apList}
                       esList={esList}
@@ -1198,7 +1198,7 @@ class MyMap extends React.Component {
                   teamList.length > 0 &&
                   projectMapShCategoryList.length > 0 &&
                   mapGetLoading === false && (
-                    <KGraph
+                    <KGraphContainer
                       setParentState={this.setState.bind(this)}
                       apList={projectApList}
                       esList={projectEsList}
