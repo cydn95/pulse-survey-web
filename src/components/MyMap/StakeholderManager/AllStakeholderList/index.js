@@ -101,6 +101,27 @@ class AllStakeholderList extends Component {
       (s) => s.fullName.toLowerCase().indexOf(search.toLowerCase()) >= 0
     );
 
+    filteredStakeholderList.sort((a, b) => {
+      const aName = a.fullName;
+      const bName = b.fullName;
+
+      let aLastName = '';
+      if (aName.split(' ').length > 1) {
+        aLastName = aName.split(' ')[1];
+      } else {
+        aLastName = aName;
+      }
+
+      let bLastName = '';
+      if (bName.split(' ').length > 1) {
+        bLastName = bName.split(' ')[1];
+      } else {
+        bLastName = bName;
+      }
+
+      return aLastName.localeCompare(bLastName);
+    })
+
     const { viewType, selectedStakeholder, userTitle } = this.state;
     let userCount = allStakeholders.length;
 
