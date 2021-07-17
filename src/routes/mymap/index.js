@@ -260,24 +260,25 @@ class MyMap extends React.Component {
       // Individual -> Organization
       let organizationList = [];
       userList.forEach((user) => {
+        const organizationName = (user.projectOrganization && user.projectOrganization !== '') ? user.projectOrganization : user.user.organization.name;
         if (organizationList.length === 0) {
           organizationList.push({
-            id: "O_" + user.user.organization.name,
+            id: "O_" + organizationName,
             icon: "fa-sitemap",
-            name: user.user.organization.name,
+            name: organizationName,
           });
         } else {
           let bExist = false;
           organizationList.forEach((o) => {
-            if (o.id === "O_" + user.user.organization.name) {
+            if (o.id === "O_" + organizationName) {
               bExist = true;
             }
           });
           if (bExist === false) {
             organizationList.push({
-              id: "O_" + user.user.organization.name,
+              id: "O_" + organizationName,
               icon: "fa-sitemap",
-              name: user.user.organization.name,
+              name: organizationName,
             });
           }
         }
@@ -355,6 +356,9 @@ class MyMap extends React.Component {
                   continue;
                 }
                 if (userList[i].shCategory[j] === mapUser.shCategory) {
+
+                  const organizationName = (userList[i].projectOrganization && userList[i].projectOrganization !== '') ? userList[i].projectOrganization : userList[i].user.organization.name;
+
                   individualUser.id = `S_${userList[i].user.id}_SHC_${userList[i].shCategory[j]}`;
                   individualUser.avatar =
                     userList[i].user.avatar == null
@@ -362,7 +366,7 @@ class MyMap extends React.Component {
                       : userList[i].user.avatar.name;
                   individualUser.name = `${userList[i].user.first_name} ${userList[i].user.last_name}`;
                   individualUser.team.current = `T_${userList[i].team.id}`;
-                  individualUser.organisation.current = `O_${userList[i].user.organization.name}`;
+                  individualUser.organisation.current = `O_${organizationName}`;
                   individualUser.sh_category.current = `SHC_${userList[i].shCategory[j]}`;
                   
                   // Calculate Survey Completion - MyMap (Sentiment Answer should be completion rate)
@@ -467,6 +471,8 @@ class MyMap extends React.Component {
             if (userList[i].id === mapUser.projectUserId) {
               for (let j = 0; j < userList[i].shCategory.length; j++) {
                 if (userList[i].shCategory[j] === mapUser.shCategory) {
+                  const organizationName = (userList[i].projectOrganization && userList[i].projectOrganization !== '') ? userList[i].projectOrganization : userList[i].user.organization.name;
+
                   individualUser.id = `S_${userList[i].user.id}_SHC_${userList[i].shCategory[j]}`;
                   individualUser.avatar =
                     userList[i].user.avatar == null
@@ -474,7 +480,7 @@ class MyMap extends React.Component {
                       : userList[i].user.avatar.name;
                   individualUser.name = `${userList[i].user.first_name} ${userList[i].user.last_name}`;
                   individualUser.team.current = `T_${userList[i].team.id}`;
-                  individualUser.organisation.current = `O_${userList[i].user.organization.name}`;
+                  individualUser.organisation.current = `O_${organizationName}`;
                   individualUser.sh_category.current = `SHC_${userList[i].shCategory[j]}`;
                   
                   // Calculate Survey Completion - ProjectMap (Sentiment answer should be completion rate)
