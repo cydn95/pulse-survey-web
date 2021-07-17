@@ -33,7 +33,7 @@ const INIT_STATE = {
 };
 
 export default (state = INIT_STATE, action) => {
-  console.log('action type => ', action.type);
+  // console.log('action type => ', action.type);
   switch (action.type) {
     case PROJECT_ID_SUCCESS:
       return {
