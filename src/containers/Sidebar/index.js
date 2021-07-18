@@ -87,10 +87,14 @@ class Sidebar extends Component {
   };
 
   componentDidMount() {
-    const { getProjectListByUser, user, getTooltipTourContent } = this.props;
+    const { getProjectListByUser, user, getTooltipTourContent, getPageContent, surveyId } = this.props;
 
     getProjectListByUser(user.userId);
     getTooltipTourContent();
+
+    if (surveyId) {
+      getPageContent(surveyId);
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -157,7 +161,7 @@ class Sidebar extends Component {
       });
     }
 
-    if (surveyId && surveyId > 0 && surveyId.toString() !== oldSurveyId) {
+    if (surveyId && surveyId > 0 && surveyId.toString() !== oldSurveyId.toString()) {
       getPageContent(surveyId);
     }
 
