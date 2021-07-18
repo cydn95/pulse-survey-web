@@ -87,7 +87,7 @@ class MapStakeholderList extends Component {
     }
 
     let groupedProjectStakeholderList = {};
-    for (let i = 0; i < projectMapShCategoryList.length; i++) {
+    for (let i = 0; i < shCategoryList.length; i++) {
       for (let j = 0; j < projectMapStakeholderList.length; j++) {
         let bAdd = false;
         if (
