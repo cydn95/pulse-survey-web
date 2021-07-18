@@ -637,10 +637,11 @@ class MyMap extends React.Component {
           color: "transparent",
           icon: "fa-user",
           avatar: projectUser.userAvatar,
-          survey_completion: (
-            (projectUser.aoAnswered / projectUser.aoTotal) *
-            100
-          ).toFixed(2),
+          // survey_completion: (
+          //   (projectUser.aoAnswered / projectUser.aoTotal) *
+          //   100
+          // ).toFixed(2),
+          survey_completion: 0,
           iconColor: "rgb(0, 0, 0)",
           team: {
             current: projectUser.teamId,
@@ -736,10 +737,11 @@ class MyMap extends React.Component {
           color: "transparent",
           icon: "fa-user",
           avatar: projectUser.userAvatar,
-          survey_completion: (
-            (projectUser.aoAnswered / projectUser.aoTotal) *
-            100
-          ).toFixed(2),
+          // survey_completion: (
+          //   (projectUser.aoAnswered / projectUser.aoTotal) *
+          //   100
+          // ).toFixed(2),
+          survey_completion: 0,
           iconColor: "rgb(0, 0, 0)",
           team: {
             current: projectUser.teamId,
