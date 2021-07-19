@@ -429,7 +429,7 @@ class Sidebar extends Component {
                           )
                         }
                       >
-                        {menu.pageName}
+                        {menu.tabName}
                       </MenuItem>
                     ))}
                   </SubMenu>
