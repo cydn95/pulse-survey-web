@@ -20,6 +20,7 @@ import {
   UPDATE_STAKEHOLDER,
   UPDATE_STAKEHOLDER_SUCCESS,
   STAKEHOLDER_ANSWER,
+  CLEAR_COMMON
 } from "Constants/actionTypes";
 
 export const teamList = (projectId = 0, surveyId = 0) => ({
@@ -122,3 +123,8 @@ export const stakeholderAnswer = (projectUserId, questionId) => ({
   type: STAKEHOLDER_ANSWER,
   payload: { projectUserId, questionId },
 });
+
+export const clearCommon = () => ({
+  type: CLEAR_COMMON
+});
+

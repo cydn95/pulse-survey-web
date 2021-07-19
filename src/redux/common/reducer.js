@@ -18,6 +18,7 @@ import {
   UPDATE_STAKEHOLDER,
   UPDATE_STAKEHOLDER_SUCCESS,
   STAKEHOLDER_ANSWER,
+  CLEAR_COMMON
 } from "Constants/actionTypes";
 
 import { SH_CATEGORY_TYPE } from "Constants/defaultValues";
@@ -110,6 +111,8 @@ export default (state = INIT_STATE, action) => {
       }
 
       return { ...state };
+    case CLEAR_COMMON:
+      return { ...INIT_STATE };
     default:
       return { ...state };
   }

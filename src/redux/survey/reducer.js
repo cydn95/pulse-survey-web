@@ -10,6 +10,7 @@ import {
   ADD_ABOUT_ME_TOPIC_SUCCESS,
   UPDATE_ABOUT_ME_TOPIC_SUCCESS,
   DELETE_ABOUT_ME_TOPIC_SUCCESS,
+  CLEAR_ABOUTME
 } from "Constants/actionTypes";
 
 const INIT_STATE = {
@@ -19,7 +20,7 @@ const INIT_STATE = {
   loading: false,
   optionList: [],
   aboutMe: {
-    project: 1,
+    project: 0,
     user: localStorage.getItem("userId"),
     userPermission: [1],
     team: 0,
@@ -99,6 +100,8 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loading: true, surveyId: action.payload.surveyId };
     case ABOUTME:
       return { ...state, aboutMe: action.payload.data };
+    case CLEAR_ABOUTME:
+      return { ...INIT_STATE }
     default:
       return { ...state };
   }

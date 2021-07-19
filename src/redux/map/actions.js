@@ -7,6 +7,7 @@ import {
   PROJECTMAP_DATA_SUCCESS,
   PROJECTMAP_SAVE,
   PROJECTMAP_SAVE_SUCCESS,
+  CLEAR_MAP
 } from "Constants/actionTypes";
 
 export const kMapData = (projectUserId, userId = 0) => ({
@@ -45,4 +46,8 @@ export const projectMapSave = (mapData, projectUserId, userId = 0, callback = nu
 
 export const projectMapSaveSuccess = () => ({
   type: PROJECTMAP_SAVE_SUCCESS,
+});
+
+export const clearMap = () => ({
+  type: CLEAR_MAP,
 });

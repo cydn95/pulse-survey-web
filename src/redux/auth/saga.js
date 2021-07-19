@@ -29,6 +29,9 @@ import {
   resetPasswordFailed,
   resetPasswordConfirmSuccess,
   resetPasswordConfirmFailed,
+  clearAboutMe,
+  clearCommon,
+  clearMap
 } from "Redux/actions";
 
 import { loginErrorType } from "Constants/defaultValues";
@@ -142,6 +145,11 @@ function* logout({ payload }) {
   const { history } = payload;
   try {
     // yield call(logoutAsync, history);
+
+    yield put(clearAboutMe());
+    yield put(clearCommon());
+    yield put(clearMap());
+
     localStorage.removeItem("tour");
     localStorage.removeItem("projectId");
     localStorage.removeItem("projectTitle");
