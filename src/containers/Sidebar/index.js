@@ -87,7 +87,13 @@ class Sidebar extends Component {
   };
 
   componentDidMount() {
-    const { getProjectListByUser, user, getTooltipTourContent, getPageContent, surveyId } = this.props;
+    const {
+      getProjectListByUser,
+      user,
+      getTooltipTourContent,
+      getPageContent,
+      surveyId,
+    } = this.props;
 
     getProjectListByUser(user.userId);
     getTooltipTourContent();
@@ -161,7 +167,11 @@ class Sidebar extends Component {
       });
     }
 
-    if (surveyId && surveyId > 0 && surveyId.toString() !== oldSurveyId.toString()) {
+    if (
+      surveyId &&
+      surveyId > 0 &&
+      surveyId.toString() !== oldSurveyId.toString()
+    ) {
       getPageContent(surveyId);
     }
 
@@ -322,6 +332,7 @@ class Sidebar extends Component {
       projectList,
       pageContent,
       guide,
+      projectId,
       surveyId,
     } = this.props;
     const { subMenuOpen, run, steps } = this.state;
@@ -444,13 +455,15 @@ class Sidebar extends Component {
               </Menu> */}
               <Menu iconShape="square">
                 <SubMenu title="Help">
-                  <MenuItem
-                    onClick={(e) =>
-                      this.handleClickSubMenu(e, "take-the-tour", `/app/tour`)
-                    }
-                  >
-                    Take the tour
-                  </MenuItem>
+                  {projectId && surveyId && (
+                    <MenuItem
+                      onClick={(e) =>
+                        this.handleClickSubMenu(e, "take-the-tour", `/app/tour`)
+                      }
+                    >
+                      Take the tour
+                    </MenuItem>
+                  )}
                   <MenuItem
                     onClick={(e) =>
                       this.handleClickSubMenu(
