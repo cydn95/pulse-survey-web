@@ -160,20 +160,28 @@ const submitSurveyAsync = async (answerData) =>
 function* submitSurvey({ payload }) {
   const { surveyList, projectId, surveyUserId, surveyId, history, navigateToNext } = payload;
   let answerList = [];
-
+  // console.log(surveyList);
   for (let i = 0; i < surveyList.length; i++) {
     let amquestions = surveyList[i].amquestion;
 
     for (let j = 0; j < amquestions.length; j++) {
-      if (
-        (amquestions[j].answer.integerValue === "" ||
-          amquestions[j].answer.integerValue === 0) &&
-        amquestions[j].answer.topicValue === "" &&
-        amquestions[j].answer.commentValue === "" &&
-        amquestions[j].answer.skipValue === "" &&
-        !amquestions[j].responsestatus
-      ) {
-        continue;
+
+      if (amquestions[j].controlType === controlType.MULTI_TOPICS) {
+        if (!amquestions[j].topic || amquestions[j].topic.length === 0) {
+          continue;
+        }
+        amquestions[j].answer.integerValue = amquestions[j].topic[0].id;
+      } else {
+        if (
+          (amquestions[j].answer.integerValue === "" ||
+            amquestions[j].answer.integerValue === 0) &&
+          amquestions[j].answer.topicValue === "" &&
+          amquestions[j].answer.commentValue === "" &&
+          amquestions[j].answer.skipValue === "" &&
+          !amquestions[j].responsestatus
+        ) {
+          continue;
+        }
       }
 
       let integerValue = amquestions[j].answer.integerValue;

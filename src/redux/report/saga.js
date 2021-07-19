@@ -385,6 +385,8 @@ function* getParticipation({ payload }) {
       let allUserCount = 0;
       let teamUserCount = 0;
 
+      // console.log('participation', result.data);
+
       for (let i = 0; i < result.data.length; i++) {
 
         if (!result.data[i].shType) {
@@ -427,6 +429,9 @@ function* getParticipation({ payload }) {
 
         const totalAnswered = Number(result.data[i].am_answered);
         const totalQuestion = Number(result.data[i].am_total);
+
+        // console.log('total answered', result.data[i].id, totalAnswered, totalQuestion);
+
         if (totalAnswered >= (totalQuestion * 0.9)) {
 
           if (result.data[i].shType.shTypeName === "Team Member") {
@@ -448,6 +453,8 @@ function* getParticipation({ payload }) {
           }
         }
       }
+
+      // console.log(teamParticipationRet)
 
       const filteredParticipationRet = [];
       const filteredTeamParticipationRet = [];
