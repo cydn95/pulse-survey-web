@@ -4,7 +4,7 @@ const getCRSFTokenAPI = () => {
   return getClient(false).get("get_csrf/");
 };
 
-const resetPasswordAPI = (email) => {
+const resetPasswordAPI = (email, csrf) => {
   return getClient(false).post(
     "password_reset/",
     { email: email },
@@ -16,7 +16,7 @@ const resetPasswordAPI = (email) => {
   );
 };
 
-const resetPasswordConfirmAPI = (password, token) => {
+const resetPasswordConfirmAPI = (password, token, csrf) => {
   return getClient(false).post(
     "password_reset/confirm/?token=" + token,
     {

@@ -46,13 +46,13 @@ const loginWithUsernamePasswordAsync = async (username, password, csrf) =>
     .then((authUser) => authUser)
     .catch((error) => error);
 
-const resetPasswordWithEmailAsync = async (email) =>
-  await resetPasswordAPI(email)
+const resetPasswordWithEmailAsync = async (email, csrf) =>
+  await resetPasswordAPI(email, csrf)
     .then((response) => response)
     .catch((error) => error);
 
-const resetPasswordConfirmWithTokenAsync = async (password, token) =>
-  await resetPasswordConfirmAPI(password, token)
+const resetPasswordConfirmWithTokenAsync = async (password, token, csrf) =>
+  await resetPasswordConfirmAPI(password, token, csrf)
     .then((response) => response)
     .catch((error) => error);
 
@@ -103,7 +103,10 @@ function* resetPasswordWithEmail({ payload }) {
 
   // console.log('test email', email);
   try {
-    const resetSendStatus = yield call(resetPasswordWithEmailAsync, email);
+    const csrfTokenRes = yield call(getCSRFTokenAsync);
+    const csrfToken = csrfTokenRes.data;
+
+    const resetSendStatus = yield call(resetPasswordWithEmailAsync, email, csrfToken);
 
     // console.log("reset send status", resetSendStatus);
     if (resetSendStatus.status === 200) {
@@ -125,7 +128,10 @@ function* resetPasswordConfirmWithToken({ payload }) {
   const { password, token, callback } = payload;
 
   try {
-    const resetSendStatus = yield call(resetPasswordConfirmWithTokenAsync, password, token);
+    const csrfTokenRes = yield call(getCSRFTokenAsync);
+    const csrfToken = csrfTokenRes.data;
+
+    const resetSendStatus = yield call(resetPasswordConfirmWithTokenAsync, password, token, csrfToken);
 
     if (resetSendStatus.status === 200) {
       yield put(resetPasswordConfirmSuccess());
