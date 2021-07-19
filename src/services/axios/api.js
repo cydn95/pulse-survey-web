@@ -5,12 +5,31 @@ const getCRSFTokenAPI = () => {
 };
 
 const resetPasswordAPI = (email) => {
-  return getClient(false).post("password_reset/", { email: email });
+  return getClient(false).post(
+    "password_reset/",
+    { email: email },
+    {
+      headers: {
+        "X-CSRFToken": csrf,
+      },
+    }
+  );
 };
 
 const resetPasswordConfirmAPI = (password, token) => {
-  return getClient(false).post("password_reset/confirm/?token=" + token, {password: password, token: token});
-}
+  return getClient(false).post(
+    "password_reset/confirm/?token=" + token,
+    {
+      password: password,
+      token: token,
+    },
+    {
+      headers: {
+        "X-CSRFToken": csrf,
+      },
+    }
+  );
+};
 const loginAPI = (username, password, csrf) => {
   return getClient(false).post(
     "api-token-auth/",
@@ -73,7 +92,9 @@ const getProjectAPI = (projectId = 0) => {
 
 /* Tour */
 const getNikelTourAPI = (surveyId) => {
-  return getClient(true).get(`/nikelmobilepage/?format=json&survey=${surveyId}`);
+  return getClient(true).get(
+    `/nikelmobilepage/?format=json&survey=${surveyId}`
+  );
 };
 
 const getTooltipGuideAPI = () => {
@@ -328,37 +349,58 @@ const updateUserGuideAPI = (token, guide) => {
 /**
  * Report
  */
-export const getAmResponseReportAPI = (surveyId, driverName, projectUser, controlType = '', startDate = "2020-01-01", endDate = "2021-12-31") => {
+export const getAmResponseReportAPI = (
+  surveyId,
+  driverName,
+  projectUser,
+  controlType = "",
+  startDate = "2020-01-01",
+  endDate = "2021-12-31"
+) => {
   // console.log('startDate', startDate);
   // console.log('endDate', endDate);
   let url = `/amresponsereport/?survey=${surveyId}&driver=${driverName}&projectUser=${projectUser}&stdt=${startDate}&eddt=${endDate}`;
-  if (controlType !== '') {
+  if (controlType !== "") {
     url += `&controltype=${controlType}`;
   }
 
   return getClient(true).get(url);
-}
+};
 
-export const getAmQuestionCntAPI = (surveyId, driverName, projectId, userId) => {
-  return getClient(true).get(`/amquestioncnt/?survey=${surveyId}&driver=${driverName}&project=${projectId}&user=${userId}`);
-}
+export const getAmQuestionCntAPI = (
+  surveyId,
+  driverName,
+  projectId,
+  userId
+) => {
+  return getClient(true).get(
+    `/amquestioncnt/?survey=${surveyId}&driver=${driverName}&project=${projectId}&user=${userId}`
+  );
+};
 
 export const getTotalStakeholderCntAPI = (surveyId) => {
   return getClient(true).get(`/totalshcnt/?survey=${surveyId}`);
-}
+};
 
-export const getAoResponseReportAPI = (surveyId, driverName, startDate = "2020-01-01", endDate = "2021-12-31") => {
+export const getAoResponseReportAPI = (
+  surveyId,
+  driverName,
+  startDate = "2020-01-01",
+  endDate = "2021-12-31"
+) => {
   return getClient(true).get(
     `/aoresponsereport/?survey=${surveyId}&driver=${driverName}&stdt=${startDate}&eddt=${endDate}`
   );
-}
+};
 
 const getOverallSentimentAPI = (surveyId) => {
   return getClient(true).get(`/overallsentimentreport/?survey=${surveyId}`);
 };
 
 const getTopPositiveAndNegativeAPI = (surveyId) => {
-  return getClient(true).get(`/aoresponsetoppositivenegativereport/?survey=${surveyId}`);
+  return getClient(true).get(
+    `/aoresponsetoppositivenegativereport/?survey=${surveyId}`
+  );
 };
 
 const getFeedbackSummaryAPI = (surveyId, subProjectUser) => {
@@ -371,23 +413,36 @@ const getParticipationAPI = (surveyId) => {
   return getClient(true).get(`/userbysurvey/?survey=${surveyId}`);
 };
 
-export const getDriverAnalysisCntAPI = (surveyId, projectUser, controlType = '', startDate = "2020-01-01", endDate = "2021-12-31") => {
+export const getDriverAnalysisCntAPI = (
+  surveyId,
+  projectUser,
+  controlType = "",
+  startDate = "2020-01-01",
+  endDate = "2021-12-31"
+) => {
   let url = `/danalysiscnt/?survey=${surveyId}&projectuser=${projectUser}&stdt=${startDate}&eddt=${endDate}`;
-  if (controlType !== '') {
+  if (controlType !== "") {
     url += `&controltype=${controlType}`;
   }
 
   return getClient(true).get(url);
-}
+};
 
-export const getDriverAnalysisAPI = (surveyId, driverName, projectUser, controlType = '', startDate = "2020-01-01", endDate = "2021-12-31") => {
+export const getDriverAnalysisAPI = (
+  surveyId,
+  driverName,
+  projectUser,
+  controlType = "",
+  startDate = "2020-01-01",
+  endDate = "2021-12-31"
+) => {
   let url = `/driveranalysis/?survey=${surveyId}&driver=${driverName}&projectUser=${projectUser}&stdt=${startDate}&eddt=${endDate}`;
-  if (controlType !== '') {
+  if (controlType !== "") {
     url += `&controltype=${controlType}`;
   }
 
   return getClient(true).get(url);
-}
+};
 
 const getWordCloudAPI = (surveyId = 0, projectUser = 0) => {
   let url = `/wordcloud/?`;
@@ -402,56 +457,74 @@ const getWordCloudAPI = (surveyId = 0, projectUser = 0) => {
 };
 
 export const getPerceptionRealityAPI = (surveyId = 0, projectUser = 0) => {
-  return getClient(true).get(`/perceptionreality/?format=json&survey=${surveyId}&projectUser=${projectUser}`);
+  return getClient(true).get(
+    `/perceptionreality/?format=json&survey=${surveyId}&projectUser=${projectUser}`
+  );
 };
 
 export const getBubbleChartAPI = (surveyId = 0, projectUser = 0) => {
-  return getClient(true).get(`/bubblechart/?format=json&survey=${surveyId}&projectUser=${projectUser}`);
+  return getClient(true).get(
+    `/bubblechart/?format=json&survey=${surveyId}&projectUser=${projectUser}`
+  );
 };
 
 export const getMyMatrixAPI = (survey, projectUser) => {
-  return getClient(true).get(`/mymatrix?survey=${survey}&projectuser=${projectUser}`)
-}
+  return getClient(true).get(
+    `/mymatrix?survey=${survey}&projectuser=${projectUser}`
+  );
+};
 
 export const getProjectMatrixAPI = (survey, projectUser) => {
-  return getClient(true).get(`/projectmatrix?survey=${survey}&projectuser=${projectUser}`)
-}
+  return getClient(true).get(
+    `/projectmatrix?survey=${survey}&projectuser=${projectUser}`
+  );
+};
 
 export const getTextValueAPI = (survey, tab, projectUser) => {
-  return getClient(true).get(`/keytheme?survey=${survey}&tab=${tab}&projectuser=${projectUser}`)
-}
+  return getClient(true).get(
+    `/keytheme?survey=${survey}&tab=${tab}&projectuser=${projectUser}`
+  );
+};
 
 export const getKeyThemeMenuCntAPI = (survey, projectUser) => {
-  return getClient(true).get(`/keymenucnt?survey=${survey}&projectuser=${projectUser}`)
-}
+  return getClient(true).get(
+    `/keymenucnt?survey=${survey}&projectuser=${projectUser}`
+  );
+};
 
 export const getAcknowledgementAPI = (responseId, projectUser) => {
-  return getClient(true).get(`/acknowledgement?response=${responseId}&projectuser=${projectUser}`)
-}
+  return getClient(true).get(
+    `/acknowledgement?response=${responseId}&projectuser=${projectUser}`
+  );
+};
 
 export const postAcknowledgementAPI = (data) => {
-  return getClient(true).post(`/acknowledgement/`, data)
-}
+  return getClient(true).post(`/acknowledgement/`, data);
+};
 
 export const updateAcknowledgementAPI = (responseId, data) => {
-  return getClient(true).put(`/acknowledgement/${responseId}/`, data)
-}
+  return getClient(true).put(`/acknowledgement/${responseId}/`, data);
+};
 
 export const voteKeyThemesAPI = (id, data) => {
   if (id === null) {
-    return getClient(true).post(`/keythemeupdownvote/`, data)
+    return getClient(true).post(`/keythemeupdownvote/`, data);
   } else {
-    return getClient(true).put(`/keythemeupdownvote/${id}/`, data)
+    return getClient(true).put(`/keythemeupdownvote/${id}/`, data);
   }
-}
+};
 
 export const advisorAPI = (survey, projectUser) => {
-  return getClient(true).get(`/advisorinsights?survey=${survey}&projectuser=${projectUser}`);
-}
+  return getClient(true).get(
+    `/advisorinsights?survey=${survey}&projectuser=${projectUser}`
+  );
+};
 
 export const checkDashboardStatusAPI = (survey, projectUser) => {
-  return getClient(true).get(`/checkdashboardstatus?survey=${survey}&projectuser=${projectUser}`);
-}
+  return getClient(true).get(
+    `/checkdashboardstatus?survey=${survey}&projectuser=${projectUser}`
+  );
+};
 
 // const getSentimentReportAPI = (
 //   surveyId,
