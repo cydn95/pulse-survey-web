@@ -161,23 +161,63 @@ export const getColorFromValue = (val) => {
   //   return '#14b0bf';
   // }
 
-  if (val < 4) {
-    return "#c00000"; // dark red
+  // if (val < 4) {
+  //   return "#c00000"; // dark red
+  // }
+
+  // if (val < 5) {
+  //   return "#e56965"; // lighter red
+  // }
+
+  // if (val < 7) {
+  //   return "#4da9ef"; // blue
+  // }
+
+  // if (val < 8) {
+  //   return "#8acbc1"; // lighter green
+  // }
+
+  if (val <= 1) {
+    return "#e56965";
   }
 
-  if (val < 5) {
-    return "#e56965"; // lighter red
+  if (val <= 2) {
+    return "#c0788a";
   }
 
-  if (val < 7) {
-    return "#4da9ef"; // blue
+  if (val <= 3) {
+    return "#a185a8";
   }
 
-  if (val < 8) {
-    return "#8acbc1"; // lighter green
+  if (val <=4) {
+    return "#8296c6";
   }
 
-  return "#00b7a2"; // solid green
+  if (val <= 5) {
+    return "#659fe2";
+  }
+
+  if (val <= 6) {
+    return "#4ba8ed";
+  }
+
+  if (val <= 7) {
+    return "#3bacdd";
+  }
+
+  if (val <= 8) {
+    return "#2aaecc";
+  }
+
+  if (val <= 9) {
+    return "#19b2bb";
+  }
+
+  if (val <= 10) {
+    return "#24beb3";
+  }
+
+  return "#24beb3"; // solid green
 }
 
 export const isJSONObject = (obj) => {
