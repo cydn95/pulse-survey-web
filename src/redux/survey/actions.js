@@ -14,6 +14,7 @@ import {
   UPDATE_ABOUT_ME_TOPIC_SUCCESS,
   DELETE_ABOUT_ME_TOPIC,
   DELETE_ABOUT_ME_TOPIC_SUCCESS,
+  CLEAR_ABOUTME
 } from "Constants/actionTypes";
 
 export const pageList = (surveyId, surveyUserId) => ({
@@ -146,3 +147,7 @@ export const deleteAboutMeTopicSuccess = (
   type: DELETE_ABOUT_ME_TOPIC_SUCCESS,
   payload: { topicId, pageIndex, questionIndex },
 });
+
+export const clearAboutMe = () => ({
+  type: CLEAR_ABOUTME
+})
