@@ -24,6 +24,8 @@ import {
   controlTypeText,
 } from "Constants/defaultValues";
 
+import { getColorFromValue } from "Util/Utils";
+
 import styles from "./styles.scss";
 
 import { selectPage, stakeholderAnswer, stakeholderList } from "Redux/actions";
@@ -44,7 +46,7 @@ class AoSurvey extends React.Component {
       lastAddedShCategory,
       myMapES,
       projectMapES,
-      mapStyle
+      mapStyle,
     } = this.props;
 
     let totalQuestions = 0;
@@ -140,7 +142,7 @@ class AoSurvey extends React.Component {
       answers,
       totalAnswers,
       totalQuestions,
-      editModal: false
+      editModal: false,
     };
   }
 
@@ -270,8 +272,13 @@ class AoSurvey extends React.Component {
   };
 
   handleOpenEditModal = () => {
-
-    const { surveyId, surveyUserId, user, currentSurveyUserId, actionStakeholderList } = this.props;
+    const {
+      surveyId,
+      surveyUserId,
+      user,
+      currentSurveyUserId,
+      actionStakeholderList,
+    } = this.props;
 
     const { editModal } = this.state;
     if (editModal) {
@@ -288,15 +295,14 @@ class AoSurvey extends React.Component {
         }
 
         this.setState((state) => ({
-          currentUser: cUser ? { ...cUser } : { ...user }
+          currentUser: cUser ? { ...cUser } : { ...user },
         }));
       });
     }
 
     this.setState((state) => ({
-      editModal: !state.editModal
+      editModal: !state.editModal,
     }));
-    
   };
 
   handleCloseEditModal = () => {
@@ -326,9 +332,8 @@ class AoSurvey extends React.Component {
       mapStyle,
       myMapES,
       projectMapES,
-      currentSurveyUserId
+      currentSurveyUserId,
     } = this.props;
-
 
     // console.log(myMapCategory);
     // console.log(projectMapCategory);
@@ -364,10 +369,18 @@ class AoSurvey extends React.Component {
     // console.log(currentSurveyUserId);
     const mapES = mapStyle === "my-map" ? myMapES : projectMapES;
     let surveyCompletion = 0;
+    let surveySentiment = 0;
     for (let i = 0; i < mapES.individuals.length; i++) {
-      // console.log(mapES.individuals[i].id);
-      if (mapES.individuals[i].id === currentSurveyUserId) {
+      // console.log(mapES.individuals[i].id, currentSurveyUserId);
+      const individualIds = mapES.individuals[i].id.split("_");
+      const currents = currentSurveyUserId.split("_");
+      if (individualIds.length < 4 || currents.length < 4) {
+        continue;
+      }
+      // if (mapES.individuals[i].id === currentSurveyUserId) {
+      if (individualIds[1] === currents[1] && individualIds[3] === currents[3]) {
         surveyCompletion = mapES.individuals[i].survey_completion;
+        surveySentiment = mapES.individuals[i].survey_sentiment;
       }
     }
 
@@ -376,30 +389,42 @@ class AoSurvey extends React.Component {
         <div className={styles.user}>
           <div className={styles.title}>
             <span>About Others:</span>
-            <div
-              role="button"
-              className={styles.edit}
-            >
+            <div role="button" className={styles.edit}>
               <div onClick={(e) => this.handleOpenEditModal()}>Edit</div>
-              {editModal && <div className={styles["stakeholder-update-panel-container"]}>
-                <StakeholderUpdatePanel
-                  open={editModal}
-                  currentUser={currentUser}
-                  myMapCategory={myMapCategory}
-                  projectMapCategory={projectMapCategory}
-                  onClose={(e) => this.handleCloseEditModal()}
-                />
-              </div>}
+              {editModal && (
+                <div className={styles["stakeholder-update-panel-container"]}>
+                  <StakeholderUpdatePanel
+                    open={editModal}
+                    currentUser={currentUser}
+                    myMapCategory={myMapCategory}
+                    projectMapCategory={projectMapCategory}
+                    onClose={(e) => this.handleCloseEditModal()}
+                  />
+                </div>
+              )}
             </div>
           </div>
           <AvatarComponent
             className={styles["avatar-comp"]}
             userId={user.id}
-            title={user.projectUserTitle === "" ? user.userTitle : user.projectUserTitle}
+            title={
+              user.projectUserTitle === ""
+                ? user.userTitle
+                : user.projectUserTitle
+            }
             username={user.fullName}
-            description={(user.projectOrganization ? user.projectOrganization : user.organisation) + " / " + user.team}
+            description={
+              (user.projectOrganization
+                ? user.projectOrganization
+                : user.organisation) +
+              " / " +
+              user.team
+            }
             profilePicUrl={user.userAvatar}
             userProgress={Number(surveyCompletion)}
+            progressStyle={{
+              background: `${getColorFromValue(Number(surveySentiment) / 10)}`,
+            }}
             donut={true}
           />
         </div>
@@ -552,5 +577,5 @@ const mapStateToProps = ({ survey, common, authUser }) => {
 export default connect(mapStateToProps, {
   setSurveyPage: selectPage,
   stakeholderAnswer,
-  actionStakeholderList: stakeholderList
+  actionStakeholderList: stakeholderList,
 })(AoSurvey);
