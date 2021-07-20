@@ -21,24 +21,6 @@ const getColor = (val) => {
     return 'transparent';
   }
 
-  // if (val < 40) {
-  //   return "#c00000"; // dark red
-  // }
-
-  // if (val < 50) {
-  //   return "#e56965"; // lighter red
-  // }
-
-  // if (val < 70) {
-  //   return "#4da9ef"; // blue
-  // }
-
-  // if (val < 80) {
-  //   return "#8acbc1"; // lighter green
-  // }
-
-  // return "#00b7a2"; // solid green
-
   return "#5194c5";
 };
 
@@ -58,7 +40,7 @@ function CircularProgressBar(props) {
 
   // const extcls = getClass(percent, styles);
 
-  const bgStyle = { background: `${getColor(percent)}`}
+  const bgStyle = style ? style : { background: `${getColor(percent)}`}
 
   return (
     <div className={classnames(styles.main, className)} style={bgStyle}>
@@ -85,13 +67,11 @@ CircularProgressBar.defaultProps = {
   percent: 0,
   styles: cssstyles,
   // conic gradient vs discrete progress
-  style: "smooth",
 };
 
 CircularProgressBar.propTypes = {
   percent: PropTypes.number,
   styles: PropTypes.any,
-  style: PropTypes.oneOf(["smooth", "discrete"]),
 };
 
 export default CircularProgressBar;

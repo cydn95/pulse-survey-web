@@ -335,6 +335,7 @@ class MyMap extends React.Component {
             name: "",
             icon: "fa-user",
             survey_completion: 0,
+            survey_sentiment: 0,
             team: {
               current: "",
               changeable: false,
@@ -371,21 +372,27 @@ class MyMap extends React.Component {
                   
                   // Calculate Survey Completion - MyMap (Sentiment Answer should be completion rate)
                   let sentimentAnswer = 0;
+                  let totalAnswer = 0;
+                  let totalQuestion = 0;
+
                   for (let k = 0; k < aoQuestionList.length; k++) {
-                    if (aoQuestionList[k].driver.driverName !== "Sentiment") {
-                      continue;
-                    }
+                    totalQuestion++;
+                    
                     const answer = aoQuestionList[k].response.filter(
                       (resp) =>
                         /*resp.shCategory.toString() === userList[i].shCategory[j].toString() &&*/
                         resp.subProjectUser.toString() === userList[i].id.toString()
                     );
                     if (answer.length > 0) {
-                      sentimentAnswer = answer[0].integerValue;
+                      totalAnswer++;
+                      if (aoQuestionList[k].driver.driverName === "Sentiment") {
+                        sentimentAnswer = answer[0].integerValue;
+                      }
                     }
                   }
 
-                  individualUser.survey_completion = sentimentAnswer.toFixed(2);
+                  individualUser.survey_completion = (totalAnswer / totalQuestion).toFixed(2) * 100;
+                  individualUser.survey_sentiment = sentimentAnswer.toFixed(2);
 
                   bAdd = true;
 
@@ -394,8 +401,10 @@ class MyMap extends React.Component {
               }
             }
           }
+
           // console.log("---individual list----------");
           // console.log(individualList);
+
           if (bAdd) {
             individualList.push(individualUser);
             // update SHCategory individual Count
@@ -453,6 +462,7 @@ class MyMap extends React.Component {
             name: "",
             icon: "fa-user",
             survey_completion: 0,
+            survey_sentiment: 0,
             team: {
               current: "",
               changeable: false,
@@ -485,21 +495,25 @@ class MyMap extends React.Component {
                   
                   // Calculate Survey Completion - ProjectMap (Sentiment answer should be completion rate)
                   let sentimentAnswer = 0;
+                  let totalQuestion = 0;
+                  let totalAnswer = 0;
                   for (let k = 0; k < aoQuestionList.length; k++) {
-                    if (aoQuestionList[k].driver.driverName !== 'Sentiment') {
-                      continue;
-                    }
+                    totalQuestion++;
                     const answer = aoQuestionList[k].response.filter(
                       (resp) =>
                         /*resp.shCategory.toString() === userList[i].shCategory[j].toString() &&*/
                         resp.subProjectUser.toString() === userList[i].id.toString()
                     );
                     if (answer > 0) {
-                      sentimentAnswer = answer[0].integerValue;
+                      totalAnswer++;
+                      if (aoQuestionList[k].driver.driverName === 'Sentiment') {
+                        sentimentAnswer = answer[0].integerValue;
+                      }
                     }
                   }
 
-                  individualUser.survey_completion = sentimentAnswer.toFixed(2);
+                  individualUser.survey_completion = (totalAnswer / totalQuestion).toFixed(2) * 100;
+                  individualUser.survey_sentiment = sentimentAnswer.toFixed(2);
                   
                   bAdd = true;
 

@@ -1,6 +1,8 @@
 import WebFont from "webfontloader";
 import "keylines";
 import DataStore from "../DataStore";
+import { getColorFromValue } from "Util/Utils";
+
 const fontsLoaded = new Promise((resolve) => {
   WebFont.load({
     custom: {
@@ -79,7 +81,8 @@ class BaseController {
 
         // let segment = Math.abs(percentage - 50) * 2;
         // let segmentColor = percentage <= 50 ? "#ff5500" : "#1f45b8";
-        let segmentColor = "#5194c5";
+        // let segmentColor = "#5194c5";
+        const segmentColor = getColorFromValue(item.d.survey_sentiment / 10);
         props.push({
           id: item.id,
           donut: {
