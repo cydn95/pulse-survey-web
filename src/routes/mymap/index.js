@@ -385,7 +385,7 @@ class MyMap extends React.Component {
                     );
                     if (answer.length > 0) {
                       totalAnswer++;
-                      if (aoQuestionList[k].driver.driverName === "Sentiment") {
+                      if (aoQuestionList[k].subdriver === "Overall Sentiment") {
                         sentimentAnswer = answer[0].integerValue;
                       }
                     }
@@ -506,7 +506,7 @@ class MyMap extends React.Component {
                     );
                     if (answer > 0) {
                       totalAnswer++;
-                      if (aoQuestionList[k].driver.driverName === 'Sentiment') {
+                      if (aoQuestionList[k].subdriver === "Overall Sentiment") {
                         sentimentAnswer = answer[0].integerValue;
                       }
                     }
