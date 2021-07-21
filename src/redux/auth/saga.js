@@ -165,7 +165,8 @@ function* logout({ payload }) {
     localStorage.removeItem("surveyId");
     localStorage.removeItem("userId");
     // yield call(logoutUser, history);
-    history.push("/");
+    // history.push("/");
+    window.location = "/";
   } catch (error) {}
 }
 
