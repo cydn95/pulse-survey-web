@@ -170,6 +170,8 @@ const ReportSummary = ({
     setFeedbackSummary(feedbackSummaryRet);
   };
 
+  // console.log('dashboard status', status);
+
   return (
     <div className={styles.root}>
       <div className={styles.topbar}>
