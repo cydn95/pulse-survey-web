@@ -309,7 +309,7 @@ const updateStakeholderAsync = async (projectUserId, projectUser) =>
 
 function* updateStakeholder({ payload }) {
   try {
-    const { projectId, surveyId, stakeholder } = payload;
+    const { projectId, surveyId, stakeholder, callback } = payload;
 
     const projectUser = {
       project: parseInt(projectId, 10),
@@ -330,8 +330,12 @@ function* updateStakeholder({ payload }) {
       projectUser
     );
 
-    if (result.status === 200) {
+    
+    if (result.status.toString() === "200") {
       yield put(stakeholderList(stakeholder.myProjectUser, surveyId));
+      if (callback) {
+        callback();
+      }
     }
   } catch (error) {
     console.log("error : ", error);

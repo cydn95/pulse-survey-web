@@ -110,9 +110,9 @@ export const addStakeholderSuccess = () => ({
   type: ADD_STAKEHOLDER_SUCCESS,
 });
 
-export const updateStakeholder = (projectId, surveyId, stakeholder) => ({
+export const updateStakeholder = (projectId, surveyId, stakeholder, callback = null) => ({
   type: UPDATE_STAKEHOLDER,
-  payload: { projectId, surveyId, stakeholder },
+  payload: { projectId, surveyId, stakeholder, callback },
 });
 
 export const updateStakeholderSuccess = () => ({

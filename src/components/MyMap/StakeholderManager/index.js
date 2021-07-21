@@ -268,7 +268,9 @@ const StakeholderManager = ({
               teamList={teamList}
               search={search}
               onUpdateStakeholder={(projectId, surveyId, stakeholder) =>
-                updateStakeholder(projectId, surveyId, stakeholder)
+                updateStakeholder(projectId, surveyId, stakeholder, () => {
+                  window.location.reload(false);
+                })
               }
               onUpdateSubView={(subView) => setSubView(subView)}
             />
