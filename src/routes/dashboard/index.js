@@ -34,8 +34,6 @@ const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard, histor
       console.log(result);
       const { code, data } = result;
 
-      console.log(data);
-
       if (!data) {
         console.log('no data');
       }
@@ -46,7 +44,7 @@ const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard, histor
           setAdminStatus(true);
         }
       } else {
-        setDashboardStatus(true);
+        setDashboardStatus(false);
       }
     });
   }, [surveyId, surveyUserId, actionCheckDashboard, history]);
