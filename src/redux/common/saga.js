@@ -320,7 +320,7 @@ function* updateStakeholder({ payload }) {
       shMyCategory: stakeholder.myCategoryList,
       shProjectCategory: stakeholder.projectCategoryList,
       projectUserTitle: stakeholder.projectUserTitle,
-      shGroup: null,
+      // shGroup: null,
       myProjectUser: stakeholder.myProjectUser,
     };
 

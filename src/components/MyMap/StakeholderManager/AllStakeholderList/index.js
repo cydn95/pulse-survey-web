@@ -105,22 +105,22 @@ class AllStakeholderList extends Component {
       const aName = a.fullName;
       const bName = b.fullName;
 
-      let aLastName = '';
-      if (aName.split(' ').length > 1) {
-        aLastName = aName.split(' ')[1];
+      let aLastName = "";
+      if (aName.split(" ").length > 1) {
+        aLastName = aName.split(" ")[1];
       } else {
         aLastName = aName;
       }
 
-      let bLastName = '';
-      if (bName.split(' ').length > 1) {
-        bLastName = bName.split(' ')[1];
+      let bLastName = "";
+      if (bName.split(" ").length > 1) {
+        bLastName = bName.split(" ")[1];
       } else {
         bLastName = bName;
       }
 
       return aLastName.localeCompare(bLastName);
-    })
+    });
 
     const { viewType, selectedStakeholder, userTitle } = this.state;
     let userCount = allStakeholders.length;
