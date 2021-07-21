@@ -37,7 +37,7 @@ class NewStakeholder extends Component {
           projectCategoryList.push(item.id);
         }
       });
-      console.log(props.stakeholder);
+
       this.state = {
         stakeholder: {
           projectUserId: props.stakeholder.projectUserId,
@@ -160,7 +160,7 @@ class NewStakeholder extends Component {
           show: true,
         };
 
-        console.log(data);
+        // console.log(data);
 
         this.props.onAddStakeholder(data);
       }
