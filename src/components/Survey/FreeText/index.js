@@ -97,13 +97,13 @@ class FreeText extends Component {
             className={styles["answer-field"]}
             value={this.state.answer.topicValue}
             onChange={(e) => this.onInputAnswer(e)}
-            placeholder='Topic prompt'
+            placeholder={question.topicPrompt}
           />
         </div>
         <SkipQuestion
           answer={this.state.answer.topicValue}
           comment={this.state.answer.commentValue}
-          commentPrompt='Comment prompt'
+          commentPrompt={question.commentPrompt}
           skipValue={this.state.answer.skipValue}
           skipQuestionList={skipQuestionList}
           skipOption={question.skipOption}
