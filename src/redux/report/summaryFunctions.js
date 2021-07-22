@@ -218,12 +218,19 @@ export const getSentimentResult = (resData) => {
 
 export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
   
+  // console.log('data', resData);
+  // console.log('shGroupList', shGroupList);
+
   const drivers = [];
   const ret = {};
       
   for (let i = 0; i < resData.length; i++) {
     const question = resData[i];
     const intValue = question.integerValue;
+
+    if (!question.projectUser.shGroup) {
+      continue;
+    }
 
     for (let j = 0; j < question.aoQuestionData.length; j++) {
       const driver = question.aoQuestionData[j].driver;
@@ -249,6 +256,11 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
         );
         if (filteredShGroupList.length > 0) {
           const shGroupName = filteredShGroupList[0].SHGroupName;
+          const projectUserShGroupName = question.projectUser.shGroup.SHGroupName;
+
+          if (shGroupName !== projectUserShGroupName) {
+            continue;
+          }
 
           if (shGroupName in ret) {
             if (driverName in ret[shGroupName]) {
