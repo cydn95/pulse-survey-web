@@ -882,7 +882,7 @@ class MyMap extends React.Component {
     this.setState({
       aoSurveySubmitLoading: false
     });
-    NotificationManager.success("Response submitted successfully", "");
+    NotificationManager.success("Response saved successfully", "");
     this.handleSaveGraph(null);
     // window.location.reload(false);
   };
