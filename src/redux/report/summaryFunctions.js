@@ -232,6 +232,12 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
       continue;
     }
 
+    // if (question.projectUser.user.email == "cetest@noemail.com") {
+    //   console.log(question.projectUser.shGroup.SHGroupName, question.projectUser);
+    // }
+
+    // console.log(question.projectUser.shGroup.SHGroupName);
+
     for (let j = 0; j < question.aoQuestionData.length; j++) {
       const driver = question.aoQuestionData[j].driver;
 
@@ -332,7 +338,19 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
       continue;
     }
 
-    const group = type === "Team" ? question.projectUser.team : question.projectUser.user.organization;
+    let group = null;
+    if (type === "Team") {
+      group = question.projectUser.team;
+    }
+    if (type === "Organization" && question.projectUser.projectOrganization) {
+       group = {
+         name: question.projectUser.projectOrganization
+       }
+    }
+
+    if (!group) {
+      continue;
+    }
 
     for (let j = 0; j < question.aoQuestionData.length; j++) {
       const driver = question.aoQuestionData[j].driver;
