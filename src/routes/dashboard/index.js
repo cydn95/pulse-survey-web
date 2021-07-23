@@ -31,11 +31,11 @@ const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard, histor
     }
 
     actionCheckDashboard(surveyId, surveyUserId, (result) => {
-      console.log(result);
+      // console.log(result);
       const { code, data } = result;
 
       if (!data) {
-        console.log('no data');
+        // console.log('no data');
       }
 
       if (code === 200 || code === 201) {

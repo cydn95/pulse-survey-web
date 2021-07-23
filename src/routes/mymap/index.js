@@ -372,6 +372,8 @@ class MyMap extends React.Component {
                   
                   // Calculate Survey Completion - MyMap (Sentiment Answer should be completion rate)
                   let sentimentAnswer = 0;
+                  let sentimentAnswerCnt = 0;
+
                   let totalAnswer = 0;
                   let totalQuestion = 0;
 
@@ -386,13 +388,14 @@ class MyMap extends React.Component {
                     if (answer.length > 0) {
                       totalAnswer++;
                       if (aoQuestionList[k].subdriver === "Overall Sentiment") {
-                        sentimentAnswer = answer[0].integerValue;
+                        sentimentAnswer += answer[0].integerValue;
+                        sentimentAnswerCnt++;
                       }
                     }
                   }
 
                   individualUser.survey_completion = (totalAnswer / totalQuestion).toFixed(2) * 100;
-                  individualUser.survey_sentiment = sentimentAnswer.toFixed(2);
+                  individualUser.survey_sentiment = (sentimentAnswer / sentimentAnswerCnt).toFixed(2);
 
                   bAdd = true;
 
@@ -495,6 +498,8 @@ class MyMap extends React.Component {
                   
                   // Calculate Survey Completion - ProjectMap (Sentiment answer should be completion rate)
                   let sentimentAnswer = 0;
+                  let sentimentAnswerCnt = 0;
+
                   let totalQuestion = 0;
                   let totalAnswer = 0;
                   for (let k = 0; k < aoQuestionList.length; k++) {
@@ -504,16 +509,17 @@ class MyMap extends React.Component {
                         /*resp.shCategory.toString() === userList[i].shCategory[j].toString() &&*/
                         resp.subProjectUser.toString() === userList[i].id.toString()
                     );
-                    if (answer > 0) {
+                    if (answer.length > 0) {
                       totalAnswer++;
                       if (aoQuestionList[k].subdriver === "Overall Sentiment") {
-                        sentimentAnswer = answer[0].integerValue;
+                        sentimentAnswer += answer[0].integerValue;
+                        sentimentAnswerCnt++;
                       }
                     }
                   }
 
                   individualUser.survey_completion = (totalAnswer / totalQuestion).toFixed(2) * 100;
-                  individualUser.survey_sentiment = sentimentAnswer.toFixed(2);
+                  individualUser.survey_sentiment = (sentimentAnswer / sentimentAnswerCnt).toFixed(2);
                   
                   bAdd = true;
 

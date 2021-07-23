@@ -378,7 +378,10 @@ class AoSurvey extends React.Component {
         continue;
       }
       // if (mapES.individuals[i].id === currentSurveyUserId) {
-      if (individualIds[1] === currents[1] && individualIds[3] === currents[3]) {
+      if (
+        individualIds[1] === currents[1] &&
+        individualIds[3] === currents[3]
+      ) {
         surveyCompletion = mapES.individuals[i].survey_completion;
         surveySentiment = mapES.individuals[i].survey_sentiment;
       }
@@ -431,13 +434,17 @@ class AoSurvey extends React.Component {
 
         <div className={styles["driver-section"]}>
           <hr />
-          <DriverPanel
-            defaultDriverId={defaultDrvierId}
-            data={drivers}
-            color="black"
-            onClick={(e, driverId) => this.handleClickDriver(driverId)}
-          />
-          <hr />
+          {drivers.length > 1 && (
+            <React.Fragment>
+              <DriverPanel
+                defaultDriverId={defaultDrvierId}
+                data={drivers}
+                color="black"
+                onClick={(e, driverId) => this.handleClickDriver(driverId)}
+              />
+              <hr />
+            </React.Fragment>
+          )}
         </div>
         <div className={styles.questions}>
           {driver.questions.map((control, index) => {

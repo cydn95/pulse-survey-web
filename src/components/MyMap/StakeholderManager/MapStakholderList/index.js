@@ -94,7 +94,7 @@ class MapStakeholderList extends Component {
     }
 
     let groupedProjectStakeholderList = {};
-    for (let i = 0; i < shCategoryList.length; i++) {
+    for (let i = 0; i < projectMapShCategoryList.length; i++) {
       for (let j = 0; j < projectMapStakeholderList.length; j++) {
         let bAdd = false;
         if (
@@ -114,7 +114,7 @@ class MapStakeholderList extends Component {
         }
 
         if (bAdd) {
-          const categoryId = shCategoryList[i].id;
+          const categoryId = projectMapShCategoryList[i].id;
           const userId = projectMapStakeholderList[j].userId;
 
           let surveyCompletion = 0;
