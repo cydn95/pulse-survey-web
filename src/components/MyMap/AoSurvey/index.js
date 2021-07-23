@@ -434,7 +434,7 @@ class AoSurvey extends React.Component {
 
         <div className={styles["driver-section"]}>
           <hr />
-          {/* {drivers.length > 1 && ( */}
+          {drivers.length > 1 && (
             <React.Fragment>
               <DriverPanel
                 defaultDriverId={defaultDrvierId}
@@ -444,7 +444,7 @@ class AoSurvey extends React.Component {
               />
               <hr />
             </React.Fragment>
-          {/* )} */}
+          )}
         </div>
         <div className={styles.questions}>
           {driver.questions.map((control, index) => {
