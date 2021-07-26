@@ -167,10 +167,12 @@ function* submitSurvey({ payload }) {
     for (let j = 0; j < amquestions.length; j++) {
 
       if (amquestions[j].controlType === controlType.MULTI_TOPICS) {
-        if (!amquestions[j].topic || amquestions[j].topic.length === 0) {
+        if ((!amquestions[j].topic || amquestions[j].topic.length === 0) && amquestions[j].commentValue === "" && amquestions.skipValue === "") {
           continue;
         }
-        amquestions[j].answer.integerValue = amquestions[j].topic[0].id;
+        if (amquestions[j].topic && amquestions[j].topic.length > 0) {
+          amquestions[j].answer.integerValue = amquestions[j].topic[0].id;
+        }
       } else {
         if (
           (amquestions[j].answer.integerValue === "" ||
