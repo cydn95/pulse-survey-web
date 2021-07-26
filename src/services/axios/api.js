@@ -405,7 +405,7 @@ const getTopPositiveAndNegativeAPI = (surveyId) => {
 
 const getFeedbackSummaryAPI = (surveyId, subProjectUser) => {
   return getClient(true).get(
-    `/feedbacksummaryreport/?survey=${surveyId}&projectuser=${subProjectUser}`
+    `/feedbacksummaryreport/?survey=${surveyId}`
   );
 };
 

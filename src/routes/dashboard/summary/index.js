@@ -288,6 +288,7 @@ const ReportSummary = ({
                     if (item === "Overall Sentiment") {
                       value = overallSentiment;
                       text = overallSentiment / 10;
+                      return null;
                     }
 
                     if (

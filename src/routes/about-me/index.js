@@ -94,8 +94,10 @@ const AboutMeSurvey = ({
             surveyList[i].amquestion[j].controlType === controlType.MULTI_TOPICS
           ) {
             if (
-              surveyList[i].amquestion[j].topic &&
-              surveyList[i].amquestion[j].topic.length > 0
+              (surveyList[i].amquestion[j].topic &&
+                surveyList[i].amquestion[j].topic.length > 0) ||
+              surveyList[i].amquestion[j].skipValue !== "" ||
+              surveyList[i].amquestion[j].commentValue !== ""
             ) {
               answeredCount++;
             }
