@@ -25,6 +25,7 @@ import {
   getFeedbackSummaryByShGroup,
   getFeedbackSummaryByTeamOrOrganization,
 } from "Redux/report/summaryFunctions";
+import { getColorFromValue } from "Util/Utils";
 
 import cn from "classnames";
 import styles from "./styles.scss";
@@ -309,7 +310,7 @@ const ReportSummary = ({
                           text={text}
                           styles={buildStyles({
                             trailColor: "#ccc",
-                            pathColor: "#18a0fb",
+                            pathColor: getColorFromValue(Number(text)),
                             textSize: "32px",
                           })}
                         />
