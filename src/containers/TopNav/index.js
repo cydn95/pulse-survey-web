@@ -40,7 +40,7 @@ const TopNav = ({
       return;
     }
 
-    setToggle("open");
+    setToggle(open);
   };
 
   const logOut = (e) => {
@@ -88,6 +88,7 @@ const TopNav = ({
             size="lg"
             color="#fff"
             icon={faTimes}
+            onClick={(e) => toggleDrawer(e, false)}
           />
         </div>
         <Sidebar />
