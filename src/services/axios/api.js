@@ -354,7 +354,7 @@ export const getAmResponseReportAPI = (
   driverName,
   projectUser,
   controlType = "",
-  startDate = "2020-01-01",
+  startDate = "2021-01-01",
   endDate = "2021-12-31"
 ) => {
   // console.log('startDate', startDate);
@@ -385,7 +385,7 @@ export const getTotalStakeholderCntAPI = (surveyId) => {
 export const getAoResponseReportAPI = (
   surveyId,
   driverName,
-  startDate = "2020-01-01",
+  startDate = "2021-01-01",
   endDate = "2021-12-31"
 ) => {
   return getClient(true).get(
@@ -417,7 +417,7 @@ export const getDriverAnalysisCntAPI = (
   surveyId,
   projectUser,
   controlType = "",
-  startDate = "2020-01-01",
+  startDate = "2021-01-01",
   endDate = "2021-12-31"
 ) => {
   let url = `/danalysiscnt/?survey=${surveyId}&projectuser=${projectUser}&stdt=${startDate}&eddt=${endDate}`;
@@ -433,7 +433,7 @@ export const getDriverAnalysisAPI = (
   driverName,
   projectUser,
   controlType = "",
-  startDate = "2020-01-01",
+  startDate = "2021-01-01",
   endDate = "2021-12-31"
 ) => {
   let url = `/driveranalysis/?survey=${surveyId}&driver=${driverName}&projectUser=${projectUser}&stdt=${startDate}&eddt=${endDate}`;
@@ -528,7 +528,7 @@ export const checkDashboardStatusAPI = (survey, projectUser) => {
 
 // const getSentimentReportAPI = (
 //   surveyId,
-//   startDate = "2020-01-01",
+//   startDate = "2021-01-01",
 //   endDate = "2021-12-31"
 // ) => {
 //   return getClient(true).get(

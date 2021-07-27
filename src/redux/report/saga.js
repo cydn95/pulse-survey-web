@@ -297,6 +297,7 @@ function* getFeedbackSummary({ payload }) {
       const organizationList = [];
 
       if (result.status === 200) {
+
         for (let i = 0; i < result.data.length; i++) {
           const data = result.data[i];
 
@@ -306,12 +307,16 @@ function* getFeedbackSummary({ payload }) {
 
           const projectUser = data.projectUser;
 
-          if (!("team" in projectUser) || !("user" in projectUser)) {
+          // if (!("team" in projectUser) || !("user" in projectUser)) {
+          //   continue;
+          // }
+
+          if (!("team" in projectUser)) {
             continue;
           }
 
           const team = projectUser.team;
-          const organization = projectUser.user.organization;
+          const organization = projectUser.projectOrganization;
 
           if (teamList.findIndex((t) => t.id === team.id) < 0) {
             teamList.push(team);
