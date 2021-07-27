@@ -7,8 +7,10 @@ export const getCultureResult = (resData) => {
     const question = resData[i];
     const intValue = question.integerValue;
 
-    for (let j = 0; j < question.aoQuestionData.length; j++) {
-      const driver = question.aoQuestionData[j].driver;
+    const questionData = question.amQuestionData; 
+
+    for (let j = 0; j < questionData.length; j++) {
+      const driver = questionData[j].driver;
 
       if (!driver) {
         continue;
@@ -18,7 +20,7 @@ export const getCultureResult = (resData) => {
 
       /* Culture Result Start */
       if (driverName === "Culture") {
-        const subDriver = question.aoQuestionData[j].subdriver;
+        const subDriver = questionData[j].subdriver;
         if (subDriver in cultureRet) {
           cultureRet[subDriver].value += parseInt(
             intValue,
@@ -81,13 +83,15 @@ export const getOverallTrends = (resData, shGroupList) => {
     const question = resData[i];
     const intValue = question.integerValue;
 
-    for (let j = 0; j < question.aoQuestionData.length; j++) {
+    const questionData = question.amQuestionData; 
+
+    for (let j = 0; j < questionData.length; j++) {
       for (
         let k = 0;
-        k < question.aoQuestionData[j].shGroup.length;
+        k < questionData[j].shGroup.length;
         k++
       ) {
-        const shGroupId = question.aoQuestionData[j].shGroup[k];
+        const shGroupId = questionData[j].shGroup[k];
         const filteredShGroupList = shGroupList.filter(
           (sh) => parseInt(sh.id, 10) === parseInt(shGroupId, 10)
         );
@@ -160,8 +164,10 @@ export const getSentimentResult = (resData) => {
     const question = resData[i];
     const intValue = question.integerValue;
 
-    for (let j = 0; j < question.aoQuestionData.length; j++) {
-      const driver = question.aoQuestionData[j].driver;
+    const questionData = question.amQuestionData; 
+
+    for (let j = 0; j < questionData.length; j++) {
+      const driver = questionData[j].driver;
 
       if (!driver) {
         continue;
@@ -170,7 +176,7 @@ export const getSentimentResult = (resData) => {
       const driverName = driver.driverName;
 
       if (driverName === "Sentiment") {
-        const subDriver = question.aoQuestionData[j].subdriver;
+        const subDriver = questionData[j].subdriver;
         if (subDriver in sentimentRet) {
           sentimentRet[subDriver].value += parseInt(
             intValue,
@@ -223,7 +229,7 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
 
   const drivers = [];
   const ret = {};
-      
+
   for (let i = 0; i < resData.length; i++) {
     const question = resData[i];
     const intValue = question.integerValue;
@@ -238,8 +244,10 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
 
     // console.log(question.projectUser.shGroup.SHGroupName);
 
-    for (let j = 0; j < question.aoQuestionData.length; j++) {
-      const driver = question.aoQuestionData[j].driver;
+    const questionData = question.amQuestionData; 
+
+    for (let j = 0; j < questionData.length; j++) {
+      const driver = questionData[j].driver;
 
       if (!driver) {
         continue;
@@ -253,10 +261,10 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
 
       for (
         let k = 0;
-        k < question.aoQuestionData[j].shGroup.length;
+        k < questionData[j].shGroup.length;
         k++
       ) {
-        const shGroupId = question.aoQuestionData[j].shGroup[k];
+        const shGroupId = questionData[j].shGroup[k];
         const filteredShGroupList = shGroupList.filter(
           (sh) => parseInt(sh.id, 10) === parseInt(shGroupId, 10)
         );
@@ -352,8 +360,10 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
       continue;
     }
 
-    for (let j = 0; j < question.aoQuestionData.length; j++) {
-      const driver = question.aoQuestionData[j].driver;
+    const questionData = question.amQuestionData;
+
+    for (let j = 0; j < questionData.length; j++) {
+      const driver = questionData[j].driver;
 
       if (!driver) {
         continue;
