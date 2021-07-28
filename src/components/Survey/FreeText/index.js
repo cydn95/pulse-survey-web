@@ -1,12 +1,11 @@
 import React, { Component } from "react";
+import { DebounceInput } from 'react-debounce-input';
 
 import TextField from "@material-ui/core/TextField";
-
 import SkipQuestion from "../SkipQuestion";
+import { replaceQuestionTextKeyWord } from "Constants/defaultValues";
 
 import styles from "./styles.scss";
-
-import { replaceQuestionTextKeyWord } from "Constants/defaultValues";
 
 class FreeText extends Component {
   constructor(props) {
@@ -93,9 +92,11 @@ class FreeText extends Component {
           )}
         </h2>
         <div className={styles["answer-section"]}>
-          <TextField
+          <DebounceInput
+            element={TextField}
             className={styles["answer-field"]}
             value={this.state.answer.topicValue}
+            debounceTimeout={500}
             onChange={(e) => this.onInputAnswer(e)}
             placeholder={question.topicPrompt}
           />

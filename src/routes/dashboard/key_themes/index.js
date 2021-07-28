@@ -22,7 +22,7 @@ const tabMenu = {
     component: <TableContainer tab={1} label="Risks" />,
   },
   "overall-sentiment": {
-    label: "Overall Sentiment",
+    label: "Own Words",
     img_white: "/assets/img/report/tab-sentiment-white.png",
     img_grey: "/assets/img/report/tab-sentiment-grey.png",
     component: (
