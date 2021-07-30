@@ -4,6 +4,7 @@ import {
   getOverallSentimentAPI,
   getTopPositiveAndNegativeAPI,
   getFeedbackSummaryAPI,
+  getOverallTrendsAPI,
   shgroupListAPI,
   getParticipationAPI,
   getWordCloudAPI,
@@ -89,6 +90,11 @@ const getShGroupListAsync = async (surveyId) =>
 
 const getFeedbackSummaryAsync = async (surveyId, subProjectUser) =>
   await getFeedbackSummaryAPI(surveyId, subProjectUser)
+    .then((result) => result)
+    .catch((error) => error);
+
+const getOverallTrendsAsync = async (surveyId, subProjectUser) =>
+  await getOverallTrendsAPI(surveyId, subProjectUser)
     .then((result) => result)
     .catch((error) => error);
 
@@ -293,10 +299,12 @@ function* getFeedbackSummary({ payload }) {
         subProjectUser
       );
 
+      const resultOverallTrends = yield call (getOverallTrendsAsync, surveyId, subProjectUser);
+
       const teamList = [];
       const organizationList = [];
 
-      if (result.status === 200) {
+      if (result.status === 200 && resultOverallTrends.status === 200) {
 
         for (let i = 0; i < result.data.length; i++) {
           const data = result.data[i];
@@ -341,7 +349,7 @@ function* getFeedbackSummary({ payload }) {
 
         const filteredCulture = getCultureResult(result.data);
 
-        const overallTrendData = getOverallTrends(result.data, shGroupList);
+        const overallTrendData = getOverallTrends(resultOverallTrends.data, shGroupList);
         const filteredOverallTrend = overallTrendData.data;
         const filteredOverallTrendShGroupList = overallTrendData.key;
 
