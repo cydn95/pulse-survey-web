@@ -19,6 +19,8 @@ import styles from "./styles.scss";
 const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard, history }) => {
   const [dashboardStatus, setDashboardStatus] = useState(false);
   const [adminStatus, setAdminStatus] = useState(false);
+  
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (
@@ -30,24 +32,30 @@ const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard, histor
       return;
     }
 
-    actionCheckDashboard(surveyId, surveyUserId, (result) => {
-      // console.log(result);
-      const { code, data } = result;
+    setLoading(true);
 
-      if (!data) {
-        // console.log('no data');
-      }
-
-      if (code === 200 || code === 201) {
-        setDashboardStatus(true);
-        if (code === 201) {
-          setAdminStatus(true);
-        }
-      } else {
-        setDashboardStatus(false);
-      }
-    });
+    actionCheckDashboard(surveyId, surveyUserId, callbackCheckDashboard);
   }, [surveyId, surveyUserId, actionCheckDashboard, history]);
+
+  const callbackCheckDashboard = (result) => {
+    setLoading(false);
+
+    // console.log(result);
+    const { code, data } = result;
+
+    if (!data) {
+      // console.log('no data');
+    }
+
+    if (code === 200 || code === 201) {
+      setDashboardStatus(true);
+      if (code === 201) {
+        setAdminStatus(true);
+      }
+    } else {
+      setDashboardStatus(false);
+    }
+  }
 
   return (
     <div className={styles.root}>

@@ -17,6 +17,9 @@ const compare = (a, b) => {
 }
 
 export const getResultForSHGroup = (shGroupList, result) => {
+  // console.log(shGroupList);
+  // console.log(result);
+
   const subDriverRet = {};
 
   const resultData = [...result.data];

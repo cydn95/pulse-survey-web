@@ -77,6 +77,8 @@ export const getOverallTrends = (resData, shGroupList) => {
     });
   }
 
+  const reverseKeys = [...dateKeys.reverse()];
+
   // console.log(dateKeys.reverse());
 
   for (let i = 0; i < resData.length; i++) {
@@ -115,7 +117,7 @@ export const getOverallTrends = (resData, shGroupList) => {
 
           if (!(shGroupName in overallTrendsRet)) {
             overallTrendsRet[shGroupName] = [
-              ...dateKeys.reverse()
+              ...reverseKeys
             ];
           }
 
@@ -139,12 +141,25 @@ export const getOverallTrends = (resData, shGroupList) => {
     filteredOverallTrendShGroupList.push(key);
 
     const temp = [];
+    
+    let prevYValue = 0;
+
     for (let i = 0; i < overallTrendsRet[key].length; i++) {
+
+      let yValue = Math.round(parseFloat(
+        getAverage(overallTrendsRet[key][i].value)
+      ).toFixed(2));
+
+      // previous month value
+      if (overallTrendsRet[key][i].value.length === 0) {
+        yValue = prevYValue;
+      }
+
+      prevYValue = yValue;
+
       temp.push({
         x: overallTrendsRet[key][i].key,
-        y: Math.round(parseFloat(
-          getAverage(overallTrendsRet[key][i].value)
-        ).toFixed(2)),
+        y: yValue,
       });
     }
 

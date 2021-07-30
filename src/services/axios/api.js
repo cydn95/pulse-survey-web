@@ -409,6 +409,12 @@ const getFeedbackSummaryAPI = (surveyId, subProjectUser) => {
   );
 };
 
+export const getOverallTrendsAPI = (surveyId, subProjectUser) => {
+  return getClient(true).get(
+    `/feedbacksummaryreport/?survey=${surveyId}&trend=1`
+  );
+};
+
 const getParticipationAPI = (surveyId) => {
   return getClient(true).get(`/userbysurvey/?survey=${surveyId}`);
 };
