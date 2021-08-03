@@ -533,6 +533,7 @@ function* getEngagementTrend({ payload }) {
       surveyId
     );
     const totalStakeholderCnt = stakeholderCntResult.data;
+    // console.log('total sh cnt', totalStakeholderCnt);
 
     const result = yield call(
       getDriverAnalysisAsync,
@@ -544,10 +545,23 @@ function* getEngagementTrend({ payload }) {
       endDate
     );
 
+    console.log('total data----------------', result);
+
     if (chartType === "SHGroup") {
-      const shGroupResult = yield call(getShGroupListAsync, surveyId);
+      const shGroupResult2 = yield call(getShGroupListAsync, surveyId);
+      const originShGroupList = [...shGroupResult2.data];
+      console.log('origin shgroup', originShGroupList);
+
+      const shGroupList = [];
       const engagementRet = { [driverName]: [], "Response Rate": [] };
-      const shGroupList = [...shGroupResult.data];
+
+      for (let i = 0; i < Object.keys(totalStakeholderCnt.shgroup).length; i++) {
+        const key = Object.keys(totalStakeholderCnt.shgroup)[i];
+        shGroupList.push({
+          id: key,
+          SHGroupName: key
+        });
+      }
 
       shGroupList.forEach((sg) => {
         engagementRet[driverName].push({
@@ -591,20 +605,30 @@ function* getEngagementTrend({ payload }) {
 
       callback({
         totalAnswered: answered.length,
-        shCnt: totalStakeholderCnt.stakeHolderCount,
+        shCnt: totalStakeholderCnt,
         data: { ...engagementRet, ...resultData },
+        shGroup: originShGroupList
       });
     }
 
     if (chartType === "Team") {
       const teamList = [];
-      result.data.forEach((d) => {
-        const teamId = d.subProjectUser.team.id;
-        const fIndex = teamList.findIndex((t) => t.id === teamId);
-        if (fIndex < 0) {
-          teamList.push(d.subProjectUser.team);
-        }
-      });
+
+      for (let i = 0; i < Object.keys(totalStakeholderCnt.team).length; i++) {
+        const key = Object.keys(totalStakeholderCnt.team)[i];
+        teamList.push({
+          id: key,
+          name: key
+        });
+      }
+      // result.data.forEach((d) => {
+      //   const teamId = d.subProjectUser.team.id;
+      //   const fIndex = teamList.findIndex((t) => t.id === teamId);
+      //   if (fIndex < 0) {
+      //     teamList.push(d.subProjectUser.team);
+      //   }
+      // });
+
       const engagementRet = { [driverName]: [], "Response Rate": [] };
       teamList.forEach((t) => {
         engagementRet[driverName].push({
@@ -648,22 +672,21 @@ function* getEngagementTrend({ payload }) {
 
       callback({
         totalAnswered: answered.length,
-        shCnt: totalStakeholderCnt.stakeHolderCount,
+        shCnt: totalStakeholderCnt,
         data: { ...engagementRet, ...resultData },
       });
     }
 
     if (chartType === "Organization") {
       const organizationList = [];
-      result.data.forEach((d) => {
-        const organizationId = d.subProjectUser.user.organization.id;
-        const fIndex = organizationList.findIndex(
-          (t) => t.id === organizationId
-        );
-        if (fIndex < 0) {
-          organizationList.push(d.subProjectUser.user.organization);
-        }
-      });
+
+      for (let i = 0; i < Object.keys(totalStakeholderCnt.org).length; i++) {
+        const key = Object.keys(totalStakeholderCnt.org)[i];
+        organizationList.push({
+          id: key,
+          name: key
+        });
+      }
 
       const engagementRet = { [driverName]: [], "Response Rate": [] };
       organizationList.forEach((t) => {
@@ -708,7 +731,7 @@ function* getEngagementTrend({ payload }) {
 
       callback({
         totalAnswered: answered.length,
-        shCnt: totalStakeholderCnt.stakeHolderCount,
+        shCnt: totalStakeholderCnt,
         data: { ...engagementRet, ...resultData },
       });
     }
