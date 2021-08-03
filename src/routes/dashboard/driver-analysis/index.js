@@ -112,7 +112,7 @@ const ReportDriverAnalysis = ({
 
   const callback = (ret) => {
     setLoading(false);
-    console.log('shgroup ret', ret);
+    console.log("shgroup ret", ret);
     setTotalAnswered(ret.totalAnswered);
     setTotalStakeholdercnt(ret.shCnt);
     setEngagementData({ ...ret.data });
@@ -131,11 +131,13 @@ const ReportDriverAnalysis = ({
     }
 
     if (status.code.toString() !== 200 && status.code.toString() !== "201") {
-      <div className={styles["main-content"]}>
-        <NoDashboard code={status.code.toString()} />
-      </div>
+      return (
+        <div className={styles["main-content"]}>
+          <NoDashboard code={status.code.toString()} />
+        </div>
+      );
     }
-    
+
     return (
       <Fragment>
         <div className={styles["main-content"]}>

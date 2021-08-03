@@ -17,9 +17,10 @@ import { checkDashboard } from "Redux/actions";
 import styles from "./styles.scss";
 
 const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard, history }) => {
-  const [dashboardStatus, setDashboardStatus] = useState(false);
-  const [adminStatus, setAdminStatus] = useState(false);
-  
+  const [dashboardStatus, setDashboardStatus] = useState({
+    code: "400"
+  });
+
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
