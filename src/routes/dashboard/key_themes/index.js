@@ -122,6 +122,64 @@ const ReportKeyThemes = ({
     setTab(t);
   };
 
+  const renderReport = () => {
+
+    if (tab === "") {
+      return (
+        <div className={styles["main-content"]}>
+          <NoDashboard code="400" />
+        </div>
+      );
+    }
+
+    if (status.code.toString() !== 200 && status.code.toString() !== "201") {
+      return (
+        <div className={styles["main-content"]}>
+          <NoDashboard code={status.code.toString()} />
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles["main-content"]}>
+        <div className={styles["keytheme-tab-container"]}>
+          <div className={styles["keythemes-tab-menu"]}>
+            {Object.keys(tabMenu).map((key) => {
+              if (!(key in availableMenu)) {
+                return null;
+              }
+
+              if (availableMenu[key] === 0) {
+                return null;
+              }
+
+              return (
+                <div
+                  key={`keythemes-tab-${key}`}
+                  className={classnames(styles["keythemes-tab-item"], {
+                    [styles.active]: key === tab,
+                  })}
+                  role="button"
+                  onClick={(e) => handleSelectTab(key)}
+                >
+                  <img
+                    src={
+                      key === tab
+                        ? tabMenu[key].img_white
+                        : tabMenu[key].img_grey
+                    }
+                  />
+                  {tabMenu[key].label}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        {tabMenu[tab].component}
+      </div>
+    );
+  };
+
   return (
     <div className={styles.root}>
       <div className={styles.topbar}>
@@ -136,48 +194,7 @@ const ReportKeyThemes = ({
           </div>
         </TopNav>
       </div>
-      {status && tab !== "" ? (
-        <div className={styles["main-content"]}>
-          <div className={styles["keytheme-tab-container"]}>
-            <div className={styles["keythemes-tab-menu"]}>
-              {Object.keys(tabMenu).map((key) => {
-                if (!(key in availableMenu)) {
-                  return null;
-                }
-
-                if (availableMenu[key] === 0) {
-                  return null;
-                }
-
-                return (
-                  <div
-                    key={`keythemes-tab-${key}`}
-                    className={classnames(styles["keythemes-tab-item"], {
-                      [styles.active]: key === tab,
-                    })}
-                    role="button"
-                    onClick={(e) => handleSelectTab(key)}
-                  >
-                    <img
-                      src={
-                        key === tab
-                          ? tabMenu[key].img_white
-                          : tabMenu[key].img_grey
-                      }
-                    />
-                    {tabMenu[key].label}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          {tabMenu[tab].component}
-        </div>
-      ) : (
-        <div className={styles["main-content"]}>
-          <NoDashboard />
-        </div>
-      )}
+      {renderReport()}
     </div>
   );
 };
