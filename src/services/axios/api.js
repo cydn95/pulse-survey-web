@@ -426,7 +426,7 @@ export const getDriverAnalysisCntAPI = (
   startDate = "2021-01-01",
   endDate = "2021-12-31"
 ) => {
-  let url = `/danalysiscnt/?survey=${surveyId}&projectuser=${projectUser}&stdt=${startDate}&eddt=${endDate}`;
+  let url = `/danalysiscnt/?survey=${surveyId}&stdt=${startDate}&eddt=${endDate}`;
   if (controlType !== "") {
     url += `&controltype=${controlType}`;
   }
@@ -442,7 +442,7 @@ export const getDriverAnalysisAPI = (
   startDate = "2021-01-01",
   endDate = "2021-12-31"
 ) => {
-  let url = `/driveranalysis/?survey=${surveyId}&driver=${driverName}&projectUser=${projectUser}&stdt=${startDate}&eddt=${endDate}`;
+  let url = `/driveranalysis/?survey=${surveyId}&driver=${driverName}&stdt=${startDate}&eddt=${endDate}`;
   if (controlType !== "") {
     url += `&controltype=${controlType}`;
   }

@@ -40,21 +40,7 @@ const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard, histor
   const callbackCheckDashboard = (result) => {
     setLoading(false);
 
-    // console.log(result);
-    const { code, data } = result;
-
-    if (!data) {
-      // console.log('no data');
-    }
-
-    if (code === 200 || code === 201) {
-      setDashboardStatus(true);
-      if (code === 201) {
-        setAdminStatus(true);
-      }
-    } else {
-      setDashboardStatus(false);
-    }
+    setDashboardStatus({ ... result});
   }
 
   return (
@@ -69,7 +55,7 @@ const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard, histor
             <Route
               path={`${match.url}/driver-analysis`}
               component={() => (
-                <ReportDriverAnalysis status={dashboardStatus} admin={adminStatus}/>
+                <ReportDriverAnalysis status={dashboardStatus}/>
               )}
             />
             <Route
@@ -86,7 +72,7 @@ const Dashboard = ({ match, surveyId, surveyUserId, actionCheckDashboard, histor
             />
             <Route
               path={`${match.url}`}
-              component={() => <DashboardGeneral status={dashboardStatus} />}
+              component={() => <ReportSummary status={dashboardStatus} />}
             />
             <Redirect to="/error" />
           </Switch>
