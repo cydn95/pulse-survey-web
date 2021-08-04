@@ -34,7 +34,7 @@ const AdvisorInsights = ({
   }, [actionAdvisorReport, surveyId, surveyUserId]);
 
   const renderReport = () => {
-    if (status.code.toString() !== 200 && status.code.toString() !== "201") {
+    if (status.code.toString() !== "200" && status.code.toString() !== "201") {
       return (
         <div className={styles["main-content"]}>
           <NoDashboard code={status.code.toString()} />
