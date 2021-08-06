@@ -1,4 +1,5 @@
 import { getCurrentYear, getCurrentMonth, MONTH, getAverage } from "Util/Utils";
+import { controlType, controlTypeText } from "Constants/defaultValues";
 
 export const getCultureResult = (resData) => {
   const cultureRet = {};
@@ -177,6 +178,11 @@ export const getSentimentResult = (resData) => {
 
   for (let i = 0; i < resData.length; i++) {
     const question = resData[i];
+
+    if (question.controlType !== controlTypeText(controlType.SLIDER)) {
+      continue;
+    }
+
     const intValue = question.integerValue;
 
     const questionData = question.amQuestionData; 
