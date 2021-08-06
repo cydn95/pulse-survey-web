@@ -440,7 +440,7 @@ function* getParticipation({ payload }) {
 
         const totalAnswered = Number(result.data[i].am_answered);
         const totalQuestion = Number(result.data[i].am_total);
-        if (totalAnswered >= (totalQuestion * 0.9)) {
+        if (totalAnswered >= Math.floor(totalQuestion * 0.9)) {
 
           if (result.data[i].shType.shTypeName === "Team Member") {
             teamParticipationRet.completed += 1;

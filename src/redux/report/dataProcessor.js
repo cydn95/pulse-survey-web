@@ -65,9 +65,9 @@ export const getResultForSHGroup = (shGroupList, result) => {
           continue
         }
 
-        if (!(data.subProjectUser.shType && data.subProjectUser.shType.shTypeName === "Stakeholder")) {
-          continue;
-        }
+        // if (!(data.subProjectUser.shType && data.subProjectUser.shType.shTypeName === "Stakeholder")) {
+        //   continue;
+        // }
 
         if (data.subProjectUser.shGroup === null || data.subProjectUser.shGroup.SHGroupName !== currentShGroup.SHGroupName) {
           continue;
@@ -177,9 +177,9 @@ export const getResultForTeam = (teamList, result) => {
           continue
         }
 
-        if (!(data.subProjectUser.shType && data.subProjectUser.shType.shTypeName === "Team Member")) {
-          continue;
-        }
+        // if (!(data.subProjectUser.shType && data.subProjectUser.shType.shTypeName === "Team Member")) {
+        //   continue;
+        // }
 
         if (data.subProjectUser.team === null || data.subProjectUser.team.name !== currentTeam.name) {
           continue;
