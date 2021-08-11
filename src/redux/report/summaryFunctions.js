@@ -8,7 +8,7 @@ export const getCultureResult = (resData) => {
     const question = resData[i];
     const intValue = question.integerValue;
 
-    const questionData = question.amQuestionData; 
+    const questionData = question.amQuestionData;
 
     for (let j = 0; j < questionData.length; j++) {
       const driver = questionData[j].driver;
@@ -23,10 +23,7 @@ export const getCultureResult = (resData) => {
       if (driverName === "Culture") {
         const subDriver = questionData[j].subdriver;
         if (subDriver in cultureRet) {
-          cultureRet[subDriver].value += parseInt(
-            intValue,
-            10
-          );
+          cultureRet[subDriver].value += parseInt(intValue, 10);
           cultureRet[subDriver].count += 1;
         } else {
           cultureRet[subDriver] = {
@@ -44,19 +41,18 @@ export const getCultureResult = (resData) => {
   for (const key in cultureRet) {
     filteredCulture.push({
       culture: key,
-      result: parseFloat(
-        cultureRet[key].value / cultureRet[key].count
-      ).toFixed(2),
+      result: parseFloat(cultureRet[key].value / cultureRet[key].count).toFixed(
+        2
+      ),
     });
   }
 
   return filteredCulture;
-}
+};
 
 export const getOverallTrends = (resData, shGroupList) => {
-
   // console.log(shGroupList);
-  
+
   const overallTrendsRet = {};
   const currentYear = getCurrentYear();
   const currentMonth = getCurrentMonth();
@@ -74,7 +70,7 @@ export const getOverallTrends = (resData, shGroupList) => {
 
     dateKeys.push({
       key,
-      value: []
+      value: [],
     });
   }
 
@@ -86,14 +82,10 @@ export const getOverallTrends = (resData, shGroupList) => {
     const question = resData[i];
     const intValue = question.integerValue;
 
-    const questionData = question.amQuestionData; 
+    const questionData = question.amQuestionData;
 
     for (let j = 0; j < questionData.length; j++) {
-      for (
-        let k = 0;
-        k < questionData[j].shGroup.length;
-        k++
-      ) {
+      for (let k = 0; k < questionData[j].shGroup.length; k++) {
         const shGroupId = questionData[j].shGroup[k];
         const filteredShGroupList = shGroupList.filter(
           (sh) => parseInt(sh.id, 10) === parseInt(shGroupId, 10)
@@ -113,16 +105,16 @@ export const getOverallTrends = (resData, shGroupList) => {
           const questionMonth = dateSplits[1];
 
           const key = `${MONTH(Number(questionMonth))} ${questionYear}`;
-          
+
           // console.log(key);
 
           if (!(shGroupName in overallTrendsRet)) {
-            overallTrendsRet[shGroupName] = [
-              ...reverseKeys
-            ];
+            overallTrendsRet[shGroupName] = [...reverseKeys];
           }
 
-          const findIndex = overallTrendsRet[shGroupName].findIndex((item) => item.key === key);
+          const findIndex = overallTrendsRet[shGroupName].findIndex(
+            (item) => item.key === key
+          );
           if (findIndex >= 0) {
             overallTrendsRet[shGroupName][findIndex].value.push(intValue);
           }
@@ -142,14 +134,13 @@ export const getOverallTrends = (resData, shGroupList) => {
     filteredOverallTrendShGroupList.push(key);
 
     const temp = [];
-    
+
     let prevYValue = 0;
 
     for (let i = 0; i < overallTrendsRet[key].length; i++) {
-
-      let yValue = Math.round(parseFloat(
-        getAverage(overallTrendsRet[key][i].value)
-      ).toFixed(2));
+      let yValue = Math.round(
+        parseFloat(getAverage(overallTrendsRet[key][i].value)).toFixed(2)
+      );
 
       // previous month value
       if (overallTrendsRet[key][i].value.length === 0) {
@@ -169,9 +160,9 @@ export const getOverallTrends = (resData, shGroupList) => {
 
   return {
     key: filteredOverallTrendShGroupList,
-    data: filteredOverallTrend
-  }
-}
+    data: filteredOverallTrend,
+  };
+};
 
 export const getSentimentResult = (resData) => {
   const sentimentRet = {};
@@ -185,7 +176,7 @@ export const getSentimentResult = (resData) => {
 
     const intValue = question.integerValue;
 
-    const questionData = question.amQuestionData; 
+    const questionData = question.amQuestionData;
 
     for (let j = 0; j < questionData.length; j++) {
       const driver = questionData[j].driver;
@@ -199,10 +190,7 @@ export const getSentimentResult = (resData) => {
       if (driverName === "Sentiment") {
         const subDriver = questionData[j].subdriver;
         if (subDriver in sentimentRet) {
-          sentimentRet[subDriver].value += parseInt(
-            intValue,
-            10
-          );
+          sentimentRet[subDriver].value += parseInt(intValue, 10);
           sentimentRet[subDriver].count += 1;
         } else {
           sentimentRet[subDriver] = {
@@ -230,21 +218,20 @@ export const getSentimentResult = (resData) => {
         name: "Pie2",
         count:
           100 -
-          parseFloat(
-            sentimentRet[key].value / sentimentRet[key].count
-          ).toFixed(2),
+          parseFloat(sentimentRet[key].value / sentimentRet[key].count).toFixed(
+            2
+          ),
       },
     ]);
   }
 
   return {
     key: filteredSentimentKeyList,
-    data: filteredSentiment
-  }
-}
+    data: filteredSentiment,
+  };
+};
 
 export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
-  
   // console.log('data', resData);
   // console.log('shGroupList', shGroupList);
 
@@ -255,7 +242,7 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
     const question = resData[i];
     const intValue = question.integerValue;
 
-    if (!question.projectUser.shGroup) {
+    if (!("subProjectUser" in question)) {
       continue;
     }
 
@@ -265,7 +252,7 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
 
     // console.log(question.projectUser.shGroup.SHGroupName);
 
-    const questionData = question.amQuestionData; 
+    const questionData = question.amQuestionData;
 
     for (let j = 0; j < questionData.length; j++) {
       const driver = questionData[j].driver;
@@ -280,44 +267,31 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
         drivers.push(driverName);
       }
 
-      for (
-        let k = 0;
-        k < questionData[j].shGroup.length;
-        k++
-      ) {
-        const shGroupId = questionData[j].shGroup[k];
-        const filteredShGroupList = shGroupList.filter(
-          (sh) => parseInt(sh.id, 10) === parseInt(shGroupId, 10)
-        );
-        if (filteredShGroupList.length > 0) {
-          const shGroupName = filteredShGroupList[0].SHGroupName;
-          const projectUserShGroupName = question.projectUser.shGroup.SHGroupName;
+      for (let k = 0; k < shGroupList.length; k++) {
+        const currentShGroupName = shGroupList[k].SHGroupName;
+        const shGroupName = question.subProjectUser.shGroup.SHGroupName;
 
-          if (shGroupName !== projectUserShGroupName) {
-            continue;
-          }
+        if (currentShGroupName.toString() === shGroupName.toString()) {
+          continue;
+        }
 
-          if (shGroupName in ret) {
-            if (driverName in ret[shGroupName]) {
-              ret[shGroupName][driverName].value += parseInt(
-                intValue,
-                10
-              );
-              ret[shGroupName][driverName].count += 1;
-            } else {
-              ret[shGroupName][driverName] = {
-                value: parseInt(intValue, 10),
-                count: 1,
-              };
-            }
+        if (shGroupName in ret) {
+          if (driverName in ret[shGroupName]) {
+            ret[shGroupName][driverName].value += parseInt(intValue, 10);
+            ret[shGroupName][driverName].count += 1;
           } else {
-            ret[shGroupName] = {
-              [driverName]: {
-                value: parseInt(intValue, 10),
-                count: 1,
-              },
+            ret[shGroupName][driverName] = {
+              value: parseInt(intValue, 10),
+              count: 1,
             };
           }
+        } else {
+          ret[shGroupName] = {
+            [driverName]: {
+              value: parseInt(intValue, 10),
+              count: 1,
+            },
+          };
         }
       }
     }
@@ -339,9 +313,7 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
     for (let i = 0; i < drivers.length; i++) {
       if (drivers[i] in ret[key]) {
         row.push(
-          (
-            ret[key][drivers[i]].value / ret[key][drivers[i]].count
-          ).toFixed(1)
+          (ret[key][drivers[i]].value / ret[key][drivers[i]].count).toFixed(1)
         );
       } else {
         row.push(0);
@@ -352,10 +324,9 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
   }
 
   return filteredRet;
-}
+};
 
 export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
-
   const drivers = [];
   const ret = {};
 
@@ -363,18 +334,21 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
     const question = resData[i];
     const intValue = question.integerValue;
 
-    if (!("projectUser") in question) {
+    if (!"subProjectUser" in question) {
       continue;
     }
 
     let group = null;
     if (type === "Team") {
-      group = question.projectUser.team;
+      group = question.subProjectUser.team;
     }
-    if (type === "Organization" && question.projectUser.projectOrganization) {
-       group = {
-         name: question.projectUser.projectOrganization
-       }
+    if (
+      type === "Organization" &&
+      question.subProjectUser.projectOrganization
+    ) {
+      group = {
+        name: question.subProjectUser.projectOrganization,
+      };
     }
 
     if (!group) {
@@ -398,10 +372,7 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
 
       if (group.name in ret) {
         if (driverName in ret[group.name]) {
-          ret[group.name][driverName].value += parseInt(
-            intValue,
-            10
-          );
+          ret[group.name][driverName].value += parseInt(intValue, 10);
           ret[group.name][driverName].count += 1;
         } else {
           ret[group.name][driverName] = {
@@ -436,9 +407,7 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
     for (let i = 0; i < drivers.length; i++) {
       if (drivers[i] in ret[key]) {
         row.push(
-          (
-            ret[key][drivers[i]].value / ret[key][drivers[i]].count
-          ).toFixed(1)
+          (ret[key][drivers[i]].value / ret[key][drivers[i]].count).toFixed(1)
         );
       } else {
         row.push(0);
@@ -449,4 +418,4 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
   }
 
   return filteredRet;
-}
+};

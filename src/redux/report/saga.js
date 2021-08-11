@@ -25,7 +25,7 @@ import {
   advisorAPI,
   checkDashboardStatusAPI,
   getDriverAnalysisCntAPI,
-  getKeyThemeMenuCntAPI
+  getKeyThemeMenuCntAPI,
 } from "../../services/axios/api";
 
 import {
@@ -48,7 +48,7 @@ import {
   REPORT_ADVISOR,
   REPORT_CHECK_DASHBOARD,
   REPORT_DRIVER_ANALYSIS_CNT,
-  REPORT_KEYTHEME_MENU_CNT
+  REPORT_KEYTHEME_MENU_CNT,
 } from "Constants/actionTypes";
 
 import {
@@ -289,67 +289,68 @@ function* getFeedbackSummary({ payload }) {
   try {
     const { surveyId, subProjectUser, graphType, callback } = payload;
 
-    const shGroupResult = yield call(getShGroupListAsync, surveyId);
+    // Get shGroup, Team, Organization
+    const stakeholderCntResult = yield call(
+      getTotalStakeholderCntAsync,
+      surveyId
+    );
 
-    if (shGroupResult.status === 200) {
-      const shGroupList = [...shGroupResult.data];
+    if (stakeholderCntResult.status === 200) {
+      const totalStakeholderCnt = stakeholderCntResult.data;
+
+      console.log("##################################");
+      console.log(totalStakeholderCnt);
+
+      const shGroupList = [];
+      for (
+        let i = 0;
+        i < Object.keys(totalStakeholderCnt.shgroup).length;
+        i++
+      ) {
+        const key = Object.keys(totalStakeholderCnt.shgroup)[i];
+        shGroupList.push({
+          id: key,
+          SHGroupName: key,
+        });
+      }
+
+      const teamList = [];
+      for (let i = 0; i < Object.keys(totalStakeholderCnt.team).length; i++) {
+        const key = Object.keys(totalStakeholderCnt.team)[i];
+        teamList.push({
+          id: key,
+          name: key,
+        });
+      }
+
+      const organizationList = [];
+      for (let i = 0; i < Object.keys(totalStakeholderCnt.org).length; i++) {
+        const key = Object.keys(totalStakeholderCnt.org)[i];
+        organizationList.push({
+          id: key,
+          name: key,
+        });
+      }
+
       const result = yield call(
         getFeedbackSummaryAsync,
         surveyId,
         subProjectUser
       );
 
-      const resultOverallTrends = yield call (getOverallTrendsAsync, surveyId, subProjectUser);
-
-      const teamList = [];
-      const organizationList = [];
+      const resultOverallTrends = yield call(
+        getOverallTrendsAsync,
+        surveyId,
+        subProjectUser
+      );
 
       if (result.status === 200 && resultOverallTrends.status === 200) {
-
-        for (let i = 0; i < result.data.length; i++) {
-          const data = result.data[i];
-
-          if (!("projectUser" in data)) {
-            continue;
-          }
-
-          const projectUser = data.projectUser;
-
-          // if (!("team" in projectUser) || !("user" in projectUser)) {
-          //   continue;
-          // }
-
-          if (!("team" in projectUser)) {
-            continue;
-          }
-
-          const team = projectUser.team;
-          const organization = projectUser.projectOrganization;
-
-          if (teamList.findIndex((t) => t.id === team.id) < 0) {
-            teamList.push(team);
-          }
-
-          if (organizationList.findIndex((t) => t.id === organization.id) < 0) {
-            organizationList.push(organization);
-          }
-        }
-
-        /**
-         * graphType: ShGroup, Team, Organization
-         * ShGroup:       group by aoQuestionData.shGroup
-         * Team:          group by projectUser.team
-         * Organization:  group by projectUser.user.organization
-         *
-         */
-        // const filteredRet =
-        //   graphType === "ShGroup"
-        //     ? getFeedbackSummaryByShGroup(result.data, shGroupList)
-        //     : getFeedbackSummaryByTeamOrOrganization(result.data, graphType);
-
         const filteredCulture = getCultureResult(result.data);
 
-        const overallTrendData = getOverallTrends(resultOverallTrends.data, shGroupList);
+        const overallTrendData = getOverallTrends(
+          resultOverallTrends.data,
+          shGroupList
+        );
         const filteredOverallTrend = overallTrendData.data;
         const filteredOverallTrendShGroupList = overallTrendData.key;
 
@@ -358,6 +359,11 @@ function* getFeedbackSummary({ payload }) {
         const filteredSentimentKeyList = sentimentData.key;
 
         // console.log(overallTrendData);
+
+        console.log("*******************************");
+        console.log(shGroupList);
+        console.log(teamList);
+        console.log(organizationList);
 
         callback(
           result.data,
@@ -399,7 +405,6 @@ function* getParticipation({ payload }) {
       let teamUserCount = 0;
 
       for (let i = 0; i < result.data.length; i++) {
-
         if (!result.data[i].shType) {
           continue;
         }
@@ -412,8 +417,10 @@ function* getParticipation({ payload }) {
           allUserCount++;
         }
 
-        if (result.data[i].sendInvite === null || result.data[i].sendInvite === false) {
-
+        if (
+          result.data[i].sendInvite === null ||
+          result.data[i].sendInvite === false
+        ) {
           if (result.data[i].shType.shTypeName === "Team Member") {
             teamParticipationRet.notIssued += 1;
           }
@@ -441,7 +448,6 @@ function* getParticipation({ payload }) {
         const totalAnswered = Number(result.data[i].am_answered);
         const totalQuestion = Number(result.data[i].am_total);
         if (totalAnswered >= Math.floor(totalQuestion * 0.9)) {
-
           if (result.data[i].shType.shTypeName === "Team Member") {
             teamParticipationRet.completed += 1;
           }
@@ -449,9 +455,7 @@ function* getParticipation({ payload }) {
           if (result.data[i].shType.shTypeName === "Stakeholder") {
             participationRet.completed += 1;
           }
-
         } else {
-
           if (result.data[i].shType.shTypeName === "Team Member") {
             teamParticipationRet.awaiting += 1;
           }
@@ -464,7 +468,7 @@ function* getParticipation({ payload }) {
 
       const filteredParticipationRet = [];
       const filteredTeamParticipationRet = [];
- 
+
       filteredParticipationRet.push(
         ...[
           { name: "Pie1", count: participationRet.notIssued * 100 },
@@ -545,21 +549,25 @@ function* getEngagementTrend({ payload }) {
       endDate
     );
 
-    console.log('total data----------------', result);
+    console.log("total data----------------", result);
 
     if (chartType === "SHGroup") {
       const shGroupResult2 = yield call(getShGroupListAsync, surveyId);
       const originShGroupList = [...shGroupResult2.data];
-      console.log('origin shgroup', originShGroupList);
+      console.log("origin shgroup", originShGroupList);
 
       const shGroupList = [];
       const engagementRet = { [driverName]: [], "Response Rate": [] };
 
-      for (let i = 0; i < Object.keys(totalStakeholderCnt.shgroup).length; i++) {
+      for (
+        let i = 0;
+        i < Object.keys(totalStakeholderCnt.shgroup).length;
+        i++
+      ) {
         const key = Object.keys(totalStakeholderCnt.shgroup)[i];
         shGroupList.push({
           id: key,
-          SHGroupName: key
+          SHGroupName: key,
         });
       }
 
@@ -570,9 +578,10 @@ function* getEngagementTrend({ payload }) {
         engagementRet["Response Rate"].push({
           key: sg.SHGroupName,
           stakeholders: [],
-          totalCnt: sg.SHGroupName in totalStakeholderCnt.shgroup
-            ? totalStakeholderCnt.shgroup[sg.SHGroupName]
-            : 0,
+          totalCnt:
+            sg.SHGroupName in totalStakeholderCnt.shgroup
+              ? totalStakeholderCnt.shgroup[sg.SHGroupName]
+              : 0,
         });
       });
 
@@ -607,7 +616,7 @@ function* getEngagementTrend({ payload }) {
         totalAnswered: answered.length,
         shCnt: totalStakeholderCnt,
         data: { ...engagementRet, ...resultData },
-        shGroup: originShGroupList
+        shGroup: originShGroupList,
       });
     }
 
@@ -618,7 +627,7 @@ function* getEngagementTrend({ payload }) {
         const key = Object.keys(totalStakeholderCnt.team)[i];
         teamList.push({
           id: key,
-          name: key
+          name: key,
         });
       }
       // result.data.forEach((d) => {
@@ -637,9 +646,10 @@ function* getEngagementTrend({ payload }) {
         engagementRet["Response Rate"].push({
           key: t.name,
           stakeholders: [],
-          totalCnt: t.name in totalStakeholderCnt.team
-            ? totalStakeholderCnt.team[t.name]
-            : 0,
+          totalCnt:
+            t.name in totalStakeholderCnt.team
+              ? totalStakeholderCnt.team[t.name]
+              : 0,
         });
       });
 
@@ -684,7 +694,7 @@ function* getEngagementTrend({ payload }) {
         const key = Object.keys(totalStakeholderCnt.org)[i];
         organizationList.push({
           id: key,
-          name: key
+          name: key,
         });
       }
 
@@ -696,9 +706,10 @@ function* getEngagementTrend({ payload }) {
         engagementRet["Response Rate"].push({
           key: t.name,
           stakeholders: [],
-          totalCnt: t.name in totalStakeholderCnt.org
-            ? totalStakeholderCnt.org[t.name]
-            : 0,
+          totalCnt:
+            t.name in totalStakeholderCnt.org
+              ? totalStakeholderCnt.org[t.name]
+              : 0,
         });
       });
 
@@ -875,7 +886,7 @@ function* getKeyThemeMenuCnt({ payload }) {
     if (result.status === 200) {
       callback(result.data);
     }
-  } catch (error) { }
+  } catch (error) {}
 }
 
 function* setAcknowledgementReport({ payload }) {
@@ -1050,6 +1061,6 @@ export default function* rootSaga() {
     fork(watchAMQuestionCnt),
     fork(watchAdvisorReport),
     fork(watchCheckDashboard),
-    fork(watchKeyThemeMenuCnt)
+    fork(watchKeyThemeMenuCnt),
   ]);
 }
