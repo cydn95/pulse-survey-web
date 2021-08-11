@@ -231,9 +231,8 @@ export const getSentimentResult = (resData) => {
   };
 };
 
-export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
+export const getFeedbackSummaryByShGroup = (resData) => {
   // console.log('data', resData);
-  // console.log('shGroupList', shGroupList);
 
   const drivers = [];
   const ret = {};
@@ -260,12 +259,35 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
 
     for (let j = 0; j < questionData.length; j++) {
       const driver = questionData[j].driver;
+      const subdriver = questionData[j].subdriver;
 
-      if (!driver) {
+      if (!driver || !subdriver) {
         continue;
       }
 
       const driverName = driver.driverName;
+
+      if (driverName === "Engagement" && subdriver !== "Actual Engagement") {
+        continue;
+      }
+      if (driverName === "Sentiment" && subdriver !== "Overall Sentiment") {
+        continue;
+      }
+      if (driverName === "Influence" && subdriver !== "Personal Influence") {
+        continue;
+      }
+      if (driverName === "Interest" && subdriver !== "Concern") {
+        continue;
+      }
+      if (driverName === "Confidence" && subdriver !== "General Confidence") {
+        continue;
+      }
+      if (driverName === "Culture" && subdriver !== "Overall Culture") {
+        continue;
+      }
+      if (driverName === "Relationships" && subdriver !== "Trust in Leaders") {
+        continue;
+      }
 
       if (!drivers.includes(driverName)) {
         drivers.push(driverName);
@@ -367,12 +389,35 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
 
     for (let j = 0; j < questionData.length; j++) {
       const driver = questionData[j].driver;
+      const subdriver = questionData[j].subdriver;
 
-      if (!driver) {
+      if (!driver || !subdriver) {
         continue;
       }
 
       const driverName = driver.driverName;
+
+      if (driverName === "Engagement" && subdriver !== "Actual Engagement") {
+        continue;
+      }
+      if (driverName === "Sentiment" && subdriver !== "Overall Sentiment") {
+        continue;
+      }
+      if (driverName === "Influence" && subdriver !== "Personal Influence") {
+        continue;
+      }
+      if (driverName === "Interest" && subdriver !== "Concern") {
+        continue;
+      }
+      if (driverName === "Confidence" && subdriver !== "General Confidence") {
+        continue;
+      }
+      if (driverName === "Culture" && subdriver !== "Overall Culture") {
+        continue;
+      }
+      if (driverName === "Relationships" && subdriver !== "Trust in Leaders") {
+        continue;
+      }
 
       if (!drivers.includes(driverName)) {
         drivers.push(driverName);
