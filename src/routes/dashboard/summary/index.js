@@ -74,9 +74,9 @@ const ReportSummary = ({
   const [participationCount, setParticipationCount] = useState(0);
   const [teamParticipationCount, setTeamParticipationCount] = useState(0);
 
-  const [teamList, setTeamList] = useState([]);
-  const [organizationList, setOrganizationList] = useState([]);
-  const [shGroupList, setShGroupList] = useState([]);
+  // const [teamList, setTeamList] = useState([]);
+  // const [organizationList, setOrganizationList] = useState([]);
+  // const [shGroupList, setShGroupList] = useState([]);
 
   const [topPositives, setTopPositives] = useState([]);
   const [topNegatives, setTopNegatives] = useState([]);
@@ -90,15 +90,9 @@ const ReportSummary = ({
     sentimentKey,
     overallTrendRet,
     overallTrendKey,
-    teamList,
-    organizationList,
-    shGroupList
   ) => {
     setFeedbackSummaryLoading(false);
-    const feedbackSummaryRet = getFeedbackSummaryByShGroup(
-      feedbackSummaryResultData,
-      shGroupList
-    );
+    const feedbackSummaryRet = getFeedbackSummaryByShGroup(feedbackSummaryResultData,);
 
     setAllData(feedbackSummaryResultData);
     setFeedbackSummary(feedbackSummaryRet);
@@ -107,9 +101,9 @@ const ReportSummary = ({
     setSentimentResult(sentimentRet);
     setOverallTrendResult(overallTrendRet);
     setOverallTrendKey(overallTrendKey);
-    setTeamList(teamList);
-    setOrganizationList(organizationList);
-    setShGroupList(shGroupList);
+    // setTeamList(teamList);
+    // setOrganizationList(organizationList);
+    // setShGroupList(shGroupList);
   };
 
   const callbackOverallSentiment = (data) => {
@@ -165,7 +159,7 @@ const ReportSummary = ({
   const hanleChangeFeedbackSummaryGraph = (type) => {
     const feedbackSummaryRet =
       type === "ShGroup"
-        ? getFeedbackSummaryByShGroup(allData, shGroupList)
+        ? getFeedbackSummaryByShGroup(allData)
         : getFeedbackSummaryByTeamOrOrganization(allData, type);
 
     setFeedbackSummary(feedbackSummaryRet);
