@@ -242,6 +242,10 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
     const question = resData[i];
     const intValue = question.integerValue;
 
+    if (question.controlType.toString() !== controlTypeText(controlType.SLIDER).toString()) {
+      continue;
+    }
+
     if (!("subProjectUser" in question)) {
       continue;
     }
@@ -267,13 +271,13 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
         drivers.push(driverName);
       }
 
-      for (let k = 0; k < shGroupList.length; k++) {
-        const currentShGroupName = shGroupList[k].SHGroupName;
+      // for (let k = 0; k < shGroupList.length; k++) {
+        // const currentShGroupName = shGroupList[k].SHGroupName;
         const shGroupName = question.subProjectUser.shGroup.SHGroupName;
 
-        if (currentShGroupName.toString() === shGroupName.toString()) {
-          continue;
-        }
+        // if (currentShGroupName.toString() === shGroupName.toString()) {
+        //   continue;
+        // }
 
         if (shGroupName in ret) {
           if (driverName in ret[shGroupName]) {
@@ -293,7 +297,7 @@ export const getFeedbackSummaryByShGroup = (resData, shGroupList) => {
             },
           };
         }
-      }
+      // }
     }
   }
 
@@ -333,6 +337,10 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
   for (let i = 0; i < resData.length; i++) {
     const question = resData[i];
     const intValue = question.integerValue;
+
+    if (question.controlType !== controlTypeText(controlType.SLIDER)) {
+      continue;
+    }
 
     if (!"subProjectUser" in question) {
       continue;
