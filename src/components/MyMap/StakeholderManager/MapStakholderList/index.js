@@ -177,9 +177,9 @@ class MapStakeholderList extends Component {
                 onClick={(e) => onShowSearchStakeholder()}
                 style={{ cursor: "pointer" }}
               >
-                Search Stakeholders
+                Search
               </strong>
-              ” to add your first one!
+              ” to add your first one.
             </span>
           </div>
         )}
