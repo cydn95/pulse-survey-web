@@ -7,7 +7,7 @@ import styles from "./styles.scss";
 
 function ProjectNotFound() {
   return (
-    <MessageBox title="Project Not Found" subTitle="">
+    <MessageBox title="Select Project" subTitle="">
       Please select a project first.
       <br />
       {/* <NavLink to={`/app/settings/projects`} className={styles.link}> */}

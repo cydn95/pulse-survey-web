@@ -2,6 +2,12 @@
   width: 100%;
   min-height: 100vh;
   background-color: #f3f5f7;
+
+  .loading-bar {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: calc(50vh - 20px);
+  }
 }
 
 .topbar {

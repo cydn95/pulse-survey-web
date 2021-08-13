@@ -169,7 +169,7 @@ const ReportSummary = ({
     if (status.code.toString() !== "200" && status.code.toString() !== "201") {
       return (
         <div className={styles["main-content"]}>
-          <NoDashboard code={status.code.toString()} />
+          <NoDashboard code={status.code.toString()} threshold={status.thresholdCnt}/>
         </div>
       );
     }

@@ -123,19 +123,17 @@ const ReportKeyThemes = ({
   };
 
   const renderReport = () => {
-
     if (tab === "") {
-      return (
-        <div className={styles["main-content"]}>
-          <NoDashboard code="400" />
-        </div>
-      );
+      return null;
     }
 
     if (status.code.toString() !== "200" && status.code.toString() !== "201") {
       return (
         <div className={styles["main-content"]}>
-          <NoDashboard code={status.code.toString()} />
+          <NoDashboard
+            code={status.code.toString()}
+            threshold={status.thresholdCnt}
+          />
         </div>
       );
     }
