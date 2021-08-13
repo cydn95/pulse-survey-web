@@ -8,7 +8,7 @@ import styles from "./styles.scss";
  * 227: not enough threshcnt
  * 400: no data
  */
-const NoDashboard = ({ code }) => {
+const NoDashboard = ({ code, threshold = 3}) => {
   return (
     <Fragment>
       {(code.toString() === "400" || code.toString() === "227") && (
@@ -21,7 +21,7 @@ const NoDashboard = ({ code }) => {
           <p className={styles["no-dashboard-text"]}>
             Not enough users have responded to ensure<br/>
             anoymity. The dashboards will be visible<br/>
-            when at least X users have provided their responses.
+            when at least {threshold} users have provided their responses.
           </p>
         </div>
       )}
