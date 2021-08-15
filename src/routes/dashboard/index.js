@@ -44,7 +44,6 @@ const Dashboard = ({
 
   const callbackCheckDashboard = (result) => {
     setLoading(false);
-    console.log(result);
     setDashboardStatus({ ...result });
   };
 

@@ -499,12 +499,9 @@ function* getEngagementTrend({ payload }) {
       endDate
     );
 
-    console.log("total data----------------", result);
-
     if (chartType === "SHGroup") {
       const shGroupResult2 = yield call(getShGroupListAsync, surveyId);
       const originShGroupList = [...shGroupResult2.data];
-      console.log("origin shgroup", originShGroupList);
 
       const shGroupList = [];
       const engagementRet = { [driverName]: [], "Response Rate": [] };
