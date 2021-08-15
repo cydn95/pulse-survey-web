@@ -44,7 +44,6 @@ const ReportDriverAnalysis = ({
   userId,
   status,
 }) => {
-  console.log("dashboard status", status);
 
   const [loading, setLoading] = useState(false);
 
@@ -112,7 +111,6 @@ const ReportDriverAnalysis = ({
 
   const callback = (ret) => {
     setLoading(false);
-    console.log("shgroup ret", ret);
     setTotalAnswered(ret.totalAnswered);
     setTotalStakeholdercnt(ret.shCnt);
     setEngagementData({ ...ret.data });
