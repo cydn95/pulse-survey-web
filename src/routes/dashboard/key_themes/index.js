@@ -28,7 +28,7 @@ const tabMenu = {
     component: (
       <CarouselContainer
         tab={2}
-        label="How do you think the project is going - in your words:"
+        label="How do you think the project is going... in your own words."
       />
     ),
   },
