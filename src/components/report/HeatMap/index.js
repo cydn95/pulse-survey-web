@@ -240,9 +240,10 @@ const HeatMap = ({
               {data[key].map((d, index) => {
                 const style =
                   rowNum >= 2 &&
-                  d.value > 0 &&
-                  d.stakeholders &&
-                  d.stakeholders.length >= thresholdCnt
+                  ((d.value > 0 &&
+                    d.stakeholders &&
+                    d.stakeholders.length > thresholdCnt) ||
+                    admin)
                     ? { borderLeft: `3px solid ${getColor(Number(d.value))}` }
                     : {};
 
