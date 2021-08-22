@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import TextField from "@material-ui/core/TextField";
+import { DebounceInput } from 'react-debounce-input';
+
 import SkipQuestion from "../SkipQuestion";
 import Slider from "Components/Slider";
 import styles from "./styles.scss";
@@ -16,6 +19,7 @@ class RangeSlider extends Component {
       answer: {
         ...answer,
       },
+      deValue: 0
     };
   }
 
@@ -34,6 +38,7 @@ class RangeSlider extends Component {
 
   onChangeSlide = (value) => {
     const percent = value;
+    const { question } = this.props;
 
     this.setState(
       (state) => ({
@@ -42,9 +47,14 @@ class RangeSlider extends Component {
           integerValue: percent,
           skipValue: "",
         },
+        deValue: percent
       }),
       () => {
-        this.props.onAnswer(this.state.answer);
+        const deValueInput = document.getElementById(`deValue_${question.id}`);
+        var nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+        nativeInputValueSetter.call(deValueInput, this.state.deValue);
+        var ev2 = new Event('input', { bubbles: true });
+        deValueInput.dispatchEvent(ev2);
       }
     );
   };
@@ -78,6 +88,10 @@ class RangeSlider extends Component {
     );
   };
 
+  handleDeValue = (e) => {
+    this.props.onAnswer(this.state.answer);
+  }
+
   render() {
     const { question, skipQuestionList, user, projectTitle } = this.props;
 
@@ -95,6 +109,14 @@ class RangeSlider extends Component {
             className={styles.slider}
             percent={this.state.answer.integerValue}
             onChange={this.onChangeSlide}
+          />
+          <DebounceInput
+            id={`deValue_${question.id}`}
+            element={TextField}
+            style={{ width: 0, height: 0, display: 'none' }}
+            value={this.state.deValue}
+            debounceTimeout={500}
+            onChange={(e) => this.handleDeValue(e)}
           />
         </div>
         <div className={styles["slider-text-section"]}>
