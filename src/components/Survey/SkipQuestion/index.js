@@ -1,10 +1,9 @@
 import React, { Component } from "react";
+import { DebounceInput } from 'react-debounce-input';
 
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import SelectableButton from "Components/SelectableButton";
-
 import TextField from "@material-ui/core/TextField";
 
 import styles from "./styles.scss";
@@ -189,8 +188,10 @@ class SkipQuestion extends Component {
         )}
         {this.state.commentToggle && (
           <div className={styles["comment-section"]}>
-            <TextField
+            <DebounceInput
               id="comment"
+              element={TextField}
+              debounceTimeout={500}
               className={styles.comment}
               value={this.state.comment}
               onChange={(e) => this.onInputComment(e)}

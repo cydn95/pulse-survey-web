@@ -81,6 +81,11 @@
   flex-flow: row wrap;
   width: 100%;
   height: calc(100vh - 188px);
+  
+
+  @media only screen and (max-width: 880px) {
+    height: calc(100vh - 108px);
+  }
 
   .map-content {
     width: 66.6666%;
@@ -150,7 +155,8 @@
     .map-stakeholder {
       width: 100%;
       background-color: #fff;
-      min-height: calc(100vh - 170px);
+      // min-height: calc(100vh - 170px);
+      min-height: calc(100vh - 100px);
       overflow-y: auto;
 
       &.full {

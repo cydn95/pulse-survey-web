@@ -17,6 +17,9 @@ const compare = (a, b) => {
 }
 
 export const getResultForSHGroup = (shGroupList, result) => {
+  // console.log(shGroupList);
+  // console.log(result);
+
   const subDriverRet = {};
 
   const resultData = [...result.data];
@@ -27,9 +30,9 @@ export const getResultForSHGroup = (shGroupList, result) => {
     if ("amQuestionData" in data) {
       questionData = data.amQuestionData;
     }
-    if ("aoQuestionData" in data) {
-      questionData = data.aoQuestionData;
-    }
+    // if ("aoQuestionData" in data) {
+    //   questionData = data.aoQuestionData;
+    // }
 
     questionData.forEach((aq) => {
       if (!(aq.subdriver in subDriverRet)) {
@@ -58,25 +61,29 @@ export const getResultForSHGroup = (shGroupList, result) => {
 
         const data = resultData[k];
 
-        if (!("projectUser" in data)) {
+        if (!("subProjectUser" in data)) {
           continue
         }
 
-        if (data.projectUser.shGroup === null || data.projectUser.shGroup.id !== currentShGroup.id) {
+        // if (!(data.subProjectUser.shType && data.subProjectUser.shType.shTypeName === "Stakeholder")) {
+        //   continue;
+        // }
+
+        if (data.subProjectUser.shGroup === null || data.subProjectUser.shGroup.SHGroupName !== currentShGroup.SHGroupName) {
           continue;
         }
 
-        if (!stakeholders.includes(data.projectUser.id)) {
-          stakeholders.push(data.projectUser.id)
+        if (!stakeholders.includes(data.subProjectUser.id)) {
+          stakeholders.push(data.subProjectUser.id)
         }
 
         let questionData = [];
         if ("amQuestionData" in data) {
           questionData = data.amQuestionData;
         }
-        if ("aoQuestionData" in data) {
-          questionData = data.aoQuestionData;
-        }
+        // if ("aoQuestionData" in data) {
+        //   questionData = data.aoQuestionData;
+        // }
         
         questionData.forEach((aq) => {
           // if (
@@ -139,9 +146,9 @@ export const getResultForTeam = (teamList, result) => {
     if ("amQuestionData" in data) {
       questionData = data.amQuestionData;
     }
-    if ("aoQuestionData" in data) {
-      questionData = data.aoQuestionData;
-    }
+    // if ("aoQuestionData" in data) {
+    //   questionData = data.aoQuestionData;
+    // }
 
     questionData.forEach((aq) => {
       if (!(aq.subdriver in subDriverRet)) {
@@ -166,25 +173,29 @@ export const getResultForTeam = (teamList, result) => {
 
         const data = resultData[k];
 
-        if (!("projectUser" in data)) {
+        if (!("subProjectUser" in data)) {
           continue
         }
 
-        if (data.projectUser.team === null || data.projectUser.team.id !== currentTeam.id) {
+        // if (!(data.subProjectUser.shType && data.subProjectUser.shType.shTypeName === "Team Member")) {
+        //   continue;
+        // }
+
+        if (data.subProjectUser.team === null || data.subProjectUser.team.name !== currentTeam.name) {
           continue;
         }
 
-        if (!stakeholders.includes(data.projectUser.id)) {
-          stakeholders.push(data.projectUser.id)
+        if (!stakeholders.includes(data.subProjectUser.id)) {
+          stakeholders.push(data.subProjectUser.id)
         }
 
         let questionData = [];
         if ("amQuestionData" in data) {
           questionData = data.amQuestionData;
         }
-        if ("aoQuestionData" in data) {
-          questionData = data.aoQuestionData;
-        }
+        // if ("aoQuestionData" in data) {
+        //   questionData = data.aoQuestionData;
+        // }
 
         questionData.forEach((aq) => {
           // if (
@@ -245,9 +256,9 @@ export const getResultForOrganization = (organizationList, result) => {
     if ("amQuestionData" in data) {
       questionData = data.amQuestionData;
     }
-    if ("aoQuestionData" in data) {
-      questionData = data.aoQuestionData;
-    }
+    // if ("aoQuestionData" in data) {
+    //   questionData = data.aoQuestionData;
+    // }
 
     questionData.forEach((aq) => {
       if (!(aq.subdriver in subDriverRet)) {
@@ -272,31 +283,29 @@ export const getResultForOrganization = (organizationList, result) => {
       
         const data = resultData[k];
 
-        if (!("projectUser" in data)) {
+        if (!("subProjectUser" in data)) {
           continue
         }
 
-        if (data.projectUser.user === null || data.projectUser.user.organization === null || data.projectUser.user.organization.id !== currentOrganization.id) {
+        if (!("projectOrganization" in data.subProjectUser && data.subProjectUser.projectOrganization !== "")) {
           continue;
         }
 
-        if (!stakeholders.includes(data.projectUser.id)) {
-          stakeholders.push(data.projectUser.id)
+        if (data.subProjectUser.projectOrganization !== currentOrganization.id) {
+          continue;
+        }
+
+        if (!stakeholders.includes(data.subProjectUser.id)) {
+          stakeholders.push(data.subProjectUser.id)
         }
 
         let questionData = [];
         if ("amQuestionData" in data) {
           questionData = data.amQuestionData;
         }
-        if ("aoQuestionData" in data) {
-          questionData = data.aoQuestionData;
-        }
-
-        if ("projectUser" in data) {
-          if (!(stakeholders.includes(data.projectUser.id)) && data.projectUser.user.organization.id === currentOrganization.id) {
-            stakeholders.push(data.projectUser.id)
-          }
-        }
+        // if ("aoQuestionData" in data) {
+        //   questionData = data.aoQuestionData;
+        // }
 
         questionData.forEach((aq) => {
           // if (

@@ -33,7 +33,7 @@ const getColor = (val) => {
   return "#00b7a2"; // solid green
 };
 
-const NoTrendData = ({ shCnt = 0 }) => {
+const NoTrendData = ({ shCnt = 0, thresholdCnt = 3 }) => {
   const [tip, setTip] = useState(false);
 
   return (
@@ -56,7 +56,9 @@ const NoTrendData = ({ shCnt = 0 }) => {
           <div className={styles["tip-answer-content"]}>
             {`${shCnt === 0 ? "No" : `Only ${shCnt}`} stakeholder${
               shCnt === 1 ? "" : "s"
-            } ${shCnt === 1 ? "has" : "have"} responded. We need at least 3.`}
+            } ${
+              shCnt === 1 ? "has" : "have"
+            } responded. We need at least ${thresholdCnt}.`}
           </div>
         </div>
       )}
@@ -64,10 +66,13 @@ const NoTrendData = ({ shCnt = 0 }) => {
   );
 };
 
-const shouldExpand = (data) => {
+const shouldExpand = (data, threshold, admin) => {
   let res = 0;
   data.forEach((d) => {
-    if (d.stakeholders && d.stakeholders.length >= 3) {
+    if (
+      d.value > 0 &&
+      ((d.stakeholders && d.stakeholders.length > threshold) || admin)
+    ) {
       res++;
     }
   });
@@ -75,7 +80,16 @@ const shouldExpand = (data) => {
   return res;
 };
 
-const HeatMap = ({ shCnt, totalAnswered, data, admin, chartWidth }) => {
+const HeatMap = ({
+  shCnt,
+  thresholdCnt,
+  totalAnswered,
+  data,
+  admin,
+  chartWidth,
+  filter,
+  shGroup,
+}) => {
   const colP = useMemo(() => {
     if (Object.keys(data).length > 0) {
       return 100 / (data[Object.keys(data)[0]].length + 1);
@@ -94,7 +108,7 @@ const HeatMap = ({ shCnt, totalAnswered, data, admin, chartWidth }) => {
       }
       answerVisible.push(false);
     });
-    // console.log(temp);
+
     setTrendVisible({ ...temp });
   }, [data]);
 
@@ -119,6 +133,30 @@ const HeatMap = ({ shCnt, totalAnswered, data, admin, chartWidth }) => {
       answerVisible[index] = true;
     }
     setAnswerVisible([...answerVisible]);
+  };
+
+  const getTotalStakeholders = () => {
+    let data = null;
+    if (filter === "SHGroup") {
+      data = shCnt.shgroup;
+    }
+    if (filter === "Team") {
+      data = shCnt.team;
+    }
+    if (filter === "Organization") {
+      data = shCnt.org;
+    }
+
+    if (data === null) {
+      return 0;
+    }
+
+    let cnt = 0;
+    for (let i = 0; i < Object.keys(data).length; i++) {
+      cnt += data[Object.keys(data)[i]];
+    }
+
+    return cnt;
   };
 
   return (
@@ -161,7 +199,8 @@ const HeatMap = ({ shCnt, totalAnswered, data, admin, chartWidth }) => {
                   >
                     <span className={styles.title}>{key}</span>
                     {rowNum > 1 &&
-                      (shouldExpand(data[key]) > 0 || admin === true) && (
+                      (shouldExpand(data[key], thresholdCnt, admin) > 0 ||
+                        admin === true) && (
                         <span className={styles.expand}>
                           Expand{" "}
                           {trendVisible[keyValue] ? (
@@ -186,8 +225,8 @@ const HeatMap = ({ shCnt, totalAnswered, data, admin, chartWidth }) => {
                         <div className={styles["row-answer-content"]}>
                           {rowNum === 1 &&
                             `The response rate is ${Math.round(
-                              (totalAnswered / shCnt) * 100
-                            )}% out of a total ${shCnt} stakeholders that have been invited to respond`}
+                              (totalAnswered / getTotalStakeholders()) * 100
+                            )}% out of a total ${getTotalStakeholders()} stakeholders that have been invited to respond`}
                           {rowNum > 1 &&
                             (data[key].length > 0 && data[key][0].question
                               ? `Question answered: "${data[key][0].question}"`
@@ -201,9 +240,10 @@ const HeatMap = ({ shCnt, totalAnswered, data, admin, chartWidth }) => {
               {data[key].map((d, index) => {
                 const style =
                   rowNum >= 2 &&
-                  d.value > 0 &&
-                  d.stakeholders &&
-                  d.stakeholders.length >= 3
+                  ((d.value > 0 &&
+                    d.stakeholders &&
+                    d.stakeholders.length > thresholdCnt) ||
+                    admin)
                     ? { borderLeft: `3px solid ${getColor(Number(d.value))}` }
                     : {};
 
@@ -220,7 +260,7 @@ const HeatMap = ({ shCnt, totalAnswered, data, admin, chartWidth }) => {
                   if (
                     (d.value > 0 &&
                       d.stakeholders &&
-                      d.stakeholders.length > 3) ||
+                      d.stakeholders.length > thresholdCnt) ||
                     admin
                   ) {
                     colVal = `${d.value} / 10`;
@@ -228,6 +268,7 @@ const HeatMap = ({ shCnt, totalAnswered, data, admin, chartWidth }) => {
                     colVal = (
                       <NoTrendData
                         shCnt={d.stakeholders ? d.stakeholders.length : 0}
+                        thresholdCnt={thresholdCnt}
                       />
                     );
                   }
@@ -249,39 +290,42 @@ const HeatMap = ({ shCnt, totalAnswered, data, admin, chartWidth }) => {
                 );
               })}
             </div>
-            {rowNum > 1 && (shouldExpand(data[key]) > 0 || admin === true) && (
-              <div
-                key={`heatmap-row-trend-${keyValue}`}
-                className={classnames(styles["map-row"], {
-                  [styles.show]: trendVisible[keyValue],
-                  [styles.hide]: !trendVisible[keyValue],
-                })}
-              >
+            {rowNum > 1 &&
+              (shouldExpand(data[key], thresholdCnt, admin) > 0 ||
+                admin === true) && (
                 <div
-                  className={styles["map-col-trend"]}
-                  style={{ width: `${colP}%` }}
-                  onClick={(e) => toggleTrendVisible(keyValue)}
-                ></div>
-                {data[key].map((d, index) => (
+                  key={`heatmap-row-trend-${keyValue}`}
+                  className={classnames(styles["map-row"], {
+                    [styles.show]: trendVisible[keyValue],
+                    [styles.hide]: !trendVisible[keyValue],
+                  })}
+                >
                   <div
-                    key={`heatmap-col-trend-${keyValue}-${index}`}
-                    className={classnames(styles["map-col-trend"])}
+                    className={styles["map-col-trend"]}
                     style={{ width: `${colP}%` }}
-                  >
-                    {chartWidth > 0 &&
-                      d.trend.length > 0 &&
-                      d.stakeholders &&
-                      (d.stakeholders.length >= 3 || admin) && (
-                        <TrendLine
-                          data={d.trend}
-                          num={`${keyValue}-${index}`}
-                          width={chartWidth}
-                        />
-                      )}
-                  </div>
-                ))}
-              </div>
-            )}
+                    onClick={(e) => toggleTrendVisible(keyValue)}
+                  ></div>
+                  {data[key].map((d, index) => (
+                    <div
+                      key={`heatmap-col-trend-${keyValue}-${index}`}
+                      className={classnames(styles["map-col-trend"])}
+                      style={{ width: `${colP}%` }}
+                    >
+                      {d.value > 0 &&
+                        chartWidth > 0 &&
+                        ((d.stakeholders &&
+                          d.stakeholders.length > thresholdCnt) ||
+                          admin) && (
+                          <TrendLine
+                            data={d.trend}
+                            num={`${keyValue}-${index}`}
+                            width={chartWidth}
+                          />
+                        )}
+                    </div>
+                  ))}
+                </div>
+              )}
           </div>
         );
       })}
