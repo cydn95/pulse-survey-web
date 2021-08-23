@@ -93,8 +93,31 @@ const StakeholderManager = ({
   }
 
   const userCount = useMemo(
-    () => myMapStakeholderList.length + projectMapStakeholderList.length,
-    [myMapStakeholderList, projectMapStakeholderList]
+    () => {
+      const shCount = [];
+
+      for (let i = 0; i < myMapStakeholderList.length; i++) {
+        for (let j = 0; j < myMapStakeholderList[i].shCategory.length; j++) {
+          const shCategoryId = myMapStakeholderList[i].shCategory[j];
+          if ((!shCount.includes(shCategoryId)) && myCategoryList.includes(shCategoryId)) {
+            shCount.push(shCategoryId);
+          }
+        }
+      }
+
+      for (let i = 0; i < projectMapStakeholderList.length; i++) {
+        for (let j = 0; j < projectMapStakeholderList[i].shCategory.length; j++) {
+          const shCategoryId = projectMapStakeholderList[i].shCategory[j];
+          if ((!shCount.includes(shCategoryId)) && projectCategoryList.includes(shCategoryId)) {
+            shCount.push(shCategoryId);
+          }
+        }
+      }
+
+      // return myMapStakeholderList.length + projectMapStakeholderList.length
+      return shCount.length;
+    },
+    [myMapStakeholderList, projectMapStakeholderList, myCategoryList, projectCategoryList]
   );
 
   return (
