@@ -280,7 +280,7 @@ const HeatMap = ({
                     className={styles["map-col"]}
                     style={{ width: `${colP}%`, ...style }}
                   >
-                    <span>{colVal}</span>
+                    <span className={classnames({ [styles['analysis-value']]: rowNum !== 1})}>{colVal}</span>
                     {rowNum === 1 && (
                       <div className={styles["map-col-shcnt"]}>
                         {`${d.stakeholders.length} out of ${d.totalCnt} stakeholders`}

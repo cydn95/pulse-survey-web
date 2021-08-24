@@ -10,6 +10,10 @@
   box-sizing: border-box;
   overflow-y: hidden;
 
+  @media only screen and (max-width: 880px) {
+    display: none;
+  }
+
   .map-col {
     font-size: 12px;
     font-weight: bold;
@@ -30,7 +34,11 @@
   display: flex;
   flex-direction: row;
   box-sizing: border-box;
-  overflow-y: hidden;
+  overflow: hidden;
+  
+  @media only screen and (max-width: 880px) {
+    flex-direction: column;
+  }
 
   &.show {
     -webkit-animation: slide-up 0.7s ease forwards;
@@ -61,6 +69,10 @@
     font-weight: 500;
     box-sizing: border-box;
 
+    @media only screen and (max-width: 880px) {
+      width: 100% !important;
+    }
+
     .left {
       flex: 1;
       display: flex;
@@ -73,6 +85,10 @@
         margin-top: 6px;
         cursor: pointer;
 
+        @media only screen and (max-width: 880px) {
+          display: none;
+        }
+
         svg {
           padding-left: 8px;
         }
@@ -81,6 +97,13 @@
 
     .right {
       padding-right: 13px;
+
+      @media only screen and (max-width: 880px) {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 0px;
+      }
 
       img {
         cursor: pointer;
@@ -99,6 +122,16 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+
+    @media only screen and (max-width: 880px) {
+      padding-left: 0px;
+      margin-top: 12px;
+      width: 100% !important;
+
+      .analysis-value {
+        padding-left: 26.5px;
+      }
+    }
 
     &-shcnt {
       font-size: 12px;
@@ -149,6 +182,10 @@
   border-right: 1px solid white;
   // padding: 5px 8px 5px 0px;
   overflow: hidden;
+
+  @media only screen and (max-width: 880px) {
+    display: none;
+  }
 }
 
 .row-answer {
@@ -161,8 +198,8 @@
   z-index: 2500;
 
   @media only screen and (max-width: 880px) {
-    margin-left: -30px;
-    align-items: flex-start;
+    margin-top: 17px;
+    margin-right: -25px;
   }
 
   .row-answer-triangle {
@@ -174,8 +211,7 @@
     margin-right: 30px;
 
     @media only screen and (max-width: 880px) {
-      margin-right: 0px;
-      margin-left: 30px;
+      margin-right: 25px;
     }
   }
 
