@@ -9,29 +9,10 @@ import {
 
 import { removeSpace } from "../../../services/axios/utility";
 import TrendLine from "Components/report/syncfusion/TrendLine";
+import { getColorFromValue } from "Util/Utils";
 
 import styles from "./styles.scss";
 import classnames from "classnames";
-
-const getColor = (val) => {
-  if (val < 4) {
-    return "#c00000"; // dark red
-  }
-
-  if (val < 5) {
-    return "#e56965"; // lighter red
-  }
-
-  if (val < 7) {
-    return "#4da9ef"; // blue
-  }
-
-  if (val < 8) {
-    return "#8acbc1"; // lighter green
-  }
-
-  return "#00b7a2"; // solid green
-};
 
 const NoTrendData = ({ shCnt = 0, thresholdCnt = 3 }) => {
   const [tip, setTip] = useState(false);
@@ -244,7 +225,7 @@ const HeatMap = ({
                     d.stakeholders &&
                     d.stakeholders.length > thresholdCnt) ||
                     admin)
-                    ? { borderLeft: `3px solid ${getColor(Number(d.value))}` }
+                    ? { borderLeft: `3px solid ${getColorFromValue(Number(d.value))}` }
                     : {};
 
                 let colVal = "";
@@ -280,7 +261,7 @@ const HeatMap = ({
                     className={styles["map-col"]}
                     style={{ width: `${colP}%`, ...style }}
                   >
-                    <span>{colVal}</span>
+                    <span className={classnames({ [styles['analysis-value']]: rowNum !== 1})}>{colVal}</span>
                     {rowNum === 1 && (
                       <div className={styles["map-col-shcnt"]}>
                         {`${d.stakeholders.length} out of ${d.totalCnt} stakeholders`}

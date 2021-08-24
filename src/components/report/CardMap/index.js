@@ -1,5 +1,7 @@
 import React from "react";
 
+import { getColorFromValue } from "Util/Utils";
+
 import styles from "./styles.scss";
 
 const CardMap = ({ title, data, field }) => {
@@ -26,6 +28,7 @@ const CardMap = ({ title, data, field }) => {
                       width: `${
                         data[index].value * (title === "Response Rate" ? 1 : 10)
                       }%`,
+                      background: `${getColorFromValue(data[index].value)}`
                     }}
                   ></div>
                 </div>
