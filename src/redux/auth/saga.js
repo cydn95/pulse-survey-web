@@ -7,6 +7,7 @@ import {
   setPasswordAPI,
   getSurveyUserAPI,
   getProjectAPI,
+  checkUserPasswordAPI
 } from "../../services/axios/api";
 
 import {
@@ -17,11 +18,11 @@ import {
   SURVEY_ID,
   RESET_PASSWORD,
   RESET_PASSWORD_CONFIRM,
+  CHECK_PASSWORD_STATUS
 } from "Constants/actionTypes";
 
 import {
   loginUserSuccess,
-  logoutUser,
   loginUserFailed,
   setProjectIDSuccess,
   setSurveyIDSuccess,
@@ -261,6 +262,20 @@ function* setProjectID({ payload }) {
   
 }
 
+
+const getCheckPasswordStatusAsync = async (email) =>
+  await checkUserPasswordAPI(email)
+    .then((res) => res)
+    .catch((error) => error);
+
+function* checkPasswordStatus({ payload }) {
+  const { email, callback } = payload;
+
+  const result = yield call(getCheckPasswordStatusAsync, email);
+  
+  callback(result);
+}
+
 export function* watchLoginUser() {
   yield takeEvery(LOGIN_USER, loginWithUsernamePassword);
 }
@@ -289,6 +304,11 @@ export function* watchSetSurveyID() {
   yield takeEvery(SURVEY_ID, setSurveyID);
 }
 
+
+export function* watchCheckPasswordStatus() {
+  yield takeEvery(CHECK_PASSWORD_STATUS, checkPasswordStatus);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchLoginUser),
@@ -298,5 +318,6 @@ export default function* rootSaga() {
     fork(watchSetPassword),
     fork(watchSetProjectID),
     fork(watchSetSurveyID),
+    fork(watchCheckPasswordStatus)
   ]);
 }

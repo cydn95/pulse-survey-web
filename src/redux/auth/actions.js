@@ -16,6 +16,7 @@ import {
   RESET_PASSWORD_CONFIRM,
   RESET_PASSWORD_CONFIRM_SUCCESS,
   RESET_PASSWORD_CONFIRM_FAILED,
+  CHECK_PASSWORD_STATUS
 } from "Constants/actionTypes";
 
 export const setProjectID = (projectId) => ({
@@ -100,3 +101,8 @@ export const resetPasswordConfirmFailed = () => ({
   type: RESET_PASSWORD_CONFIRM_FAILED,
   payload: {},
 });
+
+export const checkPasswordStatus = (email, callback) => ({
+  type: CHECK_PASSWORD_STATUS,
+  payload: { email, callback }
+})
