@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Input, Button } from "reactstrap";
-import { setPassword } from "Redux/actions";
-import classnames from "classnames";
 import queryString from "query-string";
+import ReactLoading from "react-loading";
+
+import { setPassword, checkPasswordStatus } from "Redux/actions";
+
+import classnames from "classnames";
+
+import styles from "./styles.scss";
 
 class SetPassword extends Component {
   constructor(props) {
@@ -19,8 +24,27 @@ class SetPassword extends Component {
       token: params.token,
       emailValidator: "",
       passwordValidator: "",
-      confirmPasswordValidator: ""
+      confirmPasswordValidator: "",
+      loading: true,
     };
+  }
+
+  componentDidMount() {
+    const params = queryString.parse(this.props.location.search);
+    const { checkPasswordStatus } = this.props;
+
+    checkPasswordStatus(params.email, (result) => {
+      this.setState({ loading: false });
+
+      if (result.data) {
+        if (
+          result.data.code.toString() === "200" &&
+          result.data.passwordstatus === true
+        ) {
+          window.location.href = '/login';
+        }
+      }
+    });
   }
 
   handleInput = (e) => {
@@ -73,17 +97,29 @@ class SetPassword extends Component {
       project,
       emailValidator,
       passwordValidator,
-      confirmPasswordValidator
+      confirmPasswordValidator,
+      loading,
     } = this.state;
+
+    if (loading) {
+      return (
+        <ReactLoading
+          className={styles["set-password-loading"]}
+          type={"bars"}
+          color={"grey"}
+        />
+      );
+    }
+
     return (
       <div className="set-password">
         <div className="set-password__left-bg"></div>
         <div className="set-password__content">
           <h1 className="set-password__content--title">Welcome to {project}</h1>
           <p className="set-password__content--description">
-            The {project} team has nominated you as an important
-            stakeholder, and they would like to hear your thoughts, feelings and
-            ideas to make this project successful.
+            The {project} team has nominated you as an important stakeholder,
+            and they would like to hear your thoughts, feelings and ideas to
+            make this project successful.
           </p>
           <h2 className="set-password__content--subtitle">What is Pulse? ​</h2>
           <p className="set-password__content--description">
@@ -179,4 +215,5 @@ const mapStateToProps = () => {
 
 export default connect(mapStateToProps, {
   setPassword,
+  checkPasswordStatus,
 })(SetPassword);
