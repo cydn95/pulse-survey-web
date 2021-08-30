@@ -231,7 +231,7 @@ const AboutMeSurvey = ({
     : 0;
   const driver = driverList.filter((d) => d.driverId === defaultDrvierId)[0];
   const user = { fullName: "Mike Smith", team: "Pulse" };
-  console.log(surveyList);
+
   return (
     <div className={styles.root}>
       <div className={styles.topbar}>
