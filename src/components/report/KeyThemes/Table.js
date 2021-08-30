@@ -12,7 +12,7 @@ const PercentBar = ({ value, className = "" }) => {
       )}
     >
       <div
-        style={{ width: `${value * 10}%` }}
+        style={{ width: `${value}%` }}
         className={classnames(className, styles["keythemes-table-percent-bar"])}
       ></div>
     </div>
@@ -20,6 +20,9 @@ const PercentBar = ({ value, className = "" }) => {
 };
 
 const KeyThemesTable = ({ title = "", data = [], onVote, className }) => {
+  const total = data.reduce((a, b) => ({ freq: a.freq + b.freq }));
+  const totalFreq = total ? total.freq : 0;
+
   return (
     <div className={classnames(styles["keythemes-table-root"], className)}>
       <div className={styles["keythemes-table-header"]}>
@@ -66,14 +69,14 @@ const KeyThemesTable = ({ title = "", data = [], onVote, className }) => {
                 >
                   <PercentBar
                     className={styles["keythemes-table-content-mobile-bar"]}
-                    value={d.freq}
+                    value={totalFreq === 0 ? 0 : (d.freq / totalFreq * 100)}
                   />
                 </div>
                 <div
                   className={styles["keythemes-table-content-mobile-action"]}
                 >
                   <div className={styles["keythemes-table-percent-text"]}>
-                    {d.freq * 10}%
+                    {totalFreq === 0 ? 0 : Math.round(d.freq / totalFreq * 100)}%
                   </div>
                   <div
                     className={styles["keythemes-table-content-mobile-vote"]}
@@ -117,9 +120,9 @@ const KeyThemesTable = ({ title = "", data = [], onVote, className }) => {
                   className={styles["keythemes-table-content-col"]}
                 >
                   <div className={styles["keythemes-table-percent-text"]}>
-                    {d.freq * 10}%
+                    {totalFreq === 0 ? 0 : Math.round(d.freq / totalFreq * 100)}%
                   </div>
-                  <PercentBar value={d.freq} />
+                  <PercentBar value={totalFreq === 0 ? 0 : Math.round(d.freq / totalFreq * 100)} />
                 </div>
                 <div
                   style={{ width: "39%" }}
