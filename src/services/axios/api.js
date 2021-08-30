@@ -61,6 +61,10 @@ const setPasswordAPI = (email, password, token, csrf) => {
   );
 };
 
+export const checkUserPasswordAPI = (email) => {
+  return getClient(false).get(`/checkuserpasswordstatus/?format=json&email=${email}`);
+};
+
 /* Settings -> Project */
 const projectListByUserAPI = (userId) => {
   return getClient(true).get("/projectbyuser/?format=json&user=" + userId);

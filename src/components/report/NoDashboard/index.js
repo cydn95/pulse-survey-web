@@ -31,10 +31,10 @@ const NoDashboard = ({ code, threshold = 3}) => {
             src="/assets/img/report/no-amresponse.png"
             className={styles["no-dashboard-image"]}
           />
-          <p className={styles["no-dashboard-title"]}>Tell us What you think!</p>
+          <p className={styles["no-dashboard-title"]}>Tell us what you think!</p>
           <p className={styles["no-dashboard-text"]}>
             To view the dashboards, please complete the questions<br/>
-            in the AboutMe section!<br/><br/>
+            in the About Me section!<br/><br/>
             If you can't answer a question, please select "Skip".
           </p>
         </div>

@@ -215,19 +215,18 @@ const ReportDriverAnalysis = ({
               />
             ) : (
               <div style={{ width: "100%" }}>
-                {!isMobile && (
-                  <HeatMap
-                    data={engagementData}
-                    admin={status.code && status.code.toString() === "201"}
-                    totalAnswered={totalAnswered}
-                    thresholdCnt={status.thresholdCnt ? status.thresholdCnt : 0}
-                    shCnt={totalStakeholderCnt}
-                    chartWidth={chartWidth}
-                    shGroup={shGroup}
-                    filter={filters[filterValue]}
-                  />
-                )}
-                {isMobile &&
+                <HeatMap
+                  data={engagementData}
+                  admin={status.code && status.code.toString() === "201"}
+                  totalAnswered={totalAnswered}
+                  thresholdCnt={status.thresholdCnt ? status.thresholdCnt : 0}
+                  shCnt={totalStakeholderCnt}
+                  chartWidth={chartWidth}
+                  shGroup={shGroup}
+                  filter={filters[filterValue]}
+                />
+                {/* {!isMobile && (``)} */}
+                {/* {isMobile &&
                   Object.keys(engagementData).map((key) => {
                     if (key === driverName) {
                       return null;
@@ -241,7 +240,7 @@ const ReportDriverAnalysis = ({
                         field={engagementData[driverName]}
                       />
                     );
-                  })}
+                  })} */}
               </div>
             )}
           </div>
