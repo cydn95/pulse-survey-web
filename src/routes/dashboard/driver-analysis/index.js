@@ -120,10 +120,7 @@ const ReportDriverAnalysis = ({
   };
 
   const renderReport = () => {
-    if (driverList.length === 0) {
-      return null;
-    }
-
+    
     if (status.code.toString() !== "200" && status.code.toString() !== "201") {
       return (
         <div className={styles["main-content"]}>
@@ -133,6 +130,10 @@ const ReportDriverAnalysis = ({
           />
         </div>
       );
+    }
+
+    if (driverList.length === 0) {
+      return null;
     }
 
     return (
