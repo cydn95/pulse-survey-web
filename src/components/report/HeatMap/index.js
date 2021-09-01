@@ -47,12 +47,13 @@ const NoTrendData = ({ shCnt = 0, thresholdCnt = 3 }) => {
   );
 };
 
-const shouldExpand = (data, threshold, admin) => {
+const shouldExpand = (allData, data, threshold, admin) => {
   let res = 0;
-  data.forEach((d) => {
+  data.forEach((d, index) => {
     if (
       d.value > 0 &&
-      ((d.stakeholders && d.stakeholders.length > threshold) || admin)
+      // ((d.stakeholders && d.stakeholders.length >= threshold) || admin)
+      ((allData['Response Rate'][index].stakeholders.length >= threshold) || admin)
     ) {
       res++;
     }
@@ -180,7 +181,7 @@ const HeatMap = ({
                   >
                     <span className={styles.title}>{key}</span>
                     {rowNum > 1 &&
-                      (shouldExpand(data[key], thresholdCnt, admin) > 0 ||
+                      (shouldExpand(data, data[key], thresholdCnt, admin) > 0 ||
                         admin === true) && (
                         <span className={styles.expand}>
                           Expand{" "}
@@ -239,9 +240,10 @@ const HeatMap = ({
                   } %`;
                 } else {
                   if (
-                    (d.value > 0 &&
-                      d.stakeholders &&
-                      d.stakeholders.length > thresholdCnt) ||
+                    // (d.value > 0 &&
+                    //   d.stakeholders &&
+                    //   d.stakeholders.length >= thresholdCnt) ||
+                    (data['Response Rate'][index].stakeholders.length >= thresholdCnt) ||
                     admin
                   ) {
                     colVal = `${d.value} / 10`;
@@ -272,7 +274,7 @@ const HeatMap = ({
               })}
             </div>
             {rowNum > 1 &&
-              (shouldExpand(data[key], thresholdCnt, admin) > 0 ||
+              (shouldExpand(data, data[key], thresholdCnt, admin) > 0 ||
                 admin === true) && (
                 <div
                   key={`heatmap-row-trend-${keyValue}`}
@@ -294,8 +296,7 @@ const HeatMap = ({
                     >
                       {d.value > 0 &&
                         chartWidth > 0 &&
-                        ((d.stakeholders &&
-                          d.stakeholders.length > thresholdCnt) ||
+                        ((data['Response Rate'][index].stakeholders.length >= thresholdCnt) ||
                           admin) && (
                           <TrendLine
                             data={d.trend}

@@ -18,6 +18,10 @@
     text-align: right;
     font-size: 0.9rem;
     color: rgb(51, 142, 155);
+
+    @media only screen and (max-width: 880px) {
+      display: none;
+    }
   }
 
   .nav {

@@ -96,8 +96,8 @@ const AboutMeSurvey = ({
             if (
               (surveyList[i].amquestion[j].topic &&
                 surveyList[i].amquestion[j].topic.length > 0) ||
-              surveyList[i].amquestion[j].skipValue !== "" ||
-              surveyList[i].amquestion[j].commentValue !== ""
+              (surveyList[i].amquestion[j].skipValue && surveyList[i].amquestion[j].skipValue !== "") ||
+              (surveyList[i].amquestion[j].commentValue && surveyList[i].amquestion[j].commentValue !== "")
             ) {
               answeredCount++;
             }
