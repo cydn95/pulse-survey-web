@@ -6615,9 +6615,9 @@ jszip@^3.5.0:
     readable-stream "~2.3.6"
     set-immediate-shim "~1.0.1"
 
-"keylines@file:keylines-6.5.0-64488.tar.gz":
-  version "6.5.0"
-  resolved "file:keylines-6.5.0-64488.tar.gz#7678b7aa44a24901b264751331771fbc09fc6c3f"
+"keylines@file:keylines-6.6.0-67962.tar.gz":
+  version "6.6.0"
+  resolved "file:keylines-6.6.0-67962.tar.gz#6a327b6bdd61d1a89ebc4488c8826a399aa8867e"
 
 killable@^1.0.1:
   version "1.0.1"
