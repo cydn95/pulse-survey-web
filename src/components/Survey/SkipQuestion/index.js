@@ -71,6 +71,16 @@ class SkipQuestion extends Component {
     });
   };
 
+  onCancelSkipQuestion = (e) => {
+    e.preventDefault();
+
+    this.setState({
+      skipToogle: !this.state.skipToogle,
+    }, () => {
+      this.props.onSkip("");
+    });
+  }
+
   onSelectSkipReason = (answer) => {
     console.log(answer);
     this.setState(
@@ -153,7 +163,7 @@ class SkipQuestion extends Component {
         btnsToDraw.push(
           <div key="skip" className="skip">
             Why are you skipping this question?{" "}
-            <a href="/" onClick={(e) => this.onSkipQuestion(e)}>
+            <a href="/" onClick={(e) => this.onCancelSkipQuestion(e)}>
               <strong>Cancel skip</strong>
             </a>
           </div>
