@@ -44,7 +44,6 @@ const ReportDriverAnalysis = ({
   userId,
   status,
 }) => {
-
   const [loading, setLoading] = useState(false);
 
   const [filterOpen, setFilterOpen] = useState(false);
@@ -120,7 +119,6 @@ const ReportDriverAnalysis = ({
   };
 
   const renderReport = () => {
-    
     if (status.code.toString() !== "200" && status.code.toString() !== "201") {
       return (
         <div className={styles["main-content"]}>
@@ -216,18 +214,19 @@ const ReportDriverAnalysis = ({
               />
             ) : (
               <div style={{ width: "100%" }}>
-                <HeatMap
-                  data={engagementData}
-                  admin={status.code && status.code.toString() === "201"}
-                  totalAnswered={totalAnswered}
-                  thresholdCnt={status.thresholdCnt ? status.thresholdCnt : 0}
-                  shCnt={totalStakeholderCnt}
-                  chartWidth={chartWidth}
-                  shGroup={shGroup}
-                  filter={filters[filterValue]}
-                />
-                {/* {!isMobile && (``)} */}
-                {/* {isMobile &&
+                {!isMobile && (
+                  <HeatMap
+                    data={engagementData}
+                    admin={status.code && status.code.toString() === "201"}
+                    totalAnswered={totalAnswered}
+                    thresholdCnt={status.thresholdCnt ? status.thresholdCnt : 0}
+                    shCnt={totalStakeholderCnt}
+                    chartWidth={chartWidth}
+                    shGroup={shGroup}
+                    filter={filters[filterValue]}
+                  />
+                )}
+                {isMobile &&
                   Object.keys(engagementData).map((key) => {
                     if (key === driverName) {
                       return null;
@@ -241,7 +240,7 @@ const ReportDriverAnalysis = ({
                         field={engagementData[driverName]}
                       />
                     );
-                  })} */}
+                  })}
               </div>
             )}
           </div>

@@ -96,7 +96,7 @@ const StakeholderUpdatePanel = ({
       shMyCategory: selectedMyCategory,
       shProjectCategory: selectedProjectCategory,
       projectUserTitle: currentUser.projectUserTitle,
-      shGroup: null,
+      // shGroup: null,
       myProjectUser: surveyUserId,
     };
 

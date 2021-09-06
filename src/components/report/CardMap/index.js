@@ -5,12 +5,21 @@ import { getColorFromValue } from "Util/Utils";
 import styles from "./styles.scss";
 
 const CardMap = ({ title, data, field }) => {
+  // console.log(data, field, title);
   return (
     <div className={styles["card-map-root"]}>
       <h2 className={styles["card-map-title"]}>{title}</h2>
       <div className={styles["card-map-content"]}>
         {field &&
           field.map((f, index) => {
+            let colValue = '';
+
+            if (title === "Response Rate") {
+              colValue = data[index].totalCnt === 0 ? 0 : data[index].stakeholders.length / data[index].totalCnt;
+            } else {
+              colValue = data[index].value;
+            }
+
             return (
               <div
                 key={`card-map-row-${index}`}
@@ -18,7 +27,7 @@ const CardMap = ({ title, data, field }) => {
               >
                 <div className={styles["card-map-field"]}>{f.value}</div>
                 <div className={styles["card-map-value"]}>
-                  {data[index].value}
+                  {title === "Response Rate" ? colValue * 100 : colValue}
                   {title === "Response Rate" && "%"}
                 </div>
                 <div className={styles["card-map-line"]}>
@@ -26,7 +35,7 @@ const CardMap = ({ title, data, field }) => {
                     className={styles["card-map-fill"]}
                     style={{
                       width: `${
-                        data[index].value * (title === "Response Rate" ? 1 : 10)
+                        colValue * (title === "Response Rate" ? 100 : 10)
                       }%`,
                       background: `${getColorFromValue(data[index].value)}`
                     }}

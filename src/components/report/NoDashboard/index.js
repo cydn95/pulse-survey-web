@@ -20,7 +20,7 @@ const NoDashboard = ({ code, threshold = 3}) => {
           <p className={styles["no-dashboard-title"]}>Waiting for other users</p>
           <p className={styles["no-dashboard-text"]}>
             Not enough users have responded to ensure<br/>
-            anoymity. The dashboards will be visible<br/>
+            anonymity. The dashboards will be visible<br/>
             when at least {threshold} users have provided their responses.
           </p>
         </div>
