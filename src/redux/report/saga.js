@@ -336,7 +336,12 @@ function* getParticipation({ payload }) {
     const { surveyId, callback } = payload;
     const result = yield call(getParticipationAsync, surveyId);
 
-    if (result.status === 200) {
+    const shGroupResult = yield call(getShGroupListAsync, surveyId);
+
+    if (result.status === 200 && shGroupResult.status === 200) {
+
+      const shGroupList = shGroupResult.data;
+
       const participationRet = {
         notIssued: 0,
         rejected: 0,
@@ -355,9 +360,17 @@ function* getParticipation({ payload }) {
       let teamUserCount = 0;
 
       for (let i = 0; i < result.data.length; i++) {
-        if (!result.data[i].shType) {
+        if (!result.data[i].shType || !result.data[i].shGroup) {
           continue;
         }
+
+        const projectUserShGroupId = result.data[i].shGroup.id;
+        const shGroupInfo = shGroupList.filter((item) => item.id === projectUserShGroupId);
+        if (shGroupInfo.length === 0) {
+          continue;
+        }
+
+        const thresholdPercentage = shGroupInfo[0].responsePercent;
 
         // User Count
         if (result.data[i].shType.shTypeName === "Team Member") {
@@ -397,7 +410,7 @@ function* getParticipation({ payload }) {
 
         const totalAnswered = Number(result.data[i].am_answered);
         const totalQuestion = Number(result.data[i].am_total);
-        if (totalAnswered >= Math.floor(totalQuestion * 0.9)) {
+        if (totalAnswered >= Math.floor(totalQuestion * (Number(thresholdPercentage) / 100))) {
           if (result.data[i].shType.shTypeName === "Team Member") {
             teamParticipationRet.completed += 1;
           }
