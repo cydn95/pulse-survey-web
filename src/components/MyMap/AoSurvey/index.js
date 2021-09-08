@@ -250,6 +250,8 @@ class AoSurvey extends React.Component {
 
     this.setState({
       totalAnswers,
+    }, () => {
+      this.props.onSubmit(null, this.state.answers, false);
     });
   };
 
