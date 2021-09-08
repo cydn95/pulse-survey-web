@@ -851,7 +851,7 @@ class MyMap extends React.Component {
     });
   };
 
-  handleSubmitSurvey = (e, answerData) => {
+  handleSubmitSurvey = (e, answerData, isRefresh = true) => {
     const { lastAddedShCategory } = this.state;
     // console.log(lastAddedShCategory);
     for (let i = 0; i < answerData.length; i++) {
@@ -863,27 +863,32 @@ class MyMap extends React.Component {
     this.setState({
       aoSurveySubmitLoading: true
     });
-
+console.log('isRefresh', isRefresh);
     this.props.submitAoQuestion(
       answerData,
       this.state.currentSurveyUser,
       this.props.surveyUserId,
       this.props.surveyId,
-      this.callbackSubmitSurvey
+      this.callbackSubmitSurvey,
+      isRefresh
     );
   };
 
-  callbackSubmitSurvey = () => {
+  callbackSubmitSurvey = (isRefresh = true) => {
     // this.setState({
     //   screen: "list",
     //   currentSurveyUserId: 0,
     //   currentSurveyUser: {},
     // });
+    console.log('isRefresh2', isRefresh);
     this.setState({
       aoSurveySubmitLoading: false
     });
-    NotificationManager.success("Response saved successfully", "");
-    this.handleSaveGraph(null);
+    if (isRefresh) {
+      NotificationManager.success("Response saved successfully", "");
+      this.handleSaveGraph(null, isRefresh);
+    }
+    
     // window.location.reload(false);
   };
 
@@ -938,10 +943,10 @@ class MyMap extends React.Component {
     });
   };
 
-  handleSaveGraph = (e) => {
+  handleSaveGraph = (e, isRefresh = true) => {
     const { userId, projectId, surveyUserId } = this.props;
     const { mapStyle } = this.state;
-
+    console.log('isRefresh3', isRefresh);
     let mapProjectUserList = [];
 
     if (mapStyle === "my-map") {
@@ -975,14 +980,14 @@ class MyMap extends React.Component {
         newMapData,
         surveyUserId,
         userId,
-        this.callbackSaveGraph
+        isRefresh === true ? this.callbackSaveGraph : null
       );
     } else {
       this.props.saveProjectMapData(
         newMapData,
         surveyUserId,
         userId,
-        this.callbackSaveGraph
+        isRefresh === true ? this.callbackSaveGraph : null
       );
     }
   };
@@ -1290,8 +1295,8 @@ class MyMap extends React.Component {
                     currentSurveyUserId={currentSurveyUserId}
                     lastAddedShCategory={lastAddedShCategory}
                     allStakeholders={stakeholderList}
-                    onSubmit={(e, answerData) =>
-                      this.handleSubmitSurvey(e, answerData) 
+                    onSubmit={(e, answerData, isRefresh = true) =>
+                      this.handleSubmitSurvey(e, answerData, isRefresh) 
                     }
                     myMapES={esList}
                     projectMapES={projectEsList}

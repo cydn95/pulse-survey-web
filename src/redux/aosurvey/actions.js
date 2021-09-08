@@ -23,10 +23,11 @@ export const submitAoQuestion = (
   currentSurveyUser,
   projectUserId,
   surveyId,
-  callback
+  callback,
+  isRefresh = true
 ) => ({
   type: SUBMIT_AOQUESTION,
-  payload: { answers, currentSurveyUser, projectUserId, surveyId, callback },
+  payload: { answers, currentSurveyUser, projectUserId, surveyId, callback, isRefresh },
 });
 
 export const submitAoQuestionSuccess = () => ({
