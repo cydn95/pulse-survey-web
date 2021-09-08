@@ -285,8 +285,8 @@ class AoSurvey extends React.Component {
     const { editModal } = this.state;
     if (editModal) {
       actionStakeholderList(surveyUserId, surveyId, (shList) => {
-        console.log(currentSurveyUserId);
-        console.log(shList);
+        // console.log(currentSurveyUserId);
+        // console.log(shList);
 
         let cUser = null;
         for (let i = 0; i < shList.length; i++) {
