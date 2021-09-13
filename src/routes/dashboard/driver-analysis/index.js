@@ -238,6 +238,9 @@ const ReportDriverAnalysis = ({
                         title={key}
                         data={engagementData[key]}
                         field={engagementData[driverName]}
+                        admin={status.code && status.code.toString() === "201"}
+                        thresholdCnt={status.thresholdCnt ? status.thresholdCnt : 0}
+                        responseRateData={engagementData["Response Rate"]}
                       />
                     );
                   })}

@@ -863,7 +863,7 @@ class MyMap extends React.Component {
     this.setState({
       aoSurveySubmitLoading: true
     });
-console.log('isRefresh', isRefresh);
+
     this.props.submitAoQuestion(
       answerData,
       this.state.currentSurveyUser,
@@ -880,7 +880,7 @@ console.log('isRefresh', isRefresh);
     //   currentSurveyUserId: 0,
     //   currentSurveyUser: {},
     // });
-    console.log('isRefresh2', isRefresh);
+
     this.setState({
       aoSurveySubmitLoading: false
     });
@@ -946,7 +946,7 @@ console.log('isRefresh', isRefresh);
   handleSaveGraph = (e, isRefresh = true) => {
     const { userId, projectId, surveyUserId } = this.props;
     const { mapStyle } = this.state;
-    console.log('isRefresh3', isRefresh);
+
     let mapProjectUserList = [];
 
     if (mapStyle === "my-map") {

@@ -1,0 +1,54 @@
+.no-trend {
+  display: flex;
+  flex-direction: column;
+
+  &-img {
+    height: 20px;
+    width: 22px;
+  }
+
+  &-text {
+    font-size: 12px;
+    color: #8a8a8a;
+  }
+}
+
+.tip-answer {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 250px;
+  margin-left: -3px;
+  margin-top: 40px;
+  z-index: 2500;
+
+  @media only screen and (max-width: 880px) {
+    margin-left: -30px;
+    align-items: flex-start;
+  }
+
+  .tip-answer-triangle {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #273645;
+    margin-left: 30px;
+
+    @media only screen and (max-width: 880px) {
+      margin-right: 0px;
+      margin-left: 30px;
+    }
+  }
+
+  .tip-answer-content {
+    background: #273645;
+    border-radius: 5px;
+    width: 100%;
+    padding: 19px;
+    font-size: 12px;
+    color: #fff;
+    box-sizing: border-box;
+  }
+}

@@ -285,7 +285,10 @@ export const getFeedbackSummaryByShGroup = (resData) => {
       if (driverName === "Culture" && subdriver !== "Overall Culture") {
         continue;
       }
-      if (driverName === "Relationships" && subdriver !== "Trust of leaders") {
+      // if (driverName === "Relationships" && subdriver !== "Trust of leaders") {
+      //   continue;
+      // }
+      if (driverName === "Relationships") {
         continue;
       }
 
@@ -415,7 +418,10 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
       if (driverName === "Culture" && subdriver !== "Overall Culture") {
         continue;
       }
-      if (driverName === "Relationships" && subdriver !== "Trust of leaders") {
+      // if (driverName === "Relationships" && subdriver !== "Trust of leaders") {
+      //   continue;
+      // }
+      if (driverName === "Relationships") {
         continue;
       }
 
