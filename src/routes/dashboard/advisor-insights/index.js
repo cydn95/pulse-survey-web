@@ -86,7 +86,7 @@ const AdvisorInsights = ({
                     className={styles["content-item"]}
                   >
                     <div className={styles["content-item-question"]}>
-                      The teams / groups that feel the most{" "}
+                      The teams / groups that feel the {" "}
                       <strong>{key}</strong> about the project are:
                     </div>
                     <div className={styles["content-item-data"]}>
@@ -118,7 +118,7 @@ const AdvisorInsights = ({
                                 }}
                               ></div>
                               <div className={styles["content-item-value"]}>
-                                {data.detailedData[key][key2].score}
+                                {data.detailedData[key][key2].score.toFixed(2)}
                               </div>
                             </div>
                           </div>

@@ -245,6 +245,10 @@ export const getFeedbackSummaryByShGroup = (resData) => {
       continue;
     }
 
+    if (question.latestResponse !== true) {
+      continue;
+    }
+
     if (!("subProjectUser" in question)) {
       continue;
     }
