@@ -189,23 +189,22 @@ const HeatMap = ({
               )}
               {data[key].map((d, index) => {
                 const style =
-                  rowNum >= 2 &&
-                  ((d.value > 0 &&
-                    d.stakeholders &&
-                    d.stakeholders.length > thresholdCnt) ||
-                    admin)
-                    ? { borderLeft: `3px solid ${getColorFromValue(Number(d.value))}` }
+                  rowNum >= 1 &&
+                    ((d.value > 0 ||
+                      d.stakeholders ||
+                      d.stakeholders.length > thresholdCnt) ||
+                      admin)
+                    ? { borderLeft: `3px solid ${getColorFromValue(Number(rowNum === 1 ? (d.stakeholders.length / d.totalCnt) * 10 : d.value))}` }
                     : {};
 
                 let colVal = "";
                 if (rowNum === 0) {
                   colVal = d.value;
                 } else if (rowNum === 1) {
-                  colVal = `${
-                    d.totalCnt > 0
-                      ? Math.round((d.stakeholders.length / d.totalCnt) * 100)
-                      : 0
-                  } %`;
+                  colVal = `${d.totalCnt > 0
+                    ? Math.round((d.stakeholders.length / d.totalCnt) * 100)
+                    : 0
+                    } %`;
                 } else {
                   if (
                     // (d.value > 0 &&
@@ -231,7 +230,7 @@ const HeatMap = ({
                     className={styles["map-col"]}
                     style={{ width: `${colP}%`, ...style }}
                   >
-                    <span className={classnames({ [styles['analysis-value']]: rowNum !== 1})}>{colVal}</span>
+                    <span className={classnames({ [styles['analysis-value']]: rowNum !== 1 })}>{colVal}</span>
                     {rowNum === 1 && (
                       <div className={styles["map-col-shcnt"]}>
                         {`${d.stakeholders.length} out of ${d.totalCnt} stakeholders`}
