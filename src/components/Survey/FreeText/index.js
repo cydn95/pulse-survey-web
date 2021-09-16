@@ -94,6 +94,7 @@ class FreeText extends Component {
         <div className={styles["answer-section"]}>
           <DebounceInput
             element={TextField}
+            multiline
             className={styles["answer-field"]}
             value={this.state.answer.topicValue}
             debounceTimeout={500}

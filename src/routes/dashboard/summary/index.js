@@ -169,7 +169,7 @@ const ReportSummary = ({
     if (status.code.toString() !== "200" && status.code.toString() !== "201") {
       return (
         <div className={styles["main-content"]}>
-          <NoDashboard code={status.code.toString()} threshold={status.thresholdCnt}/>
+          <NoDashboard code={status.code.toString()} threshold={status.thresholdCnt} />
         </div>
       );
     }
@@ -237,9 +237,9 @@ const ReportSummary = ({
         </div>
         {/** Filter section end */}
         {overallSentimentLoading ||
-        feedbackSummaryLoading ||
-        participationLoading ||
-        topPositiveNegativeLoading ? (
+          feedbackSummaryLoading ||
+          participationLoading ||
+          topPositiveNegativeLoading ? (
           <ReactLoading
             className={styles["summary-analysis-loading"]}
             type={"bars"}
@@ -264,13 +264,12 @@ const ReportSummary = ({
                   ? sentimentResult[index][0].count
                   : 0;
 
-                let text = `${
-                  sentimentResult[index]
+                let text = `${sentimentResult[index]
                     ? sentimentResult[index][0].count % 10 === 0
                       ? sentimentResult[index][0].count / 10
                       : (sentimentResult[index][0].count / 10).toFixed(1)
                     : ""
-                }`;
+                  }`;
 
                 if (item === "Overall Sentiment") {
                   value = overallSentiment;
@@ -359,7 +358,7 @@ const ReportSummary = ({
                       color: "#757f88",
                     }}
                   >
-                    Not issue
+                    Not issued
                   </div>
                   <div
                     className={styles["section-participation-item"]}
