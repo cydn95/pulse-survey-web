@@ -96,7 +96,7 @@ const AboutMeSurvey = ({
             if (
               (surveyList[i].amquestion[j].topic &&
                 surveyList[i].amquestion[j].topic.length > 0) ||
-              (surveyList[i].amquestion[j].skipValue && surveyList[i].amquestion[j].skipValue !== "") ||
+              (surveyList[i].amquestion[j].answer.skipValue && surveyList[i].amquestion[j].answer.skipValue !== "") ||
               (surveyList[i].amquestion[j].commentValue && surveyList[i].amquestion[j].commentValue !== "")
             ) {
               answeredCount++;
@@ -115,6 +115,7 @@ const AboutMeSurvey = ({
         if (answeredCount === 0) {
           driverProgress = SURVEY_NOT_STARTED;
         } else if (answeredCount < surveyList[i].amquestion.length) {
+          console.log(answeredCount, surveyList[i].amquestion)
           driverProgress = SURVEY_IN_PROGRESS;
         } else {
           driverProgress = SURVEY_COMPLETED;
