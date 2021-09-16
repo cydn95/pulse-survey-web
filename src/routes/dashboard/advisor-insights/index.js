@@ -87,7 +87,7 @@ const AdvisorInsights = ({
                   >
                     <div className={styles["content-item-question"]}>
                       The teams / groups that feel the {" "}
-                      <strong>{key}</strong> about the project are:
+                      <strong>{key.includes('safe') ? ' ' : 'most '}{key.includes('ly') ? key.slice(0, -2) : key}</strong> about the project are:
                     </div>
                     <div className={styles["content-item-data"]}>
                       {Object.keys(data.detailedData[key]).map((key2) => {
@@ -111,10 +111,9 @@ const AdvisorInsights = ({
                               <div
                                 className={styles["content-item-percent-bar"]}
                                 style={{
-                                  width: `${
-                                    (data.detailedData[key][key2].score / 10) *
+                                  width: `${(data.detailedData[key][key2].score / 10) *
                                     100
-                                  }%`,
+                                    }%`,
                                 }}
                               ></div>
                               <div className={styles["content-item-value"]}>
@@ -201,8 +200,8 @@ const AdvisorInsights = ({
                       ? index % 3 === 0
                         ? styles.red
                         : index % 3 === 1
-                        ? styles.green
-                        : styles.blue
+                          ? styles.green
+                          : styles.blue
                       : null;
                     const avatar = d.user.avatar
                       ? `https://pulse.projectai.com${d.user.avatar.name}`
@@ -211,8 +210,8 @@ const AdvisorInsights = ({
                     const nameA = `${d.user.first_name
                       .substring(0, 1)
                       .toUpperCase()}${d.user.last_name
-                      .substring(0, 1)
-                      .toUpperCase()}`;
+                        .substring(0, 1)
+                        .toUpperCase()}`;
 
                     return (
                       <div
@@ -243,15 +242,15 @@ const AdvisorInsights = ({
                 {data.catchupProjectUsers.filter(
                   (item) => item.user.id.toString() !== userId.toString()
                 ).length > 3 && (
-                  <div className={styles["content-more"]}>
-                    <button
-                      className={styles["content-more-button"]}
-                      onClick={(e) => setMore(!more)}
-                    >
-                      {more ? "See Less" : "See More"}
-                    </button>
-                  </div>
-                )}
+                    <div className={styles["content-more"]}>
+                      <button
+                        className={styles["content-more-button"]}
+                        onClick={(e) => setMore(!more)}
+                      >
+                        {more ? "See Less" : "See More"}
+                      </button>
+                    </div>
+                  )}
               </div>
               <div className={styles["content-summary"]}>
                 <div className={styles["sub-title"]}>
@@ -266,8 +265,8 @@ const AdvisorInsights = ({
                       ? index % 3 === 0
                         ? styles.red
                         : index % 3 === 1
-                        ? styles.green
-                        : styles.blue
+                          ? styles.green
+                          : styles.blue
                       : null;
                     const avatar = d.user.avatar
                       ? `https://pulse.projectai.com${d.user.avatar.name}`
@@ -276,8 +275,8 @@ const AdvisorInsights = ({
                     const nameA = `${d.user.first_name
                       .substring(0, 1)
                       .toUpperCase()}${d.user.last_name
-                      .substring(0, 1)
-                      .toUpperCase()}`;
+                        .substring(0, 1)
+                        .toUpperCase()}`;
 
                     return (
                       <div
