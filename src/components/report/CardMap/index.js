@@ -50,8 +50,7 @@ const CardMap = ({ title, data, field, admin, thresholdCnt, responseRateData }) 
                       <div
                         className={styles["card-map-fill"]}
                         style={{
-                          width: `${
-                            colValue * (title === "Response Rate" ? 100 : 10)
+                          width: `${colValue * (title === "Response Rate" ? 100 : 10)
                             }%`,
                           background: `${getColorFromValue(data[index].value)}`
                         }}

@@ -31,7 +31,7 @@ class EditTopicDialog extends React.Component {
   handleSave = () => {
     const { topicName, topicComment } = this.state;
     const { onSave } = this.props;
-    if (topicName !== "" && topicComment !== "") {
+    if (topicName !== "") {
       onSave(topicName, topicComment);
     }
   };
