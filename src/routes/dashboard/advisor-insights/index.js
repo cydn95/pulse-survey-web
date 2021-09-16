@@ -233,7 +233,7 @@ const AdvisorInsights = ({
                           <div
                             className={styles["content-summary-description"]}
                           >
-                            {d.team ? d.team.name : ""}
+                            {d.projectOrganization ? `${d.projectOrganization} / ` : ""}{d.team ? d.team.name : ""}
                           </div>
                         </div>
                       </div>
@@ -254,7 +254,7 @@ const AdvisorInsights = ({
               </div>
               <div className={styles["content-summary"]}>
                 <div className={styles["sub-title"]}>
-                  Rate these stakeholders
+                  Recommended stakeholders
                 </div>
                 {data.recommendedProjectUsers
                   .filter(
@@ -298,7 +298,7 @@ const AdvisorInsights = ({
                           <div
                             className={styles["content-summary-description"]}
                           >
-                            {d.team ? d.team.name : ""}
+                            {d.projectOrganization ? `${d.projectOrganization} / ` : ""}{d.team ? d.team.name : ""}
                           </div>
                         </div>
                       </div>
