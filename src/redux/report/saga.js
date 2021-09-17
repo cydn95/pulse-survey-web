@@ -246,7 +246,7 @@ function* getOverallSentiment({ payload }) {
     if (result.status === 200) {
       callback(result.data);
     }
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* getTopPositiveNegative({ payload }) {
@@ -282,7 +282,7 @@ function* getTopPositiveNegative({ payload }) {
 
       callback(positiveArr, negativeArr);
     }
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* getFeedbackSummary({ payload }) {
@@ -328,7 +328,7 @@ function* getFeedbackSummary({ payload }) {
         filteredOverallTrendShGroupList
       );
     }
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* getParticipation({ payload }) {
@@ -355,6 +355,9 @@ function* getParticipation({ payload }) {
         awaiting: 0,
         completed: 0,
       };
+
+      console.log(shGroupList)
+      console.log(result.data)
 
       let allUserCount = 0;
       let teamUserCount = 0;
@@ -395,18 +398,18 @@ function* getParticipation({ payload }) {
           continue;
         }
 
-        // if (result.data[i].accept_status === false) {
+        if (result.data[i].accept_status === false) {
 
-        //   if (result.data[i].shType.shTypeName === "Team Member") {
-        //     teamParticipationRet.rejected += 1;
-        //   }
+          if (result.data[i].shType.shTypeName === "Team Member") {
+            teamParticipationRet.rejected += 1;
+          }
 
-        //   if (result.data[i].shType.shTypeName === "Stakeholder") {
-        //     participationRet.rejected += 1;
-        //   }
+          if (result.data[i].shType.shTypeName === "Stakeholder") {
+            participationRet.rejected += 1;
+          }
 
-        //   continue;
-        // }
+          continue;
+        }
 
         const totalAnswered = Number(result.data[i].am_answered);
         const totalQuestion = Number(result.data[i].am_total);
@@ -457,7 +460,7 @@ function* getParticipation({ payload }) {
         teamUserCount
       );
     }
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* getDriverAnalysisCnt({ payload }) {
@@ -476,7 +479,7 @@ function* getDriverAnalysisCnt({ payload }) {
     );
 
     callback(result.data);
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* getEngagementTrend({ payload }) {
@@ -706,7 +709,7 @@ function* getEngagementTrend({ payload }) {
         data: { ...engagementRet, ...resultData },
       });
     }
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* getWordCloud({ payload }) {
@@ -724,7 +727,7 @@ function* getWordCloud({ payload }) {
 
       callback(ret);
     }
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* getSentimentReport({ payload }) {
@@ -766,7 +769,7 @@ function* getSentimentReport({ payload }) {
     });
 
     callback(ret);
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* getPerceptionReality({ payload }) {
@@ -786,7 +789,7 @@ function* getPerceptionReality({ payload }) {
       ret.reality = result.data[1];
     }
     callback(ret);
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* getBubbleChart({ payload }) {
@@ -798,7 +801,7 @@ function* getBubbleChart({ payload }) {
     if (result.status === 200) {
       callback(result.data);
     }
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* getMyMatrix({ payload }) {
@@ -810,7 +813,7 @@ function* getMyMatrix({ payload }) {
     if (result.status === 200) {
       callback(result.data);
     }
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* getProjectMatrix({ payload }) {
@@ -822,7 +825,7 @@ function* getProjectMatrix({ payload }) {
     if (result.status === 200) {
       callback(result.data);
     }
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* getTextValue({ payload }) {
@@ -834,7 +837,7 @@ function* getTextValue({ payload }) {
     if (result.status === 200) {
       callback(result.data);
     }
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* getKeyThemeMenuCnt({ payload }) {
@@ -846,7 +849,7 @@ function* getKeyThemeMenuCnt({ payload }) {
     if (result.status === 200) {
       callback(result.data);
     }
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* setAcknowledgementReport({ payload }) {
@@ -862,7 +865,7 @@ function* setAcknowledgementReport({ payload }) {
     }
 
     callback();
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* voteKeyThemeReport({ payload }) {
@@ -887,7 +890,7 @@ function* voteKeyThemeReport({ payload }) {
     yield call(voteKeyThemeAsync, voteId, data);
 
     callback();
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* getAMQuestionCnt({ payload }) {
@@ -903,7 +906,7 @@ function* getAMQuestionCnt({ payload }) {
     );
 
     callback(result.data);
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* advisorReport({ payload }) {
@@ -912,7 +915,7 @@ function* advisorReport({ payload }) {
 
     const result = yield call(advisorAsync, surveyId, projectUserId);
     callback(result.data);
-  } catch (error) {}
+  } catch (error) { }
 }
 
 function* checkDashboard({ payload }) {
@@ -922,7 +925,7 @@ function* checkDashboard({ payload }) {
     const result = yield call(checkDashboardAsync, surveyId, projectUserId);
 
     callback(result.data);
-  } catch (error) {}
+  } catch (error) { }
 }
 
 export function* watchGetOverallSentiment() {
