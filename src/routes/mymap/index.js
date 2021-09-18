@@ -157,7 +157,7 @@ class MyMap extends React.Component {
     // console.log(kMapData);
     // console.log(aoQuestionList);
     // console.log("--------------------------------------");
-    
+
     const kMapDataForCurrentProject =
       kMapData.length > 0
         ? kMapData.filter((map) => map.project.toString() === projectId.toString())
@@ -316,7 +316,7 @@ class MyMap extends React.Component {
           for (let i = 0; i < this.myMapProjectUserList.length; i++) {
             if (
               this.myMapProjectUserList[i].projectUserId ===
-                mapUser.projectUserId &&
+              mapUser.projectUserId &&
               this.myMapProjectUserList[i].shCategory === mapUser.shCategory
             ) {
               bExist = true;
@@ -369,7 +369,7 @@ class MyMap extends React.Component {
                   individualUser.team.current = `T_${userList[i].team.id}`;
                   individualUser.organisation.current = `O_${organizationName}`;
                   individualUser.sh_category.current = `SHC_${userList[i].shCategory[j]}`;
-                  
+
                   // Calculate Survey Completion - MyMap (Sentiment Answer should be completion rate)
                   let sentimentAnswer = 0;
                   let sentimentAnswerCnt = 0;
@@ -379,7 +379,7 @@ class MyMap extends React.Component {
 
                   for (let k = 0; k < aoQuestionList.length; k++) {
                     totalQuestion++;
-                    
+
                     const answer = aoQuestionList[k].response.filter(
                       (resp) =>
                         /*resp.shCategory.toString() === userList[i].shCategory[j].toString() &&*/
@@ -448,9 +448,9 @@ class MyMap extends React.Component {
           for (let i = 0; i < this.projectMapProjectUserList.length; i++) {
             if (
               this.projectMapProjectUserList[i].projectUserId ===
-                mapUser.projectUserId &&
+              mapUser.projectUserId &&
               this.projectMapProjectUserList[i].shCategory ===
-                mapUser.shCategory
+              mapUser.shCategory
             ) {
               bExist = true;
               break;
@@ -495,7 +495,7 @@ class MyMap extends React.Component {
                   individualUser.team.current = `T_${userList[i].team.id}`;
                   individualUser.organisation.current = `O_${organizationName}`;
                   individualUser.sh_category.current = `SHC_${userList[i].shCategory[j]}`;
-                  
+
                   // Calculate Survey Completion - ProjectMap (Sentiment answer should be completion rate)
                   let sentimentAnswer = 0;
                   let sentimentAnswerCnt = 0;
@@ -520,7 +520,7 @@ class MyMap extends React.Component {
 
                   individualUser.survey_completion = (totalAnswer / totalQuestion).toFixed(2) * 100;
                   individualUser.survey_sentiment = (sentimentAnswer / sentimentAnswerCnt).toFixed(2);
-                  
+
                   bAdd = true;
 
                   break;
@@ -674,9 +674,9 @@ class MyMap extends React.Component {
           viewCoordinates:
             Object.keys(e).length > 0
               ? {
-                  clientX: e.clientX,
-                  clientY: e.clientY,
-                }
+                clientX: e.clientX,
+                clientY: e.clientY,
+              }
               : {},
         },
       ],
@@ -711,9 +711,9 @@ class MyMap extends React.Component {
       for (let i = 0; i < this.myMapProjectUserList.length; i++) {
         if (
           parseInt(this.myMapProjectUserList[i].projectUserId, 10) ===
-            parseInt(newProjectUserId, 10) &&
+          parseInt(newProjectUserId, 10) &&
           parseInt(this.myMapProjectUserList[i].shCategory, 10) ===
-            parseInt(newShCategory, 10)
+          parseInt(newShCategory, 10)
         ) {
           bExist = true;
           break;
@@ -774,9 +774,9 @@ class MyMap extends React.Component {
           viewCoordinates:
             Object.keys(e).length > 0
               ? {
-                  clientX: e.clientX,
-                  clientY: e.clientY,
-                }
+                clientX: e.clientX,
+                clientY: e.clientY,
+              }
               : {},
         },
       ],
@@ -808,7 +808,7 @@ class MyMap extends React.Component {
       for (let i = 0; i < this.projectMapProjectUserList.length; i++) {
         if (
           this.projectMapProjectUserList[i].projectUserId ===
-            newProjectUserId &&
+          newProjectUserId &&
           this.projectMapProjectUserList[i].shCategory === newShCategory
         ) {
           bExist = true;
@@ -888,7 +888,7 @@ class MyMap extends React.Component {
       NotificationManager.success("Response saved successfully", "");
       this.handleSaveGraph(null, isRefresh);
     }
-    
+
     // window.location.reload(false);
   };
 
@@ -1099,7 +1099,7 @@ class MyMap extends React.Component {
                 <div className={styles.section}>
                   <h2 className={styles["project-name"]}>{projectTitle}</h2>
                   <div className={styles["graph-toggle"]}>
-                    <Button onClick={(e) => this.toggleGraph(e)} style={{width: 160}}>
+                    <Button onClick={(e) => this.toggleGraph(e)} style={{ width: 160 }}>
                       {!toggleGraph ? "Map View" : "List View"}
                     </Button>
                   </div>
@@ -1296,7 +1296,7 @@ class MyMap extends React.Component {
                     lastAddedShCategory={lastAddedShCategory}
                     allStakeholders={stakeholderList}
                     onSubmit={(e, answerData, isRefresh = true) =>
-                      this.handleSubmitSurvey(e, answerData, isRefresh) 
+                      this.handleSubmitSurvey(e, answerData, isRefresh)
                     }
                     myMapES={esList}
                     projectMapES={projectEsList}

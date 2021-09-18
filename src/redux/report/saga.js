@@ -356,8 +356,8 @@ function* getParticipation({ payload }) {
         completed: 0,
       };
 
-      console.log(shGroupList)
-      console.log(result.data)
+      // console.log(shGroupList)
+      // console.log(result.data)
 
       let allUserCount = 0;
       let teamUserCount = 0;
@@ -505,6 +505,8 @@ function* getEngagementTrend({ payload }) {
     const totalStakeholderCnt = stakeholderCntResult.data;
     // console.log('total sh cnt', totalStakeholderCnt);
 
+    const totalQuestionCntData = {};
+
     const result = yield call(
       getDriverAnalysisAsync,
       surveyId,
@@ -550,6 +552,16 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForSHGroup(shGroupList, result);
 
+      totalQuestionCntData.SHGroup = {
+        ...(shGroupList.map(shGroup => {
+          return {
+            SHGroupName: shGroup.SHGroupName,
+            cnt: result.data.filter(question => question.subProjectUser.shGroup.SHGroupName === shGroup.SHGroupName).length
+          }
+        })),
+        totalCnt: result.data.length,
+      };
+
       const answered = [];
 
       Object.keys(resultData).forEach((key) => {
@@ -577,6 +589,7 @@ function* getEngagementTrend({ payload }) {
 
       callback({
         totalAnswered: answered.length,
+        totalQuestionCntData: totalQuestionCntData,
         shCnt: totalStakeholderCnt,
         data: { ...engagementRet, ...resultData },
         shGroup: originShGroupList,
@@ -618,6 +631,16 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForTeam(teamList, result);
 
+      totalQuestionCntData.Team = {
+        ...(teamList.map(team => {
+          return {
+            teamName: team.name,
+            cnt: result.data.filter(question => question.subProjectUser.team.name === team.name).length
+          }
+        })),
+        totalCnt: result.data.length,
+      };
+
       const answered = [];
 
       Object.keys(resultData).forEach((key) => {
@@ -645,6 +668,7 @@ function* getEngagementTrend({ payload }) {
 
       callback({
         totalAnswered: answered.length,
+        totalQuestionCntData: totalQuestionCntData,
         shCnt: totalStakeholderCnt,
         data: { ...engagementRet, ...resultData },
       });
@@ -678,6 +702,16 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForOrganization(organizationList, result);
 
+      totalQuestionCntData.Organization = {
+        ...(organizationList.map(org => {
+          return {
+            orgName: org.name,
+            cnt: result.data.filter(question => question.subProjectUser.projectOrganization === org.name).length
+          }
+        })),
+        totalCnt: result.data.length,
+      };
+
       const answered = [];
 
       Object.keys(resultData).forEach((key) => {
@@ -704,6 +738,7 @@ function* getEngagementTrend({ payload }) {
       });
 
       callback({
+        totalQuestionCntData: totalQuestionCntData,
         totalAnswered: answered.length,
         shCnt: totalStakeholderCnt,
         data: { ...engagementRet, ...resultData },

@@ -39,6 +39,7 @@ const HeatMap = ({
   chartWidth,
   filter,
   shGroup,
+  totalQuestionCntData,
 }) => {
   const colP = useMemo(() => {
     if (Object.keys(data).length > 0) {
@@ -230,10 +231,10 @@ const HeatMap = ({
                     className={styles["map-col"]}
                     style={{ width: `${colP}%`, ...style }}
                   >
-                    <span className={classnames({ [styles['analysis-value']]: rowNum !== 1 })}>{colVal}</span>
+                    {rowNum === 1 ? (totalQuestionCntData[filter] ? `${Math.round((totalQuestionCntData[filter][index].cnt / totalQuestionCntData[filter].totalCnt) * 100)} %` : 0) : (<span className={classnames({ [styles['analysis-value']]: rowNum !== 1 })}>{colVal}</span>)}
                     {rowNum === 1 && (
                       <div className={styles["map-col-shcnt"]}>
-                        {`${d.stakeholders.length} out of ${d.totalCnt} stakeholders`}
+                        {`${totalQuestionCntData[filter] ? totalQuestionCntData[filter][index].cnt : 0} out of ${totalQuestionCntData[filter] ? totalQuestionCntData[filter].totalCnt : 0} questions`}
                       </div>
                     )}
                   </div>
