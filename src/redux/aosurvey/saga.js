@@ -214,9 +214,11 @@ function* submitAoQuestion({ payload }) {
       callback(isRefresh);
     } else {
       console.log("submit failed");
+      callback(isRefresh, false)
     }
   } catch (error) {
     console.log("survey error : ", error);
+    callback(isRefresh, false)
   }
 }
 
