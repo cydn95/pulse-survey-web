@@ -26,6 +26,7 @@ import {
   checkDashboardStatusAPI,
   getDriverAnalysisCntAPI,
   getKeyThemeMenuCntAPI,
+  driverListAPI
 } from "../../services/axios/api";
 
 import {
@@ -72,6 +73,7 @@ import {
   getFeedbackSummaryByTeamOrOrganization,
 } from "./summaryFunctions";
 import { driverAnalysisCnt, participation } from "./actions";
+import { forEach } from "lodash";
 
 const getOverallSentimentAsync = async (surveyId) =>
   await getOverallSentimentAPI(surveyId)
@@ -550,6 +552,43 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForSHGroup(shGroupList, result);
 
+      //Getting data for responseRate
+      let getDriverList = async (surveyId) =>
+        await driverListAPI(surveyId)
+          .then((data) => data)
+          .catch((error) => error);
+
+      const driverList = yield call(
+        getDriverList,
+        surveyId
+      )
+
+      let allQuestion = [];
+
+      for (let i = 0; i < driverList.data.length; i++) {
+        const data = yield call(
+          getDriverAnalysisAsync,
+          surveyId,
+          driverList.data[i].driverName,
+          subProjectUser,
+          controlType,
+          startDate,
+          endDate
+        );
+
+        allQuestion = allQuestion.concat(data.data);
+      }
+
+      const totalQuestionCntData = {};
+      totalQuestionCntData['totalCnt'] = allQuestion.length;
+      totalQuestionCntData['SHGroup'] = shGroupList.map(shGroup => {
+        return {
+          SHGroupName: shGroup.SHGroupName,
+          cnt: allQuestion.filter(q => shGroup.SHGroupName === q.projectUser.shGroup.SHGroupName).length
+        }
+      })
+      //Getting data for responseRate Ended
+
       const answered = [];
 
       Object.keys(resultData).forEach((key) => {
@@ -576,6 +615,7 @@ function* getEngagementTrend({ payload }) {
       });
 
       callback({
+        totalQuestionCntData: totalQuestionCntData,
         totalAnswered: answered.length,
         shCnt: totalStakeholderCnt,
         data: { ...engagementRet, ...resultData },
@@ -618,6 +658,43 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForTeam(teamList, result);
 
+      //Getting data for responseRate
+      let getDriverList = async (surveyId) =>
+        await driverListAPI(surveyId)
+          .then((data) => data)
+          .catch((error) => error);
+
+      const driverList = yield call(
+        getDriverList,
+        surveyId
+      )
+
+      let allQuestion = [];
+
+      for (let i = 0; i < driverList.data.length; i++) {
+        const data = yield call(
+          getDriverAnalysisAsync,
+          surveyId,
+          driverList.data[i].driverName,
+          subProjectUser,
+          controlType,
+          startDate,
+          endDate
+        );
+
+        allQuestion = allQuestion.concat(data.data);
+      }
+
+      const totalQuestionCntData = {};
+      totalQuestionCntData['totalCnt'] = allQuestion.length;
+      totalQuestionCntData['Team'] = teamList.map(team => {
+        return {
+          Team: team.name,
+          cnt: allQuestion.filter(q => team.name === q.projectUser.team.name).length
+        }
+      })
+      //Getting data for responseRate Ended
+
       const answered = [];
 
       Object.keys(resultData).forEach((key) => {
@@ -644,6 +721,7 @@ function* getEngagementTrend({ payload }) {
       });
 
       callback({
+        totalQuestionCntData: totalQuestionCntData,
         totalAnswered: answered.length,
         shCnt: totalStakeholderCnt,
         data: { ...engagementRet, ...resultData },
@@ -678,6 +756,44 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForOrganization(organizationList, result);
 
+      //Getting data for responseRate
+      let getDriverList = async (surveyId) =>
+        await driverListAPI(surveyId)
+          .then((data) => data)
+          .catch((error) => error);
+
+      const driverList = yield call(
+        getDriverList,
+        surveyId
+      )
+
+      let allQuestion = [];
+
+      for (let i = 0; i < driverList.data.length; i++) {
+        const data = yield call(
+          getDriverAnalysisAsync,
+          surveyId,
+          driverList.data[i].driverName,
+          subProjectUser,
+          controlType,
+          startDate,
+          endDate
+        );
+
+        allQuestion = allQuestion.concat(data.data);
+      }
+      console.log('organizationList', organizationList)
+      console.log('allQuestion', allQuestion)
+      const totalQuestionCntData = {};
+      totalQuestionCntData['totalCnt'] = allQuestion.length;
+      totalQuestionCntData['Organization'] = organizationList.map(org => {
+        return {
+          Organization: org.name,
+          cnt: allQuestion.filter(q => org.name === q.projectUser.projectOrganization).length
+        }
+      })
+      //Getting data for responseRate Ended
+
       const answered = [];
 
       Object.keys(resultData).forEach((key) => {
@@ -704,6 +820,7 @@ function* getEngagementTrend({ payload }) {
       });
 
       callback({
+        totalQuestionCntData: totalQuestionCntData,
         totalAnswered: answered.length,
         shCnt: totalStakeholderCnt,
         data: { ...engagementRet, ...resultData },
