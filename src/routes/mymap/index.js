@@ -962,52 +962,53 @@ class MyMap extends React.Component {
   };
 
   handleSaveGraph = (e, isRefresh = true) => {
-    const { userId, projectId, surveyUserId } = this.props;
-    const { mapStyle } = this.state;
+    // const { userId, projectId, surveyUserId } = this.props;
+    // const { mapStyle } = this.state;
 
-    let mapProjectUserList = [];
+    // let mapProjectUserList = [];
 
-    if (mapStyle === "my-map") {
-      for (let i = 0; i < this.myMapProjectUserList.length; i++) {
-        mapProjectUserList.push({
-          projectUser: this.myMapProjectUserList[i].projectUserId,
-          category: this.myMapProjectUserList[i].shCategory,
-        });
-      }
-    } else {
-      for (let i = 0; i < this.projectMapProjectUserList.length; i++) {
-        mapProjectUserList.push({
-          projectUser: this.projectMapProjectUserList[i].projectUserId,
-          category: this.projectMapProjectUserList[i].shCategory,
-        });
-      }
-    }
+    // if (mapStyle === "my-map") {
+    //   for (let i = 0; i < this.myMapProjectUserList.length; i++) {
+    //     mapProjectUserList.push({
+    //       projectUser: this.myMapProjectUserList[i].projectUserId,
+    //       category: this.myMapProjectUserList[i].shCategory,
+    //     });
+    //   }
+    // } else {
+    //   for (let i = 0; i < this.projectMapProjectUserList.length; i++) {
+    //     mapProjectUserList.push({
+    //       projectUser: this.projectMapProjectUserList[i].projectUserId,
+    //       category: this.projectMapProjectUserList[i].shCategory,
+    //     });
+    //   }
+    // }
 
-    const newMapData = {
-      user: userId,
-      project: projectId,
-      myProjectUser: surveyUserId,
-      pu_category: mapProjectUserList,
-      layout_json: {},
-    };
+    // const newMapData = {
+    //   user: userId,
+    //   project: projectId,
+    //   myProjectUser: surveyUserId,
+    //   pu_category: mapProjectUserList,
+    //   layout_json: {},
+    // };
 
-    // console.log(newMapData); return;
+    // // console.log(newMapData); return;
 
-    if (mapStyle === "my-map") {
-      this.props.saveKMapData(
-        newMapData,
-        surveyUserId,
-        userId,
-        isRefresh === true ? this.callbackSaveGraph : null
-      );
-    } else {
-      this.props.saveProjectMapData(
-        newMapData,
-        surveyUserId,
-        userId,
-        isRefresh === true ? this.callbackSaveGraph : null
-      );
-    }
+    // if (mapStyle === "my-map") {
+    //   this.props.saveKMapData(
+    //     newMapData,
+    //     surveyUserId,
+    //     userId,
+    //     isRefresh === true ? this.callbackSaveGraph : null
+    //   );
+    // } else {
+    //   this.props.saveProjectMapData(
+    //     newMapData,
+    //     surveyUserId,
+    //     userId,
+    //     isRefresh === true ? this.callbackSaveGraph : null
+    //   );
+    // }
+    window.location.reload(false);
   };
 
   callbackSaveGraph = () => {
