@@ -61,6 +61,7 @@ const ReportDriverAnalysis = ({
     [driverName]: [],
   });
   const [shGroup, setShGroup] = useState([]);
+  const [totalQuestionCntData, setTotalQuestionCntData] = useState({});
 
   const handleSelectFilter = (index) => {
     setFilterValue(index);
@@ -116,6 +117,7 @@ const ReportDriverAnalysis = ({
     if ("shGroup" in ret) {
       setShGroup(ret.shGroup);
     }
+    setTotalQuestionCntData({ ...ret.totalQuestionCntData });
   };
 
   const renderReport = () => {
@@ -200,8 +202,8 @@ const ReportDriverAnalysis = ({
               keyData.length === 0
                 ? 0
                 : (el.getBoundingClientRect().width - 40) /
-                    (keyData.length + 1) -
-                  10;
+                (keyData.length + 1) -
+                10;
             setChartWidth(width);
           }}
         >
@@ -224,6 +226,7 @@ const ReportDriverAnalysis = ({
                     chartWidth={chartWidth}
                     shGroup={shGroup}
                     filter={filters[filterValue]}
+                    totalQuestionCntData={totalQuestionCntData}
                   />
                 )}
                 {isMobile &&
