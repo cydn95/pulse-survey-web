@@ -782,8 +782,6 @@ function* getEngagementTrend({ payload }) {
 
         allQuestion = allQuestion.concat(data.data);
       }
-      console.log('organizationList', organizationList)
-      console.log('allQuestion', allQuestion)
       const totalQuestionCntData = {};
       totalQuestionCntData['totalCnt'] = allQuestion.length;
       totalQuestionCntData['Organization'] = organizationList.map(org => {
