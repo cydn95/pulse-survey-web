@@ -903,6 +903,8 @@ class MyMap extends React.Component {
       this.setState({
         aoSurveySubmitLoading: false
       });
+      NotificationManager.error("Response submit failed", "");
+      this.handleSaveGraph(null, true);
     }
 
     if (isRefresh) {
