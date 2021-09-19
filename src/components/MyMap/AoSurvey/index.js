@@ -147,13 +147,33 @@ class AoSurvey extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    const { pageIndex, currentSurveyUserId, user } = props;
+    const { pageIndex, currentSurveyUserId, user, drivers, questions } = props;
 
     if (
       currentSurveyUserId.toString() !==
       this.props.currentSurveyUserId.toString()
     ) {
-      const { drivers } = this.state;
+      for (let i = 0; i < drivers.length; i++) {
+        drivers[i] = {
+          ...drivers[i],
+          questions: [],
+        };
+      }
+
+      for (let i = 0; i < questions.length; i++) {
+        for (let j = 0; j < drivers.length; j++) {
+          if (questions[i].driver.id === drivers[j].driverId) {
+            drivers[j].questions.push(questions[i]);
+            break;
+          }
+        }
+      }
+
+      const orderedDrivers = drivers.filter((item) => {
+        return item.questions.length > 0 ? true : false;
+      });
+
+      console.log('orderedD', orderedDrivers)
 
       const shCategoryId = currentSurveyUserId.split("_SHC_")[1];
 
@@ -161,11 +181,11 @@ class AoSurvey extends React.Component {
       let totalAnswers = 0;
 
       const answers = [];
-      for (let i = 0; i < drivers.length; i++) {
-        for (let j = 0; j < drivers[i].questions.length; j++) {
+      for (let i = 0; i < orderedDrivers.length; i++) {
+        for (let j = 0; j < orderedDrivers[i].questions.length; j++) {
           totalQuestions++;
 
-          const temp = drivers[i].questions[j].response.filter(
+          const temp = orderedDrivers[i].questions[j].response.filter(
             (resp) =>
               /*resp.shCategory.toString() === shCategoryId.toString() &&*/
               resp.subProjectUser.toString() === user.projectUserId.toString()
@@ -185,15 +205,15 @@ class AoSurvey extends React.Component {
               commentTags: "",
               user: 0,
               subjectUser: 0,
-              survey: drivers[i].questions[j].survey,
-              amQuestion: drivers[i].questions[j].id,
+              survey: orderedDrivers[i].questions[j].survey,
+              amQuestion: orderedDrivers[i].questions[j].id,
               type: "other",
-              controlType: controlTypeText(drivers[i].questions[j].controlType),
+              controlType: controlTypeText(orderedDrivers[i].questions[j].controlType),
               shCategory: shCategoryId,
             });
           } else {
             answers.push({
-              amQuestion: drivers[i].questions[j].id,
+              amQuestion: orderedDrivers[i].questions[j].id,
               pageIndex: i,
               questionIndex: j,
               integerValue: temp[0].integerValue,
@@ -204,9 +224,9 @@ class AoSurvey extends React.Component {
               commentTags: temp[0].commentTags,
               user: temp[0].projectUser,
               subjectUser: temp[0].subProjectUser,
-              survey: drivers[i].questions[j].survey,
+              survey: orderedDrivers[i].questions[j].survey,
               type: "other",
-              controlType: controlTypeText(drivers[i].questions[j].controlType),
+              controlType: controlTypeText(orderedDrivers[i].questions[j].controlType),
               shCategory: shCategoryId,
             });
           }

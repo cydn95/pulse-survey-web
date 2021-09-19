@@ -595,22 +595,30 @@ class MyMap extends React.Component {
         }
       }
 
-      this.setState({
-        stakeholderList,
-        decisionMakerList,
-        teamList,
-        userList,
-        shCategoryList,
-        projectMapShCategoryList,
-        apList: architecture,
-        esList: individual,
-        projectApList: projectMapArchitecture,
-        projectEsList: projectMapIndividual,
-        screen: "list",
-        mapSaveLoading,
-        mapGetLoading,
-        myMapStakeholderList,
-        projectMapStakeholderList,
+      this.setState((state) => {
+        if (state.toggleGraph) {
+          return {
+            stakeholderList,
+            decisionMakerList,
+            teamList,
+            userList,
+            shCategoryList,
+            projectMapShCategoryList,
+            apList: architecture,
+            esList: individual,
+            projectApList: projectMapArchitecture,
+            projectEsList: projectMapIndividual,
+            screen: "list",
+            mapSaveLoading,
+            mapGetLoading,
+            myMapStakeholderList,
+            projectMapStakeholderList,
+          }
+        } else {
+          return {
+            aoSurveySubmitLoading: false
+          }
+        }
       });
     }
   }
@@ -825,6 +833,7 @@ class MyMap extends React.Component {
   };
 
   handleStartOtherSurvey = (id) => {
+    const { userId, surveyId, surveyUserId, projectId, history, driverList } = this.props;
     if (id.startsWith("S_")) {
       let user = {};
       for (let i = 0; i < this.state.stakeholderList.length; i++) {
@@ -834,6 +843,13 @@ class MyMap extends React.Component {
         }
       }
 
+      // this.props.getKMapData(surveyUserId, userId);
+      // this.props.getProjectMapData(surveyUserId, userId);
+      // this.props.getShCategoryList(surveyId, 0);
+      // this.props.getStakeholderList(surveyUserId, surveyId);
+      // this.props.getTeamList(projectId);
+      this.props.getAoQuestionList(user, id);
+      // this.props.getSkipQuestionList();
       this.setState((state) => ({
         screen: "aosurvey",
         toggleGraph: false,
@@ -880,10 +896,12 @@ class MyMap extends React.Component {
     //   currentSurveyUserId: 0,
     //   currentSurveyUser: {},
     // });
+    const { surveyId, surveyUserId } = this.props;
+    this.props.getAoQuestionList(surveyUserId, surveyId);
 
-    this.setState({
-      aoSurveySubmitLoading: false
-    });
+    // this.setState({
+    //   aoSurveySubmitLoading: false
+    // });
     if (isRefresh) {
       NotificationManager.success("Response saved successfully", "");
       this.handleSaveGraph(null, isRefresh);
