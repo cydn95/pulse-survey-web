@@ -890,7 +890,7 @@ class MyMap extends React.Component {
     );
   };
 
-  callbackSubmitSurvey = (isRefresh = true) => {
+  callbackSubmitSurvey = (isRefresh = true, success = true) => {
     // this.setState({
     //   screen: "list",
     //   currentSurveyUserId: 0,
@@ -899,9 +899,12 @@ class MyMap extends React.Component {
     const { surveyId, surveyUserId } = this.props;
     this.props.getAoQuestionList(surveyUserId, surveyId);
 
-    // this.setState({
-    //   aoSurveySubmitLoading: false
-    // });
+    if (!success) {
+      this.setState({
+        aoSurveySubmitLoading: false
+      });
+    }
+
     if (isRefresh) {
       NotificationManager.success("Response saved successfully", "");
       this.handleSaveGraph(null, isRefresh);
