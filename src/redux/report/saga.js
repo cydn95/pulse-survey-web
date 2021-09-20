@@ -26,7 +26,7 @@ import {
   checkDashboardStatusAPI,
   getDriverAnalysisCntAPI,
   getKeyThemeMenuCntAPI,
-  driverListAPI
+  userListAPI
 } from "../../services/axios/api";
 
 import {
@@ -517,6 +517,8 @@ function* getEngagementTrend({ payload }) {
       endDate
     );
 
+    const participationData = yield call(getParticipationAsync, surveyId);
+
     if (chartType === "SHGroup") {
       const shGroupResult2 = yield call(getShGroupListAsync, surveyId);
       const originShGroupList = [...shGroupResult2.data];
@@ -554,30 +556,42 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForSHGroup(shGroupList, result);
 
-      const answered = [];
-
-      Object.keys(resultData).forEach((key) => {
-        const data = resultData[key];
-        for (let i = 0; i < data.length; i++) {
-          if ("stakeholders" in data[i]) {
-            for (let j = 0; j < data[i].stakeholders.length; j++) {
-              if (
-                !engagementRet["Response Rate"][i].stakeholders.includes(
-                  data[i].stakeholders[j]
-                )
-              ) {
-                engagementRet["Response Rate"][i].stakeholders.push(
-                  data[i].stakeholders[j]
-                );
-              }
-
-              if (!answered.includes(data[i].stakeholders[j])) {
-                answered.push(data[i].stakeholders[j]);
-              }
-            }
+      const answered = []
+      console.log('shGroupList', originShGroupList)
+      originShGroupList.map((sh, idx) => {
+        participationData.data.map(ptc => {
+          if ((ptc.shGroup.SHGroupName === sh.SHGroupName) && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
+            engagementRet["Response Rate"][idx].stakeholders.push(ptc.id)
           }
-        }
-      });
+          return ptc;
+        })
+        return sh;
+      })
+
+      // Object.keys(resultData).forEach((key) => {
+      //   const data = resultData[key];
+      //   for (let i = 0; i < data.length; i++) {
+      //     if ("stakeholders" in data[i]) {
+      //       for (let j = 0; j < data[i].stakeholders.length; j++) {
+      //         if (
+      //           !engagementRet["Response Rate"][i].stakeholders.includes(
+      //             data[i].stakeholders[j]
+      //           )
+      //         ) {
+      //           engagementRet["Response Rate"][i].stakeholders.push(
+      //             data[i].stakeholders[j]
+      //           );
+      //         }
+
+      //         // if (!answered.includes(data[i].stakeholders[j])) {
+      //         //   answered.push(data[i].stakeholders[j]);
+      //         // }
+      //       }
+      //     }
+      //   }
+      // });
+
+      console.log('engagem', engagementRet)
 
       callback({
         totalAnswered: answered.length,

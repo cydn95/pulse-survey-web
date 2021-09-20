@@ -39,7 +39,6 @@ const HeatMap = ({
   chartWidth,
   filter,
   shGroup,
-  totalQuestionCntData,
 }) => {
   const colP = useMemo(() => {
     if (Object.keys(data).length > 0) {
@@ -195,15 +194,15 @@ const HeatMap = ({
                       d.stakeholders ||
                       d.stakeholders.length > thresholdCnt) ||
                       admin)
-                    ? { borderLeft: `3px solid ${getColorFromValue(Number(rowNum === 1 ? (totalQuestionCntData[filter] ? (totalQuestionCntData[filter][index].cnt / totalQuestionCntData.totalCnt) * 10 : 0) : d.value))}` }
+                    ? { borderLeft: `3px solid ${getColorFromValue(Number(rowNum === 1 ? (d.stakeholders.length / d.totalCnt) * 10 : d.value))}` }
                     : {};
 
                 let colVal = "";
                 if (rowNum === 0) {
                   colVal = d.value;
                 } else if (rowNum === 1) {
-                  colVal = `${totalQuestionCntData[filter] ?
-                    Math.round((totalQuestionCntData[filter][index].cnt / totalQuestionCntData.totalCnt) * 100)
+                  colVal = `${d.totalCnt > 0
+                    ? Math.round((d.stakeholders.length / d.totalCnt) * 100)
                     : 0
                     } %`;
                 } else {
@@ -234,7 +233,7 @@ const HeatMap = ({
                     <span className={classnames({ [styles['analysis-value']]: rowNum !== 1 })}>{colVal}</span>
                     {rowNum === 1 && (
                       <div className={styles["map-col-shcnt"]}>
-                        {`${totalQuestionCntData[filter] ? totalQuestionCntData[filter][index].cnt : 0} out of ${totalQuestionCntData[filter] ? totalQuestionCntData.totalCnt : 0} questions`}
+                        {`${d.stakeholders.length} out of ${d.totalCnt} stakeholders`}
                       </div>
                     )}
                   </div>

@@ -446,7 +446,12 @@ export const getDriverAnalysisAPI = (
   startDate = "2021-01-01",
   endDate = "2021-12-31"
 ) => {
-  let url = `/driveranalysis/?survey=${surveyId}&driver=${driverName}&stdt=${startDate}&eddt=${endDate}`;
+  let url;
+  if (driverName !== 'undefied') {
+    url = `/driveranalysis/?survey=${surveyId}&driver=${driverName}&stdt=${startDate}&eddt=${endDate}`;
+  } else {
+    url = `/driveranalysis/?survey=${surveyId}&stdt=${startDate}&eddt=${endDate}`;
+  }
   if (controlType !== "") {
     url += `&controltype=${controlType}`;
   }
