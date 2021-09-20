@@ -20,14 +20,13 @@ import {
   updateAcknowledgementAPI,
   voteKeyThemesAPI,
   getAmQuestionCntAPI,
-  getAllQuestionAPI,
   getDriverAnalysisAPI,
   getTotalStakeholderCntAPI,
   advisorAPI,
   checkDashboardStatusAPI,
   getDriverAnalysisCntAPI,
   getKeyThemeMenuCntAPI,
-  driverListAPI
+  userListAPI
 } from "../../services/axios/api";
 
 import {
@@ -142,23 +141,6 @@ const getAmReportAsync = async (
   await getAmResponseReportAPI(
     surveyId,
     driverName,
-    subProjectUser,
-    controlType,
-    startDate,
-    endDate
-  )
-    .then((result) => result)
-    .catch((error) => error);
-
-const getAllQuestionAsync = async (
-  surveyId,
-  subProjectUser,
-  controlType,
-  startDate,
-  endDate
-) =>
-  await getAllQuestionAPI(
-    surveyId,
     subProjectUser,
     controlType,
     startDate,
@@ -535,16 +517,7 @@ function* getEngagementTrend({ payload }) {
       endDate
     );
 
-    const data = yield call(
-      getAllQuestionAsync,
-      surveyId,
-      subProjectUser,
-      controlType,
-      startDate,
-      endDate
-    );
-
-    let allQuestion = data.data
+    const participationData = yield call(getParticipationAsync, surveyId);
 
     if (chartType === "SHGroup") {
       const shGroupResult2 = yield call(getShGroupListAsync, surveyId);
@@ -565,6 +538,8 @@ function* getEngagementTrend({ payload }) {
         });
       }
 
+      console.log("totalStakeholderCnt", totalStakeholderCnt)
+
       shGroupList.forEach((sg) => {
         engagementRet[driverName].push({
           value: sg.SHGroupName,
@@ -581,45 +556,44 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForSHGroup(shGroupList, result);
 
-      //Getting data for responseRate
-
-      const totalQuestionCntData = {};
-      totalQuestionCntData['totalCnt'] = allQuestion.length;
-      totalQuestionCntData['SHGroup'] = shGroupList.map(shGroup => {
-        return {
-          SHGroupName: shGroup.SHGroupName,
-          cnt: allQuestion.filter(q => shGroup.SHGroupName === q.projectUser.shGroup.SHGroupName).length
-        }
-      })
-      //Getting data for responseRate Ended
-
-      const answered = [];
-
-      Object.keys(resultData).forEach((key) => {
-        const data = resultData[key];
-        for (let i = 0; i < data.length; i++) {
-          if ("stakeholders" in data[i]) {
-            for (let j = 0; j < data[i].stakeholders.length; j++) {
-              if (
-                !engagementRet["Response Rate"][i].stakeholders.includes(
-                  data[i].stakeholders[j]
-                )
-              ) {
-                engagementRet["Response Rate"][i].stakeholders.push(
-                  data[i].stakeholders[j]
-                );
-              }
-
-              if (!answered.includes(data[i].stakeholders[j])) {
-                answered.push(data[i].stakeholders[j]);
-              }
-            }
+      const answered = []
+      console.log('shGroupList', originShGroupList)
+      originShGroupList.map((sh, idx) => {
+        participationData.data.map(ptc => {
+          if ((ptc.shGroup.SHGroupName === sh.SHGroupName) && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
+            engagementRet["Response Rate"][idx].stakeholders.push(ptc.id)
           }
-        }
-      });
+          return ptc;
+        })
+        return sh;
+      })
+
+      // Object.keys(resultData).forEach((key) => {
+      //   const data = resultData[key];
+      //   for (let i = 0; i < data.length; i++) {
+      //     if ("stakeholders" in data[i]) {
+      //       for (let j = 0; j < data[i].stakeholders.length; j++) {
+      //         if (
+      //           !engagementRet["Response Rate"][i].stakeholders.includes(
+      //             data[i].stakeholders[j]
+      //           )
+      //         ) {
+      //           engagementRet["Response Rate"][i].stakeholders.push(
+      //             data[i].stakeholders[j]
+      //           );
+      //         }
+
+      //         // if (!answered.includes(data[i].stakeholders[j])) {
+      //         //   answered.push(data[i].stakeholders[j]);
+      //         // }
+      //       }
+      //     }
+      //   }
+      // });
+
+      console.log('engagem', engagementRet)
 
       callback({
-        totalQuestionCntData: totalQuestionCntData,
         totalAnswered: answered.length,
         shCnt: totalStakeholderCnt,
         data: { ...engagementRet, ...resultData },
@@ -662,17 +636,6 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForTeam(teamList, result);
 
-      //Getting data for responseRate
-      const totalQuestionCntData = {};
-      totalQuestionCntData['totalCnt'] = allQuestion.length;
-      totalQuestionCntData['Team'] = teamList.map(team => {
-        return {
-          Team: team.name,
-          cnt: allQuestion.filter(q => team.name === q.projectUser.team.name).length
-        }
-      })
-      //Getting data for responseRate Ended
-
       const answered = [];
 
       Object.keys(resultData).forEach((key) => {
@@ -699,7 +662,6 @@ function* getEngagementTrend({ payload }) {
       });
 
       callback({
-        totalQuestionCntData: totalQuestionCntData,
         totalAnswered: answered.length,
         shCnt: totalStakeholderCnt,
         data: { ...engagementRet, ...resultData },
@@ -734,17 +696,6 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForOrganization(organizationList, result);
 
-      //Getting data for responseRate
-      const totalQuestionCntData = {};
-      totalQuestionCntData['totalCnt'] = allQuestion.length;
-      totalQuestionCntData['Organization'] = organizationList.map(org => {
-        return {
-          Organization: org.name,
-          cnt: allQuestion.filter(q => org.name === q.projectUser.projectOrganization).length
-        }
-      })
-      //Getting data for responseRate Ended
-
       const answered = [];
 
       Object.keys(resultData).forEach((key) => {
@@ -771,7 +722,6 @@ function* getEngagementTrend({ payload }) {
       });
 
       callback({
-        totalQuestionCntData: totalQuestionCntData,
         totalAnswered: answered.length,
         shCnt: totalStakeholderCnt,
         data: { ...engagementRet, ...resultData },
