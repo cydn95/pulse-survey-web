@@ -167,7 +167,7 @@ const AdvisorInsights = ({
                     </div>
                   </div>
                 </div>
-                <div className={styles["content-summary-item"]}>
+                {/* <div className={styles["content-summary-item"]}>
                   <div
                     className={classnames(
                       styles["content-summary-value"],
@@ -179,7 +179,7 @@ const AdvisorInsights = ({
                       Departments in Total
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className={styles["content-summary"]}>
                 <div className={styles["sub-title"]}>Catch-up with ...</div>
