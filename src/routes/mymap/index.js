@@ -616,6 +616,8 @@ class MyMap extends React.Component {
           }
         } else {
           return {
+            esList: individual,
+            projectEsList: projectMapIndividual,
             aoSurveySubmitLoading: false
           }
         }
