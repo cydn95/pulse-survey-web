@@ -438,6 +438,21 @@ export const getDriverAnalysisCntAPI = (
   return getClient(true).get(url);
 };
 
+export const getAllQuestionAPI = (
+  surveyId,
+  projectUser,
+  controlType = "",
+  startDate = "2021-01-01",
+  endDate = "2021-12-31"
+) => {
+  let url = `/driveranalysis/?survey=${surveyId}&stdt=${startDate}&eddt=${endDate}`;
+  if (controlType !== "") {
+    url += `&controltype=${controlType}`;
+  }
+
+  return getClient(true).get(url);
+};
+
 export const getDriverAnalysisAPI = (
   surveyId,
   driverName,

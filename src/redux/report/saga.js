@@ -20,6 +20,7 @@ import {
   updateAcknowledgementAPI,
   voteKeyThemesAPI,
   getAmQuestionCntAPI,
+  getAllQuestionAPI,
   getDriverAnalysisAPI,
   getTotalStakeholderCntAPI,
   advisorAPI,
@@ -141,6 +142,23 @@ const getAmReportAsync = async (
   await getAmResponseReportAPI(
     surveyId,
     driverName,
+    subProjectUser,
+    controlType,
+    startDate,
+    endDate
+  )
+    .then((result) => result)
+    .catch((error) => error);
+
+const getAllQuestionAsync = async (
+  surveyId,
+  subProjectUser,
+  controlType,
+  startDate,
+  endDate
+) =>
+  await getAllQuestionAPI(
+    surveyId,
     subProjectUser,
     controlType,
     startDate,
@@ -517,6 +535,17 @@ function* getEngagementTrend({ payload }) {
       endDate
     );
 
+    const data = yield call(
+      getAllQuestionAsync,
+      surveyId,
+      subProjectUser,
+      controlType,
+      startDate,
+      endDate
+    );
+
+    let allQuestion = data.data
+
     if (chartType === "SHGroup") {
       const shGroupResult2 = yield call(getShGroupListAsync, surveyId);
       const originShGroupList = [...shGroupResult2.data];
@@ -553,31 +582,6 @@ function* getEngagementTrend({ payload }) {
       const resultData = getResultForSHGroup(shGroupList, result);
 
       //Getting data for responseRate
-      let getDriverList = async (surveyId) =>
-        await driverListAPI(surveyId)
-          .then((data) => data)
-          .catch((error) => error);
-
-      const driverList = yield call(
-        getDriverList,
-        surveyId
-      )
-
-      let allQuestion = [];
-
-      for (let i = 0; i < driverList.data.length; i++) {
-        const data = yield call(
-          getDriverAnalysisAsync,
-          surveyId,
-          driverList.data[i].driverName,
-          subProjectUser,
-          controlType,
-          startDate,
-          endDate
-        );
-
-        allQuestion = allQuestion.concat(data.data);
-      }
 
       const totalQuestionCntData = {};
       totalQuestionCntData['totalCnt'] = allQuestion.length;
@@ -659,32 +663,6 @@ function* getEngagementTrend({ payload }) {
       const resultData = getResultForTeam(teamList, result);
 
       //Getting data for responseRate
-      let getDriverList = async (surveyId) =>
-        await driverListAPI(surveyId)
-          .then((data) => data)
-          .catch((error) => error);
-
-      const driverList = yield call(
-        getDriverList,
-        surveyId
-      )
-
-      let allQuestion = [];
-
-      for (let i = 0; i < driverList.data.length; i++) {
-        const data = yield call(
-          getDriverAnalysisAsync,
-          surveyId,
-          driverList.data[i].driverName,
-          subProjectUser,
-          controlType,
-          startDate,
-          endDate
-        );
-
-        allQuestion = allQuestion.concat(data.data);
-      }
-
       const totalQuestionCntData = {};
       totalQuestionCntData['totalCnt'] = allQuestion.length;
       totalQuestionCntData['Team'] = teamList.map(team => {
@@ -757,33 +735,6 @@ function* getEngagementTrend({ payload }) {
       const resultData = getResultForOrganization(organizationList, result);
 
       //Getting data for responseRate
-      let getDriverList = async (surveyId) =>
-        await driverListAPI(surveyId)
-          .then((data) => data)
-          .catch((error) => error);
-
-      const driverList = yield call(
-        getDriverList,
-        surveyId
-      )
-
-      let allQuestion = [];
-
-      for (let i = 0; i < driverList.data.length; i++) {
-        const data = yield call(
-          getDriverAnalysisAsync,
-          surveyId,
-          driverList.data[i].driverName,
-          subProjectUser,
-          controlType,
-          startDate,
-          endDate
-        );
-
-        allQuestion = allQuestion.concat(data.data);
-      }
-      console.log('organizationList', organizationList)
-      console.log('allQuestion', allQuestion)
       const totalQuestionCntData = {};
       totalQuestionCntData['totalCnt'] = allQuestion.length;
       totalQuestionCntData['Organization'] = organizationList.map(org => {
