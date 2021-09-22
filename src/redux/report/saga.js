@@ -538,8 +538,6 @@ function* getEngagementTrend({ payload }) {
         });
       }
 
-      console.log("totalStakeholderCnt", totalStakeholderCnt)
-
       shGroupList.forEach((sg) => {
         engagementRet[driverName].push({
           value: sg.SHGroupName,
@@ -557,7 +555,7 @@ function* getEngagementTrend({ payload }) {
       const resultData = getResultForSHGroup(shGroupList, result);
 
       const answered = []
-      console.log('shGroupList', originShGroupList)
+
       originShGroupList.map((sh, idx) => {
         participationData.data.map(ptc => {
           if ((ptc.shGroup.SHGroupName === sh.SHGroupName) && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
@@ -590,8 +588,6 @@ function* getEngagementTrend({ payload }) {
       //     }
       //   }
       // });
-
-      console.log('engagem', engagementRet)
 
       callback({
         totalAnswered: answered.length,

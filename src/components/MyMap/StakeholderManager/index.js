@@ -29,7 +29,8 @@ const StakeholderManager = ({
   addNewStakeholder,
   updateStakeholder,
   myMapES,
-  projectMapES
+  projectMapES,
+  handleUpdateStakeholder
 }) => {
   const [myCategoryList, setMyCategoryList] = useState([]);
   const [projectCategoryList, setProjectCategoryList] = useState([]);
@@ -299,7 +300,8 @@ const StakeholderManager = ({
               search={search}
               onUpdateStakeholder={(projectId, surveyId, stakeholder) =>
                 updateStakeholder(projectId, surveyId, stakeholder, () => {
-                  window.location.reload(false);
+                  setView('manage')
+                  handleUpdateStakeholder()
                 })
               }
               onUpdateSubView={(subView) => setSubView(subView)}
