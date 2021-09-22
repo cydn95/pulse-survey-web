@@ -625,7 +625,6 @@ class MyMap extends React.Component {
             projectApList: projectMapArchitecture,
             myMapStakeholderList,
             projectMapStakeholderList,
-            categoryChanged: false,
           }
         }
       });
@@ -858,7 +857,6 @@ class MyMap extends React.Component {
   };
 
   handleStartOtherSurvey = (id) => {
-    const { userId, surveyId, surveyUserId, projectId, history, driverList } = this.props;
     if (id.startsWith("S_")) {
       let user = {};
       for (let i = 0; i < this.state.stakeholderList.length; i++) {
@@ -879,6 +877,7 @@ class MyMap extends React.Component {
         screen: "aosurvey",
         toggleGraph: false,
         currentSurveyUserId: id,
+        categoryChanged: false,
         currentSurveyUser: user,
       }))
     }
