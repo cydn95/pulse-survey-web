@@ -121,7 +121,6 @@ const StakeholderManager = ({
           shCount.push(projectMapStakeholderList[i].userId)
         }
       }
-      console.log('shCount', shCount)
 
       // return myMapStakeholderList.length + projectMapStakeholderList.length
       return shCount.length;
