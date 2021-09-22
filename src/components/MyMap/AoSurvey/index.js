@@ -47,6 +47,7 @@ class AoSurvey extends React.Component {
       myMapES,
       projectMapES,
       mapStyle,
+      shCategoryChanged,
     } = this.props;
 
     let totalQuestions = 0;
@@ -138,7 +139,7 @@ class AoSurvey extends React.Component {
       options,
       drivers: orderedDrivers,
       pageIndex,
-      currentUser: user,
+      currentUser: { ...user },
       answers,
       totalAnswers,
       totalQuestions,
@@ -172,8 +173,6 @@ class AoSurvey extends React.Component {
       const orderedDrivers = drivers.filter((item) => {
         return item.questions.length > 0 ? true : false;
       });
-
-      console.log('orderedD', orderedDrivers)
 
       const shCategoryId = currentSurveyUserId.split("_SHC_")[1];
 
@@ -305,9 +304,6 @@ class AoSurvey extends React.Component {
     const { editModal } = this.state;
     if (editModal) {
       actionStakeholderList(surveyUserId, surveyId, (shList) => {
-        // console.log(currentSurveyUserId);
-        // console.log(shList);
-
         let cUser = null;
         for (let i = 0; i < shList.length; i++) {
           if (currentSurveyUserId.includes(`${shList[i].userId}_`)) {
@@ -355,6 +351,7 @@ class AoSurvey extends React.Component {
       myMapES,
       projectMapES,
       currentSurveyUserId,
+      shCategoryChanged,
     } = this.props;
 
     // console.log(myMapCategory);
@@ -419,6 +416,7 @@ class AoSurvey extends React.Component {
               {editModal && (
                 <div className={styles["stakeholder-update-panel-container"]}>
                   <StakeholderUpdatePanel
+                    shCategoryChanged={shCategoryChanged}
                     open={editModal}
                     currentUser={currentUser}
                     myMapCategory={myMapCategory}
@@ -468,7 +466,8 @@ class AoSurvey extends React.Component {
             </React.Fragment>
           )}
         </div>
-        <div className={styles.questions}>
+        <div style={{ position: 'relative' }} className={styles.questions}>
+          {submitLoading && <div style={{ position: 'absolute', zIndex: '100', background: 'rgba(0,0,0,0.5)', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Calculating...</div>}
           {driver.questions.map((control, index) => {
             const answer = answers.filter(
               (answer) =>

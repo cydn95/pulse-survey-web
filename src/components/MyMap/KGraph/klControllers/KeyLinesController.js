@@ -39,6 +39,57 @@ class BaseController {
     this.clickNodeListener = clickNodeListener;
   }
 
+  updatedNode = async (apList, esList, categoryChanged) => {
+    // console.log('apList', apList)
+    // console.log('esList', esList)
+    // console.log('categoryChanged', categoryChanged)
+    this.dataStore = new DataStore(apList, esList);
+    let props = [];
+    if (categoryChanged) {
+      let {
+        newItems /* highLevelNodes */
+      } = await this.dataStore.getCoreStructure();
+      this.chart.load({
+        type: "LinkChart",
+        items: newItems
+      });
+      this.chart.zoom("fit");
+      this.runLayout();
+      window.chart = this.chart;
+      this.highLevelNodes = {};
+      this.comboMap = {};
+      this.viewMode = []; // ["Org", "Team"];
+      this.setupUI();
+      this.setContainerState({ categoryChanged: false })
+    }
+    // create the donuts
+    this.chart.each({
+      type: "node",
+      items: "underlying"
+    }, (item) => {
+      if (item.d.survey_completion) {
+        const data = esList.individuals.filter(es => es.id === item.id)
+        let percentage = Math.abs(parseFloat(data[0].survey_completion).toFixed(2));
+
+        // let segment = Math.abs(percentage - 50) * 2;
+        // let segmentColor = percentage <= 50 ? "#ff5500" : "#1f45b8";
+        // let segmentColor = "#5194c5";
+        const segmentColor = getColorFromValue(data[0].survey_sentiment / 10);
+        props.push({
+          id: item.id,
+          donut: {
+            v: [percentage, 100 - percentage],
+            c: [segmentColor, "#c0c0c0"],
+            b: "#3b4f81",
+            w: 5,
+            bw: 0,
+          },
+        });
+      }
+    });
+    await this.chart.setProperties(props);
+  }
+
   enableLayoutOptions = () => {
     let enable = this.chart.selection().length > 0;
     this.setContainerState({
@@ -127,7 +178,7 @@ class BaseController {
             r: 25,
             t: 1,
             w: true,
-          }, ],
+          },],
           d: {
             ...selectedSH.d,
             individualCount: 1,
@@ -180,14 +231,14 @@ class BaseController {
       // check if there are already elements with that id in the vis and that you are over an sh category
       if (currentOverElement.d.coreEntity && !itemExists) {
         // if the sh category has not been expanded yet, expand it before adding the element
-        
+
         if (
           currentOverElement.d.individualCount > 0 &&
           !currentOverElement.d.expanded
         ) {
           await this.expandChart(currentOverElement.id);
           // await this.toggleChart(currentOverElement.id);
-          
+
 
           animate = true;
         } // if the sh category is shrunk, show it before adding
@@ -411,9 +462,9 @@ class BaseController {
       const fixed = [];
       const toArrange = [];
       this.chart.each({
-          type: "node",
-          items: "toplevel"
-        },
+        type: "node",
+        items: "toplevel"
+      },
         ({
           id,
           hi
@@ -474,7 +525,7 @@ class BaseController {
       this.expandChart(id);
     } else if (clickedElement.d.coreEntity && clickedElement.d.expanded) {
       this.toggleChart(id);
-    
+
     }
 
     if (this.chart.combo().isCombo(id)) {
@@ -535,7 +586,7 @@ class BaseController {
       container: chartContainer,
       options: chartOptions,
       type: "chart"
-    }, ]);
+    },]);
     this.chart.load({
       type: "LinkChart",
       items: newItems
@@ -599,8 +650,8 @@ class BaseController {
         if (node.d[property]) {
           let propertyId =
             visMode.length > 1 && property === "team" ?
-            `${node.d.sh_category.current}_${node.d.organisation.current}_${node.d[property].current}` :
-            `${node.d.sh_category.current}_${node.d[property].current}`;
+              `${node.d.sh_category.current}_${node.d.organisation.current}_${node.d[property].current}` :
+              `${node.d.sh_category.current}_${node.d[property].current}`;
           newCombos[propertyId] = newCombos[propertyId] || [];
           newCombos[propertyId].push(node.id);
           count[propertyId] = count[propertyId] || 0;
@@ -644,7 +695,7 @@ class BaseController {
                 r: 35,
                 t: count[id],
                 w: true,
-              }, ],
+              },],
             donuts: {},
           };
           comboDefs.push({
@@ -696,4 +747,4 @@ class BaseController {
   }
 }
 
-export default class KeyLinesController extends BaseController {}
+export default class KeyLinesController extends BaseController { }

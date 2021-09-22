@@ -75,6 +75,7 @@ class MyMap extends React.Component {
       projectMapShCategoryList: [],
       decisionMakerList: [],
       mapSaveLoading: false,
+      categoryChanged: false,
       mapGetLoading: false,
 
       toggleGraph: true,
@@ -613,12 +614,18 @@ class MyMap extends React.Component {
             mapGetLoading,
             myMapStakeholderList,
             projectMapStakeholderList,
+            categoryChanged: true,
           }
         } else {
           return {
+            stakeholderList,
             esList: individual,
+            apList: architecture,
             projectEsList: projectMapIndividual,
-            aoSurveySubmitLoading: false
+            projectApList: projectMapArchitecture,
+            myMapStakeholderList,
+            projectMapStakeholderList,
+            categoryChanged: false,
           }
         }
       });
@@ -637,6 +644,7 @@ class MyMap extends React.Component {
 
   callbackAddNewStakeholder = (code) => {
     console.log('code', code);
+    const { userId, surveyId, surveyUserId, projectId, history, driverList } = this.props;
     if (code === 400) {
       NotificationManager.error(
         "Stakeholder is already existed",
@@ -644,7 +652,13 @@ class MyMap extends React.Component {
         2000
       );
     } else {
-      window.location.reload(false);
+      // this.props.getKMapData(surveyUserId, userId);
+      // this.props.getProjectMapData(surveyUserId, userId);
+      // this.props.getShCategoryList(surveyId, 0);
+      this.props.getStakeholderList(surveyUserId, surveyId);
+      // this.props.getTeamList(projectId);
+      // this.props.getAoQuestionList(user, id);
+      // this.props.getSkipQuestionList();
     }
   };
 
@@ -748,6 +762,15 @@ class MyMap extends React.Component {
     });
   };
 
+  handleUpdateStakeholder = () => {
+    const { userId, surveyId, surveyUserId, projectId, history, driverList } = this.props;
+    // this.props.getAoQuestionList(surveyUserId, surveyId);
+    this.props.getKMapData(surveyUserId, userId);
+    this.props.getProjectMapData(surveyUserId, userId);
+    // this.props.getShCategoryList(surveyId, 0);
+    this.props.getStakeholderList(surveyUserId, surveyId);
+  }
+
   handleAddStackholderToProjectGraph = (data, e = {}) => {
     const projectUserId = data.stakeholder;
     const { stakeholderList } = this.state;
@@ -844,20 +867,20 @@ class MyMap extends React.Component {
           break;
         }
       }
-
       // this.props.getKMapData(surveyUserId, userId);
       // this.props.getProjectMapData(surveyUserId, userId);
       // this.props.getShCategoryList(surveyId, 0);
       // this.props.getStakeholderList(surveyUserId, surveyId);
       // this.props.getTeamList(projectId);
-      this.props.getAoQuestionList(user, id);
+      // this.props.getAoQuestionList(user, id);
       // this.props.getSkipQuestionList();
+
       this.setState((state) => ({
         screen: "aosurvey",
         toggleGraph: false,
         currentSurveyUserId: id,
         currentSurveyUser: user,
-      }));
+      }))
     }
   };
 
@@ -898,22 +921,30 @@ class MyMap extends React.Component {
     //   currentSurveyUserId: 0,
     //   currentSurveyUser: {},
     // });
-    const { surveyId, surveyUserId } = this.props;
-    this.props.getAoQuestionList(surveyUserId, surveyId);
+    const { surveyId, surveyUserId, userId, user } = this.props;
+    Promise.all([
+      this.props.getAoQuestionList(surveyUserId, surveyId),
+      this.props.getKMapData(surveyUserId, userId),
+      this.props.getProjectMapData(surveyUserId, userId),
+    ]).then(setTimeout(() => { this.setState({ aoSurveySubmitLoading: false, }) }, 2000));
 
     if (!success) {
       this.setState({
-        aoSurveySubmitLoading: false
+        aoSurveySubmitLoading: false,
       });
       NotificationManager.error("Response submit failed", "");
-      this.handleSaveGraph(null, true);
+      // this.handleSaveGraph(null, true);
     }
-
     if (isRefresh) {
+      this.setState({
+        screen: "list",
+        currentSurveyUserId: 0,
+        currentSurveyUser: {},
+        toggleGraph: true,
+      });
       NotificationManager.success("Response saved successfully", "");
       this.handleSaveGraph(null, isRefresh);
     }
-
     // window.location.reload(false);
   };
 
@@ -1015,7 +1046,7 @@ class MyMap extends React.Component {
     //     isRefresh === true ? this.callbackSaveGraph : null
     //   );
     // }
-    window.location.reload(false);
+    // window.location.reload(false);
   };
 
   callbackSaveGraph = () => {
@@ -1096,7 +1127,8 @@ class MyMap extends React.Component {
       myMapStakeholderList,
       projectMapStakeholderList,
       currentSurveyUserId,
-      lastAddedShCategory
+      lastAddedShCategory,
+      categoryChanged,
     } = this.state;
 
     const mapHeaderVisible = toggleGraph
@@ -1241,6 +1273,7 @@ class MyMap extends React.Component {
                       layout={layout.toLowerCase()}
                       viewMode={viewMode}
                       layoutUpdated={layoutUpdated}
+                      categoryChanged={categoryChanged}
                     />
                   )}
               </Droppable>
@@ -1286,6 +1319,7 @@ class MyMap extends React.Component {
                   addNewStakeholder={(e) => this.handleShowAddPage(e)}
                   onSearchFocus={(e) => this.handleSearchFocus()}
                   onSearchBlur={(e) => this.handleSearchBlur()}
+                  handleUpdateStakeholder={(e) => this.handleUpdateStakeholder()}
                   myMapStakeholderList={myMapStakeholderList}
                   projectMapStakeholderList={projectMapStakeholderList}
                   myMapES={esList}

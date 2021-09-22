@@ -27,6 +27,7 @@ const StakeholderUpdatePanel = ({
   actionKMapData,
   actionProjectMapData,
   userId,
+  shCategoryChanged,
 }) => {
   const [selectedMyCategory, setSelectedMyCategory] = useState([]);
   const [selectedProjectCategory, setSelectedProjectCategory] = useState([]);
@@ -34,7 +35,8 @@ const StakeholderUpdatePanel = ({
   useEffect(() => {
     const myCategory = [];
     const projectCategory = [];
-
+    // console.log('myMapCategory', myMapCategory)
+    // console.log('currentUser', currentUser)
     for (let i = 0; i < myMapCategory.length; i++) {
       const id = myMapCategory[i].id;
 
@@ -117,6 +119,7 @@ const StakeholderUpdatePanel = ({
   // };
 
   const callbackUpdate = () => {
+    shCategoryChanged()
     // console.log("callback");
     // actionStakeholderList(surveyUserId, surveyId);
     // window.location.reload(false);
