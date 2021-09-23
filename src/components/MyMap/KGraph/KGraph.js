@@ -10,7 +10,7 @@ export default class KGraph extends Component {
    */
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { changed: false };
     // (changes) => { this.props.setParentState(changes);}
     this.keyLinesController = new KeyLinesController(
       (changes) => {
@@ -32,6 +32,10 @@ export default class KGraph extends Component {
       this.chartContainer,
       this.props.viewMode
     );
+  }
+
+  async componentWillReceiveProps(props) {
+    await this.keyLinesController.updatedNode(props.apList, props.esList, props.categoryChanged)
   }
 
   /**
