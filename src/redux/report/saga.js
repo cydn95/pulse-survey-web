@@ -518,10 +518,10 @@ function* getEngagementTrend({ payload }) {
     );
 
     const participationData = yield call(getParticipationAsync, surveyId);
+    const shGroupResult2 = yield call(getShGroupListAsync, surveyId);
+    const originShGroupList = [...shGroupResult2.data];
 
     if (chartType === "SHGroup") {
-      const shGroupResult2 = yield call(getShGroupListAsync, surveyId);
-      const originShGroupList = [...shGroupResult2.data];
 
       const shGroupList = [];
       const engagementRet = { [driverName]: [], "Response Rate": [] };
@@ -538,6 +538,34 @@ function* getEngagementTrend({ payload }) {
         });
       }
 
+      shGroupList.sort(function (a, b) {
+        var nameA = a.SHGroupName.toUpperCase(); // ignore upper and lowercase
+        var nameB = b.SHGroupName.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      });
+
+      originShGroupList.sort(function (a, b) {
+        var nameA = a.SHGroupName.toUpperCase(); // ignore upper and lowercase
+        var nameB = b.SHGroupName.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      })
+
       shGroupList.forEach((sg) => {
         engagementRet[driverName].push({
           value: sg.SHGroupName,
@@ -546,9 +574,10 @@ function* getEngagementTrend({ payload }) {
           key: sg.SHGroupName,
           stakeholders: [],
           totalCnt:
-            sg.SHGroupName in totalStakeholderCnt.shgroup
-              ? totalStakeholderCnt.shgroup[sg.SHGroupName]
-              : 0,
+            participationData.data.filter(ptc => ptc.shGroup.SHGroupName === sg.SHGroupName).length
+          // sg.SHGroupName in totalStakeholderCnt.shgroup
+          //   ? totalStakeholderCnt.shgroup[sg.SHGroupName]
+          //   : 0,
         });
       });
 
@@ -558,7 +587,7 @@ function* getEngagementTrend({ payload }) {
 
       originShGroupList.map((sh, idx) => {
         participationData.data.map(ptc => {
-          if ((ptc.shGroup.SHGroupName === sh.SHGroupName) && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
+          if ((ptc.shGroup.SHGroupName === sh.SHGroupName) && ptc.sendInvite && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
             engagementRet["Response Rate"][idx].stakeholders.push(ptc.id)
           }
           return ptc;
@@ -624,9 +653,10 @@ function* getEngagementTrend({ payload }) {
           key: t.name,
           stakeholders: [],
           totalCnt:
-            t.name in totalStakeholderCnt.team
-              ? totalStakeholderCnt.team[t.name]
-              : 0,
+            participationData.data.filter(ptc => ptc.team.name === t.name).length
+          // t.name in totalStakeholderCnt.team
+          //   ? totalStakeholderCnt.team[t.name]
+          //   : 0,
         });
       });
 
@@ -634,28 +664,39 @@ function* getEngagementTrend({ payload }) {
 
       const answered = [];
 
-      Object.keys(resultData).forEach((key) => {
-        const data = resultData[key];
-        for (let i = 0; i < data.length; i++) {
-          if ("stakeholders" in data[i]) {
-            for (let j = 0; j < data[i].stakeholders.length; j++) {
-              if (
-                !engagementRet["Response Rate"][i].stakeholders.includes(
-                  data[i].stakeholders[j]
-                )
-              ) {
-                engagementRet["Response Rate"][i].stakeholders.push(
-                  data[i].stakeholders[j]
-                );
-              }
-
-              if (!answered.includes(data[i].stakeholders[j])) {
-                answered.push(data[i].stakeholders[j]);
-              }
-            }
+      originShGroupList.map((sh, idx) => {
+        participationData.data.map(ptc => {
+          if ((ptc.shGroup.SHGroupName === sh.SHGroupName) && ptc.sendInvite && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
+            // engagementRet["Response Rate"][idx].stakeholders.push(ptc.id)
+            engagementRet["Response Rate"].forEach((d, i) => { if (d.key === ptc.team.name) engagementRet["Response Rate"][i].stakeholders.push(ptc.id) })
           }
-        }
-      });
+          return ptc;
+        })
+        return sh;
+      })
+
+      // Object.keys(resultData).forEach((key) => {
+      //   const data = resultData[key];
+      //   for (let i = 0; i < data.length; i++) {
+      //     if ("stakeholders" in data[i]) {
+      //       for (let j = 0; j < data[i].stakeholders.length; j++) {
+      //         if (
+      //           !engagementRet["Response Rate"][i].stakeholders.includes(
+      //             data[i].stakeholders[j]
+      //           )
+      //         ) {
+      //           engagementRet["Response Rate"][i].stakeholders.push(
+      //             data[i].stakeholders[j]
+      //           );
+      //         }
+
+      //         if (!answered.includes(data[i].stakeholders[j])) {
+      //           answered.push(data[i].stakeholders[j]);
+      //         }
+      //       }
+      //     }
+      //   }
+      // });
 
       callback({
         totalAnswered: answered.length,
@@ -684,9 +725,10 @@ function* getEngagementTrend({ payload }) {
           key: t.name,
           stakeholders: [],
           totalCnt:
-            t.name in totalStakeholderCnt.org
-              ? totalStakeholderCnt.org[t.name]
-              : 0,
+            participationData.data.filter(ptc => ptc.projectOrganization === t.name).length
+          // t.name in totalStakeholderCnt.org
+          //   ? totalStakeholderCnt.org[t.name]
+          //   : 0,
         });
       });
 
@@ -694,28 +736,39 @@ function* getEngagementTrend({ payload }) {
 
       const answered = [];
 
-      Object.keys(resultData).forEach((key) => {
-        const data = resultData[key];
-        for (let i = 0; i < data.length; i++) {
-          if ("stakeholders" in data[i]) {
-            for (let j = 0; j < data[i].stakeholders.length; j++) {
-              if (
-                !engagementRet["Response Rate"][i].stakeholders.includes(
-                  data[i].stakeholders[j]
-                )
-              ) {
-                engagementRet["Response Rate"][i].stakeholders.push(
-                  data[i].stakeholders[j]
-                );
-              }
-
-              if (!answered.includes(data[i].stakeholders[j])) {
-                answered.push(data[i].stakeholders[j]);
-              }
-            }
+      originShGroupList.map((sh, idx) => {
+        participationData.data.map(ptc => {
+          if ((ptc.shGroup.SHGroupName === sh.SHGroupName) && ptc.sendInvite && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
+            // engagementRet["Response Rate"][idx].stakeholders.push(ptc.id)
+            engagementRet["Response Rate"].forEach((d, i) => { if (d.key === ptc.projectOrganization) engagementRet["Response Rate"][i].stakeholders.push(ptc.id) })
           }
-        }
-      });
+          return ptc;
+        })
+        return sh;
+      })
+
+      // Object.keys(resultData).forEach((key) => {
+      //   const data = resultData[key];
+      //   for (let i = 0; i < data.length; i++) {
+      //     if ("stakeholders" in data[i]) {
+      //       for (let j = 0; j < data[i].stakeholders.length; j++) {
+      //         if (
+      //           !engagementRet["Response Rate"][i].stakeholders.includes(
+      //             data[i].stakeholders[j]
+      //           )
+      //         ) {
+      //           engagementRet["Response Rate"][i].stakeholders.push(
+      //             data[i].stakeholders[j]
+      //           );
+      //         }
+
+      //         if (!answered.includes(data[i].stakeholders[j])) {
+      //           answered.push(data[i].stakeholders[j]);
+      //         }
+      //       }
+      //     }
+      //   }
+      // });
 
       callback({
         totalAnswered: answered.length,
