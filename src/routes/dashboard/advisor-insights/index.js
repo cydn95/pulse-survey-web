@@ -20,12 +20,14 @@ const AdvisorInsights = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(null);
+  const [detailedData, setDetailedData] = useState(null);
 
   const [more, setMore] = useState(false);
 
-  const callback = (res) => {
+  const callback = (res, det) => {
     setLoading(false);
     setData(res);
+    setDetailedData(det);
   };
 
   useEffect(() => {
@@ -44,7 +46,7 @@ const AdvisorInsights = ({
 
     return (
       <Fragment>
-        {loading || data === null ? (
+        {loading || data === null || detailedData === null ? (
           <ReactLoading
             className={styles["advisor-insight-loading"]}
             type={"bars"}
@@ -80,7 +82,52 @@ const AdvisorInsights = ({
                   </div>
                 </div> */}
               <div className={styles["content-data"]}>
-                {Object.keys(data.detailedData).map((key) => (
+                {detailedData.map(d => (
+                  <div
+                    key={`content-item-${d[0].key}`}
+                    className={styles["content-item"]}
+                  >
+                    <div className={styles["content-item-question"]}>
+                      The teams / groups that feel the {" "}
+                      <strong>{d[0].key.includes('safe') ? ' ' : 'most '}{d[0].key.includes('ly') ? d[0].key.slice(0, -2) : d[0].key}</strong> about the project are:
+                    </div>
+                    <div className={styles["content-item-data"]}>
+                      {d.map(item => {
+                        if (!item.name) {
+                          return null;
+                        }
+                        return (
+                          <div
+                            className={styles["content-item-value"]}
+                            key={`content-item-${item.key}-${item.sort}`}
+                          >
+                            <div className={styles["content-item-shgroup"]}>
+                              {item.name}
+                            </div>
+                            <div
+                              className={
+                                styles["content-item-percent-container"]
+                              }
+                            >
+                              <div
+                                className={styles["content-item-percent-bar"]}
+                                style={{
+                                  width: `${(item.score / 10) *
+                                    100
+                                    }%`,
+                                }}
+                              ></div>
+                              <div className={styles["content-item-value"]}>
+                                {item.score.toFixed(2)}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+                {/* {Object.keys(data.detailedData).map((key) => (
                   <div
                     key={`content-item-${key}`}
                     className={styles["content-item"]}
@@ -125,7 +172,7 @@ const AdvisorInsights = ({
                       })}
                     </div>
                   </div>
-                ))}
+                ))} */}
               </div>
             </div>
             <div className={styles["content-right"]}>

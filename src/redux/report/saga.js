@@ -981,7 +981,17 @@ function* advisorReport({ payload }) {
     const { surveyId, projectUserId, callback } = payload;
 
     const result = yield call(advisorAsync, surveyId, projectUserId);
-    callback(result.data);
+    console.log('result', result.data)
+    let detailedData = Object.keys(result.data.detailedData).map(
+      (key) => Object.keys(result.data.detailedData[key]).map(
+        key2 => {
+          return {
+            key: key,
+            ...result.data.detailedData[key][key2]
+          }
+        }
+      ).sort((a, b) => (a.key === 'positively' || a.key === 'optimistic') ? (b.score - a.score) : (a.score - b.score)))
+    callback(result.data, detailedData);
   } catch (error) { }
 }
 
