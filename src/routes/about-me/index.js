@@ -115,7 +115,6 @@ const AboutMeSurvey = ({
         if (answeredCount === 0) {
           driverProgress = SURVEY_NOT_STARTED;
         } else if (answeredCount < surveyList[i].amquestion.length) {
-          console.log(answeredCount, surveyList[i].amquestion)
           driverProgress = SURVEY_IN_PROGRESS;
         } else {
           driverProgress = SURVEY_COMPLETED;
