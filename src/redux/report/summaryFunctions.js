@@ -394,6 +394,10 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
       continue;
     }
 
+    if (!question.latestResponse) {
+      continue;
+    }
+
     const questionData = question.amQuestionData;
 
     for (let j = 0; j < questionData.length; j++) {
