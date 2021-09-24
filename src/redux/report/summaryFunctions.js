@@ -301,31 +301,31 @@ export const getFeedbackSummaryByShGroup = (resData) => {
       }
 
       // for (let k = 0; k < shGroupList.length; k++) {
-        // const currentShGroupName = shGroupList[k].SHGroupName;
-        const shGroupName = question.subProjectUser.shGroup.SHGroupName;
+      // const currentShGroupName = shGroupList[k].SHGroupName;
+      const shGroupName = question.subProjectUser.shGroup.SHGroupName;
 
-        // if (currentShGroupName.toString() === shGroupName.toString()) {
-        //   continue;
-        // }
+      // if (currentShGroupName.toString() === shGroupName.toString()) {
+      //   continue;
+      // }
 
-        if (shGroupName in ret) {
-          if (driverName in ret[shGroupName]) {
-            ret[shGroupName][driverName].value += parseInt(intValue, 10);
-            ret[shGroupName][driverName].count += 1;
-          } else {
-            ret[shGroupName][driverName] = {
-              value: parseInt(intValue, 10),
-              count: 1,
-            };
-          }
+      if (shGroupName in ret) {
+        if (driverName in ret[shGroupName]) {
+          ret[shGroupName][driverName].value += parseInt(intValue, 10);
+          ret[shGroupName][driverName].count += 1;
         } else {
-          ret[shGroupName] = {
-            [driverName]: {
-              value: parseInt(intValue, 10),
-              count: 1,
-            },
+          ret[shGroupName][driverName] = {
+            value: parseInt(intValue, 10),
+            count: 1,
           };
         }
+      } else {
+        ret[shGroupName] = {
+          [driverName]: {
+            value: parseInt(intValue, 10),
+            count: 1,
+          },
+        };
+      }
       // }
     }
   }
@@ -363,6 +363,8 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
   const drivers = [];
   const ret = {};
 
+  console.log('resData', resData)
+
   for (let i = 0; i < resData.length; i++) {
     const question = resData[i];
     const intValue = question.integerValue;
@@ -389,6 +391,10 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
     }
 
     if (!group) {
+      continue;
+    }
+
+    if (!question.latestResponse) {
       continue;
     }
 
