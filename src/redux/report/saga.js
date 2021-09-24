@@ -403,8 +403,6 @@ function* getParticipation({ payload }) {
           }
         }
 
-
-
         //   if (
         //     result.data[i].sendInvite === null ||
         //     result.data[i].sendInvite === false
