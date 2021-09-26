@@ -96,8 +96,8 @@ const StakeholderManager = ({
   const userCount = useMemo(
     () => {
       const shCount = [];
-      console.log(myMapStakeholderList);
-      console.log(projectMapStakeholderList);
+      // console.log(myMapStakeholderList);
+      // console.log(projectMapStakeholderList);
       for (let i = 0; i < myMapStakeholderList.length; i++) {
         // for (let j = 0; j < myMapStakeholderList[i].shCategory.length; j++) {
         //   const shCategoryId = myMapStakeholderList[i].shCategory[j];
