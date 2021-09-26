@@ -59,7 +59,6 @@ const StakeholderUpdatePanel = ({
 
   const handleSelectMyCategory = (id) => {
     const index = selectedMyCategory.findIndex((elem) => elem === id);
-
     const category = [...selectedMyCategory];
     if (index === -1) {
       category.push(id);
@@ -68,11 +67,11 @@ const StakeholderUpdatePanel = ({
       category.splice(index, 1);
       setSelectedMyCategory(category);
     }
+    shCategoryChanged()
   };
 
   const handleSelectProjectCategory = (id) => {
     const index = selectedProjectCategory.findIndex((elem) => elem === id);
-
     const category = [...selectedProjectCategory];
     if (index === -1) {
       category.push(id);
@@ -81,6 +80,7 @@ const StakeholderUpdatePanel = ({
       category.splice(index, 1);
       setSelectedProjectCategory(category);
     }
+    shCategoryChanged()
   };
 
   // useEffect(() => {
@@ -119,7 +119,6 @@ const StakeholderUpdatePanel = ({
   // };
 
   const callbackUpdate = () => {
-    shCategoryChanged()
     // console.log("callback");
     // actionStakeholderList(surveyUserId, surveyId);
     // window.location.reload(false);

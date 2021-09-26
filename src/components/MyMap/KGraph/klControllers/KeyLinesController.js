@@ -39,54 +39,69 @@ class BaseController {
     this.clickNodeListener = clickNodeListener;
   }
 
-  updatedNode = async (apList, esList, categoryChanged) => {
+  updatedNode = async (apList, esList, categoryChanged, viewMode) => {
     // console.log('apList', apList)
     // console.log('esList', esList)
     // console.log('categoryChanged', categoryChanged)
     this.dataStore = new DataStore(apList, esList);
     let props = [];
-    if (categoryChanged) {
-      let {
-        newItems /* highLevelNodes */
-      } = await this.dataStore.getCoreStructure();
-      this.chart.load({
-        type: "LinkChart",
-        items: newItems
-      });
-      this.chart.zoom("fit");
-      this.runLayout();
-      window.chart = this.chart;
-      this.highLevelNodes = {};
-      this.comboMap = {};
-      this.viewMode = []; // ["Org", "Team"];
-      this.setupUI();
-      this.setContainerState({ categoryChanged: false })
-    }
+    // if (categoryChanged) {
+    //   let {
+    //     newItems /* highLevelNodes */
+    //   } = await this.dataStore.getCoreStructure();
+    //   this.chart.load({
+    //     type: "LinkChart",
+    //     items: newItems
+    //   });
+    //   this.chart.zoom("fit");
+    //   this.runLayout();
+    //   window.chart = this.chart;
+    //   this.highLevelNodes = {};
+    //   this.comboMap = {};
+    //   this.viewMode = []; // ["Org", "Team"];
+    //   this.setupUI();
+    //   this.updateVisualisationMode(viewMode)
+    //   this.setContainerState({ categoryChanged: false })
+    // }
     // create the donuts
-    this.chart.each({
-      type: "node",
-      items: "underlying"
-    }, (item) => {
-      if (item.d.survey_completion) {
-        const data = esList.individuals.filter(es => es.id === item.id)
-        let percentage = Math.abs(parseFloat(data[0].survey_completion).toFixed(2));
+    // this.chart.each({
+    //   type: "node",
+    //   items: "underlying"
+    // }, (item) => {
+    //   if (item.d.survey_completion) {
+    //     const data = esList.individuals.filter(es => es.id === item.id)
+    //     let percentage = Math.abs(parseFloat(data[0].survey_completion).toFixed(2));
 
-        // let segment = Math.abs(percentage - 50) * 2;
-        // let segmentColor = percentage <= 50 ? "#ff5500" : "#1f45b8";
-        // let segmentColor = "#5194c5";
-        const segmentColor = getColorFromValue(data[0].survey_sentiment / 10);
-        props.push({
-          id: item.id,
-          donut: {
-            v: [percentage, 100 - percentage],
-            c: [segmentColor, "#c0c0c0"],
-            b: "#3b4f81",
-            w: 5,
-            bw: 0,
-          },
-        });
-      }
-    });
+    //     // let segment = Math.abs(percentage - 50) * 2;
+    //     // let segmentColor = percentage <= 50 ? "#ff5500" : "#1f45b8";
+    //     // let segmentColor = "#5194c5";
+    //     const segmentColor = getColorFromValue(data[0].survey_sentiment / 10);
+    //     props.push({
+    //       id: item.id,
+    //       donut: {
+    //         v: [percentage, 100 - percentage],
+    //         c: [segmentColor, "#c0c0c0"],
+    //         b: "#3b4f81",
+    //         w: 5,
+    //         bw: 0,
+    //       },
+    //     });
+    //   }
+    // });
+    esList.individuals.map(item => {
+      let percentage = Math.abs(parseFloat(item.survey_completion).toFixed(2));
+      const segmentColor = getColorFromValue(item.survey_sentiment / 10);
+      props.push({
+        id: item.id,
+        donut: {
+          v: [percentage, 100 - percentage],
+          c: [segmentColor, "#c0c0c0"],
+          b: "#3b4f81",
+          w: 5,
+          bw: 0,
+        },
+      });
+    })
     await this.chart.setProperties(props);
   }
 
@@ -596,7 +611,7 @@ class BaseController {
     window.chart = this.chart;
     this.highLevelNodes = {};
     this.comboMap = {};
-    this.viewMode = []; // ["Org", "Team"];
+    this.viewMode = [...defaultView]; // ["Org", "Team"];
     this.setupUI();
   }
 
