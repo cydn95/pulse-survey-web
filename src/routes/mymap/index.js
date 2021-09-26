@@ -958,37 +958,55 @@ class MyMap extends React.Component {
     //   currentSurveyUserId: 0,
     //   currentSurveyUser: {},
     // });
-    const { surveyId, surveyUserId, userId, user, projectId } = this.props;
-    Promise.all([
-      this.props.getAoQuestionList(surveyUserId, surveyId),
-      this.props.getKMapData(surveyUserId, userId),
-      this.props.getProjectMapData(surveyUserId, userId),
-      this.props.getStakeholderList(surveyUserId, surveyId),
-    ]).then(setTimeout(() => {
-      this.setState(state => {
-        if (isRefresh) {
-          return {
-            screen: "list",
-            currentSurveyUserId: 0,
-            currentSurveyUser: {},
-            toggleGraph: true,
-            aoSurveySubmitLoading: false,
-          }
-        } else {
-          return {
-            aoSurveySubmitLoading: false,
-          }
-        }
-      })
-      if (!success) {
-        NotificationManager.error("Response submit failed", "");
-        // this.handleSaveGraph(null, true);
-      }
-      if (isRefresh) {
-        NotificationManager.success("Response saved successfully", "");
-        this.handleSaveGraph(null, isRefresh);
-      }
-    }, 2000));
+    if (isRefresh) {
+      this.setState({
+        screen: "list",
+        currentSurveyUserId: 0,
+        currentSurveyUser: {},
+      });
+      NotificationManager.success("Response saved successfully", "");
+      this.handleSaveGraph(null, isRefresh);
+      window.location.reload(false);
+    } else {
+      const { surveyId, surveyUserId, userId, user, projectId } = this.props;
+      Promise.all([
+        this.props.getAoQuestionList(surveyUserId, surveyId),
+        this.props.getKMapData(surveyUserId, userId),
+        this.props.getProjectMapData(surveyUserId, userId),
+        this.props.getStakeholderList(surveyUserId, surveyId),
+      ]).then(setTimeout(() => { this.setState({ aoSurveySubmitLoading: false, }) }, 1000))
+    }
+    // const { surveyId, surveyUserId, userId, user, projectId } = this.props;
+    // Promise.all([
+    //   this.props.getAoQuestionList(surveyUserId, surveyId),
+    //   this.props.getKMapData(surveyUserId, userId),
+    //   this.props.getProjectMapData(surveyUserId, userId),
+    //   this.props.getStakeholderList(surveyUserId, surveyId),
+    // ]).then(setTimeout(() => {
+    //   this.setState(state => {
+    //     if (isRefresh) {
+    //       return {
+    //         screen: "list",
+    //         currentSurveyUserId: 0,
+    //         currentSurveyUser: {},
+    //         toggleGraph: true,
+    //         aoSurveySubmitLoading: false,
+    //       }
+    //     } else {
+    //       return {
+    //         aoSurveySubmitLoading: false,
+    //       }
+    //     }
+    //   })
+    //   if (!success) {
+    //     NotificationManager.error("Response submit failed", "");
+    //     // this.handleSaveGraph(null, true);
+    //   }
+    //   if (isRefresh) {
+    //     NotificationManager.success("Response saved successfully", "");
+    //     this.handleSaveGraph(null, isRefresh);
+    //   }
+    // }, 2000));
 
 
     // window.location.reload(false);
