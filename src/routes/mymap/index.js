@@ -882,37 +882,42 @@ class MyMap extends React.Component {
   };
 
   handleCancelSurvey = (e) => {
-    const { surveyUserId, surveyId, userId } = this.props;
-    this.setState(state => {
-      if (!state.categoryChanged) {
-        return {
-          screen: "list",
-          currentSurveyUserId: 0,
-          currentSurveyUser: {},
-        }
-      } else {
-        return {
-          screen: "list",
-          currentSurveyUserId: 0,
-          currentSurveyUser: {},
-          mapGetLoading: true,
-        }
-      }
+    this.setState({
+      screen: "list",
+      currentSurveyUserId: 0,
+      currentSurveyUser: {},
     });
+    // const { surveyUserId, surveyId, userId } = this.props;
+    // this.setState(state => {
+    //   if (!state.categoryChanged) {
+    //     return {
+    //       screen: "list",
+    //       currentSurveyUserId: 0,
+    //       currentSurveyUser: {},
+    //     }
+    //   } else {
+    //     return {
+    //       screen: "list",
+    //       currentSurveyUserId: 0,
+    //       currentSurveyUser: {},
+    //       mapGetLoading: true,
+    //     }
+    //   }
+    // });
 
-    if (this.state.categoryChanged) {
-      Promise.all([
-        this.props.getKMapData(surveyUserId, userId),
-        this.props.getProjectMapData(surveyUserId, userId),
-        this.props.getStakeholderList(surveyUserId, surveyId),
-      ]).then(setTimeout(() => {
-        this.setState({
-          categoryChanged: false,
-          mapGetLoading: false,
-          viewMode: [...this.state.viewMode],
-        })
-      }, 1000))
-    }
+    // if (this.state.categoryChanged) {
+    //   Promise.all([
+    //     this.props.getKMapData(surveyUserId, userId),
+    //     this.props.getProjectMapData(surveyUserId, userId),
+    //     this.props.getStakeholderList(surveyUserId, surveyId),
+    //   ]).then(setTimeout(() => {
+    //     this.setState({
+    //       categoryChanged: false,
+    //       mapGetLoading: false,
+    //       viewMode: [...this.state.viewMode],
+    //     })
+    //   }, 1000))
+    // }
   };
 
   handleSubmitSurvey = (e, answerData, isRefresh = true) => {
@@ -1041,13 +1046,13 @@ class MyMap extends React.Component {
   };
 
   handleSaveGraph = (e, isRefresh = true) => {
-    if (this.state.categoryChanged) {
-      this.setState({
-        categoryChanged: false,
-        mapGetLoading: false,
-        viewMode: [...this.state.viewMode],
-      })
-    }
+    // if (this.state.categoryChanged) {
+    //   this.setState({
+    //     categoryChanged: false,
+    //     mapGetLoading: false,
+    //     viewMode: [...this.state.viewMode],
+    //   })
+    // }
     // const { userId, projectId, surveyUserId } = this.props;
     // const { mapStyle } = this.state;
 
@@ -1094,7 +1099,7 @@ class MyMap extends React.Component {
     //     isRefresh === true ? this.callbackSaveGraph : null
     //   );
     // }
-    // window.location.reload(false);
+    window.location.reload(false);
   };
 
   callbackSaveGraph = () => {
