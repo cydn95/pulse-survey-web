@@ -11,8 +11,8 @@ export default class KGraph extends Component {
   constructor(props) {
     super(props);
     this.state = { changed: false };
-    console.log('apList', this.props.apList)
-    console.log('esList', this.props.esList)
+    // console.log('apList', this.props.apList)
+    // console.log('esList', this.props.esList)
     // (changes) => { this.props.setParentState(changes);}
     this.keyLinesController = new KeyLinesController(
       (changes) => {

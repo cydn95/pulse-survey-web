@@ -891,7 +891,6 @@ class MyMap extends React.Component {
           currentSurveyUser: {},
         }
       } else {
-        console.log("changed and cancel");
         return {
           screen: "list",
           currentSurveyUserId: 0,

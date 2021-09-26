@@ -82,7 +82,7 @@ class SkipQuestion extends Component {
   }
 
   onSelectSkipReason = (answer) => {
-    console.log(answer);
+    // console.log(answer);
     this.setState(
       {
         reason: answer,
