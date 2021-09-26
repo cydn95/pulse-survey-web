@@ -974,7 +974,7 @@ class MyMap extends React.Component {
         this.props.getKMapData(surveyUserId, userId),
         this.props.getProjectMapData(surveyUserId, userId),
         this.props.getStakeholderList(surveyUserId, surveyId),
-      ]).then(setTimeout(() => { this.setState({ aoSurveySubmitLoading: false, }) }, 1000))
+      ]).then(setTimeout(() => { this.setState({ aoSurveySubmitLoading: false, }) }, 2000))
     }
     // const { surveyId, surveyUserId, userId, user, projectId } = this.props;
     // Promise.all([
