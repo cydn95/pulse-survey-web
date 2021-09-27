@@ -614,7 +614,6 @@ class MyMap extends React.Component {
             mapGetLoading,
             myMapStakeholderList,
             projectMapStakeholderList,
-            categoryChanged: true,
           }
         } else {
           return {
@@ -877,18 +876,43 @@ class MyMap extends React.Component {
         screen: "aosurvey",
         toggleGraph: false,
         currentSurveyUserId: id,
-        categoryChanged: false,
         currentSurveyUser: user,
       }))
     }
   };
 
   handleCancelSurvey = (e) => {
-    this.setState({
-      screen: "list",
-      currentSurveyUserId: 0,
-      currentSurveyUser: {},
+    const { surveyUserId, surveyId, userId } = this.props;
+    this.setState(state => {
+      if (!state.categoryChanged) {
+        return {
+          screen: "list",
+          currentSurveyUserId: 0,
+          currentSurveyUser: {},
+        }
+      } else {
+        return {
+          screen: "list",
+          currentSurveyUserId: 0,
+          currentSurveyUser: {},
+          mapGetLoading: true,
+        }
+      }
     });
+
+    if (this.state.categoryChanged) {
+      Promise.all([
+        this.props.getKMapData(surveyUserId, userId),
+        this.props.getProjectMapData(surveyUserId, userId),
+        this.props.getStakeholderList(surveyUserId, surveyId),
+      ]).then(setTimeout(() => {
+        this.setState({
+          categoryChanged: false,
+          mapGetLoading: false,
+          viewMode: [...this.state.viewMode],
+        })
+      }, 1000))
+    }
   };
 
   handleSubmitSurvey = (e, answerData, isRefresh = true) => {
@@ -901,7 +925,7 @@ class MyMap extends React.Component {
     }
 
     this.setState(state => {
-      if (!isRefresh) {
+      if (!state.categoryChanged) {
         return {
           aoSurveySubmitLoading: true,
         }
@@ -943,8 +967,6 @@ class MyMap extends React.Component {
             currentSurveyUserId: 0,
             currentSurveyUser: {},
             toggleGraph: true,
-            mapGetLoading: false,
-            viewMode: [...state.viewMode],
             aoSurveySubmitLoading: false,
           }
         } else {
@@ -1019,6 +1041,13 @@ class MyMap extends React.Component {
   };
 
   handleSaveGraph = (e, isRefresh = true) => {
+    if (this.state.categoryChanged) {
+      this.setState({
+        categoryChanged: false,
+        mapGetLoading: false,
+        viewMode: [...this.state.viewMode],
+      })
+    }
     // const { userId, projectId, surveyUserId } = this.props;
     // const { mapStyle } = this.state;
 
@@ -1107,6 +1136,13 @@ class MyMap extends React.Component {
       mapStyle,
     });
   };
+
+  handleCategoryChanged = () => {
+    console.log('categoryChagned')
+    this.setState({
+      categoryChanged: true,
+    })
+  }
 
   render() {
     const {
@@ -1279,6 +1315,7 @@ class MyMap extends React.Component {
                   this.handleAddStackholderToGraph(data, e);
                 }}
               >
+                {mapGetLoading && (<div class="loading"></div>)}
                 {userList.length > 0 &&
                   teamList.length > 0 &&
                   shCategoryList.length > 0 &&
@@ -1305,6 +1342,7 @@ class MyMap extends React.Component {
                   this.handleAddStackholderToProjectGraph(data, e);
                 }}
               >
+                {mapGetLoading && (<div class="loading"></div>)}
                 {userList.length > 0 &&
                   teamList.length > 0 &&
                   projectMapShCategoryList.length > 0 &&
@@ -1372,6 +1410,7 @@ class MyMap extends React.Component {
                     projectMapCategory={projectMapShCategoryList}
                     skipQuestionList={skipQuestionList}
                     currentSurveyUserId={currentSurveyUserId}
+                    shCategoryChanged={this.handleCategoryChanged}
                     lastAddedShCategory={lastAddedShCategory}
                     allStakeholders={stakeholderList}
                     onSubmit={(e, answerData, isRefresh = true) =>
