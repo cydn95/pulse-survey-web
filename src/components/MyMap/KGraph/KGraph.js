@@ -37,7 +37,7 @@ export default class KGraph extends Component {
   }
 
   async componentWillReceiveProps(props) {
-    // await this.keyLinesController.updatedNode(props.apList, props.esList, props.categoryChanged, props.viewMode)
+    await this.keyLinesController.updatedNode(props.apList, props.esList, props.categoryChanged, props.viewMode)
   }
 
   /**
