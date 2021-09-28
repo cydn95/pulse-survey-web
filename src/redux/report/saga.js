@@ -380,76 +380,76 @@ function* getParticipation({ payload }) {
         // User Count
         if (result.data[i].shType.shTypeName === "Team Member") {
           teamUserCount++;
-          const totalAnswered = Number(result.data[i].am_answered);
-          const totalQuestion = Number(result.data[i].am_total);
-          if (totalAnswered == 0) {
-            teamParticipationRet.notIssued += 1;
-          } else {
-            if (totalAnswered <= Math.floor(totalQuestion * (Number(thresholdPercentage) / 100))) {
-              teamParticipationRet.awaiting += 1;
-            } else {
-              teamParticipationRet.completed += 1;
-            }
-          }
+          // const totalAnswered = Number(result.data[i].am_answered);
+          // const totalQuestion = Number(result.data[i].am_total);
+          // if (totalAnswered == 0) {
+          //   teamParticipationRet.notIssued += 1;
+          // } else {
+          //   if (totalAnswered <= Math.floor(totalQuestion * (Number(thresholdPercentage) / 100))) {
+          //     teamParticipationRet.awaiting += 1;
+          //   } else {
+          //     teamParticipationRet.completed += 1;
+          //   }
+          // }
         }
         if (result.data[i].shType.shTypeName === "Stakeholder") {
           allUserCount++;
-          const totalAnswered = Number(result.data[i].ao_answered);
-          const totalQuestion = Number(result.data[i].ao_total);
-          if (totalAnswered < totalQuestion) {
-            participationRet.awaiting += 1;
-          } else {
-            participationRet.completed += 1;
-          }
+          // const totalAnswered = Number(result.data[i].ao_answered);
+          // const totalQuestion = Number(result.data[i].ao_total);
+          // if (totalAnswered < totalQuestion) {
+          //   participationRet.awaiting += 1;
+          // } else {
+          //   participationRet.completed += 1;
+          // }
         }
 
-        //   if (
-        //     result.data[i].sendInvite === null ||
-        //     result.data[i].sendInvite === false
-        //   ) {
-        //     if (result.data[i].shType.shTypeName === "Team Member") {
-        //       teamParticipationRet.notIssued += 1;
-        //     }
+        if (
+          result.data[i].sendInvite === null ||
+          result.data[i].sendInvite === false
+        ) {
+          if (result.data[i].shType.shTypeName === "Team Member") {
+            teamParticipationRet.notIssued += 1;
+          }
 
-        //     if (result.data[i].shType.shTypeName === "Stakeholder") {
-        //       participationRet.notIssued += 1;
-        //     }
+          if (result.data[i].shType.shTypeName === "Stakeholder") {
+            participationRet.notIssued += 1;
+          }
 
-        //     continue;
+          continue;
+        }
+
+        // if (result.data[i].accept_status === false) {
+
+        //   if (result.data[i].shType.shTypeName === "Team Member") {
+        //     teamParticipationRet.rejected += 1;
         //   }
 
-        //   // if (result.data[i].accept_status === false) {
-
-        //   //   if (result.data[i].shType.shTypeName === "Team Member") {
-        //   //     teamParticipationRet.rejected += 1;
-        //   //   }
-
-        //   //   if (result.data[i].shType.shTypeName === "Stakeholder") {
-        //   //     participationRet.rejected += 1;
-        //   //   }
-
-        //   //   continue;
-        //   // }
-
-        //   const totalAnswered = Number(result.data[i].am_answered);
-        //   const totalQuestion = Number(result.data[i].am_total);
-        //   if (totalAnswered >= Math.floor(totalQuestion * (Number(thresholdPercentage) / 100))) {
-        //     if (result.data[i].shType.shTypeName === "Team Member") {
-        //       teamParticipationRet.completed += 1;
-        //     }
-
-        //     if (result.data[i].shType.shTypeName === "Stakeholder") {
-        //       participationRet.completed += 1;
-        //     }
-        //   } else {
-        //     if (result.data[i].shType.shTypeName === "Team Member") {
-        //       teamParticipationRet.awaiting += 1;
-        //     }
-
-        //     if (result.data[i].shType.shTypeName === "Stakeholder") {
-        //       participationRet.awaiting += 1;
-        //     }
+        //   if (result.data[i].shType.shTypeName === "Stakeholder") {
+        //     participationRet.rejected += 1;
         //   }
+
+        //   continue;
+        // }
+
+        const totalAnswered = Number(result.data[i].am_answered);
+        const totalQuestion = Number(result.data[i].am_total);
+        if (totalAnswered >= Math.floor(totalQuestion * (Number(thresholdPercentage) / 100))) {
+          if (result.data[i].shType.shTypeName === "Team Member") {
+            teamParticipationRet.completed += 1;
+          }
+
+          if (result.data[i].shType.shTypeName === "Stakeholder") {
+            participationRet.completed += 1;
+          }
+        } else {
+          if (result.data[i].shType.shTypeName === "Team Member") {
+            teamParticipationRet.awaiting += 1;
+          }
+
+          if (result.data[i].shType.shTypeName === "Stakeholder") {
+            participationRet.awaiting += 1;
+          }
+        }
       }
 
       const filteredParticipationRet = [];
@@ -1018,8 +1018,11 @@ function* checkDashboard({ payload }) {
     const { surveyId, projectUserId, callback } = payload;
 
     const result = yield call(checkDashboardAsync, surveyId, projectUserId);
-
-    callback(result.data);
+    if (result.data) {
+      callback(result.data);
+    } else {
+      callback({ code: 404 })
+    }
   } catch (error) { }
 }
 
