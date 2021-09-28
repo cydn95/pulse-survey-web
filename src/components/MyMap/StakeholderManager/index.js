@@ -30,7 +30,8 @@ const StakeholderManager = ({
   updateStakeholder,
   myMapES,
   projectMapES,
-  handleUpdateStakeholder
+  handleUpdateStakeholder,
+  refresh
 }) => {
   const [myCategoryList, setMyCategoryList] = useState([]);
   const [projectCategoryList, setProjectCategoryList] = useState([]);
@@ -38,6 +39,10 @@ const StakeholderManager = ({
   const [filterView, setFilterView] = useState(false);
   const [search, setSearch] = useState('');
   const [subView, setSubView] = useState('search');
+
+  useEffect(() => {
+    setView('manage')
+  }, [refresh])
 
   useEffect(() => {
     const tempMyCategoryList = [];
