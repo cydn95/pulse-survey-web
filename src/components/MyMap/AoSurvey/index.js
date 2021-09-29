@@ -466,7 +466,7 @@ class AoSurvey extends React.Component {
             </React.Fragment>
           )}
         </div>
-        <div style={{ position: 'relative' }} className={styles.questions}>
+        <div style={{ position: 'relative', pointerEvents: submitLoading ? 'none' : 'all' }} className={styles.questions}>
           {submitLoading && <div style={{ position: 'absolute', zIndex: '100', background: 'rgba(0,0,0,0.5)', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Calculating...</div>}
           {driver.questions.map((control, index) => {
             const answer = answers.filter(

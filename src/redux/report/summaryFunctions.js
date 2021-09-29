@@ -52,6 +52,7 @@ export const getCultureResult = (resData) => {
 
 export const getOverallTrends = (resData, shGroupList) => {
   // console.log(shGroupList);
+  console.log('resData', resData)
 
   const overallTrendsRet = {};
   const currentYear = getCurrentYear();
@@ -81,6 +82,9 @@ export const getOverallTrends = (resData, shGroupList) => {
   for (let i = 0; i < resData.length; i++) {
     const question = resData[i];
     const intValue = question.integerValue;
+    if (!question.latestResponse) {
+      continue;
+    }
 
     const questionData = question.amQuestionData;
 
