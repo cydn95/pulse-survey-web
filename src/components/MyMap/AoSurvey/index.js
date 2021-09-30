@@ -407,7 +407,8 @@ class AoSurvey extends React.Component {
     }
 
     return (
-      <div className={styles.root}>
+      <div style={{ position: 'relative' }} className={styles.root}>
+        {submitLoading && <div style={{ position: 'absolute', zIndex: '100', background: 'rgba(0,0,0,0.5)', width: 'calc(100% - 29px)', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Calculating...</div>}
         <div className={styles.user}>
           <div className={styles.title}>
             <span>About Others:</span>
@@ -466,8 +467,7 @@ class AoSurvey extends React.Component {
             </React.Fragment>
           )}
         </div>
-        <div style={{ position: 'relative', pointerEvents: submitLoading ? 'none' : 'all' }} className={styles.questions}>
-          {submitLoading && <div style={{ position: 'absolute', zIndex: '100', background: 'rgba(0,0,0,0.5)', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Calculating...</div>}
+        <div className={styles.questions}>
           {driver.questions.map((control, index) => {
             const answer = answers.filter(
               (answer) =>
