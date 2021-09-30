@@ -88,21 +88,48 @@ class BaseController {
     //     });
     //   }
     // });
-    esList.individuals.map(item => {
-      let percentage = Math.abs(parseFloat(item.survey_completion).toFixed(2));
-      const segmentColor = getColorFromValue(item.survey_sentiment / 10);
-      props.push({
-        id: item.id,
-        donut: {
-          v: [percentage, 100 - percentage],
-          c: [segmentColor, "#c0c0c0"],
-          b: "#3b4f81",
-          w: 5,
-          bw: 0,
-        },
-      });
-    })
-    await this.chart.setProperties(props);
+    console.log('chart', this.chart)
+    this.chart.each({
+      type: "node",
+      items: "underlying"
+    }, (item) => {
+      console.log('hi', item)
+      // if (item.d.survey_completion) {
+      //   let percentage = Math.abs(parseFloat(item.d.survey_completion).toFixed(2));
+
+      //   // let segment = Math.abs(percentage - 50) * 2;
+      //   // let segmentColor = percentage <= 50 ? "#ff5500" : "#1f45b8";
+      //   // let segmentColor = "#5194c5";
+      //   const segmentColor = getColorFromValue(item.d.survey_sentiment / 10);
+      //   props.push({
+      //     id: item.id,
+      //     donut: {
+      //       v: [percentage, 100 - percentage],
+      //       c: [segmentColor, "#c0c0c0"],
+      //       b: "#3b4f81",
+      //       w: 5,
+      //       bw: 0,
+      //     },
+      //   });
+      // }
+    });
+    if (this.chart !== undefined) {
+      esList.individuals.map(item => {
+        let percentage = Math.abs(parseFloat(item.survey_completion).toFixed(2));
+        const segmentColor = getColorFromValue(item.survey_sentiment / 10);
+        props.push({
+          id: item.id,
+          donut: {
+            v: [percentage, 100 - percentage],
+            c: [segmentColor, "#c0c0c0"],
+            b: "#3b4f81",
+            w: 5,
+            bw: 0,
+          },
+        });
+      })
+      await this.chart.setProperties(props);
+    }
   }
 
   enableLayoutOptions = () => {
@@ -352,6 +379,14 @@ class BaseController {
       await this.createNode(data, mouseViewCoords);
     }
     this.chart.selection([]);
+    const items = []
+    this.chart.each({
+      type: "node",
+      items: "underlying"
+    }, (item) => {
+      items.push(item)
+    })
+    this.setContainerState({ items: items })
   };
 
   expandChart = async (clickedId) => {

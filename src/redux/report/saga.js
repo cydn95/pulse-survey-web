@@ -498,6 +498,8 @@ function* getDriverAnalysisCnt({ payload }) {
       endDate
     );
 
+    console.log('result', result.data)
+
     callback(result.data);
   } catch (error) { }
 }

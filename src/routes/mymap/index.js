@@ -91,6 +91,7 @@ class MyMap extends React.Component {
 
       aoSurveySubmitLoading: false,
       refreshStakeholderManager: false,
+      items: [],
     };
 
     this.defaultStakeholder = {
@@ -1374,6 +1375,7 @@ class MyMap extends React.Component {
                   mapGetLoading === false &&
                   !refreshKMap && (
                     <KGraphContainer
+                      items={this.state.items}
                       setParentState={this.setState.bind(this)}
                       apList={apList}
                       esList={esList}
