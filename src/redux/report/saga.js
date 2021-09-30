@@ -609,6 +609,9 @@ function* getEngagementTrend({ payload }) {
         participationData.data.map(ptc => {
           if ((ptc.shGroup.SHGroupName === sh.SHGroupName) && ptc.sendInvite && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
             engagementRet["Response Rate"][idx].stakeholders.push(ptc.id)
+            if (!answered.includes(ptc.id)) {
+              answered.push(ptc.id);
+            }
           }
           return ptc;
         })
@@ -688,7 +691,13 @@ function* getEngagementTrend({ payload }) {
         participationData.data.map(ptc => {
           if ((ptc.shGroup.SHGroupName === sh.SHGroupName) && ptc.sendInvite && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
             // engagementRet["Response Rate"][idx].stakeholders.push(ptc.id)
-            engagementRet["Response Rate"].forEach((d, i) => { if (d.key === ptc.team.name) engagementRet["Response Rate"][i].stakeholders.push(ptc.id) })
+            engagementRet["Response Rate"].forEach((d, i) => {
+              if (d.key === ptc.team.name)
+                engagementRet["Response Rate"][i].stakeholders.push(ptc.id)
+              if (!answered.includes(ptc.id)) {
+                answered.push(ptc.id);
+              }
+            })
           }
           return ptc;
         })
@@ -760,8 +769,15 @@ function* getEngagementTrend({ payload }) {
         participationData.data.map(ptc => {
           if ((ptc.shGroup.SHGroupName === sh.SHGroupName) && ptc.sendInvite && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
             // engagementRet["Response Rate"][idx].stakeholders.push(ptc.id)
-            engagementRet["Response Rate"].forEach((d, i) => { if (d.key === ptc.projectOrganization) engagementRet["Response Rate"][i].stakeholders.push(ptc.id) })
+            engagementRet["Response Rate"].forEach((d, i) => {
+              if (d.key === ptc.projectOrganization)
+                engagementRet["Response Rate"][i].stakeholders.push(ptc.id)
+              if (!answered.includes(ptc.id)) {
+                answered.push(ptc.id);
+              }
+            })
           }
+
           return ptc;
         })
         return sh;

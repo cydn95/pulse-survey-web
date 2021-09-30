@@ -27,10 +27,12 @@ const drivers = [
   "Engagement",
   "Culture",
   "Sentiment",
+  "Influence",
   "Interest",
   "Confidence",
   "Relationships",
   "Improvement",
+  "About Others"
 ];
 
 const ReportDriverAnalysis = ({

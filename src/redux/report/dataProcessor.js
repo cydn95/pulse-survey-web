@@ -7,7 +7,7 @@ const MONTH = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "O
 const compare = (a, b) => {
   if (a.created_at > b.created_at) {
     return 1;
-  } 
+  }
 
   if (a.created_at < b.created_at) {
     return -1;
@@ -29,6 +29,8 @@ export const getResultForSHGroup = (shGroupList, result) => {
     let questionData = [];
     if ("amQuestionData" in data) {
       questionData = data.amQuestionData;
+    } else {
+      questionData = data.aoQuestionData;
     }
     // if ("aoQuestionData" in data) {
     //   questionData = data.aoQuestionData;
@@ -80,11 +82,13 @@ export const getResultForSHGroup = (shGroupList, result) => {
         let questionData = [];
         if ("amQuestionData" in data) {
           questionData = data.amQuestionData;
+        } else {
+          questionData = data.aoQuestionData;
         }
         // if ("aoQuestionData" in data) {
         //   questionData = data.aoQuestionData;
         // }
-        
+
         questionData.forEach((aq) => {
           // if (
           //   aq.shGroup.includes(currentShGroup.id) &&
@@ -103,7 +107,7 @@ export const getResultForSHGroup = (shGroupList, result) => {
             if (question === "") {
               question = aq.questionText;
             }
-            
+
             if (dateKey in trend) {
               trend[dateKey].push(data.integerValue);
             } else {
@@ -145,6 +149,8 @@ export const getResultForTeam = (teamList, result) => {
     let questionData = [];
     if ("amQuestionData" in data) {
       questionData = data.amQuestionData;
+    } else {
+      questionData = data.aoQuestionData;
     }
     // if ("aoQuestionData" in data) {
     //   questionData = data.aoQuestionData;
@@ -192,6 +198,8 @@ export const getResultForTeam = (teamList, result) => {
         let questionData = [];
         if ("amQuestionData" in data) {
           questionData = data.amQuestionData;
+        } else {
+          questionData = data.aoQuestionData;
         }
         // if ("aoQuestionData" in data) {
         //   questionData = data.aoQuestionData;
@@ -255,6 +263,8 @@ export const getResultForOrganization = (organizationList, result) => {
     let questionData = [];
     if ("amQuestionData" in data) {
       questionData = data.amQuestionData;
+    } else {
+      questionData = data.aoQuestionData;
     }
     // if ("aoQuestionData" in data) {
     //   questionData = data.aoQuestionData;
@@ -280,7 +290,7 @@ export const getResultForOrganization = (organizationList, result) => {
       let question = "";
 
       for (let k = 0; k < resultData.length; k++) {
-      
+
         const data = resultData[k];
 
         if (!("subProjectUser" in data)) {
@@ -302,6 +312,8 @@ export const getResultForOrganization = (organizationList, result) => {
         let questionData = [];
         if ("amQuestionData" in data) {
           questionData = data.amQuestionData;
+        } else {
+          questionData = data.aoQuestionData;
         }
         // if ("aoQuestionData" in data) {
         //   questionData = data.aoQuestionData;
