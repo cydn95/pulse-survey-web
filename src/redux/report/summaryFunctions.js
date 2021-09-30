@@ -50,9 +50,9 @@ export const getCultureResult = (resData) => {
   return filteredCulture;
 };
 
-export const getOverallTrends = (resData, shGroupList) => {
+export const getOverallTrends = (resData, shGroupList, projectId) => {
   // console.log(shGroupList);
-  console.log('resData', resData)
+  // console.log('resData', resData)
 
   const overallTrendsRet = {};
   const currentYear = getCurrentYear();
@@ -84,6 +84,10 @@ export const getOverallTrends = (resData, shGroupList) => {
     const intValue = question.integerValue;
     if (!question.latestResponse) {
       continue;
+    }
+
+    if (question.project.toString() !== projectId.toString()) {
+      continue
     }
 
     const questionData = question.amQuestionData;

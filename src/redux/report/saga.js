@@ -289,8 +289,7 @@ function* getTopPositiveNegative({ payload }) {
 
 function* getFeedbackSummary({ payload }) {
   try {
-    const { surveyId, subProjectUser, graphType, callback } = payload;
-
+    const { projectId, surveyId, subProjectUser, graphType, callback } = payload;
     const result = yield call(
       getFeedbackSummaryAsync,
       surveyId,
@@ -312,7 +311,8 @@ function* getFeedbackSummary({ payload }) {
 
       const overallTrendData = getOverallTrends(
         resultOverallTrends.data,
-        shGroupList
+        shGroupList,
+        projectId,
       );
       const filteredOverallTrend = overallTrendData.data;
       const filteredOverallTrendShGroupList = overallTrendData.key;
@@ -358,8 +358,8 @@ function* getParticipation({ payload }) {
         completed: 0,
       };
 
-      console.log(shGroupList)
-      console.log(result.data)
+      // console.log(shGroupList)
+      // console.log(result.data)
 
       let allUserCount = 0;
       let teamUserCount = 0;
