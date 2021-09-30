@@ -36,6 +36,7 @@ const FILTER_ORGANIZATION = "Organization";
 
 const ReportSummary = ({
   projectTitle,
+  projectId,
   surveyId,
   surveyUserId,
   actionOverallSentiment,
@@ -149,6 +150,7 @@ const ReportSummary = ({
   useEffect(() => {
     setFeedbackSummaryLoading(true);
     actionFeedbackSummary(
+      projectId,
       surveyId,
       surveyUserId,
       FILTER_SHGROUP,
@@ -265,10 +267,10 @@ const ReportSummary = ({
                   : 0;
 
                 let text = `${sentimentResult[index]
-                    ? sentimentResult[index][0].count % 10 === 0
-                      ? sentimentResult[index][0].count / 10
-                      : (sentimentResult[index][0].count / 10).toFixed(1)
-                    : ""
+                  ? sentimentResult[index][0].count % 10 === 0
+                    ? sentimentResult[index][0].count / 10
+                    : (sentimentResult[index][0].count / 10).toFixed(1)
+                  : ""
                   }`;
 
                 if (item === "Overall Sentiment") {
@@ -442,10 +444,11 @@ const ReportSummary = ({
 };
 
 const mapStateToProps = ({ authUser }) => {
-  const { projectTitle, surveyId, surveyUserId } = authUser;
+  const { projectTitle, projectId, surveyId, surveyUserId } = authUser;
 
   return {
     projectTitle,
+    projectId,
     surveyId,
     surveyUserId,
   };
