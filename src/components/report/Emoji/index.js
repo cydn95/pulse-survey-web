@@ -38,7 +38,7 @@ const Emoji = ({ satisfaction }) => {
   return (
     <div className={styles["emoji-root"]} style={rootStyle}>
       {satisfaction !== -1 && (
-        <div className={styles.percentage}>{satisfaction / 10}</div>
+        <div className={styles.percentage}>{(satisfaction / 10).toFixed(1)}</div>
       )}
     </div>
   );

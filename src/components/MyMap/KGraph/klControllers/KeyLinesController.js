@@ -39,11 +39,11 @@ class BaseController {
     this.clickNodeListener = clickNodeListener;
   }
 
-  updatedNode = async (apList, esList, categoryChanged, viewMode) => {
-    // console.log('apList', apList)
-    // console.log('esList', esList)
+  updatedNode = async (apList, esList, categoryChanged, viewMode, myMapProjectUserList, projectMapProjectUserList) => {
+    // console.log('myMapProjectUserList', myMapProjectUserList)
+    // console.log('projectMapProjectUserList', projectMapProjectUserList)
     // console.log('categoryChanged', categoryChanged)
-    this.dataStore = new DataStore(apList, esList);
+    // this.dataStore = new DataStore(apList, esList);
     let props = [];
     // if (categoryChanged) {
     //   let {
@@ -88,7 +88,7 @@ class BaseController {
     //     });
     //   }
     // });
-    console.log('chart', this.chart)
+    // console.log('chart', this.chart)
     this.chart.each({
       type: "node",
       items: "underlying"
@@ -292,10 +292,14 @@ class BaseController {
           animate = true;
         }
 
+        node.individuals[0].id = node.individuals[0].id.split('_').map((d, i) => i === 2 ? currentOverElement.id : d).join('_')
+
         node.individuals[0].sh_category = {
           current: currentOverElement.id,
           changeable: false,
         };
+
+        console.log('node', node)
 
         let {
           newItems,
@@ -578,16 +582,7 @@ class BaseController {
 
     }
 
-    if (this.chart.combo().isCombo(id)) {
-      let elems = this.chart.combo().info(id);
-      if (
-        elems.nodes.length === 1 &&
-        !elems.nodes[0].d.icon &&
-        !elems.nodes[0].d.name
-      ) {
-        return true;
-      }
-    }
+    //  
   };
 
   handleClick = (id) => {
