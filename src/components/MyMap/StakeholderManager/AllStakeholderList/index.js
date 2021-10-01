@@ -49,16 +49,15 @@ class AllStakeholderList extends Component {
           : stakeholder.projectUserTitle,
     });
 
-    this.props.onUpdateSubView("category"); 
+    this.props.onUpdateSubView("category");
   };
 
   handleUpdateStakeholder = (stakeholder) => {
     const { projectId, surveyId, onUpdateStakeholder } = this.props;
-    onUpdateStakeholder(projectId, surveyId, stakeholder);
-    // this.setState({
-    //   viewType: "search",
-    // });
-    // this.props.onUpdateSubView("search");
+    this.setState({
+      viewType: "search",
+    });
+    this.props.onUpdateSubView("search");
   };
 
   render() {

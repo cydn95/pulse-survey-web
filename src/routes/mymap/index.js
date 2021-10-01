@@ -84,6 +84,7 @@ class MyMap extends React.Component {
 
       myMapStakeholderList: [],
       projectMapStakeholderList: [],
+      aoQuestionList: [],
 
       lastAddedShCategory: null,
 
@@ -596,6 +597,7 @@ class MyMap extends React.Component {
       }
 
       this.setState({
+        aoQuestionList,
         stakeholderList,
         decisionMakerList,
         teamList,
@@ -860,11 +862,31 @@ class MyMap extends React.Component {
       }
     }
 
+    const updatedTemp = this.state.aoQuestionList.map(ao => {
+      let response = ao.response.map((resp, idx) => {
+        let temp = answerData.filter(q => q.amQuestion === resp.aoQuestion && q.subjectUser === resp.subProjectUser)
+        if (temp.length === 0) {
+          return resp
+        }
+        return {
+          ...resp,
+          integerValue: temp[0].integerValue,
+          topicValue: temp[0].topicValue,
+          commentValue: temp[0].commentValue,
+          skipValue: temp[0].skipValue,
+          topicTags: temp[0].topicValue,
+          commentTags: temp[0].commentTags,
+        }
+      })
+      return { ...ao, response }
+    })
+
     this.setState({
-      aoSurveySubmitLoading: true
+      aoSurveySubmitLoading: true,
+      aoQuestionList: updatedTemp,
     });
-    // console.log('aoquestion', this.props.aoQuestionList)
-    // console.log('answerData', answerData)
+    console.log('aoquestion', this.props.aoQuestionList)
+    console.log('answerData', answerData)
     this.props.submitAoQuestion(
       answerData,
       this.state.currentSurveyUser,
@@ -1036,7 +1058,6 @@ class MyMap extends React.Component {
   render() {
     const {
       projectTitle,
-      aoQuestionList,
       optionList,
       driverList,
       skipQuestionList,
@@ -1044,6 +1065,7 @@ class MyMap extends React.Component {
     } = this.props;
 
     const {
+      aoQuestionList,
       enableLayout,
       viewDropDownOpen,
       layoutDropDownOpen,

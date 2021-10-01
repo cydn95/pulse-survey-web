@@ -304,7 +304,6 @@ const StakeholderManager = ({
               onUpdateStakeholder={(projectId, surveyId, stakeholder) =>
                 updateStakeholder(projectId, surveyId, stakeholder, () => {
                   setView('manage')
-                  handleUpdateStakeholder()
                 })
               }
               onUpdateSubView={(subView) => setSubView(subView)}
