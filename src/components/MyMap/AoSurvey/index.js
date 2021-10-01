@@ -29,7 +29,6 @@ import { getColorFromValue } from "Util/Utils";
 import styles from "./styles.scss";
 
 import { selectPage, stakeholderAnswer, stakeholderList } from "Redux/actions";
-import StakeholderUpdateModal from "../StakeholderUpdateModal";
 import StakeholderUpdatePanel from "../StakeholderUpdatePanel";
 
 class AoSurvey extends React.Component {
@@ -407,8 +406,7 @@ class AoSurvey extends React.Component {
     }
 
     return (
-      <div style={{ position: 'relative' }} className={styles.root}>
-        {submitLoading && <div style={{ position: 'absolute', zIndex: '100', background: 'rgba(0,0,0,0.5)', width: 'calc(100% - 29px)', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Calculating...</div>}
+      <div className={styles.root}>
         <div className={styles.user}>
           <div className={styles.title}>
             <span>About Others:</span>

@@ -75,8 +75,6 @@ class MyMap extends React.Component {
       projectMapShCategoryList: [],
       decisionMakerList: [],
       mapSaveLoading: false,
-      refreshKMap: false,
-      categoryChanged: false,
       mapGetLoading: false,
 
       toggleGraph: true,
@@ -89,9 +87,7 @@ class MyMap extends React.Component {
 
       lastAddedShCategory: null,
 
-      aoSurveySubmitLoading: false,
-      refreshStakeholderManager: false,
-      items: [],
+      aoSurveySubmitLoading: false
     };
 
     this.defaultStakeholder = {
@@ -315,27 +311,20 @@ class MyMap extends React.Component {
           }
         }
 
-        // console.log('mapUserList', mapUserList)
-        // console.log('myMapProjectUserList', this.myMapProjectUserList)
-
         mapUserList.forEach((mapUser) => {
           let bExist = false;
-          if (!this.state.categoryChanged) {
-            for (let i = 0; i < this.myMapProjectUserList.length; i++) {
-              if (
-                this.myMapProjectUserList[i].projectUserId ===
-                mapUser.projectUserId &&
-                this.myMapProjectUserList[i].shCategory === mapUser.shCategory
-              ) {
-                bExist = true;
-                break;
-              }
+          for (let i = 0; i < this.myMapProjectUserList.length; i++) {
+            if (
+              this.myMapProjectUserList[i].projectUserId ===
+              mapUser.projectUserId &&
+              this.myMapProjectUserList[i].shCategory === mapUser.shCategory
+            ) {
+              bExist = true;
+              break;
             }
-            if (!bExist) {
-              this.myMapProjectUserList.push(mapUser);
-            }
-          } else {
-            this.myMapProjectUserList = [...mapUserList];
+          }
+          if (!bExist) {
+            this.myMapProjectUserList.push(mapUser);
           }
 
           // console.log("---------------------");
@@ -456,23 +445,19 @@ class MyMap extends React.Component {
 
         mapUserList.forEach((mapUser) => {
           let bExist = false;
-          if (!this.state.categoryChanged) {
-            for (let i = 0; i < this.projectMapProjectUserList.length; i++) {
-              if (
-                this.projectMapProjectUserList[i].projectUserId ===
-                mapUser.projectUserId &&
-                this.projectMapProjectUserList[i].shCategory ===
-                mapUser.shCategory
-              ) {
-                bExist = true;
-                break;
-              }
+          for (let i = 0; i < this.projectMapProjectUserList.length; i++) {
+            if (
+              this.projectMapProjectUserList[i].projectUserId ===
+              mapUser.projectUserId &&
+              this.projectMapProjectUserList[i].shCategory ===
+              mapUser.shCategory
+            ) {
+              bExist = true;
+              break;
             }
-            if (!bExist) {
-              this.projectMapProjectUserList.push(mapUser);
-            }
-          } else {
-            this.projectMapProjectUserList = [...mapUserList]
+          }
+          if (!bExist) {
+            this.projectMapProjectUserList.push(mapUser);
           }
 
           let individualUser = {
@@ -610,36 +595,22 @@ class MyMap extends React.Component {
         }
       }
 
-      this.setState((state) => {
-        if (state.toggleGraph) {
-          return {
-            stakeholderList,
-            decisionMakerList,
-            teamList,
-            userList,
-            shCategoryList,
-            projectMapShCategoryList,
-            apList: architecture,
-            esList: individual,
-            projectApList: projectMapArchitecture,
-            projectEsList: projectMapIndividual,
-            screen: "list",
-            mapSaveLoading,
-            mapGetLoading,
-            myMapStakeholderList,
-            projectMapStakeholderList,
-          }
-        } else {
-          return {
-            stakeholderList,
-            esList: individual,
-            apList: architecture,
-            projectEsList: projectMapIndividual,
-            projectApList: projectMapArchitecture,
-            myMapStakeholderList,
-            projectMapStakeholderList,
-          }
-        }
+      this.setState({
+        stakeholderList,
+        decisionMakerList,
+        teamList,
+        userList,
+        shCategoryList,
+        projectMapShCategoryList,
+        apList: architecture,
+        esList: individual,
+        projectApList: projectMapArchitecture,
+        projectEsList: projectMapIndividual,
+        screen: "list",
+        mapSaveLoading,
+        mapGetLoading,
+        myMapStakeholderList,
+        projectMapStakeholderList,
       });
     }
   }
@@ -656,7 +627,6 @@ class MyMap extends React.Component {
 
   callbackAddNewStakeholder = (code) => {
     console.log('code', code);
-    const { userId, surveyId, surveyUserId, projectId, history, driverList } = this.props;
     if (code === 400) {
       NotificationManager.error(
         "Stakeholder is already existed",
@@ -664,13 +634,7 @@ class MyMap extends React.Component {
         2000
       );
     } else {
-      this.props.getKMapData(surveyUserId, userId);
-      this.props.getProjectMapData(surveyUserId, userId);
-      // this.props.getShCategoryList(surveyId, 0);
-      this.props.getStakeholderList(surveyUserId, surveyId);
-      // this.props.getTeamList(projectId);
-      this.props.getAoQuestionList(surveyUserId, surveyId);
-      // this.props.getSkipQuestionList();
+      window.location.reload(false);
     }
   };
 
@@ -680,8 +644,6 @@ class MyMap extends React.Component {
     let projectUser = stakeholderList.filter((e) => {
       return parseInt(e.projectUserId, 10) === parseInt(projectUserId, 10);
     });
-
-
 
     if (projectUser.length === 0) return;
 
@@ -776,36 +738,6 @@ class MyMap extends React.Component {
     });
   };
 
-  handleUpdateStakeholder = () => {
-    const { userId, surveyId, surveyUserId, projectId, history, driverList } = this.props;
-    // this.props.getAoQuestionList(surveyUserId, surveyId);
-    this.setState({
-      refreshKMap: true,
-    })
-    Promise.all([
-      this.props.getKMapData(surveyUserId, userId),
-      this.props.getAoQuestionList(surveyUserId, surveyId),
-      this.props.getProjectMapData(surveyUserId, userId),
-      this.props.getShCategoryList(surveyId, 0),
-      this.props.getStakeholderList(surveyUserId, surveyId),
-      this.props.getTeamList(projectId),
-      this.props.getAoQuestionList(surveyUserId, surveyId),
-      this.props.getDriverList(surveyId),
-      this.props.getSkipQuestionList(),
-      this.handleCategoryChanged({ myMap: null })
-    ]).then(setTimeout(() => {
-      this.setState(state => {
-        if (state.categoryChanged) {
-          return {
-            categoryChanged: false,
-            refreshKMap: false,
-            viewMode: [...this.state.viewMode],
-          }
-        }
-      })
-    }, 2000))
-  }
-
   handleAddStackholderToProjectGraph = (data, e = {}) => {
     const projectUserId = data.stakeholder;
     const { stakeholderList } = this.state;
@@ -866,7 +798,6 @@ class MyMap extends React.Component {
 
     this.setState({ newStakeholder: newElem }, () => {
       if (!newElem.individuals[0].sh_category) return;
-      console.log('newelem', newElem)
       const newProjectUserId = projectUser.projectUserId;
       const newShCategory = newElem.individuals[0].sh_category.current.split(
         "_"
@@ -902,55 +833,22 @@ class MyMap extends React.Component {
           break;
         }
       }
-      // this.props.getKMapData(surveyUserId, userId);
-      // this.props.getProjectMapData(surveyUserId, userId);
-      // this.props.getShCategoryList(surveyId, 0);
-      // this.props.getStakeholderList(surveyUserId, surveyId);
-      // this.props.getTeamList(projectId);
-      // this.props.getAoQuestionList(user, id);
-      // this.props.getSkipQuestionList();
 
       this.setState((state) => ({
         screen: "aosurvey",
         toggleGraph: false,
         currentSurveyUserId: id,
         currentSurveyUser: user,
-      }))
+      }));
     }
   };
 
   handleCancelSurvey = (e) => {
-    const { surveyUserId, surveyId, userId } = this.props;
-    this.setState(state => {
-      if (!state.categoryChanged) {
-        return {
-          screen: "list",
-          currentSurveyUserId: 0,
-          currentSurveyUser: {},
-        }
-      } else {
-        return {
-          screen: "list",
-          currentSurveyUserId: 0,
-          currentSurveyUser: {},
-          mapGetLoading: true,
-        }
-      }
+    this.setState({
+      screen: "list",
+      currentSurveyUserId: 0,
+      currentSurveyUser: {},
     });
-
-    if (this.state.categoryChanged) {
-      Promise.all([
-        this.props.getKMapData(surveyUserId, userId),
-        this.props.getProjectMapData(surveyUserId, userId),
-        this.props.getStakeholderList(surveyUserId, surveyId),
-      ]).then(setTimeout(() => {
-        this.setState({
-          categoryChanged: false,
-          mapGetLoading: false,
-          viewMode: [...this.state.viewMode],
-        })
-      }, 1000))
-    }
   };
 
   handleSubmitSurvey = (e, answerData, isRefresh = true) => {
@@ -962,17 +860,8 @@ class MyMap extends React.Component {
       }
     }
 
-    this.setState(state => {
-      if (!state.categoryChanged) {
-        return {
-          aoSurveySubmitLoading: true,
-        }
-      } else {
-        return {
-          mapGetLoading: true,
-          aoSurveySubmitLoading: true,
-        }
-      }
+    this.setState({
+      aoSurveySubmitLoading: true
     });
 
     this.props.submitAoQuestion(
@@ -985,50 +874,20 @@ class MyMap extends React.Component {
     );
   };
 
-  callbackSubmitSurvey = (isRefresh = true, success = true) => {
+  callbackSubmitSurvey = (isRefresh = true) => {
     // this.setState({
     //   screen: "list",
     //   currentSurveyUserId: 0,
     //   currentSurveyUser: {},
     // });
-    const { surveyId, surveyUserId, userId, user, projectId } = this.props;
-    Promise.all([
-      this.props.getAoQuestionList(surveyUserId, surveyId),
-      this.props.getKMapData(surveyUserId, userId),
-      this.props.getProjectMapData(surveyUserId, userId),
-      this.props.getStakeholderList(surveyUserId, surveyId),
-    ]).then(setTimeout(() => {
-      this.setState(state => {
-        if (isRefresh) {
-          return {
-            screen: "list",
-            currentSurveyUserId: 0,
-            currentSurveyUser: {},
-            toggleGraph: true,
-            aoSurveySubmitLoading: false,
-          }
-        } else {
-          return {
-            aoSurveySubmitLoading: false,
-          }
-        }
-      })
-      if (!success) {
-        NotificationManager.error("Response submit failed", "");
-        // this.handleSaveGraph(null, true);
-      }
-      if (isRefresh) {
-        NotificationManager.success("Response saved successfully", "");
-        if (this.state.categoryChanged) {
-          this.setState({
-            categoryChanged: false,
-            mapGetLoading: false,
-            viewMode: [...this.state.viewMode],
-          })
-        }
-      }
-    }, 2000));
 
+    this.setState({
+      aoSurveySubmitLoading: false
+    });
+    if (isRefresh) {
+      NotificationManager.success("Response saved successfully", "");
+      this.handleSaveGraph(null, isRefresh);
+    }
 
     // window.location.reload(false);
   };
@@ -1085,13 +944,6 @@ class MyMap extends React.Component {
   };
 
   handleSaveGraph = (e, isRefresh = true) => {
-    // if (this.state.categoryChanged) {
-    //   this.setState({
-    //     categoryChanged: false,
-    //     mapGetLoading: false,
-    //     viewMode: [...this.state.viewMode],
-    //   })
-    // }
     const { userId, projectId, surveyUserId } = this.props;
     const { mapStyle } = this.state;
 
@@ -1123,10 +975,6 @@ class MyMap extends React.Component {
 
     // console.log(newMapData); return;
 
-    this.setState({
-      refreshKMap: true
-    })
-
     if (mapStyle === "my-map") {
       this.props.saveKMapData(
         newMapData,
@@ -1142,28 +990,22 @@ class MyMap extends React.Component {
         isRefresh === true ? this.callbackSaveGraph : null
       );
     }
-    // window.location.reload(false);
   };
 
   callbackSaveGraph = () => {
-    // window.location.reload(false);
-    const { userId, surveyId, surveyUserId, projectId } = this.props;
+    window.location.reload(false);
+    // const { userId, surveyId, surveyUserId, projectId } = this.props;
 
-    this.props.getAoQuestionList(surveyUserId, surveyId);
-    this.props.getStakeholderList(surveyUserId, surveyId);
-    this.props.getShCategoryList(surveyId, 0);
-    this.props.getKMapData(surveyUserId, userId);
-    this.props.getProjectMapData(surveyUserId, userId);
-    this.props.getTeamList(projectId);
-    this.props.getDriverList(surveyId);
-    this.props.getSkipQuestionList();
-    this.setState({
-      screen: "list",
-      currentSurveyUserId: 0,
-      currentSurveyUser: {},
-      refreshStakeholderManager: !this.state.refreshStakeholderManager,
-    }, () => setTimeout(() => { this.setState({ refreshKMap: false }) }, 2000))
-    NotificationManager.success("Map has been saved successfully", "");
+    // this.props.getKMapData(surveyUserId, userId);
+    // this.props.getProjectMapData(surveyUserId, userId);
+    // this.props.getShCategoryList(surveyId, 0);
+    // this.props.getStakeholderList(surveyUserId, surveyId);
+    // this.props.getTeamList(projectId);
+    // this.props.getAoQuestionList(surveyUserId, surveyId);
+    // this.props.getDriverList(surveyId);
+    // this.props.getSkipQuestionList();
+
+    // NotificationManager.success("Map has been saved successfully", "");
   }
 
   toggleGraph = (e) => {
@@ -1189,12 +1031,6 @@ class MyMap extends React.Component {
       mapStyle,
     });
   };
-
-  handleCategoryChanged = () => {
-    this.setState({
-      categoryChanged: true,
-    })
-  }
 
   render() {
     const {
@@ -1226,7 +1062,6 @@ class MyMap extends React.Component {
       teamList,
       userList,
       mapSaveLoading,
-      refreshKMap,
       mapGetLoading,
       toggleGraph,
       currentSurveyUser,
@@ -1235,9 +1070,7 @@ class MyMap extends React.Component {
       myMapStakeholderList,
       projectMapStakeholderList,
       currentSurveyUserId,
-      lastAddedShCategory,
-      categoryChanged,
-      refreshStakeholderManager,
+      lastAddedShCategory
     } = this.state;
 
     const mapHeaderVisible = toggleGraph
@@ -1369,15 +1202,11 @@ class MyMap extends React.Component {
                   this.handleAddStackholderToGraph(data, e);
                 }}
               >
-                {mapGetLoading && refreshKMap && (<div className="loading"></div>)}
                 {userList.length > 0 &&
                   teamList.length > 0 &&
                   shCategoryList.length > 0 &&
-                  mapGetLoading === false &&
-                  !refreshKMap && (
+                  mapGetLoading === false && (
                     <KGraphContainer
-                      myMapProjectUserList={this.myMapProjectUserList}
-                      projectMapProjectUserList={this.projectMapProjectUserList}
                       setParentState={this.setState.bind(this)}
                       apList={apList}
                       esList={esList}
@@ -1386,7 +1215,6 @@ class MyMap extends React.Component {
                       layout={layout.toLowerCase()}
                       viewMode={viewMode}
                       layoutUpdated={layoutUpdated}
-                      categoryChanged={categoryChanged}
                     />
                   )}
               </Droppable>
@@ -1399,15 +1227,11 @@ class MyMap extends React.Component {
                   this.handleAddStackholderToProjectGraph(data, e);
                 }}
               >
-                {mapGetLoading && refreshKMap && (<div class="loading"></div>)}
                 {userList.length > 0 &&
                   teamList.length > 0 &&
                   projectMapShCategoryList.length > 0 &&
-                  mapGetLoading === false &&
-                  !refreshKMap && (
+                  mapGetLoading === false && (
                     <KGraphContainer
-                      myMapProjectUserList={this.myMapProjectUserList}
-                      projectMapProjectUserList={this.projectMapProjectUserList}
                       setParentState={this.setState.bind(this)}
                       apList={projectApList}
                       esList={projectEsList}
@@ -1428,7 +1252,6 @@ class MyMap extends React.Component {
             >
               {screen === "list" && shCategoryList.length > 0 && (
                 <StakeholderManager
-                  refresh={refreshStakeholderManager}
                   projectTitle={projectTitle}
                   searchKey={searchKey}
                   decisionMakers={decisionMakerList}
@@ -1437,7 +1260,6 @@ class MyMap extends React.Component {
                   addNewStakeholder={(e) => this.handleShowAddPage(e)}
                   onSearchFocus={(e) => this.handleSearchFocus()}
                   onSearchBlur={(e) => this.handleSearchBlur()}
-                  handleUpdateStakeholder={(e) => this.handleUpdateStakeholder()}
                   myMapStakeholderList={myMapStakeholderList}
                   projectMapStakeholderList={projectMapStakeholderList}
                   myMapES={esList}
@@ -1471,7 +1293,6 @@ class MyMap extends React.Component {
                     projectMapCategory={projectMapShCategoryList}
                     skipQuestionList={skipQuestionList}
                     currentSurveyUserId={currentSurveyUserId}
-                    shCategoryChanged={this.handleCategoryChanged}
                     lastAddedShCategory={lastAddedShCategory}
                     allStakeholders={stakeholderList}
                     onSubmit={(e, answerData, isRefresh = true) =>
