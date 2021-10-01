@@ -36,12 +36,6 @@ export default class KGraph extends Component {
     );
   }
 
-  async componentWillReceiveProps(props) {
-    console.log('myMapProjectUserList', props.myMapProjectUserList)
-    console.log('projectMapProjectUserList', props.projectMapProjectUserList)
-    await this.keyLinesController.updatedNode(props.apList, props.esList, props.categoryChanged, props.viewMode, props.myMapProjectUserList, props.projectMapProjectUserList)
-  }
-
   /**
    * Update chart according to changes in props/state
    */
