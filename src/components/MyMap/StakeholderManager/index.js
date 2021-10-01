@@ -31,7 +31,6 @@ const StakeholderManager = ({
   myMapES,
   projectMapES,
   handleUpdateStakeholder,
-  refresh
 }) => {
   const [myCategoryList, setMyCategoryList] = useState([]);
   const [projectCategoryList, setProjectCategoryList] = useState([]);
@@ -39,10 +38,6 @@ const StakeholderManager = ({
   const [filterView, setFilterView] = useState(false);
   const [search, setSearch] = useState('');
   const [subView, setSubView] = useState('search');
-
-  useEffect(() => {
-    setView('manage')
-  }, [refresh])
 
   useEffect(() => {
     const tempMyCategoryList = [];
@@ -126,6 +121,9 @@ const StakeholderManager = ({
           shCount.push(projectMapStakeholderList[i].userId)
         }
       }
+
+      console.log('myMapStakeholderList', myMapStakeholderList)
+      console.log('projectMapStakeholderList', projectMapStakeholderList)
 
       // return myMapStakeholderList.length + projectMapStakeholderList.length
       return shCount.length;

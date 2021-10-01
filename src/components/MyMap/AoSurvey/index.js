@@ -46,7 +46,6 @@ class AoSurvey extends React.Component {
       myMapES,
       projectMapES,
       mapStyle,
-      shCategoryChanged,
     } = this.props;
 
     let totalQuestions = 0;
@@ -350,7 +349,6 @@ class AoSurvey extends React.Component {
       myMapES,
       projectMapES,
       currentSurveyUserId,
-      shCategoryChanged,
     } = this.props;
 
     // console.log(myMapCategory);
@@ -415,7 +413,6 @@ class AoSurvey extends React.Component {
               {editModal && (
                 <div className={styles["stakeholder-update-panel-container"]}>
                   <StakeholderUpdatePanel
-                    shCategoryChanged={shCategoryChanged}
                     open={editModal}
                     currentUser={currentUser}
                     myMapCategory={myMapCategory}

@@ -863,7 +863,8 @@ class MyMap extends React.Component {
     this.setState({
       aoSurveySubmitLoading: true
     });
-
+    // console.log('aoquestion', this.props.aoQuestionList)
+    // console.log('answerData', answerData)
     this.props.submitAoQuestion(
       answerData,
       this.state.currentSurveyUser,
@@ -886,7 +887,8 @@ class MyMap extends React.Component {
     });
     if (isRefresh) {
       NotificationManager.success("Response saved successfully", "");
-      this.handleSaveGraph(null, isRefresh);
+      // this.handleSaveGraph(null, isRefresh);
+      window.location.reload(false);
     }
 
     // window.location.reload(false);
@@ -964,7 +966,6 @@ class MyMap extends React.Component {
         });
       }
     }
-
     const newMapData = {
       user: userId,
       project: projectId,
