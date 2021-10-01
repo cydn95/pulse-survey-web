@@ -27,7 +27,6 @@ const StakeholderUpdatePanel = ({
   actionKMapData,
   actionProjectMapData,
   userId,
-  shCategoryChanged,
 }) => {
   const [selectedMyCategory, setSelectedMyCategory] = useState([]);
   const [selectedProjectCategory, setSelectedProjectCategory] = useState([]);
@@ -67,7 +66,6 @@ const StakeholderUpdatePanel = ({
       category.splice(index, 1);
       setSelectedMyCategory(category);
     }
-    shCategoryChanged()
   };
 
   const handleSelectProjectCategory = (id) => {
@@ -80,7 +78,6 @@ const StakeholderUpdatePanel = ({
       category.splice(index, 1);
       setSelectedProjectCategory(category);
     }
-    shCategoryChanged()
   };
 
   // useEffect(() => {
@@ -107,6 +104,7 @@ const StakeholderUpdatePanel = ({
       projectUser,
       callbackUpdate
     );
+
   }, [
     selectedMyCategory,
     selectedProjectCategory,
