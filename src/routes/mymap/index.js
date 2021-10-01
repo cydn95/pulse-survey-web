@@ -866,6 +866,7 @@ class MyMap extends React.Component {
 
     this.setState({ newStakeholder: newElem }, () => {
       if (!newElem.individuals[0].sh_category) return;
+      console.log('newelem', newElem)
       const newProjectUserId = projectUser.projectUserId;
       const newShCategory = newElem.individuals[0].sh_category.current.split(
         "_"
@@ -1375,7 +1376,8 @@ class MyMap extends React.Component {
                   mapGetLoading === false &&
                   !refreshKMap && (
                     <KGraphContainer
-                      items={this.state.items}
+                      myMapProjectUserList={this.myMapProjectUserList}
+                      projectMapProjectUserList={this.projectMapProjectUserList}
                       setParentState={this.setState.bind(this)}
                       apList={apList}
                       esList={esList}
@@ -1404,6 +1406,8 @@ class MyMap extends React.Component {
                   mapGetLoading === false &&
                   !refreshKMap && (
                     <KGraphContainer
+                      myMapProjectUserList={this.myMapProjectUserList}
+                      projectMapProjectUserList={this.projectMapProjectUserList}
                       setParentState={this.setState.bind(this)}
                       apList={projectApList}
                       esList={projectEsList}
