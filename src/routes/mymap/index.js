@@ -90,7 +90,8 @@ class MyMap extends React.Component {
 
       aoSurveySubmitLoading: false,
       mapRefresh: false,
-      savedElements: [],
+      expandedElements: [],
+      toggledElements: [],
     };
 
     this.defaultStakeholder = {
@@ -1192,7 +1193,8 @@ class MyMap extends React.Component {
       currentSurveyUserId,
       lastAddedShCategory,
       mapRefresh,
-      savedElements,
+      expandedElements,
+      toggledElements,
     } = this.state;
 
     const mapHeaderVisible = toggleGraph
@@ -1337,7 +1339,8 @@ class MyMap extends React.Component {
                       onClickNode={(id) => this.handleStartOtherSurvey(id)}
                       layout={layout.toLowerCase()}
                       viewMode={viewMode}
-                      savedElements={savedElements}
+                      expandedElements={expandedElements}
+                      toggledElements={toggledElements}
                       layoutUpdated={layoutUpdated}
                     />
                   )}
@@ -1364,7 +1367,8 @@ class MyMap extends React.Component {
                       layout={layout.toLowerCase()}
                       viewMode={viewMode}
                       layoutUpdated={layoutUpdated}
-                      savedElements={savedElements}
+                      expandedElements={expandedElements}
+                      toggledElements={toggledElements}
                     />
                   )}
               </Droppable>

@@ -33,7 +33,8 @@ export default class KGraph extends Component {
     this.keyLinesController.createChart(
       this.chartContainer,
       this.props.viewMode,
-      this.props.savedElements,
+      this.props.expandedElements,
+      this.props.toggledElements,
     );
   }
 
