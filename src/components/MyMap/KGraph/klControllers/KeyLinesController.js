@@ -206,7 +206,7 @@ class BaseController {
           changeable: false,
         };
 
-        console.log('node', node)
+        // console.log('node', node)
 
         let {
           newItems,
@@ -367,6 +367,11 @@ class BaseController {
 
     shCategoryIds.forEach(async (itemId) => {
       let clickedElement = this.chart.getItem(itemId);
+      this.setContainerState(state => {
+        return {
+          savedElements: !state.savedElements.includes(clickedElement.id) ? [...state.savedElements, clickedElement.id] : [...state.savedElements]
+        }
+      })
       await this.chart.setProperties({
         id: clickedElement.id,
         d: {
@@ -508,7 +513,7 @@ class BaseController {
    * Create chart and load data
    * @param {String|HTMLDivElement} chartContainer Container div element or id for KeyLines chart
    */
-  async createChart(chartContainer, defaultView) {
+  async createChart(chartContainer, defaultView, savedElements) {
     await fontsLoaded;
     const imageAlignment = {
       [KeyLines.getFontIcon("fa-project-diagram")]: {
@@ -550,6 +555,14 @@ class BaseController {
     this.comboMap = {};
     this.viewMode = [...defaultView]; // ["Org", "Team"];
     this.setupUI();
+    this.chart.each({
+      type: "node",
+      items: "all"
+    }, (node) => {
+      if (savedElements.includes(node.id)) {
+        this.expandChart(node.id);
+      }
+    });
   }
 
   /**
