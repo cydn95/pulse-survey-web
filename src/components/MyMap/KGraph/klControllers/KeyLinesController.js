@@ -368,8 +368,13 @@ class BaseController {
     shCategoryIds.forEach(async (itemId) => {
       let clickedElement = this.chart.getItem(itemId);
       this.setContainerState(state => {
+        let expandedElements = [...state.expandedElements]
+        let index = expandedElements.indexOf(clickedElement.id);
+        if (index === -1) {
+          expandedElements.push(clickedElement.id)
+        }
         return {
-          savedElements: !state.savedElements.includes(clickedElement.id) ? [...state.savedElements, clickedElement.id] : [...state.savedElements]
+          expandedElements: expandedElements
         }
       })
       await this.chart.setProperties({
@@ -416,6 +421,16 @@ class BaseController {
       // hide the elements to move
       await this.chart.hide(elementsToMove);
       // set the shrunk flag to true
+      this.setContainerState(state => {
+        let toggledElements = [...state.toggledElements]
+        let index = toggledElements.indexOf(clickedId);
+        if (index > -1) {
+          toggledElements.splice(index, 1)
+        }
+        return {
+          toggledElements: toggledElements
+        }
+      })
       await this.chart.setProperties({
         id: clickedId,
         d: {
@@ -467,6 +482,16 @@ class BaseController {
         fixed
       });
       // set the shrunk flag to false
+      this.setContainerState(state => {
+        let toggledElements = [...state.toggledElements]
+        let index = toggledElements.indexOf(clickedId);
+        if (index === -1) {
+          toggledElements.push(clickedId);
+        }
+        return {
+          toggledElements: toggledElements
+        }
+      })
       await this.chart.setProperties({
         id: clickedId,
         d: {
@@ -513,7 +538,7 @@ class BaseController {
    * Create chart and load data
    * @param {String|HTMLDivElement} chartContainer Container div element or id for KeyLines chart
    */
-  async createChart(chartContainer, defaultView, savedElements) {
+  async createChart(chartContainer, defaultView, expandedElements, toggledElements) {
     await fontsLoaded;
     const imageAlignment = {
       [KeyLines.getFontIcon("fa-project-diagram")]: {
@@ -555,14 +580,23 @@ class BaseController {
     this.comboMap = {};
     this.viewMode = [...defaultView]; // ["Org", "Team"];
     this.setupUI();
-    this.chart.each({
-      type: "node",
-      items: "all"
-    }, (node) => {
-      if (savedElements.includes(node.id)) {
-        this.expandChart(node.id);
+    console.log(expandedElements, toggledElements)
+    // await this.chart.each({
+    //   type: "node",
+    //   items: "all"
+    // }, async (node) => {
+    //   if (expandedElements.includes(node.id) && toggledElements.includes(node.id)) {
+    //     console.log(node.id, toggledElements)
+    //     await this.expandChart(node.id)
+    //   }
+    // })
+    for (let i = 0; i < toggledElements.length; i++) {
+      if (i === 0) {
+        await this.expandChart(toggledElements[i])
+      } else {
+        await this.toggleChart(toggledElements[i])
       }
-    });
+    }
   }
 
   /**
