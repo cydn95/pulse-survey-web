@@ -122,8 +122,8 @@ const StakeholderManager = ({
         }
       }
 
-      console.log('myMapStakeholderList', myMapStakeholderList)
-      console.log('projectMapStakeholderList', projectMapStakeholderList)
+      // console.log('myMapStakeholderList', myMapStakeholderList)
+      // console.log('projectMapStakeholderList', projectMapStakeholderList)
 
       // return myMapStakeholderList.length + projectMapStakeholderList.length
       return shCount.length;

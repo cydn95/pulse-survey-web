@@ -32,7 +32,8 @@ export default class KGraph extends Component {
   async componentDidMount() {
     this.keyLinesController.createChart(
       this.chartContainer,
-      this.props.viewMode
+      this.props.viewMode,
+      this.props.savedElements,
     );
   }
 
