@@ -960,9 +960,14 @@ class MyMap extends React.Component {
       }
     })
 
+    if (isRefresh) {
+      this.setState({
+        mapRefresh: true,
+      })
+    }
+
     this.setState({
       aoSurveySubmitLoading: true,
-      mapRefresh: true,
       aoQuestionList: updatedTemp,
       esList: { ...this.state.esList, individuals: esListTemp },
       projectEsList: { ...this.state.projectEsList, individuals: projectEsListTemp },
