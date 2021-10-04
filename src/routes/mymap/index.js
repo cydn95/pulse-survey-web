@@ -960,17 +960,23 @@ class MyMap extends React.Component {
       }
     })
 
-    if (isRefresh) {
-      this.setState({
-        mapRefresh: true,
-      })
-    }
-
-    this.setState({
-      aoSurveySubmitLoading: true,
-      aoQuestionList: updatedTemp,
-      esList: { ...this.state.esList, individuals: esListTemp },
-      projectEsList: { ...this.state.projectEsList, individuals: projectEsListTemp },
+    this.setState(state => {
+      if (!state.categoryChanged) {
+        return {
+          aoSurveySubmitLoading: true,
+          aoQuestionList: updatedTemp,
+          esList: { ...this.state.esList, individuals: esListTemp },
+          projectEsList: { ...this.state.projectEsList, individuals: projectEsListTemp },
+        }
+      } else {
+        return {
+          mapRefresh: true,
+          aoSurveySubmitLoading: true,
+          aoQuestionList: updatedTemp,
+          esList: { ...this.state.esList, individuals: esListTemp },
+          projectEsList: { ...this.state.projectEsList, individuals: projectEsListTemp },
+        }
+      }
     });
 
     this.props.submitAoQuestion(
@@ -993,19 +999,25 @@ class MyMap extends React.Component {
     if (isRefresh) {
       const { userId, surveyId, surveyUserId, projectId, history } = this.props;
       NotificationManager.success("Response saved successfully", "");
-      Promise.all([
-        this.props.getKMapData(surveyUserId, userId),
-        this.props.getProjectMapData(surveyUserId, userId),
-        this.props.getShCategoryList(surveyId, 0),
-        this.props.getStakeholderList(surveyUserId, surveyId),
-        this.props.getTeamList(projectId),
-        this.props.getAoQuestionList(surveyUserId, surveyId),
-        this.props.getDriverList(surveyId),
-        this.props.getSkipQuestionList(),
-      ]).then(setTimeout(() => {
-        this.setState({ mapRefresh: false })
-      }, 1500))
-      // this.handleSaveGraph(null, isRefresh);
+      if (this.state.categoryChanged) {
+        Promise.all([
+          this.props.getKMapData(surveyUserId, userId),
+          this.props.getProjectMapData(surveyUserId, userId),
+          this.props.getShCategoryList(surveyId, 0),
+          this.props.getStakeholderList(surveyUserId, surveyId),
+          this.props.getTeamList(projectId),
+          this.props.getAoQuestionList(surveyUserId, surveyId),
+          this.props.getDriverList(surveyId),
+          this.props.getSkipQuestionList(),
+        ]).then(setTimeout(() => {
+          this.setState({
+            mapRefresh: false,
+            categoryChanged: false,
+          })
+        }, 1500))
+      } else {
+        this.handleSaveGraph(null, isRefresh);
+      }
       // window.location.reload(false);
     }
     this.setState({
@@ -1128,7 +1140,10 @@ class MyMap extends React.Component {
       this.props.getDriverList(surveyId),
       this.props.getSkipQuestionList(),
     ]).then(setTimeout(() => {
-      this.setState({ mapRefresh: false })
+      this.setState({
+        categoryChanged: false,
+        mapRefresh: false,
+      })
     }, 1500))
 
     NotificationManager.success("Map has been saved successfully", "");
@@ -1157,6 +1172,12 @@ class MyMap extends React.Component {
       mapStyle,
     });
   };
+
+  handleCategoryChanged = () => {
+    this.setState({
+      categoryChanged: true,
+    })
+  }
 
   render() {
     const {
@@ -1436,6 +1457,7 @@ class MyMap extends React.Component {
                     projectMapES={projectEsList}
                     mapStyle={mapStyle}
                     onCancel={(e) => this.handleCancelSurvey()}
+                    handleCategoryChanged={this.handleCategoryChanged}
                   />
                 )}
             </div>
