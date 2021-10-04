@@ -1,0 +1,43 @@
+.main {
+  padding: 26px 56px 44px 44px;
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+      font-size: 25px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.6;
+      letter-spacing: -0.64px;
+      color: #273645;
+    }
+    .button {
+      font-size: 13px;
+      padding: 12px 19.5px 14px;
+    }
+  }
+  .projectCards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 23px;
+    grid-gap: 20px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .main {
+    .projectCards {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+}
+
+
+
+@media (max-width: 540px) {
+  .main {
+    padding: 10px;
+  }
+}
