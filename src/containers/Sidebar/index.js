@@ -50,6 +50,11 @@ const MENU_REPORT = [
   "Advisor Insights",
 ];
 
+const MENU_ADMIN = [
+  "Projects",
+  "Subscription"
+];
+
 class Sidebar extends Component {
   constructor(props) {
     super(props);
@@ -157,7 +162,7 @@ class Sidebar extends Component {
 
       if (findIndex < 0) {
         actionSetProjectID(0);
-        actionSetSurveyID(user.userId, 0, () => {});
+        actionSetSurveyID(user.userId, 0, () => { });
       }
     }
 
@@ -426,6 +431,30 @@ class Sidebar extends Component {
           <div className={styles.space}></div>
           <div className={styles.link}>
             <ProSidebar width="220px">
+              {this.state.isAdmin && <Menu iconShape="square">
+                <SubMenu title="Administration">
+                  {MENU_ADMIN.map((menu) => {
+                    return (
+                      <MenuItem
+                        key={`submenu-report-${menu
+                          .toLowerCase()
+                          .replace(" ", "-")}`}
+                        onClick={(e) =>
+                          this.handleClickSubMenu(
+                            e,
+                            menu.toLocaleLowerCase(),
+                            `/app/admin/${menu
+                              .toLocaleLowerCase()
+                              .replace(" ", "-")}`
+                          )
+                        }
+                      >
+                        {menu}
+                      </MenuItem>
+                    );
+                  })}
+                </SubMenu>
+              </Menu>}
               {pageContent.length > 0 && (
                 <Menu iconShape="square">
                   <SubMenu title="More Info">

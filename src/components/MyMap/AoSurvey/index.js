@@ -418,6 +418,7 @@ class AoSurvey extends React.Component {
                     myMapCategory={myMapCategory}
                     projectMapCategory={projectMapCategory}
                     onClose={(e) => this.handleCloseEditModal()}
+                    handleCategoryChanged={this.props.handleCategoryChanged}
                   />
                 </div>
               )}
