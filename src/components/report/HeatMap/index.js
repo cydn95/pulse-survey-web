@@ -189,13 +189,19 @@ const HeatMap = ({
               )}
               {data[key].map((d, index) => {
                 const style =
-                  rowNum >= 1 &&
-                    ((d.value > 0 ||
-                      d.stakeholders ||
-                      d.stakeholders.length > thresholdCnt) ||
-                      admin)
-                    ? { borderLeft: `3px solid ${getColorFromValue(Number(rowNum === 1 ? (d.stakeholders.length / d.totalCnt) * 10 : d.value))}` }
-                    : {};
+                  rowNum > 0
+                    ? rowNum === 1
+                      ?
+                      { borderLeft: `3px solid ${getColorFromValue(Number(rowNum === 1 ? (d.stakeholders.length / d.totalCnt) * 10 : d.value))}` }
+                      :
+                      (
+                        // (d.value > 0 &&
+                        //   d.stakeholders &&
+                        //   )
+                        d.stakeholders.length >= thresholdCnt ||
+                        admin)
+                        ? { borderLeft: `3px solid ${getColorFromValue(Number(rowNum === 1 ? (d.stakeholders.length / d.totalCnt) * 10 : d.value))}` }
+                        : {} : {};
 
                 let colVal = "";
                 if (rowNum === 0) {
