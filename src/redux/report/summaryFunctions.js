@@ -51,10 +51,10 @@ export const getCultureResult = (resData) => {
 };
 
 export const getOverallTrends = (resData, shGroupList, projectId) => {
-  console.log('shGroupList', shGroupList);
+  // console.log('shGroupList', shGroupList);
   // console.log('resData', resData)
 
-  const overallTrendsRet = {};
+  const overallTrendsRet = [];
   const currentYear = getCurrentYear();
   const currentMonth = getCurrentMonth();
 
@@ -79,99 +79,133 @@ export const getOverallTrends = (resData, shGroupList, projectId) => {
 
   // console.log(dateKeys.reverse());
 
-  for (let i = 0; i < resData.length; i++) {
-    const question = resData[i];
-    const intValue = question.integerValue;
-    if (!question.latestResponse) {
-      continue;
+  let questions = resData.filter(question => question.project.toString() === projectId.toString())
+  questions.sort((a, b) => a.updated_at.localeCompare(b.updated_at))
+  let handledData = questions.map(q => {
+    return {
+      key: `${MONTH(Number(q.updated_at.split("-")[1]))} ${q.updated_at.split("-")[0]}`,
+      user: q.projectUser.user.id,
+      intValue: q.integerValue
     }
-
-    if (question.project.toString() !== projectId.toString()) {
-      continue
+  })
+  let data = [...handledData]
+  data.reverse()
+  reverseKeys.map(r => {
+    let index = data.findIndex(d => d.key === r.key)
+    if (index === -1) return r;
+    let temp = []
+    let length = handledData.length;
+    for (let i = 0; i < length - index; i++) {
+      temp[handledData[i].user] = handledData[i].intValue
     }
+    Object.keys(temp).map(key => {
+      r.value.push(temp[key])
+      return key
+    })
+    return r
+  })
+  reverseKeys.map(r => {
+    overallTrendsRet.push({
+      x: r.key,
+      y: Math.round(r.value.length ? r.value.reduce((pre, crr) => pre + crr, 0) / r.value.length : 0).toFixed(2),
+    })
+    return r;
+  })
+  let tempData = []
+  tempData.push(overallTrendsRet)
+  tempData.push(overallTrendsRet)
+  // for (let i = 0; i < questions.length; i++) {
+  //   const question = questions[i];
+  //   const intValue = question.integerValue;
+  //   if (!question.latestResponse) {
+  //     continue;
+  //   }
 
-    const questionData = question.amQuestionData;
+  //   if (question.project.toString() !== projectId.toString()) {
+  //     continue
+  //   }
 
-    console.log('question', question)
+  //   const questionData = question.amQuestionData;
 
-    for (let j = 0; j < questionData.length; j++) {
-      for (let k = 0; k < questionData[j].shGroup.length; k++) {
-        // console.log('overallTrendsRet', overallTrendsRet)
-        const shGroupId = questionData[j].shGroup[k];
-        const filteredShGroupList = shGroupList.filter(
-          (sh) => parseInt(sh.id, 10) === parseInt(shGroupId, 10)
-        );
+  //   // console.log('question', question)
 
-        if (filteredShGroupList.length > 0) {
-          const shGroupName = filteredShGroupList[0].SHGroupName;
+  //   for (let j = 0; j < questionData.length; j++) {
+  //     for (let k = 0; k < questionData[j].shGroup.length; k++) {
+  //       // console.log('overallTrendsRet', overallTrendsRet)
+  //       const shGroupId = questionData[j].shGroup[k];
+  //       const filteredShGroupList = shGroupList.filter(
+  //         (sh) => parseInt(sh.id, 10) === parseInt(shGroupId, 10)
+  //       );
 
-          /* OverallTrend Start */
-          const questionUpdatedDate = question.updated_at;
+  //       if (filteredShGroupList.length > 0) {
+  //         const shGroupName = filteredShGroupList[0].SHGroupName;
 
-          const dateSplits = questionUpdatedDate.split("-");
-          if (dateSplits.length < 2) {
-            continue;
-          }
-          const questionYear = dateSplits[0];
-          const questionMonth = dateSplits[1];
+  //         /* OverallTrend Start */
+  //         const questionUpdatedDate = question.updated_at;
 
-          const key = `${MONTH(Number(questionMonth))} ${questionYear}`;
+  //         const dateSplits = questionUpdatedDate.split("-");
+  //         if (dateSplits.length < 2) {
+  //           continue;
+  //         }
+  //         const questionYear = dateSplits[0];
+  //         const questionMonth = dateSplits[1];
 
-          // console.log(key);
+  //         const key = `${MONTH(Number(questionMonth))} ${questionYear}`;
 
-          if (!(shGroupName in overallTrendsRet)) {
-            overallTrendsRet[shGroupName] = [...reverseKeys];
-          }
+  //         // console.log(key);
 
-          const findIndex = overallTrendsRet[shGroupName].findIndex(
-            (item) => item.key === key
-          );
-          if (findIndex >= 0) {
-            overallTrendsRet[shGroupName][findIndex].value.push(intValue);
-          }
+  //         if (!(shGroupName in overallTrendsRet)) {
+  //           overallTrendsRet[shGroupName] = [...reverseKeys];
+  //         }
 
-          /* OverallTrend End */
-        }
-      }
-    }
-  }
+  //         const findIndex = overallTrendsRet[shGroupName].findIndex(
+  //           (item) => item.key === key
+  //         );
+  //         if (findIndex >= 0) {
+  //           overallTrendsRet[shGroupName][findIndex].value.push(intValue);
+  //         }
 
-  // console.log(overallTrendsRet);
+  //         /* OverallTrend End */
+  //       }
+  //     }
+  //   }
+  // }
 
-  const filteredOverallTrend = [];
-  const filteredOverallTrendShGroupList = [];
+  // const filteredOverallTrend = [];
+  // const filteredOverallTrendShGroupList = [];
 
-  for (const key in overallTrendsRet) {
-    filteredOverallTrendShGroupList.push(key);
+  // for (const key in overallTrendsRet) {
+  //   filteredOverallTrendShGroupList.push(key);
 
-    const temp = [];
+  //   const temp = [];
 
-    let prevYValue = 0;
+  //   let prevYValue = 0;
 
-    for (let i = 0; i < overallTrendsRet[key].length; i++) {
-      let yValue = Math.round(
-        parseFloat(getAverage(overallTrendsRet[key][i].value)).toFixed(2)
-      );
+  //   for (let i = 0; i < overallTrendsRet[key].length; i++) {
+  //     let yValue = Math.round(
+  //       parseFloat(getAverage(overallTrendsRet[key][i].value)).toFixed(2)
+  //     );
 
-      // previous month value
-      if (overallTrendsRet[key][i].value.length === 0) {
-        yValue = prevYValue;
-      }
+  //     // previous month value
+  //     if (overallTrendsRet[key][i].value.length === 0) {
+  //       yValue = prevYValue;
+  //     }
 
-      prevYValue = yValue;
+  //     prevYValue = yValue;
 
-      temp.push({
-        x: overallTrendsRet[key][i].key,
-        y: yValue,
-      });
-    }
+  //     temp.push({
+  //       x: overallTrendsRet[key][i].key,
+  //       y: yValue,
+  //     });
+  //   }
 
-    filteredOverallTrend.push(temp);
-  }
+  //   filteredOverallTrend.push(temp);
+  // }
+  // console.log('filteredOverallTrend', filteredOverallTrend);
 
   return {
-    key: filteredOverallTrendShGroupList,
-    data: filteredOverallTrend,
+    key: [],
+    data: tempData,
   };
 };
 
