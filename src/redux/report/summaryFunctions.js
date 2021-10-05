@@ -51,7 +51,7 @@ export const getCultureResult = (resData) => {
 };
 
 export const getOverallTrends = (resData, shGroupList, projectId) => {
-  // console.log(shGroupList);
+  console.log('shGroupList', shGroupList);
   // console.log('resData', resData)
 
   const overallTrendsRet = {};
@@ -92,10 +92,11 @@ export const getOverallTrends = (resData, shGroupList, projectId) => {
 
     const questionData = question.amQuestionData;
 
-    // console.log('question', question)
+    console.log('question', question)
 
     for (let j = 0; j < questionData.length; j++) {
       for (let k = 0; k < questionData[j].shGroup.length; k++) {
+        // console.log('overallTrendsRet', overallTrendsRet)
         const shGroupId = questionData[j].shGroup[k];
         const filteredShGroupList = shGroupList.filter(
           (sh) => parseInt(sh.id, 10) === parseInt(shGroupId, 10)
@@ -135,7 +136,7 @@ export const getOverallTrends = (resData, shGroupList, projectId) => {
     }
   }
 
-  console.log(overallTrendsRet);
+  // console.log(overallTrendsRet);
 
   const filteredOverallTrend = [];
   const filteredOverallTrendShGroupList = [];
