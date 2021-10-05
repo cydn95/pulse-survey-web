@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Button from 'Components/Button'
 import styles from './styles.scss'
 import ProjectAvatar from '../../assets/img/admin/Work.svg'
@@ -9,7 +9,7 @@ import Folder from '../../assets/img/admin/Folder.svg'
 import Heart from '../../assets/img/admin/Heart.svg'
 import Send from '../../assets/img/admin/Send.svg'
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = ({ project, setEditing }) => {
   return (
     <div className={styles.main}>
       <div className={styles.header}>
@@ -73,7 +73,7 @@ const ProjectCard = ({ project }) => {
         </div>
       </div>
       <div className={styles.actions}>
-        <Button className={styles.edit}>Edit project</Button>
+        <Button className={styles.edit} onClick={(e) => setEditing(project.id)}>Edit project</Button>
         <Button className={styles.deactivate}>Deactivate</Button>
         <Button className={styles.plus}>+</Button>
         <p>Add New Stakeholder</p>

@@ -431,7 +431,7 @@ class Sidebar extends Component {
           <div className={styles.space}></div>
           <div className={styles.link}>
             <ProSidebar width="220px">
-              {this.state.isAdmin && <Menu iconShape="square">
+              {false && <Menu iconShape="square">
                 <SubMenu title="Administration">
                   {MENU_ADMIN.map((menu) => {
                     return (

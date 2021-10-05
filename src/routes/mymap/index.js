@@ -719,37 +719,39 @@ class MyMap extends React.Component {
     //       console.log(newElem);
     //       console.log(this.myMapProjectUserList);
     // console.log("*********************************");
-    this.setState({ newStakeholder: newElem }, () => {
-      if (!newElem.individuals[0].sh_category) return;
-      const newProjectUserId = projectUser.projectUserId;
-      const newShCategory = newElem.individuals[0].sh_category.current.split(
-        "_"
-      )[1];
+    this.setState({ newStakeholder: newElem }, () => setTimeout(
+      () => {
+        // console.log(newElem.individuals[0].sh_category)
+        if (!newElem.individuals[0].sh_category) return;
+        const newProjectUserId = projectUser.projectUserId;
+        const newShCategory = newElem.individuals[0].sh_category.current.split(
+          "_"
+        )[1];
 
-      let bExist = false;
+        let bExist = false;
 
-      for (let i = 0; i < this.myMapProjectUserList.length; i++) {
-        if (
-          parseInt(this.myMapProjectUserList[i].projectUserId, 10) ===
-          parseInt(newProjectUserId, 10) &&
-          parseInt(this.myMapProjectUserList[i].shCategory, 10) ===
-          parseInt(newShCategory, 10)
-        ) {
-          bExist = true;
-          break;
+        for (let i = 0; i < this.myMapProjectUserList.length; i++) {
+          if (
+            parseInt(this.myMapProjectUserList[i].projectUserId, 10) ===
+            parseInt(newProjectUserId, 10) &&
+            parseInt(this.myMapProjectUserList[i].shCategory, 10) ===
+            parseInt(newShCategory, 10)
+          ) {
+            bExist = true;
+            break;
+          }
         }
-      }
-      console.log('new', newShCategory);
-      if (!bExist) {
-        this.myMapProjectUserList.push({
-          projectUserId: newProjectUserId,
-          shCategory: parseInt(newShCategory, 10),
+        console.log('new', newShCategory);
+        if (!bExist) {
+          this.myMapProjectUserList.push({
+            projectUserId: newProjectUserId,
+            shCategory: parseInt(newShCategory, 10),
+          });
+        }
+        this.setState({
+          lastAddedShCategory: parseInt(newShCategory, 10)
         });
-      }
-      this.setState({
-        lastAddedShCategory: parseInt(newShCategory, 10)
-      });
-    });
+      }, 2000));
   };
 
   handleShowAddPage = () => {
