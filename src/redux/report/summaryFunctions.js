@@ -92,6 +92,8 @@ export const getOverallTrends = (resData, shGroupList, projectId) => {
 
     const questionData = question.amQuestionData;
 
+    // console.log('question', question)
+
     for (let j = 0; j < questionData.length; j++) {
       for (let k = 0; k < questionData[j].shGroup.length; k++) {
         const shGroupId = questionData[j].shGroup[k];
@@ -103,7 +105,7 @@ export const getOverallTrends = (resData, shGroupList, projectId) => {
           const shGroupName = filteredShGroupList[0].SHGroupName;
 
           /* OverallTrend Start */
-          const questionUpdatedDate = question.created_at;
+          const questionUpdatedDate = question.updated_at;
 
           const dateSplits = questionUpdatedDate.split("-");
           if (dateSplits.length < 2) {
@@ -133,7 +135,7 @@ export const getOverallTrends = (resData, shGroupList, projectId) => {
     }
   }
 
-  // console.log(overallTrendsRet);
+  console.log(overallTrendsRet);
 
   const filteredOverallTrend = [];
   const filteredOverallTrendShGroupList = [];
