@@ -96,7 +96,7 @@ const ReportSummary = ({
     const feedbackSummaryRet = getFeedbackSummaryByShGroup(feedbackSummaryResultData,);
     // console.log('overallTrendRet', overallTrendRet)
     // console.log('overallTrendKey', overallTrendKey)
-    setOverallSentiment(Math.round(overallTrendRet.reduce((pre, crr) => pre + crr[crr.length - 1].y, 0) / 2));
+    // setOverallSentiment(Math.round(overallTrendRet.reduce((pre, crr) => pre + crr[crr.length - 1].y, 0) / 2));
     setAllData(feedbackSummaryResultData);
     setFeedbackSummary(feedbackSummaryRet);
     setCultureResult(cultureRet);
@@ -109,12 +109,12 @@ const ReportSummary = ({
     // setShGroupList(shGroupList);
   };
 
-  // const callbackOverallSentiment = (data) => {
-  //   setOverallSentimentLoading(false);
-  //   if (data.length > 0) {
-  //     setOverallSentiment(Math.round(data[0].value));
-  //   }
-  // };
+  const callbackOverallSentiment = (data) => {
+    setOverallSentimentLoading(false);
+    if (data.length > 0) {
+      setOverallSentiment(Math.round(data[0].value));
+    }
+  };
 
   const callbackTopPositiveNegative = (positive, negative) => {
     setTopPositiveNegativeLoading(false);
@@ -139,8 +139,8 @@ const ReportSummary = ({
   };
 
   useEffect(() => {
-    // setOverallSentimentLoading(true);
-    // actionOverallSentiment(surveyId, callbackOverallSentiment);
+    setOverallSentimentLoading(true);
+    actionOverallSentiment(surveyId, callbackOverallSentiment);
 
     setTopPositiveNegativeLoading(true);
     actionTopPositiveNegative(surveyId, callbackTopPositiveNegative);
@@ -324,7 +324,6 @@ const ReportSummary = ({
                 <div className={styles["section-title"]}>Overall Trends</div>
                 <OverallTrend
                   key="linechart"
-                  shGroups={overallTrendKey}
                   data={overallTrendResult}
                   xRange={[1, 12]}
                   yRange={[0, 10]}
