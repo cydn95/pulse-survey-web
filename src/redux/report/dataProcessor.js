@@ -1,8 +1,6 @@
-import {
-  arrayAverage,
-} from "Util/Utils";
+import { getCurrentYear, getCurrentMonth, MONTH, arrayAverage } from "Util/Utils";
 
-const MONTH = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+// const MONTH = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 const compare = (a, b) => {
   if (a.created_at > b.created_at) {
@@ -99,7 +97,7 @@ export const getResultForSHGroup = (shGroupList, result) => {
             sum += data.integerValue;
             const dateStr = data.created_at.split("-");
             // const dateKey = dateStr[0] + "-" + dateStr[1];  // Year - Month
-            const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
+            const dateKey = MONTH(Number(dateStr[1])) + " " + dateStr[0];
             // const dateKey = dateStr[1];    // Only Month
             // const dateStr = data.created_at.split("T");
             // const dateKey = dateStr[0];
@@ -118,13 +116,44 @@ export const getResultForSHGroup = (shGroupList, result) => {
       }
 
       const newTrend = [];
+      const currentYear = getCurrentYear();
+      const currentMonth = getCurrentMonth();
+      const keys = [];
+      for (let i = 0; i < 5; i++) {
+        let month = currentMonth - i;
+        let year = currentYear;
+        if (month <= 0) {
+          month += 12;
+          year = currentYear - 1;
+        }
 
-      Object.keys(trend).forEach((t, index) => {
-        newTrend.push({
-          x: t,
-          y: arrayAverage(trend[t]) / 10,
+        const key = `${MONTH(month)} ${year}`;
+
+        keys.push({
+          key,
+          value: 0,
         });
-      });
+      }
+
+      const reverseKeys = [...keys.reverse()];
+      let prevYValue = [];
+      reverseKeys.map(d => {
+        if (trend[d.key]) {
+          prevYValue = [...trend[d.key]]
+        }
+        newTrend.push({
+          x: d.key,
+          y: arrayAverage(prevYValue) / 10,
+        })
+        return d;
+      })
+
+      // Object.keys(trend).forEach((t, index) => {
+      //   newTrend.push({
+      //     x: t,
+      //     y: arrayAverage(trend[t]) / 10,
+      //   });
+      // });
 
       subDriverRet[currentKey].push({
         value: cnt > 0 ? ((sum / cnt / 10).toFixed(1) > 100 ? 100 : (sum / cnt / 10).toFixed(1)) : 0,
@@ -214,7 +243,7 @@ export const getResultForTeam = (teamList, result) => {
             cnt++;
             sum += data.integerValue;
             const dateStr = data.created_at.split("-");
-            const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
+            const dateKey = MONTH(Number(dateStr[1])) + " " + dateStr[0];
             // const dateStr = data.created_at.split("T");
             // const dateKey = dateStr[0];
 
@@ -232,13 +261,44 @@ export const getResultForTeam = (teamList, result) => {
       }
 
       const newTrend = [];
+      const currentYear = getCurrentYear();
+      const currentMonth = getCurrentMonth();
+      const keys = [];
+      for (let i = 0; i < 5; i++) {
+        let month = currentMonth - i;
+        let year = currentYear;
+        if (month <= 0) {
+          month += 12;
+          year = currentYear - 1;
+        }
 
-      Object.keys(trend).forEach((t, index) => {
-        newTrend.push({
-          x: t,
-          y: arrayAverage(trend[t]) / 10,
+        const key = `${MONTH(month)} ${year}`;
+
+        keys.push({
+          key,
+          value: 0,
         });
-      });
+      }
+
+      const reverseKeys = [...keys.reverse()];
+      let prevYValue = [];
+      reverseKeys.map(d => {
+        if (trend[d.key]) {
+          prevYValue = [...trend[d.key]]
+        }
+        newTrend.push({
+          x: d.key,
+          y: arrayAverage(prevYValue) / 10,
+        })
+        return d;
+      })
+
+      // Object.keys(trend).forEach((t, index) => {
+      //   newTrend.push({
+      //     x: t,
+      //     y: arrayAverage(trend[t]) / 10,
+      //   });
+      // });
 
       subDriverRet[currentKey].push({
         value: cnt > 0 ? ((sum / cnt / 10).toFixed(1) > 100 ? 100 : (sum / cnt / 10).toFixed(1)) : 0,
@@ -328,7 +388,7 @@ export const getResultForOrganization = (organizationList, result) => {
             cnt++;
             sum += data.integerValue;
             const dateStr = data.created_at.split("-");
-            const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
+            const dateKey = MONTH(Number(dateStr[1])) + " " + dateStr[0];
             // const dateStr = data.created_at.split("T");
             // const dateKey = dateStr[0];
 
@@ -346,13 +406,44 @@ export const getResultForOrganization = (organizationList, result) => {
       }
 
       const newTrend = [];
+      const currentYear = getCurrentYear();
+      const currentMonth = getCurrentMonth();
+      const keys = [];
+      for (let i = 0; i < 5; i++) {
+        let month = currentMonth - i;
+        let year = currentYear;
+        if (month <= 0) {
+          month += 12;
+          year = currentYear - 1;
+        }
 
-      Object.keys(trend).forEach((t, index) => {
-        newTrend.push({
-          x: t,
-          y: arrayAverage(trend[t]) / 10,
+        const key = `${MONTH(month)} ${year}`;
+
+        keys.push({
+          key,
+          value: 0,
         });
-      });
+      }
+
+      const reverseKeys = [...keys.reverse()];
+      let prevYValue = [];
+      reverseKeys.map(d => {
+        if (trend[d.key]) {
+          prevYValue = [...trend[d.key]]
+        }
+        newTrend.push({
+          x: d.key,
+          y: arrayAverage(prevYValue) / 10,
+        })
+        return d;
+      })
+
+      // Object.keys(trend).forEach((t, index) => {
+      //   newTrend.push({
+      //     x: t,
+      //     y: arrayAverage(trend[t]) / 10,
+      //   });
+      // });
 
       subDriverRet[currentKey].push({
         value: cnt > 0 ? ((sum / cnt / 10).toFixed(1) > 100 ? 100 : (sum / cnt / 10).toFixed(1)) : 0,
