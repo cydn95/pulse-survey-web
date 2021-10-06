@@ -219,6 +219,10 @@ export const getSentimentResult = (resData) => {
       continue;
     }
 
+    if (!question.latestResponse) {
+      continue;
+    }
+
     const intValue = question.integerValue;
 
     const questionData = question.amQuestionData;

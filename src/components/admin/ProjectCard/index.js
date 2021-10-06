@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import Button from 'Components/Button'
 import styles from './styles.scss'
-import ProjectAvatar from '../../assets/img/admin/Work.svg'
-import Show from '../../assets/img/admin/Show.svg'
-import Calendar from '../../assets/img/admin/Calendar.svg'
-import User from '../../assets/img/admin/3 User.svg'
-import Folder from '../../assets/img/admin/Folder.svg'
-import Heart from '../../assets/img/admin/Heart.svg'
-import Send from '../../assets/img/admin/Send.svg'
+import ProjectAvatar from '../../../assets/img/admin/Work.svg'
+import Show from '../../../assets/img/admin/Show.svg'
+import Calendar from '../../../assets/img/admin/Calendar.svg'
+import User from '../../../assets/img/admin/3 User.svg'
+import Folder from '../../../assets/img/admin/Folder.svg'
+import Heart from '../../../assets/img/admin/Heart.svg'
+import Send from '../../../assets/img/admin/Send.svg'
 
 const ProjectCard = ({ project, setEditing }) => {
   return (

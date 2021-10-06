@@ -603,6 +603,8 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForSHGroup(shGroupList, result);
 
+      console.log('resultData', resultData)
+
       const answered = []
 
       originShGroupList.map((sh, idx) => {
