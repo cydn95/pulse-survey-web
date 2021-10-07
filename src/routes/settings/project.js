@@ -51,7 +51,7 @@ class Project extends Component {
     const activeSurveys = data.filter(d => d.isActive === true);
     if (activeSurveys.length > 0) {
       const survey = activeSurveys[0];
-      console.log(survey);
+      // console.log(survey);
 
       const { actionSetProjectID, actionSetSurveyID, user } = this.props;
       actionSetProjectID(survey.project);

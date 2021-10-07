@@ -12,6 +12,8 @@ const projects = [
     name: 'Juilet Phase 3',
     manager: 'Cristophor Robinson',
     code: '07341215',
+    title: 'We want to hear from you!',
+    shortText: 'Watch a short video from our Project Manager.',
     totalIdentified: 80,
     createdAt: '01-Jan-2021',
     memberCount: 30,
@@ -20,12 +22,27 @@ const projects = [
     invitedPercent: 63,
     availableSeatCount: 30,
     overallSentiment: 9.2,
+    template: `
+    <p><a href="http://www.syncfusion.com">The Rich Text Editor</a> component is WYSIWYG ("what you see is what you get") editor that provides the best user experience to create and update the content.
+        Users can format their content using standard toolbar commands.</p>
+    <img alt="Logo" src="http://cdn.syncfusion.com/content/images/sales/buynow/Character-opt.png" />
+    <p><b>Key features:</b></p>
+    <ul>
+        <li> <p>Provides IFRAME and DIV modes</p> </li>
+        <li> <p>Capable of handling markdown editing.</p> </li>
+        <li> <p>Contains a modular library to load the necessary functionality on demand.</p> </li>
+        <li> <p>Provides a fully customizable toolbar.</p> </li>
+        <li> <p>Provides HTML view to edit the source directly for developers.</p> </li>
+        <li> <p>Supports third-party library integration.</p> </li>
+    </ul>`,
   },
   {
     id: 32,
     name: 'Bravo Expansion Phase 1',
     manager: 'Cristophor Robinson',
     code: '02341241',
+    title: 'We want to hear from you!',
+    shortText: 'Watch a short video from our Project Manager.',
     totalIdentified: 80,
     createdAt: '01-Jan-2021',
     memberCount: 30,
@@ -34,11 +51,26 @@ const projects = [
     invitedPercent: 63,
     availableSeatCount: 30,
     overallSentiment: 9.2,
+    template: `
+    <p><a href="http://www.syncfusion.com">The Rich Text Editor</a> component is WYSIWYG ("what you see is what you get") editor that provides the best user experience to create and update the content.
+        Users can format their content using standard toolbar commands.</p>
+    <img alt="Logo" src="http://cdn.syncfusion.com/content/images/sales/buynow/Character-opt.png" />
+    <p><b>Key features:</b></p>
+    <ul>
+        <li> <p>Provides IFRAME and DIV modes</p> </li>
+        <li> <p>Capable of handling markdown editing.</p> </li>
+        <li> <p>Contains a modular library to load the necessary functionality on demand.</p> </li>
+        <li> <p>Provides a fully customizable toolbar.</p> </li>
+        <li> <p>Provides HTML view to edit the source directly for developers.</p> </li>
+        <li> <p>Supports third-party library integration.</p> </li>
+    </ul>`,
   },
   {
     id: 33,
     name: 'Juilet Phase 3',
     code: '07341215',
+    title: 'We want to hear from you!',
+    shortText: 'Watch a short video from our Project Manager.',
     manager: 'Cristophor Robinson',
     totalIdentified: 80,
     createdAt: '01-Jan-2021',
@@ -48,6 +80,19 @@ const projects = [
     invitedPercent: 63,
     availableSeatCount: 30,
     overallSentiment: 9.2,
+    template: `
+    <p><a href="http://www.syncfusion.com">The Rich Text Editor</a> component is WYSIWYG ("what you see is what you get") editor that provides the best user experience to create and update the content.
+        Users can format their content using standard toolbar commands.</p>
+    <img alt="Logo" src="http://cdn.syncfusion.com/content/images/sales/buynow/Character-opt.png" />
+    <p><b>Key features:</b></p>
+    <ul>
+        <li> <p>Provides IFRAME and DIV modes</p> </li>
+        <li> <p>Capable of handling markdown editing.</p> </li>
+        <li> <p>Contains a modular library to load the necessary functionality on demand.</p> </li>
+        <li> <p>Provides a fully customizable toolbar.</p> </li>
+        <li> <p>Provides HTML view to edit the source directly for developers.</p> </li>
+        <li> <p>Supports third-party library integration.</p> </li>
+    </ul>`,
   },
 ]
 

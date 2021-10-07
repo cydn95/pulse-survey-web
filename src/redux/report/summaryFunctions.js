@@ -412,7 +412,7 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
   const drivers = [];
   const ret = {};
 
-  console.log('resData', resData)
+  // console.log('resData', resData)
 
   for (let i = 0; i < resData.length; i++) {
     const question = resData[i];

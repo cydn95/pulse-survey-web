@@ -30,7 +30,7 @@ const ForgotPasswordLayout = ({ loading, resetPassword, history }) => {
   const [sendStatus, setSendStatus] = useState(false);
 
   const onResetPasswordCallback = (response) => {
-    console.log(response);
+    // console.log(response);
     if (response) {
       // history.push("/resetsent");
       setSendStatus(true);
@@ -59,7 +59,7 @@ const ForgotPasswordLayout = ({ loading, resetPassword, history }) => {
         <h2>Reset password</h2>
         <p className="white">
           Enter your email to reset your password. You will receive an
-          email with instructions on how to reset your password.<br/>
+          email with instructions on how to reset your password.<br />
           If you are still experiencing difficulties please drop us a direct email{` `}
           <a href="mailto:support@projectai.com" className={styles.link}>
             support@projectai.com
@@ -69,7 +69,7 @@ const ForgotPasswordLayout = ({ loading, resetPassword, history }) => {
         <Input
           type="text"
           name="username_or_email"
-          onChange = {
+          onChange={
             (e) => setEmail(e.target.value)
           }
         />

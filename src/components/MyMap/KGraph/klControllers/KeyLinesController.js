@@ -580,7 +580,7 @@ class BaseController {
     this.comboMap = {};
     this.viewMode = [...defaultView]; // ["Org", "Team"];
     this.setupUI();
-    console.log(expandedElements, toggledElements)
+    // console.log(expandedElements, toggledElements)
     // await this.chart.each({
     //   type: "node",
     //   items: "all"
