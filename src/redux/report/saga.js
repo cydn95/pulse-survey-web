@@ -498,7 +498,7 @@ function* getDriverAnalysisCnt({ payload }) {
       endDate
     );
 
-    console.log('result', result.data)
+    // console.log('result', result.data)
 
     callback(result.data);
   } catch (error) { }
@@ -603,7 +603,7 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForSHGroup(shGroupList, result);
 
-      console.log('resultData', resultData)
+      // console.log('resultData', resultData)
 
       const answered = []
 
@@ -1019,7 +1019,7 @@ function* advisorReport({ payload }) {
     const { surveyId, projectUserId, callback } = payload;
 
     const result = yield call(advisorAsync, surveyId, projectUserId);
-    console.log('result', result.data)
+    // console.log('result', result.data)
     let detailedData = Object.keys(result.data.detailedData).map(
       (key) => Object.keys(result.data.detailedData[key]).map(
         key2 => {

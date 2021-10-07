@@ -1,0 +1,37 @@
+.wrapper {
+	padding: 10px 31px 10px 16px;
+	border-radius: 8px;
+	border: solid 2px #eee;
+	background-color: #fff;
+	position: relative;
+  color: gray;
+  font-family: Montserrat;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+	.select {
+		display: flex;
+		justify-content: space-between;
+    .open {
+      transform: rotate(90deg);
+      font-family: Poppins;
+    }
+    .close {
+      transform: rotate(-90deg);
+      font-family: Poppins;
+    }
+	}
+	.dropdown {
+		position: absolute;
+		top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+	  border-radius: 8px;
+		.item {
+			padding: 10px 16px;
+			border: solid #eee;
+      border-width: 2px 2px 0px 2px;
+		}
+	}
+}

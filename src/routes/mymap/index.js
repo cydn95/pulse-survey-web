@@ -117,7 +117,6 @@ class MyMap extends React.Component {
 
   componentWillMount() {
     const { userId, surveyId, surveyUserId, projectId, history } = this.props;
-    console.log('will mount')
     if (
       surveyId == undefined ||
       surveyId == null ||
