@@ -163,6 +163,10 @@
         align-items: center;
         margin-bottom: 11px;
         a {
+          &.underline {
+            text-decoration: underline;
+          }
+          cursor: pointer;
           font-size: 15px;
           font-weight: 500;
           font-stretch: normal;
@@ -188,6 +192,7 @@
           color: #000;
           display: flex;
           align-items: center;
+          cursor: pointer;
           justify-content: center;
         }
       }
@@ -220,6 +225,7 @@
             line-height: normal;
             letter-spacing: normal;
             color: #62b5a6;
+            cursor: pointer;
             margin-right: 15px;
           }
         }
@@ -229,6 +235,9 @@
       position: relative;
       flex-grow: 1;
       margin-left: 15px;
+      & > .e-richtexteditor.e-rte-tb-expand {
+        border: none !important;
+      }
     }
   }
 }

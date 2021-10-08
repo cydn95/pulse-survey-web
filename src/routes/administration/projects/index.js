@@ -22,7 +22,9 @@ const projects = [
     invitedPercent: 63,
     availableSeatCount: 30,
     overallSentiment: 9.2,
-    template: `
+    templates: [{
+      title: 'About the project',
+      content: `
     <p><a href="http://www.syncfusion.com">The Rich Text Editor</a> component is WYSIWYG ("what you see is what you get") editor that provides the best user experience to create and update the content.
         Users can format their content using standard toolbar commands.</p>
     <img alt="Logo" src="http://cdn.syncfusion.com/content/images/sales/buynow/Character-opt.png" />
@@ -34,7 +36,14 @@ const projects = [
         <li> <p>Provides a fully customizable toolbar.</p> </li>
         <li> <p>Provides HTML view to edit the source directly for developers.</p> </li>
         <li> <p>Supports third-party library integration.</p> </li>
-    </ul>`,
+    </ul>`
+    }, {
+      title: 'FAQ',
+      content: `
+    <p><a href="http://www.syncfusion.com">The Rich Text Editor</a> component is WYSIWYG ("what you see is what you get") editor that provides the best user experience to create and update the content.
+        Users can format their content using standard toolbar commands.</p>
+    <p><b>Key features:</b></p>`
+    }],
   },
   {
     id: 32,
@@ -51,7 +60,9 @@ const projects = [
     invitedPercent: 63,
     availableSeatCount: 30,
     overallSentiment: 9.2,
-    template: `
+    templates: [{
+      title: 'About the project',
+      content: `
     <p><a href="http://www.syncfusion.com">The Rich Text Editor</a> component is WYSIWYG ("what you see is what you get") editor that provides the best user experience to create and update the content.
         Users can format their content using standard toolbar commands.</p>
     <img alt="Logo" src="http://cdn.syncfusion.com/content/images/sales/buynow/Character-opt.png" />
@@ -63,7 +74,8 @@ const projects = [
         <li> <p>Provides a fully customizable toolbar.</p> </li>
         <li> <p>Provides HTML view to edit the source directly for developers.</p> </li>
         <li> <p>Supports third-party library integration.</p> </li>
-    </ul>`,
+    </ul>`
+    }],
   },
   {
     id: 33,
@@ -80,7 +92,9 @@ const projects = [
     invitedPercent: 63,
     availableSeatCount: 30,
     overallSentiment: 9.2,
-    template: `
+    templates: [{
+      title: 'About the project',
+      content: `
     <p><a href="http://www.syncfusion.com">The Rich Text Editor</a> component is WYSIWYG ("what you see is what you get") editor that provides the best user experience to create and update the content.
         Users can format their content using standard toolbar commands.</p>
     <img alt="Logo" src="http://cdn.syncfusion.com/content/images/sales/buynow/Character-opt.png" />
@@ -92,7 +106,14 @@ const projects = [
         <li> <p>Provides a fully customizable toolbar.</p> </li>
         <li> <p>Provides HTML view to edit the source directly for developers.</p> </li>
         <li> <p>Supports third-party library integration.</p> </li>
-    </ul>`,
+    </ul>`
+    }, {
+      title: 'FAQ',
+      content: `
+    <p><a href="http://www.syncfusion.com">The Rich Text Editor</a> component is WYSIWYG ("what you see is what you get") editor that provides the best user experience to create and update the content.
+        Users can format their content using standard toolbar commands.</p>
+    <p><b>Key features:</b></p>`
+    }],
   },
 ]
 
