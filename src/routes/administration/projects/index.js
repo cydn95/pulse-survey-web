@@ -153,8 +153,8 @@ const Projects = ({ history, }) => {
       </div>
       {editing < 0 ?
         <div className={styles.projectCards}>
-          {projects.map(project =>
-            <ProjectCard project={project} setEditing={(projectId) => handleEdit(projectId)} />
+          {projects.map((project, index) =>
+            <ProjectCard key={`${project.code}-${index}`} project={project} setEditing={(projectId) => handleEdit(projectId)} />
           )}
         </div> :
         <div>

@@ -32,8 +32,12 @@ const FileUpload = ({
   maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES,
   ...otherProps
 }) => {
+  let data = {}
+  if (otherProps.data !== undefined) {
+    data[otherProps.data.name] = otherProps.data
+  }
   const fileInputField = useRef(null);
-  const [files, setFiles] = useState({});
+  const [files, setFiles] = useState(data);
 
   const handleUploadBtnClick = () => {
     fileInputField.current.click();

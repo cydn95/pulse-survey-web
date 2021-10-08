@@ -34,7 +34,7 @@ const ProjectEdit = ({ project, currentStep }, ref) => {
 
   return (
     <div className={styles.wrapper}>
-      {/* <ProjectSetup
+      {currentStep === 0 && <ProjectSetup
         project={project}
         name={name}
         setName={setName}
@@ -45,15 +45,14 @@ const ProjectEdit = ({ project, currentStep }, ref) => {
         shortText={shortText}
         setShortText={setShortText}
         companyLogo={companyLogo}
-        setCompanyLogo={updateCompanyLogo}
+        updateCompanyLogo={updateCompanyLogo}
         projectLogo={projectLogo}
-        setProjectLogo={updateProjectLogo}
+        updateProjectLogo={updateProjectLogo}
         video={video}
-        setVideo={updateVideo}
+        updateVideo={updateVideo}
         templates={templates}
         setTemplates={setTemplates}
-      /> */}
-      {currentStep === 0 && <div>Project Setup Page</div>}
+      />}
       {currentStep === 1 && <div>Project Configuration Page</div>}
       {currentStep === 2 && <div>User Administration Page</div>}
       {currentStep === 3 && <div>Survey Configuration Page</div>}

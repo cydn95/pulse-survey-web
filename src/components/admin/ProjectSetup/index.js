@@ -57,12 +57,14 @@ const ProjectSetup = ({
 						label="Upload company logo"
 						accept="image"
 						type="file"
+						data={companyLogo}
 						updateFilesCb={updateCompanyLogo}
 					/>
 					<FileUpload
 						label="Upload project logo"
 						accept="image"
 						type="file"
+						data={projectLogo}
 						updateFilesCb={updateProjectLogo}
 					/>
 				</div>
@@ -80,6 +82,7 @@ const ProjectSetup = ({
 						label="Upload Video"
 						description="Record a custom video message to welcome new users and encourage their open and honest feedback."
 						accept="video"
+						data={video}
 						updateFilesCb={updateVideo}
 						maxFileSizeInBytes={5000000000000000}
 					/>
@@ -90,7 +93,7 @@ const ProjectSetup = ({
 				<div className={styles.left}>
 					<h3>More Info</h3>
 					<p>Provide additional context, links or web pages as required.</p>
-					{templates.map((t, index) => <div className={styles.page}>
+					{templates.map((t, index) => <div className={styles.page} key={`${project.code}-${index}`}>
 						<a className={index === crrPage ? styles.underline : ''} onClick={(e) => { e.preventDefault(); setCrrPage(index) }}>{t.title}</a>
 						<span onClick={() => console.log('close')}>x</span>
 					</div>)}
