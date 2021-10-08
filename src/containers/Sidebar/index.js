@@ -340,6 +340,7 @@ class Sidebar extends Component {
       projectId,
       surveyId,
       user,
+      isSuperUser
     } = this.props;
     const { subMenuOpen, run, steps } = this.state;
 
@@ -432,7 +433,7 @@ class Sidebar extends Component {
           <div className={styles.space}></div>
           <div className={styles.link}>
             <ProSidebar width="220px">
-              {user.isSuperUser && <Menu iconShape="square">
+              {isSuperUser && <Menu iconShape="square">
                 <SubMenu title="Administration">
                   {MENU_ADMIN.map((menu) => {
                     return (
@@ -575,6 +576,7 @@ const mapStateToProps = ({ menu, settings, authUser, tour, account }) => {
     guide: profile.guide,
     pageContent,
     tooltipContent,
+    isSuperUser: profile.is_superuser
   };
 };
 

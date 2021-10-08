@@ -59,6 +59,7 @@ function* getProfile({ payload }) {
         avatarId: result.data.avatar ? result.data.avatar.id : 0,
         avatar: result.data.avatar ? result.data.avatar.name : "",
         guide: result.data.guide,
+        is_superuser: result.data.is_superuser,
       };
 
       yield put(getProfileSuccess(profile));

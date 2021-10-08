@@ -541,12 +541,6 @@ export const checkDashboardStatusAPI = (survey, projectUser) => {
   );
 };
 
-const getIsAdminAPI = (id) => {
-  return getClient(true).get(
-    `/users/${id}/`
-  );
-}
-
 // const getSentimentReportAPI = (
 //   surveyId,
 //   startDate = "2021-01-01",
@@ -620,5 +614,4 @@ export {
   getParticipationAPI,
   updateStakeholderCategoryAPI,
   getWordCloudAPI,
-  getIsAdminAPI,
 };
