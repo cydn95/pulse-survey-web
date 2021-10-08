@@ -7,7 +7,8 @@ import {
   setPasswordAPI,
   getSurveyUserAPI,
   getProjectAPI,
-  checkUserPasswordAPI
+  checkUserPasswordAPI,
+  getIsAdminAPI
 } from "../../services/axios/api";
 
 import {
@@ -47,6 +48,11 @@ const loginWithUsernamePasswordAsync = async (username, password, csrf) =>
     .then((authUser) => authUser)
     .catch((error) => error);
 
+const getIsAdminAync = async (id) =>
+  await getIsAdminAPI(id)
+    .then((response) => response)
+    .catch((error) => error)
+
 const resetPasswordWithEmailAsync = async (email, csrf) =>
   await resetPasswordAPI(email, csrf)
     .then((response) => response)
@@ -75,14 +81,21 @@ function* loginWithUsernamePassword({ payload }) {
     if (loginUser.data) {
       let userId = loginUser.data.id;
       let accessToken = loginUser.data.token;
+      const userData = yield call(
+        getIsAdminAync,
+        loginUser.data.id
+      );
+      let isSuperUser = userData.data === undefined ? false : userData.data.is_superuser
       if (accessToken !== "") {
         // Save admin info to localStorage
         localStorage.setItem("userId", userId);
         localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("isSuperUser", isSuperUser);
 
         let authData = {
           userId,
           accessToken,
+          isSuperUser,
         };
 
         yield put(loginUserSuccess(authData));
@@ -168,7 +181,7 @@ function* logout({ payload }) {
     // yield call(logoutUser, history);
     // history.push("/");
     window.location = "/";
-  } catch (error) {}
+  } catch (error) { }
 }
 
 const setPasswordAsync = async (email, password, token, csrf) =>
@@ -259,7 +272,7 @@ function* setProjectID({ payload }) {
     localStorage.setItem("projectTitle", "");
     yield put(setProjectIDSuccess(0, ""));
   }
-  
+
 }
 
 
@@ -272,7 +285,7 @@ function* checkPasswordStatus({ payload }) {
   const { email, callback } = payload;
 
   const result = yield call(getCheckPasswordStatusAsync, email);
-  
+
   callback(result);
 }
 

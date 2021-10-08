@@ -14,7 +14,8 @@ import {
   FileMetaData,
   RemoveFileIcon,
   NoImage,
-  InputLabel
+  InputLabel,
+  VideoPreview,
 } from "./files.styles";
 
 const KILO_BYTES_PER_BYTE = 1000;
@@ -91,6 +92,7 @@ const FileUpload = ({
             {Object.keys(files).map((fileName, index) => {
               let file = files[fileName];
               let isImageFile = file.type.split("/")[0] === "image";
+              let isVideoFile = file.type.split("/")[0] === "video";
               return (
                 <PreviewContainer key={fileName}>
                   <div>
@@ -100,7 +102,12 @@ const FileUpload = ({
                         alt={`file preview ${index}`}
                       />
                     )}
-                    <FileMetaData isImageFile={isImageFile}>
+                    {isVideoFile && (
+                      <VideoPreview autoPlay='autoplay' muted loop>
+                        <source src={URL.createObjectURL(file)} type={file.type} />
+                      </VideoPreview>
+                    )}
+                    <FileMetaData isImageFile={isImageFile || isVideoFile}>
                       <span>{file.name}</span>
                       <aside>
                         <span>{convertBytesToKB(file.size)} kb</span>

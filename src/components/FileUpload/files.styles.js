@@ -194,7 +194,6 @@ export const RemoveFileIcon = styled.i`
 
 export const PreviewContainer = styled.section`
   padding: 0.25rem;
-  height: 126px;
   border-radius: 6px;
   box-sizing: border-box;
 
@@ -226,9 +225,15 @@ export const PreviewContainer = styled.section`
 `;
 
 export const ImagePreview = styled.img`
+  height: 126px;
   border-radius: 6px;
   width: 100%;
-  height: 100%;
+`;
+
+export const VideoPreview = styled.video`
+  height: 250px;
+  border-radius: 6px;
+  width: 100%;
 `;
 
 export const NoImage = styled.img`
