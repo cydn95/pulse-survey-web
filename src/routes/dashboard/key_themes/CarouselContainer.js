@@ -50,6 +50,7 @@ const CarouselContainer = ({
   const callback = (res) => {
     setLoading(false);
     setData(res);
+    console.log('res', res)
   };
 
   useEffect(() => {
@@ -122,6 +123,11 @@ const CarouselContainer = ({
           {data.length > 0 ? (
             data.map((d) => {
               if (d.topicValue === "") return null;
+              if (d.myStatus.length > 0) {
+                if (d.myStatus[0].flagStatus > 0) {
+                  return null;
+                }
+              }
 
               return (
                 <KeyThemesCarousel
