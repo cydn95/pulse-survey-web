@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 import styles from './styles.scss'
 
 import Edit from '../../../assets/img/admin/Edit.svg'
@@ -54,7 +55,7 @@ const AdminStepBar = ({ currentStep, setCurrentStep }) => {
       {
         steps.map((step, index) =>
           <div key={index} className={styles.step}>
-            <div className={styles.imageWrapper} onClick={() => setCurrentStep(index)}>
+            <div className={classnames(styles.imageWrapper, index === currentStep && styles.active)} onClick={() => setCurrentStep(index)}>
               <img src={index === currentStep ? step.active : step.icon} alt="step" />
             </div>
             <span className={index === currentStep ? styles.active : ''}>{step.text}</span>

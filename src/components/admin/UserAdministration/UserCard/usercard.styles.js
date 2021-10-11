@@ -61,11 +61,41 @@ export const Basic = styled.div`
       text-align: left;
       color: #000;
     }
+    &.right-part {
+      display: flex;
+      gap: 15px;
+      div {
+        display: flex;
+        align-items:center;
+      }
+    }
   }
 `
 
 export const BasicContent = styled.div`
   display: flex;
+  align-items: center;
+  gap: 15px;
+  & > div {
+    display: flex;
+    align-items: center;
+    .input {
+      padding: 4px 10px 2px;
+      border-radius: 5px;
+      background-color: #eff0f6;
+      input {
+        font-family: Montserrat;
+        font-size: 13px;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.38;
+        letter-spacing: normal;
+        text-align: left;
+        color: #6d6f94;
+      }
+    }
+  }
 `
 
 export const Detailed = styled.div`
@@ -112,5 +142,5 @@ export const RoleDescription = styled.div`
 `
 
 export const Arrow = styled.div`
-  transform: rotate()
+  transform: rotate(${(props) => props.isActive ? 90 : -90}deg);
 `
