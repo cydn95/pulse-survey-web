@@ -28,6 +28,9 @@
         border-radius: 30px;
         border: solid 2.5px #e8e8e8;
         background-color: #f5f5f5;
+        &.active {
+          border: solid 2.5px #62b5a6;
+        }
       }
       span {
         &.active {

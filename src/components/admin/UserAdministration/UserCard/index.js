@@ -8,20 +8,55 @@ import { Tag, Basic, BasicContent, Wrapper, Detailed, EditPart, RoleDescription,
 
 const UserCard = ({ user }) => {
   const [isActive, setIsActive] = useState(false)
+  const [shGroup, setShGroup] = useState('Internal')
+  const [team, setTeam] = useState('Management')
+  const [shType, setShType] = useState('Team member')
+  const [name, setName] = useState('Ryan Jones')
+  const [email, setEmail] = useState('ryanjones@gmail.com')
+  const [jobTitle, setJobTitle] = useState('Janitor')
+  const [org, setOrg] = useState('Acme')
+  const [roleDescription, setRoleDescription] = useState('I think...')
   return (
     <Wrapper>
-      <Basic onClick={() => setIsActive(!isActive)}>
+      <Basic>
         <div>
-          <h2>Ryan Jones</h2>
+          <h2 onClick={() => setIsActive(!isActive)}>{name}</h2>
           <BasicContent>
-            <span className="tag">SH Group:</span>
-            <span className="tag">SH Type:</span>
-            <span className="tag">Team:</span>
-            <span className="tag">Job Title:</span>
-            <span className="tag">Project Org:</span>
+            <div>
+              <span className="tag">SH Group:&nbsp;</span>
+              <Select
+                selected={shGroup}
+                setSelected={setShGroup}
+                items={['Internal', 'External']}
+              />
+            </div>
+            <div>
+              <span className="tag">SH Type:&nbsp;</span>
+              <Select
+                selected={shType}
+                setSelected={setShType}
+                items={['Team member', 'Stakeholder']}
+              />
+            </div>
+            <div>
+              <span className="tag">Team:&nbsp;</span>
+              <Select
+                selected={team}
+                setSelected={setTeam}
+                items={['Management', 'CTO']}
+              />
+            </div>
+            <div>
+              <span className="tag">Job Title:&nbsp;</span>
+              <Input className="input" value={jobTitle} />
+            </div>
+            <div>
+              <span className="tag">Project Org:&nbsp;</span>
+              <Input className="input" value={org} />
+            </div>
           </BasicContent>
         </div>
-        <div>
+        <div className="right-part" onClick={() => setIsActive(!isActive)}>
           <Tag isActive={isActive}>Self Submited</Tag>
           <Arrow isActive={isActive}>{`>`}</Arrow>
         </div>
@@ -55,33 +90,33 @@ const UserCard = ({ user }) => {
       {isActive && <EditPart>
         <div>
           <span className="bgTag">First Name</span>
-          <Input />
+          <Input value={name.split(' ')[0]} />
         </div>
         <div>
           <span className="bgTag">Last Name</span>
-          <Input />
+          <Input value={name.split(' ')[1]} />
         </div>
         <div>
           <span className="bgTag">Email</span>
-          <Input />
+          <Input value={email} />
         </div>
         <div>
           <span className="bgTag">User Org</span>
-          <Input />
+          <Input value={org} />
         </div>
         <RoleDescription>
           <span className="bgTag">Role Description</span>
-          <Input />
+          <Input value={roleDescription} />
         </RoleDescription>
         <div className="selectGroup">
           <span className="tag">Select Group</span>
-          <TooltipComponent content="Tooltip Content">
+          <TooltipComponent content="Custom Group">
             <CheckBoxComponent label="CG1" checked={false} />
           </TooltipComponent>
-          <TooltipComponent content="Tooltip Content">
-            <CheckBoxComponent label="CG2" checked={false} />
+          <TooltipComponent content="Custom Group">
+            <CheckBoxComponent label="CG2" checked={true} />
           </TooltipComponent>
-          <TooltipComponent content="Tooltip Content">
+          <TooltipComponent content="Custom Group">
             <CheckBoxComponent label="CG3" checked={false} />
           </TooltipComponent>
         </div>

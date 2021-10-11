@@ -1,7 +1,4 @@
 .wrapper {
-	padding: 10px 31px 10px 16px;
-	border-radius: 8px;
-	border: solid 2px #eee;
 	background-color: #fff;
 	position: relative;
   color: gray;
@@ -12,6 +9,8 @@
 	.select {
 		display: flex;
 		justify-content: space-between;
+    gap: 8px;
+    align-items: center;
     .open {
       transform: rotate(90deg);
       font-family: Poppins;
@@ -28,6 +27,7 @@
     width: 100%;
     background-color: white;
 	  border-radius: 8px;
+    min-width: 140px;
 		.item {
 			padding: 10px 16px;
 			border: solid #eee;
