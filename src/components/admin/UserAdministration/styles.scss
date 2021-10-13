@@ -1,4 +1,18 @@
 .horizontalWrapper {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  .individual {
+    gap: 10px;
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+  }
+  .total {
+    display: flex;
+    gap: 10px;
+    flex-grow: 1;
+    flex-wrap: wrap;
+  }
 }

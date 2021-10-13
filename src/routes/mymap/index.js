@@ -19,6 +19,7 @@ import {
   teamList,
   shCategoryList,
   addStakeholder,
+  updateStakeholder,
 } from "Redux/actions";
 
 import {
@@ -1180,6 +1181,29 @@ class MyMap extends React.Component {
     })
   }
 
+  handleUpdateStakeholder = (pId, sId, stakeholder) => {
+    console.log('stakeholder', stakeholder)
+    this.setState({ mapRefresh: true })
+    this.props.updateStakeholder(pId, sId, stakeholder, () => {
+      const { userId, surveyId, surveyUserId, projectId } = this.props;
+      Promise.all([
+        this.props.getKMapData(surveyUserId, userId),
+        this.props.getProjectMapData(surveyUserId, userId),
+        this.props.getShCategoryList(surveyId, 0),
+        this.props.getStakeholderList(surveyUserId, surveyId),
+        this.props.getTeamList(projectId),
+        this.props.getAoQuestionList(surveyUserId, surveyId),
+        this.props.getDriverList(surveyId),
+        this.props.getSkipQuestionList(),
+      ]).then(setTimeout(() => {
+        this.setState({
+          mapRefresh: false,
+          categoryChanged: false,
+        })
+      }, 1500))
+    })
+  }
+
   render() {
     const {
       projectTitle,
@@ -1420,6 +1444,7 @@ class MyMap extends React.Component {
                   projectMapStakeholderList={projectMapStakeholderList}
                   myMapES={esList}
                   projectMapES={projectEsList}
+                  handleUpdateStakeholder={this.handleUpdateStakeholder}
                 />
               )}
               {screen === "add" && shCategoryList.length > 0 && (
@@ -1538,4 +1563,5 @@ export default connect(mapStateToProps, {
   getTeamList: teamList,
   submitAoQuestion,
   addStakeholder,
+  updateStakeholder,
 })(MyMap);

@@ -18,9 +18,9 @@ const UserCard = ({ user }) => {
   const [roleDescription, setRoleDescription] = useState('I think...')
   return (
     <Wrapper>
-      <Basic>
+      <Basic onClick={() => setIsActive(!isActive)}>
         <div>
-          <h2 onClick={() => setIsActive(!isActive)}>{name}</h2>
+          <h2>{name}</h2>
           <BasicContent>
             <div>
               <span className="tag">SH Group:&nbsp;</span>
@@ -56,7 +56,7 @@ const UserCard = ({ user }) => {
             </div>
           </BasicContent>
         </div>
-        <div className="right-part" onClick={() => setIsActive(!isActive)}>
+        <div className="right-part">
           <Tag isActive={isActive}>Self Submited</Tag>
           <Arrow isActive={isActive}>{`>`}</Arrow>
         </div>
@@ -111,13 +111,13 @@ const UserCard = ({ user }) => {
         <div className="selectGroup">
           <span className="tag">Select Group</span>
           <TooltipComponent content="Custom Group">
-            <CheckBoxComponent label="CG1" checked={false} />
+            <input type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
           </TooltipComponent>
           <TooltipComponent content="Custom Group">
-            <CheckBoxComponent label="CG2" checked={true} />
+            <input type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
           </TooltipComponent>
           <TooltipComponent content="Custom Group">
-            <CheckBoxComponent label="CG3" checked={false} />
+            <input type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
           </TooltipComponent>
         </div>
       </EditPart>}

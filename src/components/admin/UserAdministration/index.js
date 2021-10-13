@@ -8,12 +8,18 @@ const UserAdministration = () => {
   return (
     <Fragment>
       <div className={styles.horizontalWrapper}>
-        <Counter count={30} description="Identified Team Members" />
-        <Counter count={25} description="Identified Stakeholder" />
-        <Counter count={20} description="Invited Team Members" />
-        <Counter count={19} description="Invited Stakeholder" />
-        <Counter count={55} description="Total Identified" type="total" />
-        <Counter count={39} description="Total Invited" type="total" />
+        <div className={styles.individual}>
+          <Counter count={30} description="Identified Team Members" />
+          <Counter count={25} description="Identified Stakeholder" />
+        </div>
+        <div className={styles.individual}>
+          <Counter count={20} description="Invited Team Members" />
+          <Counter count={19} description="Invited Stakeholder" />
+        </div>
+        <div className={styles.total}>
+          <Counter count={55} description="Total Identified" type="total" />
+          <Counter count={39} description="Total Invited" type="total" />
+        </div>
       </div>
       <div>
         <UserCard />

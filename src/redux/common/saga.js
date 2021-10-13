@@ -290,7 +290,7 @@ function* addStakeholder({ payload }) {
         shGroup: null,
         myProjectUser: stakeholder.myProjectUser,
       };
-      
+
       const result2 = yield call(addStakeholderAsync, projectUser);
       console.log(result2);
 
@@ -310,6 +310,7 @@ const updateStakeholderAsync = async (projectUserId, projectUser) =>
 function* updateStakeholder({ payload }) {
   try {
     const { projectId, surveyId, stakeholder, callback } = payload;
+    console.log('updated')
 
     const projectUser = {
       project: parseInt(projectId, 10),
@@ -324,13 +325,14 @@ function* updateStakeholder({ payload }) {
       myProjectUser: stakeholder.myProjectUser,
     };
 
+
     const result = yield call(
       updateStakeholderAsync,
       parseInt(stakeholder.projectUserId, 10),
       projectUser
     );
 
-    
+
     if (result.status.toString() === "200") {
       yield put(stakeholderList(stakeholder.myProjectUser, surveyId));
       if (callback) {

@@ -50,7 +50,7 @@ const ProjectSetup = ({
         </div>
         <div className={styles.projectManager}>
           <p className={styles.projectName}>Project Manager</p>
-          <Select selected={manager} setSelected={(item) => setManager(item)} items={managers} />
+          <Select selected={manager} setSelected={(item) => setManager(item)} items={managers} className={styles.withOutline} />
         </div>
         <div className={styles.logos}>
           <FileUpload

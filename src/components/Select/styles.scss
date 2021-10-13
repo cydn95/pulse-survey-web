@@ -22,16 +22,20 @@
 	}
 	.dropdown {
 		position: absolute;
-		top: 100%;
+		top: 95%;
     left: 0;
     width: 100%;
     background-color: white;
 	  border-radius: 8px;
     min-width: 140px;
+    z-index: 10;
 		.item {
 			padding: 10px 16px;
 			border: solid #eee;
-      border-width: 2px 2px 0px 2px;
+      border-width: 0px 2px 2px 2px;
+      &:first-child {
+        border-width: 2px 2px 2px 2px;
+      }
 		}
 	}
 }
