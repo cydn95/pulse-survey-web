@@ -19,7 +19,7 @@ const Input = ({
   onBlur,
 }) => {
   return (
-    <label className={classnames(styles.main, className)}>
+    <label className={classnames(styles.main, className)} onClick={(e) => e.stopPropagation()}>
       {label && <span className={styles.label}>{label}</span>}
       <input
         type={type}

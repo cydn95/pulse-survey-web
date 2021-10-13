@@ -1,6 +1,7 @@
 import React, { useState, useImperativeHandle, forwardRef, useEffect } from 'react'
 import ProjectSetup from '../ProjectSetup'
 import UserAdministration from '../UserAdministration'
+import ProjectConfiguration from '../ProjectConfiguration'
 import styles from './styles.scss'
 
 const ProjectEdit = ({ project, currentStep }, ref) => {
@@ -54,9 +55,10 @@ const ProjectEdit = ({ project, currentStep }, ref) => {
         templates={templates}
         setTemplates={setTemplates}
       />}
-      {currentStep === 1 && <div>Project Configuration Page</div>}
-      {currentStep === 2 && <UserAdministration />}
-      {/* {currentStep === 2 && <div>UserAdministration Page</div>} */}
+      {/* {currentStep === 1 && <div>Project Configuration Page</div>} */}
+      {currentStep === 1 && <ProjectConfiguration />}
+      {/* {currentStep === 2 && <UserAdministration />} */}
+      {currentStep === 2 && <div>UserAdministration Page</div>}
       {currentStep === 3 && <div>Survey Configuration Page</div>}
       {currentStep === 4 && <div>Reporting Page</div>}
       {currentStep === 5 && <div>Flagged Responses Page</div>}

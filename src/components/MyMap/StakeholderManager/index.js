@@ -27,9 +27,9 @@ const StakeholderManager = ({
   teamList,
   onClickDecisionMaker,
   addNewStakeholder,
-  updateStakeholder,
   myMapES,
   projectMapES,
+  updateStakeholder,
   handleUpdateStakeholder,
 }) => {
   const [myCategoryList, setMyCategoryList] = useState([]);
@@ -301,10 +301,10 @@ const StakeholderManager = ({
               selectedProjectCategoryList={projectCategoryList}
               teamList={teamList}
               search={search}
-              onUpdateStakeholder={(projectId, surveyId, stakeholder) =>
-                updateStakeholder(projectId, surveyId, stakeholder, () => {
-                  setView('manage')
-                })
+              onUpdateStakeholder={(projectId, surveyId, stakeholder) => {
+                setView('manage')
+                handleUpdateStakeholder(projectId, surveyId, stakeholder)
+              }
               }
               onUpdateSubView={(subView) => setSubView(subView)}
             />

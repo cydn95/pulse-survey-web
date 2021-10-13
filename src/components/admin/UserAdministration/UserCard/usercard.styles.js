@@ -6,12 +6,13 @@ export const Tag = styled.span`
   background-color: ${(props) => props.isActive ? 'rgba(242, 182, 29, 0.19)' : '#d0e7f8'};
   font-family: Poppins;
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   font-stretch: normal;
   font-style: normal;
   line-height: 1.82;
   letter-spacing: normal;
   text-align: center;
+  cursor: pointer;
   color: ${(props) => props.isActive ? '#d08a02' : '#1289da'};
 `
 
@@ -22,7 +23,7 @@ export const Wrapper = styled.div`
   .tag {
     font-family: Montserrat;
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 600;
     font-stretch: normal;
     font-style: normal;
     line-height: 1.38;
@@ -49,6 +50,8 @@ export const Basic = styled.div`
   align-items: center;
   padding: 15px 35px;
   border-bottom: 1px solid #dfe0eb;
+  flex-wrap: wrap;
+  gap: 10px;
   div {
     h2 {
       font-family: Poppins;
@@ -64,6 +67,7 @@ export const Basic = styled.div`
     &.right-part {
       display: flex;
       gap: 15px;
+      flex-shrink: 0;
       div {
         display: flex;
         align-items:center;
@@ -74,7 +78,10 @@ export const Basic = styled.div`
 
 export const BasicContent = styled.div`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
+  flex-grow: 1;
   gap: 15px;
   & > div {
     display: flex;
@@ -133,6 +140,10 @@ export const EditPart = styled.div`
     &.selectGroup {
       display: flex;
       gap: 10px;
+      .e-tooltip {
+        display: flex;
+        align-items:center
+      }
     }
   }
 `
@@ -143,4 +154,5 @@ export const RoleDescription = styled.div`
 
 export const Arrow = styled.div`
   transform: rotate(${(props) => props.isActive ? 90 : -90}deg);
+  cursor: pointer;
 `

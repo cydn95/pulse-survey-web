@@ -114,7 +114,7 @@ function SearchBar(props) {
                           .length === 0
                           ? `No Users`
                           : getSuggestionsWithSh(decisionMakers, filter, shId)
-                              .length + ` Users`}
+                            .length + ` Users`}
                       </span>
                       {getSuggestionsWithSh(decisionMakers, filter, shId).map(
                         (d, index) => {
@@ -158,7 +158,7 @@ function SearchBar(props) {
                         {getSuggestions(allStakeholders, filter).length === 0
                           ? `No Users`
                           : getSuggestions(allStakeholders, filter).length +
-                            ` Users`}
+                          ` Users`}
                       </span>
                       {getSuggestions(allStakeholders, filter).map(
                         (d, index) => {

@@ -54,10 +54,11 @@ class AllStakeholderList extends Component {
 
   handleUpdateStakeholder = (stakeholder) => {
     const { projectId, surveyId, onUpdateStakeholder } = this.props;
-    this.setState({
-      viewType: "search",
-    });
-    this.props.onUpdateSubView("search");
+    // this.setState({
+    //   viewType: "search",
+    // });
+    onUpdateStakeholder(projectId, surveyId, stakeholder);
+    // this.props.onUpdateSubView("search");
   };
 
   render() {
