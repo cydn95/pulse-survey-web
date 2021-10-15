@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const FileUploadContainer = styled.section`
   position: relative;
-  width: ${(props) => props.accept === "image" ? '134px' : '369px'};
+  max-width: ${(props) => props.accept === "image" ? '124px' : '369px'};
   gap: ${(props) => props.accept === "image" ? '15px' : '30px'};
   display: flex;
   flex-direction: column;

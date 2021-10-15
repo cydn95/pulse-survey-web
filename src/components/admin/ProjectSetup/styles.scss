@@ -11,22 +11,41 @@
     flex-grow: 1;
     max-width: 386px;
     .projectName {
-      margin-bottom: 15px;.input {
-        margin-bottom: 10px;
-        padding: 10px 16px;
-        border-radius: 8px;
-        background-color: #eff0f6;
-        border: 0;
-        input {
-          color: gray;
-          font-family: Montserrat;
-          font-size: 13px;
-          font-weight: 600;
-        }
+      font-family: Montserrat;
+      font-size: 13px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.38;
+      letter-spacing: normal;
+      color: #000;
+      margin: 0px;
+      margin-bottom: 15px;
+    }
+    .input {
+      margin-bottom: 10px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      background-color: #eff0f6;
+      border: 0;
+      input {
+        color: gray;
+        font-family: Montserrat;
+        font-size: 13px;
+        font-weight: 600;
       }
     }
     .projectCode {
       margin-top: 18px;
+      font-family: Montserrat;
+      font-size: 13px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.38;
+      letter-spacing: normal;
+      color: #000;
+      margin: 0px;
       span {
         font-weight: 800;
       }
@@ -40,12 +59,21 @@
     border: solid 2px #eee;
     }
     .projectName {
+      font-family: Montserrat;
+      font-size: 13px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.38;
+      letter-spacing: normal;
+      color: #000;
+      margin: 0px;
       margin-bottom: 15px;
     }
   }
   .logos {
     display: flex;
-    gap: 23px;
+    gap: 15px;
   }
 }
 
@@ -61,7 +89,7 @@
   .header {
     font-family: Poppins;
     font-size: 16px;
-    font-weight: normal;
+    font-weight: 600;
     font-stretch: normal;
     font-style: normal;
     line-height: normal;
@@ -75,12 +103,7 @@
     flex-wrap: wrap;
     gap: 65px;
     .message {
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-      max-width: 386px;
       p {
-        margin-bottom: 15px;
         font-family: Montserrat;
         font-size: 13px;
         font-weight: 600;
@@ -90,6 +113,7 @@
         letter-spacing: normal;
         color: #000;
         margin: 0px;
+        margin-bottom: 15px;
       }
       .input {
         margin-bottom: 10px;
@@ -113,6 +137,7 @@
         font-family: Montserrat;
         font-size: 13px;
         font-weight: 600;
+        width: calc(100% - 32px);
       }
     }
   }
@@ -245,5 +270,57 @@
   .richText {
     position: relative;
     flex-grow: 1;
+    max-width: 640px;
+  }
+}
+
+.richTextMobile {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #eff1f4;
+  .header {
+    margin: 20px 0px 0px 20px;
+    font-size: 25px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.6;
+    letter-spacing: -0.64px;
+    color: #273645;
+  }
+  .brandcrumb {
+    margin-left: 20px;
+    font-family: Poppins;
+    font-size: 15px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #62b5a6;
+  }
+  .btn {
+    margin: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .basicData {
+    padding: 21px 23px;
+  }
+  .welcome {
+    padding: 21px 20px;
+  }
+  .moreInfo {
+    padding: 22px 21px;
+    .richText {
+      display: none;
+    }
   }
 }

@@ -108,6 +108,7 @@
         }
       }
       .threshold {
+        width: 82px;
         padding: 10px 16px;
         border-radius: 8px;
         background-color: #eff0f6;
@@ -133,6 +134,7 @@
         align-items: flex-start;
         gap: 15px;
         flex: 1;
+        width: 100%;
         & > div {
           width: 100%;
         }
@@ -203,6 +205,16 @@
             margin-right: 15px;
           }
         }
+      }
+    }
+  }
+}
+
+@media (max-width: 425px) {
+  .wrapper {
+    .row {
+      .description {
+        max-width: 100%;
       }
     }
   }

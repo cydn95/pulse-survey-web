@@ -50,18 +50,20 @@ const steps = [
 
 const AdminStepBar = ({ currentStep, setCurrentStep }) => {
   return (
-    <div className={styles.stepBar}>
-      <div className={styles.centerLine}></div>
-      {
-        steps.map((step, index) =>
-          <div key={index} className={styles.step}>
-            <div className={classnames(styles.imageWrapper, index === currentStep && styles.active)} onClick={() => setCurrentStep(index)}>
-              <img src={index === currentStep ? step.active : step.icon} alt="step" />
+    <div className={styles.wrapper}>
+      <div className={styles.stepBar}>
+        <div className={styles.centerLine}></div>
+        {
+          steps.map((step, index) =>
+            <div key={index} className={styles.step}>
+              <div className={classnames(styles.imageWrapper, index === currentStep && styles.active)} onClick={() => setCurrentStep(index)}>
+                <img src={index === currentStep ? step.active : step.icon} alt="step" />
+              </div>
+              <span className={index === currentStep ? styles.active : ''}>{step.text}</span>
             </div>
-            <span className={index === currentStep ? styles.active : ''}>{step.text}</span>
-          </div>
-        )
-      }
+          )
+        }
+      </div>
     </div>
   )
 }

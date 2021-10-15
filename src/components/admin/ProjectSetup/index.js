@@ -40,6 +40,7 @@ const ProjectSetup = ({
   setTemplates
 }) => {
   const [crrPage, setCrrPage] = useState(0)
+  const [show, setShow] = useState(false)
   return (
     <Fragment>
       <div className={styles.basicData}>
@@ -94,7 +95,7 @@ const ProjectSetup = ({
           <h3>More Info</h3>
           <p>Provide additional context, links or web pages as required.</p>
           {templates.map((t, index) => <div className={styles.page} key={`${project.code}-${index}`}>
-            <a className={index === crrPage ? styles.underline : ''} onClick={(e) => { e.preventDefault(); setCrrPage(index) }}>{t.title}</a>
+            <a className={index === crrPage ? styles.underline : ''} onClick={(e) => { e.preventDefault(); setCrrPage(index); setShow(true); }}>{t.title}</a>
             <span onClick={() => console.log('close')}>x</span>
           </div>)}
           <div className={styles.add}>
@@ -112,6 +113,18 @@ const ProjectSetup = ({
           </RichTextEditorComponent>
         </div>
       </div>
+      {show && <div className={styles.richTextMobile}>
+        <h2 className={styles.header}>About the project</h2>
+        <span className={styles.brandcrumb}>{`Projects > Edit Project > ${templates[crrPage].title}`}</span>
+        <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={templates[crrPage].content} saveInterval={1000} change={(e) => {
+          let temp = [...templates]
+          temp[crrPage].content = e.value
+          setTemplates(temp)
+        }}>
+          <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
+        </RichTextEditorComponent>
+        <Button className={styles.btn} onClick={() => setShow(false)}>Save and go back</Button>
+      </div>}
     </Fragment>
   )
 }

@@ -4,10 +4,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
     gap: 15px;
     .title {
-      font-size: 25px;
+      font-size: 20px;
       font-weight: 600;
       font-stretch: normal;
       font-style: normal;
@@ -17,7 +16,7 @@
     }
     .breadcrumb {
       font-family: Poppins;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 500;
       font-stretch: normal;
       font-style: normal;
@@ -29,6 +28,9 @@
     .btnGroup {
       display: flex;
       gap: 16px;
+      .forMobile {
+        display: none;
+      }
       .cancelBtn {
         font-size: 13px;
         padding: 12px 38px;
@@ -54,6 +56,25 @@
   .main {
     .projectCards {
       grid-template-columns: repeat(1, 1fr);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    .header {
+      .btnGroup{
+        .button {
+          display: none;
+        }
+        .cancelBtn {
+          display: none;
+        }
+        .forMobile {
+          display: block;
+          height: 26px;
+        }
+      }
     }
   }
 }

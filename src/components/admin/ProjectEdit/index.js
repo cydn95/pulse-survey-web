@@ -5,7 +5,7 @@ import ProjectConfiguration from '../ProjectConfiguration'
 import SurveyConfiguration from '../SurveyConfiguration'
 import styles from './styles.scss'
 
-const ProjectEdit = ({ project, currentStep }, ref) => {
+const ProjectEdit = ({ project, currentStep, setBreadcrumb }, ref) => {
   const [name, setName] = useState(project.name)
   const [manager, setManager] = useState(project.manager)
   const [companyLogo, setCompanyLogo] = useState()
@@ -38,6 +38,7 @@ const ProjectEdit = ({ project, currentStep }, ref) => {
   return (
     <div className={styles.wrapper}>
       {currentStep === 0 && <ProjectSetup
+        setBreadcrumb={setBreadcrumb}
         project={project}
         name={name}
         setName={setName}
