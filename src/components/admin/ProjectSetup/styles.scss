@@ -54,7 +54,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 17px;
-  padding: 21px 351px 34px 38px;
+  padding: 21px 38px;
   border-radius: 8px;
   border: solid 1px #dfe0eb;
   background-color: #fff;
@@ -72,6 +72,7 @@
   .content {
     display: flex;
     align-items: flex-end;
+    flex-wrap: wrap;
     gap: 65px;
     .message {
       display: flex;
@@ -136,8 +137,10 @@
 }
 .moreInfo {
   display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
   padding: 30px 38px;
-  gap: 82px;
   border-radius: 8px;
   border: solid 1px #dfe0eb;
   background-color: #fff;
@@ -242,6 +245,5 @@
   .richText {
     position: relative;
     flex-grow: 1;
-    margin-left: 15px;
   }
 }

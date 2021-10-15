@@ -1,9 +1,65 @@
 .wrapper {
-  .user_group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  .row {
     background-color: white;
     padding: 38px 27px;
     border-radius: 8px;
     border: solid 1px #dfe0eb;
+    &.order {
+      display: flex;
+      gap: 15px;
+      flex-direction: column;
+      .description {
+        width: unset;
+      }
+      h2 {
+        margin-bottom: 0px;
+      }
+      .btnGroup {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        .resetAll {
+          padding: 10px 20px;
+          border-radius: 5px;
+          background-color: #cacaca;
+          &:focus {
+            background-color: #cacaca;
+          }
+          &:hover {
+            background-color: #cacaca;
+          }
+        }
+        .reorder {
+          display: flex;
+          align-items: center;
+          gap: 13px;
+          .image {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4px;
+            border-radius: 2px;
+            border: solid 1px rgba(138, 143, 160, 0.21);
+          }
+          .text {
+            font-family: Poppins;
+            font-size: 12px;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            color: #62b5a6;
+          }
+        }
+      }
+    }
     h2 {
       font-family: Poppins;
       font-size: 18px;
@@ -15,6 +71,18 @@
       text-align: left;
       color: #000;
       margin-bottom: 9px;
+    }
+    .description {
+      font-family: Poppins;
+      font-size: 11px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #8b90a1;
+      width: 371px;
     }
     .threshold_wrapper {
       display: flex;
@@ -83,18 +151,6 @@
           letter-spacing: normal;
           text-align: center;
           color: #000;
-        }
-        .description {
-          font-family: Poppins;
-          font-size: 11px;
-          font-weight: normal;
-          font-stretch: normal;
-          font-style: normal;
-          line-height: normal;
-          letter-spacing: normal;
-          text-align: left;
-          color: #8b90a1;
-          width: 371px;
         }
         .customGroup {
           padding: 10px 16px;
