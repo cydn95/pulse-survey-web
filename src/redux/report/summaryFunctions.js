@@ -6,6 +6,7 @@ export const getCultureResult = (resData) => {
 
   for (let i = 0; i < resData.length; i++) {
     const question = resData[i];
+    if (question.controlType !== "SLIDER") continue;
     const intValue = question.integerValue;
 
     const questionData = question.amQuestionData;

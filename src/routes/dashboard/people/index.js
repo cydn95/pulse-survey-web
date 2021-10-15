@@ -163,7 +163,7 @@ class ReportPeople extends React.Component {
       type === "ShGroup"
         ? getFeedbackSummaryByShGroup(allData, shGroupList)
         : getFeedbackSummaryByTeamOrOrganization(allData, type);
-    
+
     this.setState({
       feedbackSummary: feedbackSummaryRet
     })
