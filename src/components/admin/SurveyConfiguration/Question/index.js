@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import Select from 'Components/Select'
 import Input from 'Components/Input'
+import styles from './styles.scss'
 
 const Tag = styled.span`
   padding: 3px 6px 1px;

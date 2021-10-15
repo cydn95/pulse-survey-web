@@ -1,14 +1,82 @@
-.wrapper {
+.header {
   display: flex;
-  flex-direction: column;
-  gap: 25px;
-  .header {
+  width: 100%;
+  justify-content: space-between;
+  h2 {
+    font-family: Poppins;
+    font-size: 21px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #273645;
+  }
+  .rightPart {
     display: flex;
-    justify-content: space-between;
-    h2 {
+    gap: 13px;
+    div {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      .image {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 4px;
+        border-radius: 2px;
+        border: solid 1px rgba(138, 143, 160, 0.21);
+        color: #62b5a6;
+      }
+      .text {
+        font-family: Poppins;
+        font-size: 12px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #62b5a6;
+      }
+    }
+  }
+}
+.filters {
+  border: solid 1px #212529;
+  display: inline-flex;
+  border-radius: 5px;
+  justify-self: flex-start;
+  .filter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 160px;
+    padding: 8px;
+    gap: 13px;
+    cursor: pointer;
+    &.active {
+      background-color: #273645;
+      .icon {
+        fill: #fff;
+      }
+      span {
+        color: #fff;
+      }
+    }
+    .icon {
+      fill: #273645;
+      width: 14px;
+      height: 14px;
+    }
+    span {
       font-family: Poppins;
-      font-size: 21px;
-      font-weight: bold;
+      font-size: 13px;
+      font-weight: 500;
       font-stretch: normal;
       font-style: normal;
       line-height: normal;
@@ -16,88 +84,32 @@
       text-align: left;
       color: #273645;
     }
-    .rightPart {
-      display: flex;
-      gap: 13px;
-      div {
-        display: flex;
-        align-items: center;
-        gap: 7px;
-        .image {
-          width: 24px;
-          height: 24px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          padding: 4px;
-          border-radius: 2px;
-          border: solid 1px rgba(138, 143, 160, 0.21);
-          color: #62b5a6;
-        }
-        .text {
-          font-family: Poppins;
-          font-size: 12px;
-          font-weight: 600;
-          font-stretch: normal;
-          font-style: normal;
-          line-height: normal;
-          letter-spacing: normal;
-          text-align: left;
-          color: #62b5a6;
-        }
-      }
-    }
   }
-  .filters {
-    border: solid 1px #212529;
-    display: inline-flex;
+}
+.drivers {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  span {
+    padding: 4px 10px 5px;
     border-radius: 5px;
-    justify-self: flex-start;
-    .filter {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 160px;
-      padding: 8px;
-      gap: 13px;
-      &.active {
-        background-color: #273645;
-        .icon {
-          fill: #fff;
-        }
-        span {
-          color: #fff;
-        }
-      }
-      .icon {
-        fill: #273645;
-        width: 14px;
-        height: 14px;
-      }
-      span {
-        font-family: Poppins;
-        font-size: 13px;
-        font-weight: 500;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: normal;
-        letter-spacing: normal;
-        text-align: left;
-        color: #273645;
-      }
-    }
-  }
-  .drivers {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
-    span {
-      padding: 4px 10px 5px;
-      border-radius: 5px;
-      border: solid 1px #97a0af;
-      background-color: #f4f5f7;
+    border: solid 1px #97a0af;
+    background-color: #f4f5f7;
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.67;
+    letter-spacing: normal;
+    text-align: left;
+    color: #757f88;
+    cursor: pointer;
+    &.active {
+      color: #fff;
+      background-color: #273645;
+      border: solid 1px #273645;
     }
   }
 }

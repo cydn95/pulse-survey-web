@@ -75,8 +75,10 @@ const ProjectCard = ({ project, setEditing }) => {
       <div className={styles.actions}>
         <Button className={styles.edit} onClick={(e) => setEditing(project.id)}>Edit project</Button>
         <Button className={styles.deactivate}>Deactivate</Button>
-        <Button className={styles.plus}>+</Button>
-        <p>Add New Stakeholder</p>
+        <div>
+          <Button className={styles.plus}>+</Button>
+          <p>Add New Stakeholder</p>
+        </div>
       </div>
     </div>
   )

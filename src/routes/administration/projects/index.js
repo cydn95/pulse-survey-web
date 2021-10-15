@@ -4,6 +4,8 @@ import ProjectEdit from 'Components/admin/ProjectEdit'
 import AdminStepBar from 'Components/admin/AdminStepBar'
 import Input from "Components/Input";
 import Button from 'Components/Button'
+import CancelImage from '../../../assets/img/admin/Cancel.png'
+import SaveImage from '../../../assets/img/admin/Save.png'
 import styles from './styles.scss'
 
 const projects = [
@@ -140,12 +142,18 @@ const Projects = ({ history, }) => {
     <div className={styles.main}>
       <div className={styles.header}>
         <div>
-          <h2 className={styles.title}>Projects</h2>
+          <h2 className={styles.title}>{editing < 0 ? 'Projects' : currentProject.name}</h2>
           <h3 className={styles.breadcrumb}>{breadcrumb}</h3>
         </div>
         {editing < 0 ?
           <Button className={styles.button}>Create new project</Button> :
           <div className={styles.btnGroup}>
+            <span className={styles.forMobile} onClick={() => handleEdit(-1)}>
+              <img src={CancelImage} alt="cancel" />
+            </span>
+            <span className={styles.forMobile} onClick={() => console.log(projectEditRef.current)}>
+              <img src={SaveImage} alt="save" />
+            </span>
             <Button className={styles.cancelBtn} onClick={() => handleEdit(-1)}>Cancel</Button>
             <Button className={styles.button} onClick={() => console.log(projectEditRef.current)}>Save changes</Button>
           </div>
@@ -159,7 +167,7 @@ const Projects = ({ history, }) => {
         </div> :
         <div>
           <AdminStepBar currentStep={currentStep} setCurrentStep={(i) => setCurrentStep(i)} />
-          <ProjectEdit ref={projectEditRef} project={currentProject} currentStep={currentStep} />
+          <ProjectEdit ref={projectEditRef} project={currentProject} currentStep={currentStep} setBreadcrumb={setBreadcrumb} />
         </div>
       }
     </div>
