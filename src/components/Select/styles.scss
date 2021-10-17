@@ -12,11 +12,11 @@
     gap: 8px;
     align-items: center;
     .open {
-      transform: rotate(90deg);
+      transform: rotate(-90deg);
       font-family: Poppins;
     }
     .close {
-      transform: rotate(-90deg);
+      transform: rotate(90deg);
       font-family: Poppins;
     }
 	}

@@ -6,7 +6,7 @@ import Reorder from '../../../assets/img/admin/reorder.png'
 
 const questions = [
   {
-    text: "Does the team have enough experience it o succeed?",
+    text: "Does the team have enough experience to succeed?",
     controlType: 'Slider',
     driver: 'Sentiment',
     subDriver: 'Experience',
@@ -99,8 +99,8 @@ const SurveyConfiguration = () => {
         </div>
       </div>
       <div className={styles.drivers}>
-        {drivers.map(driver =>
-          <span className={driver === currentDriver ? styles.active : ''} onClick={() => setCurrentDriver(driver)}>{driver}</span>
+        {drivers.map((driver, idx) =>
+          <span key={`${idx}-${driver}`} className={driver === currentDriver ? styles.active : ''} onClick={() => setCurrentDriver(driver)}>{driver}</span>
         )}
       </div>
       {questions.map((question, idx) => {

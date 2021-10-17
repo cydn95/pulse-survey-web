@@ -109,6 +109,9 @@ export const BasicContent = styled.div`
   justify-content: space-between;
   flex-grow: 1;
   gap: 15px;
+  .btnViewDetails {
+    display: none;
+  }
   & > div {
     display: flex;
     align-items: center;
@@ -130,6 +133,9 @@ export const BasicContent = styled.div`
     }
   }
   @media (max-width: 768px) {
+    .btnViewDetails {
+      display: block;
+    }
     & > div {
       &:nth-child(n+4) {
         flex-wrap: wrap;
@@ -197,7 +203,7 @@ export const RoleDescription = styled.div`
 `
 
 export const Arrow = styled.div`
-  transform: rotate(${(props) => props.isActive ? 90 : -90}deg);
+  transform: rotate(${(props) => props.isActive ? -90 : 90}deg);
   cursor: pointer;
 `
 
@@ -284,6 +290,7 @@ export const ModalHeader = styled.div`
   span {
     color: #6d6f94;
     font-family: cursive;
+    cursor: pointer;
   }
 `
 
@@ -296,6 +303,7 @@ export const ModalFooter = styled.div`
     display: flex;
     align-items: center;
     width: 108px;
+    cursor: pointer;
     justify-content: center;
   }
   .btn {

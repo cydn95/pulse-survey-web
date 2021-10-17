@@ -86,12 +86,37 @@
     }
     .threshold_wrapper {
       display: flex;
-      align-items: center;
+      flex-wrap: wrap;
       gap: 15px;
-      .left_part {
+      .anonymity {
         display: flex;
         align-items: center;
-        span {
+        gap: 15px;
+        .left_part {
+          display: flex;
+          align-items: center;
+          span {
+            font-family: Poppins;
+            font-size: 13px;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: center;
+            color: #000;
+          }
+          img {
+            width: 25px;
+            height: 25px;
+          }
+        }
+      }
+      .completion {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        .text {
           font-family: Poppins;
           font-size: 13px;
           font-weight: 600;
@@ -101,10 +126,6 @@
           letter-spacing: normal;
           text-align: center;
           color: #000;
-        }
-        img {
-          width: 25px;
-          height: 25px;
         }
       }
       .threshold {

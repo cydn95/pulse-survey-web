@@ -17,11 +17,14 @@ const Input = ({
   type,
   onFocus,
   onBlur,
+  style = null,
+  refVal = null,
 }) => {
   return (
     <label className={classnames(styles.main, className)} onClick={(e) => e.stopPropagation()}>
       {label && <span className={styles.label}>{label}</span>}
       <input
+        ref={refVal}
         type={type}
         name={name}
         placeholder={placeholder}
@@ -30,6 +33,7 @@ const Input = ({
         value={value}
         onFocus={(e) => (onFocus ? onFocus(e) : {})}
         onBlur={(e) => (onBlur ? onBlur(e) : {})}
+        style={style}
       />
     </label>
   );

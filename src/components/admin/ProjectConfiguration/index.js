@@ -112,14 +112,20 @@ const ProjectConfiguration = () => {
       <div className={styles.row}>
         <h2>User Grouping</h2>
         <div className={styles.threshold_wrapper}>
-          <div className={styles.left_part}>
-            <span>Anonymity Threshold&nbsp;</span>
-            <TooltipComponent
-              content="To ensure all responses remain safe and anonymous the minimum threshold is 3">
-              <img src={Help} alt="help" />
-            </TooltipComponent>
+          <div className={styles.anonymity}>
+            <div className={styles.left_part}>
+              <span>Anonymity Threshold&nbsp;</span>
+              <TooltipComponent
+                content="To ensure all responses remain safe and anonymous the minimum threshold is 3">
+                <img src={Help} alt="help" />
+              </TooltipComponent>
+            </div>
+            <Input type="number" className={styles.threshold} />
           </div>
-          <Input type="number" className={styles.threshold} />
+          <div className={styles.completion}>
+            <span className={styles.text}>Completion Threshold(%)</span>
+            <Input className={styles.threshold} />
+          </div>
         </div>
         <div className={styles.detailed}>
           <div className={styles.column}>
