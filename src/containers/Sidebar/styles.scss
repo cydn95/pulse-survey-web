@@ -14,8 +14,8 @@
   margin-left: 40px;
   background: url(/assets/img/login/projecai-logo.png);
   background-size: cover;
-  display: flex;
-  justify-content: flex-end;
+  display: inline;
+  flex-shrink: 0;
 }
 
 .main-menu {
@@ -24,6 +24,17 @@
   flex-direction: column;
   padding-bottom: 30px;
   background-color: #212529;
+  height: 100vh;
+  overflow: auto !important;
+  scrollbar-color: #77c8bb #aaa;
+  scrollbar-width: thin;
+  &::-webkit-scrollbar {
+    width: 5px;
+    background-color: #aaa;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #77c8bb;
+  }
 }
 
 .link {
