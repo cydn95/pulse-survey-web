@@ -25,7 +25,9 @@ class SetPassword extends Component {
       emailValidator: "",
       passwordValidator: "",
       confirmPasswordValidator: "",
+      privacyValidator: "",
       loading: true,
+      privacy: false,
     };
   }
 
@@ -48,6 +50,13 @@ class SetPassword extends Component {
   }
 
   handleInput = (e) => {
+    if (e.target.name === 'privacy') {
+      this.setState({
+        [e.target.name]: e.target.checked,
+        [e.target.name + "Validator"]: "",
+      });
+      return;
+    }
     this.setState({
       [e.target.name]: e.target.value,
       [e.target.name + "Validator"]: "",
@@ -55,8 +64,15 @@ class SetPassword extends Component {
   };
 
   handleSetPassword = (e) => {
-    const { email, password, confirmPassword, token } = this.state;
+    const { email, password, confirmPassword, token, privacy } = this.state;
     const { setPassword, history } = this.props;
+
+    if (!privacy) {
+      this.setState({
+        privacyValidator: "error"
+      });
+      return;
+    }
 
     if (email === "") {
       this.setState({
@@ -122,28 +138,23 @@ class SetPassword extends Component {
             make this project successful.
           </p>
           <h2 className="set-password__content--subtitle">What is Pulse? ​</h2>
-          <p className="set-password__content--description">
-            Pulse is an easy to use web application designed to capture: Some
-            basic info About You, and your role on the project. The team would
-            like to understand what you think, how you feel, and what you care
-            about. Some info about others that you are working with – by
-            creating a “map” of the other people involved. We’d like to
-            understand: ​<br />
-            <strong>My Map</strong>: The people working with you on a day to day
-            basis – and how you think they feel about the project.​
-            <br />
-            <strong>Project Map</strong>: The people who you think are most
-            important to the project success – and how you think they feel.​
-            <br />
-            There are NO WRONG ANSWERS! The team needs your honest feedback!
-            Using your insight, we want to identify new ways we can improve, and
-            places we need to focus to help create a more successful and
-            predictable project!
+          <p className="set-password__content--description_2">
+            Pulse is an easy to use web application designed to understand the sentiment and
+            perspectives of team members in real-time_ by <strong>anonymously</strong> measuring
+            <ul>
+              <li>
+                <strong>About Me</strong>: <u>How you feel</u> about the project
+              </li>
+              <li>
+                <strong>About Others</strong>: How you think <u>other people feel</u> about the project
+              </li>
+            </ul>
+            There are no wrong answers. You can cheange your feedback as often as you'd like and your responses will be kept anonymous!
           </p>
           <h2 className="set-password__content--subtitle">To Get Started​​</h2>
-          <p className="set-password__content--description">
+          {/* <p className="set-password__content--description">
             Confirm your details below, click “edit” if you’d like to make any
-            changes.​
+            changes.
           </p>
           <Input
             type="text"
@@ -155,13 +166,13 @@ class SetPassword extends Component {
             name="email"
             value={email}
             onChange={(e) => this.handleInput(e)}
-          />
+          /> */}
           {emailValidator !== "" && (
             <span class="set-password__content--error">Email is required</span>
           )}
           <p className="set-password__content--description">
             Create a password. You can log back in and change your answers at
-            any time!​
+            any time!
           </p>
           <Input
             type="password"
@@ -191,6 +202,7 @@ class SetPassword extends Component {
             name="confirmPassword"
             value={confirmPassword}
             placeholder="Confirm Password"
+            style={{ marginBottom: 20 }}
             onChange={(e) => this.handleInput(e)}
           />
           {confirmPasswordValidator !== "" && (
@@ -198,6 +210,15 @@ class SetPassword extends Component {
               Confirm Password is required
             </span>
           )}
+          <div className={`set-password__content--prviacy_and_policy ${this.state.privacyValidator}`}>
+            <input
+              name="privacy"
+              id="privacy"
+              type="checkbox"
+              onChange={(e) => this.handleInput(e)} checked={this.state.privacy}
+            />
+            <label htmlFor="privacy">I understand the <a href="https://projectai.com/privacy-policy/">Privcy Policy</a> and agree to the <a href="#">Terms {`&`} conditions</a></label>
+          </div>
           <Button
             className="set-password__content--submit round-btn green"
             onClick={(e) => this.handleSetPassword()}
