@@ -4,8 +4,8 @@ import classnames from 'classnames'
 import Select from 'Components/Select'
 import Input from 'Components/Input'
 import styles from './styles.scss'
-import QMark from 'Assets/img/admin/Qmark.svg'
-import DeleteIcon from 'Assets/img/admin/delete.svg'
+import QMark from '../../../../assets/img/admin/Qmark.svg'
+import DeleteIcon from '../../../../assets/img/admin/delete.svg'
 
 const Tag = styled.span`
   padding: 3px 6px 1px;
