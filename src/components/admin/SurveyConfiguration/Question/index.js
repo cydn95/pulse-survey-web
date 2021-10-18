@@ -4,8 +4,8 @@ import classnames from 'classnames'
 import Select from 'Components/Select'
 import Input from 'Components/Input'
 import styles from './styles.scss'
-// import QMark from '../../../../assets/img/admin/qmark.svg'
-// import DeleteIcon from '../../../../assets/img/admin/delete.svg'
+import QMark from 'Assets/img/admin/qmark.svg'
+import DeleteIcon from 'Assets/img/admin/delete.svg'
 
 const Tag = styled.span`
   padding: 3px 6px 1px;
@@ -59,7 +59,7 @@ const Question = ({ question }) => {
     <div className={styles.wrapper}>
       <div className={styles.basic}>
         <div className={styles.data}>
-          {/* <span className={styles.qmark}><img src={QMark} alt="QMark" /></span> */}
+          <span className={styles.qmark}><img src={QMark} alt="QMark" /></span>
           <div>
             <div className={styles.headerPart}>
               <span className={styles.hide} ref={spanRef}>{survey}</span>
@@ -95,7 +95,7 @@ const Question = ({ question }) => {
         <div className={styles.function}>
           <span className={styles.label}>Control Type:</span>
           <Select selected={controlType} setSelected={setControlType} items={controlTypes} className={styles.controlType} />
-          {/* <span className={styles.delete}><img src={DeleteIcon} alt="delete" /></span> */}
+          <span className={styles.delete}><img src={DeleteIcon} alt="delete" /></span>
           <span className={styles.toggle}>{`>`}</span>
         </div>
       </div>

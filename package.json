@@ -101,7 +101,7 @@
     "express-favicon": "^2.0.1",
     "grommet": "^2.13.0",
     "icomoon-free-npm": "^0.0.0",
-    "keylines": "file:keylines-6.6.0-67962.tar.gz",
+    "keylines": "file:keylines-6.7.tar.gz",
     "lodash": "^4.17.21",
     "materialize-css": "^1.0.0-rc.2",
     "node-sass": "^4.14.1",

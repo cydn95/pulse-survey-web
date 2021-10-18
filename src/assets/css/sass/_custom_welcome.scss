@@ -80,7 +80,7 @@
   }
 
   &__content {
-    width: 60%;
+    width: 80%;
     margin-left: 15%;
     height: 100%;
     display: flex;
@@ -104,6 +104,18 @@
       margin-top: 22px;
     }
 
+    &--description_2 {
+      font-size: 17px !important;
+      color: #000;
+      line-height: 1.75;
+      letter-spacing: normal;
+      margin-top: 22px;
+      margin-bottom: 22px;
+      ul {
+        margin: 10px 10px 10px 20px;
+      }
+    }
+
     &--error {
       display: inline-block;
       margin-top: 5px;
@@ -116,6 +128,15 @@
       color: #333;
       line-height: 1.73;
       letter-spacing: normal;
+    }
+
+    &--prviacy_and_policy {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      &.error {
+        color: red;
+      }
     }
 
     &--input {
