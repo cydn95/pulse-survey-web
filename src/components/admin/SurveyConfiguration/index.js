@@ -3,7 +3,6 @@ import classnames from 'classnames'
 import Question from './Question'
 import styles from './styles.scss'
 import Reorder from '../../../assets/img/admin/reorder.png'
-import QMark from '../../../assets/img/admin/qmark.svg'
 
 const questions = [
   {
