@@ -141,7 +141,7 @@ const UserCard = ({ user }) => {
         </div>
       </EditPart>}
       {open && <ModalWrapper onClick={() => setOpen(false)}>
-        <DetailModal>
+        <DetailModal onClick={(e) => e.stopPropagation()}>
           <ModalHeader>
             <h2>Ryan Jones</h2>
             <span onClick={() => setOpen(false)}>X</span>

@@ -3,9 +3,18 @@ import styled from 'styled-components'
 import classnames from 'classnames'
 import Select from 'Components/Select'
 import Input from 'Components/Input'
+import Button from 'Components/Button'
+import AddButton from 'Components/AddButton'
+import {
+  DetailModal,
+  ModalWrapper,
+  ModalHeader,
+  ModalFooter,
+} from '../../UserAdministration/UserCard/usercard.styles'
 import styles from './styles.scss'
 import QMark from '../../../../assets/img/admin/QMark.svg'
 import DeleteIcon from '../../../../assets/img/admin/delete.svg'
+import { Fragment } from 'react'
 
 const Tag = styled.span`
   padding: 3px 6px 1px;
@@ -38,18 +47,25 @@ const shGroups = [
     background: 'rgba(242, 182, 29, 0.19);'
   }
 ]
-const controlTypes = ['Multi Options', 'SLIDER', 'Two Options', 'Multi-Topic']
+const controlTypes = ['Multi Options', 'Slider', 'Two Options', 'Multi-Topic']
 const drivers = ['Sentiment', 'Support', 'Politics', 'Risks']
 
 const Question = ({ question }) => {
   const headerRef = useRef(null)
   const spanRef = useRef(null)
+  const [detailed, setDetailed] = useState(false)
   const [edit, setEdit] = useState(false)
   const [width, setWidth] = useState()
   const [survey, setSurvey] = useState(question.text)
   const [driver, setDriver] = useState(question.driver)
   const [subDriver, setSubDriver] = useState(question.subDriver)
   const [controlType, setControlType] = useState(question.controlType)
+  const [sliderLeft, setSliderLeft] = useState(question.sliderLeft)
+  const [sliderRight, setSliderRight] = useState(question.sliderRight)
+  const [options, setOptions] = useState(question.options)
+  const [topics, setTopics] = useState(question.topics)
+  const [commentPrompt, setCommentPrompt] = useState(question.commentPrompt)
+  const [skipOptions, setSkipOptions] = useState(question.skipOptions)
 
   useEffect(() => {
     setWidth(spanRef.current.offsetWidth)
@@ -57,7 +73,7 @@ const Question = ({ question }) => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.basic}>
+      <div className={styles.basic} onClick={() => setDetailed(!detailed)}>
         <div className={styles.data}>
           <span className={styles.qmark}><img src={QMark} alt="QMark" /></span>
           <div>
@@ -74,7 +90,13 @@ const Question = ({ question }) => {
                 className={styles.header}
                 style={{ width }}
               />
-              {!edit && <span onClick={() => { headerRef.current.focus(); setEdit(true) }}>Edit</span>}
+              {!edit && <span onClick={(e) => { e.stopPropagation(); headerRef.current.focus(); setEdit(true); }} style={{ cursor: 'pointer' }}>Edit</span>}
+            </div>
+            <span className={styles.survey}>{survey}</span>
+            <div className={styles.function_for_mobile}>
+              <span className={styles.label}>Control Type:</span>
+              <Select selected={controlType} setSelected={setControlType} items={controlTypes} className={styles.controlType} />
+              <span className={styles.delete} onClick={(e) => { e.stopPropagation(); }}><img src={DeleteIcon} alt="delete" /></span>
             </div>
             <div className={styles.inputs}>
               <div className={styles.input}>
@@ -82,23 +104,164 @@ const Question = ({ question }) => {
                 <Select selected={driver} setSelected={setDriver} items={drivers} />
               </div>
               <div className={styles.input}>
-                <span className={styles.label}>Subdriver:</span>
-                <Input className={styles.sub} value={subDriver} onChagne={(value, e) => setSubDriver(value)} />
+                <span className={classnames(styles.label, styles.subdriver)}>Subdriver:</span>
+                <Input className={styles.sub} value={subDriver} onChange={(value, e) => setSubDriver(value)} />
               </div>
               <div className={styles.input}>
                 <span className={styles.label}>SH Group:</span>
                 {question.SHGroup.map((sh, idx) => <Tag key={`${idx}-${sh}`} text={sh}>{sh}</Tag>)}
               </div>
+              <Button onClick={() => setDetailed(true)} className={styles.viewDetails}>View Details</Button>
             </div>
           </div>
         </div>
         <div className={styles.function}>
           <span className={styles.label}>Control Type:</span>
           <Select selected={controlType} setSelected={setControlType} items={controlTypes} className={styles.controlType} />
-          <span className={styles.delete}><img src={DeleteIcon} alt="delete" /></span>
-          <span className={styles.toggle}>{`>`}</span>
+          <span className={styles.delete} onClick={(e) => { e.stopPropagation(); }}><img src={DeleteIcon} alt="delete" /></span>
+          <span className={classnames(styles.toggle, detailed && styles.active)}>{`>`}</span>
         </div>
       </div>
+      {detailed && <div className={styles.others}>
+        <div className={styles.slider}>
+          {controlType === 'Slider' && <Fragment>
+            <div className={styles.left}>
+              <label>Slider Left (Red)</label>
+              <Input value={sliderLeft} onChange={(value, e) => setSliderLeft(value)} className={styles.input} />
+            </div>
+            <div className={styles.right}>
+              <label>Slider Right (Green)</label>
+              <Input value={sliderRight} onChange={(value, e) => setSliderRight(value)} className={styles.input} />
+            </div>
+          </Fragment>}
+          {(controlType === 'Two Options' || controlType === 'Multi Options') && <Fragment>
+            {options.map((option, idx) =>
+              <div key={`${idx}-${option}`}>
+                <label>Option {idx + 1}</label>
+                <Input className={styles.input} value={option} onChange={(value, e) => {
+                  let temp = [...options]
+                  temp[idx] = value
+                  setOptions(temp)
+                }} />
+              </div>
+            )}
+            {controlType === 'Multi Options' && <AddButton text="Option" style={{ flexBasis: '100%' }} />}
+          </Fragment>}
+          {controlType === 'Multi-Topic' && <Fragment>
+            {topics.map((topic, idx) =>
+              <div key={`${idx}-${topic}`}>
+                <label>Option {idx + 1}</label>
+                <Input className={styles.input} value={topic} onChange={(value, e) => {
+                  let temp = [...topics]
+                  temp[idx] = value
+                  setTopics(temp)
+                }} />
+              </div>
+            )}
+            <AddButton text="Topic" style={{ flexBasis: '100%' }} />
+          </Fragment>}
+          <div className={styles.comment}>
+            <label>Comment Prompt</label>
+            <Input value={commentPrompt} onChange={(value, e) => setCommentPrompt(value)} className={styles.input} />
+          </div>
+        </div>
+        <div className={styles.skipOptions}>
+          <label>Skip Options</label>
+          <div className={styles.inputs}>
+            {skipOptions.map((option, idx) =>
+              <Input
+                value={option}
+                key={`${idx}-${option}`}
+                className={styles.input}
+                withClose={idx === skipOptions.length - 1}
+                onClickClose={() => { let temp = [...skipOptions]; temp.pop(); setSkipOptions(temp) }}
+                onChange={(value, e) => {
+                  let temp = [...skipOptions]
+                  temp[idx] = value;
+                  setSkipOptions(temp)
+                }}
+              />
+            )}
+            <AddButton text="Skip Option" />
+          </div>
+        </div>
+      </div>}
+      {detailed &&
+        <ModalWrapper className={styles.modal} onClick={() => setDetailed(false)}>
+          <DetailModal onClick={(e) => e.stopPropagation()}>
+            <ModalHeader>
+              <h2>{survey}</h2>
+              <span onClick={() => setDetailed(false)}>X</span>
+            </ModalHeader>
+            <div className={classnames("editPart", styles.editPart)}>
+              {controlType === 'Slider' && <Fragment>
+                <div className={styles.left}>
+                  <label className="bgTag">Slider Left (Red)</label>
+                  <Input value={sliderLeft} onChange={(value, e) => setSliderLeft(value)} className={styles.input} />
+                </div>
+                <div className={styles.right}>
+                  <label className="bgTag">Slider Right (Green)</label>
+                  <Input value={sliderRight} onChange={(value, e) => setSliderRight(value)} className={styles.input} />
+                </div>
+              </Fragment>}
+              {(controlType === 'Two Options' || controlType === 'Multi Options') && <Fragment>
+                {options.map((option, idx) =>
+                  <div key={`${idx}-${option}`}>
+                    <label className="bgTag">Option {idx + 1}</label>
+                    <Input className={styles.input} value={option} onChange={(value, e) => {
+                      let temp = [...options]
+                      temp[idx] = value
+                      setOptions(temp)
+                    }} />
+                  </div>
+                )}
+                {controlType === 'Multi Options' && <AddButton text="Option" style={{ flexBasis: '100%' }} />}
+              </Fragment>}
+              {controlType === 'Multi-Topic' && <Fragment>
+                {topics.map((topic, idx) =>
+                  <div key={`${idx}-${topic}`}>
+                    <label className="bgTag">Option {idx + 1}</label>
+                    <Input className={styles.input} value={topic} onChange={(value, e) => {
+                      let temp = [...topics]
+                      temp[idx] = value
+                      setTopics(temp)
+                    }} />
+                  </div>
+                )}
+                <AddButton text="Topic" style={{ flexBasis: '100%' }} />
+              </Fragment>}
+              <div className={styles.comment}>
+                <label className="bgTag">Comment Prompt</label>
+                <textarea row={3} value={commentPrompt} onChange={(value, e) => setCommentPrompt(value)} className={styles.input} />
+              </div>
+              <div className={styles.skipOptions}>
+                <label className="bgTag">Skip Options</label>
+                <div className={styles.inputs}>
+                  {skipOptions.map((option, idx) =>
+                    <Input
+                      value={option}
+                      key={`${idx}-${option}`}
+                      className={styles.input}
+                      withClose={idx === skipOptions.length - 1}
+                      onClickClose={() => { let temp = [...skipOptions]; temp.pop(); setSkipOptions(temp) }}
+                      onChange={(value, e) => {
+                        let temp = [...skipOptions]
+                        temp[idx] = value;
+                        setSkipOptions(temp)
+                      }}
+                    />
+                  )}
+                  <AddButton text="Skip Option" />
+                </div>
+              </div>
+            </div>
+            <ModalFooter>
+              <span onClick={() => setDetailed(false)}>Cancel</span>
+              <Button className="btn">Save</Button>
+            </ModalFooter>
+          </DetailModal>
+        </ModalWrapper>
+      }
     </div>
   )
 }

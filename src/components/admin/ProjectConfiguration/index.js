@@ -194,9 +194,9 @@ const ProjectConfiguration = () => {
         </div>
         <OrderComponent items={projectMap} title="Project Map" />
       </div>
-      {driverReorder && <ReorderModal items={drivers} onClose={() => setDriverReorder(false)} setItems={setDrivers} />}
-      {myMapReorder && <ReorderModal items={myMap} onClose={() => setMyMapReorder(false)} setItems={setMyMap} />}
-      {projectMapReorder && <ReorderModal items={projectMap} onClose={() => setProjectMapReorder(false)} setItems={setProjectMap} />}
+      {driverReorder && <ReorderModal items={drivers} onClose={() => setDriverReorder(false)} setItems={setDrivers} text="drivers" />}
+      {myMapReorder && <ReorderModal items={myMap} onClose={() => setMyMapReorder(false)} setItems={setMyMap} text="My map Categories" />}
+      {projectMapReorder && <ReorderModal items={projectMap} onClose={() => setProjectMapReorder(false)} setItems={setProjectMap} text="My map Categories" />}
     </div>
   )
 }

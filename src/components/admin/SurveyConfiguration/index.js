@@ -1,50 +1,80 @@
 import React, { useState, Fragment } from 'react'
 import classnames from 'classnames'
+import Select from 'Components/Select'
+import Button from 'Components/Button'
+import ReorderModal from '../ProjectConfiguration/ReorderModal'
 import Question from './Question'
+import {
+  DetailModal,
+  ModalWrapper,
+  ModalHeader,
+  ModalFooter,
+} from '../UserAdministration/UserCard/usercard.styles'
 import styles from './styles.scss'
+import Setting from 'Assets/img/admin/Setting_filled.png'
 import Reorder from '../../../assets/img/admin/reorder.png'
 
-const questions = [
+const defaultQuestions = [
   {
+    id: 1,
     text: "Does the team have enough experience to succeed?",
     controlType: 'Slider',
     driver: 'Sentiment',
     subDriver: 'Experience',
-    SHGroup: ['Internal', 'Other']
+    SHGroup: ['Internal', 'Other'],
+    sliderLeft: 'Not at all',
+    sliderRight: 'Absolutely',
+    commentPrompt: 'Add a comment to describe why you feel that way.',
+    skipOptions: ["I don't know", "I'm afraid to say", "I don't understand"]
   },
   {
+    id: 2,
     text: "Do you feel like management is supporting the project team?",
     controlType: 'Multi Options',
     driver: 'Support',
     subDriver: 'Experience',
-    SHGroup: ['Other']
+    SHGroup: ['Other'],
+    commentPrompt: 'Add a comment to describe why you feel that way.',
+    options: ["Excellent", "Vey Good", "Good", "Fair", "Poor"],
+    skipOptions: ["I don't know", "I'm afraid to say", "I don't understand"]
   },
   {
+    id: 3,
     text: "Do you feel like orgaisational politics is getting the way?",
     controlType: 'Two Options',
     driver: 'Politics',
     subDriver: 'Experience',
-    SHGroup: ['External', 'Other']
+    SHGroup: ['External', 'Other'],
+    options: ['Option1', 'Option2'],
+    commentPrompt: 'Add a comment to describe why you feel that way.',
+    skipOptions: ["I don't know", "I'm afraid to say", "I don't understand"]
   },
   {
+    id: 4,
     text: "What do you see as the main risks to the project?",
     controlType: 'Multi-Topic',
     driver: 'Politics',
     subDriver: 'Experience',
-    SHGroup: ['Internal', 'External', 'Other']
+    SHGroup: ['Internal', 'External', 'Other'],
+    topics: [],
+    commentPrompt: 'Add a comment to describe why you feel that way.',
+    skipOptions: ["I don't know", "I'm afraid to say", "I don't understand"]
   }
 ]
 
 const SurveyConfiguration = () => {
   const temp = [];
+  const [questions, setQuestions] = useState(defaultQuestions)
   questions.map(question => {
     if (!temp.includes(question.driver)) {
       temp.push(question.driver)
     }
   })
-  const [filter, setFilter] = useState(0)
+  const [filter, setFilter] = useState('About Me')
   const [drivers, setDrivers] = useState(temp)
   const [currentDriver, setCurrentDriver] = useState(temp[0])
+  const [open, setOpen] = useState(false)
+  const [reorderModal, setReorderModal] = useState(false)
   return (
     <Fragment>
       <div className={styles.header}>
@@ -54,7 +84,7 @@ const SurveyConfiguration = () => {
             <span className={styles.image}>+</span>
             <span className={styles.text}>Add question</span>
           </div>
-          <div>
+          <div onClick={() => setReorderModal(true)}>
             <span className={styles.image}><img src={Reorder} alt="reorder" /></span>
             <span className={styles.text}>Reorder</span>
           </div>
@@ -62,7 +92,7 @@ const SurveyConfiguration = () => {
       </div>
       <div>
         <div className={styles.filters}>
-          <div className={classnames(styles.filter, filter === 0 && styles.active)} onClick={() => setFilter(0)}>
+          <div className={classnames(styles.filter, filter === 'About Me' && styles.active)} onClick={() => setFilter('About Me')}>
             <svg
               className={styles.icon}
               viewBox="0 0 20 20"
@@ -78,7 +108,7 @@ const SurveyConfiguration = () => {
             </svg>
             <span>About Me</span>
           </div>
-          <div className={classnames(styles.filter, filter === 1 && styles.active)} onClick={() => setFilter(1)}>
+          <div className={classnames(styles.filter, filter === 'About Others' && styles.active)} onClick={() => setFilter('About Others')}>
             <svg
               className={styles.icon}
               viewBox="0 0 20 20"
@@ -103,6 +133,10 @@ const SurveyConfiguration = () => {
           <span key={`${idx}-${driver}`} className={driver === currentDriver ? styles.active : ''} onClick={() => setCurrentDriver(driver)}>{driver}</span>
         )}
       </div>
+      <div className={styles.filter_for_mobile}>
+        <Select className={styles.select} selected={filter} setSelected={setFilter} items={['About Me', 'About Others']} />
+        <span onClick={() => setOpen(true)}>{currentDriver}<img src={Setting} alt="drivers" /></span>
+      </div>
       {questions.map((question, idx) => {
         if (question.driver !== currentDriver)
           return null;
@@ -110,6 +144,20 @@ const SurveyConfiguration = () => {
           <Question question={question} key={`${idx}-${question.controlType}`} />
         )
       })}
+      {open && <ModalWrapper onClick={() => setOpen(false)}>
+        <DetailModal onClick={(e) => e.stopPropagation()}>
+          <ModalHeader>
+            <h2>Filter</h2>
+            <span onClick={() => setOpen(false)}>X</span>
+          </ModalHeader>
+          <div className={styles.drivers_for_mobile}>
+            {drivers.map((driver, idx) =>
+              <span key={`${idx}-${driver}`} className={driver === currentDriver ? styles.active : ''} onClick={() => setCurrentDriver(driver)}>{driver}</span>
+            )}
+          </div>
+        </DetailModal>
+      </ModalWrapper>}
+      {reorderModal && <ReorderModal onClose={() => setReorderModal(false)} items={questions.filter(q => q.driver === currentDriver)} setItems={(data) => { let temp = questions.filter(q => q.driver !== currentDriver); setQuestions([...temp, ...data]) }} />}
     </Fragment>
   )
 }
