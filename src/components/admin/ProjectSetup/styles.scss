@@ -275,12 +275,13 @@
 }
 
 .richTextMobile {
-  display: flex;
+  display: none;
   flex-direction: column;
   gap: 15px;
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 10;
   width: 100%;
   background-color: #eff1f4;
   .header {
@@ -322,5 +323,8 @@
     .richText {
       display: none;
     }
+  }
+  .richTextMobile {
+    display: flex;
   }
 }
