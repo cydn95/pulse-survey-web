@@ -22,14 +22,14 @@ const Item = ({ item, index, current }) =>
     }
   </Draggable>
 
-const ReorderModal = ({ items, setItems, onClose }) => {
+const ReorderModal = ({ items, setItems, onClose, text }) => {
   const [list, setList] = useState(items)
   const [current, setCurrent] = useState(-1)
   return (
     <div className={styles.wrapper} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
-          <h2>Reorder drivers</h2>
+          <h2>Reorder {text}</h2>
           <span className={styles.close} onClick={onClose}>X</span>
         </div>
         <DragDropContext

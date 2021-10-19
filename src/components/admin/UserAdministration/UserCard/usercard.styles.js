@@ -222,6 +222,8 @@ export const ModalWrapper = styled.div`
 
 export const DetailModal = styled.div`
   width: 80%;
+  max-height: 90vh;
+  overflow: auto;
   background: white;
   padding: 12.5px 20px;
   border-radius: 20px;
@@ -242,6 +244,17 @@ export const DetailModal = styled.div`
     gap: 8px;
     div {
       width: 100%;
+      .bgTag {
+        font-family: Montserrat;
+        font-size: 12px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.38;
+        letter-spacing: normal;
+        text-align: left;
+        color: #000;
+      }
       input {
         background: #eff0f6;
         padding: 10px 16px;

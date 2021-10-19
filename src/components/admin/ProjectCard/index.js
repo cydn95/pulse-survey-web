@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Button from 'Components/Button'
+import AddButton from 'Components/AddButton'
 import styles from './styles.scss'
 import ProjectAvatar from '../../../assets/img/admin/Work.svg'
 import Show from '../../../assets/img/admin/Show.svg'
@@ -75,10 +76,7 @@ const ProjectCard = ({ project, setEditing }) => {
       <div className={styles.actions}>
         <Button className={styles.edit} onClick={(e) => setEditing(project.id)}>Edit project</Button>
         <Button className={styles.deactivate}>Deactivate</Button>
-        <div>
-          <Button className={styles.plus}>+</Button>
-          <p>Add New Stakeholder</p>
-        </div>
+        <AddButton text="Stakeholder" />
       </div>
     </div>
   )

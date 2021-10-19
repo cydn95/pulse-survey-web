@@ -19,22 +19,27 @@ const Input = ({
   onBlur,
   style = null,
   refVal = null,
+  withClose = false,
+  onClickClose = null,
 }) => {
   return (
     <label className={classnames(styles.main, className)} onClick={(e) => e.stopPropagation()}>
       {label && <span className={styles.label}>{label}</span>}
-      <input
-        ref={refVal}
-        type={type}
-        name={name}
-        placeholder={placeholder}
-        onChange={(e) => onChange(e.target.value, e)}
-        onKeyUp={(e) => (onKeyUp ? onKeyUp(e) : {})}
-        value={value}
-        onFocus={(e) => (onFocus ? onFocus(e) : {})}
-        onBlur={(e) => (onBlur ? onBlur(e) : {})}
-        style={style}
-      />
+      <div>
+        <input
+          ref={refVal}
+          type={type}
+          name={name}
+          placeholder={placeholder}
+          onChange={(e) => onChange(e.target.value, e)}
+          onKeyUp={(e) => (onKeyUp ? onKeyUp(e) : {})}
+          value={value}
+          onFocus={(e) => (onFocus ? onFocus(e) : {})}
+          onBlur={(e) => (onBlur ? onBlur(e) : {})}
+          style={style}
+        />
+        {withClose && <span onClick={onClickClose} className={styles.close}>x</span>}
+      </div>
     </label>
   );
 };
