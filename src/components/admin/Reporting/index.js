@@ -1,32 +1,20 @@
 import React, { Fragment, useState } from 'react'
 import Select from 'Components/Select'
 import styles from './styles.scss'
-import SegmentAvatar from 'Assts/img/admin/Segment.svg'
-import TeamAvatar from 'Assts/img/admin/Team.svg'
-import OrganizationAvatar from 'Assts/img/admin/Organization.svg'
+import SegmentAvatar from 'Assets/img/admin/Segments.svg'
+import TeamAvatar from 'Assets/img/admin/Teams.svg'
+import OrganizationAvatar from 'Assets/img/admin/Organizations.svg'
+import Row from './Row'
 
 const Reporting = () => {
-  const [segmentName, setSegmentName] = useState('Internal')
   return (
     <Fragment>
       <div>
         <span>Dashboard Threshold</span>
       </div>
-      <div className={styles.row}>
-        <div className={styles.header}>
-          <span><img src={SegmentAvatar} alt="segments" /></span>
-          <h2>Segments</h2>
-        </div>
-        <div className={styles.inputs}>
-          <div>
-            <label>Segment name</label>
-            <Select selected={segmentName} setSelected={setSegmentName} items={['Internal', 'External']} />
-          </div>
-          <div>
-
-          </div>
-        </div>
-      </div>
+      <Row title="Segments" avatar={SegmentAvatar} />
+      <Row title="Teams" avatar={TeamAvatar} />
+      <Row title="Organizations" avatar={OrganizationAvatar} />
     </Fragment>
   )
 }
