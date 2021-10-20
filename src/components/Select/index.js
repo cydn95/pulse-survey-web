@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import classnames from 'classnames'
 import styles from './styles.scss'
 
-const Select = ({ selected, setSelected, items, className, noSelected, keyValue = "default" }) => {
+const Select = ({ selected = "", setSelected, items = [], className, noSelected = "Select", keyValue = "default" }) => {
   const [open, setOpen] = useState(false)
   useEffect(() => {
     setOpen(false);

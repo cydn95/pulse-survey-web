@@ -3,6 +3,7 @@ import ProjectSetup from '../ProjectSetup'
 import UserAdministration from '../UserAdministration'
 import ProjectConfiguration from '../ProjectConfiguration'
 import SurveyConfiguration from '../SurveyConfiguration'
+import Reporting from '../Reporting'
 import FlaggedResponses from '../FlaggedResponses'
 import styles from './styles.scss'
 
@@ -64,7 +65,8 @@ const ProjectEdit = ({ project, currentStep, setBreadcrumb }, ref) => {
       {/* {currentStep === 2 && <div>UserAdministration Page</div>} */}
       {currentStep === 3 && <SurveyConfiguration />}
       {/* {currentStep === 3 && <div>Survey Configuration Page</div>} */}
-      {currentStep === 4 && <div>Reporting Page</div>}
+      {/* {currentStep === 4 && <div>Reporting Page</div>} */}
+      {currentStep === 4 && <Reporting />}
       {/* {currentStep === 5 && <FlaggedResponses />} */}
       {currentStep === 5 && <div>Flagged Responses Page</div>}
     </div>
