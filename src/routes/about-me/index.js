@@ -2,7 +2,6 @@ import React, { Fragment, useState, useEffect, useRef } from "react";
 import { connect } from "react-redux";
 
 import DriverPanel from "Components/driver";
-import NoDashboard from "Components/report/NoDashboard";
 import Loading from "Components/Loading";
 
 import TopNav from "Containers/TopNav";
@@ -38,7 +37,6 @@ const AboutMeSurvey = ({
   optionList,
   aboutMe,
   surveyList,
-  loading,
   pageIndex,
   skipQuestionList,
   projectId,
@@ -243,7 +241,7 @@ const AboutMeSurvey = ({
           </div>
         </TopNav>
       </div>
-      {loading ? (<Loading descripiton="" />) : surveyList.length > 0 ? (
+      {surveyList.length > 0 && (
         <div className={styles["main-content"]}>
           {driverList.length > 0 && skipQuestionList.length > 0 && (
             <Fragment>
@@ -392,14 +390,15 @@ const AboutMeSurvey = ({
           {driverList.length === 0 && (
             <h2 className={styles["no-questions"]}>No Questions</h2>
           )}
-        </div>)
-        : <div style={{ marginTop: '30px' }}><NoDashboard code={404} /></div>}
+        </div>
+      )}
+      {surveyList.length === 0 && <Loading description="" />}
     </div>
   );
 };
 
 const mapStateToProps = ({ survey, common, authUser }) => {
-  const { pageList, pageIndex, optionList, aboutMe, loading } = survey;
+  const { pageList, pageIndex, optionList, aboutMe } = survey;
   const { skipQuestionList } = common;
   const {
     projectId,
@@ -413,7 +412,6 @@ const mapStateToProps = ({ survey, common, authUser }) => {
     optionList,
     aboutMe,
     surveyList: pageList,
-    loading,
     pageIndex,
     skipQuestionList,
     projectId,
