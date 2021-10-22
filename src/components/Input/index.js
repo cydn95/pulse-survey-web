@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classnames from "classnames";
 
 import styles from "./styles.scss";
@@ -42,7 +43,7 @@ const Input = ({
             e.stopPropagation();
             onClickClose();
           }}
-          className={styles.close}>x</span>}
+          className={styles.close}><FontAwesomeIcon icon={faTimes} /></span>}
       </div>
     </label>
   );

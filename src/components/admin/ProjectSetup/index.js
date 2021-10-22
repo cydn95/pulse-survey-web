@@ -4,6 +4,8 @@ import FileUpload from 'Components/FileUpload'
 import Button from 'Components/Button'
 import Select from 'Components/Select'
 import Input from 'Components/Input'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import '@syncfusion/ej2-base/styles/material.css';
 import '@syncfusion/ej2-icons/styles/material.css';
 import '@syncfusion/ej2-buttons/styles/material.css';
@@ -96,7 +98,7 @@ const ProjectSetup = ({
           <p>Provide additional context, links or web pages as required.</p>
           {templates.map((t, index) => <div className={styles.page} key={`${project.code}-${index}`}>
             <a className={index === crrPage ? styles.underline : ''} onClick={(e) => { e.preventDefault(); setCrrPage(index); setShow(true); }}>{t.title}</a>
-            <span onClick={() => console.log('close')}>x</span>
+            <span onClick={() => console.log('close')}><FontAwesomeIcon icon={faTimes} /></span>
           </div>)}
           <div className={styles.add}>
             <span className={styles.plus}>+</span>

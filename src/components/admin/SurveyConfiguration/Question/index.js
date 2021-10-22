@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, Fragment } from 'react'
 import styled from 'styled-components'
 import classnames from 'classnames'
 import { controlType, controlTypeTag } from 'Constants/defaultValues'
@@ -6,6 +6,8 @@ import Select from 'Components/Select'
 import Input from 'Components/Input'
 import Button from 'Components/Button'
 import AddButton from 'Components/AddButton'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   DetailModal,
   ModalWrapper,
@@ -15,7 +17,6 @@ import {
 import styles from './styles.scss'
 import QMark from '../../../../assets/img/admin/QMark.svg'
 import DeleteIcon from '../../../../assets/img/admin/delete.svg'
-import { Fragment } from 'react'
 
 const Tag = styled.span`
   padding: 3px 6px 1px;
@@ -192,7 +193,7 @@ const Question = ({ question }) => {
           <DetailModal onClick={(e) => e.stopPropagation()}>
             <ModalHeader>
               <h2>{survey}</h2>
-              <span onClick={() => setDetailed(false)}>X</span>
+              <span onClick={() => setDetailed(false)}><FontAwesomeIcon icon={faTimes} /></span>
             </ModalHeader>
             <div className={classnames("editPart", styles.editPart)}>
               {controlType === 'Slider' && <Fragment>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classnames from 'classnames'
 import Select from 'Components/Select'
 import Input from 'Components/Input'
@@ -149,7 +151,7 @@ const UserCard = ({ user, teamList, shgroupList }) => {
         <DetailModal onClick={(e) => e.stopPropagation()}>
           <ModalHeader>
             <h2>Ryan Jones</h2>
-            <span onClick={() => setOpen(false)}>X</span>
+            <span onClick={() => setOpen(false)}><FontAwesomeIcon icon={faTimes} /></span>
           </ModalHeader>
           <div className="detailed">
             <div>

@@ -2,6 +2,8 @@ import React, { useState, Fragment } from 'react'
 import classnames from 'classnames'
 import Select from 'Components/Select'
 import Button from 'Components/Button'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReorderModal from '../ProjectConfiguration/ReorderModal'
 import Question from './Question'
 import {
@@ -148,7 +150,7 @@ const SurveyConfiguration = () => {
         <DetailModal onClick={(e) => e.stopPropagation()}>
           <ModalHeader>
             <h2>Filter</h2>
-            <span onClick={() => setOpen(false)}>X</span>
+            <span onClick={() => setOpen(false)}><FontAwesomeIcon icon={faTimes} /></span>
           </ModalHeader>
           <div className={styles.drivers_for_mobile}>
             {drivers.map((driver, idx) =>
