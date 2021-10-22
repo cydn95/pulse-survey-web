@@ -9,3 +9,4 @@ export * from "./aosurvey/actions";
 export * from "./account/actions";
 export * from "./tour/actions";
 export * from "./report/actions";
+export * from "./admin/actions";

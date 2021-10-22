@@ -39,6 +39,22 @@ export const controlTypeText = (type) => {
   }
 };
 
+export const controlTypeTag = (type) => {
+  if (type === 1) {
+    return "Text";
+  } else if (type === 2) {
+    return "Slider";
+  } else if (type === 3) {
+    return "Tow Options";
+  } else if (type === 4) {
+    return "Multi Options";
+  } else if (type === 5) {
+    return "Smart Text";
+  } else if (type === 6) {
+    return "Multi Topics";
+  }
+};
+
 export const loginErrorType = {
   AUTH_SUCCESS: 9999,
   USERNAME: 1,

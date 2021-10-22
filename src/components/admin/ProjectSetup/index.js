@@ -15,7 +15,7 @@ import '@syncfusion/ej2-popups/styles/material.css';
 import '@syncfusion/ej2-richtexteditor/styles/material.css';
 import styles from './styles.scss'
 
-const managers = ["Christopher Robin", "James Li"]
+const managers = ["Christopher Robin", "Mike Smith"]
 const toolbarSettings = {
   items: ['Undo', 'Redo', 'Italic', 'Bold', 'OrderedList', 'Underline', 'StrikeThrough', 'UnorderedList', 'Image', 'Formats', 'FontSize']
 };

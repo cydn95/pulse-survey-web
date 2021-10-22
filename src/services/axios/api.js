@@ -558,7 +558,7 @@ const projectUserListAPI = () => {
   return getClient(true).get("/projectuser/");
 };
 
-const adminUserListAPI = ({ surveyId }) => {
+const adminUserListAPI = (surveyId) => {
   return getClient(true).get(`/adminuserbysurvey/?survey=${surveyId}`);
 };
 

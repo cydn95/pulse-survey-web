@@ -35,7 +35,7 @@
         .reorder {
           display: flex;
           align-items: center;
-          gap: 13px;
+          gap: 12px;
           .image {
             width: 24px;
             height: 24px;
@@ -97,7 +97,7 @@
           align-items: center;
           span {
             font-family: Poppins;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             font-stretch: normal;
             font-style: normal;
@@ -112,36 +112,22 @@
           }
         }
       }
-      .completion {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        .text {
-          font-family: Poppins;
-          font-size: 13px;
-          font-weight: 600;
-          font-stretch: normal;
-          font-style: normal;
-          line-height: normal;
-          letter-spacing: normal;
-          text-align: center;
-          color: #000;
-        }
-      }
       .threshold {
         width: 82px;
         padding: 10px 16px;
         border-radius: 8px;
         background-color: #eff0f6;
-        font-family: Poppins;
-        font-size: 12px;
-        font-weight: 600;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: normal;
-        letter-spacing: normal;
-        text-align: left;
-        color: #6d6f94;
+        input {
+          font-family: Poppins;
+          font-size: 12px;
+          font-weight: 600;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: normal;
+          letter-spacing: normal;
+          text-align: left;
+          color: #6d6f94;
+        }
       }
     }
     .detailed {
@@ -163,6 +149,39 @@
           padding: 10px 16px;
           border-radius: 8px;
           border: solid 2px #eee;
+        }
+        .completion {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          .text {
+            font-family: Poppins;
+            font-size: 12px;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: center;
+            color: #000;
+          }
+          .completion_input {
+            width: 82px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            background-color: #eff0f6;
+            input {
+              font-family: Poppins;
+              font-size: 12px;
+              font-weight: 600;
+              font-stretch: normal;
+              font-style: normal;
+              line-height: normal;
+              letter-spacing: normal;
+              text-align: left;
+              color: #6d6f94;
+            }
+          }
         }
         .header {
           font-family: Poppins;

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import classnames from 'classnames'
+import { controlType, controlTypeTag } from 'Constants/defaultValues'
 import Select from 'Components/Select'
 import Input from 'Components/Input'
 import Button from 'Components/Button'
@@ -47,7 +48,7 @@ const shGroups = [
     background: 'rgba(242, 182, 29, 0.19);'
   }
 ]
-const controlTypes = ['Multi Options', 'Slider', 'Two Options', 'Multi-Topic']
+
 const drivers = ['Sentiment', 'Support', 'Politics', 'Risks']
 
 const Question = ({ question }) => {
@@ -59,7 +60,7 @@ const Question = ({ question }) => {
   const [survey, setSurvey] = useState(question.text)
   const [driver, setDriver] = useState(question.driver)
   const [subDriver, setSubDriver] = useState(question.subDriver)
-  const [controlType, setControlType] = useState(question.controlType)
+  const [type, setType] = useState(question.controlType)
   const [sliderLeft, setSliderLeft] = useState(question.sliderLeft)
   const [sliderRight, setSliderRight] = useState(question.sliderRight)
   const [options, setOptions] = useState(question.options)
@@ -95,7 +96,7 @@ const Question = ({ question }) => {
             <span className={styles.survey}>{survey}</span>
             <div className={styles.function_for_mobile}>
               <span className={styles.label}>Control Type:</span>
-              <Select selected={controlType} setSelected={setControlType} items={controlTypes} className={styles.controlType} />
+              <Select selected={type} setSelected={setType} items={Object.keys(controlType).map(type => controlTypeTag(controlType[type]))} className={styles.controlType} />
               <span className={styles.delete} onClick={(e) => { e.stopPropagation(); }}><img src={DeleteIcon} alt="delete" /></span>
             </div>
             <div className={styles.inputs}>
@@ -117,7 +118,7 @@ const Question = ({ question }) => {
         </div>
         <div className={styles.function}>
           <span className={styles.label}>Control Type:</span>
-          <Select selected={controlType} setSelected={setControlType} items={controlTypes} className={styles.controlType} />
+          <Select selected={type} setSelected={setType} items={Object.keys(controlType).map(type => controlTypeTag(controlType[type]))} className={styles.controlType} />
           <span className={styles.delete} onClick={(e) => { e.stopPropagation(); }}><img src={DeleteIcon} alt="delete" /></span>
           <span className={classnames(styles.toggle, detailed && styles.active)}>{`>`}</span>
         </div>
