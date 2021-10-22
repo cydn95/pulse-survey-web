@@ -122,17 +122,23 @@ const ProjectConfiguration = () => {
             </div>
             <Input type="number" className={styles.threshold} />
           </div>
-          <div className={styles.completion}>
-            <span className={styles.text}>Completion Threshold(%)</span>
-            <Input className={styles.threshold} />
-          </div>
         </div>
         <div className={styles.detailed}>
           <div className={styles.column}>
             <span className={styles.header}>Stakeholder Groups / Segments</span>
             <span className={styles.description}>Create meaningful groupings to specify which
               questions the users are asked.</span>
-            <Select selected={shgroup} noSelected="Choose Group" setSelected={setSHGroup} items={[]} className={styles.withOutline} />
+            <Select
+              selected={shgroup}
+              noSelected="Choose Group"
+              setSelected={setSHGroup}
+              items={[]}
+              className={styles.withOutline}
+            />
+            <div className={styles.completion}>
+              <span className={styles.text}>Completion Threshold(%)</span>
+              <Input className={styles.completion_input} />
+            </div>
             <div className={styles.add}>
               <span className={styles.plus}>+</span>
               <span>Add new</span>
@@ -144,7 +150,16 @@ const ProjectConfiguration = () => {
               categorise user responses. Users in different
               organisations can be in the same team.</span>
             {projectTeams.map((pt, idx) =>
-              <Select key={`${idx}-select`} keyValue={`${idx}-select`} selected={pt} noSelected="Choose Group" setSelected={setSHGroup} items={['Management', 'Engineering']} className={styles.withOutline} />
+              <Select
+                key={`${idx}-select`}
+                keyValue={`${idx}-select`}
+                selected={pt}
+                noSelected="Choose Group"
+                setSelected={setSHGroup}
+                items={['Management', 'Engineering']}
+                className={styles.withOutline}
+                onClose={() => console.log('close')}
+              />
             )}
             <div className={styles.add}>
               <span className={styles.plus}>+</span>
@@ -154,7 +169,7 @@ const ProjectConfiguration = () => {
           <div className={styles.column}>
             <span className={styles.header}>Custom Groups</span>
             <span className={styles.description}>Create up to three custom groups</span>
-            <Input type="text" className={styles.customGroup} />
+            <Input type="text" className={styles.customGroup} onClickClose={() => console.log('close')} />
             <div className={styles.add}>
               <span className={styles.plus}>+</span>
               <span>Add new</span>

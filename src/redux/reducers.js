@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import admin from './admin/reducer';
 import settings from "./settings/reducer";
 import menu from "./menu/reducer";
 import authUser from "./auth/reducer";
@@ -23,6 +24,7 @@ const reducers = combineReducers({
   account,
   tour,
   report,
+  admin,
 });
 
 export default reducers;

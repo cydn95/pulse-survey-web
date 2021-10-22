@@ -38,6 +38,20 @@
       background: darken($non-default-color, 14%);
     }
   }
+
+  &:disabled,
+  &[disabled]{
+    color: white;
+    background-color: #cacaca;
+    &:focus {
+      background: #cacaca;
+    }
+
+    &:hover {
+      color: white;
+      background: #cacaca;
+    }
+  }
 }
 
 .main .active {

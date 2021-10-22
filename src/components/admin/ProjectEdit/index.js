@@ -59,16 +59,12 @@ const ProjectEdit = ({ project, currentStep, setBreadcrumb }, ref) => {
         templates={templates}
         setTemplates={setTemplates}
       />}
-      {/* {currentStep === 1 && <div>Project Configuration Page</div>} */}
       {currentStep === 1 && <ProjectConfiguration />}
-      {currentStep === 2 && <UserAdministration />}
-      {/* {currentStep === 2 && <div>UserAdministration Page</div>} */}
+      {currentStep === 2 && <UserAdministration project={project} />}
       {currentStep === 3 && <SurveyConfiguration />}
-      {/* {currentStep === 3 && <div>Survey Configuration Page</div>} */}
-      {/* {currentStep === 4 && <div>Reporting Page</div>} */}
       {currentStep === 4 && <Reporting />}
       {/* {currentStep === 5 && <FlaggedResponses />} */}
-      {currentStep === 5 && <div>Flagged Responses Page</div>}
+      {currentStep === 5 && <div>Flagged Response page</div>}
     </div>
   )
 }

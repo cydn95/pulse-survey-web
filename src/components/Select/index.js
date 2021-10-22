@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import classnames from 'classnames'
 import styles from './styles.scss'
 
-const Select = ({ selected = "", setSelected, items = [], className, noSelected = "Select", keyValue = "default" }) => {
+const Select = ({ selected = "", setSelected, items = [], className, noSelected = "Select", keyValue = "default", onClose = null }) => {
   const [open, setOpen] = useState(false)
   useEffect(() => {
     setOpen(false);
@@ -10,7 +10,11 @@ const Select = ({ selected = "", setSelected, items = [], className, noSelected 
   return (
     <div key={keyValue} className={styles.wrapper} onClick={(e) => { e.stopPropagation(); setOpen(!open); }}>
       <div className={classnames(styles.select, className)}>
-        <span>{selected === "" ? noSelected : selected}</span><span className={open ? styles.open : styles.close}>{`>`}</span>
+        <span>{selected === "" ? noSelected : selected}</span>
+        <div className={styles.sign}>
+          <span className={open ? styles.open : styles.close}>{`>`}</span>
+          {onClose && <span onClick={(e) => { e.stopPropagation(); onClose(); }} className={styles.cross}>x</span>}
+        </div>
       </div>
       {open && <div className={styles.dropdown}>
         {items.map((item, index) => <div key={`${keyValue}-${index}`} onClick={() => setSelected(item)} className={styles.item}>{item}</div>)}

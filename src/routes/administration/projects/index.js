@@ -11,6 +11,7 @@ import styles from './styles.scss'
 const projects = [
   {
     id: 33,
+    surveyId: 59,
     name: 'Juilet Phase 3',
     manager: 'Cristophor Robinson',
     code: '07341215',
@@ -49,6 +50,7 @@ const projects = [
   },
   {
     id: 32,
+    surveyId: 59,
     name: 'Bravo Expansion Phase 1',
     manager: 'Cristophor Robinson',
     code: '02341241',
@@ -81,6 +83,7 @@ const projects = [
   },
   {
     id: 33,
+    surveyId: 59,
     name: 'Juilet Phase 3',
     code: '07341215',
     title: 'We want to hear from you!',

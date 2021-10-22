@@ -10,13 +10,31 @@
 		justify-content: space-between;
     gap: 8px;
     align-items: center;
-    .open {
-      transform: rotate(-90deg);
-      font-family: Poppins;
-    }
-    .close {
-      transform: rotate(90deg);
-      font-family: Poppins;
+    .sign {
+      display: flex;
+      gap: 13px;
+      align-items: center;
+      .cross {
+        border-radius: 19px;
+        background: #e2e2e2;
+        width: 19px;
+        height: 19px;
+        color: black;
+        font-weight: bolder;
+        font-family: cursive;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+      .open {
+        transform: rotate(-90deg);
+        font-family: Poppins;
+      }
+      .close {
+        transform: rotate(90deg);
+        font-family: Poppins;
+      }
     }
 	}
 	.dropdown {

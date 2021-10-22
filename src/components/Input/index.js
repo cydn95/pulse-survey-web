@@ -19,7 +19,6 @@ const Input = ({
   onBlur,
   style = null,
   refVal = null,
-  withClose = false,
   onClickClose = null,
 }) => {
   return (
@@ -38,7 +37,12 @@ const Input = ({
           onBlur={(e) => (onBlur ? onBlur(e) : {})}
           style={style}
         />
-        {withClose && <span onClick={onClickClose} className={styles.close}>x</span>}
+        {onClickClose && <span
+          onClick={(e) => {
+            e.stopPropagation();
+            onClickClose();
+          }}
+          className={styles.close}>x</span>}
       </div>
     </label>
   );

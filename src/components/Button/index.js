@@ -4,18 +4,19 @@ import classnames from "classnames";
 import styles from "./styles.scss";
 
 function Button(props) {
-  const { className, type, children, onClick, default: isDefault, style} = props;
+  const { className, type, children, onClick, default: isDefault, style, disabled } = props;
   return (
     <button
       className={classnames(
         styles.main,
-        isDefault ? styles.default : null,
+        isDefault ? disabled ? null : styles.default : null,
         className
       )}
       type={type}
       onClick={onClick}
       {...{ autoFocus: isDefault }}
-      style={{...style}}
+      style={{ ...style }}
+      disabled={disabled}
     >
       {children}
     </button>

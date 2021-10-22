@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import classnames from 'classnames'
@@ -20,23 +20,28 @@ import {
   ModalFooter,
 } from './usercard.styles'
 
-const UserCard = ({ user }) => {
+const UserCard = ({ user, teamList, shgroupList }) => {
   const [open, setOpen] = useState(false)
   const [isActive, setIsActive] = useState(false)
-  const [shGroup, setShGroup] = useState('Internal')
-  const [team, setTeam] = useState('Management')
-  const [shType, setShType] = useState('Team member')
-  const [name, setName] = useState('Ryan Jones')
-  const [email, setEmail] = useState('ryanjones@gmail.com')
-  const [jobTitle, setJobTitle] = useState('Janitor')
-  const [org, setOrg] = useState('Acme')
+  const [shGroup, setShGroup] = useState(user.shGroup.SHGroupName)
+  const [team, setTeam] = useState(user.team.name)
+  const [shType, setShType] = useState(user.shType.shTypeName)
+  const [firstName, setFirstName] = useState(user.user.first_name)
+  const [lastName, setLastName] = useState(user.user.last_name)
+  const [email, setEmail] = useState(user.user.email)
+  const [jobTitle, setJobTitle] = useState(user.projectUserTitle)
+  const [org, setOrg] = useState(user.projectOrganization)
+  const [isCGroup1, setIsCGroup1] = useState(user.isCGroup1)
+  const [isCGroup2, setIsCGroup2] = useState(user.isCGroup2)
+  const [isCGroup3, setIsCGroup3] = useState(user.isCGroup3)
   const [roleDescription, setRoleDescription] = useState('I think...')
+
   return (
     <Wrapper>
       <Basic onClick={() => setIsActive(!isActive)}>
         <div className="left-part">
           <div className="header">
-            <h2>{name}</h2>
+            <h2>{`${firstName} ${lastName}`}</h2>
             <Tag isActive={isActive}>Self Submited</Tag>
           </div>
           <BasicContent>
@@ -45,7 +50,7 @@ const UserCard = ({ user }) => {
               <Select
                 selected={shGroup}
                 setSelected={setShGroup}
-                items={['Internal', 'External']}
+                items={shgroupList.map(sh => sh.SHGroupName)}
               />
             </div>
             <div>
@@ -61,7 +66,7 @@ const UserCard = ({ user }) => {
               <Select
                 selected={team}
                 setSelected={setTeam}
-                items={['Management', 'CTO']}
+                items={teamList.map(team => team.name)}
               />
             </div>
             <div>
@@ -91,11 +96,11 @@ const UserCard = ({ user }) => {
         </div>
         <div>
           <span className="tag">AM Status</span>
-          <span className="bgTag">30%</span>
+          <span className="bgTag">{((user.am_response.length / user.am_total) * 100).toFixed()}%</span>
         </div>
         <div>
           <span className="tag">AO SH Identified</span>
-          <span className="bgTag">4</span>
+          <span className="bgTag">{user.ao_total}</span>
         </div>
         <div>
           <span className="tag">Mapped by Ohters</span>
@@ -109,11 +114,11 @@ const UserCard = ({ user }) => {
       {isActive && <EditPart>
         <div>
           <span className="bgTag">First Name</span>
-          <Input value={name.split(' ')[0]} />
+          <Input value={firstName} />
         </div>
         <div>
           <span className="bgTag">Last Name</span>
-          <Input value={name.split(' ')[1]} />
+          <Input value={lastName} />
         </div>
         <div>
           <span className="bgTag">Email</span>
@@ -129,14 +134,14 @@ const UserCard = ({ user }) => {
         </RoleDescription>
         <div className="selectGroup">
           <span className="tag">Select Group</span>
-          <TooltipComponent content="Custom Group">
-            <input type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
+          <TooltipComponent content={user.survey.customGroup1}>
+            <input checked={isCGroup1} onChange={(e) => setIsCGroup1(e.target.checked)} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
           </TooltipComponent>
-          <TooltipComponent content="Custom Group">
-            <input type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
+          <TooltipComponent content={user.survey.customGroup2}>
+            <input checked={isCGroup2} onChange={(e) => setIsCGroup2(e.target.checked)} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
           </TooltipComponent>
-          <TooltipComponent content="Custom Group">
-            <input type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
+          <TooltipComponent content={user.survey.customGroup3}>
+            <input checked={isCGroup3} onChange={(e) => setIsCGroup3(e.target.checked)} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
           </TooltipComponent>
         </div>
       </EditPart>}
@@ -157,11 +162,11 @@ const UserCard = ({ user }) => {
             </div>
             <div>
               <span className="tag">AM Status</span>
-              <span className="bgTag">30%</span>
+              <span className="bgTag">{((user.am_response.length / user.am_total) * 100).toFixed()}%</span>
             </div>
             <div>
               <span className="tag">AO SH Identified</span>
-              <span className="bgTag">4</span>
+              <span className="bgTag">{user.ao_total}</span>
             </div>
             <div>
               <span className="tag">Mapped by Ohters</span>
@@ -175,11 +180,11 @@ const UserCard = ({ user }) => {
           <div className="editPart">
             <div>
               <span className="bgTag">First Name</span>
-              <Input value={name.split(' ')[0]} />
+              <Input value={firstName} />
             </div>
             <div>
               <span className="bgTag">Last Name</span>
-              <Input value={name.split(' ')[1]} />
+              <Input value={lastName} />
             </div>
             <div>
               <span className="bgTag">Email</span>
@@ -195,14 +200,14 @@ const UserCard = ({ user }) => {
             </RoleDescription>
             <div className="selectGroup">
               <span className="tag">Select Group</span>
-              <TooltipComponent content="Custom Group">
-                <input type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
+              <TooltipComponent content={user.survey.customGroup1}>
+                <input checked={isCGroup1} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
               </TooltipComponent>
-              <TooltipComponent content="Custom Group">
-                <input type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
+              <TooltipComponent content={user.survey.customGroup2}>
+                <input checked={isCGroup1} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
               </TooltipComponent>
-              <TooltipComponent content="Custom Group">
-                <input type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
+              <TooltipComponent content={user.survey.customGroup3}>
+                <input checked={isCGroup1} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
               </TooltipComponent>
             </div>
           </div>

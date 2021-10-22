@@ -1,0 +1,33 @@
+.dashboard_threshold {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  .tag {
+    font-family: Poppins;
+    font-size: 13px;
+    font-weight: 600;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: center;
+    color: #000;
+  }
+  .threshold {
+    width: 82px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background-color: rgba(180,180,180,0.2);
+    input {
+      font-family: Poppins;
+      font-size: 12px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #6d6f94;
+    }
+  }
+}
