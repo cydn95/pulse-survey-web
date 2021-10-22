@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import Button from 'Components/Button'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classnames from 'classnames'
 import styles from './styles.scss'
 import Reorder from '../../../../assets/img/admin/reorder.png'
@@ -30,7 +32,7 @@ const ReorderModal = ({ items, setItems, onClose, text }) => {
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
           <h2>Reorder {text}</h2>
-          <span className={styles.close} onClick={onClose}>X</span>
+          <span className={styles.close} onClick={onClose}><FontAwesomeIcon icon={faTimes} /></span>
         </div>
         <DragDropContext
           onDragStart={data => {

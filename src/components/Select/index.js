@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import classnames from 'classnames'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from './styles.scss'
 
 const Select = ({ selected = "", setSelected, items = [], className, noSelected = "Select", keyValue = "default", onClose = null }) => {
@@ -13,7 +15,7 @@ const Select = ({ selected = "", setSelected, items = [], className, noSelected 
         <span>{selected === "" ? noSelected : selected}</span>
         <div className={styles.sign}>
           <span className={open ? styles.open : styles.close}>{`>`}</span>
-          {onClose && <span onClick={(e) => { e.stopPropagation(); onClose(); }} className={styles.cross}>x</span>}
+          {onClose && <span onClick={(e) => { e.stopPropagation(); onClose(); }} className={styles.cross}><FontAwesomeIcon icon={faTimes} /></span>}
         </div>
       </div>
       {open && <div className={styles.dropdown}>
