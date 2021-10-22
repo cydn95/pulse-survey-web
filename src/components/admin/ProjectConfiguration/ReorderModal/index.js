@@ -32,7 +32,7 @@ const ReorderModal = ({ items, setItems, onClose, text }) => {
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
           <h2>Reorder {text}</h2>
-          <span className={styles.close} onClick={onClose}><FontAwesomeIcon icon={faTimes} /></span>
+          <span className={styles.close} onClick={onClose}><FontAwesomeIcon icon={faTimes} color="#6d6f94" /></span>
         </div>
         <DragDropContext
           onDragStart={data => {

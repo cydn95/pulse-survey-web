@@ -193,7 +193,7 @@ const Question = ({ question }) => {
           <DetailModal onClick={(e) => e.stopPropagation()}>
             <ModalHeader>
               <h2>{survey}</h2>
-              <span onClick={() => setDetailed(false)}><FontAwesomeIcon icon={faTimes} /></span>
+              <span onClick={() => setDetailed(false)}><FontAwesomeIcon icon={faTimes} color="#6d6f94" /></span>
             </ModalHeader>
             <div className={classnames("editPart", styles.editPart)}>
               {controlType === 'Slider' && <Fragment>

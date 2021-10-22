@@ -214,22 +214,18 @@
       }
       span {
         font-family: Montserrat;
-        padding: 6px;
         border-radius: 20px;
         background-color: #e2e2e2;
         width: 19px;
         height: 19px;
-        font-size: 15px;
-        font-weight: 800;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: normal;
-        letter-spacing: normal;
-        color: #000;
         display: flex;
         align-items: center;
         cursor: pointer;
         justify-content: center;
+        svg {
+          width: 11px;
+          height: 11px;
+        }
       }
     }
     .add {

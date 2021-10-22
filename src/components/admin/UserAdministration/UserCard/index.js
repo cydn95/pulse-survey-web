@@ -151,7 +151,7 @@ const UserCard = ({ user, teamList, shgroupList }) => {
         <DetailModal onClick={(e) => e.stopPropagation()}>
           <ModalHeader>
             <h2>Ryan Jones</h2>
-            <span onClick={() => setOpen(false)}><FontAwesomeIcon icon={faTimes} /></span>
+            <span onClick={() => setOpen(false)}><FontAwesomeIcon icon={faTimes} color="#6d6f94" /></span>
           </ModalHeader>
           <div className="detailed">
             <div>

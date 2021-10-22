@@ -150,7 +150,7 @@ const SurveyConfiguration = () => {
         <DetailModal onClick={(e) => e.stopPropagation()}>
           <ModalHeader>
             <h2>Filter</h2>
-            <span onClick={() => setOpen(false)}><FontAwesomeIcon icon={faTimes} /></span>
+            <span onClick={() => setOpen(false)}><FontAwesomeIcon icon={faTimes} color="#6d6f94" /></span>
           </ModalHeader>
           <div className={styles.drivers_for_mobile}>
             {drivers.map((driver, idx) =>
