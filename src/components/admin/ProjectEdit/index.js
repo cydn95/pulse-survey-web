@@ -63,8 +63,7 @@ const ProjectEdit = ({ project, currentStep, setBreadcrumb }, ref) => {
       {currentStep === 2 && <UserAdministration project={project} />}
       {currentStep === 3 && <SurveyConfiguration />}
       {currentStep === 4 && <Reporting />}
-      {/* {currentStep === 5 && <FlaggedResponses />} */}
-      {currentStep === 5 && <div>Flagged Response page</div>}
+      {currentStep === 5 && <FlaggedResponses />}
     </div>
   )
 }
