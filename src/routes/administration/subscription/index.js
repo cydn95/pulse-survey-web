@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import { faDownload, faStar, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from 'Components/Button'
+import Input from 'Components/Input'
+import Select from 'Components/Select'
 import MasterCard from 'Assets/img/admin/Mastercard.svg'
 import Chair from 'Assets/img/admin/Chair.svg'
 import BestValue from 'Assets/img/admin/best_value_tag.png'
+import InvoiceAvatar from 'Assets/img/admin/File-invoice.svg'
 import { Wrapper, Card, InvoiceTable, Invoice, ValueTable, Item, PlanCard } from './subscription.styles';
 
 const items = [
@@ -80,6 +83,10 @@ const pages = [
   {
     header: 'Change plan',
     breadCrumb: 'Subscription > Change plan',
+  },
+  {
+    header: 'Invoicing details',
+    breadCrumb: 'Subscription > Invoicing details',
   }
 ]
 
@@ -87,8 +94,10 @@ const Subscription = () => {
   const [page, setPage] = useState(0)
   return (
     <Wrapper>
-      <h2>{pages[page].header}</h2>
-      <span className="breadCrumb">{pages[page].breadCrumb}</span>
+      <div className="headerPart">
+        <h2>{pages[page].header}</h2>
+        <span className="breadCrumb">{pages[page].breadCrumb}</span>
+      </div>
       {page === 0 && <div className="cards">
         <Card>
           <span className="title">Current Plan</span>
@@ -146,7 +155,7 @@ const Subscription = () => {
             <FontAwesomeIcon icon={faDownload} className="icon" />
           </Invoice>
         </InvoiceTable>
-        <Button>Invoice Details</Button>
+        <Button onClick={() => setPage(2)}>Invoice Details</Button>
       </div>}
       {page === 1 && <div className="changePlan">
         <ValueTable>
@@ -191,6 +200,44 @@ const Subscription = () => {
             </PlanCard>
           )}
         </div>
+      </div>}
+      {page === 2 && <div className="invoiceDetails">
+        <div className="header">
+          <span className="image"><img src={InvoiceAvatar} alt="file" /></span>
+          <span className="tag">Invoice informations</span>
+        </div>
+        <div className="inputs">
+          <div className="value">
+            <label>Company Name</label>
+            <Input className="input" />
+          </div>
+          <div className="value">
+            <label>Send emails to</label>
+            <Input className="input" />
+          </div>
+          <div className="value">
+            <label>Country</label>
+            <Select className="select" />
+          </div>
+          <div className="value">
+            <label>City</label>
+            <Select className="select" />
+          </div>
+          <div className="value">
+            <label>State</label>
+            <Select className="select" />
+          </div>
+          <div className="value">
+            <label>Address</label>
+            <Input className="input" />
+          </div>
+          <div className="value">
+            <label>Zip</label>
+            <Input className="input" />
+          </div>
+          <div className="value"></div>
+        </div>
+        <Button>Save</Button>
       </div>}
     </Wrapper>
   )

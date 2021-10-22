@@ -5,27 +5,30 @@ export const Wrapper = styled.div`
   flex-direction: column;
   gap: 19px;
   padding: 26px 44px;
-  h2 {
-    font-family: Poppins;
-    font-size: 25px;
-    font-weight: 600;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.6;
-    letter-spacing: -0.64px;
-    text-align: left;
-    color: #273645;
-  }
-  .breadCrumb {
-    font-family: Poppins;
-    font-size: 15px;
-    font-weight: 500;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: left;
-    color: #62b5a6;
+  .headerPart {
+
+    h2 {
+      font-family: Poppins;
+      font-size: 25px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.6;
+      letter-spacing: -0.64px;
+      text-align: left;
+      color: #273645;
+    }
+    .breadCrumb {
+      font-family: Poppins;
+      font-size: 15px;
+      font-weight: 500;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #62b5a6;
+    }
   }
   .title {
     font-family: Poppins;
@@ -62,6 +65,88 @@ export const Wrapper = styled.div`
     }
   }
 
+  .invoiceDetails {
+    padding: 24px 28px 31px;
+    border-radius: 8px;
+    border: solid 1px #dfe0eb;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 29px;
+    align-items: flex-start;
+    max-width: 677px;
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 19px;
+      .image {
+        width: 52px;
+        height: 53px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background-color: #eff0f6;
+        img {
+          width: 32px;
+          height: 32px;
+        }
+      }
+      .tag {
+        font-family: Poppins;
+        font-size: 15px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #000;
+      }
+    }
+    .inputs {
+      display: flex;
+      gap: 21px;
+      flex-wrap: wrap;
+      .value {
+        flex: calc(50% - 11px);
+        label {
+          font-family: Montserrat;
+          font-size: 13px;
+          font-weight: 600;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: 1.38;
+          letter-spacing: normal;
+          text-align: left;
+          color: #000;
+        }
+        .input {
+          padding: 10px 16px;
+          border-radius: 8px;
+          background-color: #eff0f6;
+          input {
+            font-family: Poppins;
+            font-size: 12px;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: left;
+            color: #6d6f94;
+          }
+        }
+        .select {
+          padding: 10px 16px;
+          border-radius: 8px;
+          border: solid 2px #eee;
+          background-color: #fff;
+        }
+      }
+    }
+  }
+
   @media (max-width: 1260px) {
     .changePlan {
       .plans {
@@ -72,11 +157,20 @@ export const Wrapper = styled.div`
 
   @media (max-width: 768px) {
     padding: 44px 13px;
-    h2 {
-      font-size: 17px;
+    .headerPart {
+      h2 {
+        font-size: 17px;
+      }
+      .breadCrumb {
+        font-size: 13px;
+      }
     }
-    .breadCrumb {
-      font-size: 13px;
+    .invoiceDetails {
+      .inputs {
+        .value {
+          flex: 100%;
+        }
+      }
     }
   }
 `
