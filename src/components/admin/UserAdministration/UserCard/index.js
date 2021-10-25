@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
+import { all, call, fork, takeEvery, put } from 'redux-saga/effects'
 import { CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
@@ -22,24 +23,23 @@ import {
   ModalFooter,
 } from './usercard.styles'
 
-const UserCard = ({ user, teamList, shgroupList }) => {
+const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
   const [open, setOpen] = useState(false)
   const [isActive, setIsActive] = useState(false)
-  const [shGroup, setShGroup] = useState(user.shGroup.SHGroupName)
-  const [team, setTeam] = useState(user.team.name)
+  // const [shGroup, setShGroup] = useState(user.shGroup.SHGroupName)
+  // const [team, setTeam] = useState(user.team.name)
   const [shType, setShType] = useState(user.shType.shTypeName)
-  const [firstName, setFirstName] = useState(user.user.first_name)
-  const [lastName, setLastName] = useState(user.user.last_name)
-  const [email, setEmail] = useState(user.user.email)
-  const [jobTitle, setJobTitle] = useState(user.projectUserTitle)
-  const [org, setOrg] = useState(user.projectOrganization)
+  // const [firstName, setFirstName] = useState(user.user.first_name)
+  // const [lastName, setLastName] = useState(user.user.last_name)
+  // const [email, setEmail] = useState(user.user.email)
+  // const [jobTitle, setJobTitle] = useState(user.projectUserTitle)
+  // const [org, setOrg] = useState(user.projectOrganization)
   const [isCGroup1, setIsCGroup1] = useState(user.isCGroup1)
   const [isCGroup2, setIsCGroup2] = useState(user.isCGroup2)
   const [isCGroup3, setIsCGroup3] = useState(user.isCGroup3)
   const [roleDescription, setRoleDescription] = useState('I think...')
   const last_login = useMemo(() => {
     let now = new Date().getTime();
-    console.log(now, Date.parse(user.user.last_login))
     const diffTime = Math.abs(now - Date.parse(user.user.last_login));
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
@@ -53,15 +53,15 @@ const UserCard = ({ user, teamList, shgroupList }) => {
       <Basic onClick={() => setIsActive(!isActive)}>
         <div className="left-part">
           <div className="header">
-            <h2>{`${firstName} ${lastName}`}</h2>
+            <h2>{`${user.user.first_name} ${user.user.last_name}`}</h2>
             <Tag isActive={isActive}>Self Submited</Tag>
           </div>
           <BasicContent>
             <div>
               <span className="tag">SH Group:&nbsp;</span>
               <Select
-                selected={shGroup}
-                setSelected={setShGroup}
+                selected={user.shGroup.SHGroupName}
+                setSelected={(item) => setUserField(user.id, 'shGroup', shgroupList.filter(sh => sh.SHGroupName === item)[0])}
                 items={shgroupList.map(sh => sh.SHGroupName)}
               />
             </div>
@@ -76,18 +76,30 @@ const UserCard = ({ user, teamList, shgroupList }) => {
             <div>
               <span className="tag">Team:&nbsp;</span>
               <Select
-                selected={team}
-                setSelected={setTeam}
+                selected={user.team.name}
+                setSelected={(item) => setUserField(user.id, 'team', teamList.filter(team => team.name === item)[0])}
                 items={teamList.map(team => team.name)}
               />
             </div>
             <div>
               <span className="tag">Job Title:&nbsp;</span>
-              <Input className="input" value={jobTitle} />
+              <Input
+                className="input"
+                value={user.projectUserTitle}
+                onChange={(value, e) =>
+                  setUserField(user.id, 'projectUserTitle', value)
+                }
+              />
             </div>
             <div>
               <span className="tag">Project Org:&nbsp;</span>
-              <Input className="input" value={org} />
+              <Input
+                className="input"
+                value={user.projectOrganization}
+                onChange={(value, e) =>
+                  setUserField(user.id, 'projectOrganization', value)
+                }
+              />
             </div>
             <Button onClick={() => setOpen(true)} className="btnViewDetails">View details</Button>
           </BasicContent>
@@ -126,19 +138,34 @@ const UserCard = ({ user, teamList, shgroupList }) => {
       {isActive && <EditPart>
         <div>
           <span className="bgTag">First Name</span>
-          <Input value={firstName} />
+          <Input
+            value={user.user.first_name}
+            onChange={(value, e) =>
+              setUserField(user.id, 'user', { ...user.user, first_name: value })
+            }
+          />
         </div>
         <div>
           <span className="bgTag">Last Name</span>
-          <Input value={lastName} />
+          <Input
+            value={user.user.last_name}
+            onChange={(value, e) =>
+              setUserField(user.id, 'user', { ...user.user, last_name: value })
+            }
+          />
         </div>
         <div>
           <span className="bgTag">Email</span>
-          <Input value={email} />
+          <Input
+            value={user.user.email}
+            onChange={(value, e) =>
+              setUserField(user.id, 'user', { ...user.user, email: value })
+            }
+          />
         </div>
         <div>
           <span className="bgTag">User Org</span>
-          <Input value={org} />
+          <Input value={user.user.organization.name} />
         </div>
         <RoleDescription>
           <span className="bgTag">Role Description</span>
@@ -192,19 +219,36 @@ const UserCard = ({ user, teamList, shgroupList }) => {
           <div className="editPart">
             <div>
               <span className="bgTag">First Name</span>
-              <Input value={firstName} />
+              <Input
+                value={user.user.first_name}
+                onChange={(value, e) =>
+                  setUserField(user.id, 'user', { ...user.user, first_name: value })
+                }
+              />
             </div>
             <div>
               <span className="bgTag">Last Name</span>
-              <Input value={lastName} />
+              <Input
+                value={user.user.last_name}
+                onChange={(value, e) =>
+                  setUserField(user.id, 'user', { ...user.user, last_name: value })
+                }
+              />
             </div>
             <div>
               <span className="bgTag">Email</span>
-              <Input value={email} />
+              <Input
+                value={user.user.email}
+                onChange={(value, e) =>
+                  setUserField(user.id, 'user', { ...user.user, email: value })
+                }
+              />
             </div>
             <div>
               <span className="bgTag">User Org</span>
-              <Input value={org} />
+              <Input
+                value={user.user.organization.name}
+              />
             </div>
             <RoleDescription>
               <span className="bgTag">Role Description</span>

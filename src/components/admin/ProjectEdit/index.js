@@ -1,4 +1,6 @@
-import React, { useState, useImperativeHandle, forwardRef, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
+import { adminUserList } from 'Redux/actions'
 import ProjectSetup from '../ProjectSetup'
 import UserAdministration from '../UserAdministration'
 import ProjectConfiguration from '../ProjectConfiguration'
@@ -7,7 +9,7 @@ import Reporting from '../Reporting'
 import FlaggedResponses from '../FlaggedResponses'
 import styles from './styles.scss'
 
-const ProjectEdit = ({ project, currentStep, setBreadcrumb }, ref) => {
+const ProjectEdit = ({ project, currentStep, setBreadcrumb, getUserList }, ref) => {
   const [name, setName] = useState(project.name)
   const [manager, setManager] = useState(project.manager)
   const [companyLogo, setCompanyLogo] = useState()
@@ -17,6 +19,10 @@ const ProjectEdit = ({ project, currentStep, setBreadcrumb }, ref) => {
   const [video, setVideo] = useState(project.video)
   const [templates, setTemplates] = useState(project.templates)
 
+  useEffect(() => {
+    getUserList(project.surveyId)
+  }, [project])
+
   const updateCompanyLogo = (files) =>
     setCompanyLogo(files[0]);
 
@@ -25,17 +31,6 @@ const ProjectEdit = ({ project, currentStep, setBreadcrumb }, ref) => {
 
   const updateVideo = (files) =>
     setVideo(files[0])
-
-  useImperativeHandle(ref, () => ({
-    name,
-    manager,
-    title,
-    shortText,
-    companyLogo,
-    projectLogo,
-    video,
-    templates,
-  }), [name, manager, title, shortText, companyLogo, projectLogo, video, templates])
 
   return (
     <div className={styles.wrapper}>
@@ -68,4 +63,6 @@ const ProjectEdit = ({ project, currentStep, setBreadcrumb }, ref) => {
   )
 }
 
-export default forwardRef(ProjectEdit);
+export default connect(null, {
+  getUserList: adminUserList
+})(ProjectEdit);
