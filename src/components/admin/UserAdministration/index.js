@@ -1,23 +1,21 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { adminUserList, teamList, shgroupList } from 'Redux/actions'
+import { teamList, shgroupList, adminSetUserField } from 'Redux/actions'
 import Loading from 'Components/Loading'
 import Counter from './Counter'
 import UserCard from './UserCard'
 import styles from './styles.scss'
 
-const UserAdministration = ({ userList, adminUserList, project, loading, getTeamList, getShGroupList, shgroupList, teamList }) => {
+const UserAdministration = ({ userList, project, loading, getTeamList, getShGroupList, shgroupList, teamList, setUserField }) => {
   const [selected, setSelected] = useState(0)
   const [list, setList] = useState([])
   useEffect(() => {
-    adminUserList(project.surveyId)
     getTeamList(project.id)
     getShGroupList(project.surveyId)
   }, [project])
 
   useEffect(() => {
     setList(userList.projectUser ? userList.projectUser : [])
-    console.log('userList', userList)
   }, [userList])
   return (
     <Fragment>
@@ -37,7 +35,7 @@ const UserAdministration = ({ userList, adminUserList, project, loading, getTeam
           </div>
         </div>
         {list.map((user, idx) =>
-          <UserCard key={`${idx}-${user.id}`} user={user} teamList={teamList} shgroupList={shgroupList} />
+          <UserCard key={`${idx}-${user.id}`} user={user} teamList={teamList} shgroupList={shgroupList} setUserField={setUserField} />
         )}
       </Fragment>}
 
@@ -57,7 +55,7 @@ const mapStateToProps = ({ admin, common }) => {
 }
 
 export default connect(mapStateToProps, {
-  adminUserList,
   getTeamList: teamList,
   getShGroupList: shgroupList,
+  setUserField: adminSetUserField,
 })(UserAdministration)

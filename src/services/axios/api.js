@@ -562,6 +562,10 @@ const adminUserListAPI = (surveyId) => {
   return getClient(true).get(`/adminuserbysurvey/?survey=${surveyId}`);
 };
 
+const postAdminUserListAPI = (data) => {
+  return getClient(true).post("/adminuserbysurvey/", data);
+};
+
 const getKeyDataFromLambda = () => {
   return getLambdaClient().get(
     "https://gft6ixgrq7.execute-api.us-east-2.amazonaws.com/default/PulseLambda-NeptuneLambdaFunction-QI9VKCO1VXK1"
@@ -619,4 +623,5 @@ export {
   updateStakeholderCategoryAPI,
   getWordCloudAPI,
   adminUserListAPI,
+  postAdminUserListAPI,
 };

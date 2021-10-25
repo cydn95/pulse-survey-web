@@ -1,4 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react'
+import { connect } from 'react-redux'
+import "react-notifications/lib/notifications.css";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+import { adminUpdateUserList } from 'Redux/admin/actions'
 import ProjectCard from 'Components/admin/ProjectCard'
 import ProjectEdit from 'Components/admin/ProjectEdit'
 import AdminStepBar from 'Components/admin/AdminStepBar'
@@ -122,7 +129,7 @@ const projects = [
   },
 ]
 
-const Projects = ({ history, }) => {
+const Projects = ({ history, updateUserList, userList }) => {
   const [breadcrumb, setBreadcrumb] = useState('')
   const [editing, setEditing] = useState(-1)
   const [currentProject, setCurrentProject] = useState({})
@@ -141,6 +148,21 @@ const Projects = ({ history, }) => {
       setBreadcrumb('')
     }
   }
+
+  const savedCallback = (status) => {
+    if (status) {
+      NotificationManager.success("Response saved successfully", "");
+    } else {
+      NotificationManager.error("Something went wrong", "");
+    }
+    handleEdit(-1)
+  }
+
+  const onSave = () => {
+    console.log('save button clicked')
+    updateUserList(userList, savedCallback)
+  }
+
   return (
     <div className={styles.main}>
       <div className={styles.header}>
@@ -158,7 +180,7 @@ const Projects = ({ history, }) => {
               <img src={SaveImage} alt="save" />
             </span>
             <Button className={styles.cancelBtn} onClick={() => handleEdit(-1)}>Cancel</Button>
-            <Button className={styles.button} onClick={() => console.log(projectEditRef.current)}>Save changes</Button>
+            <Button className={styles.button} onClick={() => onSave()}>Save changes</Button>
           </div>
         }
       </div>
@@ -173,8 +195,18 @@ const Projects = ({ history, }) => {
           <ProjectEdit ref={projectEditRef} project={currentProject} currentStep={currentStep} setBreadcrumb={setBreadcrumb} />
         </div>
       }
+      <NotificationContainer />
     </div>
   )
 }
 
-export default Projects
+const mapStateToProps = ({ admin }) => {
+  const { userList } = admin
+  return {
+    userList,
+  }
+}
+
+export default connect(mapStateToProps, {
+  updateUserList: adminUpdateUserList
+})(Projects)
