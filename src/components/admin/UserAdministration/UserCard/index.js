@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
@@ -37,7 +37,17 @@ const UserCard = ({ user, teamList, shgroupList }) => {
   const [isCGroup2, setIsCGroup2] = useState(user.isCGroup2)
   const [isCGroup3, setIsCGroup3] = useState(user.isCGroup3)
   const [roleDescription, setRoleDescription] = useState('I think...')
-
+  const last_login = useMemo(() => {
+    let now = new Date().getTime();
+    console.log(now, Date.parse(user.user.last_login))
+    const diffTime = Math.abs(now - Date.parse(user.user.last_login));
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  }, [user])
+  const submittedDate = useMemo(() => {
+    const date = new Date(user.created_at);
+    return `${date.getDate()}-${date.toLocaleString('default', { month: 'short' })}-${date.getFullYear()}`
+  }, [user])
   return (
     <Wrapper>
       <Basic onClick={() => setIsActive(!isActive)}>
@@ -90,11 +100,11 @@ const UserCard = ({ user, teamList, shgroupList }) => {
       {isActive && <Detailed>
         <div>
           <span className="tag">Submitted By</span>
-          <span className="bgTag">Ryan Jones</span>
+          <span className="bgTag">{`${user.addByProjectUser.user.firstName} ${user.addByProjectUser.user.lastName}`}</span>
         </div>
         <div>
           <span className="tag">Submitted Date</span>
-          <span className="bgTag">15-May-2021</span>
+          <span className="bgTag">{submittedDate}</span>
         </div>
         <div>
           <span className="tag">AM Status</span>
@@ -105,12 +115,12 @@ const UserCard = ({ user, teamList, shgroupList }) => {
           <span className="bgTag">{user.ao_total}</span>
         </div>
         <div>
-          <span className="tag">Mapped by Ohters</span>
-          <span className="bgTag">Ryan Jones</span>
+          <span className="tag">Mapped by Others</span>
+          <span className="bgTag">{user.mappedByOthers}</span>
         </div>
         <div>
           <span className="tag">Last Login</span>
-          <span className="bgTag">2 days ago</span>
+          <span className="bgTag">{last_login ? last_login + (last_login < 1 ? ' day ago' : ' days ago') : 'Have not logged in yet'}</span>
         </div>
       </Detailed>}
       {isActive && <EditPart>
@@ -156,11 +166,11 @@ const UserCard = ({ user, teamList, shgroupList }) => {
           <div className="detailed">
             <div>
               <span className="tag">Submitted By</span>
-              <span className="bgTag">Ryan Jones</span>
+              <span className="bgTag">{`${user.addByProjectUser.user.firstName} ${user.addByProjectUser.user.lastName}`}</span>
             </div>
             <div>
               <span className="tag">Submitted Date</span>
-              <span className="bgTag">15-May-2021</span>
+              <span className="bgTag">{submittedDate}</span>
             </div>
             <div>
               <span className="tag">AM Status</span>
@@ -171,12 +181,12 @@ const UserCard = ({ user, teamList, shgroupList }) => {
               <span className="bgTag">{user.ao_total}</span>
             </div>
             <div>
-              <span className="tag">Mapped by Ohters</span>
-              <span className="bgTag">Ryan Jones</span>
+              <span className="tag">Mapped by Others</span>
+              <span className="bgTag">{user.mappedByOthers}</span>
             </div>
             <div>
               <span className="tag">Last Login</span>
-              <span className="bgTag">2 days ago</span>
+              <span className="bgTag">{last_login ? last_login + (last_login === 1 ? ' day ago' : ' days ago') : 'Have not logged in yet'}</span>
             </div>
           </div>
           <div className="editPart">
