@@ -131,7 +131,7 @@ const projects = [
 
 const Projects = ({ history, updateUserList, userList }) => {
   const [breadcrumb, setBreadcrumb] = useState('')
-  const [editing, setEditing] = useState(-1)
+  const [editing, setEditing] = useState(-2)
   const [currentProject, setCurrentProject] = useState({})
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -147,6 +147,7 @@ const Projects = ({ history, updateUserList, userList }) => {
       setCurrentProject({})
       setBreadcrumb('')
     }
+    setCurrentStep(0)
   }
 
   const savedCallback = (status) => {
@@ -155,7 +156,7 @@ const Projects = ({ history, updateUserList, userList }) => {
     } else {
       NotificationManager.error("Something went wrong", "");
     }
-    handleEdit(-1)
+    handleEdit(-2)
   }
 
   const onSave = () => {
@@ -171,20 +172,20 @@ const Projects = ({ history, updateUserList, userList }) => {
           <h3 className={styles.breadcrumb}>{breadcrumb}</h3>
         </div>
         {editing < 0 ?
-          <Button className={styles.button}>Create new project</Button> :
+          <Button className={styles.button} onClick={() => handleEdit(-1)}>Create new project</Button> :
           <div className={styles.btnGroup}>
-            <span className={styles.forMobile} onClick={() => handleEdit(-1)}>
+            <span className={styles.forMobile} onClick={() => handleEdit(-2)}>
               <img src={CancelImage} alt="cancel" />
             </span>
-            <span className={styles.forMobile} onClick={() => console.log(projectEditRef.current)}>
+            <span className={styles.forMobile} onClick={onSave}>
               <img src={SaveImage} alt="save" />
             </span>
-            <Button className={styles.cancelBtn} onClick={() => handleEdit(-1)}>Cancel</Button>
-            <Button className={styles.button} onClick={() => onSave()}>Save changes</Button>
+            <Button className={styles.cancelBtn} onClick={() => handleEdit(-2)}>Cancel</Button>
+            <Button className={styles.button} onClick={onSave}>Save changes</Button>
           </div>
         }
       </div>
-      {editing < 0 ?
+      {editing < -1 ?
         <div className={styles.projectCards}>
           {projects.map((project, index) =>
             <ProjectCard key={`${project.code}-${index}`} project={project} setEditing={(projectId) => handleEdit(projectId)} />
