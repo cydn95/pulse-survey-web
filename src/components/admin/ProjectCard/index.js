@@ -76,7 +76,6 @@ const ProjectCard = ({ project, setEditing }) => {
       <div className={styles.actions}>
         <Button className={styles.edit} onClick={(e) => setEditing(project.id)}>Edit project</Button>
         <Button className={styles.deactivate}>Deactivate</Button>
-        <AddButton text="Stakeholder" />
       </div>
     </div>
   )

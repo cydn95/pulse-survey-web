@@ -23,26 +23,27 @@ const toolbarSettings = {
 };
 
 const ProjectSetup = ({
-  project,
-  name,
-  setName,
-  manager,
-  setManager,
-  title,
-  setTitle,
-  shortText,
-  setShortText,
-  companyLogo,
-  updateCompanyLogo,
-  projectLogo,
-  updateProjectLogo,
-  video,
-  updateVideo,
-  templates,
-  setTemplates
+  project
 }) => {
   const [crrPage, setCrrPage] = useState(0)
   const [show, setShow] = useState(false)
+  const [name, setName] = useState(project.name)
+  const [manager, setManager] = useState(project.manager)
+  const [companyLogo, setCompanyLogo] = useState()
+  const [projectLogo, setProjectLogo] = useState()
+  const [title, setTitle] = useState(project.title)
+  const [shortText, setShortText] = useState(project.shortText)
+  const [video, setVideo] = useState(project.video)
+  const [templates, setTemplates] = useState(project.templates)
+
+  const updateCompanyLogo = (files) =>
+    setCompanyLogo(files[0]);
+
+  const updateProjectLogo = (files) =>
+    setProjectLogo(files[0]);
+
+  const updateVideo = (files) =>
+    setVideo(files[0])
   return (
     <Fragment>
       <div className={styles.basicData}>
@@ -96,23 +97,32 @@ const ProjectSetup = ({
         <div className={styles.left}>
           <h3>More Info</h3>
           <p>Provide additional context, links or web pages as required.</p>
-          {templates.map((t, index) => <div className={styles.page} key={`${project.code}-${index}`}>
+          {templates && (templates.map((t, index) => <div className={styles.page} key={`${project.code}-${index}`}>
             <a className={index === crrPage ? styles.underline : ''} onClick={(e) => { e.preventDefault(); setCrrPage(index); setShow(true); }}>{t.title}</a>
             <span onClick={() => console.log('close')}><FontAwesomeIcon icon={faTimes} /></span>
-          </div>)}
+          </div>))}
           <div className={styles.add}>
             <span className={styles.plus}>+</span>
             <span>Add new page</span>
           </div>
         </div>
         <div className={styles.richText}>
-          <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={templates[crrPage].content} saveInterval={1000} change={(e) => {
+          {templates ? <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={templates[crrPage].content} saveInterval={1000} change={(e) => {
             let temp = [...templates]
             temp[crrPage].content = e.value
             setTemplates(temp)
           }}>
             <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
-          </RichTextEditorComponent>
+          </RichTextEditorComponent> :
+            <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} saveInterval={1000} change={(e) => {
+              let temp = [...templates]
+              temp[crrPage].content = e.value
+              setTemplates(temp)
+            }}>
+              <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
+            </RichTextEditorComponent>
+          }
+
         </div>
       </div>
       {show && <div className={styles.richTextMobile}>
