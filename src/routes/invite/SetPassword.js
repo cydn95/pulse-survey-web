@@ -217,7 +217,7 @@ class SetPassword extends Component {
               type="checkbox"
               onChange={(e) => this.handleInput(e)} checked={this.state.privacy}
             />
-            <label htmlFor="privacy">I understand the <a href='#' target="_blank">Privacy Policy</a></label>
+            <label htmlFor="privacy">I understand the <a href='https://projectai.com/privacy-policy/' rel='noreferrer' target="_blank">Privacy Policy</a></label>
           </div>
           <Button
             className="set-password__content--submit round-btn green"
