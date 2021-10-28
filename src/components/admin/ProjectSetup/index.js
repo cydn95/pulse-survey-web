@@ -53,7 +53,7 @@ const ProjectSetup = ({
 
   const content = () => (
     <div className={styles.modalContent}>
-      <Input value={pageHeader} onChange={(value, e) => setPageHeader(value)} />
+      <Input className={styles.input} value={pageHeader} onChange={(value, e) => setPageHeader(value)} />
       {error && <span className={styles.error}>{error}</span>}
     </div>
   )
@@ -124,6 +124,9 @@ const ProjectSetup = ({
             <span onClick={() => {
               let temp = [...currentProject.templates];
               temp.splice(index, 1)
+              if (index <= crrPage) {
+                setCrrPage(crrPage - 1)
+              }
               setProjectField('templates', temp)
             }}><FontAwesomeIcon icon={faTimes} /></span>
           </div>))}
@@ -135,15 +138,15 @@ const ProjectSetup = ({
             setOpen={() => setOpen(true)}
             setClose={() => { setOpen(false); setError(''); setPageHeader('') }}
             handleAdd={() => {
-              if (currentProject.templates && currentProject.templates.filter(t => t.title === pageHeader).length > 0) {
+              if ((currentProject.templates || []).filter(t => t.title === pageHeader).length > 0) {
                 setError('Already exist')
               } else {
-                setProjectField('templates', currentProject.templates ?
-                  [...currentProject.templates, { title: pageHeader, content: '<p>Please type here</p>' }] :
-                  [{ title: pageHeader, content: '<p>Please type here</p>' }]);
+                setProjectField('templates',
+                  [...(currentProject.templates || []), { title: pageHeader, content: '<p>Please type here</p>' }])
                 setPageHeader('')
                 setError('')
                 setOpen(false)
+                setCrrPage((currentProject.templates || []).length)
               }
             }} />
         </div>
@@ -157,7 +160,7 @@ const ProjectSetup = ({
           </RichTextEditorComponent>}
         </div>
       </div>
-      {show && <div className={styles.richTextMobile}>
+      {currentProject.templates && currentProject.templates.length > 0 && show && <div className={styles.richTextMobile}>
         <h2 className={styles.header}>About the project</h2>
         <span className={styles.brandcrumb}>{`Projects > Edit Project > ${currentProject.templates[crrPage].title}`}</span>
         <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={currentProject.templates[crrPage].content} saveInterval={0} change={(e) => {
