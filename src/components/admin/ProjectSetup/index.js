@@ -1,7 +1,18 @@
 import React, { Fragment, useState } from 'react'
-import { HtmlEditor, Image, Inject, Link, QuickToolbar, RichTextEditorComponent, Toolbar, Table } from '@syncfusion/ej2-react-richtexteditor';
+import { connect } from 'react-redux'
+import {
+  HtmlEditor,
+  Image,
+  Inject,
+  Link,
+  QuickToolbar,
+  RichTextEditorComponent,
+  Toolbar,
+  Table
+} from '@syncfusion/ej2-react-richtexteditor';
 import FileUpload from 'Components/FileUpload'
 import Button from 'Components/Button'
+import AddButton from 'Components/AddButton'
 import Select from 'Components/Select'
 import Input from 'Components/Input'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
@@ -16,6 +27,7 @@ import '@syncfusion/ej2-navigations/styles/material.css';
 import '@syncfusion/ej2-popups/styles/material.css';
 import '@syncfusion/ej2-richtexteditor/styles/material.css';
 import styles from './styles.scss'
+import { adminSetProjectField } from 'Redux/admin/actions';
 
 const managers = ["Christopher Robin", "Mike Smith"]
 const toolbarSettings = {
@@ -23,18 +35,28 @@ const toolbarSettings = {
 };
 
 const ProjectSetup = ({
-  project
+  currentProject,
+  setProjectField
 }) => {
   const [crrPage, setCrrPage] = useState(0)
   const [show, setShow] = useState(false)
-  const [name, setName] = useState(project.name)
-  const [manager, setManager] = useState(project.manager)
+  const [name, setName] = useState(currentProject.name)
+  const [manager, setManager] = useState(currentProject.manager)
   const [companyLogo, setCompanyLogo] = useState()
   const [projectLogo, setProjectLogo] = useState()
-  const [title, setTitle] = useState(project.title)
-  const [shortText, setShortText] = useState(project.shortText)
-  const [video, setVideo] = useState(project.video)
-  const [templates, setTemplates] = useState(project.templates)
+  const [title, setTitle] = useState(currentProject.title)
+  const [shortText, setShortText] = useState(currentProject.shortText)
+  const [video, setVideo] = useState(currentProject.video)
+  const [pageHeader, setPageHeader] = useState('')
+  const [open, setOpen] = useState(false)
+  const [error, setError] = useState('')
+
+  const content = () => (
+    <div className={styles.modalContent}>
+      <Input value={pageHeader} onChange={(value, e) => setPageHeader(value)} />
+      {error && <span className={styles.error}>{error}</span>}
+    </div>
+  )
 
   const updateCompanyLogo = (files) =>
     setCompanyLogo(files[0]);
@@ -50,7 +72,7 @@ const ProjectSetup = ({
         <div className={styles.name}>
           <p className={styles.projectName}>Project Name</p>
           <Input type="text" value={name} onChange={(value, e) => setName(value)} className={styles.input} />
-          {Object.keys(project).length > 0 && <p className={styles.projectCode}>Project Code:<span>{` ${project.code}`}</span></p>}
+          {Object.keys(currentProject).length > 0 && <p className={styles.projectCode}>Project Code:<span>{` ${currentProject.code}`}</span></p>}
         </div>
         <div className={styles.projectManager}>
           <p className={styles.projectName}>Project Manager</p>
@@ -97,20 +119,39 @@ const ProjectSetup = ({
         <div className={styles.left}>
           <h3>More Info</h3>
           <p>Provide additional context, links or web pages as required.</p>
-          {templates && (templates.map((t, index) => <div className={styles.page} key={`${project.code}-${index}`}>
+          {currentProject.templates && currentProject.templates.length > 0 && (currentProject.templates.map((t, index) => <div className={styles.page} key={`${currentProject.code}-${index}`}>
             <a className={index === crrPage ? styles.underline : ''} onClick={(e) => { e.preventDefault(); setCrrPage(index); setShow(true); }}>{t.title}</a>
-            <span onClick={() => console.log('close')}><FontAwesomeIcon icon={faTimes} /></span>
+            <span onClick={() => {
+              let temp = [...currentProject.templates];
+              temp.splice(index, 1)
+              setProjectField('templates', temp)
+            }}><FontAwesomeIcon icon={faTimes} /></span>
           </div>))}
-          <div className={styles.add}>
-            <span className={styles.plus}>+</span>
-            <span>Add new page</span>
-          </div>
+          <AddButton
+            text="new page"
+            content={content}
+            pageHeader={pageHeader}
+            open={open}
+            setOpen={() => setOpen(true)}
+            setClose={() => { setOpen(false); setError(''); setPageHeader('') }}
+            handleAdd={() => {
+              if (currentProject.templates && currentProject.templates.filter(t => t.title === pageHeader).length > 0) {
+                setError('Already exist')
+              } else {
+                setProjectField('templates', currentProject.templates ?
+                  [...currentProject.templates, { title: pageHeader, content: '<p>Please type here</p>' }] :
+                  [{ title: pageHeader, content: '<p>Please type here</p>' }]);
+                setPageHeader('')
+                setError('')
+                setOpen(false)
+              }
+            }} />
         </div>
         <div className={styles.richText}>
-          {templates && <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={templates[crrPage].content} saveInterval={1000} change={(e) => {
-            let temp = [...templates]
+          {currentProject.templates && currentProject.templates.length > 0 && <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={currentProject.templates[crrPage].content} saveInterval={0} change={(e) => {
+            let temp = [...currentProject.templates]
             temp[crrPage].content = e.value
-            setTemplates(temp)
+            setProjectField('templates', temp)
           }}>
             <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
           </RichTextEditorComponent>}
@@ -118,11 +159,11 @@ const ProjectSetup = ({
       </div>
       {show && <div className={styles.richTextMobile}>
         <h2 className={styles.header}>About the project</h2>
-        <span className={styles.brandcrumb}>{`Projects > Edit Project > ${templates[crrPage].title}`}</span>
-        <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={templates[crrPage].content} saveInterval={1000} change={(e) => {
-          let temp = [...templates]
+        <span className={styles.brandcrumb}>{`Projects > Edit Project > ${currentProject.templates[crrPage].title}`}</span>
+        <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={currentProject.templates[crrPage].content} saveInterval={0} change={(e) => {
+          let temp = [...currentProject.templates]
           temp[crrPage].content = e.value
-          setTemplates(temp)
+          setProjectField('templates', temp)
         }}>
           <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
         </RichTextEditorComponent>
@@ -132,4 +173,13 @@ const ProjectSetup = ({
   )
 }
 
-export default ProjectSetup
+const mapStateToProps = ({ admin }) => {
+  const { currentProject } = admin
+  return {
+    currentProject
+  }
+}
+
+export default connect(mapStateToProps, {
+  setProjectField: adminSetProjectField
+})(ProjectSetup)

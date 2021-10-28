@@ -12,6 +12,7 @@ const INIT_STATE = {
   userList: {},
   projectList: [],
   currentProject: {},
+  surveyId: '',
   loading: false,
 }
 
@@ -37,9 +38,9 @@ export default (state = INIT_STATE, action) => {
         }
       }
     case ADMIN_SET_CURRENT_PROJECT:
-      console.log('data', action.payload.data)
       return {
         ...state,
+        surveyId: action.payload.data.surveyId,
         currentProject: action.payload.data,
       }
     case ADMIN_SET_PROJECT_FIELD:
@@ -47,7 +48,7 @@ export default (state = INIT_STATE, action) => {
         ...state,
         currentProject: {
           ...state.currentProject,
-          [action.paylaod.field]: action.paylaod.value
+          [action.payload.field]: action.payload.value
         }
       }
     default:

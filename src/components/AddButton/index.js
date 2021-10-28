@@ -1,13 +1,39 @@
-import React from 'react'
+import React, { Fragment, useState } from 'react'
 import classnames from 'classnames'
+import Button from 'Components/Button'
 import styles from './styles.scss'
+import {
+  ModalWrapper,
+  ModalFooter,
+  ModalHeader,
+  ModalBody,
+  ModalContent,
+} from './addButton.styles'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const AddButton = ({ text, className, outlined = false, ...others }) => {
+const AddButton = ({ text, className, outlined = false, content, handleAdd, open, setOpen, setClose, ...others, }) => {
   return (
-    <div className={classnames(styles.add, className)} {...others}>
-      <span className={classnames(styles.plus, outlined && styles.outlined)}>+</span>
-      <span>Add {text && `New ${text}`}</span>
-    </div>
+    <Fragment>
+      <div className={classnames(styles.add, className)} {...others} onClick={setOpen}>
+        <span className={classnames(styles.plus, outlined && styles.outlined)}>+</span>
+        <span>Add {text && `New ${text}`}</span>
+      </div>
+      {open && <ModalWrapper onClick={setClose}>
+        <ModalContent onClick={(e) => e.stopPropagation()}>
+          <ModalHeader>
+            <h2>Add {text && `New ${text}`}</h2>
+            <span onClick={setClose}><FontAwesomeIcon icon={faTimes} color="#6d6f94" /></span>
+          </ModalHeader>
+          <ModalBody>{content()}</ModalBody>
+          <ModalFooter>
+            <span onClick={setClose}>Cancel</span>
+            <Button className="btn"
+              onClick={handleAdd}>Add</Button>
+          </ModalFooter>
+        </ModalContent>
+      </ModalWrapper>}
+    </Fragment>
   )
 }
 
