@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import Button from 'Components/Button'
-import AddButton from 'Components/AddButton'
+import {
+  ModalWrapper,
+  ModalHeader,
+  ModalFooter,
+} from '../UserAdministration/UserCard/usercard.styles'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from './styles.scss'
 import ProjectAvatar from '../../../assets/img/admin/Work.svg'
 import Show from '../../../assets/img/admin/Show.svg'
@@ -11,6 +17,7 @@ import Heart from '../../../assets/img/admin/Heart.svg'
 import Send from '../../../assets/img/admin/Send.svg'
 
 const ProjectCard = ({ project, setEditing }) => {
+  const [open, setOpen] = useState(false)
   return (
     <div className={styles.main}>
       <div className={styles.header}>
@@ -75,8 +82,21 @@ const ProjectCard = ({ project, setEditing }) => {
       </div>
       <div className={styles.actions}>
         <Button className={styles.edit} onClick={(e) => setEditing(project.id)}>Edit project</Button>
-        <Button className={styles.deactivate}>Deactivate</Button>
+        <Button className={styles.deactivate} onClick={(e) => setOpen(true)}>Deactivate</Button>
       </div>
+      {open && <ModalWrapper onClick={() => setOpen(false)}>
+        <div className={styles.modalBody}>
+          <ModalHeader className={styles.header}>
+            <h2>Confirm</h2>
+            <span onClick={() => setOpen(false)}><FontAwesomeIcon icon={faTimes} color="#6d6f94" /></span>
+          </ModalHeader>
+          <p className={styles.content}>Do you really want to deactivate this project?</p>
+          <ModalFooter className={styles.footer}>
+            <span onClick={() => setOpen(false)}>Cancel</span>
+            <Button className="btn">OK</Button>
+          </ModalFooter>
+        </div>
+      </ModalWrapper>}
     </div>
   )
 }

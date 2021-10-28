@@ -1,8 +1,12 @@
 .add {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    span {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  span {
+    &.outlined {
+      border-radius: 2px;
+      border: solid 1px rgba(138, 143, 160, 0.21);
+    }
     &.plus {
       width: 35px;
       height: 34px;

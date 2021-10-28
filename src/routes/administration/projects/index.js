@@ -5,7 +5,12 @@ import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
-import { adminUpdateUserList } from 'Redux/admin/actions'
+import {
+  adminUpdateUserList,
+  adminSetProjectField,
+  adminProjectListSuccess,
+  adminSetCurrentProject,
+} from 'Redux/admin/actions'
 import ProjectCard from 'Components/admin/ProjectCard'
 import ProjectEdit from 'Components/admin/ProjectEdit'
 import AdminStepBar from 'Components/admin/AdminStepBar'
@@ -14,8 +19,9 @@ import Button from 'Components/Button'
 import CancelImage from '../../../assets/img/admin/Cancel.png'
 import SaveImage from '../../../assets/img/admin/Save.png'
 import styles from './styles.scss'
+import { projectListByUserAPI } from '../../../services/axios/api';
 
-const projects = [
+const defaultProjects = [
   {
     id: 33,
     surveyId: 59,
@@ -129,23 +135,43 @@ const projects = [
   },
 ]
 
-const Projects = ({ history, updateUserList, userList }) => {
+const Projects = ({ history,
+  updateUserList,
+  userList,
+  setProjectField,
+  projectList,
+  getProjectList,
+  setCurrentProject,
+  currentProject,
+}) => {
   const [breadcrumb, setBreadcrumb] = useState('')
   const [editing, setEditing] = useState(-2)
-  const [currentProject, setCurrentProject] = useState({})
+  const [crr, setCrrProject] = useState({})
   const [currentStep, setCurrentStep] = useState(0);
+
+  useEffect(() => {
+    getProjectList(defaultProjects)
+  }, [])
+
+  useEffect(() => {
+    setCrrProject(currentProject)
+  }, [currentProject])
 
   const projectEditRef = useRef({})
 
   const handleEdit = (projectId) => {
     if (projectId >= 0) {
       setEditing(projectId)
-      setCurrentProject(projects.filter(p => p.id === projectId)[0])
+      setCurrentProject(projectList.filter(p => p.id === projectId)[0] || {})
       setBreadcrumb('Projects > Edit Project')
     } else {
+      if (projectId === -1) {
+        setBreadcrumb('Projects > Create Project')
+      } else {
+        setBreadcrumb('')
+      }
       setEditing(projectId)
       setCurrentProject({})
-      setBreadcrumb('')
     }
     setCurrentStep(0)
   }
@@ -171,7 +197,7 @@ const Projects = ({ history, updateUserList, userList }) => {
           <h2 className={styles.title}>{editing < 0 ? 'Projects' : currentProject.name}</h2>
           <h3 className={styles.breadcrumb}>{breadcrumb}</h3>
         </div>
-        {editing < 0 ?
+        {editing < -1 ?
           <Button className={styles.button} onClick={() => handleEdit(-1)}>Create new project</Button> :
           <div className={styles.btnGroup}>
             <span className={styles.forMobile} onClick={() => handleEdit(-2)}>
@@ -181,13 +207,13 @@ const Projects = ({ history, updateUserList, userList }) => {
               <img src={SaveImage} alt="save" />
             </span>
             <Button className={styles.cancelBtn} onClick={() => handleEdit(-2)}>Cancel</Button>
-            <Button className={styles.button} onClick={onSave}>Save changes</Button>
+            <Button className={styles.button} onClick={onSave}>{`Save ${editing !== -1 && 'changes'}`}</Button>
           </div>
         }
       </div>
       {editing < -1 ?
         <div className={styles.projectCards}>
-          {projects.map((project, index) =>
+          {projectList.length > 0 && projectList.map((project, index) =>
             <ProjectCard key={`${project.code}-${index}`} project={project} setEditing={(projectId) => handleEdit(projectId)} />
           )}
         </div> :
@@ -202,12 +228,17 @@ const Projects = ({ history, updateUserList, userList }) => {
 }
 
 const mapStateToProps = ({ admin }) => {
-  const { userList } = admin
+  const { userList, projectList, currentProject } = admin
   return {
     userList,
+    projectList,
+    currentProject,
   }
 }
 
 export default connect(mapStateToProps, {
-  updateUserList: adminUpdateUserList
+  updateUserList: adminUpdateUserList,
+  setProjectField: adminSetProjectField,
+  getProjectList: adminProjectListSuccess,
+  setCurrentProject: adminSetCurrentProject
 })(Projects)

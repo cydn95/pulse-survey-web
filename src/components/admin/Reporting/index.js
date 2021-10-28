@@ -7,16 +7,16 @@ import TeamAvatar from 'Assets/img/admin/Teams.svg'
 import OrganizationAvatar from 'Assets/img/admin/Organizations.svg'
 import Row from './Row'
 
-const Reporting = () => {
+const Reporting = ({ project }) => {
   return (
     <Fragment>
       <div className={styles.dashboard_threshold}>
         <span className={styles.tag}>Dashboard Threshold</span>
         <Input className={styles.threshold} />
       </div>
-      <Row title="Segments" avatar={SegmentAvatar} />
-      <Row title="Teams" avatar={TeamAvatar} />
-      <Row title="Organizations" avatar={OrganizationAvatar} />
+      <Row title="Segments" avatar={SegmentAvatar} project={project} />
+      <Row title="Teams" avatar={TeamAvatar} project={project} />
+      <Row title="Organizations" avatar={OrganizationAvatar} project={project} />
     </Fragment>
   )
 }

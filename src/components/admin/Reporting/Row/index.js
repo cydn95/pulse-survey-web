@@ -3,7 +3,7 @@ import Select from 'Components/Select'
 import AddButton from 'Components/AddButton'
 import styles from './styles.scss'
 
-const Row = ({ title, avatar }) => {
+const Row = ({ title, avatar, project }) => {
   const [segmentName, setSegmentName] = useState('Internal')
   const [permissionType, setPermissionType] = useState('All Exception')
   const [dashboards, setDashboards] = useState(['Summary', 'Timeline'])

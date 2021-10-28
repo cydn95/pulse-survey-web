@@ -35,8 +35,8 @@ const flagTypes = [
   }
 ]
 
-const FlaggedResponses = () => {
-  const [responses, setResponses] = useState(defaultResponses)
+const FlaggedResponses = ({ project }) => {
+  const [responses, setResponses] = useState(Object.keys(project).length && defaultResponses)
   return (
     <Fragment>
       <div className={styles.tags}>
@@ -46,7 +46,7 @@ const FlaggedResponses = () => {
         <span className={classnames(styles.col_4, styles.tag)}>FLAG TYPE</span>
         <span className={classnames(styles.col_5, styles.tag)}>STATUS</span>
       </div>
-      {responses.map((response, idx) =>
+      {responses ? responses.map((response, idx) =>
         <div key={`${idx}-${response.flaggedBy}`} className={styles.response}>
           <div className={styles.col_1}>
             <span
@@ -80,7 +80,7 @@ const FlaggedResponses = () => {
           </span>
           <span className={classnames(styles.col_5, styles.smText)}><div className={styles[response.status.toLowerCase()]}></div>{response.status}</span>
         </div>
-      )}
+      ) : <h3>No Response</h3>}
     </Fragment>
   )
 }
