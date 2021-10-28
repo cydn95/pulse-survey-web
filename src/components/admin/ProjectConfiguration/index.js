@@ -98,14 +98,14 @@ const defaultDrivers = [
   }
 ]
 
-const ProjectConfiguration = () => {
+const ProjectConfiguration = ({ project }) => {
   const [shgroup, setSHGroup] = useState('')
   const [driverReorder, setDriverReorder] = useState(false)
   const [myMapReorder, setMyMapReorder] = useState(false)
   const [projectMapReorder, setProjectMapReorder] = useState(false)
-  const [drivers, setDrivers] = useState(defaultDrivers)
-  const [myMap, setMyMap] = useState(defaultMyMap)
-  const [projectMap, setProjectMap] = useState(defaultprojectMap)
+  const [drivers, setDrivers] = useState(Object.keys(project).length && defaultDrivers)
+  const [myMap, setMyMap] = useState(Object.keys(project).length && defaultMyMap)
+  const [projectMap, setProjectMap] = useState(Object.keys(project).length && defaultprojectMap)
   const [projectTeams, setProjectTeams] = useState(['Management', 'Engineering'])
   return (
     <div className={styles.wrapper}>

@@ -558,6 +558,10 @@ const projectUserListAPI = () => {
   return getClient(true).get("/projectuser/");
 };
 
+const adminProjectListAPI = (userId) => {
+  return getClient(true).get(`/adminsurveybyuser/?user=${userId}`);
+};
+
 const adminUserListAPI = (surveyId) => {
   return getClient(true).get(`/adminuserbysurvey/?survey=${surveyId}`);
 };
@@ -623,5 +627,6 @@ export {
   updateStakeholderCategoryAPI,
   getWordCloudAPI,
   adminUserListAPI,
+  adminProjectListAPI,
   postAdminUserListAPI,
 };

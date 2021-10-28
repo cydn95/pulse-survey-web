@@ -50,7 +50,7 @@ const ProjectSetup = ({
         <div className={styles.name}>
           <p className={styles.projectName}>Project Name</p>
           <Input type="text" value={name} onChange={(value, e) => setName(value)} className={styles.input} />
-          <p className={styles.projectCode}>Project Code:<span>{` ${project.code}`}</span></p>
+          {Object.keys(project).length > 0 && <p className={styles.projectCode}>Project Code:<span>{` ${project.code}`}</span></p>}
         </div>
         <div className={styles.projectManager}>
           <p className={styles.projectName}>Project Manager</p>
@@ -107,22 +107,13 @@ const ProjectSetup = ({
           </div>
         </div>
         <div className={styles.richText}>
-          {templates ? <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={templates[crrPage].content} saveInterval={1000} change={(e) => {
+          {templates && <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={templates[crrPage].content} saveInterval={1000} change={(e) => {
             let temp = [...templates]
             temp[crrPage].content = e.value
             setTemplates(temp)
           }}>
             <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
-          </RichTextEditorComponent> :
-            <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} saveInterval={1000} change={(e) => {
-              let temp = [...templates]
-              temp[crrPage].content = e.value
-              setTemplates(temp)
-            }}>
-              <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
-            </RichTextEditorComponent>
-          }
-
+          </RichTextEditorComponent>}
         </div>
       </div>
       {show && <div className={styles.richTextMobile}>

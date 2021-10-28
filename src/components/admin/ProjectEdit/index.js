@@ -23,11 +23,11 @@ const ProjectEdit = ({ project, currentStep, setBreadcrumb, getUserList }, ref) 
         setBreadcrumb={setBreadcrumb}
         project={project}
       />}
-      {currentStep === 1 && <ProjectConfiguration />}
+      {currentStep === 1 && <ProjectConfiguration project={project} />}
       {currentStep === 2 && <UserAdministration project={project} />}
-      {currentStep === 3 && <SurveyConfiguration />}
-      {currentStep === 4 && <Reporting />}
-      {currentStep === 5 && <FlaggedResponses />}
+      {currentStep === 3 && <SurveyConfiguration project={project} />}
+      {currentStep === 4 && <Reporting project={project} />}
+      {currentStep === 5 && <FlaggedResponses project={project} />}
     </div>
   )
 }

@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { teamList, shgroupList, adminSetUserField } from 'Redux/actions'
 import Loading from 'Components/Loading'
+import AddButton from 'Components/AddButton'
 import Counter from './Counter'
 import UserCard from './UserCard'
 import styles from './styles.scss'
@@ -20,7 +21,8 @@ const UserAdministration = ({ userList, project, loading, getTeamList, getShGrou
   return (
     <Fragment>
       {loading ? <Loading description="" /> : <Fragment>
-        <div className={styles.horizontalWrapper}>
+        <AddButton text="User" outlined={true} className={styles.alignRight} />
+        {list.length > 0 && <div className={styles.horizontalWrapper}>
           <div className={styles.individual}>
             <Counter count={list.filter(user => user.shType.shTypeName === "Team Member").length} description="Identified Team Members" />
             <Counter count={list.filter(user => user.shType.shTypeName === "Stakeholder").length} description="Identified Stakeholder" />
@@ -33,10 +35,10 @@ const UserAdministration = ({ userList, project, loading, getTeamList, getShGrou
             <Counter count={list.length} description="Total Identified" type="total" />
             <Counter count={list.filter(user => user.sendInvite).length} description="Total Invited" type="total" />
           </div>
-        </div>
-        {list.map((user, idx) =>
+        </div>}
+        {list.length !== 0 ? list.map((user, idx) =>
           <UserCard key={`${idx}-${user.id}`} user={user} teamList={teamList} shgroupList={shgroupList} setUserField={setUserField} />
-        )}
+        ) : <h3>No User</h3>}
       </Fragment>}
 
     </Fragment>

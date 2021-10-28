@@ -1,10 +1,15 @@
 import { all, call, fork, takeEvery, put } from 'redux-saga/effects'
-import { ADMIN_USER_LIST, ADMIN_UPDATE_USER_LIST } from 'Constants/actionTypes'
-import { adminUserListSuccess } from './actions'
-import { adminUserListAPI, postAdminUserListAPI } from '../../services/axios/api'
+import { ADMIN_USER_LIST, ADMIN_UPDATE_USER_LIST, ADMIN_PROJECT_LIST } from 'Constants/actionTypes'
+import { adminUserListSuccess, adminProjectListSuccess } from './actions'
+import { adminUserListAPI, postAdminUserListAPI, adminProjectListAPI } from '../../services/axios/api'
 
 const getAdminUserListAsync = async (surveyId) =>
   await adminUserListAPI(surveyId)
+    .then(data => data)
+    .catch(error => console.log(error))
+
+const getAdminProjectListAsync = async (userId) =>
+  await adminProjectListAPI(userId)
     .then(data => data)
     .catch(error => console.log(error))
 

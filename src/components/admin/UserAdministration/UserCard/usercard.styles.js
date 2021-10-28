@@ -210,14 +210,14 @@ export const Arrow = styled.div`
 export const ModalWrapper = styled.div`
   width: 100%;
   height: 100%;
-  position: absolute;
+  position: fixed;
   top: 0;
   background: rgba(0,0,0, 0.3);
   left: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 1000;
 `
 
 export const DetailModal = styled.div`
