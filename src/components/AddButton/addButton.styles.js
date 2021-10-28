@@ -56,6 +56,7 @@ export const ModalFooter = styled.div`
   display: flex;
   gap: 5px;
   justify-content: flex-end;
+  padding: 10px;
   span {
     display: flex;
     align-items: center;

@@ -329,4 +329,20 @@
   .error {
     color: red;
   }
+  .input {
+    padding: 10px 16px;
+    border-radius: 8px;
+    background-color: #eff0f6;
+    input {
+      font-family: Poppins;
+      font-size: 12px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #6d6f94;
+    }
+  }
 }
