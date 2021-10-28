@@ -34,9 +34,9 @@ export const adminSetUserField = (id, field, value) => ({
   payload: { id, field, value }
 })
 
-export const adminSetProjectField = (id, field, value) => ({
+export const adminSetProjectField = (field, value) => ({
   type: ADMIN_SET_PROJECT_FIELD,
-  payload: { id, field, value }
+  payload: { field, value }
 })
 
 export const adminSetCurrentProject = (data) => ({

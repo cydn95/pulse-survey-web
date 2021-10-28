@@ -9,13 +9,13 @@ import Reporting from '../Reporting'
 import FlaggedResponses from '../FlaggedResponses'
 import styles from './styles.scss'
 
-const ProjectEdit = ({ project, currentStep, setBreadcrumb, getUserList }, ref) => {
+const ProjectEdit = ({ project, currentStep, setBreadcrumb, getUserList, surveyId }, ref) => {
 
   useEffect(() => {
     if (Object.keys(project).length > 0) {
       getUserList(project.surveyId)
     }
-  }, [project])
+  }, [surveyId])
 
   return (
     <div className={styles.wrapper}>
@@ -32,6 +32,13 @@ const ProjectEdit = ({ project, currentStep, setBreadcrumb, getUserList }, ref) 
   )
 }
 
-export default connect(null, {
+const mapStateToProps = ({ admin }) => {
+  const { surveyId } = admin
+  return {
+    surveyId
+  }
+}
+
+export default connect(mapStateToProps, {
   getUserList: adminUserList
 })(ProjectEdit);

@@ -207,7 +207,7 @@ const Projects = ({ history,
               <img src={SaveImage} alt="save" />
             </span>
             <Button className={styles.cancelBtn} onClick={() => handleEdit(-2)}>Cancel</Button>
-            <Button className={styles.button} onClick={onSave}>{`Save ${editing !== -1 && 'changes'}`}</Button>
+            <Button className={styles.button} onClick={onSave}>{`Save ${editing !== -1 ? 'changes' : ''}`}</Button>
           </div>
         }
       </div>
