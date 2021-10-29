@@ -12,9 +12,7 @@ import styles from './styles.scss'
 const ProjectEdit = ({ project, currentStep, setBreadcrumb, getUserList, surveyId }, ref) => {
 
   useEffect(() => {
-    if (Object.keys(project).length > 0) {
-      getUserList(project.surveyId)
-    }
+    getUserList(surveyId)
   }, [surveyId])
 
   return (

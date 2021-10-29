@@ -3,6 +3,7 @@ import {
   ADMIN_PROJECT_LIST_SUCCESS,
   ADMIN_USER_LIST,
   ADMIN_USER_LIST_SUCCESS,
+  ADMIN_USER_LIST_FAILURE,
   ADMIN_SET_USER_FIELD,
   ADMIN_SET_PROJECT_FIELD,
   ADMIN_SET_CURRENT_PROJECT,
@@ -26,6 +27,8 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loading: true }
     case ADMIN_USER_LIST_SUCCESS:
       return { ...state, userList: action.payload.userList, loading: false }
+    case ADMIN_USER_LIST_FAILURE:
+      return { ...state, loading: false }
     case ADMIN_SET_USER_FIELD:
       return {
         ...state,
@@ -38,9 +41,10 @@ export default (state = INIT_STATE, action) => {
         }
       }
     case ADMIN_SET_CURRENT_PROJECT:
+      console.log('data', action.payload.data)
       return {
         ...state,
-        surveyId: action.payload.data.surveyId,
+        surveyId: action.payload.data.id,
         currentProject: action.payload.data,
       }
     case ADMIN_SET_PROJECT_FIELD:

@@ -1,6 +1,6 @@
 import { all, call, fork, takeEvery, put } from 'redux-saga/effects'
 import { ADMIN_USER_LIST, ADMIN_UPDATE_USER_LIST, ADMIN_PROJECT_LIST } from 'Constants/actionTypes'
-import { adminUserListSuccess, adminProjectListSuccess } from './actions'
+import { adminUserListSuccess, adminProjectListSuccess, adminUserListFailure } from './actions'
 import { adminUserListAPI, postAdminUserListAPI, adminProjectListAPI } from '../../services/axios/api'
 
 const getAdminUserListAsync = async (surveyId) =>
@@ -26,6 +26,18 @@ function* getAdminUserList({ payload }) {
       yield put(adminUserListSuccess(result.data))
     }
   } catch (error) {
+    yield put(adminUserListFailure())
+  }
+}
+
+function* getAdminProjectList({ payload }) {
+  try {
+    const { userId } = payload
+    const result = yield call(getAdminProjectListAsync, userId)
+    if (result.status === 200) {
+      yield put(adminProjectListSuccess(result.data))
+    }
+  } catch (error) {
     console.log(error)
   }
 }
@@ -49,9 +61,14 @@ export function* watchPostAdminUserList() {
   yield takeEvery(ADMIN_UPDATE_USER_LIST, postAdminUserList)
 }
 
+export function* watchAdminProejctList() {
+  yield takeEvery(ADMIN_PROJECT_LIST, getAdminProjectList)
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchAdminUserList),
     fork(watchPostAdminUserList),
+    fork(watchAdminProejctList),
   ]);
 }

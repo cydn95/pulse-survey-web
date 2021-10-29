@@ -7,6 +7,7 @@ import {
   ADMIN_PROJECT_LIST,
   ADMIN_PROJECT_LIST_SUCCESS,
   ADMIN_SET_CURRENT_PROJECT,
+  ADMIN_USER_LIST_FAILURE,
 } from 'Constants/actionTypes'
 
 export const adminProjectList = (userId) => ({
@@ -27,6 +28,11 @@ export const adminUserList = (surveyId) => ({
 export const adminUserListSuccess = (userList) => ({
   type: ADMIN_USER_LIST_SUCCESS,
   payload: { userList }
+})
+
+export const adminUserListFailure = (error) => ({
+  type: ADMIN_USER_LIST_FAILURE,
+  payload: { error }
 })
 
 export const adminSetUserField = (id, field, value) => ({
