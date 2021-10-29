@@ -3,6 +3,7 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import classnames from 'classnames'
 import Input from 'Components/Input'
 import Select from 'Components/Select'
+import AddButton from 'Components/AddButton'
 import Button from 'Components/Button'
 import OrderComponent from './OrderComponent'
 import ReorderModal from './ReorderModal'
@@ -139,10 +140,7 @@ const ProjectConfiguration = ({ project }) => {
               <span className={styles.text}>Completion Threshold(%)</span>
               <Input className={styles.completion_input} />
             </div>
-            <div className={styles.add}>
-              <span className={styles.plus}>+</span>
-              <span>Add new</span>
-            </div>
+            <AddButton />
           </div>
           <div className={styles.column}>
             <span className={styles.header}>Project Teams</span>
@@ -161,19 +159,13 @@ const ProjectConfiguration = ({ project }) => {
                 onClose={() => console.log('close')}
               />
             )}
-            <div className={styles.add}>
-              <span className={styles.plus}>+</span>
-              <span>Add new</span>
-            </div>
+            <AddButton />
           </div>
           <div className={styles.column}>
             <span className={styles.header}>Custom Groups</span>
             <span className={styles.description}>Create up to three custom groups</span>
             <Input type="text" className={styles.customGroup} onClickClose={() => console.log('close')} />
-            <div className={styles.add}>
-              <span className={styles.plus}>+</span>
-              <span>Add new</span>
-            </div>
+            <AddButton />
           </div>
         </div>
       </div>

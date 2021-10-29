@@ -40,10 +40,6 @@ const ProjectSetup = ({
 }) => {
   const [crrPage, setCrrPage] = useState(0)
   const [show, setShow] = useState(false)
-  const [name, setName] = useState(currentProject.name)
-  const [manager, setManager] = useState(currentProject.manager)
-  const [companyLogo, setCompanyLogo] = useState()
-  const [projectLogo, setProjectLogo] = useState()
   const [title, setTitle] = useState(currentProject.title)
   const [shortText, setShortText] = useState(currentProject.shortText)
   const [video, setVideo] = useState(currentProject.video)
@@ -59,38 +55,38 @@ const ProjectSetup = ({
   )
 
   const updateCompanyLogo = (files) =>
-    setCompanyLogo(files[0]);
+    setProjectField('companyLogo', files[0]);
 
   const updateProjectLogo = (files) =>
-    setProjectLogo(files[0]);
+    setProjectField('projectLogo', files[0]);
 
   const updateVideo = (files) =>
-    setVideo(files[0])
+    setProjectField('video', files[0])
   return (
     <Fragment>
       <div className={styles.basicData}>
         <div className={styles.name}>
           <p className={styles.projectName}>Project Name</p>
-          <Input type="text" value={name} onChange={(value, e) => setName(value)} className={styles.input} />
-          {Object.keys(currentProject).length > 0 && <p className={styles.projectCode}>Project Code:<span>{` ${currentProject.code}`}</span></p>}
+          <Input type="text" value={currentProject.name} onChange={(value, e) => setProjectField('name', value)} className={styles.input} />
+          {currentProject.code && <p className={styles.projectCode}>Project Code:<span>{` ${currentProject.code}`}</span></p>}
         </div>
         <div className={styles.projectManager}>
           <p className={styles.projectName}>Project Manager</p>
-          <Select selected={manager} setSelected={(item) => setManager(item)} items={managers} className={styles.withOutline} />
+          <Select selected={currentProject.manager} setSelected={(item) => setProjectField('manager', item)} items={managers} className={styles.withOutline} />
         </div>
         <div className={styles.logos}>
           <FileUpload
             label="Upload company logo"
             accept="image"
             type="file"
-            data={companyLogo}
+            data={currentProject.companyLogo}
             updateFilesCb={updateCompanyLogo}
           />
           <FileUpload
             label="Upload project logo"
             accept="image"
             type="file"
-            data={projectLogo}
+            data={currentProject.projectLogo}
             updateFilesCb={updateProjectLogo}
           />
         </div>
@@ -133,7 +129,6 @@ const ProjectSetup = ({
           <AddButton
             text="new page"
             content={content}
-            pageHeader={pageHeader}
             open={open}
             setOpen={() => setOpen(true)}
             setClose={() => { setOpen(false); setError(''); setPageHeader('') }}

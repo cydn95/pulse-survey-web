@@ -25,7 +25,7 @@ const Item = ({ item, index, current }) =>
   </Draggable>
 
 const ReorderModal = ({ items, setItems, onClose, text }) => {
-  const [list, setList] = useState(items && [])
+  const [list, setList] = useState(items || [])
   const [current, setCurrent] = useState(-1)
   return (
     <div className={styles.wrapper} onClick={onClose}>
