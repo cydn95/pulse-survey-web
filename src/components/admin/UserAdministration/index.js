@@ -24,16 +24,16 @@ const UserAdministration = ({ userList, project, loading, getTeamList, getShGrou
         <AddButton text="User" outlined={true} className={styles.alignRight} />
         {list.length > 0 && <div className={styles.horizontalWrapper}>
           <div className={styles.individual}>
-            <Counter count={list.filter(user => user.shType.shTypeName === "Team Member").length} description="Identified Team Members" />
-            <Counter count={list.filter(user => user.shType.shTypeName === "Stakeholder").length} description="Identified Stakeholder" />
+            <Counter count={userList.identifiedTeamMemberCnt} description="Identified Team Members" />
+            <Counter count={userList.identifiedStakeholderCnt} description="Identified Stakeholder" />
           </div>
           <div className={styles.individual}>
-            <Counter count={list.filter(user => user.shType.shTypeName === "Team Member" && user.sendInvite).length} description="Invited Team Members" />
-            <Counter count={list.filter(user => user.shType.shTypeName === "Stakeholder" && user.sendInvite).length} description="Invited Stakeholder" />
+            <Counter count={userList.invitedTeamMemberCnt} description="Invited Team Members" />
+            <Counter count={userList.invitedStakeholderCnt} description="Invited Stakeholder" />
           </div>
           <div className={styles.total}>
-            <Counter count={list.length} description="Total Identified" type="total" />
-            <Counter count={list.filter(user => user.sendInvite).length} description="Total Invited" type="total" />
+            <Counter count={userList.totalIdentifiedCnt} description="Total Identified" type="total" />
+            <Counter count={userList.totalInvitedCnt} description="Total Invited" type="total" />
           </div>
         </div>}
         {list.length !== 0 ? list.map((user, idx) =>

@@ -1,10 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react'
-import { all, call, fork, takeEvery, put } from 'redux-saga/effects'
-import { CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
+import React, { useState, useMemo } from 'react'
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import classnames from 'classnames'
 import Select from 'Components/Select'
 import Input from 'Components/Input'
 import Button from 'Components/Button'
@@ -28,7 +25,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
   const [isActive, setIsActive] = useState(false)
   // const [shGroup, setShGroup] = useState(user.shGroup.SHGroupName)
   // const [team, setTeam] = useState(user.team.name)
-  const [shType, setShType] = useState(user.shType.shTypeName)
+  const [shType, setShType] = useState((user.shType || {}).shTypeName)
   // const [firstName, setFirstName] = useState(user.user.first_name)
   // const [lastName, setLastName] = useState(user.user.last_name)
   // const [email, setEmail] = useState(user.user.email)
@@ -60,7 +57,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
             <div>
               <span className="tag">SH Group:&nbsp;</span>
               <Select
-                selected={user.shGroup.SHGroupName}
+                selected={(user.shGroup || {}).SHGroupName}
                 setSelected={(item) => setUserField(user.id, 'shGroup', shgroupList.filter(sh => sh.SHGroupName === item)[0])}
                 items={shgroupList.map(sh => sh.SHGroupName)}
               />
@@ -76,7 +73,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
             <div>
               <span className="tag">Team:&nbsp;</span>
               <Select
-                selected={user.team.name}
+                selected={(user.team || {}).name}
                 setSelected={(item) => setUserField(user.id, 'team', teamList.filter(team => team.name === item)[0])}
                 items={teamList.map(team => team.name)}
               />
@@ -112,7 +109,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
       {isActive && <Detailed>
         <div>
           <span className="tag">Submitted By</span>
-          <span className="bgTag">{`${user.addByProjectUser.user.firstName} ${user.addByProjectUser.user.lastName}`}</span>
+          <span className="bgTag">{`${user.addByProjectUser.user.first_name} ${user.addByProjectUser.user.last_name}`}</span>
         </div>
         <div>
           <span className="tag">Submitted Date</span>
@@ -193,7 +190,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
           <div className="detailed">
             <div>
               <span className="tag">Submitted By</span>
-              <span className="bgTag">{`${user.addByProjectUser.user.firstName} ${user.addByProjectUser.user.lastName}`}</span>
+              <span className="bgTag">{`${user.addByProjectUser.user.first_name} ${user.addByProjectUser.user.last_name}`}</span>
             </div>
             <div>
               <span className="tag">Submitted Date</span>
