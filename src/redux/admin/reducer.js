@@ -7,6 +7,7 @@ import {
   ADMIN_SET_USER_FIELD,
   ADMIN_SET_PROJECT_FIELD,
   ADMIN_SET_CURRENT_PROJECT,
+  ADMIN_SET_ACTIVE_REQUEST,
 } from 'Constants/actionTypes'
 
 const INIT_STATE = {
@@ -28,7 +29,7 @@ export default (state = INIT_STATE, action) => {
     case ADMIN_USER_LIST_SUCCESS:
       return { ...state, userList: action.payload.userList, loading: false }
     case ADMIN_USER_LIST_FAILURE:
-      return { ...state, loading: false }
+      return { ...state, loading: false, userList: {} }
     case ADMIN_SET_USER_FIELD:
       return {
         ...state,
@@ -41,7 +42,6 @@ export default (state = INIT_STATE, action) => {
         }
       }
     case ADMIN_SET_CURRENT_PROJECT:
-      console.log('data', action.payload.data)
       return {
         ...state,
         surveyId: action.payload.data.id,
@@ -55,6 +55,12 @@ export default (state = INIT_STATE, action) => {
           [action.payload.field]: action.payload.value
         }
       }
+    case ADMIN_SET_ACTIVE_REQUEST: {
+      return {
+        ...state,
+        loading: true,
+      }
+    }
     default:
       return { ...state }
   }

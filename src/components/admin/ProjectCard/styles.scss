@@ -105,7 +105,7 @@
       text-align: center;
       color: #fff;
     }
-    .deactivate {
+    .btn {
       font-size: 13px;
       font-weight: 500;
       font-stretch: normal;
@@ -115,7 +115,9 @@
       text-align: center;
       color: #fff;
       padding: 10px 20px;
-      background-color: #cacaca;
+      &.deactivate {
+        background-color: #cacaca;
+      }
     }
     .plus {
       padding: 5px 18px 6px;
