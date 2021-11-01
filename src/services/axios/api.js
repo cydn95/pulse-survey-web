@@ -562,6 +562,10 @@ const adminProjectListAPI = (userId) => {
   return getClient(true).get(`/adminsurveybyuser/?user=${userId}`);
 };
 
+const postAdminProjectListAPI = (surveyId) => {
+  return getClient.apply(true).put(`/adminsurveybyuser/${surveyId}`)
+}
+
 const adminUserListAPI = (surveyId) => {
   return getClient(true).get(`/adminuserbysurvey/?survey=${surveyId}`);
 };
@@ -629,4 +633,5 @@ export {
   adminUserListAPI,
   adminProjectListAPI,
   postAdminUserListAPI,
+  postAdminProjectListAPI,
 };

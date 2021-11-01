@@ -175,7 +175,7 @@ function* getStakeholderList({ payload }) {
         stakeholderList.push({
           projectUserId: sh.id,
           projectUserTitle: sh.projectUserTitle,
-          // projectUserRoleDesc: sh.projectUserRoleDesc,
+          projectUserRoleDesc: sh.projectUserRoleDesc,
           projectId: sh.survey.project,
           userId: "S_" + sh.user.id,
           userAvatar: sh.user.avatar === null ? "" : sh.user.avatar.name,
@@ -289,6 +289,7 @@ function* addStakeholder({ payload }) {
         projectUserTitle: stakeholder.projectUserTitle,
         shGroup: null,
         myProjectUser: stakeholder.myProjectUser,
+        projectAdmin: false,
       };
 
       const result2 = yield call(addStakeholderAsync, projectUser);

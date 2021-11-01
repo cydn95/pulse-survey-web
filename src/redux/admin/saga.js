@@ -1,7 +1,7 @@
 import { all, call, fork, takeEvery, put } from 'redux-saga/effects'
 import { ADMIN_USER_LIST, ADMIN_UPDATE_USER_LIST, ADMIN_PROJECT_LIST } from 'Constants/actionTypes'
 import { adminUserListSuccess, adminProjectListSuccess, adminUserListFailure } from './actions'
-import { adminUserListAPI, postAdminUserListAPI, adminProjectListAPI } from '../../services/axios/api'
+import { adminUserListAPI, postAdminUserListAPI, adminProjectListAPI, postadminProjectListApi } from '../../services/axios/api'
 
 const getAdminUserListAsync = async (surveyId) =>
   await adminUserListAPI(surveyId)
@@ -29,6 +29,20 @@ function* getAdminUserList({ payload }) {
     yield put(adminUserListFailure())
   }
 }
+
+const postAdminProjectListAsync = async (surveyId) =>
+  await postAdminUserListAPI(surveyId)
+    .then(data => data)
+
+// function* adminSetActiveRequest({ payload }) {
+//   try {
+//     const {surveyId} = payload
+//     const result = yield call(postAdminProjectListAsync, surveyId)
+//     if (result.state === 201) {
+//       yield call 
+//     }
+//   }
+// }
 
 function* getAdminProjectList({ payload }) {
   try {

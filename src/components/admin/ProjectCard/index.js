@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Button from 'Components/Button'
+import classnames from 'classnames'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -85,7 +86,7 @@ const ProjectCard = ({ project, setEditing }) => {
       </div>
       <div className={styles.actions}>
         <Button className={styles.edit} onClick={(e) => setEditing(project.id)}>Edit project</Button>
-        <Button className={styles.deactivate} onClick={(e) => setOpen(true)}>Deactivate</Button>
+        <Button className={classnames(project.isActive && styles.deactivate, styles.btn)} onClick={(e) => setOpen(true)}>{project.isActive ? "Deactivate" : "Activate"}</Button>
       </div>
       {open && <ModalWrapper onClick={() => setOpen(false)}>
         <div className={styles.modalBody}>

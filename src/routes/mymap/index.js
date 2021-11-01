@@ -636,8 +636,9 @@ class MyMap extends React.Component {
   }
 
   handleAddNewStakeholder = (stakeholder) => {
-    const { projectId, surveyId } = this.props;
+    const { projectId, surveyId, userId } = this.props;
     this.props.addStakeholder(
+      userId,
       projectId,
       surveyId,
       stakeholder,
