@@ -8,14 +8,21 @@ import {
   ADMIN_SET_PROJECT_FIELD,
   ADMIN_SET_CURRENT_PROJECT,
   ADMIN_SET_ACTIVE_REQUEST,
+  ADMIN_AO_QUESTION_LIST,
+  ADMIN_AO_QUESTION_LIST_SUCCESS,
+  ADMIN_AM_QUESTION_LIST,
+  ADMIN_AM_QUESTION_LIST_SUCCESS,
 } from 'Constants/actionTypes'
 
 const INIT_STATE = {
   userList: {},
   projectList: [],
+  aoQuestionList: [],
+  amQuestionList: [],
   currentProject: {},
   surveyId: '',
   loading: false,
+  error: '',
 }
 
 export default (state = INIT_STATE, action) => {
@@ -55,12 +62,32 @@ export default (state = INIT_STATE, action) => {
           [action.payload.field]: action.payload.value
         }
       }
-    case ADMIN_SET_ACTIVE_REQUEST: {
+    case ADMIN_SET_ACTIVE_REQUEST:
       return {
         ...state,
-        loading: true,
       }
-    }
+    case ADMIN_AO_QUESTION_LIST:
+      return {
+        ...state,
+        loading: true
+      }
+    case ADMIN_AO_QUESTION_LIST_SUCCESS:
+      return {
+        ...state,
+        aoQuestionList: action.payload.data,
+        loading: false,
+      }
+    case ADMIN_AM_QUESTION_LIST:
+      return {
+        ...state,
+        loading: true
+      }
+    case ADMIN_AM_QUESTION_LIST_SUCCESS:
+      return {
+        ...state,
+        amQuestionList: action.payload.data,
+        loading: false,
+      }
     default:
       return { ...state }
   }

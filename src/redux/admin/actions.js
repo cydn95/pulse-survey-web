@@ -8,9 +8,11 @@ import {
   ADMIN_PROJECT_LIST,
   ADMIN_PROJECT_LIST_SUCCESS,
   ADMIN_SET_CURRENT_PROJECT,
-  ADMIN_SET_ACTIVE_REQUEST,
-  ADMIN_SET_ACTIVE_SUCCESS,
-  ADMIN_SET_ACTIVE_FAILURE,
+  ADMIN_ACTIVE_PROJECT_REQUEST,
+  ADMIN_AO_QUESTION_LIST,
+  ADMIN_AO_QUESTION_LIST_SUCCESS,
+  ADMIN_AM_QUESTION_LIST,
+  ADMIN_AM_QUESTION_LIST_SUCCESS,
 } from 'Constants/actionTypes'
 
 export const adminProjectList = (userId) => ({
@@ -58,7 +60,27 @@ export const adminUpdateUserList = (data, callback) => ({
   payload: { data, callback }
 })
 
-export const adminSetActiveRequest = (surveyId) => ({
-  type: ADMIN_SET_ACTIVE_REQUEST,
+export const adminSetActive = (surveyId, data, callback) => ({
+  type: ADMIN_ACTIVE_PROJECT_REQUEST,
+  payload: { surveyId, data, callback }
+})
+
+export const adminAOQuestionList = (surveyId) => ({
+  type: ADMIN_AO_QUESTION_LIST,
   payload: { surveyId }
+})
+
+export const adminAOQuestionListSuccess = (data) => ({
+  type: ADMIN_AO_QUESTION_LIST_SUCCESS,
+  payload: { data }
+})
+
+export const adminAMQuestionList = (surveyId) => ({
+  type: ADMIN_AM_QUESTION_LIST,
+  payload: { surveyId }
+})
+
+export const adminAMQuestionListSuccess = (data) => ({
+  type: ADMIN_AM_QUESTION_LIST_SUCCESS,
+  payload: { data }
 })
