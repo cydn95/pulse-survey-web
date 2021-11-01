@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { adminUserList } from 'Redux/actions'
+import {
+  adminUserList,
+  adminAOQuestionList,
+  adminAMQuestionList,
+} from 'Redux/actions'
 import ProjectSetup from '../ProjectSetup'
 import UserAdministration from '../UserAdministration'
 import ProjectConfiguration from '../ProjectConfiguration'
@@ -9,10 +13,12 @@ import Reporting from '../Reporting'
 import FlaggedResponses from '../FlaggedResponses'
 import styles from './styles.scss'
 
-const ProjectEdit = ({ project, currentStep, setBreadcrumb, getUserList, surveyId }, ref) => {
+const ProjectEdit = ({ project, currentStep, setBreadcrumb, getUserList, surveyId, getAOQuestionList, getAMQuestionList }, ref) => {
 
   useEffect(() => {
     getUserList(surveyId)
+    getAOQuestionList(surveyId)
+    getAMQuestionList(surveyId)
   }, [surveyId])
 
   return (
@@ -38,5 +44,7 @@ const mapStateToProps = ({ admin }) => {
 }
 
 export default connect(mapStateToProps, {
-  getUserList: adminUserList
+  getUserList: adminUserList,
+  getAOQuestionList: adminAOQuestionList,
+  getAMQuestionList: adminAMQuestionList,
 })(ProjectEdit);

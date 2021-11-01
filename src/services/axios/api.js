@@ -562,12 +562,23 @@ const adminProjectListAPI = (userId) => {
   return getClient(true).get(`/adminsurveybyuser/?user=${userId}`);
 };
 
-const postAdminProjectListAPI = (surveyId) => {
-  return getClient.apply(true).put(`/adminsurveybyuser/${surveyId}`)
+const putAdminProjectListAPI = (surveyId, data) => {
+  return getClient(true).put(
+    "/adminsurveybyuser/" + surveyId + "/",
+    data
+  );
 }
 
 const adminUserListAPI = (surveyId) => {
   return getClient(true).get(`/adminuserbysurvey/?survey=${surveyId}`);
+};
+
+const adminAOQuestionListAPI = (surveyId) => {
+  return getClient(true).get(`/adminaoquestion/?survey=${surveyId}`);
+};
+
+const adminAMQuestionListAPI = (surveyId) => {
+  return getClient(true).get(`/adminamquestion/?survey=${surveyId}`);
 };
 
 const postAdminUserListAPI = (data) => {
@@ -633,5 +644,7 @@ export {
   adminUserListAPI,
   adminProjectListAPI,
   postAdminUserListAPI,
-  postAdminProjectListAPI,
+  putAdminProjectListAPI,
+  adminAOQuestionListAPI,
+  adminAMQuestionListAPI,
 };

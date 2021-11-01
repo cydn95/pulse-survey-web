@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, Fragment } from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
 import classnames from 'classnames'
 import { controlType, controlTypeTag } from 'Constants/defaultValues'
@@ -52,7 +53,7 @@ const shGroups = [
 
 const drivers = ['Sentiment', 'Support', 'Politics', 'Risks']
 
-const Question = ({ question }) => {
+const Question = ({ question, shgroupList }) => {
   const headerRef = useRef(null)
   const spanRef = useRef(null)
   const [detailed, setDetailed] = useState(false)
@@ -111,7 +112,7 @@ const Question = ({ question }) => {
               </div>
               <div className={styles.input}>
                 <span className={styles.label}>SH Group:</span>
-                {question.SHGroup.map((sh, idx) => <Tag key={`${idx}-${sh}`} text={sh}>{sh}</Tag>)}
+                {question.shGroup.map((sh, idx) => <Tag key={`${idx}-${sh}`} text={shgroupList.filter(s => s.id === sh)[0].SHGroupName}>{shgroupList.filter(s => s.id === sh)[0].SHGroupName}</Tag>)}
               </div>
               <Button onClick={() => setDetailed(true)} className={styles.viewDetails}>View Details</Button>
             </div>
@@ -268,4 +269,11 @@ const Question = ({ question }) => {
   )
 }
 
-export default Question
+const mapStateToProps = ({ common }) => {
+  const { shgroupList } = common;
+  return {
+    shgroupList,
+  }
+}
+
+export default connect(mapStateToProps, null)(Question)
