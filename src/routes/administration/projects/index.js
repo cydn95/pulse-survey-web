@@ -157,7 +157,6 @@ const Projects = ({
     if (projectId >= 0) {
       setEditing(projectId)
       setCurrentProject(projectList.filter(p => p.id === projectId)[0] || {})
-      console.log("projectId", projectList.filter(p => p.id === projectId)[0] || {})
       setBreadcrumb('Projects > Edit Project')
     } else {
       if (projectId === -1) {

@@ -1,5 +1,6 @@
 import React, { useState, Fragment, useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
+import { shgroupList } from 'Redux/actions'
 import classnames from 'classnames'
 import Select from 'Components/Select'
 import Loading from 'Components/Loading'
@@ -66,7 +67,7 @@ const defaultQuestions = [
   }
 ]
 
-const SurveyConfiguration = ({ project, amQuestionList, aoQuestionList, loading }) => {
+const SurveyConfiguration = ({ project, amQuestionList, aoQuestionList, loading, getShGroupList }) => {
   const temp = [];
   const [questions, setQuestions] = useState([])
   const [filter, setFilter] = useState('About Me')
@@ -75,15 +76,20 @@ const SurveyConfiguration = ({ project, amQuestionList, aoQuestionList, loading 
   const [open, setOpen] = useState(false)
   const [reorderModal, setReorderModal] = useState(false)
 
+  useEffect(() => {
+    getShGroupList(project.surveyId)
+  }, [])
+
   useMemo(() => {
-    if (Object.keys(project).length) {
+    if (Object.keys(project).length && questions.length > 0) {
       questions.map(question => {
-        if (!temp.includes(question.driver.driverName)) {
-          temp.push(question.driver.driverName)
+        if (question.driver) {
+          if (!temp.includes(question.driver.driverName)) {
+            temp.push(question.driver.driverName)
+          }
         }
       })
     }
-    console.log('temp', temp)
     setDrivers(temp)
     setCurrentDriver(temp[0])
   }, [questions])
@@ -94,7 +100,7 @@ const SurveyConfiguration = ({ project, amQuestionList, aoQuestionList, loading 
     } else {
       setQuestions(aoQuestionList)
     }
-  }, [amQuestionList, aoQuestionList])
+  }, [amQuestionList, aoQuestionList, filter])
   return (
     <Fragment>
       {loading ? <Loading description="" /> :
@@ -133,11 +139,11 @@ const SurveyConfiguration = ({ project, amQuestionList, aoQuestionList, loading 
             <Select className={styles.select} selected={filter} setSelected={setFilter} items={['About Me', 'About Others']} />
             <span onClick={() => setOpen(true)}>{currentDriver}<img src={Setting} alt="drivers" /></span>
           </div>
-          {questions ? questions.map((question, idx) => {
-            if (question.driver !== currentDriver)
+          {questions.length > 0 ? questions.map((question, idx) => {
+            if (question.driver && question.driver.driverName !== currentDriver)
               return null;
             return (
-              <Question question={question} key={`${idx}-${question.controlType}`} />
+              <Question surveyId={project.id} question={question} drivers={drivers} key={`${idx}-${question.controlType}`} />
             )
           }) : <h3>No Question</h3>}
           {open && <ModalWrapper onClick={() => setOpen(false)}>
@@ -168,4 +174,6 @@ const mapStateToProps = ({ admin }) => {
   }
 }
 
-export default connect(mapStateToProps, null)(SurveyConfiguration)
+export default connect(mapStateToProps, {
+  getShGroupList: shgroupList
+})(SurveyConfiguration)

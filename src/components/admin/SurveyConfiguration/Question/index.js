@@ -30,8 +30,8 @@ const Tag = styled.span`
   line-height: 1.82;
   letter-spacing: normal;
   text-align: center;
-  color: ${props => shGroups.filter(sh => sh.name === props.text)[0].color};
-  background-color: ${props => shGroups.filter(sh => sh.name === props.text)[0].background};
+  color: ${props => (shGroups.filter(sh => sh.name === props.text)[0] || {}).color};
+  background-color: ${props => (shGroups.filter(sh => sh.name === props.text)[0] || {}).background};
 `
 const shGroups = [
   {
@@ -51,24 +51,22 @@ const shGroups = [
   }
 ]
 
-const drivers = ['Sentiment', 'Support', 'Politics', 'Risks']
-
-const Question = ({ question, shgroupList }) => {
+const Question = ({ question, shgroupList, drivers }) => {
   const headerRef = useRef(null)
   const spanRef = useRef(null)
   const [detailed, setDetailed] = useState(false)
   const [edit, setEdit] = useState(false)
   const [width, setWidth] = useState()
-  const [survey, setSurvey] = useState(question.text)
-  const [driver, setDriver] = useState(question.driver)
-  const [subDriver, setSubDriver] = useState(question.subDriver)
-  const [type, setType] = useState(question.controlType)
-  const [sliderLeft, setSliderLeft] = useState(question.sliderLeft)
-  const [sliderRight, setSliderRight] = useState(question.sliderRight)
-  const [options, setOptions] = useState(question.options)
+  const [survey, setSurvey] = useState(question.questionText)
+  const [driver, setDriver] = useState((question.driver || {}).driverName)
+  const [subDriver, setSubDriver] = useState(question.subdriver)
+  const [type, setType] = useState(controlTypeTag(question.controlType))
+  const [sliderLeft, setSliderLeft] = useState(question.sliderTextLeft)
+  const [sliderRight, setSliderRight] = useState(question.sliderTextRight)
+  const [options, setOptions] = useState(question.option)
   const [topics, setTopics] = useState(question.topics)
   const [commentPrompt, setCommentPrompt] = useState(question.commentPrompt)
-  const [skipOptions, setSkipOptions] = useState(question.skipOptions)
+  const [skipOptions, setSkipOptions] = useState(question.skipOption)
 
   useEffect(() => {
     setWidth(spanRef.current.offsetWidth)
@@ -98,7 +96,7 @@ const Question = ({ question, shgroupList }) => {
             <span className={styles.survey}>{survey}</span>
             <div className={styles.function_for_mobile}>
               <span className={styles.label}>Control Type:</span>
-              <Select selected={type} setSelected={setType} items={Object.keys(controlType).map(type => controlTypeTag(controlType[type]))} className={styles.controlType} />
+              <Select selected={type} setSelected={setType} items={Object.keys(controlType).map(type => controlTypeTag(type))} className={styles.controlType} />
               <span className={styles.delete} onClick={(e) => { e.stopPropagation(); }}><img src={DeleteIcon} alt="delete" /></span>
             </div>
             <div className={styles.inputs}>
@@ -112,7 +110,7 @@ const Question = ({ question, shgroupList }) => {
               </div>
               <div className={styles.input}>
                 <span className={styles.label}>SH Group:</span>
-                {question.shGroup.map((sh, idx) => <Tag key={`${idx}-${sh}`} text={shgroupList.filter(s => s.id === sh)[0].SHGroupName}>{shgroupList.filter(s => s.id === sh)[0].SHGroupName}</Tag>)}
+                {question.shGroup.map((sh, idx) => <Tag key={`${idx}-${sh}`} text={(shgroupList.filter(s => s.id === sh)[0] || {}).SHGroupName}>{(shgroupList.filter(s => s.id === sh)[0] || {}).SHGroupName}</Tag>)}
               </div>
               <Button onClick={() => setDetailed(true)} className={styles.viewDetails}>View Details</Button>
             </div>
@@ -127,7 +125,7 @@ const Question = ({ question, shgroupList }) => {
       </div>
       {detailed && <div className={styles.others}>
         <div className={styles.slider}>
-          {controlType === 'Slider' && <Fragment>
+          {type === 'Slider' && <Fragment>
             <div className={styles.left}>
               <label>Slider Left (Red)</label>
               <Input value={sliderLeft} onChange={(value, e) => setSliderLeft(value)} className={styles.input} />
@@ -137,7 +135,7 @@ const Question = ({ question, shgroupList }) => {
               <Input value={sliderRight} onChange={(value, e) => setSliderRight(value)} className={styles.input} />
             </div>
           </Fragment>}
-          {(controlType === 'Two Options' || controlType === 'Multi Options') && <Fragment>
+          {(type === 'Two Options' || type === 'Multi Options') && <Fragment>
             {options.map((option, idx) =>
               <div key={`${idx}-${option}`}>
                 <label>Option {idx + 1}</label>
@@ -148,9 +146,9 @@ const Question = ({ question, shgroupList }) => {
                 }} />
               </div>
             )}
-            {controlType === 'Multi Options' && <AddButton text="Option" style={{ flexBasis: '100%' }} />}
+            {type === 'Multi Options' && <AddButton text="Option" style={{ flexBasis: '100%' }} />}
           </Fragment>}
-          {controlType === 'Multi-Topic' && <Fragment>
+          {type === 'Multi-Topic' && <Fragment>
             {topics.map((topic, idx) =>
               <div key={`${idx}-${topic}`}>
                 <label>Option {idx + 1}</label>

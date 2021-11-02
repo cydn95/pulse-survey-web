@@ -35,10 +35,11 @@ const ProjectCard = ({ project, setEditing, setActive, loading, error }) => {
   const callbackActive = (result) => {
     if (error === '') {
       NotificationManager.success("Response saved successfully", "");
-      setSurvey(result)
+      setSurvey({ ...project, isActive: !project.isActive })
     } else {
       NotificationManager.error("Something went wrong", "");
     }
+    setOpen(false)
   }
 
   return (
@@ -111,7 +112,7 @@ const ProjectCard = ({ project, setEditing, setActive, loading, error }) => {
         <Button className={classnames(survey.isActive && styles.deactivate, styles.btn)} onClick={(e) => setOpen(true)}>{survey.isActive ? "Deactivate" : "Activate"}</Button>
       </div>
       {open && <ModalWrapper onClick={() => setOpen(false)}>
-        <div className={styles.modalBody}>
+        <div className={styles.modalBody} onClick={(e) => e.stopPropagation()}>
           <ModalHeader className={styles.header}>
             <h2>Confirm</h2>
             <span onClick={() => setOpen(false)}><FontAwesomeIcon icon={faTimes} color="#6d6f94" /></span>
