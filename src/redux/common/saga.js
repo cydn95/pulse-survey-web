@@ -287,9 +287,11 @@ function* addStakeholder({ payload }) {
         shMyCategory: stakeholder.myCategoryList,
         shProjectCategory: stakeholder.projectCategoryList,
         projectUserTitle: stakeholder.projectUserTitle,
+        projectUserRoleDesc: stakeholder.projectUserRoleDesc,
+        projectOrganization: stakeholder.organisationId,
         shGroup: null,
         myProjectUser: stakeholder.myProjectUser,
-        addByProjectUser_id,
+        addByProjectUser: stakeholder.myProjectUser,
         projectAdmin: false,
       };
 
