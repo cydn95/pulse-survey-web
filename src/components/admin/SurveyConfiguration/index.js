@@ -1,6 +1,6 @@
 import React, { useState, Fragment, useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { shgroupList } from 'Redux/actions'
+import { shgroupList, skipQuestionList } from 'Redux/actions'
 import classnames from 'classnames'
 import Select from 'Components/Select'
 import Loading from 'Components/Loading'
@@ -67,7 +67,7 @@ const defaultQuestions = [
   }
 ]
 
-const SurveyConfiguration = ({ project, amQuestionList, aoQuestionList, loading, getShGroupList }) => {
+const SurveyConfiguration = ({ project, amQuestionList, aoQuestionList, loading, getShGroupList, getSkipQuestionList }) => {
   const temp = [];
   const [questions, setQuestions] = useState([])
   const [filter, setFilter] = useState('About Me')
@@ -77,8 +77,9 @@ const SurveyConfiguration = ({ project, amQuestionList, aoQuestionList, loading,
   const [reorderModal, setReorderModal] = useState(false)
 
   useEffect(() => {
-    getShGroupList(project.surveyId)
-  }, [])
+    getSkipQuestionList();
+    getShGroupList(project.surveyId);
+  }, [project.surveyId])
 
   useMemo(() => {
     if (Object.keys(project).length && questions.length > 0) {
@@ -175,5 +176,6 @@ const mapStateToProps = ({ admin }) => {
 }
 
 export default connect(mapStateToProps, {
-  getShGroupList: shgroupList
+  getShGroupList: shgroupList,
+  getSkipQuestionList: skipQuestionList,
 })(SurveyConfiguration)

@@ -186,13 +186,13 @@ const Projects = ({
 
   return (
     <div className={styles.main}>
-      <div className={styles.header}>
+      <div className={styles.header} id="header">
         <div>
           <h2 className={styles.title}>{editing < 0 ? 'Projects' : currentProject.name}</h2>
           <h3 className={styles.breadcrumb}>{breadcrumb}</h3>
         </div>
         {editing < -1 ?
-          <Button className={styles.button} onClick={() => handleEdit(-1)}>Create new project</Button> :
+          <Button autofocus className={styles.button} onClick={() => handleEdit(-1)}>Create new project</Button> :
           <div className={styles.btnGroup}>
             <span className={styles.forMobile} onClick={() => handleEdit(-2)}>
               <img src={CancelImage} alt="cancel" />

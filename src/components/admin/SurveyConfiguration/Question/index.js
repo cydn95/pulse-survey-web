@@ -51,7 +51,7 @@ const shGroups = [
   }
 ]
 
-const Question = ({ question, shgroupList, drivers }) => {
+const Question = ({ question, shgroupList, skipQuestionList, drivers }) => {
   const headerRef = useRef(null)
   const spanRef = useRef(null)
   const [detailed, setDetailed] = useState(false)
@@ -71,6 +71,10 @@ const Question = ({ question, shgroupList, drivers }) => {
   useEffect(() => {
     setWidth(spanRef.current.offsetWidth)
   }, [])
+
+  useEffect(() => {
+    console.log('question', skipQuestionList)
+  }, [skipQuestionList])
 
   return (
     <div className={styles.wrapper}>
@@ -171,7 +175,7 @@ const Question = ({ question, shgroupList, drivers }) => {
           <div className={styles.inputs}>
             {skipOptions.map((option, idx) =>
               <Input
-                value={option}
+                value={(skipQuestionList.filter(q => q.id === option)[0] || {}).optionName}
                 key={`${idx}-${option}`}
                 className={styles.input}
                 withClose={idx === skipOptions.length - 1}
@@ -268,9 +272,10 @@ const Question = ({ question, shgroupList, drivers }) => {
 }
 
 const mapStateToProps = ({ common }) => {
-  const { shgroupList } = common;
+  const { shgroupList, skipQuestionList } = common;
   return {
     shgroupList,
+    skipQuestionList,
   }
 }
 
