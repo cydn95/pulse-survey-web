@@ -246,7 +246,7 @@ const getUserListAsync = async (email) =>
 
 function* addStakeholder({ payload }) {
   try {
-    const { projectId, surveyId, stakeholder, callback } = payload;
+    const { addByProjectUser_id, projectId, surveyId, stakeholder, callback } = payload;
 
     let userId = 0;
 
@@ -289,6 +289,7 @@ function* addStakeholder({ payload }) {
         projectUserTitle: stakeholder.projectUserTitle,
         shGroup: null,
         myProjectUser: stakeholder.myProjectUser,
+        addByProjectUser_id,
         projectAdmin: false,
       };
 
