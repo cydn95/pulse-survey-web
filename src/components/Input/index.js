@@ -21,6 +21,7 @@ const Input = ({
   style = null,
   refVal = null,
   onClickClose = null,
+  ...others
 }) => {
   return (
     <label className={classnames(styles.main, className)} onClick={(e) => e.stopPropagation()}>
@@ -37,6 +38,7 @@ const Input = ({
           onFocus={(e) => (onFocus ? onFocus(e) : {})}
           onBlur={(e) => (onBlur ? onBlur(e) : {})}
           style={style}
+          {...others}
         />
         {onClickClose && <span
           onClick={(e) => {
