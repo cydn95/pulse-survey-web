@@ -188,7 +188,7 @@ const Projects = ({
     <div className={styles.main}>
       <div className={styles.header} id="header">
         <div>
-          <h2 className={styles.title}>{editing < 0 ? 'Projects' : currentProject.name}</h2>
+          <h2 className={styles.title}>{editing < 0 ? 'Projects' : currentProject.surveyTitle}</h2>
           <h3 className={styles.breadcrumb}>{breadcrumb}</h3>
         </div>
         {editing < -1 ?

@@ -67,12 +67,13 @@ const ProjectSetup = ({
       <div className={styles.basicData}>
         <div className={styles.name}>
           <p className={styles.projectName}>Project Name</p>
-          <Input type="text" value={currentProject.name} onChange={(value, e) => setProjectField('name', value)} className={styles.input} />
+          <Input type="text" value={currentProject.surveyTitle} onChange={(value, e) => setProjectField('surveyTitle', value)} className={styles.input} />
           {currentProject.code && <p className={styles.projectCode}>Project Code:<span>{` ${currentProject.code}`}</span></p>}
         </div>
         <div className={styles.projectManager}>
           <p className={styles.projectName}>Project Manager</p>
-          <Select selected={currentProject.manager} setSelected={(item) => setProjectField('manager', item)} items={managers} className={styles.withOutline} />
+          {/* <Select selected={currentProject.manager} setSelected={(item) => setProjectField('manager', item)} items={managers} className={styles.withOutline} /> */}
+          <Input value={currentProject.manager} onChange={(e, value) => setProjectField('manager', value)} className={styles.input} />
         </div>
         <div className={styles.logos}>
           <FileUpload

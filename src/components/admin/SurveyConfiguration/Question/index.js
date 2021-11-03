@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, Fragment } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import classnames from 'classnames'
+import { getColorFromValue } from "Util/Utils";
 import { controlType, controlTypeTag } from 'Constants/defaultValues'
 import Select from 'Components/Select'
 import Input from 'Components/Input'
@@ -30,8 +31,8 @@ const Tag = styled.span`
   line-height: 1.82;
   letter-spacing: normal;
   text-align: center;
-  color: ${props => (shGroups.filter(sh => sh.name === props.text)[0] || {}).color};
-  background-color: ${props => (shGroups.filter(sh => sh.name === props.text)[0] || {}).background};
+  color: ${props => `${props.color}`};
+  background-color: ${props => `${props.color}50`};
 `
 const shGroups = [
   {
@@ -100,7 +101,7 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers }) => {
             <span className={styles.survey}>{survey}</span>
             <div className={styles.function_for_mobile}>
               <span className={styles.label}>Control Type:</span>
-              <Select selected={type} setSelected={setType} items={Object.keys(controlType).map(type => controlTypeTag(type))} className={styles.controlType} />
+              <Select selected={type} setSelected={setType} items={Object.keys(controlType).map(type => controlTypeTag(controlType[type]))} className={styles.controlType} />
               <span className={styles.delete} onClick={(e) => { e.stopPropagation(); }}><img src={DeleteIcon} alt="delete" /></span>
             </div>
             <div className={styles.inputs}>
@@ -114,7 +115,7 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers }) => {
               </div>
               <div className={styles.input}>
                 <span className={styles.label}>SH Group:</span>
-                {question.shGroup.map((sh, idx) => <Tag key={`${idx}-${sh}`} text={(shgroupList.filter(s => s.id === sh)[0] || {}).SHGroupName}>{(shgroupList.filter(s => s.id === sh)[0] || {}).SHGroupName}</Tag>)}
+                {question.shGroup.map((sh, idx) => <Tag color={getColorFromValue((idx + 4) % 5 + 5)} key={`${idx}-${sh}`} text={(shgroupList.filter(s => s.id === sh)[0] || {}).SHGroupName}>{(shgroupList.filter(s => s.id === sh)[0] || {}).SHGroupName}</Tag>)}
               </div>
               <Button onClick={() => setDetailed(true)} className={styles.viewDetails}>View Details</Button>
             </div>
