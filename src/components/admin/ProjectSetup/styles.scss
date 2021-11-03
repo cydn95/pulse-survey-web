@@ -53,10 +53,18 @@
   }
   .projectManager {
     width: 320px;
-    .withOutline {
+    .input {
+      margin-bottom: 10px;
       padding: 10px 16px;
       border-radius: 8px;
-      border: solid 2px #eee;
+      background-color: #eff0f6;
+      border: 0;
+      input {
+        color: gray;
+        font-family: Montserrat;
+        font-size: 13px;
+        font-weight: 600;
+      }
     }
     .projectName {
       font-family: Montserrat;
