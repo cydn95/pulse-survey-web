@@ -17,7 +17,7 @@ const Item = ({ item, index, current }) =>
         ref={provided.innerRef}
       >
         <span className={styles.text}>
-          {item.text}
+          {item.driverName || item.SHCategoryName}
         </span>
         <span><img src={Reorder} alt="reorder" /></span>
       </div>
@@ -52,7 +52,6 @@ const ReorderModal = ({ items, setItems, onClose, text }) => {
             let fromIndex = result.source.index
             let toIndex = result.destination.index
             temp.splice(toIndex, 0, temp.splice(fromIndex, 1)[0]);
-            console.log('list', temp)
             setCurrent(-1)
             setList(temp)
           }}

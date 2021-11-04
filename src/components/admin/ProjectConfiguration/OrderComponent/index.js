@@ -6,11 +6,11 @@ const OrderComponent = ({ items, title, addText = "Add New" }) => {
     <Fragment>
       {title && <span className={styles.description}>{title}</span>}
       <div className={styles.wrapper}>
-        {items ? items.map((item, idx) => {
+        {items.length > 0 ? items.map((item, idx) => {
           return (
             <div className={styles.itemWrapper} key={`${idx}-order`}>
-              <span className={styles.image}><img src={item.image} alt="item" /></span>
-              <span className={styles.description}>{item.text}</span>
+              <span className={styles.image}><img src={`${!title ? item.icon.split('.').map((d, idx, list) => idx === list.length - 2 ? d + '-dark' : d).join('.') : item.icon}`} alt="item" /></span>
+              <span className={styles.description}>{!title ? item.driverName : item.SHCategoryName}</span>
             </div>
           )
         }) : <div></div>}

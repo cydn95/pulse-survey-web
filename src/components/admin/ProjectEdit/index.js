@@ -13,33 +13,41 @@ import Reporting from '../Reporting'
 import FlaggedResponses from '../FlaggedResponses'
 import styles from './styles.scss'
 
-const ProjectEdit = ({ project, currentStep, setBreadcrumb, getUserList, surveyId, getAOQuestionList, getAMQuestionList }, ref) => {
-
+const ProjectEdit = ({
+  currentStep,
+  setBreadcrumb,
+  getUserList,
+  surveyId,
+  getAOQuestionList,
+  getAMQuestionList,
+  currentProject,
+}) => {
   useEffect(() => {
     getUserList(surveyId)
     getAOQuestionList(surveyId)
     getAMQuestionList(surveyId)
+    console.log("surveyId", surveyId)
   }, [surveyId])
 
   return (
     <div className={styles.wrapper}>
       {currentStep === 0 && <ProjectSetup
         setBreadcrumb={setBreadcrumb}
-        project={project}
       />}
-      {currentStep === 1 && <ProjectConfiguration project={project} />}
-      {currentStep === 2 && <UserAdministration project={project} />}
-      {currentStep === 3 && <SurveyConfiguration project={project} />}
-      {currentStep === 4 && <Reporting project={project} />}
-      {currentStep === 5 && <FlaggedResponses project={project} />}
+      {currentStep === 1 && <ProjectConfiguration />}
+      {currentStep === 2 && <UserAdministration />}
+      {currentStep === 3 && <SurveyConfiguration />}
+      {currentStep === 4 && <Reporting project={currentProject} />}
+      {currentStep === 5 && <FlaggedResponses project={currentProject} />}
     </div>
   )
 }
 
 const mapStateToProps = ({ admin }) => {
-  const { surveyId } = admin
+  const { surveyId, currentProject } = admin
   return {
-    surveyId
+    currentProject,
+    surveyId,
   }
 }
 

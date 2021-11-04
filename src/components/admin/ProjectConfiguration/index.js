@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import classnames from 'classnames'
+import { surveyListByProject, driverList, shCategoryList } from 'Redux/actions';
 import Input from 'Components/Input'
 import Select from 'Components/Select'
 import AddButton from 'Components/AddButton'
@@ -9,105 +11,44 @@ import OrderComponent from './OrderComponent'
 import ReorderModal from './ReorderModal'
 import styles from './styles.scss'
 import Help from '../../../assets/img/admin/help.svg'
-import Sentiment from '../../../assets/img/admin/sentiment-dark.svg'
-import Egagement from '../../../assets/img/admin/engagement-dark.svg'
-import Influence from '../../../assets/img/admin/influence-dark.svg'
-import Interest from '../../../assets/img/admin/interest-dark.svg'
-import Confidence from '../../../assets/img/admin/confidence-dark.svg'
-import Culture from '../../../assets/img/admin/culture-dark.svg'
-import Relationships from '../../../assets/img/admin/relationships-dark.svg'
-import Improvement from '../../../assets/img/admin/trophy-dark.svg'
 import Reorder from '../../../assets/img/admin/reorder.png'
-import MyLeaders from '../../../assets/img/admin/MyLeaders.svg'
-import MyPeers from '../../../assets/img/admin/MyPeers.svg'
-import MyDirectReports from '../../../assets/img/admin/MyDirectReports.svg'
-import WhoNeedsMe from '../../../assets/img/admin/WhoNeedsMe.svg'
-import DecisionMakers from '../../../assets/img/admin/DecisionMakers.svg'
-import InternalStakeholders from '../../../assets/img/admin/InternalStakeholders.svg'
-import KeySuppliers from '../../../assets/img/admin/KeySuppliers.svg'
-import ExternalStakeholders from '../../../assets/img/admin/ExternalStakeholders.svg'
 
-const defaultMyMap = [
-  {
-    text: 'My Leaders',
-    image: MyLeaders
-  },
-  {
-    text: 'My Peers',
-    image: MyPeers
-  },
-  {
-    text: 'My Direct Reports',
-    image: MyDirectReports
-  },
-  {
-    text: 'Who Needs Me',
-    image: WhoNeedsMe
-  }
-]
-const defaultprojectMap = [
-  {
-    text: 'Decision Makers',
-    image: DecisionMakers
-  },
-  {
-    text: 'Internal Stakeholders',
-    image: InternalStakeholders
-  },
-  {
-    text: 'External Stakeholders',
-    image: ExternalStakeholders
-  },
-  {
-    text: 'Key Suppliers',
-    image: KeySuppliers
-  },
-]
-
-const defaultDrivers = [
-  {
-    text: 'Sentiment',
-    image: Sentiment
-  },
-  {
-    text: 'Egagement',
-    image: Egagement
-  },
-  {
-    text: 'Influence',
-    image: Influence
-  },
-  {
-    text: 'Interest',
-    image: Interest
-  },
-  {
-    text: 'Confidence',
-    image: Confidence
-  },
-  {
-    text: 'Culture',
-    image: Culture
-  },
-  {
-    text: 'Relationships',
-    image: Relationships
-  },
-  {
-    text: 'Improvement',
-    image: Improvement
-  }
-]
-
-const ProjectConfiguration = ({ project }) => {
+const ProjectConfiguration = ({
+  currentProject,
+  surveyList,
+  getSurveyList,
+  getDriverList,
+  driverList,
+  surveyId,
+  shCategoryList,
+  getShCategoryList,
+  projectMapShCategoryList,
+}) => {
+  const [project, setProject] = useState({})
   const [shgroup, setSHGroup] = useState('')
   const [driverReorder, setDriverReorder] = useState(false)
   const [myMapReorder, setMyMapReorder] = useState(false)
   const [projectMapReorder, setProjectMapReorder] = useState(false)
-  const [drivers, setDrivers] = useState(Object.keys(project).length && defaultDrivers)
-  const [myMap, setMyMap] = useState(Object.keys(project).length && defaultMyMap)
-  const [projectMap, setProjectMap] = useState(Object.keys(project).length && defaultprojectMap)
+  const [drivers, setDrivers] = useState(driverList)
+  const [myMap, setMyMap] = useState([])
+  const [projectMap, setProjectMap] = useState([])
   const [projectTeams, setProjectTeams] = useState(['Management', 'Engineering'])
+
+  useEffect(() => {
+    getDriverList(surveyId)
+    getShCategoryList(surveyId, 0)
+  }, [surveyId])
+
+  useEffect(() => {
+    setDrivers(driverList);
+  }, [driverList])
+
+  useEffect(() => {
+    console.log('shcategorylist', shCategoryList)
+    setMyMap(shCategoryList)
+    setProjectMap(projectMapShCategoryList)
+  }, [shCategoryList])
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.row}>
@@ -121,7 +62,7 @@ const ProjectConfiguration = ({ project }) => {
                 <img src={Help} alt="help" />
               </TooltipComponent>
             </div>
-            <Input type="number" className={styles.threshold} />
+            <Input type="number" className={styles.threshold} value={project.threshold} />
           </div>
         </div>
         <div className={styles.detailed}>
@@ -173,7 +114,7 @@ const ProjectConfiguration = ({ project }) => {
         <h2>Drivers</h2>
         <span className={styles.description}>Create driver categories to group questions into meaningful categories.</span>
         <div className={styles.btnGroup}>
-          <Button className={styles.resetAll} onClick={() => setProjectMap(defaultDrivers)}>Reset All</Button>
+          <Button className={styles.resetAll} onClick={() => setDrivers(driverList)}>Reset All</Button>
           <div className={styles.reorder}>
             <span className={styles.image} onClick={() => setDriverReorder(true)}><img src={Reorder} alt="reorder" /></span>
             <span className={styles.text}>Reorder</span>
@@ -185,7 +126,7 @@ const ProjectConfiguration = ({ project }) => {
         <h2>Mapping Categories</h2>
         <span className={styles.description}>Create / manage categories for About Others mapping.</span>
         <div className={styles.btnGroup}>
-          <Button className={styles.resetAll} onClick={() => setMyMap(defaultMyMap)}>Reset All</Button>
+          <Button className={styles.resetAll} onClick={() => setMyMap(shCategoryList.filter(sh => sh.mapType === 2))}>Reset All</Button>
           <div className={styles.reorder}>
             <span className={styles.image} onClick={() => setMyMapReorder(true)}><img src={Reorder} alt="reorder" /></span>
             <span className={styles.text}>Reorder</span>
@@ -193,7 +134,7 @@ const ProjectConfiguration = ({ project }) => {
         </div>
         <OrderComponent items={myMap} title="My Map" />
         <div className={styles.btnGroup}>
-          <Button className={styles.resetAll} onClick={() => setProjectMap(defaultprojectMap)}>Reset All</Button>
+          <Button className={styles.resetAll} onClick={() => setProjectMap(shCategoryList.filter(sh => sh.mapType === 3))}>Reset All</Button>
           <div className={styles.reorder}>
             <span className={styles.image} onClick={() => setProjectMapReorder(true)}><img src={Reorder} alt="reorder" /></span>
             <span className={styles.text}>Reorder</span>
@@ -208,4 +149,22 @@ const ProjectConfiguration = ({ project }) => {
   )
 }
 
-export default ProjectConfiguration
+const mapStateToProps = ({ admin, settings, common }) => {
+  const { currentProject, surveyId } = admin
+  const { surveyList } = settings;
+  const { driverList, shCategoryList, projectMapShCategoryList } = common
+  return {
+    currentProject,
+    surveyList,
+    driverList,
+    surveyId,
+    shCategoryList,
+    projectMapShCategoryList,
+  }
+}
+
+export default connect(mapStateToProps, {
+  getSurveyList: surveyListByProject,
+  getDriverList: driverList,
+  getShCategoryList: shCategoryList,
+})(ProjectConfiguration)
