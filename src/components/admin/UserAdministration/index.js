@@ -1,14 +1,16 @@
 import React, { Fragment, useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { teamList, shgroupList, adminSetUserField } from 'Redux/actions'
-import Loading from 'Components/Loading'
+import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddButton from 'Components/AddButton'
 import Counter from './Counter'
 import UserCard from './UserCard'
 import styles from './styles.scss'
 
 const UserAdministration = ({ userList, currentProject, loading, getTeamList, getShGroupList, shgroupList, teamList, setUserField }) => {
-  const [selected, setSelected] = useState(0)
+  const [selected, setSelected] = useState([])
+  const [detail, setDetail] = useState([])
   const [list, setList] = useState([])
   useEffect(() => {
     getTeamList(currentProject.id)
@@ -20,7 +22,6 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
   }, [userList])
   return (
     <Fragment>
-      <AddButton text="User" outlined={true} className={styles.alignRight} />
       {list.length > 0 && <div className={styles.horizontalWrapper}>
         <div className={styles.individual}>
           <Counter count={userList.identifiedTeamMemberCnt} description="Identified Team Members" />
@@ -35,9 +36,67 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
           <Counter count={userList.totalInvitedCnt} description="Total Invited" type="total" />
         </div>
       </div>}
-      {list.length !== 0 ? list.map((user, idx) =>
-        <UserCard key={`${idx}-${user.id}`} user={user} teamList={teamList} shgroupList={shgroupList} setUserField={setUserField} />
-      ) : <h3>No User</h3>}
+      <div className={styles.header}>
+        <h3>Member list</h3>
+        <AddButton text="member" outlined={true} className={styles.alignRight} />
+      </div>
+      {list.length !== 0 ? <table style={{ textAlign: 'left' }} className={styles.dataTable}>
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" />
+            </th>
+            <th>
+              <div className={styles.arrow}>
+                <span>First name</span>
+                <span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span>
+              </div>
+            </th>
+            <th>
+              <div className={styles.arrow}>
+                <span>Last name</span>
+                <span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span>
+              </div>
+            </th>
+            <th><div className={styles.arrow}><span>Project title</span><span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span></div></th>
+            <th><div className={styles.arrow}><span>Project Org</span><span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span></div></th>
+            <th><div className={styles.arrow}><span>Team</span><span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span></div></th>
+            <th><div className={styles.arrow}><span>SH Group</span><span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span></div></th>
+            <th><div className={styles.arrow}><span>SH Type</span><span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span></div></th>
+            <th><div className={styles.arrow}><span>Status</span><span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span></div></th>
+          </tr>
+        </thead>
+        <tbody>
+          {list.map((user, idx) =>
+            <Fragment key={idx}>
+              <tr onClick={() => {
+                let temp = [...detail.filter(t => t !== idx)]
+                if (detail.filter(t => t === idx).length === 0) {
+                  temp.push(idx)
+                }
+                setDetail(temp)
+              }}>
+                <td>
+                  <input type="checkbox" />
+                </td>
+                <td>{user.user.first_name}</td>
+                <td>{user.user.last_name}</td>
+                <td>{user.projectUserTitle}</td>
+                <td>{user.projectOrganization}</td>
+                <td>{(user.team || {}).name}</td>
+                <td>{(user.shGroup || {}).SHGroupName}</td>
+                <td>{(user.shType || {}).shTypeName}</td>
+                <td><div className={styles.arrow}>{'Invited'}<span><FontAwesomeIcon icon={detail.includes(idx) ? faAngleDown : faAngleUp} color="#6d6f94" /></span></div></td>
+              </tr>
+              {detail.includes(idx) && <tr>
+                <td colSpan={9} style={{ padding: '0px' }}>
+                  <UserCard key={`${idx}-${user.id}`} user={user} teamList={teamList} shgroupList={shgroupList} setUserField={setUserField} />
+                </td>
+              </tr>}
+            </Fragment>
+          )}
+        </tbody>
+      </table> : <h3>No User</h3>}
     </Fragment>
   )
 }

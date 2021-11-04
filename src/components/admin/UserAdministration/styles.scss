@@ -2,6 +2,96 @@
   align-self: flex-end;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  h3 {
+    font-family: Poppins;
+    font-size: 21px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #273645;
+  }
+}
+
+.dataTable {
+  background-color: white;
+  text-align: left;
+  border-collapse: collapse;
+  border: solid 1px #dfe0eb;
+  thead {
+    tr {
+      background-color: rgba(139, 144, 161, 0.1);
+      border: none;
+      th {
+        .arrow {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+        span {
+          display: inline-flex;
+        }
+        &:first-child {
+          padding-left: 36px;
+        }
+        &:last-child {
+          padding-right: 36px;
+        }
+        padding-top: 16px;
+        padding-bottom: 16px;
+        font-family: Montserrat;
+        font-size: 14px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.29;
+        letter-spacing: normal;
+        text-align: left;
+        color: #6d6f94;
+      }
+    }
+  }
+  tbody {
+    tr {
+      border-top: 1px solid #dfe0eb;
+      td {
+        &:first-child {
+          padding-left: 36px;
+        }
+        &:last-child {
+          padding-right: 36px;
+          .arrow {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: space-between;
+            span {
+              display: inline-flex;
+            }
+          }
+        }
+        padding-top: 16px;
+        padding-bottom: 16px;
+        font-family: Montserrat;
+        font-size: 14px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.29;
+        letter-spacing: normal;
+        text-align: left;
+        color: #6d6f94;
+      }
+    }
+  }
+}
+
 .horizontalWrapper {
   display: flex;
   justify-content: space-between;
