@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, Fragment } from 'react'
 import { connect } from 'react-redux'
 import "react-notifications/lib/notifications.css";
 import {
@@ -11,6 +11,7 @@ import {
   adminProjectList,
   adminSetCurrentProject,
 } from 'Redux/admin/actions'
+import Loading from 'Components/Loading'
 import ProjectCard from 'Components/admin/ProjectCard'
 import ProjectEdit from 'Components/admin/ProjectEdit'
 import AdminStepBar from 'Components/admin/AdminStepBar'
@@ -151,7 +152,10 @@ const Projects = ({
     getProjectList(user.userId)
   }, [user])
 
-  const projectEditRef = useRef({})
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  })
+
 
   const handleEdit = (projectId) => {
     if (projectId >= 0) {
@@ -213,7 +217,7 @@ const Projects = ({
         </div> :
         <div>
           <AdminStepBar currentStep={currentStep} setCurrentStep={(i) => setCurrentStep(i)} />
-          <ProjectEdit ref={projectEditRef} project={currentProject} currentStep={currentStep} setBreadcrumb={setBreadcrumb} />
+          <ProjectEdit project={currentProject} currentStep={currentStep} setBreadcrumb={setBreadcrumb} />
         </div>
       }
       <NotificationContainer />

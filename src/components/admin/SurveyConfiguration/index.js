@@ -67,7 +67,7 @@ const defaultQuestions = [
   }
 ]
 
-const SurveyConfiguration = ({ project, amQuestionList, aoQuestionList, loading, getShGroupList, getSkipQuestionList }) => {
+const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, loading, getShGroupList, getSkipQuestionList }) => {
   const temp = [];
   const [questions, setQuestions] = useState([])
   const [filter, setFilter] = useState('About Me')
@@ -78,11 +78,11 @@ const SurveyConfiguration = ({ project, amQuestionList, aoQuestionList, loading,
 
   useEffect(() => {
     getSkipQuestionList();
-    getShGroupList(project.surveyId);
-  }, [project.surveyId])
+    getShGroupList(currentProject.surveyId);
+  }, [currentProject.surveyId])
 
   useMemo(() => {
-    if (Object.keys(project).length && questions.length > 0) {
+    if (Object.keys(currentProject).length && questions.length > 0) {
       questions.map(question => {
         if (question.driver) {
           if (!temp.includes(question.driver.driverName)) {
@@ -144,7 +144,7 @@ const SurveyConfiguration = ({ project, amQuestionList, aoQuestionList, loading,
             if (question.driver && question.driver.driverName !== currentDriver)
               return null;
             return (
-              <Question surveyId={project.id} question={question} drivers={drivers} key={`${idx}-${question.controlType}`} />
+              <Question surveyId={currentProject.id} question={question} drivers={drivers} key={`${idx}-${question.controlType}`} />
             )
           }) : <h3>No Question</h3>}
           {open && <ModalWrapper onClick={() => setOpen(false)}>
@@ -167,11 +167,12 @@ const SurveyConfiguration = ({ project, amQuestionList, aoQuestionList, loading,
 }
 
 const mapStateToProps = ({ admin }) => {
-  const { aoQuestionList, amQuestionList, loading } = admin;
+  const { aoQuestionList, amQuestionList, loading, currentProject } = admin;
   return {
     aoQuestionList,
     amQuestionList,
     loading,
+    currentProject,
   }
 }
 

@@ -73,10 +73,6 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers }) => {
     setWidth(spanRef.current.offsetWidth)
   }, [])
 
-  useEffect(() => {
-    console.log('question', skipQuestionList)
-  }, [skipQuestionList])
-
   return (
     <div className={styles.wrapper}>
       <div className={styles.basic} onClick={() => setDetailed(!detailed)}>
