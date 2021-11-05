@@ -1,12 +1,13 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { teamList, shgroupList, adminSetUserField } from 'Redux/actions'
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
+import { faAngleRight, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddButton from 'Components/AddButton'
 import Counter from './Counter'
 import UserCard from './UserCard'
 import styles from './styles.scss'
+import { gray } from 'd3-color';
 
 const UserAdministration = ({ userList, currentProject, loading, getTeamList, getShGroupList, shgroupList, teamList, setUserField }) => {
   const [selected, setSelected] = useState([])
@@ -16,6 +17,42 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
     getTeamList(currentProject.id)
     getShGroupList(currentProject.surveyId)
   }, [currentProject])
+
+  const getStatus = useCallback((user) => {
+    if (!user && !user.shGroup) {
+      return {}
+    }
+    if (user.id === user.addByProjectUser.id) {
+      return {
+        text: 'Not Invited',
+        color: 'gray',
+      }
+    } else {
+      let percentage = (user.am_answered / user.am_total) * 100
+      let resPercent
+      if (user.shGroup) {
+        resPercent = user.shGroup.responsePercent
+      } else {
+        resPercent = 100
+      }
+      if (percentage === 0) {
+        return {
+          text: 'Not Started',
+          color: 'yello'
+        }
+      } else if (percentage < resPercent) {
+        return {
+          text: 'In Progress',
+          color: 'blue'
+        }
+      } else {
+        return {
+          text: 'Complete',
+          color: 'green'
+        }
+      }
+    }
+  }, [userList])
 
   useEffect(() => {
     setList(userList.projectUser ? userList.projectUser : [])
@@ -68,11 +105,11 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
         </thead>
         <tbody>
           {list.map((user, idx) =>
-            <Fragment key={idx}>
+            <Fragment key={user.id}>
               <tr onClick={() => {
-                let temp = [...detail.filter(t => t !== idx)]
-                if (detail.filter(t => t === idx).length === 0) {
-                  temp.push(idx)
+                let temp = [...detail.filter(t => t !== user.id)]
+                if (detail.filter(t => t === user.id).length === 0) {
+                  temp.push(user.id)
                 }
                 setDetail(temp)
               }}>
@@ -86,9 +123,9 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                 <td>{(user.team || {}).name}</td>
                 <td>{(user.shGroup || {}).SHGroupName}</td>
                 <td>{(user.shType || {}).shTypeName}</td>
-                <td><div className={styles.arrow}>{'Invited'}<span><FontAwesomeIcon icon={detail.includes(idx) ? faAngleDown : faAngleUp} color="#6d6f94" /></span></div></td>
+                <td><div className={styles.arrow}>{getStatus(user).text}<span><FontAwesomeIcon icon={detail.includes(user.id) ? faAngleDown : faAngleRight} color="#6d6f94" /></span></div></td>
               </tr>
-              {detail.includes(idx) && <tr>
+              {detail.includes(user.id) && <tr>
                 <td colSpan={9} style={{ padding: '0px' }}>
                   <UserCard key={`${idx}-${user.id}`} user={user} teamList={teamList} shgroupList={shgroupList} setUserField={setUserField} />
                 </td>
