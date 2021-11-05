@@ -1,13 +1,15 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import { teamList, shgroupList, adminSetUserField } from 'Redux/actions'
-import { faAngleRight, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons'
+import { CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
+import "@syncfusion/ej2-base/styles/material.css";
+import "@syncfusion/ej2-buttons/styles/material.css";
+import { faAngleRight, faAngleDown, faPaperPlane, faArchive } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddButton from 'Components/AddButton'
 import Counter from './Counter'
 import UserCard from './UserCard'
 import styles from './styles.scss'
-import { gray } from 'd3-color';
 
 const UserAdministration = ({ userList, currentProject, loading, getTeamList, getShGroupList, shgroupList, teamList, setUserField }) => {
   const [selected, setSelected] = useState([])
@@ -17,6 +19,14 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
     getTeamList(currentProject.id)
     getShGroupList(currentProject.surveyId)
   }, [currentProject])
+
+  const toggle = (arr, d) => {
+    let temp = [...arr.filter(t => t !== d)]
+    if (arr.filter(t => t === d).length === 0) {
+      temp.push(d)
+    }
+    return temp
+  }
 
   const getStatus = useCallback((user) => {
     if (!user && !user.shGroup) {
@@ -81,7 +91,17 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
         <thead>
           <tr>
             <th>
-              <input type="checkbox" />
+              <CheckBoxComponent
+                checked={list.length === selected.length}
+                indeterminate={list.length !== selected.length && selected.length !== 0}
+                onChange={() => setSelected(() => {
+                  if (selected.length !== list.length) {
+                    return list.map(user => user.id)
+                  } else {
+                    return []
+                  }
+                })}
+              />
             </th>
             <th>
               <div className={styles.arrow}>
@@ -107,14 +127,18 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
           {list.map((user, idx) =>
             <Fragment key={user.id}>
               <tr onClick={() => {
-                let temp = [...detail.filter(t => t !== user.id)]
-                if (detail.filter(t => t === user.id).length === 0) {
-                  temp.push(user.id)
-                }
+                let temp = toggle(detail, user.id)
                 setDetail(temp)
               }}>
                 <td>
-                  <input type="checkbox" />
+                  <CheckBoxComponent
+                    checked={selected.includes(user.id)}
+                    onChange={(e) => {
+                      let temp = toggle(selected, user.id)
+                      console.log(temp)
+                      setSelected(temp)
+                    }}
+                  />
                 </td>
                 <td>{user.user.first_name}</td>
                 <td>{user.user.last_name}</td>
@@ -134,6 +158,26 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
           )}
         </tbody>
       </table> : <h3>No User</h3>}
+      {selected.length > 0 && <div className={styles.toolbar}>
+        <span className={styles.selected}>
+          <CheckBoxComponent
+            checked={list.length === selected.length}
+            indeterminate={list.length !== selected.length && selected.length !== 0}
+            onChange={() => setSelected(() => {
+              if (selected.length !== list.length) {
+                return list.map(user => user.id)
+              } else {
+                return []
+              }
+            })}
+          />
+          {`${selected.length} members selected`}
+        </span>
+        <div className={styles.actions}>
+          <span><FontAwesomeIcon icon={faPaperPlane} className={styles.icon} />Send invite</span>
+          <span><FontAwesomeIcon icon={faArchive} className={styles.icon} />Archive</span>
+        </div>
+      </div>}
     </Fragment>
   )
 }

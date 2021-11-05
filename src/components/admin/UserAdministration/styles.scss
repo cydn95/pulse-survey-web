@@ -109,6 +109,52 @@
   }
 }
 
+.toolbar {
+  display: flex;
+  box-shadow: 0 -4px 32px 0 rgba(0, 0, 0, 0.08);
+  background-color: #fff;
+  padding: 24px 36px;
+  width: calc(100% - 296px);
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  .selected {
+    flex: 2;
+    font-family: Poppins;
+    font-size: 13px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: #273645;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .actions {
+    flex: 3;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    .icon {
+      margin-right: 6.4px;
+    }
+    span {
+      font-family: Poppins;
+      font-size: 14px;
+      font-weight: 500;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #273645;
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .horizontalWrapper {
     .individual {
@@ -117,5 +163,8 @@
     .total {
       width: 100%;
     }
+  }
+  .toolbar {
+    width: 100%;
   }
 }
