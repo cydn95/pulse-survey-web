@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react'
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faTimes, faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Select from 'Components/Select'
 import Input from 'Components/Input'
@@ -103,7 +103,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
         </div>
         <div className="right-part">
           <Tag isActive={isActive}>Self Submited</Tag>
-          <Arrow isActive={isActive}>{`>`}</Arrow>
+          <FontAwesomeIcon icon={isActive ? faAngleUp : faAngleDown} color="#6d6f94" />
         </div>
       </Basic>
       {isActive && <Detailed>
