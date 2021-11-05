@@ -4,7 +4,7 @@ import { teamList, shgroupList, adminSetUserField } from 'Redux/actions'
 import { CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
 import "@syncfusion/ej2-base/styles/material.css";
 import "@syncfusion/ej2-buttons/styles/material.css";
-import { faAngleRight, faAngleDown, faPaperPlane, faArchive } from '@fortawesome/free-solid-svg-icons'
+import { faAngleRight, faAngleDown, faAngleUp, faPaperPlane, faArchive } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddButton from 'Components/AddButton'
 import Counter from './Counter'
@@ -12,13 +12,38 @@ import UserCard from './UserCard'
 import styles from './styles.scss'
 
 const UserAdministration = ({ userList, currentProject, loading, getTeamList, getShGroupList, shgroupList, teamList, setUserField }) => {
+  const [order, setOrder] = useState([0, 0, 0, 0, 0, 0, 0, 0])
+  const [sort, setSort] = useState()
   const [selected, setSelected] = useState([])
   const [detail, setDetail] = useState([])
   const [list, setList] = useState([])
   useEffect(() => {
     getTeamList(currentProject.id)
-    getShGroupList(currentProject.surveyId)
+    getShGroupList(currentProject.id)
   }, [currentProject])
+
+  const valueByField = (user, field) => {
+    switch (field) {
+      case 'firstName':
+        return user.user.first_name
+      case 'lastName':
+        return user.user.last_name
+      case 'projectTitle':
+        return user.projectUserTitle
+      case 'projectOrg':
+        return user.projectOrganization
+      case 'team':
+        return (user.team || {}).name
+      case 'shGroup':
+        return (user.shGroup || {}).SHGroupName
+      case 'shType':
+        return (user.shType || {}).shTypeName
+      case 'status':
+        return getStatus(user).text
+      default:
+        return;
+    }
+  }
 
   const toggle = (arr, d) => {
     let temp = [...arr.filter(t => t !== d)]
@@ -67,6 +92,26 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
   useEffect(() => {
     setList(userList.projectUser ? userList.projectUser : [])
   }, [userList])
+
+  const sortFunc = (field, n, o) => {
+    const temp = [...list]
+    temp.sort((a, b) => valueByField(a, field).toLowerCase() > valueByField(b, field).toLowerCase() ? o : -o)
+    setList(temp)
+  }
+
+  const thClicked = (n, field) => {
+    if (order[n] === 0 || order[n] === -1) {
+      let temp = [0, 0, 0, 0, 0, 0, 0, 0]
+      temp[n] = 1
+      setOrder(temp)
+      sortFunc(field, 0, 1)
+    } else {
+      let temp = [0, 0, 0, 0, 0, 0, 0, 0]
+      temp[n] = -1
+      setOrder(temp)
+      sortFunc(field, 0, -1)
+    }
+  }
   return (
     <Fragment>
       {list.length > 0 && <div className={styles.horizontalWrapper}>
@@ -103,24 +148,68 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                 })}
               />
             </th>
-            <th>
+            <th onClick={() => thClicked(0, 'firstName')}>
               <div className={styles.arrow}>
                 <span>First name</span>
-                <span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span>
+                {order[0] !== 0 && <span><FontAwesomeIcon icon={order[0] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
               </div>
             </th>
-            <th>
+            <th
+              onClick={() => thClicked(1, 'lastName')}
+            >
               <div className={styles.arrow}>
                 <span>Last name</span>
-                <span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span>
+                {order[1] !== 0 && <span><FontAwesomeIcon icon={order[1] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
               </div>
             </th>
-            <th><div className={styles.arrow}><span>Project title</span><span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span></div></th>
-            <th><div className={styles.arrow}><span>Project Org</span><span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span></div></th>
-            <th><div className={styles.arrow}><span>Team</span><span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span></div></th>
-            <th><div className={styles.arrow}><span>SH Group</span><span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span></div></th>
-            <th><div className={styles.arrow}><span>SH Type</span><span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span></div></th>
-            <th><div className={styles.arrow}><span>Status</span><span><FontAwesomeIcon icon={faAngleDown} color="#6d6f94" /></span></div></th>
+            <th
+              onClick={() => thClicked(2, 'projectTitle')}
+            >
+              <div className={styles.arrow}>
+                <span>Project title</span>
+                {order[2] !== 0 && <span><FontAwesomeIcon icon={order[2] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
+              </div>
+            </th>
+            <th
+              onClick={() => thClicked(3, 'projectOrg')}
+            >
+              <div className={styles.arrow}>
+                <span>Project Org</span>
+                {order[3] !== 0 && <span><FontAwesomeIcon icon={order[3] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
+              </div>
+            </th>
+            <th
+              onClick={() => thClicked(4, 'team')}
+            >
+              <div className={styles.arrow}>
+                <span>Team</span>
+                {order[4] !== 0 && <span><FontAwesomeIcon icon={order[4] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
+              </div>
+            </th>
+            <th
+              onClick={() => thClicked(5, 'shGroup')}
+            >
+              <div className={styles.arrow}>
+                <span>SH Group</span>
+                {order[5] !== 0 && <span><FontAwesomeIcon icon={order[5] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
+              </div>
+            </th>
+            <th
+              onClick={() => thClicked(6, 'shType')}
+            >
+              <div className={styles.arrow}>
+                <span>SH Type</span>
+                {order[6] !== 0 && <span><FontAwesomeIcon icon={order[6] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
+              </div>
+            </th>
+            <th
+              onClick={() => thClicked(7, 'status')}
+            >
+              <div className={styles.arrow}>
+                <span>Status</span>
+                {order[7] !== 0 && <span><FontAwesomeIcon icon={order[7] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody>
