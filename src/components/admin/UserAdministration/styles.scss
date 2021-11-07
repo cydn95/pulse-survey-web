@@ -43,6 +43,18 @@
         &:last-child {
           padding-right: 36px;
         }
+        &:nth-child(n+4) div {
+          justify-content: unset;
+          font-family: Montserrat;
+          font-size: 14px;
+          font-weight: 600;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: 1.29;
+          letter-spacing: normal;
+          text-align: left;
+          color: #6d6f94;
+        }
         padding-top: 16px;
         padding-bottom: 16px;
         font-family: Montserrat;
@@ -54,6 +66,7 @@
         letter-spacing: normal;
         text-align: left;
         color: #6d6f94;
+        cursor: pointer;
       }
     }
   }
@@ -151,6 +164,32 @@
       letter-spacing: normal;
       text-align: left;
       color: #273645;
+    }
+  }
+}
+
+.modal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  & > div {
+    flex-basis: calc(50% - 18px);
+    p {
+      margin-top: 0px;
+      font-family: Montserrat;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .input {
+      background-color: #eff0f6;
+      padding: 4px 10px 2px;
+      border-radius: 5px;
+      input {
+        font-family: Montserrat;
+        font-size: 12px;
+        font-weight: bold;
+        color: #6d6f94;
+      }
     }
   }
 }

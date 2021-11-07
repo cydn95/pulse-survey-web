@@ -17,7 +17,7 @@ const Item = ({ item, index, current }) =>
         ref={provided.innerRef}
       >
         <span className={styles.text}>
-          {item.driverName || item.SHCategoryName}
+          {item.driverName || item.SHCategoryName || item.questionText}
         </span>
         <span><img src={Reorder} alt="reorder" /></span>
       </div>

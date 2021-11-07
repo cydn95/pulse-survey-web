@@ -81,9 +81,15 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
     getShGroupList(currentProject.surveyId);
   }, [currentProject.surveyId])
 
-  useMemo(() => {
-    if (Object.keys(currentProject).length && questions.length > 0) {
-      questions.map(question => {
+  useEffect(() => {
+    let tempQuestion
+    if (filter === 'About Me') {
+      tempQuestion = (amQuestionList.filter(q => q.driver))
+    } else {
+      tempQuestion = (aoQuestionList.filter(q => q.driver))
+    }
+    if (Object.keys(currentProject).length && tempQuestion.length > 0) {
+      tempQuestion.map(question => {
         if (question.driver) {
           if (!temp.includes(question.driver.driverName)) {
             temp.push(question.driver.driverName)
@@ -93,14 +99,7 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
     }
     setDrivers(temp)
     setCurrentDriver(temp[0])
-  }, [questions])
-
-  useEffect(() => {
-    if (filter === 'About Me') {
-      setQuestions(amQuestionList)
-    } else {
-      setQuestions(aoQuestionList)
-    }
+    setQuestions(tempQuestion)
   }, [amQuestionList, aoQuestionList, filter])
   return (
     <Fragment>
@@ -160,7 +159,7 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
               </div>
             </DetailModal>
           </ModalWrapper>}
-          {reorderModal && <ReorderModal onClose={() => setReorderModal(false)} items={questions.filter(q => q.driver === currentDriver)} setItems={(data) => { let temp = questions.filter(q => q.driver !== currentDriver); setQuestions([...temp, ...data]) }} />}
+          {reorderModal && <ReorderModal onClose={() => setReorderModal(false)} items={questions.filter(q => q.driver && q.driver.driverName === currentDriver)} setItems={(data) => { let temp = questions.filter(q => !q.driver || (q.driver && q.driver.driverName !== currentDriver)); setQuestions([...temp, ...data]) }} />}
         </Fragment>}
     </Fragment>
   )
