@@ -377,7 +377,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
               </tr>}
             </Fragment>
           )}
-        </tbody> : <h3 style={{ padding: '16px 24px' }}>No User</h3>}
+        </tbody> : <tr><td colSpan={9}><h3 style={{ padding: '16px 24px' }}>No User</h3></td></tr>}
       </table> : <h3>No User</h3>}
       {selected.length > 0 && <div className={styles.toolbar}>
         <span className={styles.selected}>
