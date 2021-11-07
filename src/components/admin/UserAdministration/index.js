@@ -170,7 +170,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
     </div>
   return (
     <Fragment>
-      {list.length > 0 && <div className={styles.horizontalWrapper}>
+      {(userList.projectUser ? userList.projectUser : []).length > 0 && <div className={styles.horizontalWrapper}>
         <div className={styles.individual}>
           <Counter count={userList.identifiedTeamMemberCnt} description="Identified Team Members" />
           <Counter count={userList.identifiedStakeholderCnt} description="Identified Stakeholder" />
@@ -197,12 +197,12 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
           content={modalContent}
         />
       </div>
-      {list.length !== 0 ? <table style={{ textAlign: 'left' }} className={styles.dataTable}>
+      {(userList.projectUser ? userList.projectUser : []).length !== 0 ? <table style={{ textAlign: 'left' }} className={styles.dataTable}>
         <thead>
           <tr>
             <th>
               <CheckBoxComponent
-                checked={list.length === selected.length}
+                checked={(userList.projectUser ? userList.projectUser : []).length === selected.length}
                 indeterminate={list.length !== selected.length && selected.length !== 0}
                 onChange={() => setSelected(() => {
                   if (selected.length !== list.length) {
@@ -344,7 +344,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
             </th>
           </tr>
         </thead>
-        <tbody>
+        {list.length > 0 ? <tbody>
           {list.map((user, idx) =>
             <Fragment key={user.id}>
               <tr onClick={() => {
@@ -377,7 +377,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
               </tr>}
             </Fragment>
           )}
-        </tbody>
+        </tbody> : <h3 style={{ padding: '16px 24px' }}>No User</h3>}
       </table> : <h3>No User</h3>}
       {selected.length > 0 && <div className={styles.toolbar}>
         <span className={styles.selected}>
