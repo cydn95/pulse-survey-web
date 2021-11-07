@@ -7,13 +7,16 @@ import "@syncfusion/ej2-buttons/styles/material.css";
 import { faAngleRight, faAngleDown, faAngleUp, faPaperPlane, faArchive } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddButton from 'Components/AddButton'
+import Input from 'Components/Input'
+import Select from 'Components/Select'
 import Counter from './Counter'
 import UserCard from './UserCard'
 import styles from './styles.scss'
 
 const UserAdministration = ({ userList, currentProject, loading, getTeamList, getShGroupList, shgroupList, teamList, setUserField }) => {
-  const [order, setOrder] = useState([0, 0, 0, 0, 0, 0, 0, 0])
-  const [sort, setSort] = useState()
+  const [order, setOrder] = useState([0, 0])
+  const [filter, setFilter] = useState(['', '', '', '', '', ''])
+  const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState([])
   const [detail, setDetail] = useState([])
   const [list, setList] = useState([])
@@ -90,8 +93,16 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
   }, [userList])
 
   useEffect(() => {
-    setList(userList.projectUser ? userList.projectUser : [])
-  }, [userList])
+    let temp = (userList.projectUser ? userList.projectUser : []).filter(
+      user => (filter[0] === '' || valueByField(user, 'projectTitle') === filter[0])
+        && (filter[1] === '' || valueByField(user, 'projectOrg') === filter[1])
+        && (filter[2] === '' || valueByField(user, 'team') === filter[2])
+        && (filter[3] === '' || valueByField(user, 'shGroup') === filter[3])
+        && (filter[4] === '' || valueByField(user, 'shType') === filter[4])
+        && (filter[5] === '' || valueByField(user, 'status') === filter[5])
+    )
+    setList(temp)
+  }, [userList, filter])
 
   const sortFunc = (field, n, o) => {
     const temp = [...list]
@@ -112,9 +123,54 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
       sortFunc(field, 0, -1)
     }
   }
+
+  const modalContent = () =>
+    <div className={styles.modal}>
+      <div>
+        <p>First Name</p>
+        <Input className={styles.input} />
+      </div>
+      <div>
+        <p>Last Name</p>
+        <Input className={styles.input} />
+      </div>
+      <div>
+        <p>Email</p>
+        <Input className={styles.input} />
+      </div>
+      <div>
+        <p>User Org</p>
+        <Input className={styles.input} />
+      </div>
+      <div>
+        <p>Project Org</p>
+        <Input className={styles.input} />
+      </div>
+      <div>
+        <p>Job Title</p>
+        <Input className={styles.input} />
+      </div>
+      <div>
+        <p>Role Description</p>
+        <Input className={styles.input} />
+      </div>
+      <div>
+        <p>Team</p>
+        <Select className={styles.input} />
+      </div>
+      <div>
+        <p>SH Type</p>
+        <Select className={styles.input} />
+      </div>
+      <div>
+        <p>SH Group</p>
+        <Select className={styles.input} />
+      </div>
+      <CheckBoxComponent checked={false} label="Send Invite" />
+    </div>
   return (
     <Fragment>
-      {list.length > 0 && <div className={styles.horizontalWrapper}>
+      {(userList.projectUser ? userList.projectUser : []).length > 0 && <div className={styles.horizontalWrapper}>
         <div className={styles.individual}>
           <Counter count={userList.identifiedTeamMemberCnt} description="Identified Team Members" />
           <Counter count={userList.identifiedStakeholderCnt} description="Identified Stakeholder" />
@@ -130,14 +186,23 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
       </div>}
       <div className={styles.header}>
         <h3>Member list</h3>
-        <AddButton text="member" outlined={true} className={styles.alignRight} />
+        <AddButton
+          text="member"
+          outlined={true}
+          className={styles.alignRight}
+          open={open}
+          setOpen={() => setOpen(true)}
+          setClose={() => setOpen(false)}
+          handleAdd={() => console.log('new user added')}
+          content={modalContent}
+        />
       </div>
-      {list.length !== 0 ? <table style={{ textAlign: 'left' }} className={styles.dataTable}>
+      {(userList.projectUser ? userList.projectUser : []).length !== 0 ? <table style={{ textAlign: 'left' }} className={styles.dataTable}>
         <thead>
           <tr>
             <th>
               <CheckBoxComponent
-                checked={list.length === selected.length}
+                checked={(userList.projectUser ? userList.projectUser : []).length === selected.length}
                 indeterminate={list.length !== selected.length && selected.length !== 0}
                 onChange={() => setSelected(() => {
                   if (selected.length !== list.length) {
@@ -162,57 +227,124 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                 {order[1] !== 0 && <span><FontAwesomeIcon icon={order[1] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
               </div>
             </th>
-            <th
-              onClick={() => thClicked(2, 'projectTitle')}
-            >
-              <div className={styles.arrow}>
-                <span>Project title</span>
-                {order[2] !== 0 && <span><FontAwesomeIcon icon={order[2] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
-              </div>
+            <th>
+              <Select selected={filter[0]}
+                noSelected="Project title"
+                setSelected={(item) => {
+                  let temp = [...filter]
+                  temp[0] = item
+                  setFilter(temp)
+                }}
+                items={(() => {
+                  let temp = [];
+                  (userList.projectUser ? userList.projectUser : []).map(user => {
+                    if (valueByField(user, 'projectTitle') && !temp.includes(valueByField(user, 'projectTitle'))) {
+                      temp.push(valueByField(user, 'projectTitle'))
+                    }
+                  })
+                  return temp
+                })()}
+              />
             </th>
-            <th
-              onClick={() => thClicked(3, 'projectOrg')}
-            >
-              <div className={styles.arrow}>
-                <span>Project Org</span>
-                {order[3] !== 0 && <span><FontAwesomeIcon icon={order[3] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
-              </div>
+            <th>
+              <Select selected={filter[1]}
+                noSelected="Project Org"
+                setSelected={(item) => {
+                  let temp = [...filter]
+                  temp[1] = item
+                  setFilter(temp)
+                }}
+                items={(() => {
+                  let temp = [];
+                  (userList.projectUser ? userList.projectUser : []).map(user => {
+                    if (valueByField(user, 'projectOrg') && !temp.includes(valueByField(user, 'projectOrg'))) {
+                      temp.push(valueByField(user, 'projectOrg'))
+                    }
+                  })
+                  return temp
+                })()}
+              />
             </th>
-            <th
-              onClick={() => thClicked(4, 'team')}
-            >
-              <div className={styles.arrow}>
-                <span>Team</span>
-                {order[4] !== 0 && <span><FontAwesomeIcon icon={order[4] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
-              </div>
+            <th>
+              <Select selected={filter[2]}
+                noSelected="Team"
+                setSelected={(item) => {
+                  let temp = [...filter]
+                  temp[2] = item
+                  setFilter(temp)
+                }}
+                items={(() => {
+                  let temp = [];
+                  (userList.projectUser ? userList.projectUser : []).map(user => {
+                    if (valueByField(user, 'team') && !temp.includes(valueByField(user, 'team'))) {
+                      temp.push(valueByField(user, 'team'))
+                    }
+                  })
+                  return temp
+                })()}
+              />
             </th>
-            <th
-              onClick={() => thClicked(5, 'shGroup')}
-            >
-              <div className={styles.arrow}>
-                <span>SH Group</span>
-                {order[5] !== 0 && <span><FontAwesomeIcon icon={order[5] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
-              </div>
+            <th>
+              <Select selected={filter[3]}
+                noSelected="SH Group"
+                setSelected={(item) => {
+                  let temp = [...filter]
+                  temp[3] = item
+                  setFilter(temp)
+                }}
+                items={(() => {
+                  let temp = [];
+                  (userList.projectUser ? userList.projectUser : []).map(user => {
+                    if (valueByField(user, 'shGroup') && !temp.includes(valueByField(user, 'shGroup'))) {
+                      temp.push(valueByField(user, 'shGroup'))
+                    }
+                  })
+                  return temp
+                })()}
+              />
             </th>
-            <th
-              onClick={() => thClicked(6, 'shType')}
-            >
-              <div className={styles.arrow}>
-                <span>SH Type</span>
-                {order[6] !== 0 && <span><FontAwesomeIcon icon={order[6] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
-              </div>
+            <th>
+              <Select selected={filter[4]}
+                noSelected="SH Type"
+                setSelected={(item) => {
+                  let temp = [...filter]
+                  temp[4] = item
+                  setFilter(temp)
+                }}
+                items={(() => {
+                  let temp = [];
+                  (userList.projectUser ? userList.projectUser : []).map(user => {
+                    if (valueByField(user, 'shType') && !temp.includes(valueByField(user, 'shType'))) {
+                      temp.push(valueByField(user, 'shType'))
+                    }
+                  })
+                  console.log('tem', temp)
+                  return temp
+                })()}
+              />
             </th>
-            <th
-              onClick={() => thClicked(7, 'status')}
-            >
-              <div className={styles.arrow}>
-                <span>Status</span>
-                {order[7] !== 0 && <span><FontAwesomeIcon icon={order[7] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
-              </div>
+            <th>
+              <Select selected={filter[5]}
+                noSelected="Status"
+                setSelected={(item) => {
+                  let temp = [...filter]
+                  temp[5] = item
+                  setFilter(temp)
+                }}
+                items={(() => {
+                  let temp = [];
+                  (userList.projectUser ? userList.projectUser : []).map(user => {
+                    if (valueByField(user, 'status') && !temp.includes(valueByField(user, 'status'))) {
+                      temp.push(valueByField(user, 'status'))
+                    }
+                  })
+                  return temp
+                })()}
+              />
             </th>
           </tr>
         </thead>
-        <tbody>
+        {list.length > 0 ? <tbody>
           {list.map((user, idx) =>
             <Fragment key={user.id}>
               <tr onClick={() => {
@@ -245,7 +377,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
               </tr>}
             </Fragment>
           )}
-        </tbody>
+        </tbody> : <tr><td colSpan={9}><h3 style={{ padding: '16px 24px' }}>No User</h3></td></tr>}
       </table> : <h3>No User</h3>}
       {selected.length > 0 && <div className={styles.toolbar}>
         <span className={styles.selected}>
