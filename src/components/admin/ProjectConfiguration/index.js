@@ -62,7 +62,7 @@ const ProjectConfiguration = ({
                 <img src={Help} alt="help" />
               </TooltipComponent>
             </div>
-            <Input type="number" className={styles.threshold} value={project.threshold} />
+            <Input type="number" className={styles.threshold} value={currentProject.anonymityThreshold} />
           </div>
         </div>
         <div className={styles.detailed}>
