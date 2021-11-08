@@ -43,7 +43,7 @@ function DriverPanel(props) {
     setLeftArrowVisible(root.current.scrollLeft > 0);
     setRightArrowVisible(
       container.current.clientWidth - root.current.scrollLeft >
-        root.current.clientWidth
+      root.current.clientWidth
     );
   };
 

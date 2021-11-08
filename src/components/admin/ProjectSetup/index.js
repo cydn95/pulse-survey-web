@@ -13,9 +13,8 @@ import {
 import FileUpload from 'Components/FileUpload'
 import Button from 'Components/Button'
 import AddButton from 'Components/AddButton'
-import Select from 'Components/Select'
 import Input from 'Components/Input'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faTimes, faAsterisk } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import '@syncfusion/ej2-base/styles/material.css';
 import '@syncfusion/ej2-icons/styles/material.css';
@@ -66,7 +65,7 @@ const ProjectSetup = ({
     <Fragment>
       <div className={styles.basicData}>
         <div className={styles.name}>
-          <p className={styles.projectName}>Project Name</p>
+          <p className={styles.projectName}>Project Name <FontAwesomeIcon style={{ fontSize: '7px' }} fixedWidth icon={faAsterisk} color="#e30000" size="xs" /></p>
           <Input type="text" value={currentProject.surveyTitle} onChange={(value, e) => setProjectField('surveyTitle', value)} className={styles.input} />
           {currentProject.code && <p className={styles.projectCode}>Project Code:<span>{` ${currentProject.code}`}</span></p>}
         </div>

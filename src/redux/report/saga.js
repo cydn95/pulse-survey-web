@@ -586,6 +586,8 @@ function* getEngagementTrend({ payload }) {
         return 0;
       })
 
+      console.log('participation', participationData)
+
       shGroupList.forEach((sg) => {
         engagementRet[driverName].push({
           value: sg.SHGroupName,

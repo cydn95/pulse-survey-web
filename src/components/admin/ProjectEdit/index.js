@@ -23,10 +23,12 @@ const ProjectEdit = ({
   currentProject,
 }) => {
   useEffect(() => {
-    getUserList(surveyId)
-    getAOQuestionList(surveyId)
-    getAMQuestionList(surveyId)
-    console.log("surveyId", surveyId)
+    if (surveyId) {
+      getUserList(surveyId)
+      getAOQuestionList(surveyId)
+      getAMQuestionList(surveyId)
+      console.log("surveyId", surveyId)
+    }
   }, [surveyId])
 
   return (
