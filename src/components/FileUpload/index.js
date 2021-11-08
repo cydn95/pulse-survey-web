@@ -33,7 +33,7 @@ const FileUpload = ({
   ...otherProps
 }) => {
   let data = {}
-  if (otherProps.data !== undefined) {
+  if (otherProps.data) {
     data[otherProps.data.name] = otherProps.data
   }
   const fileInputField = useRef(null);

@@ -4,6 +4,7 @@ import {
   adminUserList,
   adminAOQuestionList,
   adminAMQuestionList,
+  adminSurveySetup,
 } from 'Redux/actions'
 import ProjectSetup from '../ProjectSetup'
 import UserAdministration from '../UserAdministration'
@@ -20,6 +21,7 @@ const ProjectEdit = ({
   surveyId,
   getAOQuestionList,
   getAMQuestionList,
+  getAdminSurveySetup,
   currentProject,
 }) => {
   useEffect(() => {
@@ -27,6 +29,7 @@ const ProjectEdit = ({
       getUserList(surveyId)
       getAOQuestionList(surveyId)
       getAMQuestionList(surveyId)
+      getAdminSurveySetup(surveyId)
       console.log("surveyId", surveyId)
     }
   }, [surveyId])
@@ -57,4 +60,5 @@ export default connect(mapStateToProps, {
   getUserList: adminUserList,
   getAOQuestionList: adminAOQuestionList,
   getAMQuestionList: adminAMQuestionList,
+  getAdminSurveySetup: adminSurveySetup,
 })(ProjectEdit);

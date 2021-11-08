@@ -6,6 +6,7 @@ import {
   ADMIN_ACTIVE_PROJECT_REQUEST,
   ADMIN_AM_QUESTION_LIST,
   ADMIN_AO_QUESTION_LIST,
+  ADMIN_SURVEY_SETUP,
 } from 'Constants/actionTypes'
 import {
   adminUserListSuccess,
@@ -13,6 +14,7 @@ import {
   adminUserListFailure,
   adminAMQuestionListSuccess,
   adminAOQuestionListSuccess,
+  adminSurveySetupSuccess,
 } from './actions'
 import {
   adminUserListAPI,
@@ -21,6 +23,7 @@ import {
   putAdminProjectListAPI,
   adminAOQuestionListAPI,
   adminAMQuestionListAPI,
+  adminSurveySetupAPI,
 } from '../../services/axios/api'
 
 const getAdminUserListAsync = async (surveyId) =>
@@ -47,6 +50,10 @@ const getAdminAOQuestionListAsync = async (surveyId) =>
     .then(data => data)
 const getAdminAMQuestionListAsync = async (surveyId) =>
   await adminAMQuestionListAPI(surveyId)
+    .then(data => data)
+
+const getAdminSurveySetupAsync = async (surveyId) =>
+  await adminSurveySetupAPI(surveyId)
     .then(data => data)
 
 function* getAdminUserList({ payload }) {
@@ -122,6 +129,19 @@ function* adminAOQuestionList({ payload }) {
   }
 }
 
+function* adminSurveySetup({ payload }) {
+  try {
+    const { surveyId } = payload
+    const result = yield call(getAdminSurveySetupAsync, surveyId)
+    console.log('result', result)
+    if (result.status === 200) {
+      yield put(adminSurveySetupSuccess(result.data))
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export function* watchAdminUserList() {
   yield takeEvery(ADMIN_USER_LIST, getAdminUserList)
 }
@@ -146,6 +166,10 @@ export function* watchAdminAOQuestionList() {
   yield takeEvery(ADMIN_AO_QUESTION_LIST, adminAOQuestionList)
 }
 
+export function* watchAdminSurveySetup() {
+  yield takeEvery(ADMIN_SURVEY_SETUP, adminSurveySetup)
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchAdminUserList),
@@ -154,5 +178,6 @@ export default function* rootSaga() {
     fork(watchAdminSetActive),
     fork(watchAdminAMQuestionList),
     fork(watchAdminAOQuestionList),
+    fork(watchAdminSurveySetup),
   ]);
 }

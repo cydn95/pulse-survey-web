@@ -115,15 +115,15 @@ const ProjectSetup = ({
         <div className={styles.left}>
           <h3>More Info</h3>
           <p>Provide additional context, links or web pages as required.</p>
-          {currentProject.templates && currentProject.templates.length > 0 && (currentProject.templates.map((t, index) => <div className={styles.page} key={`${currentProject.code}-${index}`}>
-            <a className={index === crrPage ? styles.underline : ''} onClick={(e) => { e.preventDefault(); setCrrPage(index); setShow(true); }}>{t.title}</a>
+          {currentProject.moreInfo && currentProject.moreInfo.length > 0 && (currentProject.moreInfo.map((t, index) => <div className={styles.page} key={`${currentProject.code}-${index}`}>
+            <a className={index === crrPage ? styles.underline : ''} onClick={(e) => { e.preventDefault(); setCrrPage(index); setShow(true); }}>{t.pageName}</a>
             <span onClick={() => {
-              let temp = [...currentProject.templates];
+              let temp = [...currentProject.moreInfo];
               temp.splice(index, 1)
               if (index <= crrPage) {
                 setCrrPage(crrPage - 1)
               }
-              setProjectField('templates', temp)
+              setProjectField('moreInfo', temp)
             }}><FontAwesomeIcon icon={faTimes} /></span>
           </div>))}
           <AddButton
@@ -133,35 +133,35 @@ const ProjectSetup = ({
             setOpen={() => setOpen(true)}
             setClose={() => { setOpen(false); setError(''); setPageHeader('') }}
             handleAdd={() => {
-              if ((currentProject.templates || []).filter(t => t.title === pageHeader).length > 0) {
+              if ((currentProject.moreInfo || []).filter(t => t.pageName === pageHeader).length > 0) {
                 setError('Already exist')
               } else {
-                setProjectField('templates',
-                  [...(currentProject.templates || []), { title: pageHeader, content: '<p>Please type here</p>' }])
+                setProjectField('moreInfo',
+                  [...(currentProject.moreInfo || []), { pageName: pageHeader, pageContent: '<p>Please type here</p>' }])
                 setPageHeader('')
                 setError('')
                 setOpen(false)
-                setCrrPage((currentProject.templates || []).length)
+                setCrrPage((currentProject.moreInfo || []).length)
               }
             }} />
         </div>
         <div className={styles.richText}>
-          {currentProject.templates && currentProject.templates.length > 0 && <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={currentProject.templates[crrPage].content} saveInterval={0} change={(e) => {
-            let temp = [...currentProject.templates]
-            temp[crrPage].content = e.value
-            setProjectField('templates', temp)
+          {currentProject.moreInfo && currentProject.moreInfo.length > 0 && <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={currentProject.moreInfo[crrPage].pageContent} saveInterval={0} change={(e) => {
+            let temp = [...currentProject.moreInfo]
+            temp[crrPage].pageContent = e.value
+            setProjectField('moreInfo', temp)
           }}>
             <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
           </RichTextEditorComponent>}
         </div>
       </div>
-      {currentProject.templates && currentProject.templates.length > 0 && show && <div className={styles.richTextMobile}>
-        <h2 className={styles.header}>About the project</h2>
-        <span className={styles.brandcrumb}>{`Projects > Edit Project > ${currentProject.templates[crrPage].title}`}</span>
-        <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={currentProject.templates[crrPage].content} saveInterval={0} change={(e) => {
-          let temp = [...currentProject.templates]
-          temp[crrPage].content = e.value
-          setProjectField('templates', temp)
+      {currentProject.moreInfo && currentProject.moreInfo.length > 0 && show && <div className={styles.richTextMobile}>
+        <h2 className={styles.header}>{currentProject.moreInfo[crrPage].pageName}</h2>
+        <span className={styles.brandcrumb}>{`Projects > Edit Project > ${currentProject.moreInfo[crrPage].pageName}`}</span>
+        <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={currentProject.moreInfo[crrPage].pageContent} saveInterval={0} change={(e) => {
+          let temp = [...currentProject.moreInfo]
+          temp[crrPage].pageContent = e.value
+          setProjectField('moreInfo', temp)
         }}>
           <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
         </RichTextEditorComponent>

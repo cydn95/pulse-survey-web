@@ -585,6 +585,10 @@ const postAdminUserListAPI = (data) => {
   return getClient(true).post("/adminuserbysurvey/", data);
 };
 
+const adminSurveySetupAPI = (surveyId) => {
+  return getClient(true).get(`/adminsurveysetup/?survey=${surveyId}`);
+}
+
 const getKeyDataFromLambda = () => {
   return getLambdaClient().get(
     "https://gft6ixgrq7.execute-api.us-east-2.amazonaws.com/default/PulseLambda-NeptuneLambdaFunction-QI9VKCO1VXK1"
@@ -647,4 +651,5 @@ export {
   putAdminProjectListAPI,
   adminAOQuestionListAPI,
   adminAMQuestionListAPI,
+  adminSurveySetupAPI,
 };
