@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import UploadImage from '../../assets/img/admin/image_upload.png'
 import UploadVideo from '../../assets/img/admin/video_upload.png'
 import {
@@ -32,12 +32,46 @@ const FileUpload = ({
   maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES,
   ...otherProps
 }) => {
-  let data = {}
-  if (otherProps.data) {
-    data[otherProps.data.name] = otherProps.data
+
+  const getUrlExtension = (url) => {
+    return url
+      .split(/[#?]/)[0]
+      .split(".")
+      .pop()
+      .trim();
   }
+
+  const onImageEdit = async (imgUrl) => {
+    var imgExt = getUrlExtension(imgUrl);
+
+    const response = await fetch(imgUrl);
+    const blob = await response.blob();
+    const file = new File([blob], "Logo" + imgExt, {
+      type: blob.type,
+    });
+    return file;
+  }
+  useEffect(() => {
+    let data = {};
+    (async () => {
+      if (otherProps.data) {
+        if (typeof otherProps.data === 'string') {
+          console.log('new', otherProps.data)
+          let temp = await onImageEdit(otherProps.data)
+          data[temp.name] = temp
+          setFiles(data)
+        } else {
+          data[otherProps.data.name] = otherProps.data
+          setFiles(data)
+        }
+      }
+    })()
+    return () => {
+      console.log('data', data)
+    }
+  }, [otherProps.data])
   const fileInputField = useRef(null);
-  const [files, setFiles] = useState(data);
+  const [files, setFiles] = useState({});
 
   const handleUploadBtnClick = () => {
     fileInputField.current.click();
@@ -70,7 +104,6 @@ const FileUpload = ({
   };
 
   const removeFile = (fileName) => {
-    console.log('file', fileName)
     delete files[fileName];
     setFiles({ ...files });
     callUpdateFilesCb({ ...files });
@@ -78,7 +111,7 @@ const FileUpload = ({
 
   return (
     <React.Fragment>
-      {Object.keys(files).length === 0 ? <FileUploadContainer accept={otherProps.accept}>
+      {(Object.keys(files).length === 0 && typeof files !== 'string') ? <FileUploadContainer accept={otherProps.accept}>
         {otherProps.description && <Description>{otherProps.description}</Description>}
         <NoImage src={otherProps.accept === 'image' ? UploadImage : UploadVideo} alt="upload" />
         <DragDropText>{label}</DragDropText>
