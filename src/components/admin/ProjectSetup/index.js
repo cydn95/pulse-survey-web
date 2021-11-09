@@ -72,7 +72,7 @@ const ProjectSetup = ({
         <div className={styles.projectManager}>
           <p className={styles.projectName}>Project Manager</p>
           {/* <Select selected={currentProject.manager} setSelected={(item) => setProjectField('manager', item)} items={managers} className={styles.withOutline} /> */}
-          <Input value={currentProject.manager} onChange={(e, value) => setProjectField('manager', value)} className={styles.input} />
+          <Input value={currentProject.projectManager} onChange={(e, value) => setProjectField('projectManager', value)} className={styles.input} />
         </div>
         <div className={styles.logos}>
           <FileUpload
@@ -92,13 +92,24 @@ const ProjectSetup = ({
         </div>
       </div>
       <div className={styles.welcome}>
-        <p className={styles.header}>Tour: PM Welcome Message</p>
+        <p className={styles.header}>Tour: {((currentProject.tour || [])[0] || {}).tabName}</p>
         <div className={styles.content}>
           <div className={styles.message}>
             <p>Title</p>
-            <Input type="text" value={title} onChange={(value, e) => setTitle(value)} className={styles.input} />
+            <Input type="text" value={((currentProject.tour || [])[0] || {}).pageName} onChange={(value, e) => {
+              let temp = [...currentProject.tour];
+              ((temp.tour || [])[0] || {}).pageName = value
+              setProjectField('tour', temp)
+            }} className={styles.input} />
             <p>Short text</p>
-            <textarea type="text" value={shortText} rows={7} cols={60} onChange={(e) => setShortText(e.target.value)} className={styles.input}></textarea>
+            {<RichTextEditorComponent iframeSettings={{ enable: true }} height={150} toolbarSettings={toolbarSettings} valueTemplate={((currentProject.tour || [])[0] || {}).pageContent} saveInterval={0} change={(e) => {
+              let temp = [...currentProject.tour];
+              ((temp.tour || [])[0] || {}).pageContent = e.value
+              setProjectField('tour', temp)
+            }}>
+              <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
+            </RichTextEditorComponent>}
+            {/* <textarea type="text" value={shortText} rows={7} cols={60} onChange={(e) => setShortText(e.target.value)} className={styles.input}></textarea> */}
           </div>
           <FileUpload
             label="Upload Video"
