@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import classnames from 'classnames'
-import { surveyListByProject, driverList, shCategoryList } from 'Redux/actions';
+import { surveyListByProject, driverList, shCategoryList, teamList } from 'Redux/actions';
 import Input from 'Components/Input'
 import Select from 'Components/Select'
 import AddButton from 'Components/AddButton'
 import Button from 'Components/Button'
+import { adminSetProjectField } from 'Redux/admin/actions';
 import OrderComponent from './OrderComponent'
 import ReorderModal from './ReorderModal'
 import styles from './styles.scss'
@@ -23,8 +24,10 @@ const ProjectConfiguration = ({
   shCategoryList,
   getShCategoryList,
   projectMapShCategoryList,
+  setProjectField,
+  getTeamList,
+  teamList
 }) => {
-  const [project, setProject] = useState({})
   const [shgroup, setSHGroup] = useState('')
   const [driverReorder, setDriverReorder] = useState(false)
   const [myMapReorder, setMyMapReorder] = useState(false)
@@ -32,11 +35,13 @@ const ProjectConfiguration = ({
   const [drivers, setDrivers] = useState(driverList)
   const [myMap, setMyMap] = useState([])
   const [projectMap, setProjectMap] = useState([])
-  const [projectTeams, setProjectTeams] = useState(['Management', 'Engineering'])
 
   useEffect(() => {
     getDriverList(surveyId)
     getShCategoryList(surveyId, 0)
+    if (currentProject.project) {
+      getTeamList(currentProject.project, surveyId)
+    }
   }, [surveyId])
 
   useEffect(() => {
@@ -74,13 +79,21 @@ const ProjectConfiguration = ({
               selected={shgroup}
               noSelected="Choose Group"
               setSelected={setSHGroup}
-              items={[]}
+              items={(() => currentProject.shGroup.map(sh => sh.SHGroupName))()}
               className={styles.withOutline}
             />
-            <div className={styles.completion}>
+            {currentProject.shGroup.filter(sh => sh.SHGroupName === shgroup).length > 0 && <div className={styles.completion}>
               <span className={styles.text}>Completion Threshold(%)</span>
-              <Input className={styles.completion_input} />
-            </div>
+              <Input
+                className={styles.completion_input}
+                value={(currentProject.shGroup.filter(sh => sh.SHGroupName === shgroup)[0] || {}).responsePercent || 0}
+                onChange={(value, e) => {
+                  let temp = [...currentProject.shGroup]
+                  temp.filter(sh => sh.SHGroupName === shgroup)[0].responsePercent = value
+                  setProjectField('shGroup', temp)
+                }}
+              />
+            </div>}
             <AddButton />
           </div>
           <div className={styles.column}>
@@ -88,16 +101,23 @@ const ProjectConfiguration = ({
             <span className={styles.description}>Define the teams that will be used to
               categorise user responses. Users in different
               organisations can be in the same team.</span>
-            {projectTeams.map((pt, idx) =>
+            {currentProject.projectTeam.map((pt, idx) =>
               <Select
                 key={`${idx}-select`}
                 keyValue={`${idx}-select`}
-                selected={pt}
+                selected={pt.name}
                 noSelected="Choose Group"
-                setSelected={setSHGroup}
-                items={['Management', 'Engineering']}
+                setSelected={(value) => {
+                  let temp = [...currentProject]
+                  temp[idx] = teamList.filter(team => team.name === value)[0]
+                  setProjectField('projectTeam', temp)
+                }}
+                items={(teamList || []).filter(team => !currentProject.projectTeam.map(pt => pt.name).includes(team.name)).map(team => team.name)}
                 className={styles.withOutline}
-                onClose={() => console.log('close')}
+                onClose={() => {
+                  let temp = currentProject.projectTeam.filter(p => p !== pt)
+                  setProjectField('projectTeam', temp)
+                }}
               />
             )}
             <AddButton />
@@ -105,8 +125,19 @@ const ProjectConfiguration = ({
           <div className={styles.column}>
             <span className={styles.header}>Custom Groups</span>
             <span className={styles.description}>Create up to three custom groups</span>
-            <Input type="text" className={styles.customGroup} onClickClose={() => console.log('close')} />
-            <AddButton />
+            {Object.keys(currentProject).filter(key => key.includes('customGroup')).map((key, idx) =>
+              currentProject[key] && <Input
+                type="text"
+                className={styles.customGroup}
+                value={currentProject[key]}
+                onChange={(value, e) => {
+                  setProjectField(`customGroup${idx + 1}`, value)
+                }}
+                onClickClose={() => {
+                  setProjectField(`customGroup${idx + 1}`, '')
+                }} />
+            )}
+            {Object.keys(currentProject).filter(key => key.includes('customGroup')).length > 2 && <AddButton />}
           </div>
         </div>
       </div>
@@ -152,7 +183,7 @@ const ProjectConfiguration = ({
 const mapStateToProps = ({ admin, settings, common }) => {
   const { currentProject, surveyId } = admin
   const { surveyList } = settings;
-  const { driverList, shCategoryList, projectMapShCategoryList } = common
+  const { driverList, shCategoryList, projectMapShCategoryList, teamList } = common
   return {
     currentProject,
     surveyList,
@@ -160,6 +191,7 @@ const mapStateToProps = ({ admin, settings, common }) => {
     surveyId,
     shCategoryList,
     projectMapShCategoryList,
+    teamList,
   }
 }
 
@@ -167,4 +199,6 @@ export default connect(mapStateToProps, {
   getSurveyList: surveyListByProject,
   getDriverList: driverList,
   getShCategoryList: shCategoryList,
+  setProjectField: adminSetProjectField,
+  getTeamList: teamList
 })(ProjectConfiguration)

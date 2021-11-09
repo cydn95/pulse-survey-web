@@ -7,6 +7,7 @@ import {
   ADMIN_AM_QUESTION_LIST,
   ADMIN_AO_QUESTION_LIST,
   ADMIN_SURVEY_SETUP,
+  ADMIN_SURVEY_CONFIGURATION,
 } from 'Constants/actionTypes'
 import {
   adminUserListSuccess,
@@ -15,6 +16,7 @@ import {
   adminAMQuestionListSuccess,
   adminAOQuestionListSuccess,
   adminSurveySetupSuccess,
+  adminSUrveyConfigurationSuccess,
 } from './actions'
 import {
   adminUserListAPI,
@@ -24,6 +26,7 @@ import {
   adminAOQuestionListAPI,
   adminAMQuestionListAPI,
   adminSurveySetupAPI,
+  adminSurveyConfigurationAPI,
 } from '../../services/axios/api'
 
 const getAdminUserListAsync = async (surveyId) =>
@@ -54,6 +57,10 @@ const getAdminAMQuestionListAsync = async (surveyId) =>
 
 const getAdminSurveySetupAsync = async (surveyId) =>
   await adminSurveySetupAPI(surveyId)
+    .then(data => data)
+
+const getAdminSurveyConfigurationAsync = async (surveyId) =>
+  await adminSurveyConfigurationAPI(surveyId)
     .then(data => data)
 
 function* getAdminUserList({ payload }) {
@@ -133,6 +140,18 @@ function* adminSurveySetup({ payload }) {
   try {
     const { surveyId } = payload
     const result = yield call(getAdminSurveySetupAsync, surveyId)
+    if (result.status === 200) {
+      yield put(adminSurveySetupSuccess(result.data))
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+function* adminSurveyConfiguration({ payload }) {
+  try {
+    const { surveyId } = payload
+    const result = yield call(getAdminSurveyConfigurationAsync, surveyId)
     console.log('result', result)
     if (result.status === 200) {
       yield put(adminSurveySetupSuccess(result.data))
@@ -170,6 +189,10 @@ export function* watchAdminSurveySetup() {
   yield takeEvery(ADMIN_SURVEY_SETUP, adminSurveySetup)
 }
 
+export function* watchAdminSurveyConfiguration() {
+  yield takeEvery(ADMIN_SURVEY_CONFIGURATION, adminSurveyConfiguration)
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchAdminUserList),
@@ -179,5 +202,6 @@ export default function* rootSaga() {
     fork(watchAdminAMQuestionList),
     fork(watchAdminAOQuestionList),
     fork(watchAdminSurveySetup),
+    fork(watchAdminSurveyConfiguration),
   ]);
 }

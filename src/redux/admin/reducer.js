@@ -14,6 +14,8 @@ import {
   ADMIN_AM_QUESTION_LIST_SUCCESS,
   ADMIN_SURVEY_SETUP,
   ADMIN_SURVEY_SETUP_SUCCESS,
+  ADMIN_SURVEY_CONFIGURATION,
+  ADMIN_SURVEY_CONFIGURATION_SUCCESS,
 } from 'Constants/actionTypes'
 
 const INIT_STATE = {
@@ -96,6 +98,20 @@ export default (state = INIT_STATE, action) => {
         loading: true,
       }
     case ADMIN_SURVEY_SETUP_SUCCESS:
+      return {
+        ...state,
+        currentProject: {
+          ...state.currentProject,
+          ...action.payload.data
+        },
+        loading: false,
+      }
+    case ADMIN_SURVEY_CONFIGURATION:
+      return {
+        ...state,
+        loading: true,
+      }
+    case ADMIN_SURVEY_CONFIGURATION_SUCCESS:
       return {
         ...state,
         currentProject: {
