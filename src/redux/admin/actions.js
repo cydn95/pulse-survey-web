@@ -15,6 +15,8 @@ import {
   ADMIN_AM_QUESTION_LIST_SUCCESS,
   ADMIN_SURVEY_SETUP,
   ADMIN_SURVEY_SETUP_SUCCESS,
+  ADMIN_SURVEY_CONFIGURATION,
+  ADMIN_SURVEY_CONFIGURATION_SUCCESS,
 } from 'Constants/actionTypes'
 
 export const adminProjectList = (userId) => ({
@@ -94,5 +96,15 @@ export const adminSurveySetup = (surveyId) => ({
 
 export const adminSurveySetupSuccess = (data) => ({
   type: ADMIN_SURVEY_SETUP_SUCCESS,
+  payload: { data }
+})
+
+export const adminSurveyConfiguration = (surveyId) => ({
+  type: ADMIN_SURVEY_CONFIGURATION,
+  payload: { surveyId }
+})
+
+export const adminSUrveyConfigurationSuccess = (data) => ({
+  type: ADMIN_SURVEY_CONFIGURATION_SUCCESS,
   payload: { data }
 })
