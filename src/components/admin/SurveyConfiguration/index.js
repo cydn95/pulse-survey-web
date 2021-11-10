@@ -19,56 +19,8 @@ import AboutMe from 'Assets/img/admin/AboutMe.svg'
 import Setting from 'Assets/img/admin/Setting_filled.png'
 import Reorder from '../../../assets/img/admin/reorder.png'
 
-const defaultQuestions = [
-  {
-    id: 1,
-    text: "Does the team have enough experience to succeed?",
-    controlType: 'Slider',
-    driver: 'Sentiment',
-    subDriver: 'Experience',
-    SHGroup: ['Internal', 'Other'],
-    sliderLeft: 'Not at all',
-    sliderRight: 'Absolutely',
-    commentPrompt: 'Add a comment to describe why you feel that way.',
-    skipOptions: ["I don't know", "I'm afraid to say", "I don't understand"]
-  },
-  {
-    id: 2,
-    text: "Do you feel like management is supporting the project team?",
-    controlType: 'Multi Options',
-    driver: 'Support',
-    subDriver: 'Experience',
-    SHGroup: ['Other'],
-    commentPrompt: 'Add a comment to describe why you feel that way.',
-    options: ["Excellent", "Vey Good", "Good", "Fair", "Poor"],
-    skipOptions: ["I don't know", "I'm afraid to say", "I don't understand"]
-  },
-  {
-    id: 3,
-    text: "Do you feel like orgaisational politics is getting the way?",
-    controlType: 'Two Options',
-    driver: 'Politics',
-    subDriver: 'Experience',
-    SHGroup: ['External', 'Other'],
-    options: ['Option1', 'Option2'],
-    commentPrompt: 'Add a comment to describe why you feel that way.',
-    skipOptions: ["I don't know", "I'm afraid to say", "I don't understand"]
-  },
-  {
-    id: 4,
-    text: "What do you see as the main risks to the project?",
-    controlType: 'Multi-Topic',
-    driver: 'Politics',
-    subDriver: 'Experience',
-    SHGroup: ['Internal', 'External', 'Other'],
-    topics: [],
-    commentPrompt: 'Add a comment to describe why you feel that way.',
-    skipOptions: ["I don't know", "I'm afraid to say", "I don't understand"]
-  }
-]
-
 const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, loading, getShGroupList, getSkipQuestionList }) => {
-  const temp = [];
+  let temp = [];
   const [questions, setQuestions] = useState([])
   const [filter, setFilter] = useState('About Me')
   const [drivers, setDrivers] = useState(temp)
@@ -88,7 +40,9 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
     } else {
       tempQuestion = (aoQuestionList.filter(q => q.driver))
     }
-    if (Object.keys(currentProject).length && tempQuestion.length > 0) {
+    temp = []
+    if (Object.keys(currentProject).length > 0 && tempQuestion.length > 0) {
+      console.log('tempQ', tempQuestion)
       tempQuestion.map(question => {
         if (question.driver) {
           if (!temp.includes(question.driver.driverName)) {
@@ -140,6 +94,8 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
             <span onClick={() => setOpen(true)}>{currentDriver}<img src={Setting} alt="drivers" /></span>
           </div>
           {questions.length > 0 ? questions.map((question, idx) => {
+            console.log('question', question)
+            console.log('currentDriver', currentDriver)
             if (question.driver && question.driver.driverName !== currentDriver)
               return null;
             return (

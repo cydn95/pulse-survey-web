@@ -70,6 +70,19 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers }) => {
   const [skipOptions, setSkipOptions] = useState(question.skipOption)
 
   useEffect(() => {
+    setSurvey(question.questionText)
+    setDriver((question.driver || {}).driverName)
+    setSubDriver(question.subdriver)
+    setType(controlTypeTag(question.controlType))
+    setSliderLeft(question.sliderTextLeft)
+    setSliderRight(question.sliderTextRight)
+    setOptions(question.option)
+    setTopics(question.topics)
+    setCommentPrompt(question.commentPrompt)
+    setSkipOptions(question.skipOption)
+  }, [question])
+
+  useEffect(() => {
     setWidth(spanRef.current.offsetWidth)
   }, [])
 

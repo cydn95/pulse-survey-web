@@ -5,6 +5,7 @@ import {
   ADMIN_USER_LIST_SUCCESS,
   ADMIN_USER_LIST_FAILURE,
   ADMIN_SET_USER_FIELD,
+  ADMIN_ADD_NEW_USER,
   ADMIN_SET_PROJECT_FIELD,
   ADMIN_SET_CURRENT_PROJECT,
   ADMIN_SET_ACTIVE_REQUEST,
@@ -46,10 +47,23 @@ export default (state = INIT_STATE, action) => {
         ...state,
         userList: {
           ...state.userList,
-          projectUser: state.userList.projectUser.map(user =>
-            user.id === action.payload.id
+          projectUser: state.userList.projectUser.map((user, idx) =>
+            idx === action.payload.id
               ? { ...user, [action.payload.field]: action.payload.value }
               : user)
+        }
+      }
+    case ADMIN_ADD_NEW_USER:
+      return {
+        ...state,
+        userList: {
+          ...(state.userList || {}),
+          totalIdentifiedCnt: ((state.userList || {}).totalIdentifiedCnt || 0) + 1,
+          totalInvitedCnt: action.payload.user.sendInvite ? ((state.userList || {}).totalInvitedCnt || 0) + 1 : ((state.userList || {}).totalInvitedCnt || 0),
+          projectUser: [
+            ...(state.userList.projectUser || {}),
+            action.payload.user
+          ]
         }
       }
     case ADMIN_SET_CURRENT_PROJECT:

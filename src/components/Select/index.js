@@ -18,7 +18,7 @@ const Select = ({ selected = "", setSelected, items = [], className, noSelected 
           {onClose && <span onClick={(e) => { e.stopPropagation(); onClose(); }} className={styles.cross}><FontAwesomeIcon icon={faTimes} /></span>}
         </div>
       </div>
-      {open && items.length > 0 && <div className={styles.dropdown}>
+      {open && <div className={styles.dropdown}>
         <div key={`${keyValue}-default`} onClick={() => setSelected('')} className={styles.item}>None</div>
         {items.map((item, index) => <div key={`${keyValue}-${index}`} onClick={() => setSelected(item)} className={styles.item}>{item}</div>)}
       </div>}
