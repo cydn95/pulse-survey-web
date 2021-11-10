@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react'
+import { connect } from 'react-redux'
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { faTimes, faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,7 +21,7 @@ import {
   ModalFooter,
 } from './usercard.styles'
 
-const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
+const UserCard = ({ user, teamListManual, shgroupList, setUserField, idx }) => {
   const [open, setOpen] = useState(false)
   const [isActive, setIsActive] = useState(false)
   // const [shGroup, setShGroup] = useState(user.shGroup.SHGroupName)
@@ -58,7 +59,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
               <span className="tag">SH Group:&nbsp;</span>
               <Select
                 selected={(user.shGroup || {}).SHGroupName}
-                setSelected={(item) => setUserField(user.id, 'shGroup', shgroupList.filter(sh => sh.SHGroupName === item)[0])}
+                setSelected={(item) => setUserField(idx, 'shGroup', shgroupList.filter(sh => sh.SHGroupName === item)[0])}
                 items={shgroupList.map(sh => sh.SHGroupName)}
               />
             </div>
@@ -74,8 +75,8 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
               <span className="tag">Team:&nbsp;</span>
               <Select
                 selected={(user.team || {}).name}
-                setSelected={(item) => setUserField(user.id, 'team', teamList.filter(team => team.name === item)[0])}
-                items={teamList.map(team => team.name)}
+                setSelected={(item) => setUserField(idx, 'team', teamListManual().filter(team => team === item)[0])}
+                items={teamListManual()}
               />
             </div>
             <div>
@@ -84,7 +85,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
                 className="input"
                 value={user.projectUserTitle}
                 onChange={(value, e) =>
-                  setUserField(user.id, 'projectUserTitle', value)
+                  setUserField(idx, 'projectUserTitle', value)
                 }
               />
             </div>
@@ -94,7 +95,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
                 className="input"
                 value={user.projectOrganization}
                 onChange={(value, e) =>
-                  setUserField(user.id, 'projectOrganization', value)
+                  setUserField(idx, 'projectOrganization', value)
                 }
               />
             </div>
@@ -138,7 +139,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
           <Input
             value={user.user.first_name}
             onChange={(value, e) =>
-              setUserField(user.id, 'user', { ...user.user, first_name: value })
+              setUserField(idx, 'user', { ...user.user, first_name: value })
             }
           />
         </div>
@@ -147,7 +148,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
           <Input
             value={user.user.last_name}
             onChange={(value, e) =>
-              setUserField(user.id, 'user', { ...user.user, last_name: value })
+              setUserField(idx, 'user', { ...user.user, last_name: value })
             }
           />
         </div>
@@ -156,7 +157,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
           <Input
             value={user.user.email}
             onChange={(value, e) =>
-              setUserField(user.id, 'user', { ...user.user, email: value })
+              setUserField(idx, 'user', { ...user.user, email: value })
             }
           />
         </div>
@@ -219,7 +220,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
               <Input
                 value={user.user.first_name}
                 onChange={(value, e) =>
-                  setUserField(user.id, 'user', { ...user.user, first_name: value })
+                  setUserField(idx, 'user', { ...user.user, first_name: value })
                 }
               />
             </div>
@@ -228,7 +229,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
               <Input
                 value={user.user.last_name}
                 onChange={(value, e) =>
-                  setUserField(user.id, 'user', { ...user.user, last_name: value })
+                  setUserField(idx, 'user', { ...user.user, last_name: value })
                 }
               />
             </div>
@@ -237,7 +238,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
               <Input
                 value={user.user.email}
                 onChange={(value, e) =>
-                  setUserField(user.id, 'user', { ...user.user, email: value })
+                  setUserField(idx, 'user', { ...user.user, email: value })
                 }
               />
             </div>
@@ -274,4 +275,11 @@ const UserCard = ({ user, teamList, shgroupList, setUserField }) => {
   )
 }
 
-export default UserCard
+const mapStateToProps = ({ common }) => {
+  const { shgroupList, teamList } = common;
+  return {
+    shgroupList,
+  }
+}
+
+export default connect(mapStateToProps, null)(UserCard)

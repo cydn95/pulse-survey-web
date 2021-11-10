@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { teamList, shgroupList, adminSetUserField } from 'Redux/actions'
+import { teamList, shgroupList, adminSetUserField, adminAddNewUSer } from 'Redux/actions'
 import { CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
 import "@syncfusion/ej2-base/styles/material.css";
 import "@syncfusion/ej2-buttons/styles/material.css";
@@ -14,17 +14,38 @@ import Counter from './Counter'
 import UserCard from './UserCard'
 import styles from './styles.scss'
 
-const UserAdministration = ({ userList, currentProject, loading, getTeamList, getShGroupList, shgroupList, teamList, setUserField }) => {
+const UserAdministration = ({ userList, currentProject, loading, getTeamList, getShGroupList, shgroupList, teamList, setUserField, addNewUser }) => {
   const [order, setOrder] = useState([0, 0])
   const [filter, setFilter] = useState(['', '', '', '', '', ''])
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState([])
   const [detail, setDetail] = useState([])
   const [list, setList] = useState([])
+  const [newUser, setNewUser] = useState({})
   useEffect(() => {
     getTeamList(currentProject.id)
     getShGroupList(currentProject.id)
   }, [currentProject])
+
+  const teamListManual = useCallback(() => {
+    let temp = [];
+    (userList.projectUser ? userList.projectUser : []).map(user => {
+      if (valueByField(user, 'team') && !temp.includes(valueByField(user, 'team'))) {
+        temp.push(valueByField(user, 'team'))
+      }
+    })
+    return temp
+  }, [userList])
+
+  const shGroupListManual = useCallback(() => {
+    let temp = [];
+    (userList.projectUser ? userList.projectUser : []).map(user => {
+      if (valueByField(user, 'shGroup') && !temp.includes(valueByField(user, 'shGroup'))) {
+        temp.push(valueByField(user, 'shGroup'))
+      }
+    })
+    return temp
+  }, [userList])
 
   const valueByField = (user, field) => {
     switch (field) {
@@ -58,7 +79,12 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
   }
 
   const getStatus = useCallback((user) => {
-    if (!user && !user.shGroup) {
+    console.log('usererereerer', user)
+    if (!user) {
+      return {}
+    }
+
+    if (!user.shGroup || !user.id) {
       return {}
     }
     if (user.id === user.addByProjectUser.id) {
@@ -125,49 +151,92 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
     }
   }
 
+  const setNewUserField = (field, value) => {
+    let temp = { ...newUser }
+    temp[field] = value
+    setNewUser(temp)
+  }
+
   const modalContent = () =>
     <div className={styles.modal}>
       <div>
         <p>First Name</p>
-        <Input className={styles.input} />
+        <Input className={styles.input} value={(newUser.user || {}).first_name} onChange={(value, e) => {
+          let temp = {
+            ...newUser,
+            user: {
+              ...(newUser.user || {}),
+              first_name: value
+            }
+          }
+          setNewUserField('user', temp)
+        }} />
       </div>
       <div>
         <p>Last Name</p>
-        <Input className={styles.input} />
+        <Input className={styles.input} value={(newUser.user || {}).last_name} onChange={(value, e) => {
+          let temp = {
+            ...(newUser.user || {}),
+            last_name: value
+          }
+          setNewUserField('user', temp)
+        }} />
       </div>
       <div>
         <p>Email</p>
-        <Input className={styles.input} />
+        <Input className={styles.input} value={(newUser.user || {}).email} onChange={(value, e) => {
+          let temp = {
+            ...(newUser.user || {}),
+            email: value
+          }
+          setNewUserField('user', temp)
+        }} />
       </div>
       <div>
         <p>User Org</p>
-        <Input className={styles.input} />
+        <Input className={styles.input} value={((newUser.user || {}).organization || {}).name} onChange={(value, e) => {
+          let temp = {
+            ...(newUser.user || {}),
+            organization: {
+              name: value
+            }
+          }
+          setNewUserField('user', temp)
+        }} />
       </div>
       <div>
         <p>Project Org</p>
-        <Input className={styles.input} />
+        <Input className={styles.input} value={(newUser.projectOrganization)} onChange={(value, e) => setNewUserField('projectOrganization', value)} />
       </div>
       <div>
         <p>Job Title</p>
-        <Input className={styles.input} />
+        <Input className={styles.input} value={newUser.projectUserTitle} onChange={(value, e) => setNewUserField('projectUserTitle', value)} />
       </div>
       <div>
         <p>Role Description</p>
-        <Input className={styles.input} />
+        <Input className={styles.input} value={newUser.projectUserRoleDesc} onChange={(value, e) => setNewUserField('projectUserRoleDesc', value)} />
       </div>
       <div>
         <p>Team</p>
-        <Select className={styles.input} />
-      </div>
-      <div>
-        <p>SH Type</p>
-        <Select className={styles.input} />
+        <Select className={styles.input} value={(newUser.team || {}).name} setSelected={(item) => {
+          let temp = { ...newUser }
+          temp.team = teamListManual().filter(team => team.name === item)[0]
+          setNewUser(temp)
+        }} />
       </div>
       <div>
         <p>SH Group</p>
-        <Select className={styles.input} />
+        <Select selected={(newUser.shGroup || {}).SHGroupName}
+          noSelected="SH Group"
+          setSelected={(item) => {
+            let temp = { ...newUser }
+            temp.shGroup = shGroupListManual().filter(sh => sh.SHGroupName === item)[0]
+            setNewUser(temp)
+          }}
+          items={shGroupListManual()}
+        />
       </div>
-      <CheckBoxComponent checked={false} label="Send Invite" />
+      <CheckBoxComponent checked={newUser.sendInvite} label="Send Invite" onChange={(e) => setNewUserField('sendInvite', e.target.value)} />
     </div>
   return (
     <Fragment>
@@ -197,7 +266,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
               open={open}
               setOpen={() => setOpen(true)}
               setClose={() => setOpen(false)}
-              handleAdd={() => console.log('new user added')}
+              handleAdd={() => addNewUser(newUser)}
               content={modalContent}
             />
           </div>
@@ -210,7 +279,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                     indeterminate={list.length !== selected.length && selected.length !== 0}
                     onChange={() => setSelected(() => {
                       if (selected.length !== list.length) {
-                        return list.map(user => user.id)
+                        return list.map((user, idx) => idx)
                       } else {
                         return []
                       }
@@ -277,15 +346,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                       temp[2] = item
                       setFilter(temp)
                     }}
-                    items={(() => {
-                      let temp = [];
-                      (userList.projectUser ? userList.projectUser : []).map(user => {
-                        if (valueByField(user, 'team') && !temp.includes(valueByField(user, 'team'))) {
-                          temp.push(valueByField(user, 'team'))
-                        }
-                      })
-                      return temp
-                    })()}
+                    items={teamListManual()}
                   />
                 </th>
                 <th>
@@ -350,16 +411,16 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
             </thead>
             {list.length > 0 ? <tbody>
               {list.map((user, idx) =>
-                <Fragment key={user.id}>
+                <Fragment key={idx}>
                   <tr onClick={() => {
-                    let temp = toggle(detail, user.id)
+                    let temp = toggle(detail, idx)
                     setDetail(temp)
                   }}>
                     <td>
                       <CheckBoxComponent
-                        checked={selected.includes(user.id)}
+                        checked={selected.includes(idx)}
                         onChange={(e) => {
-                          let temp = toggle(selected, user.id)
+                          let temp = toggle(selected, idx)
                           console.log(temp)
                           setSelected(temp)
                         }}
@@ -372,11 +433,11 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                     <td>{(user.team || {}).name}</td>
                     <td>{(user.shGroup || {}).SHGroupName}</td>
                     <td>{(user.shType || {}).shTypeName}</td>
-                    <td><div className={styles.arrow}>{getStatus(user).text}<span><FontAwesomeIcon icon={detail.includes(user.id) ? faAngleDown : faAngleRight} color="#6d6f94" /></span></div></td>
+                    <td><div className={styles.arrow}>{getStatus(user).text}<span><FontAwesomeIcon icon={detail.includes(idx) ? faAngleDown : faAngleRight} color="#6d6f94" /></span></div></td>
                   </tr>
-                  {detail.includes(user.id) && <tr>
+                  {detail.includes(idx) && <tr>
                     <td colSpan={9} style={{ padding: '0px' }}>
-                      <UserCard key={`${idx}-${user.id}`} user={user} teamList={teamList} shgroupList={shgroupList} setUserField={setUserField} />
+                      <UserCard key={`${idx}-${idx}`} user={user} idx={idx} teamListManual={teamListManual} setUserField={setUserField} />
                     </td>
                   </tr>}
                 </Fragment>
@@ -390,7 +451,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                 indeterminate={list.length !== selected.length && selected.length !== 0}
                 onChange={() => setSelected(() => {
                   if (selected.length !== list.length) {
-                    return list.map(user => user.id)
+                    return list.map((user, idx) => idx)
                   } else {
                     return []
                   }
@@ -425,4 +486,5 @@ export default connect(mapStateToProps, {
   getTeamList: teamList,
   getShGroupList: shgroupList,
   setUserField: adminSetUserField,
+  addNewUser: adminAddNewUSer,
 })(UserAdministration)

@@ -29,6 +29,7 @@ const Projects = ({
   getProjectList,
   setCurrentProject,
   currentProject,
+  loading
 }) => {
   const [breadcrumb, setBreadcrumb] = useState('')
   const [editing, setEditing] = useState(-2)
@@ -39,8 +40,10 @@ const Projects = ({
   }, [user])
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    if (!loading) {
+      window.scrollTo(0, 0)
+    }
+  }, [loading, editing])
 
 
   const handleEdit = (projectId) => {
@@ -71,7 +74,8 @@ const Projects = ({
 
   const onSave = () => {
     console.log('save button clicked')
-    updateUserList(userList, savedCallback)
+    console.log('currentProject', currentProject)
+    // updateUserList(userList, savedCallback)
   }
 
   return (
@@ -112,13 +116,14 @@ const Projects = ({
 }
 
 const mapStateToProps = ({ admin, authUser }) => {
-  const { userList, projectList, currentProject } = admin
+  const { userList, projectList, currentProject, loading } = admin
   const { user } = authUser
   return {
     userList,
     projectList,
     currentProject,
     user,
+    loading,
   }
 }
 

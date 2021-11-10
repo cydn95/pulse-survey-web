@@ -3,6 +3,7 @@ import {
   ADMIN_USER_LIST_SUCCESS,
   ADMIN_USER_LIST_FAILURE,
   ADMIN_SET_USER_FIELD,
+  ADMIN_ADD_NEW_USER,
   ADMIN_SET_PROJECT_FIELD,
   ADMIN_UPDATE_USER_LIST,
   ADMIN_PROJECT_LIST,
@@ -47,6 +48,11 @@ export const adminUserListFailure = (error) => ({
 export const adminSetUserField = (id, field, value) => ({
   type: ADMIN_SET_USER_FIELD,
   payload: { id, field, value }
+})
+
+export const adminAddNewUSer = (user) => ({
+  type: ADMIN_ADD_NEW_USER,
+  payload: { user }
 })
 
 export const adminSetProjectField = (field, value) => ({
