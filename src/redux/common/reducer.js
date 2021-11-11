@@ -18,7 +18,8 @@ import {
   UPDATE_STAKEHOLDER,
   UPDATE_STAKEHOLDER_SUCCESS,
   STAKEHOLDER_ANSWER,
-  CLEAR_COMMON
+  CLEAR_COMMON,
+  SET_TEAM_LIST
 } from "Constants/actionTypes";
 
 import { SH_CATEGORY_TYPE } from "Constants/defaultValues";
@@ -40,6 +41,8 @@ export default (state = INIT_STATE, action) => {
   switch (action.type) {
     case TEAM_LIST:
       return { ...state };
+    case SET_TEAM_LIST:
+      return { ...state, teamList: action.payload.data }
     case TEAM_LIST_SUCCESS:
       return { ...state, teamList: action.payload.teamList };
     case SHGROUP_LIST:

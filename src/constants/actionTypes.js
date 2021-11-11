@@ -44,6 +44,7 @@ export const CLOSE_NOTIFICATION = "CLOSE_NOTIFICATION";
 
 /* Common */
 export const TEAM_LIST = "TEAM_LIST";
+export const SET_TEAM_LIST = "SET_TEAM_LIST";
 export const TEAM_LIST_SUCCESS = "TEAM_LIST_SUCCESS";
 
 export const SHGROUP_LIST = "SHGROUP_LIST";

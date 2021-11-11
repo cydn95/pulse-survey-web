@@ -20,13 +20,19 @@ import {
   UPDATE_STAKEHOLDER,
   UPDATE_STAKEHOLDER_SUCCESS,
   STAKEHOLDER_ANSWER,
-  CLEAR_COMMON
+  CLEAR_COMMON,
+  SET_TEAM_LIST,
 } from "Constants/actionTypes";
 
 export const teamList = (projectId = 0, surveyId = 0) => ({
   type: TEAM_LIST,
   payload: { projectId, surveyId },
 });
+
+export const setTeamList = (data) => ({
+  type: SET_TEAM_LIST,
+  payload: { data }
+})
 
 export const teamListSuccess = (teamList) => ({
   type: TEAM_LIST_SUCCESS,

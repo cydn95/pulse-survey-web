@@ -34,23 +34,6 @@ const Tag = styled.span`
   color: ${props => `${props.color}`};
   background-color: ${props => `${props.color}50`};
 `
-const shGroups = [
-  {
-    name: 'Internal',
-    color: '#008a37',
-    background: '#c7efe3'
-  },
-  {
-    name: 'External',
-    color: '#036fb7',
-    background: 'rgba(3, 111, 183, 0.19)'
-  },
-  {
-    name: 'Other',
-    color: '#d08a02',
-    background: 'rgba(242, 182, 29, 0.19);'
-  }
-]
 
 const Question = ({ question, shgroupList, skipQuestionList, drivers }) => {
   const headerRef = useRef(null)

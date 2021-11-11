@@ -118,7 +118,7 @@ const UserCard = ({ user, teamListManual, shgroupList, setUserField, idx }) => {
         </div>
         <div>
           <span className="tag">AM Status</span>
-          <span className="bgTag">{((user.am_response.length / user.am_total) * 100).toFixed()}%</span>
+          <span className="bgTag">{(((user.am_response || []).length / (user.am_total ? user.am_total : 1)) * 100).toFixed()}%</span>
         </div>
         <div>
           <span className="tag">AO SH Identified</span>
@@ -171,13 +171,13 @@ const UserCard = ({ user, teamListManual, shgroupList, setUserField, idx }) => {
         </RoleDescription>
         <div className="selectGroup">
           <span className="tag">Select Group</span>
-          <TooltipComponent content={user.survey.customGroup1}>
+          <TooltipComponent content={(user.survey || {}).customGroup1}>
             <input checked={isCGroup1} onChange={(e) => setIsCGroup1(e.target.checked)} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
           </TooltipComponent>
-          <TooltipComponent content={user.survey.customGroup2}>
+          <TooltipComponent content={(user.survey || {}).customGroup2}>
             <input checked={isCGroup2} onChange={(e) => setIsCGroup2(e.target.checked)} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
           </TooltipComponent>
-          <TooltipComponent content={user.survey.customGroup3}>
+          <TooltipComponent content={(user.survey || {}).customGroup3}>
             <input checked={isCGroup3} onChange={(e) => setIsCGroup3(e.target.checked)} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
           </TooltipComponent>
         </div>
@@ -199,11 +199,11 @@ const UserCard = ({ user, teamListManual, shgroupList, setUserField, idx }) => {
             </div>
             <div>
               <span className="tag">AM Status</span>
-              <span className="bgTag">{((user.am_response.length / user.am_total) * 100).toFixed()}%</span>
+              <span className="bgTag">{(((user.am_response || []).length / (user.am_total ? user.am_total : 1)) * 100).toFixed()}%</span>
             </div>
             <div>
               <span className="tag">AO SH Identified</span>
-              <span className="bgTag">{user.ao_total}</span>
+              <span className="bgTag">{user.ao_total ? user.ao_total : 0}</span>
             </div>
             <div>
               <span className="tag">Mapped by Others</span>

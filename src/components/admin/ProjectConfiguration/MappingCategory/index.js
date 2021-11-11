@@ -18,7 +18,7 @@ const MappingCategory = ({ styles, currentProject, setProjectField, setMyMapReor
           <span className={styles.text}>Reorder</span>
         </div>
       </div>
-      <OrderComponent items={currentProject.myMap} title="My Map" />
+      <OrderComponent items={currentProject.myMap} title="My Map" field="myMap" />
       <div className={styles.btnGroup}>
         <Button className={styles.resetAll} onClick={() => setProjectField('projectMap', shCategoryList.filter(sh => sh.mapType === 3))}>Reset All</Button>
         <div className={styles.reorder}>
@@ -26,7 +26,7 @@ const MappingCategory = ({ styles, currentProject, setProjectField, setMyMapReor
           <span className={styles.text}>Reorder</span>
         </div>
       </div>
-      <OrderComponent items={currentProject.projectMap} title="Project Map" />
+      <OrderComponent items={currentProject.projectMap} title="Project Map" field="projectMap" />
     </div>
   )
 }
