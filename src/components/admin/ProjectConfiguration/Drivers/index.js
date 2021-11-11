@@ -18,7 +18,7 @@ const Drivers = ({ styles, setDriverReorder, currentProject, drivers, setProject
           <span className={styles.text}>Reorder</span>
         </div>
       </div>
-      {currentProject.driverList && <OrderComponent items={currentProject.driverList} />}
+      <OrderComponent items={currentProject.driverList} field="driverList" />
     </div>
   )
 }

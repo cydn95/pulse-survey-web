@@ -14,7 +14,7 @@ import Counter from './Counter'
 import UserCard from './UserCard'
 import styles from './styles.scss'
 
-const UserAdministration = ({ userList, currentProject, loading, getTeamList, getShGroupList, shgroupList, teamList, setUserField, addNewUser }) => {
+const UserAdministration = ({ userList, currentProject, loading, getTeamList, getShGroupList, shgroupList, teamList, setUserField, addNewUser, profile }) => {
   const [order, setOrder] = useState([0, 0])
   const [filter, setFilter] = useState(['', '', '', '', '', ''])
   const [open, setOpen] = useState(false)
@@ -81,11 +81,15 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
   const getStatus = useCallback((user) => {
     console.log('usererereerer', user)
     if (!user) {
-      return {}
+      return {
+        text: ''
+      }
     }
 
     if (!user.shGroup || !user.id) {
-      return {}
+      return {
+        text: 'Not Started'
+      }
     }
     if (user.id === user.addByProjectUser.id) {
       return {
@@ -163,11 +167,8 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
         <p>First Name</p>
         <Input className={styles.input} value={(newUser.user || {}).first_name} onChange={(value, e) => {
           let temp = {
-            ...newUser,
-            user: {
-              ...(newUser.user || {}),
-              first_name: value
-            }
+            ...(newUser.user || {}),
+            first_name: value
           }
           setNewUserField('user', temp)
         }} />
@@ -231,12 +232,21 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
           setSelected={(item) => {
             let temp = { ...newUser }
             temp.shGroup = shGroupListManual().filter(sh => sh.SHGroupName === item)[0]
+            console.log('temp', temp)
             setNewUser(temp)
           }}
           items={shGroupListManual()}
         />
       </div>
-      <CheckBoxComponent checked={newUser.sendInvite} label="Send Invite" onChange={(e) => setNewUserField('sendInvite', e.target.value)} />
+      <CheckBoxComponent checked={newUser.sendInvite} label="Send Invite" onChange={(e) => {
+        let temp = { ...newUser }
+        if (e.target.checked) {
+          temp.addByProjectUser = { user: profile }
+        }
+        temp.sendInvite = e.target.checked
+        console.log('profile', temp)
+        setNewUser(temp)
+      }} />
     </div>
   return (
     <Fragment>
@@ -245,16 +255,16 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
         <Fragment>
           {(userList.projectUser ? userList.projectUser : []).length > 0 && <div className={styles.horizontalWrapper}>
             <div className={styles.individual}>
-              <Counter count={userList.identifiedTeamMemberCnt} description="Identified Team Members" />
-              <Counter count={userList.identifiedStakeholderCnt} description="Identified Stakeholder" />
+              <Counter count={userList.identifiedTeamMemberCnt ? userList.identifiedTeamMemberCnt : 0} description="Identified Team Members" />
+              <Counter count={userList.identifiedStakeholderCnt ? userList.identifiedStakeholderCnt : 0} description="Identified Stakeholder" />
             </div>
             <div className={styles.individual}>
-              <Counter count={userList.invitedTeamMemberCnt} description="Invited Team Members" />
-              <Counter count={userList.invitedStakeholderCnt} description="Invited Stakeholder" />
+              <Counter count={userList.invitedTeamMemberCnt ? userList.invitedTeamMemberCnt : 0} description="Invited Team Members" />
+              <Counter count={userList.invitedStakeholderCnt ? userList.invitedStakeholderCnt : 0} description="Invited Stakeholder" />
             </div>
             <div className={styles.total}>
-              <Counter count={userList.totalIdentifiedCnt} description="Total Identified" type="total" />
-              <Counter count={userList.totalInvitedCnt} description="Total Invited" type="total" />
+              <Counter count={userList.totalIdentifiedCnt ? userList.totalIdentifiedCnt : 0} description="Total Identified" type="total" />
+              <Counter count={userList.totalInvitedCnt ? userList.totalInvitedCnt : 0} description="Total Invited" type="total" />
             </div>
           </div>}
           <div className={styles.header}>
@@ -266,7 +276,12 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
               open={open}
               setOpen={() => setOpen(true)}
               setClose={() => setOpen(false)}
-              handleAdd={() => addNewUser(newUser)}
+              handleAdd={() => {
+                setOpen(false)
+                setNewUser({})
+                console.log('newUser', newUser)
+                addNewUser({ ...newUser, created_at: new Date(), updated_at: new Date() })
+              }}
               content={modalContent}
             />
           </div>
@@ -470,15 +485,17 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
   )
 }
 
-const mapStateToProps = ({ admin, common }) => {
+const mapStateToProps = ({ admin, common, account }) => {
   const { userList, loading, currentProject } = admin;
   const { teamList, shgroupList } = common;
+  const { profile } = account;
   return {
     userList,
     loading,
     teamList,
     shgroupList,
     currentProject,
+    profile,
   }
 }
 

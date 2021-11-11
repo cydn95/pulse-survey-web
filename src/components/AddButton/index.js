@@ -12,11 +12,11 @@ import {
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const AddButton = ({ text, className, outlined = false, content, handleAdd, open, setOpen, setClose, ...others, }) => {
+const AddButton = ({ text, className, outlined = false, plusClassName, content, handleAdd, open, setOpen, setClose, ...others, }) => {
   return (
     <Fragment>
       <div className={classnames(styles.add, className)} {...others} onClick={setOpen}>
-        <span className={classnames(styles.plus, outlined && styles.outlined)}>+</span>
+        <span className={classnames(styles.plus, outlined && styles.outlined, plusClassName)}>+</span>
         <span>Add {text && `New ${text}`}</span>
       </div>
       {open && <ModalWrapper onClick={setClose}>
