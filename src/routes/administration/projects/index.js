@@ -10,6 +10,8 @@ import {
   adminSetProjectField,
   adminProjectList,
   adminSetCurrentProject,
+  adminAddSurvey,
+  adminUpdateSurvey,
 } from 'Redux/admin/actions'
 import Loading from 'Components/Loading'
 import ProjectCard from 'Components/admin/ProjectCard'
@@ -29,7 +31,12 @@ const Projects = ({
   getProjectList,
   setCurrentProject,
   currentProject,
-  loading
+  loading,
+  amQuestionList,
+  aoQuestionList,
+  surveyId,
+  addSurvey,
+  updateSurvey
 }) => {
   const [breadcrumb, setBreadcrumb] = useState('')
   const [editing, setEditing] = useState(-2)
@@ -75,6 +82,45 @@ const Projects = ({
   const onSave = () => {
     console.log('save button clicked')
     console.log('currentProject', currentProject)
+    console.log('userList', userList)
+    if (!currentProject.surveyTitle || currentProject.surveyTitle === '') {
+      NotificationManager.error("Please fill out required fields", "");
+      return;
+    }
+    const data = {
+      projectSetup: {
+        surveyTitle: currentProject.surveyTitle,
+        projectManager: currentProject.projectManager,
+        projectLogo: currentProject.projectLogo,
+        companyLogo: currentProject.companyLogo,
+        tour: currentProject.tour,
+        moreInfo: currentProject.moreInfo,
+      },
+      projectConfiguration: {
+        anonymityThreshold: currentProject.anonymityThreshold,
+        shGroup: currentProject.shGroup,
+        projectTeam: currentProject.projectTeam,
+        customGroup1: currentProject.customGroup1,
+        customGroup2: currentProject.customGroup2,
+        customGroup3: currentProject.customGroup3,
+        driverList: currentProject.driverList,
+        myMap: currentProject.myMap,
+        projectMap: currentProject.projectMap,
+      },
+      userAdministration: {
+        ...userList
+      },
+      surveyConfiguration: {
+        aoQuestionList,
+        amQuestionList,
+      }
+    }
+    console.log('data', data)
+    if (surveyId) {
+      updateSurvey(surveyId, data, savedCallback)
+    } else {
+      addSurvey(surveyId, data, savedCallback)
+    }
     // updateUserList(userList, savedCallback)
   }
 
@@ -94,7 +140,7 @@ const Projects = ({
             <span className={styles.forMobile} onClick={onSave}>
               <img src={SaveImage} alt="save" />
             </span>
-            <Button className={styles.cancelBtn} onClick={() => handleEdit(-2)}>Cancel</Button>
+            <Button className={styles.cancelBtn} onClick={() => { handleEdit(-2); setCurrentProject({}) }}>Cancel</Button>
             <Button className={styles.button} onClick={onSave}>{`Save ${editing !== -1 ? 'changes' : ''}`}</Button>
           </div>
         }
@@ -116,7 +162,7 @@ const Projects = ({
 }
 
 const mapStateToProps = ({ admin, authUser }) => {
-  const { userList, projectList, currentProject, loading } = admin
+  const { userList, projectList, currentProject, loading, aoQuestionList, amQuestionList, surveyId } = admin
   const { user } = authUser
   return {
     userList,
@@ -124,6 +170,9 @@ const mapStateToProps = ({ admin, authUser }) => {
     currentProject,
     user,
     loading,
+    aoQuestionList,
+    amQuestionList,
+    surveyId
   }
 }
 
@@ -131,5 +180,7 @@ export default connect(mapStateToProps, {
   updateUserList: adminUpdateUserList,
   setProjectField: adminSetProjectField,
   getProjectList: adminProjectList,
-  setCurrentProject: adminSetCurrentProject
+  setCurrentProject: adminSetCurrentProject,
+  addSurvey: adminAddSurvey,
+  updateSurvey: adminUpdateSurvey,
 })(Projects)

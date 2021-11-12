@@ -21,7 +21,7 @@ import {
   ModalFooter,
 } from './usercard.styles'
 
-const UserCard = ({ user, teamListManual, shgroupList, setUserField, idx }) => {
+const UserCard = ({ user, teamList, shgroupList, setUserField, idx }) => {
   const [open, setOpen] = useState(false)
   const [isActive, setIsActive] = useState(false)
   // const [shGroup, setShGroup] = useState(user.shGroup.SHGroupName)
@@ -75,8 +75,8 @@ const UserCard = ({ user, teamListManual, shgroupList, setUserField, idx }) => {
               <span className="tag">Team:&nbsp;</span>
               <Select
                 selected={(user.team || {}).name}
-                setSelected={(item) => setUserField(idx, 'team', teamListManual().filter(team => team === item)[0])}
-                items={teamListManual()}
+                setSelected={(item) => setUserField(idx, 'team', teamList.filter(team => team === item)[0])}
+                items={teamList.map(team => team.name)}
               />
             </div>
             <div>
@@ -279,6 +279,7 @@ const mapStateToProps = ({ common }) => {
   const { shgroupList, teamList } = common;
   return {
     shgroupList,
+    teamList,
   }
 }
 

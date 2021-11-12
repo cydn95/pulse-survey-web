@@ -581,8 +581,14 @@ const adminAMQuestionListAPI = (surveyId) => {
   return getClient(true).get(`/adminamquestion/?survey=${surveyId}`);
 };
 
-const postAdminUserListAPI = (data) => {
-  return getClient(true).post("/adminuserbysurvey/", data);
+const postAdminSurveyAddAPI = (data) => {
+  console.log('data', data)
+  return getClient(true).post("/adminsurveyadd", data);
+};
+
+const postAdminSurveyEditAPI = (data) => {
+  console.log('data', data)
+  return getClient(true).post("/adminsurveyedit", data);
 };
 
 const adminSurveySetupAPI = (surveyId) => {
@@ -651,7 +657,8 @@ export {
   getWordCloudAPI,
   adminUserListAPI,
   adminProjectListAPI,
-  postAdminUserListAPI,
+  postAdminSurveyAddAPI,
+  postAdminSurveyEditAPI,
   putAdminProjectListAPI,
   adminAOQuestionListAPI,
   adminAMQuestionListAPI,
