@@ -34,8 +34,6 @@ const OrderComponent = ({ items, title, addText = "Add New", field = "", setProj
   }
 
   const modalContent = () => {
-    console.log('icon', icon)
-    console.log('icon', name)
     if (icon && name) {
       return (
         <div className={styles.modal}>

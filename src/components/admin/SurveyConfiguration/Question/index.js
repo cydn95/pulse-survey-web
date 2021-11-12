@@ -35,7 +35,7 @@ const Tag = styled.span`
   background-color: ${props => `${props.color}50`};
 `
 
-const Question = ({ question, shgroupList, skipQuestionList, drivers }) => {
+const Question = ({ question, shgroupList, skipQuestionList, drivers, idx }) => {
   const headerRef = useRef(null)
   const spanRef = useRef(null)
   const [detailed, setDetailed] = useState(false)
@@ -143,7 +143,7 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers }) => {
                 }} />
               </div>
             )}
-            {type === 'Multi Options' && <AddButton text="Option" style={{ flexBasis: '100%' }} />}
+            {(type === 'Multi Options' || (type === "Two Options" && options.length < 2)) && <AddButton text="Option" style={{ flexBasis: '100%' }} />}
           </Fragment>}
           {type === 'Multi-Topic' && <Fragment>
             {topics.map((topic, idx) =>
@@ -172,7 +172,7 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers }) => {
                 key={`${idx}-${option}`}
                 className={styles.input}
                 withClose={idx === skipOptions.length - 1}
-                onClickClose={() => { let temp = [...skipOptions]; temp.pop(); setSkipOptions(temp) }}
+                onClickClose={idx === skipOptions.length - 1 ? (() => { let temp = [...skipOptions]; temp.pop(); setSkipOptions(temp) }) : null}
                 onChange={(value, e) => {
                   let temp = [...skipOptions]
                   temp[idx] = value;

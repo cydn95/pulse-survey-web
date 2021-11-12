@@ -42,7 +42,6 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
     }
     temp = []
     if (Object.keys(currentProject).length > 0 && tempQuestion.length > 0) {
-      console.log('tempQ', tempQuestion)
       tempQuestion.map(question => {
         if (question.driver) {
           if (!temp.includes(question.driver.driverName)) {
@@ -79,7 +78,7 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
                 <span>About Me</span>
               </div>
               <div className={classnames(styles.filter, filter === 'About Others' && styles.active)} onClick={() => setFilter('About Others')}>
-                <img className={styles.icon} src={AboutMe} alt="About Others" />
+                <img className={styles.icon} src={AboutOthers} alt="About Others" />
                 <span>About Others</span>
               </div>
             </div>
@@ -94,12 +93,10 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
             <span onClick={() => setOpen(true)}>{currentDriver}<img src={Setting} alt="drivers" /></span>
           </div>
           {questions.length > 0 ? questions.map((question, idx) => {
-            console.log('question', question)
-            console.log('currentDriver', currentDriver)
             if (question.driver && question.driver.driverName !== currentDriver)
               return null;
             return (
-              <Question surveyId={currentProject.id} question={question} drivers={drivers} key={`${idx}-${question.controlType}`} />
+              <Question surveyId={currentProject.id} question={question} idx={idx} drivers={drivers} key={`${idx}-${question.controlType}`} />
             )
           }) : <h3>No Question</h3>}
           {open && <ModalWrapper onClick={() => setOpen(false)}>

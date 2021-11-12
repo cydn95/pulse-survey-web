@@ -45,7 +45,7 @@ export const controlTypeTag = (type) => {
   } else if (type === 2) {
     return "Slider";
   } else if (type === 3) {
-    return "Tow Options";
+    return "Two Options";
   } else if (type === 4) {
     return "Multi Options";
   } else if (type === 5) {

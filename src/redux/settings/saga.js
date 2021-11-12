@@ -44,7 +44,6 @@ function* getProjectListByUser({ payload }) {
   try {
     const allSurveyData = yield call(getSurveyListByProjectAsync, 0);
     const validProjectIdList = [];
-    console.log('all', allSurveyData)
     if (allSurveyData.status === 200) {
       for (let i = 0; i < allSurveyData.data.length; i++) {
         if (allSurveyData.data[i].isActive) {

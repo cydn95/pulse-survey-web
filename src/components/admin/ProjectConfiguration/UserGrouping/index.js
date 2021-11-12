@@ -73,7 +73,6 @@ const UserGrouping = ({
         setProjectField('customGroup2', '')
         setProjectField('customGroup3', '')
       }
-      console.log('field', field)
       setProjectField(field, newCG)
       setNewCG('')
       setOpenCG(false)

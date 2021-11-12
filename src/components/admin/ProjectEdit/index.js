@@ -33,7 +33,6 @@ const ProjectEdit = ({
       getAMQuestionList(surveyId)
       getAdminSurveySetup(surveyId)
       getAdminSurveyConfiguration(surveyId)
-      console.log("surveyId", surveyId)
     }
   }, [surveyId])
 

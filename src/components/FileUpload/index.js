@@ -56,7 +56,6 @@ const FileUpload = ({
     (async () => {
       if (otherProps.data) {
         if (typeof otherProps.data === 'string') {
-          console.log('new', otherProps.data)
           let temp = await onImageEdit(otherProps.data)
           data[temp.name] = temp
           setFiles(data)
@@ -67,7 +66,6 @@ const FileUpload = ({
       }
     })()
     return () => {
-      console.log('data', data)
     }
   }, [otherProps.data])
   const fileInputField = useRef(null);
