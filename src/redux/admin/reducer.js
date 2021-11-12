@@ -17,6 +17,8 @@ import {
   ADMIN_SURVEY_SETUP_SUCCESS,
   ADMIN_SURVEY_CONFIGURATION,
   ADMIN_SURVEY_CONFIGURATION_SUCCESS,
+  ADMIN_ADD_SURVEY,
+  ADMIN_UPDATE_SURVEY,
 } from 'Constants/actionTypes'
 
 const INIT_STATE = {
@@ -133,6 +135,14 @@ export default (state = INIT_STATE, action) => {
           ...action.payload.data
         },
         loading: false,
+      }
+    case ADMIN_ADD_SURVEY:
+      return {
+        ...state,
+      }
+    case ADMIN_UPDATE_SURVEY:
+      return {
+        ...state,
       }
     default:
       return { ...state }

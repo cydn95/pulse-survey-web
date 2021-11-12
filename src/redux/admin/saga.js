@@ -1,7 +1,6 @@
 import { all, call, fork, takeEvery, put } from 'redux-saga/effects'
 import {
   ADMIN_USER_LIST,
-  ADMIN_UPDATE_USER_LIST,
   ADMIN_PROJECT_LIST,
   ADMIN_ACTIVE_PROJECT_REQUEST,
   ADMIN_AM_QUESTION_LIST,
@@ -16,7 +15,7 @@ import {
   adminAMQuestionListSuccess,
   adminAOQuestionListSuccess,
   adminSurveySetupSuccess,
-  adminSUrveyConfigurationSuccess,
+  adminSurveyConfigurationSuccess,
 } from './actions'
 import {
   adminUserListAPI,
@@ -27,7 +26,10 @@ import {
   adminAMQuestionListAPI,
   adminSurveySetupAPI,
   adminSurveyConfigurationAPI,
+  postAdminSurveyAddAPI,
+  postAdminSurveyEditAPI,
 } from '../../services/axios/api'
+import { ADMIN_ADD_SURVEY, ADMIN_UPDATE_SURVEY } from '../../constants/actionTypes'
 
 const getAdminUserListAsync = async (surveyId) =>
   await adminUserListAPI(surveyId)
@@ -39,9 +41,12 @@ const getAdminProjectListAsync = async (userId) =>
     .then(data => data)
     .catch(error => console.log(error))
 
+const adminAddSurveyAsync = async (data) =>
+  await postAdminSurveyAddAPI(data)
+    .then(data => data)
 
-const postAdminUserListAsync = async (data) =>
-  await postAdminUserListAPI(data)
+const adminUpdateSurveyAsync = async (data) =>
+  await postAdminSurveyEditAPI(data)
     .then(data => data)
 
 const putAdminProjectListAsync = async (surveyId, data) =>
@@ -101,13 +106,30 @@ function* getAdminProjectList({ payload }) {
   }
 }
 
-function* postAdminUserList({ payload }) {
+function* adminAddSurvey({ payload }) {
   try {
     const { data, callback } = payload
-    yield call(postAdminUserListAsync, data.projectUser)
+    const result = yield call(adminAddSurveyAsync, data)
+    console.log('result', result)
     callback(true)
   } catch (error) {
     const { callback } = payload
+    callback(false)
+  }
+}
+
+function* adminUpdateSurvey({ payload }) {
+  try {
+    const { surveyId, data, callback } = payload
+    const result = yield call(adminUpdateSurveyAsync, {
+      ...data,
+      surveyId
+    })
+    console.log('result', result)
+    callback(true)
+  } catch (error) {
+    const { callback } = payload
+    console.log('error', error)
     callback(false)
   }
 }
@@ -154,7 +176,7 @@ function* adminSurveyConfiguration({ payload }) {
     const result = yield call(getAdminSurveyConfigurationAsync, surveyId)
     console.log('result', result)
     if (result.status === 200) {
-      yield put(adminSurveySetupSuccess(result.data))
+      yield put(adminSurveyConfigurationSuccess(result.data))
     }
   } catch (error) {
     console.log(error)
@@ -165,8 +187,12 @@ export function* watchAdminUserList() {
   yield takeEvery(ADMIN_USER_LIST, getAdminUserList)
 }
 
-export function* watchPostAdminUserList() {
-  yield takeEvery(ADMIN_UPDATE_USER_LIST, postAdminUserList)
+export function* watchAdminAddSurvey() {
+  yield takeEvery(ADMIN_ADD_SURVEY, adminAddSurvey)
+}
+
+export function* watchAdminUpdateSurvey() {
+  yield takeEvery(ADMIN_UPDATE_SURVEY, adminUpdateSurvey)
 }
 
 export function* watchAdminProejctList() {
@@ -196,7 +222,8 @@ export function* watchAdminSurveyConfiguration() {
 export default function* rootSaga() {
   yield all([
     fork(watchAdminUserList),
-    fork(watchPostAdminUserList),
+    fork(watchAdminAddSurvey),
+    fork(watchAdminUpdateSurvey),
     fork(watchAdminProejctList),
     fork(watchAdminSetActive),
     fork(watchAdminAMQuestionList),

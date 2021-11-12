@@ -10,6 +10,7 @@ import {
   engagementTrend,
   getAMQuestionCnt,
   driverAnalysisCnt,
+  driverList,
 } from "Redux/actions";
 
 import HeatMap from "Components/report/HeatMap";
@@ -23,17 +24,17 @@ import styles from "./styles.scss";
 import classnames from "classnames";
 
 const filters = ["SHGroup", "Team", "Organization"];
-const drivers = [
-  "Engagement",
-  "Culture",
-  "Sentiment",
-  "Influence",
-  "Interest",
-  "Confidence",
-  "Relationships",
-  "Improvement",
-  "About Others"
-];
+// const drivers = [
+//   "Engagement",
+//   "Culture",
+//   "Sentiment",
+//   "Influence",
+//   "Interest",
+//   "Confidence",
+//   "Relationships",
+//   "Improvement",
+//   "About Others"
+// ];
 
 const ReportDriverAnalysis = ({
   history,
@@ -45,6 +46,8 @@ const ReportDriverAnalysis = ({
   projectId,
   userId,
   status,
+  drivers,
+  getAllDrivers
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -71,6 +74,10 @@ const ReportDriverAnalysis = ({
   };
 
   useEffect(() => {
+    getAllDrivers(surveyId)
+  }, [surveyId])
+
+  useEffect(() => {
     actionDriverAnalysisCnt(
       surveyId,
       surveyUserId,
@@ -78,26 +85,26 @@ const ReportDriverAnalysis = ({
       "2021-12-31",
       (result) => {
         const driverList = [];
-
-        drivers.forEach((d) => {
-          if (d in result && result[d] > 0) {
-            driverList.push(d);
-          }
+        let temp = drivers.map(d => d.driverName)
+        temp.forEach((d) => {
+          // if (d in result && result[d] > 0) {
+          driverList.push(d);
+          // }
         });
 
         if (driverList.length > 0) {
           setDriverName(driverList[0]);
         }
+        console.log('driverList', driverList)
 
         setDriverList([...driverList]);
       }
     );
-  }, [surveyId, surveyUserId, actionDriverAnalysisCnt]);
+  }, [surveyId, surveyUserId, actionDriverAnalysisCnt, drivers]);
 
   useEffect(() => {
     setLoading(true);
     setEngagementData({ [driverName]: [] });
-
     actionEngagementTrend(
       filters[filterValue],
       driverName,
@@ -276,8 +283,9 @@ const ReportDriverAnalysis = ({
   );
 };
 
-const mapStateToProps = ({ authUser }) => {
+const mapStateToProps = ({ authUser, common }) => {
   const { projectTitle, surveyId, surveyUserId, projectId, user } = authUser;
+  const { driverList } = common
 
   return {
     projectTitle,
@@ -285,6 +293,7 @@ const mapStateToProps = ({ authUser }) => {
     surveyUserId,
     projectId,
     userId: user.userId,
+    drivers: driverList,
   };
 };
 
@@ -292,4 +301,5 @@ export default connect(mapStateToProps, {
   actionEngagementTrend: engagementTrend,
   actionGetAMQuestionCnt: getAMQuestionCnt,
   actionDriverAnalysisCnt: driverAnalysisCnt,
+  getAllDrivers: driverList,
 })(ReportDriverAnalysis);

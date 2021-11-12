@@ -23,7 +23,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
   const [list, setList] = useState([])
   const [newUser, setNewUser] = useState({})
   useEffect(() => {
-    getTeamList(currentProject.id)
+    getTeamList(currentProject.project, currentProject.id)
     getShGroupList(currentProject.id)
   }, [currentProject])
 
@@ -220,9 +220,9 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
         <p>Team</p>
         <Select className={styles.input} value={(newUser.team || {}).name} setSelected={(item) => {
           let temp = { ...newUser }
-          temp.team = teamListManual().filter(team => team.name === item)[0]
+          temp.team = teamList.filter(team => team.name === item)[0]
           setNewUser(temp)
-        }} />
+        }} items={teamList.map(team => team.name)} />
       </div>
       <div>
         <p>SH Group</p>
@@ -230,10 +230,10 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
           noSelected="SH Group"
           setSelected={(item) => {
             let temp = { ...newUser }
-            temp.shGroup = shGroupListManual().filter(sh => sh.SHGroupName === item)[0]
+            temp.shGroup = shgroupList.filter(sh => sh.SHGroupName === item)[0]
             setNewUser(temp)
           }}
-          items={shGroupListManual()}
+          items={shgroupList.map(sh => sh.SHGroupName)}
         />
       </div>
       <CheckBoxComponent checked={newUser.sendInvite} label="Send Invite" onChange={(e) => {
@@ -357,7 +357,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                       temp[2] = item
                       setFilter(temp)
                     }}
-                    items={teamListManual()}
+                    items={teamList.map(team => team.name)}
                   />
                 </th>
                 <th>
@@ -446,7 +446,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                   </tr>
                   {detail.includes(idx) && <tr>
                     <td colSpan={9} style={{ padding: '0px' }}>
-                      <UserCard key={`${idx}-${idx}`} user={user} idx={idx} teamListManual={teamListManual} setUserField={setUserField} />
+                      <UserCard key={`${idx}-${idx}`} user={user} idx={idx} setUserField={setUserField} />
                     </td>
                   </tr>}
                 </Fragment>
