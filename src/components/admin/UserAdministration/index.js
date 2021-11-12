@@ -79,7 +79,6 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
   }
 
   const getStatus = useCallback((user) => {
-    console.log('usererereerer', user)
     if (!user) {
       return {
         text: ''
@@ -232,7 +231,6 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
           setSelected={(item) => {
             let temp = { ...newUser }
             temp.shGroup = shGroupListManual().filter(sh => sh.SHGroupName === item)[0]
-            console.log('temp', temp)
             setNewUser(temp)
           }}
           items={shGroupListManual()}
@@ -244,7 +242,6 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
           temp.addByProjectUser = { user: profile }
         }
         temp.sendInvite = e.target.checked
-        console.log('profile', temp)
         setNewUser(temp)
       }} />
     </div>
@@ -279,7 +276,6 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
               handleAdd={() => {
                 setOpen(false)
                 setNewUser({})
-                console.log('newUser', newUser)
                 addNewUser({ ...newUser, created_at: new Date(), updated_at: new Date() })
               }}
               content={modalContent}
@@ -398,7 +394,6 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                           temp.push(valueByField(user, 'shType'))
                         }
                       })
-                      console.log('tem', temp)
                       return temp
                     })()}
                   />
@@ -436,7 +431,6 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                         checked={selected.includes(idx)}
                         onChange={(e) => {
                           let temp = toggle(selected, idx)
-                          console.log(temp)
                           setSelected(temp)
                         }}
                       />

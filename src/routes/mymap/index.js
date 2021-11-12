@@ -1183,7 +1183,6 @@ class MyMap extends React.Component {
   }
 
   handleUpdateStakeholder = (pId, sId, stakeholder) => {
-    console.log('stakeholder', stakeholder)
     this.setState({ mapRefresh: true })
     this.props.updateStakeholder(pId, sId, stakeholder, () => {
       const { userId, surveyId, surveyUserId, projectId } = this.props;
