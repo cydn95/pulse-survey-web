@@ -32,10 +32,6 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx }) => {
   // const [email, setEmail] = useState(user.user.email)
   // const [jobTitle, setJobTitle] = useState(user.projectUserTitle)
   // const [org, setOrg] = useState(user.projectOrganization)
-  const [isCGroup1, setIsCGroup1] = useState(user.isCGroup1)
-  const [isCGroup2, setIsCGroup2] = useState(user.isCGroup2)
-  const [isCGroup3, setIsCGroup3] = useState(user.isCGroup3)
-  const [roleDescription, setRoleDescription] = useState('I think...')
   const last_login = useMemo(() => {
     let now = new Date().getTime();
     const diffTime = Math.abs(now - Date.parse(user.user.last_login));
@@ -167,18 +163,18 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx }) => {
         </div>
         <RoleDescription>
           <span className="bgTag">Role Description</span>
-          <Input value={roleDescription} />
+          <Input value={user.projectUserRoleDesc} onChange={(value) => setUserField(idx, 'projectUserRoleDesc', value)} />
         </RoleDescription>
         <div className="selectGroup">
           <span className="tag">Select Group</span>
           <TooltipComponent content={(user.survey || {}).customGroup1}>
-            <input checked={isCGroup1} onChange={(e) => setIsCGroup1(e.target.checked)} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
+            <input checked={user.isCGroup1} onChange={(e) => setUserField(idx, 'isCGroup1', e.target.checked)} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
           </TooltipComponent>
           <TooltipComponent content={(user.survey || {}).customGroup2}>
-            <input checked={isCGroup2} onChange={(e) => setIsCGroup2(e.target.checked)} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
+            <input checked={user.isCGroup2} onChange={(e) => setUserField(idx, 'isCGroup2', e.target.checked)} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
           </TooltipComponent>
           <TooltipComponent content={(user.survey || {}).customGroup3}>
-            <input checked={isCGroup3} onChange={(e) => setIsCGroup3(e.target.checked)} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
+            <input checked={user.isCGroup3} onChange={(e) => setUserField(idx, 'isCGroup3', e.target.checked)} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
           </TooltipComponent>
         </div>
       </EditPart>}
@@ -250,18 +246,18 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx }) => {
             </div>
             <RoleDescription>
               <span className="bgTag">Role Description</span>
-              <Input value={roleDescription} />
+              <Input value={user.projectUserRoleDesc} onChange={(value) => setUserField(idx, 'projectUserRoleDesc', value)} />
             </RoleDescription>
             <div className="selectGroup">
               <span className="tag">Select Group</span>
               <TooltipComponent content={user.survey.customGroup1}>
-                <input checked={isCGroup1} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
+                <input checked={user.isCGroup1} onChange={(e) => setUserField(idx, 'isCGroup1', e.target.checked)} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
               </TooltipComponent>
               <TooltipComponent content={user.survey.customGroup2}>
-                <input checked={isCGroup1} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
+                <input checked={user.isCGroup2} onChange={(e) => setUserField(idx, 'isCGroup2', e.target.checked)} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
               </TooltipComponent>
               <TooltipComponent content={user.survey.customGroup3}>
-                <input checked={isCGroup1} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
+                <input checked={user.isCGroup3} onChange={(e) => setUserField(idx, 'isCGroup3', e.target.checked)} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
               </TooltipComponent>
             </div>
           </div>

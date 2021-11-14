@@ -15,6 +15,8 @@ import {
   ADMIN_AO_QUESTION_LIST_SUCCESS,
   ADMIN_AM_QUESTION_LIST,
   ADMIN_AM_QUESTION_LIST_SUCCESS,
+  ADMIN_SET_QUESTION_LIST,
+  ADMIN_SET_QUESTION_LIST_BY_FIELD,
   ADMIN_SURVEY_SETUP,
   ADMIN_SURVEY_SETUP_SUCCESS,
   ADMIN_SURVEY_CONFIGURATION,
@@ -99,6 +101,11 @@ export const adminAMQuestionList = (surveyId) => ({
 export const adminAMQuestionListSuccess = (data) => ({
   type: ADMIN_AM_QUESTION_LIST_SUCCESS,
   payload: { data }
+})
+
+export const adminSetQuestionListByField = (filter, index, field, value) => ({
+  type: ADMIN_SET_QUESTION_LIST_BY_FIELD,
+  payload: { filter, index, field, value }
 })
 
 export const adminSurveySetup = (surveyId) => ({

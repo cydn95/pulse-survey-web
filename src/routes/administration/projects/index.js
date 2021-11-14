@@ -119,7 +119,7 @@ const Projects = ({
     if (surveyId) {
       updateSurvey(surveyId, data, savedCallback)
     } else {
-      addSurvey(surveyId, data, savedCallback)
+      addSurvey(data, savedCallback)
     }
     // updateUserList(userList, savedCallback)
   }
