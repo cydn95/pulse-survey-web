@@ -1,6 +1,6 @@
 import React, { useState, Fragment, useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { shgroupList, skipQuestionList } from 'Redux/actions'
+import { shgroupList, skipQuestionList, adminSetQuestionListByField } from 'Redux/actions'
 import classnames from 'classnames'
 import Select from 'Components/Select'
 import Loading from 'Components/Loading'
@@ -19,7 +19,7 @@ import AboutMe from 'Assets/img/admin/AboutMe.svg'
 import Setting from 'Assets/img/admin/Setting_filled.png'
 import Reorder from '../../../assets/img/admin/reorder.png'
 
-const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, loading, getShGroupList, getSkipQuestionList }) => {
+const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, loading, getShGroupList, getSkipQuestionList, setQuestionByField }) => {
   let temp = [];
   const [questions, setQuestions] = useState([])
   const [filter, setFilter] = useState('About Me')
@@ -96,7 +96,7 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
             if (question.driver && question.driver.driverName !== currentDriver)
               return null;
             return (
-              <Question surveyId={currentProject.id} question={question} idx={idx} drivers={drivers} key={`${idx}-${question.controlType}`} />
+              <Question surveyId={currentProject.id} question={question} index={idx} filter={filter} setQuestionByField={setQuestionByField} drivers={drivers} key={`${idx}-${question.controlType}`} />
             )
           }) : <h3>No Question</h3>}
           {open && <ModalWrapper onClick={() => setOpen(false)}>
@@ -131,4 +131,5 @@ const mapStateToProps = ({ admin }) => {
 export default connect(mapStateToProps, {
   getShGroupList: shgroupList,
   getSkipQuestionList: skipQuestionList,
+  setQuestionByField: adminSetQuestionListByField,
 })(SurveyConfiguration)

@@ -96,16 +96,21 @@
   border-radius: 8px;
   border: solid 1px #dfe0eb;
   background-color: #fff;
-  .header {
-    font-family: Poppins;
-    font-size: 16px;
-    font-weight: 600;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: normal;
-    letter-spacing: normal;
-    text-align: left;
-    color: #273645;
+  .tourHeader {
+    display: flex;
+    align-items: center;
+    .input input,
+    .header {
+      font-family: Poppins;
+      font-size: 16px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #273645;
+    }
   }
   .content {
     display: flex;

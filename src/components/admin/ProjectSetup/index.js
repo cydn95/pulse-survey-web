@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import {
   HtmlEditor,
@@ -39,10 +39,12 @@ const ProjectSetup = ({
   setProjectField,
   loading
 }) => {
+  const tourTitle = useRef(null)
+  const spanRef = useRef(null)
   const [crrPage, setCrrPage] = useState(0)
   const [show, setShow] = useState(false)
-  const [title, setTitle] = useState(currentProject.title)
-  const [shortText, setShortText] = useState(currentProject.shortText)
+  const [edit, setEdit] = useState(false)
+  const [width, setWidth] = useState()
   const [video, setVideo] = useState(currentProject.video)
   const [pageHeader, setPageHeader] = useState('')
   const [open, setOpen] = useState(false)
@@ -53,6 +55,10 @@ const ProjectSetup = ({
       window.scrollTo(0, 0)
     }
   }, [loading])
+
+  useEffect(() => {
+    setWidth(spanRef.current.offsetWidth + 10)
+  }, [])
 
   const content = () => (
     <div className={styles.modalContent}>
@@ -102,19 +108,51 @@ const ProjectSetup = ({
             </div>
           </div>
           <div className={styles.welcome}>
-            <p className={styles.header}>Tour: {((currentProject.tour || [])[0] || {}).tabName}</p>
+            <div className={styles.tourHeader}>
+              <span className={styles.header}>Tour:&nbsp;</span>
+              <Input
+                refVal={tourTitle}
+                className={styles.input}
+                type="text"
+                value={((currentProject.tour || [])[0] || {}).tabName}
+                onBlur={() => setEdit(false)}
+                onChange={(value) => {
+                  let temp
+                  if (currentProject.tour) {
+                    temp = [...currentProject.tour];
+                  } else {
+                    temp = { tour: [] }
+                  }
+                  if (!temp[0]) {
+                    temp[0] = {}
+                  }
+                  temp[0].tabName = value
+                  setWidth(spanRef.current.offsetWidth + 10)
+                  setProjectField('tour', temp)
+                }}
+                style={{ width }}
+              />
+              <span style={{ opacity: 0, position: 'absolute' }} className={styles.header} ref={spanRef}>{((currentProject.tour || [])[0] || {}).tabName}</span>
+              {!edit && <span onClick={(e) => { e.stopPropagation(); tourTitle.current.focus(); setEdit(true); }} style={{ cursor: 'pointer' }}>&nbsp;Edit</span>}
+            </div>
             <div className={styles.content}>
               <div className={styles.message}>
                 <p>Title</p>
                 <Input type="text" value={((currentProject.tour || [])[0] || {}).pageName} onChange={(value, e) => {
                   let temp = [...currentProject.tour];
-                  ((temp.tour || [])[0] || {}).pageName = value
+                  if (!temp[0]) {
+                    temp[0] = {}
+                  }
+                  temp[0].pageName = value
                   setProjectField('tour', temp)
                 }} className={styles.input} />
                 <p>Short text</p>
                 {<RichTextEditorComponent iframeSettings={{ enable: true }} height={150} toolbarSettings={toolbarSettings} valueTemplate={((currentProject.tour || [])[0] || {}).pageContent} saveInterval={0} change={(e) => {
                   let temp = [...currentProject.tour];
-                  ((temp.tour || [])[0] || {}).pageContent = e.value
+                  if (!temp[0]) {
+                    temp[0] = {}
+                  }
+                  temp[0].pageContent = e.value
                   setProjectField('tour', temp)
                 }}>
                   <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
