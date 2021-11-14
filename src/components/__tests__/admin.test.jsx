@@ -6,6 +6,8 @@ import UserGrouping from "../admin/ProjectConfiguration/UserGrouping";
 import MappingCategory from "../admin/ProjectConfiguration/MappingCategory";
 import Drivers from "../admin/ProjectConfiguration/Drivers";
 import UserAdministration from '../admin/UserAdministration'
+import FlaggedResponses from '../admin/FlaggedResponses'
+import Reporting from '../admin/Reporting'
 
 describe('admin components works properly', () => {
     test('step bar should work properly', () => {
@@ -44,5 +46,17 @@ describe('admin components works properly', () => {
         render(<UserAdministration userList={{}} loading={true} />)
         expect(screen.getByText('No User')).toBeInTheDocument()
         expect(screen.getByText('No User')).not.toBeInTheDocument()
+    })
+    test('flagged response works properly', () => {
+        render(<FlaggedResponses />)
+        expect(screen.getByText('SELECT TO MAKE FLAGGED REPONSE VISIBLE')).toBeInTheDocument()
+        expect(screen.getByText('FLAGGED BY')).toBeInTheDocument()
+        expect(screen.getByText('DATE')).toBeInTheDocument()
+        expect(screen.getByText('STATUS')).toBeInTheDocument()
+        expect(screen.getByText('FLAG TYPE')).toBeInTheDocument()
+    })
+    test('flagged response works properly', () => {
+        render(<Reporting />)
+        expect(screen.getByText('Dashboard Threshold')).toBeInTheDocument()
     })
 })
