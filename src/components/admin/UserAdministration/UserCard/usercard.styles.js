@@ -21,7 +21,6 @@ export const Tag = styled.span`
 `
 
 export const Wrapper = styled.div`
-  border: 1px solid #dfe0eb;
   background: #fff;
   border-radius: 8px;
   .tag {
@@ -170,6 +169,9 @@ export const EditPart = styled.div`
   align-items: flex-end;
   gap: 20px;
   div {
+    &.quatar {
+      width: 23%;
+    }
     input {
       background: #eff0f6;
       padding: 10px 16px;
@@ -193,13 +195,20 @@ export const EditPart = styled.div`
       }
     }
   }
-  @media (max-width: 768px) {
-    display: none;
+  @media (max-width: 1152px) {
+     div {
+      &.quatar {
+        width: 48%;
+      }
+    }
   }
 `
 
 export const RoleDescription = styled.div`
   width: 700px;
+  @media (max-width: 1152px) {
+     width: 60%;
+  }
 `
 
 export const Arrow = styled.div`

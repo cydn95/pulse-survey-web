@@ -44,7 +44,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx }) => {
   }, [user])
   return (
     <Wrapper>
-      <Basic onClick={() => setIsActive(!isActive)}>
+      {/* <Basic onClick={() => setIsActive(!isActive)}>
         <div className="left-part">
           <div className="header">
             <h2>{`${user.user.first_name} ${user.user.last_name}`}</h2>
@@ -102,8 +102,58 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx }) => {
           <Tag isActive={isActive}>Self Submited</Tag>
           <FontAwesomeIcon icon={isActive ? faAngleUp : faAngleDown} color="#6d6f94" />
         </div>
-      </Basic>
-      {isActive && <Detailed>
+      </Basic> */}
+      {<EditPart>
+        <div className="quatar">
+          <span className="bgTag">First Name</span>
+          <Input
+            value={user.user.first_name}
+            onChange={(value, e) =>
+              setUserField(idx, 'user', { ...user.user, first_name: value })
+            }
+          />
+        </div>
+        <div className="quatar">
+          <span className="bgTag">Last Name</span>
+          <Input
+            value={user.user.last_name}
+            onChange={(value, e) =>
+              setUserField(idx, 'user', { ...user.user, last_name: value })
+            }
+          />
+        </div>
+        <div className="quatar">
+          <span className="bgTag">Email</span>
+          <Input
+            value={user.user.email}
+            onChange={(value, e) =>
+              setUserField(idx, 'user', { ...user.user, email: value })
+            }
+          />
+        </div>
+        <div className="quatar">
+          <span className="bgTag">User Org</span>
+          <Input value={user.user.organization.name} />
+        </div>
+        <RoleDescription>
+          <span className="bgTag">Role Description</span>
+          <Input value={user.projectUserRoleDesc} onChange={(value) => setUserField(idx, 'projectUserRoleDesc', value)} />
+        </RoleDescription>
+        {((user.survey || {}).customGroup1 || (user.survey || {}).customGroup2 || (user.survey || {}).customGroup3) &&
+          <div className="selectGroup">
+            <span className="tag">Select Group</span>
+            {(user.survey || {}).customGroup1 && <TooltipComponent content={(user.survey || {}).customGroup1}>
+              <input checked={user.isCGroup1} onChange={(e) => setUserField(idx, 'isCGroup1', e.target.checked)} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
+            </TooltipComponent>}
+            {(user.survey || {}).customGroup2 && <TooltipComponent content={(user.survey || {}).customGroup2}>
+              <input checked={user.isCGroup2} onChange={(e) => setUserField(idx, 'isCGroup2', e.target.checked)} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
+            </TooltipComponent>}
+            {(user.survey || {}).customGroup3 && <TooltipComponent content={(user.survey || {}).customGroup3}>
+              <input checked={user.isCGroup3} onChange={(e) => setUserField(idx, 'isCGroup3', e.target.checked)} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
+            </TooltipComponent>}
+          </div>}
+      </EditPart>}
+      {<Detailed>
         <div>
           <span className="tag">Submitted By</span>
           <span className="bgTag">{`${user.addByProjectUser.user.first_name} ${user.addByProjectUser.user.last_name}`}</span>
@@ -129,55 +179,6 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx }) => {
           <span className="bgTag">{last_login ? last_login + (last_login < 1 ? ' day ago' : ' days ago') : 'Have not logged in yet'}</span>
         </div>
       </Detailed>}
-      {isActive && <EditPart>
-        <div>
-          <span className="bgTag">First Name</span>
-          <Input
-            value={user.user.first_name}
-            onChange={(value, e) =>
-              setUserField(idx, 'user', { ...user.user, first_name: value })
-            }
-          />
-        </div>
-        <div>
-          <span className="bgTag">Last Name</span>
-          <Input
-            value={user.user.last_name}
-            onChange={(value, e) =>
-              setUserField(idx, 'user', { ...user.user, last_name: value })
-            }
-          />
-        </div>
-        <div>
-          <span className="bgTag">Email</span>
-          <Input
-            value={user.user.email}
-            onChange={(value, e) =>
-              setUserField(idx, 'user', { ...user.user, email: value })
-            }
-          />
-        </div>
-        <div>
-          <span className="bgTag">User Org</span>
-          <Input value={user.user.organization.name} />
-        </div>
-        <RoleDescription>
-          <span className="bgTag">Role Description</span>
-          <Input value={user.projectUserRoleDesc} onChange={(value) => setUserField(idx, 'projectUserRoleDesc', value)} />
-        </RoleDescription>
-        <div className="selectGroup">
-          <span className="tag">Select Group</span>
-          <TooltipComponent content={(user.survey || {}).customGroup1}>
-            <input checked={user.isCGroup1} onChange={(e) => setUserField(idx, 'isCGroup1', e.target.checked)} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
-          </TooltipComponent>
-          <TooltipComponent content={(user.survey || {}).customGroup2}>
-            <input checked={user.isCGroup2} onChange={(e) => setUserField(idx, 'isCGroup2', e.target.checked)} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
-          </TooltipComponent>
-          <TooltipComponent content={(user.survey || {}).customGroup3}>
-            <input checked={user.isCGroup3} onChange={(e) => setUserField(idx, 'isCGroup3', e.target.checked)} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
-          </TooltipComponent>
-        </div>
-      </EditPart>}
       {open && <ModalWrapper onClick={() => setOpen(false)}>
         <DetailModal onClick={(e) => e.stopPropagation()}>
           <ModalHeader>

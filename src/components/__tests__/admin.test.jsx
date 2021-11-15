@@ -53,7 +53,6 @@ describe('admin components works properly', () => {
         expect(screen.getByText('FLAGGED BY')).toBeInTheDocument()
         expect(screen.getByText('DATE')).toBeInTheDocument()
         expect(screen.getByText('STATUS')).toBeInTheDocument()
-        expect(screen.getByText('FLAG TYPE')).toBeInTheDocument()
     })
     test('flagged response works properly', () => {
         render(<Reporting />)
