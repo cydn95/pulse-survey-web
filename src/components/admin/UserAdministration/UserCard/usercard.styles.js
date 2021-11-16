@@ -171,6 +171,24 @@ export const EditPart = styled.div`
   div {
     &.quatar {
       width: 23%;
+      &:nth-child(4) {
+        width: calc(31% - 65px);
+      }
+    }
+    &.full {
+      width: 100%;
+      display:flex;
+      align-items: flex-end;
+      gap: 10px;
+      .selectGroup {
+        flex-shrink: 0;
+        display: flex;
+        gap: 10px;
+        .e-tooltip {
+          display: flex;
+          align-items:center
+        }
+      }
     }
     input {
       background: #eff0f6;
@@ -186,14 +204,6 @@ export const EditPart = styled.div`
       text-align: left;
       color: #6d6f94;
     }
-    &.selectGroup {
-      display: flex;
-      gap: 10px;
-      .e-tooltip {
-        display: flex;
-        align-items:center
-      }
-    }
   }
   @media (max-width: 1152px) {
      div {
@@ -205,7 +215,7 @@ export const EditPart = styled.div`
 `
 
 export const RoleDescription = styled.div`
-  width: 700px;
+  flex-grow: 1;
   @media (max-width: 1152px) {
      width: 60%;
   }
