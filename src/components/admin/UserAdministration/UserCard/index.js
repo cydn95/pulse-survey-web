@@ -135,23 +135,25 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx }) => {
           <span className="bgTag">User Org</span>
           <Input value={user.user.organization.name} />
         </div>
-        <RoleDescription>
-          <span className="bgTag">Role Description</span>
-          <Input value={user.projectUserRoleDesc} onChange={(value) => setUserField(idx, 'projectUserRoleDesc', value)} />
-        </RoleDescription>
-        {((user.survey || {}).customGroup1 || (user.survey || {}).customGroup2 || (user.survey || {}).customGroup3) &&
-          <div className="selectGroup">
-            <span className="tag">Select Group</span>
-            {(user.survey || {}).customGroup1 && <TooltipComponent content={(user.survey || {}).customGroup1}>
-              <input checked={user.isCGroup1} onChange={(e) => setUserField(idx, 'isCGroup1', e.target.checked)} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
-            </TooltipComponent>}
-            {(user.survey || {}).customGroup2 && <TooltipComponent content={(user.survey || {}).customGroup2}>
-              <input checked={user.isCGroup2} onChange={(e) => setUserField(idx, 'isCGroup2', e.target.checked)} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
-            </TooltipComponent>}
-            {(user.survey || {}).customGroup3 && <TooltipComponent content={(user.survey || {}).customGroup3}>
-              <input checked={user.isCGroup3} onChange={(e) => setUserField(idx, 'isCGroup3', e.target.checked)} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
-            </TooltipComponent>}
-          </div>}
+        <div className="full">
+          <RoleDescription>
+            <span className="bgTag">Role Description</span>
+            <Input value={user.projectUserRoleDesc} onChange={(value) => setUserField(idx, 'projectUserRoleDesc', value)} />
+          </RoleDescription>
+          {((user.survey || {}).customGroup1 || (user.survey || {}).customGroup2 || (user.survey || {}).customGroup3) &&
+            <div className="selectGroup">
+              <span className="tag">Select Group</span>
+              {(user.survey || {}).customGroup1 && <TooltipComponent content={(user.survey || {}).customGroup1}>
+                <input checked={user.isCGroup1} onChange={(e) => setUserField(idx, 'isCGroup1', e.target.checked)} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
+              </TooltipComponent>}
+              {(user.survey || {}).customGroup2 && <TooltipComponent content={(user.survey || {}).customGroup2}>
+                <input checked={user.isCGroup2} onChange={(e) => setUserField(idx, 'isCGroup2', e.target.checked)} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
+              </TooltipComponent>}
+              {(user.survey || {}).customGroup3 && <TooltipComponent content={(user.survey || {}).customGroup3}>
+                <input checked={user.isCGroup3} onChange={(e) => setUserField(idx, 'isCGroup3', e.target.checked)} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
+              </TooltipComponent>}
+            </div>}
+        </div>
       </EditPart>}
       {<Detailed>
         <div>
