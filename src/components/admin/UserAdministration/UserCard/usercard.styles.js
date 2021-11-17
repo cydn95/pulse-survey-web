@@ -212,6 +212,10 @@ export const EditPart = styled.div`
       }
     }
   }
+
+  @media (max-width: 767px) {
+    display: none;
+  }
 `
 
 export const RoleDescription = styled.div`

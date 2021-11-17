@@ -21,12 +21,11 @@ import {
   ModalFooter,
 } from './usercard.styles'
 
-const UserCard = ({ user, teamList, shgroupList, setUserField, idx }) => {
-  const [open, setOpen] = useState(false)
-  const [isActive, setIsActive] = useState(false)
+const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpen }) => {
+  // const [isActive, setIsActive] = useState(false)
   // const [shGroup, setShGroup] = useState(user.shGroup.SHGroupName)
   // const [team, setTeam] = useState(user.team.name)
-  const [shType, setShType] = useState((user.shType || {}).shTypeName)
+  // const [shType, setShType] = useState((user.shType || {}).shTypeName)
   // const [firstName, setFirstName] = useState(user.user.first_name)
   // const [lastName, setLastName] = useState(user.user.last_name)
   // const [email, setEmail] = useState(user.user.email)
@@ -181,10 +180,10 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx }) => {
           <span className="bgTag">{last_login ? last_login + (last_login < 1 ? ' day ago' : ' days ago') : 'Have not logged in yet'}</span>
         </div>
       </Detailed>}
-      {open && <ModalWrapper onClick={() => setOpen(false)}>
+      {open !== null && <ModalWrapper onClick={() => setOpen(false)}>
         <DetailModal onClick={(e) => e.stopPropagation()}>
           <ModalHeader>
-            <h2>Ryan Jones</h2>
+            <h2>{user.user.first_name} {user.user.last_name}</h2>
             <span onClick={() => setOpen(false)}><FontAwesomeIcon icon={faTimes} color="#6d6f94" /></span>
           </ModalHeader>
           <div className="detailed">
