@@ -1,3 +1,15 @@
+.configContent {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  min-width: 280px;
+  .configBody {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
 .alignRight {
   align-self: flex-end;
 }
@@ -17,9 +29,15 @@
     text-align: left;
     color: #273645;
   }
+
+  @media (max-width: 767px) {
+    justify-content: space-between;
+    gap: unset;
+  }
 }
 
 .dataTable {
+  display: table;
   background-color: white;
   text-align: left;
   border-collapse: collapse;
@@ -28,6 +46,22 @@
     tr {
       background-color: rgba(139, 144, 161, 0.1);
       border: none;
+      &:first-child {
+        display: table-row;
+      }
+      
+      &:last-child {
+        display: none;
+      }
+      @media (max-width: 767px) {
+        &:first-child {
+          display: none;
+        }
+        
+        &:last-child {
+          display: table-row;
+        }
+      }
       th {
         .arrow {
           display: flex;
@@ -68,11 +102,49 @@
         color: #6d6f94;
         cursor: pointer;
       }
+      .config {
+        display: flex;
+        gap: 10px;
+        padding: 20px;
+        .icon {
+          padding: 5px;
+        }
+        .content {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          span {
+            color: rgb(109, 111, 148);
+            font-family: Poppins;
+            font-size: 12px;
+          }
+        }
+      }
+      @media (max-width: 767px) {
+        &:first-child {
+          display: none;
+        }
+      }
     }
   }
   tbody {
     tr {
-      border-top: 1px solid #dfe0eb;
+      &.desktop {
+        display: table-row;
+        border-top: 1px solid #dfe0eb;
+      }
+      &.mobile {
+        border-bottom: 1px solid #dfe0eb;
+        display: none;
+      }
+      @media (max-width: 767px) {
+        &.desktop {
+          display: none;
+        }
+        &.mobile {
+          display: table-row;;
+        } 
+      }
       td {
         &:first-child {
           padding-left: 36px;
@@ -89,6 +161,23 @@
             }
           }
         }
+        .check {
+          cursor: pointer;
+          width: 30px;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          border-radius: 34px;
+          border: solid 2px #62b5a6;
+          &.visible {
+            background-color: #62b5a6;
+          }
+          &.hidden {
+            background-color: unset;
+          }
+        }
         padding-top: 16px;
         padding-bottom: 16px;
         font-family: Montserrat;
@@ -100,6 +189,9 @@
         letter-spacing: normal;
         text-align: left;
         color: #6d6f94;
+        @media (max-width: 767px) {
+          font-size: 12px;
+        }
       }
     }
   }
@@ -166,6 +258,14 @@
       color: #273645;
     }
   }
+  @media (max-width: 767px) {
+    width: calc(100% - 20px);
+    padding: 24px 10px;
+    gap: 20px;
+    .actions {
+      gap: 10px;
+    }
+  }
 }
 
 .modal {
@@ -204,6 +304,6 @@
     }
   }
   .toolbar {
-    width: calc(100% - 72px);
+    width: calc(100% - 20px);
   }
 }
