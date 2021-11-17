@@ -157,7 +157,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpe
       {<Detailed>
         <div>
           <span className="tag">Submitted By</span>
-          <span className="bgTag">{`${user.addByProjectUser.user.first_name} ${user.addByProjectUser.user.last_name}`}</span>
+          <span className="bgTag">{`${((user.addByProjectUser || {}).user || {}).first_name} ${((user.addByProjectUser || {}).user || {}).last_name}`}</span>
         </div>
         <div>
           <span className="tag">Submitted Date</span>
@@ -180,11 +180,11 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpe
           <span className="bgTag">{last_login ? last_login + (last_login < 1 ? ' day ago' : ' days ago') : 'Have not logged in yet'}</span>
         </div>
       </Detailed>}
-      {open !== null && <ModalWrapper onClick={() => setOpen(false)}>
+      {open !== null && <ModalWrapper onClick={() => setOpen(null)} className="detail">
         <DetailModal onClick={(e) => e.stopPropagation()}>
           <ModalHeader>
             <h2>{user.user.first_name} {user.user.last_name}</h2>
-            <span onClick={() => setOpen(false)}><FontAwesomeIcon icon={faTimes} color="#6d6f94" /></span>
+            <span onClick={() => setOpen(null)}><FontAwesomeIcon icon={faTimes} color="#6d6f94" /></span>
           </ModalHeader>
           <div className="detailed">
             <div>
@@ -252,19 +252,19 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpe
             </RoleDescription>
             <div className="selectGroup">
               <span className="tag">Select Group</span>
-              <TooltipComponent content={user.survey.customGroup1}>
+              <TooltipComponent content={(user.survey || {}).customGroup1}>
                 <input checked={user.isCGroup1} onChange={(e) => setUserField(idx, 'isCGroup1', e.target.checked)} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
               </TooltipComponent>
-              <TooltipComponent content={user.survey.customGroup2}>
+              <TooltipComponent content={(user.survey || {}).customGroup2}>
                 <input checked={user.isCGroup2} onChange={(e) => setUserField(idx, 'isCGroup2', e.target.checked)} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
               </TooltipComponent>
-              <TooltipComponent content={user.survey.customGroup3}>
+              <TooltipComponent content={(user.survey || {}).customGroup3}>
                 <input checked={user.isCGroup3} onChange={(e) => setUserField(idx, 'isCGroup3', e.target.checked)} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
               </TooltipComponent>
             </div>
           </div>
           <ModalFooter>
-            <span onClick={() => setOpen(false)}>Cancel</span>
+            <span onClick={() => setOpen(null)}>Cancel</span>
             <Button className="btn">Save</Button>
           </ModalFooter>
         </DetailModal>

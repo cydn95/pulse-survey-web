@@ -13,6 +13,7 @@ import {
   ModalWrapper,
   ModalHeader,
 } from '../UserAdministration/UserCard/usercard.styles'
+import AddButton from 'Components/AddButton'
 import styles from './styles.scss'
 import AboutOthers from 'Assets/img/admin/AboutOthers.svg'
 import AboutMe from 'Assets/img/admin/AboutMe.svg'
@@ -26,6 +27,8 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
   const [drivers, setDrivers] = useState(temp)
   const [currentDriver, setCurrentDriver] = useState(temp[0])
   const [open, setOpen] = useState(false)
+  const [addNew, setAddNew] = useState(false)
+  const [newQuestion, setNewQuestion] = useState({})
   const [reorderModal, setReorderModal] = useState(false)
 
   useEffect(() => {
@@ -54,6 +57,11 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
     setCurrentDriver(temp[0])
     setQuestions(tempQuestion)
   }, [amQuestionList, aoQuestionList, filter])
+
+  const modalContent = () => <div>
+    Modal
+  </div>
+
   return (
     <Fragment>
       {loading ? <Loading description="" /> :
@@ -61,11 +69,19 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
           <div className={styles.header}>
             <h2>Questions</h2>
             <div className={styles.rightPart}>
-              <div>
-                <span className={styles.image}>+</span>
-                <span className={styles.text}>Add question</span>
-              </div>
-              <div onClick={() => setReorderModal(true)}>
+              <AddButton
+                text="question"
+                outlined={true}
+                className={styles.alignRight}
+                open={addNew}
+                setOpen={() => setAddNew(true)}
+                setClose={() => setAddNew(false)}
+                handleAdd={() => {
+                  setAddNew(false)
+                }}
+                content={modalContent}
+              />
+              <div className={styles.actions} onClick={() => setReorderModal(true)}>
                 <span className={styles.image}><img src={Reorder} alt="reorder" /></span>
                 <span className={styles.text}>Reorder</span>
               </div>

@@ -23,6 +23,18 @@
       flex-wrap: wrap;
       gap: 16px;
       align-items: flex-start;
+      .header_mobile {
+        display: none;
+        font-family: Poppins;
+        font-size: 18px;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #000;
+      }
       .headerPart {
         display: flex;
         align-items: center;
@@ -240,6 +252,9 @@
             width: 17px;
             height: 17px;
           }
+        }
+        .header_mobile {
+          display: block;
         }
         .headerPart {
           display: none;

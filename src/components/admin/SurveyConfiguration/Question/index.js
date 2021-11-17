@@ -52,6 +52,7 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
       <div className={styles.basic} onClick={() => setDetailed(!detailed)}>
         <div className={styles.data}>
           <span className={styles.qmark}><img src={QMark} alt="QMark" /></span>
+          <span className={styles.header_mobile}>{question.questionText}</span>
           <div>
             <div className={styles.headerPart}>
               <span className={styles.hide} ref={spanRef}>{question.questionText}</span>

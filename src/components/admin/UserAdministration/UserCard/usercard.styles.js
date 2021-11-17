@@ -241,6 +241,12 @@ export const ModalWrapper = styled.div`
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  &.detail {
+    display: none;
+    @media (max-width: 767px) {
+      display: flex;
+    }
+  }
 `
 
 export const DetailModal = styled.div`
