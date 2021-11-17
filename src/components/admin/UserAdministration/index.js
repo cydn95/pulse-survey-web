@@ -226,15 +226,18 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
       </div>
       <div>
         <p>Team</p>
-        <Select className={styles.input} value={(newUser.team || {}).name} setSelected={(item) => {
+        <Select className={styles.input} selected={(newUser.team || {}).name} setSelected={(item) => {
           let temp = { ...newUser }
+          console.log('temp', temp)
+          console.log('item', item)
           temp.team = teamList.filter(team => team.name === item)[0]
+          console.log('temp', temp)
           setNewUser(temp)
         }} items={teamList.map(team => team.name)} />
       </div>
       <div>
         <p>SH Group</p>
-        <Select selected={(newUser.shGroup || {}).SHGroupName}
+        <Select className={styles.input} selected={(newUser.shGroup || {}).SHGroupName}
           noSelected="SH Group"
           setSelected={(item) => {
             let temp = { ...newUser }
@@ -442,18 +445,18 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
               {list.map((user, idx) =>
                 <Fragment key={idx}>
                   <tr className={styles.desktop} onClick={() => {
-                    if (detail === idx) {
+                    if (detail === user.id) {
                       setDetail(null)
                     } else {
-                      setDetail(idx)
+                      setDetail(user.id)
                     }
                     // let temp = toggle(detail, idx)
                   }}>
                     <td>
                       <CheckBoxComponent
-                        checked={selected.includes(idx)}
+                        checked={selected.includes(user.id)}
                         onChange={(e) => {
-                          let temp = toggle(selected, idx)
+                          let temp = toggle(selected, user.id)
                           setSelected(temp)
                         }}
                       />
@@ -465,13 +468,13 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                     <td>{(user.team || {}).name}</td>
                     <td>{(user.shGroup || {}).SHGroupName}</td>
                     <td>{(user.shType || {}).shTypeName}</td>
-                    <td><div className={styles.arrow}>{getStatus(user).text}<span><FontAwesomeIcon icon={detail === idx ? faAngleDown : faAngleRight} color="#6d6f94" /></span></div></td>
+                    <td><div className={styles.arrow}>{getStatus(user).text}<span><FontAwesomeIcon icon={detail === user.id ? faAngleDown : faAngleRight} color="#6d6f94" /></span></div></td>
                   </tr>
                   <tr className={styles.mobile} onClick={() => {
-                    if (detail === idx) {
+                    if (detail === user.id) {
                       setDetail(null)
                     } else {
-                      setDetail(idx)
+                      setDetail(user.id)
                     }
                     // let temp = toggle(detail, idx)
                   }}>
@@ -479,10 +482,10 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                       <span
                         onClick={(e) => {
                           e.stopPropagation()
-                          let temp = toggle(selected, idx)
+                          let temp = toggle(selected, user.id)
                           setSelected(temp)
                         }}
-                        className={classnames(styles.check, styles[selected.includes(idx) ? 'visible' : 'hidden'])}>
+                        className={classnames(styles.check, styles[selected.includes(user.id) ? 'visible' : 'hidden'])}>
                         <FontAwesomeIcon icon={faCheck} color="white" />
                       </span>
                     </td>
@@ -492,9 +495,9 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                         <span>{`${user.projectUserTitle} ${user.projectOrganization ? ', ' + user.projectOrganization : ''} ${(user.shType || {}).shTypeName ? ' / ' + (user.shType || {}).shTypeName : ''}`}</span>
                       </div>
                     </td>
-                    <td style={{ textAlign: 'right' }}><FontAwesomeIcon icon={detail === idx ? faAngleDown : faAngleRight} color="#6d6f94" /></td>
+                    <td style={{ textAlign: 'right' }}><FontAwesomeIcon icon={detail === user.id ? faAngleDown : faAngleRight} color="#6d6f94" /></td>
                   </tr>
-                  {detail === idx && <tr>
+                  {detail === user.id && <tr>
                     <td colSpan={9} style={{ padding: '0px' }}>
                       <UserCard key={`${idx}-${idx}`} user={user} idx={idx} setUserField={setUserField} open={detail} setOpen={setDetail} />
                     </td>
@@ -510,7 +513,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                 indeterminate={list.length !== selected.length && selected.length !== 0}
                 onChange={() => setSelected(() => {
                   if (selected.length !== list.length) {
-                    return list.map((user, idx) => idx)
+                    return list.map((user, idx) => user.id)
                   } else {
                     return []
                   }
@@ -519,8 +522,11 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
               {`${selected.length} members selected`}
             </span>
             <div className={styles.actions}>
-              <span><FontAwesomeIcon icon={faPaperPlane} className={styles.icon} />Send invite</span>
-              <span><FontAwesomeIcon icon={faArchive} className={styles.icon} />Archive</span>
+              <span style={{ cursor: 'pointer' }}><FontAwesomeIcon icon={faPaperPlane} className={styles.icon} />Send invite</span>
+              <span style={{ cursor: 'pointer' }} onClick={() => {
+                setSelected([])
+                setList(list.filter(user => !selected.includes(user.id)))
+              }}><FontAwesomeIcon icon={faArchive} className={styles.icon} />Archive</span>
             </div>
           </div>}
         </Fragment>
