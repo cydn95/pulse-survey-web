@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import classnames from 'classnames'
 import { getColorFromValue } from "Util/Utils";
-import { controlType, controlTypeTag } from 'Constants/defaultValues'
+import { controlType, controlTypeTag, controlTypeByTag } from 'Constants/defaultValues'
 import Select from 'Components/Select'
 import Input from 'Components/Input'
 import Button from 'Components/Button'
@@ -41,7 +41,17 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
   const [detailed, setDetailed] = useState(false)
   const [edit, setEdit] = useState(false)
   const [width, setWidth] = useState()
-  const [type, setType] = useState(controlTypeTag(question.controlType))
+  const [open, setOpen] = useState(false)
+  const [newSkip, setNewSkip] = useState({})
+
+  const modalContent = () => <div>
+    <Select
+      items={skipQuestionList.filter(q => !question.skipOption.includes(q)).map(q => q.optionName)}
+      selected={(newSkip || {}).optionName}
+      setSelected={(value) => setNewSkip(skipQuestionList.filter(q => q.optionName === value)[0])}
+      className={styles.skipSelect}
+    />
+  </div>
 
   useEffect(() => {
     setWidth(spanRef.current.offsetWidth)
@@ -71,13 +81,13 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
             </div>
             <div className={styles.function_for_mobile}>
               <span className={styles.label}>Control Type:</span>
-              <Select selected={type} setSelected={setType} items={Object.keys(controlType).map(type => controlTypeTag(controlType[type]))} className={styles.controlType} />
+              <Select selected={controlTypeTag(question.controlType)} setSelected={(value) => setQuestionByField(filter, index, 'controlType', controlTypeByTag(value))} items={Object.keys(controlType).map(type => controlTypeTag(controlType[type]))} className={styles.controlType} />
               <span className={styles.delete} onClick={(e) => { e.stopPropagation(); }}><img src={DeleteIcon} alt="delete" /></span>
             </div>
             <div className={styles.inputs}>
               <div className={styles.input}>
                 <span className={styles.label}>Driver:</span>
-                <Select selected={(question.driver || {}).driverName} setSelected={(value) => setQuestionByField(filter, index, 'driver', driverList.filter(d => d.driverName === value)[0])} items={drivers} />
+                <Select selected={(question.driver || {}).driverName} setSelected={(value) => setQuestionByField(filter, index, 'driver', drivers.filter(d => d.driverName === value)[0])} items={drivers} />
               </div>
               <div className={styles.input}>
                 <span className={classnames(styles.label, styles.subdriver)}>Subdriver:</span>
@@ -93,14 +103,14 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
         </div>
         <div className={styles.function}>
           <span className={styles.label}>Control Type:</span>
-          <Select selected={controlTypeTag(question.controlType)} setSelected={(value) => setQuestionByField(filter, index, 'controlType', value)} items={Object.keys(controlType).map(type => controlTypeTag(controlType[type]))} className={styles.controlType} />
+          <Select selected={controlTypeTag(question.controlType)} setSelected={(value) => setQuestionByField(filter, index, 'controlType', controlTypeByTag[value])} items={Object.keys(controlType).map(type => controlTypeTag(controlType[type]))} className={styles.controlType} />
           <span className={styles.delete} onClick={(e) => { e.stopPropagation(); }}><img src={DeleteIcon} alt="delete" /></span>
           <span className={classnames(styles.toggle, detailed && styles.active)}>{`>`}</span>
         </div>
       </div>
       {detailed && <div className={styles.others}>
         <div className={styles.slider}>
-          {type === 'Slider' && <Fragment>
+          {controlTypeTag(question.controlType) === 'Slider' && <Fragment>
             <div className={styles.left}>
               <label>Slider Left (Red)</label>
               <Input value={question.sliderTextLeft} onChange={(value, e) => setQuestionByField(filter, index, 'sliderTextLeft', value)} className={styles.input} />
@@ -110,7 +120,7 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
               <Input value={question.sliderTextRight} onChange={(value, e) => setQuestionByField(filter, index, 'sliderTextRight', value)} className={styles.input} />
             </div>
           </Fragment>}
-          {(type === 'Two Options' || type === 'Multi Options') && <Fragment>
+          {(controlTypeTag(question.controlType) === 'Two Options' || controlTypeTag(question.controlType) === 'Multi Options') && <Fragment>
             {question.option.map((option, idx) =>
               <div key={`${idx}-${option}`}>
                 <label>Option {idx + 1}</label>
@@ -121,9 +131,9 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
                 }} />
               </div>
             )}
-            {(type === 'Multi Options' || (type === "Two Options" && question.option.length < 2)) && <AddButton text="Option" style={{ flexBasis: '100%' }} />}
+            {(controlTypeTag(question.controlType) === 'Multi Options' || (controlTypeTag(question.controlType) === "Two Options" && question.option.length < 2)) && <AddButton text="Option" style={{ flexBasis: '100%' }} />}
           </Fragment>}
-          {type === 'Multi-Topic' && <Fragment>
+          {controlTypeTag(question.controlType) === 'Multi-Topic' && <Fragment>
             {question.topics.map((topic, idx) =>
               <div key={`${idx}-${topic}`}>
                 <label>Option {idx + 1}</label>
@@ -156,9 +166,21 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
                   temp[idx] = value;
                   setQuestionByField(filter, index, 'skipOption', temp)
                 }}
+                readOnly="readonly"
               />
             )}
-            <AddButton text="Skip Option" />
+            <AddButton
+              text="Skip Option"
+              content={modalContent}
+              open={open}
+              setOpen={() => setOpen(true)}
+              setClose={() => setOpen(false)}
+              handleAdd={() => {
+                setQuestionByField(filter, index, 'skipOption', [...question.skipOption, newSkip.id])
+                setOpen(false)
+                setNewSkip({})
+              }}
+            />
           </div>
         </div>
       </div>}
@@ -170,7 +192,7 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
               <span onClick={() => setDetailed(false)}><FontAwesomeIcon icon={faTimes} color="#6d6f94" /></span>
             </ModalHeader>
             <div className={classnames("editPart", styles.editPart)}>
-              {controlType === 'Slider' && <Fragment>
+              {controlTypeTag(question.controlType) === 'Slider' && <Fragment>
                 <div className={styles.left}>
                   <label className="bgTag">Slider Left (Red)</label>
                   <Input value={question.sliderTextLeft} onChange={(value, e) => setQuestionByField(filter, index, 'sliderTextLeft', value)} className={styles.input} />
@@ -180,7 +202,7 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
                   <Input value={question.sliderTextRight} onChange={(value, e) => setQuestionByField(filter, index, 'sliderTextRight', value)} className={styles.input} />
                 </div>
               </Fragment>}
-              {(controlType === 'Two Options' || controlType === 'Multi Options') && <Fragment>
+              {(controlTypeTag(question.controlType) === 'Two Options' || controlTypeTag(question.controlType) === 'Multi Options') && <Fragment>
                 {question.option.map((option, idx) =>
                   <div key={`${idx}-${option}`}>
                     <label>Option {idx + 1}</label>
@@ -191,9 +213,9 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
                     }} />
                   </div>
                 )}
-                {controlType === 'Multi Options' && <AddButton text="Option" style={{ flexBasis: '100%' }} />}
+                {controlTypeTag(question.controlType) === 'Multi Options' && <AddButton text="Option" style={{ flexBasis: '100%' }} />}
               </Fragment>}
-              {controlType === 'Multi-Topic' && <Fragment>
+              {controlTypeTag(question.controlType) === 'Multi-Topic' && <Fragment>
                 {question.topics.map((topic, idx) =>
                   <div key={`${idx}-${topic}`}>
                     <label>Option {idx + 1}</label>
@@ -220,11 +242,6 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
                       className={styles.input}
                       withClose={idx === question.skipOption.length - 1}
                       onClickClose={idx === question.skipOption.length - 1 ? (() => { let temp = [...question.skipOption]; temp.pop(); setQuestionByField(filter, index, 'skipOption', temp) }) : null}
-                      onChange={(value, e) => {
-                        let temp = [...question.skipOption]
-                        temp[idx] = value;
-                        setQuestionByField(filter, index, 'skipOption', temp)
-                      }}
                     />
                   )}
                   <AddButton text="Skip Option" />
@@ -243,7 +260,7 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
 }
 
 const mapStateToProps = ({ common }) => {
-  const { shgroupList, skipQuestionList, driverList } = common;
+  const { shgroupList, skipQuestionList } = common;
   return {
     shgroupList,
     skipQuestionList,

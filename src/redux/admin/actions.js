@@ -103,6 +103,11 @@ export const adminAMQuestionListSuccess = (data) => ({
   payload: { data }
 })
 
+export const adminSetQuestionList = (filter, data) => ({
+  type: ADMIN_SET_QUESTION_LIST,
+  payload: { filter, data }
+})
+
 export const adminSetQuestionListByField = (filter, index, field, value) => ({
   type: ADMIN_SET_QUESTION_LIST_BY_FIELD,
   payload: { filter, index, field, value }

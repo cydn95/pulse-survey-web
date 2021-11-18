@@ -1,6 +1,6 @@
 import React, { useState, Fragment, useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { shgroupList, skipQuestionList, adminSetQuestionListByField } from 'Redux/actions'
+import { shgroupList, skipQuestionList, adminSetQuestionListByField, adminSetQuestionList } from 'Redux/actions'
 import classnames from 'classnames'
 import Select from 'Components/Select'
 import Loading from 'Components/Loading'
@@ -14,13 +14,15 @@ import {
   ModalHeader,
 } from '../UserAdministration/UserCard/usercard.styles'
 import AddButton from 'Components/AddButton'
+import Input from 'Components/Input'
 import styles from './styles.scss'
 import AboutOthers from 'Assets/img/admin/AboutOthers.svg'
 import AboutMe from 'Assets/img/admin/AboutMe.svg'
 import Setting from 'Assets/img/admin/Setting_filled.png'
 import Reorder from '../../../assets/img/admin/reorder.png'
+import { isNull } from 'lodash'
 
-const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, loading, getShGroupList, getSkipQuestionList, setQuestionByField }) => {
+const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, loading, getShGroupList, getSkipQuestionList, setQuestionByField, setQuestionList }) => {
   let temp = [];
   const [questions, setQuestions] = useState([])
   const [filter, setFilter] = useState('About Me')
@@ -59,7 +61,54 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
   }, [amQuestionList, aoQuestionList, filter])
 
   const modalContent = () => <div>
-    Modal
+    <div>
+      <span>Question Text</span>
+      <Input
+        value={newQuestion.questionText}
+        onChange={(value) => {
+          return {
+            ...newQuestion,
+            questionText: value
+          }
+        }}
+      />
+    </div>
+    <div>
+      <span>Driver</span>
+      <Select
+        selected={(newQuestion.driver || {}).driverName}
+        setSelected={(value) => {
+          return {
+            ...newQuestion,
+            questionText: value
+          }
+        }}
+      />
+    </div>
+    <div>
+      <span>Subdriver</span>
+      <Input
+        value={newQuestion.subdriver}
+        onChange={(value) => {
+          return {
+            ...newQuestion,
+            questionText: value
+          }
+        }}
+      />
+    </div>
+    <div>
+      <span>Control Type</span>
+      <Select
+        selected={(newQuestion.driver || {}).driverName}
+        setSelected={(value) => {
+          return {
+            ...newQuestion,
+            questionText: value
+          }
+        }}
+      />
+    </div>
   </div>
 
   return (
@@ -73,13 +122,31 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
                 text="question"
                 outlined={true}
                 className={styles.alignRight}
-                open={addNew}
-                setOpen={() => setAddNew(true)}
-                setClose={() => setAddNew(false)}
-                handleAdd={() => {
-                  setAddNew(false)
+                setOpen={() => {
+                  setQuestionList(filter, {
+                    "id": 4901,
+                    "subdriver": "",
+                    "questionText": "",
+                    "sliderTextLeft": "",
+                    "sliderTextRight": "",
+                    "skipOptionYN": true,
+                    "topicPrompt": "",
+                    "commentPrompt": "",
+                    "survey": null,
+                    "driver": currentProject.driverList.filter(d => d.driverName === currentDriver)[0],
+                    "controlType": null,
+                    "shGroup": [],
+                    "option": [],
+                    "skipOption": [],
+                  })
                 }}
-                content={modalContent}
+              // open={addNew}
+              // setOpen={() => setAddNew(true)}
+              // setClose={() => setAddNew(false)}
+              // handleAdd={() => {
+              //   setAddNew(false)
+              // }}
+              // content={modalContent}
               />
               <div className={styles.actions} onClick={() => setReorderModal(true)}>
                 <span className={styles.image}><img src={Reorder} alt="reorder" /></span>
@@ -148,4 +215,5 @@ export default connect(mapStateToProps, {
   getShGroupList: shgroupList,
   getSkipQuestionList: skipQuestionList,
   setQuestionByField: adminSetQuestionListByField,
+  setQuestionList: adminSetQuestionList,
 })(SurveyConfiguration)
