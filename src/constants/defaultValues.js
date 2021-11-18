@@ -55,6 +55,15 @@ export const controlTypeTag = (type) => {
   }
 };
 
+export const controlTypeByTag = {
+  "Text": 1,
+  "Slider": 2,
+  "Two Options": 3,
+  "Multi Options": 4,
+  "Smart Text": 5,
+  "Multi Topics": 6,
+}
+
 export const loginErrorType = {
   AUTH_SUCCESS: 9999,
   USERNAME: 1,

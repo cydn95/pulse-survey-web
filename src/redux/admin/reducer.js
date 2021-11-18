@@ -13,6 +13,7 @@ import {
   ADMIN_AO_QUESTION_LIST_SUCCESS,
   ADMIN_AM_QUESTION_LIST,
   ADMIN_AM_QUESTION_LIST_SUCCESS,
+  ADMIN_SET_QUESTION_LIST,
   ADMIN_SET_QUESTION_LIST_BY_FIELD,
   ADMIN_SURVEY_SETUP,
   ADMIN_SURVEY_SETUP_SUCCESS,
@@ -109,20 +110,34 @@ export default (state = INIT_STATE, action) => {
         amQuestionList: action.payload.data,
         loading: false,
       }
-    case ADMIN_SET_QUESTION_LIST_BY_FIELD:
-      const { filter, index, field, value } = action.payload
+    case ADMIN_SET_QUESTION_LIST:
       let filterText
-      if (filter === "About Me") {
+      if (action.payload.filter === "About Me") {
         filterText = 'amQuestionList'
       } else {
         filterText = 'aoQuestionList'
       }
-      let temp = [...state[filterText]]
+      return {
+        ...state,
+        [filterText]: [
+          action.payload.data,
+          ...state[filterText],
+        ]
+      }
+    case ADMIN_SET_QUESTION_LIST_BY_FIELD:
+      const { filter, index, field, value } = action.payload
+      let filterText2
+      if (filter === "About Me") {
+        filterText2 = 'amQuestionList'
+      } else {
+        filterText2 = 'aoQuestionList'
+      }
+      let temp = [...state[filterText2]]
       temp[index][field] = value;
       console.log('data', temp)
       return {
         ...state,
-        [filterText]: [
+        [filterText2]: [
           ...temp
         ]
       }
