@@ -149,7 +149,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
 
   const callbackSendInvte = (success) => {
     if (success) {
-      NotificationManager.success("Response saved successfully", "");
+      NotificationManager.success("Invitation sent successfully", "");
     } else {
       NotificationManager.error("Something went wrong", "");
     }
