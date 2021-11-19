@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
-import { teamList, shgroupList, adminSetUserField, adminAddNewUSer } from 'Redux/actions'
+import { teamList, shgroupList, adminSetUserField, adminAddNewUSer, adminSendBulkInvitation } from 'Redux/actions'
 import { CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
 import "@syncfusion/ej2-base/styles/material.css";
 import "@syncfusion/ej2-buttons/styles/material.css";
@@ -9,6 +9,11 @@ import { faAngleRight, faAngleDown, faAngleUp, faPaperPlane, faArchive, faCog, f
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddButton from 'Components/AddButton'
 import Loading from 'Components/Loading'
+import "react-notifications/lib/notifications.css";
+import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
 import Input from 'Components/Input'
 import Button from 'Components/Button'
 import Select from 'Components/Select'
@@ -21,7 +26,7 @@ import Counter from './Counter'
 import UserCard from './UserCard'
 import styles from './styles.scss'
 
-const UserAdministration = ({ userList, currentProject, loading, getTeamList, getShGroupList, shgroupList, teamList, setUserField, addNewUser, profile }) => {
+const UserAdministration = ({ userList, currentProject, loading, getTeamList, getShGroupList, shgroupList, teamList, setUserField, addNewUser, profile, sendBulkInvitation }) => {
   const [order, setOrder] = useState([0, 0])
   const [config, setConfig] = useState(false)
   const [filter, setFilter] = useState(['', '', '', '', '', ''])
@@ -141,6 +146,14 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
     )
     setList(temp)
   }, [userList, filter])
+
+  const callbackSendInvte = (success) => {
+    if (success) {
+      NotificationManager.success("Response saved successfully", "");
+    } else {
+      NotificationManager.error("Something went wrong", "");
+    }
+  }
 
   const sortFunc = (field, n, o) => {
     const temp = [...list]
@@ -301,7 +314,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
                     indeterminate={list.length !== selected.length && selected.length !== 0}
                     onChange={() => setSelected(() => {
                       if (selected.length !== list.length) {
-                        return list.map((user, idx) => idx)
+                        return list.map((user, idx) => user.id)
                       } else {
                         return []
                       }
@@ -522,7 +535,10 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
               {`${selected.length} members selected`}
             </span>
             <div className={styles.actions}>
-              <span style={{ cursor: 'pointer' }}><FontAwesomeIcon icon={faPaperPlane} className={styles.icon} />Send invite</span>
+              <span style={{ cursor: 'pointer' }} onClick={() => {
+                sendBulkInvitation(selected, callbackSendInvte)
+                setSelected([])
+              }}><FontAwesomeIcon icon={faPaperPlane} className={styles.icon} />Send invite</span>
               <span style={{ cursor: 'pointer' }} onClick={() => {
                 setSelected([])
                 setList(list.filter(user => !selected.includes(user.id)))
@@ -657,6 +673,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
           </div>
         </div>
       </ModalWrapper>}
+      <NotificationContainer />
     </Fragment>
   )
 }
@@ -680,4 +697,5 @@ export default connect(mapStateToProps, {
   getShGroupList: shgroupList,
   setUserField: adminSetUserField,
   addNewUser: adminAddNewUSer,
+  sendBulkInvitation: adminSendBulkInvitation,
 })(UserAdministration)

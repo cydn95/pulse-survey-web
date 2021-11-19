@@ -21,6 +21,7 @@ import {
   ADMIN_SURVEY_SETUP_SUCCESS,
   ADMIN_SURVEY_CONFIGURATION,
   ADMIN_SURVEY_CONFIGURATION_SUCCESS,
+  ADMIN_SEND_BULK_INVITATION,
 } from 'Constants/actionTypes'
 
 export const adminProjectList = (userId) => ({
@@ -131,4 +132,9 @@ export const adminSurveyConfiguration = (surveyId) => ({
 export const adminSurveyConfigurationSuccess = (data) => ({
   type: ADMIN_SURVEY_CONFIGURATION_SUCCESS,
   payload: { data }
+})
+
+export const adminSendBulkInvitation = (data, callback) => ({
+  type: ADMIN_SEND_BULK_INVITATION,
+  payload: { data, callback }
 })
