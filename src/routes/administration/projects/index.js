@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, Fragment } from 'react'
 import { connect } from 'react-redux'
+import classnames from 'classnames'
 import "react-notifications/lib/notifications.css";
 import {
   NotificationContainer,
@@ -13,6 +14,7 @@ import {
   adminAddSurvey,
   adminUpdateSurvey,
 } from 'Redux/admin/actions'
+import TopNav from "Containers/TopNav";
 import Loading from 'Components/Loading'
 import ProjectCard from 'Components/admin/ProjectCard'
 import ProjectEdit from 'Components/admin/ProjectEdit'
@@ -124,26 +126,34 @@ const Projects = ({
     // updateUserList(userList, savedCallback)
   }
 
+  const actions = editing < - 1 ?
+    <Button autofocus className={classnames(styles.button, styles.actions)} onClick={() => handleEdit(-1)}>Create new project</Button> :
+    <div className={classnames(styles.btnGroup, styles.actions)}>
+      <span className={styles.forMobile} onClick={() => handleEdit(-2)}>
+        <img src={CancelImage} alt="cancel" />
+      </span>
+      <span className={styles.forMobile} onClick={onSave}>
+        <img src={SaveImage} alt="save" />
+      </span>
+      <Button className={styles.cancelBtn} onClick={() => { handleEdit(-2); setCurrentProject({}) }}>Cancel</Button>
+      <Button className={styles.button} onClick={onSave}>{`Save ${editing !== -1 ? 'changes' : ''}`}</Button>
+    </div>
+
   return (
     <div className={styles.main}>
       <div className={styles.header} id="header">
-        <div>
+        <div className={styles.topbar}>
+          <TopNav history={history} withProfile={false} actions={actions} menuTitle={editing < 0 ? 'Projects' : currentProject.surveyTitle}>
+            <div className={styles.section}>
+              <h2 className={styles.breadcrumb}>{breadcrumb}</h2>
+            </div>
+          </TopNav>
+        </div>
+        {/* <div>
           <h2 className={styles.title}>{editing < 0 ? 'Projects' : currentProject.surveyTitle}</h2>
           <h3 className={styles.breadcrumb}>{breadcrumb}</h3>
-        </div>
-        {editing < -1 ?
-          <Button autofocus className={styles.button} onClick={() => handleEdit(-1)}>Create new project</Button> :
-          <div className={styles.btnGroup}>
-            <span className={styles.forMobile} onClick={() => handleEdit(-2)}>
-              <img src={CancelImage} alt="cancel" />
-            </span>
-            <span className={styles.forMobile} onClick={onSave}>
-              <img src={SaveImage} alt="save" />
-            </span>
-            <Button className={styles.cancelBtn} onClick={() => { handleEdit(-2); setCurrentProject({}) }}>Cancel</Button>
-            <Button className={styles.button} onClick={onSave}>{`Save ${editing !== -1 ? 'changes' : ''}`}</Button>
-          </div>
-        }
+        </div> */}
+
       </div>
       {editing < -1 ?
         <div className={styles.projectCards}>

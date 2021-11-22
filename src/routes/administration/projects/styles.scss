@@ -1,10 +1,51 @@
 .main {
   padding: 26px 56px 44px 44px;
+  margin-top: 45px;
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 15px;
+    .topbar {
+      background-color: #eff1f4;
+      position: fixed;
+      top: 0px;
+      left: 225px;
+      width: calc(100% - 224px);
+      height: 80px;
+      z-index: 400;
+
+      .actions {
+        position: absolute;
+        right: 8px
+      }
+
+      @media only screen and (max-width: 880px) {
+        height: 100px;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        z-index: 300;
+        width: 100%;
+      }
+
+      .section {
+        .page-title {
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 1.19;
+          color: #7eccbf;
+          display: none;
+        }
+
+        .project-name {
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 1.19;
+          color: rgb(126, 204, 191);
+        }
+      }
+    }
     .title {
       font-size: 20px;
       font-weight: 600;
@@ -28,6 +69,10 @@
     .btnGroup {
       display: flex;
       gap: 16px;
+      top: 45px;
+      @media (min-width: 768px) {
+        top: 20px;
+      }
       .forMobile {
         display: none;
       }
@@ -40,8 +85,12 @@
       }
     }
     .button {
+      top: 20px;
       font-size: 13px;
       padding: 12px 19.5px 14px;
+      @media (min-width: 768px) {
+        top: 25px;
+      }
     }
   }
   .projectCards {
@@ -81,6 +130,6 @@
 
 @media (max-width: 540px) {
   .main {
-    padding: 10px;
+    padding: 45px 10px;
   }
 }

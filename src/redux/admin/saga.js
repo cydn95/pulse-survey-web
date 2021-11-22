@@ -7,7 +7,8 @@ import {
   ADMIN_AO_QUESTION_LIST,
   ADMIN_SURVEY_SETUP,
   ADMIN_SURVEY_CONFIGURATION,
-  ADMIN_SEND_BULK_INVITATION
+  ADMIN_SEND_BULK_INVITATION,
+  ADMIN_BULK_ARCHIVE_USER
 } from 'Constants/actionTypes'
 import {
   adminUserListSuccess,
@@ -30,6 +31,7 @@ import {
   postAdminSurveyAddAPI,
   postAdminSurveyEditAPI,
   adminBulkInvitationSendAPI,
+  adminBulkArchiveUserAPI,
 } from '../../services/axios/api'
 import { ADMIN_ADD_SURVEY, ADMIN_UPDATE_SURVEY } from '../../constants/actionTypes'
 
@@ -72,6 +74,10 @@ const getAdminSurveyConfigurationAsync = async (surveyId) =>
 
 const adminBulkInvitationSendAsync = async (ids) =>
   await adminBulkInvitationSendAPI(ids)
+    .then(data => data)
+
+const adminBulkArchiveUserAsync = async (ids) =>
+  await adminBulkArchiveUserAPI(ids)
     .then(data => data)
 
 function* getAdminUserList({ payload }) {
@@ -203,6 +209,20 @@ function* adminSendBulkInvitation({ payload }) {
   }
 }
 
+function* adminBulkArchiveUser({ payload }) {
+  try {
+    const { data, callback } = payload
+    const result = yield call(adminBulkArchiveUserAsync, data)
+    console.log('result', result)
+    if (result.status === 201) {
+      callback(true)
+    }
+  } catch (error) {
+    const { callback } = payload
+    callback(false)
+  }
+}
+
 export function* watchAdminUserList() {
   yield takeEvery(ADMIN_USER_LIST, getAdminUserList)
 }
@@ -243,6 +263,10 @@ export function* watchAdminSendBulkInvitation() {
   yield takeEvery(ADMIN_SEND_BULK_INVITATION, adminSendBulkInvitation)
 }
 
+export function* watchAdminBulkArchiveUser() {
+  yield takeEvery(ADMIN_BULK_ARCHIVE_USER, adminBulkArchiveUser)
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchAdminUserList),
@@ -255,5 +279,6 @@ export default function* rootSaga() {
     fork(watchAdminSurveySetup),
     fork(watchAdminSurveyConfiguration),
     fork(watchAdminSendBulkInvitation),
+    fork(watchAdminBulkArchiveUser),
   ]);
 }

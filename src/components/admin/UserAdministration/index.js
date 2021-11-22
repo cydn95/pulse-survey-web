@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
-import { teamList, shgroupList, adminSetUserField, adminAddNewUSer, adminSendBulkInvitation } from 'Redux/actions'
+import { teamList, shgroupList, adminSetUserField, adminAddNewUSer, adminSendBulkInvitation, adminBulkArchiveUser } from 'Redux/actions'
 import { CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
 import "@syncfusion/ej2-base/styles/material.css";
 import "@syncfusion/ej2-buttons/styles/material.css";
@@ -26,7 +26,7 @@ import Counter from './Counter'
 import UserCard from './UserCard'
 import styles from './styles.scss'
 
-const UserAdministration = ({ userList, currentProject, loading, getTeamList, getShGroupList, shgroupList, teamList, setUserField, addNewUser, profile, sendBulkInvitation }) => {
+const UserAdministration = ({ userList, currentProject, loading, getTeamList, getShGroupList, shgroupList, teamList, setUserField, addNewUser, profile, sendBulkInvitation, sendBulkArchiveUser }) => {
   const [order, setOrder] = useState([0, 0])
   const [config, setConfig] = useState(false)
   const [filter, setFilter] = useState(['', '', '', '', '', ''])
@@ -35,6 +35,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
   const [detail, setDetail] = useState(null)
   const [list, setList] = useState([])
   const [newUser, setNewUser] = useState({})
+  const [confirm, setConfirm] = useState(false)
   useEffect(() => {
     getTeamList(currentProject.project, currentProject.id)
     getShGroupList(currentProject.id)
@@ -149,7 +150,17 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
 
   const callbackSendInvte = (success) => {
     if (success) {
-      NotificationManager.success("Invitation sent successfully", "");
+      NotificationManager.success(`Invitation sent to ${selected.length === 1 ? "a user" : selected.length + "users"} successfully`, "");
+      setSelected([])
+    } else {
+      NotificationManager.error("Something went wrong", "");
+    }
+  }
+
+  const callbackArchiveUser = (success) => {
+    if (success) {
+      NotificationManager.success(`Archived ${selected.length === 1 ? "a user" : selected.length + "users"} successfully`, "");
+      setSelected([])
     } else {
       NotificationManager.error("Something went wrong", "");
     }
@@ -537,11 +548,9 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
             <div className={styles.actions}>
               <span style={{ cursor: 'pointer' }} onClick={() => {
                 sendBulkInvitation(selected, callbackSendInvte)
-                setSelected([])
               }}><FontAwesomeIcon icon={faPaperPlane} className={styles.icon} />Send invite</span>
               <span style={{ cursor: 'pointer' }} onClick={() => {
-                setSelected([])
-                setList(list.filter(user => !selected.includes(user.id)))
+                setConfirm(true)
               }}><FontAwesomeIcon icon={faArchive} className={styles.icon} />Archive</span>
             </div>
           </div>}
@@ -673,6 +682,24 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
           </div>
         </div>
       </ModalWrapper>}
+      {confirm && <ModalWrapper>
+        <div className={styles.configContent}>
+          <ModalHeader>
+            <h2>Confirm Modal</h2>
+            <span onClick={() => setConfig(false)}><FontAwesomeIcon icon={faTimes} color="#6d6f94" /></span>
+          </ModalHeader>
+          <div className={styles.configBody}>
+            <p>Are you sure to archive selected users?</p>
+          </div>
+          <ModalFooter>
+            <span onClick={() => setConfirm(false)}>Cancel</span>
+            <Button className="btn" onClick={() => {
+              sendBulkArchiveUser(selected, callbackArchiveUser)
+              setConfirm(false);
+            }}>Save</Button>
+          </ModalFooter>
+        </div>
+      </ModalWrapper>}
       <NotificationContainer />
     </Fragment>
   )
@@ -698,4 +725,5 @@ export default connect(mapStateToProps, {
   setUserField: adminSetUserField,
   addNewUser: adminAddNewUSer,
   sendBulkInvitation: adminSendBulkInvitation,
+  sendBulkArchiveUser: adminBulkArchiveUser,
 })(UserAdministration)

@@ -22,6 +22,7 @@ import {
   ADMIN_ADD_SURVEY,
   ADMIN_UPDATE_SURVEY,
   ADMIN_SEND_BULK_INVITATION,
+  ADMIN_BULK_ARCHIVE_USER,
 } from 'Constants/actionTypes'
 
 const INIT_STATE = {
@@ -182,6 +183,11 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
       }
+    case ADMIN_BULK_ARCHIVE_USER: {
+      return {
+        ...state,
+      }
+    }
     default:
       return { ...state }
   }
