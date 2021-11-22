@@ -23,6 +23,9 @@ import {
   ADMIN_UPDATE_SURVEY,
   ADMIN_SEND_BULK_INVITATION,
   ADMIN_BULK_ARCHIVE_USER,
+  ADMIN_SET_USER_LIST,
+  ADMIN_SET_QUESTION_LIST_BLANK,
+  ADMIN_DELETE_QUESTION,
 } from 'Constants/actionTypes'
 
 const INIT_STATE = {
@@ -48,6 +51,8 @@ export default (state = INIT_STATE, action) => {
       return { ...state, userList: action.payload.userList, loading: false }
     case ADMIN_USER_LIST_FAILURE:
       return { ...state, loading: false, userList: {} }
+    case ADMIN_SET_USER_LIST:
+      return { ...state, userList: action.payload.data }
     case ADMIN_SET_USER_FIELD:
       return {
         ...state,
@@ -89,6 +94,12 @@ export default (state = INIT_STATE, action) => {
     case ADMIN_SET_ACTIVE_REQUEST:
       return {
         ...state,
+      }
+    case ADMIN_SET_QUESTION_LIST_BLANK:
+      return {
+        ...state,
+        aoQuestionList: [],
+        amQuestionList: [],
       }
     case ADMIN_AO_QUESTION_LIST:
       return {
@@ -141,6 +152,23 @@ export default (state = INIT_STATE, action) => {
         ...state,
         [filterText2]: [
           ...temp
+        ]
+      }
+    case ADMIN_DELETE_QUESTION:
+      let filterText3
+      if (action.payload.filter === "About Me") {
+        filterText3 = 'amQuestionList'
+      } else {
+        filterText3 = 'aoQuestionList'
+      }
+      console.log(filterText3, action.payload.questionText)
+      console.log('filterText3', state[filterText3])
+      let temp2 = [...state[filterText3]].filter(q => q.questionText !== action.payload.questionText)
+      console.log('temp2', temp2)
+      return {
+        ...state,
+        [filterText3]: [
+          ...temp2
         ]
       }
     case ADMIN_SURVEY_SETUP:
