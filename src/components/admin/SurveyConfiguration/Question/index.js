@@ -10,6 +10,7 @@ import Button from 'Components/Button'
 import AddButton from 'Components/AddButton'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { adminDeleteQuestion } from 'Redux/actions'
 import {
   DetailModal,
   ModalWrapper,
@@ -35,13 +36,15 @@ const Tag = styled.span`
   background-color: ${props => `${props.color}50`};
 `
 
-const Question = ({ question, shgroupList, skipQuestionList, drivers, index, setQuestionByField, filter, driverList }) => {
+const Question = ({ question, shgroupList, skipQuestionList, drivers, index, setQuestionByField, filter, driverList, setQuestionList, deleteQuestion }) => {
   const headerRef = useRef(null)
   const spanRef = useRef(null)
+  const subRef = useRef(null)
   const [detailed, setDetailed] = useState(false)
   const [edit, setEdit] = useState(false)
   const [width, setWidth] = useState()
   const [open, setOpen] = useState(false)
+  const [subDriver, setSubDriver] = useState(question.subdriver)
   const [newSkip, setNewSkip] = useState({})
 
   const modalContent = () => <div>
@@ -55,7 +58,8 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
 
   useEffect(() => {
     setWidth(spanRef.current.offsetWidth)
-  }, [])
+    setSubDriver(question.subdriver)
+  }, [question.questionText, question.subdriver])
 
   return (
     <div className={styles.wrapper}>
@@ -82,7 +86,7 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
             <div className={styles.function_for_mobile}>
               <span className={styles.label}>Control Type:</span>
               <Select selected={controlTypeTag(question.controlType)} setSelected={(value) => setQuestionByField(filter, index, 'controlType', controlTypeByTag(value))} items={Object.keys(controlType).map(type => controlTypeTag(controlType[type]))} className={styles.controlType} />
-              <span className={styles.delete} onClick={(e) => { e.stopPropagation(); }}><img src={DeleteIcon} alt="delete" /></span>
+              <span className={styles.delete} onClick={(e) => { e.stopPropagation(); deleteQuestion(filter, question.questionText) }}><img src={DeleteIcon} alt="delete" /></span>
             </div>
             <div className={styles.inputs}>
               <div className={styles.input}>
@@ -91,7 +95,7 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
               </div>
               <div className={styles.input}>
                 <span className={classnames(styles.label, styles.subdriver)}>Subdriver:</span>
-                <Input className={styles.sub} value={question.subdriver} onChange={(value, e) => setQuestionByField(filter, index, 'subdriver', value)} />
+                <Input refVal={subRef} className={styles.sub} value={question.subdriver} onChange={(value, e) => { setQuestionByField(filter, index, 'subdriver', value); setSubDriver(value) }} />
               </div>
               <div className={styles.input}>
                 <span className={styles.label}>SH Group:</span>
@@ -104,7 +108,7 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
         <div className={styles.function}>
           <span className={styles.label}>Control Type:</span>
           <Select selected={controlTypeTag(question.controlType)} setSelected={(value) => setQuestionByField(filter, index, 'controlType', controlTypeByTag[value])} items={Object.keys(controlType).map(type => controlTypeTag(controlType[type]))} className={styles.controlType} />
-          <span className={styles.delete} onClick={(e) => { e.stopPropagation(); }}><img src={DeleteIcon} alt="delete" /></span>
+          <span className={styles.delete} onClick={(e) => { e.stopPropagation(); deleteQuestion(filter, question.questionText) }}><img src={DeleteIcon} alt="delete" /></span>
           <span className={classnames(styles.toggle, detailed && styles.active)}>{`>`}</span>
         </div>
       </div>
@@ -267,4 +271,6 @@ const mapStateToProps = ({ common }) => {
   }
 }
 
-export default connect(mapStateToProps, null)(Question)
+export default connect(mapStateToProps, {
+  deleteQuestion: adminDeleteQuestion,
+})(Question)

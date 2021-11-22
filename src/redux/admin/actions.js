@@ -2,6 +2,7 @@ import {
   ADMIN_USER_LIST,
   ADMIN_USER_LIST_SUCCESS,
   ADMIN_USER_LIST_FAILURE,
+  ADMIN_SET_USER_LIST,
   ADMIN_SET_USER_FIELD,
   ADMIN_ADD_NEW_USER,
   ADMIN_SET_PROJECT_FIELD,
@@ -23,6 +24,8 @@ import {
   ADMIN_SURVEY_CONFIGURATION_SUCCESS,
   ADMIN_SEND_BULK_INVITATION,
   ADMIN_BULK_ARCHIVE_USER,
+  ADMIN_SET_QUESTION_LIST_BLANK,
+  ADMIN_DELETE_QUESTION,
 } from 'Constants/actionTypes'
 
 export const adminProjectList = (userId) => ({
@@ -48,6 +51,11 @@ export const adminUserListSuccess = (userList) => ({
 export const adminUserListFailure = (error) => ({
   type: ADMIN_USER_LIST_FAILURE,
   payload: { error }
+})
+
+export const adminSetUserList = (data) => ({
+  type: ADMIN_SET_USER_LIST,
+  payload: { data }
 })
 
 export const adminSetUserField = (id, field, value) => ({
@@ -83,6 +91,16 @@ export const adminAddSurvey = (data, callback) => ({
 export const adminSetActive = (surveyId, data, callback) => ({
   type: ADMIN_ACTIVE_PROJECT_REQUEST,
   payload: { surveyId, data, callback }
+})
+
+export const adminDeleteQuestion = (filter, questionText) => ({
+  type: ADMIN_DELETE_QUESTION,
+  payload: { filter, questionText }
+})
+
+export const adminSetQuestionListBlank = () => ({
+  type: ADMIN_SET_QUESTION_LIST_BLANK,
+  payload: {}
 })
 
 export const adminAOQuestionList = (surveyId) => ({

@@ -13,6 +13,8 @@ import {
   adminSetCurrentProject,
   adminAddSurvey,
   adminUpdateSurvey,
+  adminSetUserList,
+  adminSetQuestionListBlank
 } from 'Redux/admin/actions'
 import TopNav from "Containers/TopNav";
 import Loading from 'Components/Loading'
@@ -38,7 +40,9 @@ const Projects = ({
   aoQuestionList,
   surveyId,
   addSurvey,
-  updateSurvey
+  updateSurvey,
+  setUserList,
+  setQuestionListBlank,
 }) => {
   const [breadcrumb, setBreadcrumb] = useState('')
   const [editing, setEditing] = useState(-2)
@@ -68,6 +72,8 @@ const Projects = ({
       }
       setEditing(projectId)
       setCurrentProject({})
+      setUserList({})
+      setQuestionListBlank()
     }
     setCurrentStep(0)
   }
@@ -193,4 +199,6 @@ export default connect(mapStateToProps, {
   setCurrentProject: adminSetCurrentProject,
   addSurvey: adminAddSurvey,
   updateSurvey: adminUpdateSurvey,
+  setUserList: adminSetUserList,
+  setQuestionListBlank: adminSetQuestionListBlank,
 })(Projects)

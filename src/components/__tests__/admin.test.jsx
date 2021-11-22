@@ -6,6 +6,7 @@ import UserGrouping from "../admin/ProjectConfiguration/UserGrouping";
 import MappingCategory from "../admin/ProjectConfiguration/MappingCategory";
 import Drivers from "../admin/ProjectConfiguration/Drivers";
 import UserAdministration from '../admin/UserAdministration'
+import SurveyConfiguration from '../admin/SurveyConfiguration'
 import FlaggedResponses from '../admin/FlaggedResponses'
 import Reporting from '../admin/Reporting'
 
@@ -1119,6 +1120,13 @@ describe('admin components works properly', () => {
         expect(screen.getByText('No User')).toBeInTheDocument()
         rerender(<UserAdministration userList={mockData} />)
         expect(screen.getByText('No User')).not.toBeInTheDocument()
+    })
+    test('survey configuration page works properly', () => {
+        render(<SurveyConfiguration />)
+        expect(screen.getByText('Questions')).toBeInTheDocument()
+        expect(screen.getByText('About Me')).toBeInTheDocument()
+        expect(screen.getByText('About Others')).toBeInTheDocument()
+        expect(screen.getByText('No Drivers. Please add drivers on project configuration tab.')).toBeInTheDocument()
     })
     test('flagged response works properly', () => {
         render(<FlaggedResponses />)

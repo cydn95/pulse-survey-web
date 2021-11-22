@@ -1,6 +1,6 @@
 import React, { useState, Fragment, useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { shgroupList, skipQuestionList, adminSetQuestionListByField, adminSetQuestionList } from 'Redux/actions'
+import { shgroupList, skipQuestionList, adminSetQuestionListByField, adminSetQuestionList, } from 'Redux/actions'
 import classnames from 'classnames'
 import Select from 'Components/Select'
 import Loading from 'Components/Loading'
@@ -14,23 +14,31 @@ import {
   ModalHeader,
 } from '../UserAdministration/UserCard/usercard.styles'
 import AddButton from 'Components/AddButton'
-import Input from 'Components/Input'
+// import Input from 'Components/Input'
 import styles from './styles.scss'
 import AboutOthers from 'Assets/img/admin/AboutOthers.svg'
 import AboutMe from 'Assets/img/admin/AboutMe.svg'
 import Setting from 'Assets/img/admin/Setting_filled.png'
 import Reorder from '../../../assets/img/admin/reorder.png'
-import { isNull } from 'lodash'
 
-const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, loading, getShGroupList, getSkipQuestionList, setQuestionByField, setQuestionList }) => {
+const SurveyConfiguration = ({
+  currentProject,
+  amQuestionList,
+  aoQuestionList,
+  loading,
+  getShGroupList,
+  getSkipQuestionList,
+  setQuestionByField,
+  setQuestionList
+}) => {
   let temp = [];
   const [questions, setQuestions] = useState([])
   const [filter, setFilter] = useState('About Me')
-  const [drivers, setDrivers] = useState(temp)
-  const [currentDriver, setCurrentDriver] = useState(temp[0])
+  const [drivers, setDrivers] = useState((currentProject.driverList || []).map(d => d.driverName))
+  const [currentDriver, setCurrentDriver] = useState((currentProject.driverList || []).map(d => d.driverName)[0])
   const [open, setOpen] = useState(false)
-  const [addNew, setAddNew] = useState(false)
-  const [newQuestion, setNewQuestion] = useState({})
+  // const [addNew, setAddNew] = useState(false)
+  // const [newQuestion, setNewQuestion] = useState({})
   const [reorderModal, setReorderModal] = useState(false)
 
   useEffect(() => {
@@ -55,61 +63,61 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
         }
       })
     }
-    setDrivers(temp)
-    setCurrentDriver(temp[0])
+    // setDrivers(temp)
+    // setCurrentDriver(temp[0])
     setQuestions(tempQuestion)
   }, [amQuestionList, aoQuestionList, filter])
 
-  const modalContent = () => <div>
-    <div>
-      <span>Question Text</span>
-      <Input
-        value={newQuestion.questionText}
-        onChange={(value) => {
-          return {
-            ...newQuestion,
-            questionText: value
-          }
-        }}
-      />
-    </div>
-    <div>
-      <span>Driver</span>
-      <Select
-        selected={(newQuestion.driver || {}).driverName}
-        setSelected={(value) => {
-          return {
-            ...newQuestion,
-            questionText: value
-          }
-        }}
-      />
-    </div>
-    <div>
-      <span>Subdriver</span>
-      <Input
-        value={newQuestion.subdriver}
-        onChange={(value) => {
-          return {
-            ...newQuestion,
-            questionText: value
-          }
-        }}
-      />
-    </div>
-    <div>
-      <span>Control Type</span>
-      <Select
-        selected={(newQuestion.driver || {}).driverName}
-        setSelected={(value) => {
-          return {
-            ...newQuestion,
-            questionText: value
-          }
-        }}
-      />
-    </div>
-  </div>
+  // const modalContent = () => <div>
+  //   <div>
+  //     <span>Question Text</span>
+  //     <Input
+  //       value={newQuestion.questionText}
+  //       onChange={(value) => {
+  //         return {
+  //           ...newQuestion,
+  //           questionText: value
+  //         }
+  //       }}
+  //     />
+  //   </div>
+  //   <div>
+  //     <span>Driver</span>
+  //     <Select
+  //       selected={(newQuestion.driver || {}).driverName}
+  //       setSelected={(value) => {
+  //         return {
+  //           ...newQuestion,
+  //           questionText: value
+  //         }
+  //       }}
+  //     />
+  //   </div>
+  //   <div>
+  //     <span>Subdriver</span>
+  //     <Input
+  //       value={newQuestion.subdriver}
+  //       onChange={(value) => {
+  //         return {
+  //           ...newQuestion,
+  //           questionText: value
+  //         }
+  //       }}
+  //     />
+  //   </div>
+  //   <div>
+  //     <span>Control Type</span>
+  //     <Select
+  //       selected={(newQuestion.driver || {}).driverName}
+  //       setSelected={(value) => {
+  //         return {
+  //           ...newQuestion,
+  //           questionText: value
+  //         }
+  //       }}
+  //     />
+  //   </div>
+  // </div>
 
   return (
     <Fragment>
@@ -167,9 +175,9 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
             </div>
           </div>
           <div className={styles.drivers}>
-            {drivers.map((driver, idx) =>
+            {drivers.length > 0 ? drivers.map((driver, idx) =>
               <span key={`${idx}-${driver}`} className={driver === currentDriver ? styles.active : ''} onClick={() => setCurrentDriver(driver)}>{driver}</span>
-            )}
+            ) : <h3>No Drivers. Please add drivers on project configuration tab.</h3>}
           </div>
           <div className={styles.filter_for_mobile}>
             <Select className={styles.select} selected={filter} setSelected={setFilter} items={['About Me', 'About Others']} />
@@ -179,7 +187,7 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
             if (question.driver && question.driver.driverName !== currentDriver)
               return null;
             return (
-              <Question surveyId={currentProject.id} question={question} index={idx} filter={filter} setQuestionByField={setQuestionByField} drivers={drivers} key={`${idx}-${question.controlType}`} />
+              <Question surveyId={currentProject.id} question={question} index={idx} filter={filter} setQuestionByField={setQuestionByField} setQuestionList={setQuestionList} drivers={drivers} key={`${idx}-${question.controlType}`} />
             )
           }) : <h3>No Question</h3>}
           {open && <ModalWrapper onClick={() => setOpen(false)}>
@@ -202,7 +210,7 @@ const SurveyConfiguration = ({ currentProject, amQuestionList, aoQuestionList, l
 }
 
 const mapStateToProps = ({ admin }) => {
-  const { aoQuestionList, amQuestionList, loading, currentProject } = admin;
+  const { aoQuestionList, amQuestionList, loading, currentProject, driverList } = admin;
   return {
     aoQuestionList,
     amQuestionList,
