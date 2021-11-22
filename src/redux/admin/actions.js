@@ -22,6 +22,7 @@ import {
   ADMIN_SURVEY_CONFIGURATION,
   ADMIN_SURVEY_CONFIGURATION_SUCCESS,
   ADMIN_SEND_BULK_INVITATION,
+  ADMIN_BULK_ARCHIVE_USER,
 } from 'Constants/actionTypes'
 
 export const adminProjectList = (userId) => ({
@@ -136,5 +137,10 @@ export const adminSurveyConfigurationSuccess = (data) => ({
 
 export const adminSendBulkInvitation = (data, callback) => ({
   type: ADMIN_SEND_BULK_INVITATION,
+  payload: { data, callback }
+})
+
+export const adminBulkArchiveUser = (data, callback) => ({
+  type: ADMIN_BULK_ARCHIVE_USER,
   payload: { data, callback }
 })

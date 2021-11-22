@@ -604,6 +604,10 @@ const adminBulkInvitationSendAPI = (ids) => {
   return getClient(true).post("/adminbulkinvitationsend", { ids: `[${ids}]` })
 }
 
+const adminBulkArchiveUserAPI = (ids) => {
+  return getClient(true).post("/adminbulkarchive", { ids: `[${ids}]` })
+}
+
 const getKeyDataFromLambda = () => {
   return getLambdaClient().get(
     "https://gft6ixgrq7.execute-api.us-east-2.amazonaws.com/default/PulseLambda-NeptuneLambdaFunction-QI9VKCO1VXK1"
@@ -670,4 +674,5 @@ export {
   adminSurveySetupAPI,
   adminSurveyConfigurationAPI,
   adminBulkInvitationSendAPI,
+  adminBulkArchiveUserAPI,
 };

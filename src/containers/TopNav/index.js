@@ -18,6 +18,8 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import classnames from "classnames";
 
 const TopNav = ({
+  actions = null,
+  withProfile = true,
   menuTitle,
   profile,
   children,
@@ -104,8 +106,9 @@ const TopNav = ({
         </div>
         <div className={styles.section}>{children}</div>
       </div>
+      {actions}
       <div id="menu" className={styles.control}>
-        <div className={styles.dropdown} onClick={(e) => toggleMenu(e)}>
+        {withProfile && <div className={styles.dropdown} onClick={(e) => toggleMenu(e)}>
           {profile.avatar && (
             <img className={styles.avatar} src={profile.avatar} alt="avatar" />
           )}
@@ -119,7 +122,7 @@ const TopNav = ({
           <span
             className={styles.username}
           >{`${profile.firstName} ${profile.lastName}`}</span>
-        </div>
+        </div>}
         {menu && (
           <div className={styles["dropdown-menu"]}>
             <div
