@@ -1,6 +1,6 @@
 import React from 'react'
 import TopNav from '../../containers/TopNav'
-import { render, screen } from '@testing-library/react'
+import { render, screen, shallow } from '@testing-library/react'
 
 describe('work properly', () => {
     test('adds 1 + 2 to equal 3', () => {
@@ -16,6 +16,15 @@ describe('work properly', () => {
         expect(screen.getByText('Mike')).toBeInTheDocument();
         expect(screen.getByText('Smith')).toBeInTheDocument();
     })
+    test('Test click event', () => {
+        const mockCallBack = jest.fn();
+
+        const TopNav = shallow((<TopNav onClick={mockCallBack} />));
+        TopNav.find('button').simulate('click');
+        expect(screen.getByText('Log Out')).toBeInTheDocument();
+        expect(screen.getByText('Edit Profile')).toBeInTheDocument();
+        expect(mockCallBack.mock.calls.length).toEqual(1);
+    });
 })
 
 
