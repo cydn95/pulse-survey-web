@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
+import { faCog, faInfoCircle, faLightbulb, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import Switch from "react-switch";
 
 import Joyride, { STATUS } from "react-joyride";
@@ -370,11 +373,15 @@ class Sidebar extends Component {
           <div className={styles.logo}></div>
           <div className={styles.link}>
             <ProSidebar width="220px">
-              <Menu iconShape="square" className="s-menu-my-projects">
-                <SubMenu icon={<IconMyProject />} title="My Projects">
+              <Menu iconShape="square" className={"s-menu-my-projects"}>
+                <SubMenu
+                  icon={<IconMyProject />}
+                  title="My Projects"
+                >
                   {projectList.map((project) => (
                     <MenuItem
                       key={`project-submenu-${project.id}`}
+                      className={projectId === project.id && styles.menuItem}
                       onClick={(e) => this.handleClickProject(e, project.id)}
                     >
                       {project.projectName}
@@ -412,6 +419,7 @@ class Sidebar extends Component {
                         key={`submenu-report-${menu
                           .toLowerCase()
                           .replace(" ", "-")}`}
+                        className={menu.toLocaleLowerCase() === subMenuClassName && styles.menuItem}
                         onClick={(e) =>
                           this.handleClickSubMenu(
                             e,
@@ -434,13 +442,14 @@ class Sidebar extends Component {
           <div className={styles.link}>
             <ProSidebar width="220px">
               {isProjectManager && <Menu iconShape="square">
-                <SubMenu title="Administration">
+                <SubMenu title="Administration" icon={<FontAwesomeIcon icon={faCog} color="#bababa" />}>
                   {MENU_ADMIN.map((menu) => {
                     return (
                       <MenuItem
                         key={`submenu-report-${menu
                           .toLowerCase()
                           .replace(" ", "-")}`}
+                        className={menu.toLocaleLowerCase() === subMenuClassName && styles.menuItem}
                         onClick={(e) =>
                           this.handleClickSubMenu(
                             e,
@@ -459,10 +468,11 @@ class Sidebar extends Component {
               </Menu>}
               {pageContent.length > 0 && (
                 <Menu iconShape="square">
-                  <SubMenu title="More Info">
+                  <SubMenu title="More Info" icon={<FontAwesomeIcon icon={faInfoCircle} color="#bababa" />}>
                     {pageContent.map((menu) => (
                       <MenuItem
                         key={`submenu-configpage-${menu.id}`}
+                        className={`config-page-${menu.id}` === subMenuClassName && styles.menuItem}
                         onClick={(e) =>
                           this.handleClickSubMenu(
                             e,
@@ -485,9 +495,10 @@ class Sidebar extends Component {
                 </MenuItem>
               </Menu> */}
               <Menu iconShape="square">
-                <SubMenu title="Help">
+                <SubMenu title="Help" icon={<FontAwesomeIcon icon={faLightbulb} color="#bababa" />}>
                   {projectId && surveyId && (
                     <MenuItem
+                      className={"take-the-tour" === subMenuClassName && styles.menuItem}
                       onClick={(e) =>
                         this.handleClickSubMenu(e, "take-the-tour", `/app/tour`)
                       }
@@ -496,6 +507,7 @@ class Sidebar extends Component {
                     </MenuItem>
                   )}
                   <MenuItem
+                    className={"how-to-use-pulse" === subMenuClassName && styles.menuItem}
                     onClick={(e) =>
                       this.handleClickSubMenu(
                         e,
@@ -507,6 +519,7 @@ class Sidebar extends Component {
                     How to use Pulse
                   </MenuItem>
                   <MenuItem
+                    className={"turn-on-guide-mode" === subMenuClassName && styles.menuItem}
                     onClick={(e) =>
                       this.handleClickSubMenu(
                         e,
@@ -539,6 +552,7 @@ class Sidebar extends Component {
               <Menu iconShape="square">
                 <MenuItem
                   onClick={(e) => this.handleClickMainMenu(e, "logout", false)}
+                  icon={<FontAwesomeIcon icon={faSignOutAlt} color="#bababa" />}
                 >
                   Log Out
                 </MenuItem>
