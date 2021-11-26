@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import classnames from 'classnames'
 import styles from './styles.scss'
 
@@ -48,14 +49,14 @@ const steps = [
   }
 ]
 
-const AdminStepBar = ({ currentStep, setCurrentStep }) => {
+const AdminStepBar = ({ currentStep, setCurrentStep, currentProject }) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.stepBar}>
         <div className={styles.centerLine}></div>
         {
           steps.map((step, index) =>
-            <div key={index} className={styles.step}>
+            (index !== 5 || (index === 5 && Object.keys(currentProject).length > 0)) && <div key={index} className={styles.step}>
               <div className={classnames(styles.imageWrapper, index === currentStep && styles.active)} onClick={() => setCurrentStep(index)}>
                 <img src={index === currentStep ? step.active : step.icon} alt="step" />
               </div>
@@ -68,4 +69,11 @@ const AdminStepBar = ({ currentStep, setCurrentStep }) => {
   )
 }
 
-export default AdminStepBar
+const mapStateToProps = ({ admin }) => {
+  const { currentProject } = admin
+  return {
+    currentProject
+  }
+}
+
+export default connect(mapStateToProps, null)(AdminStepBar)
