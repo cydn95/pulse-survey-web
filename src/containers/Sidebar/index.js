@@ -70,6 +70,7 @@ class Sidebar extends Component {
       stepIndex: 0,
       steps: [],
       isAdmin: false,
+      subMenuSelected: null,
     };
   }
 
@@ -276,6 +277,7 @@ class Sidebar extends Component {
 
     this.setState({
       subMenuOpen: false,
+      subMenuSelected: menu
     });
 
     history.push(to);
@@ -286,6 +288,7 @@ class Sidebar extends Component {
 
     this.setState({
       subMenuOpen: false,
+      subMenuSelected: projectId
     });
 
     const { getSurveyListByProject } = this.props;
@@ -381,7 +384,7 @@ class Sidebar extends Component {
                   {projectList.map((project) => (
                     <MenuItem
                       key={`project-submenu-${project.id}`}
-                      className={projectId === project.id && styles.menuItem}
+                      className={this.state.subMenuSelected === project.id && styles.menuItem}
                       onClick={(e) => this.handleClickProject(e, project.id)}
                     >
                       {project.projectName}
@@ -419,7 +422,7 @@ class Sidebar extends Component {
                         key={`submenu-report-${menu
                           .toLowerCase()
                           .replace(" ", "-")}`}
-                        className={menu.toLocaleLowerCase() === subMenuClassName && styles.menuItem}
+                        className={menu.toLocaleLowerCase() === this.state.subMenuSelected && styles.menuItem}
                         onClick={(e) =>
                           this.handleClickSubMenu(
                             e,
@@ -449,7 +452,7 @@ class Sidebar extends Component {
                         key={`submenu-report-${menu
                           .toLowerCase()
                           .replace(" ", "-")}`}
-                        className={menu.toLocaleLowerCase() === subMenuClassName && styles.menuItem}
+                        className={menu.toLocaleLowerCase() === this.state.subMenuSelected && styles.menuItem}
                         onClick={(e) =>
                           this.handleClickSubMenu(
                             e,
@@ -472,7 +475,7 @@ class Sidebar extends Component {
                     {pageContent.map((menu) => (
                       <MenuItem
                         key={`submenu-configpage-${menu.id}`}
-                        className={`config-page-${menu.id}` === subMenuClassName && styles.menuItem}
+                        className={`config-page-${menu.id}` === this.state.subMenuSelected && styles.menuItem}
                         onClick={(e) =>
                           this.handleClickSubMenu(
                             e,
@@ -498,7 +501,7 @@ class Sidebar extends Component {
                 <SubMenu title="Help" icon={<FontAwesomeIcon icon={faLightbulb} color="#bababa" />}>
                   {projectId && surveyId && (
                     <MenuItem
-                      className={"take-the-tour" === subMenuClassName && styles.menuItem}
+                      className={"take-the-tour" === this.state.subMenuSelected && styles.menuItem}
                       onClick={(e) =>
                         this.handleClickSubMenu(e, "take-the-tour", `/app/tour`)
                       }
@@ -507,7 +510,7 @@ class Sidebar extends Component {
                     </MenuItem>
                   )}
                   <MenuItem
-                    className={"how-to-use-pulse" === subMenuClassName && styles.menuItem}
+                    className={"how-to-use-pulse" === this.state.subMenuSelected && styles.menuItem}
                     onClick={(e) =>
                       this.handleClickSubMenu(
                         e,
@@ -519,7 +522,7 @@ class Sidebar extends Component {
                     How to use Pulse
                   </MenuItem>
                   <MenuItem
-                    className={"turn-on-guide-mode" === subMenuClassName && styles.menuItem}
+                    className={"turn-on-guide-mode" === this.state.subMenuSelected && styles.menuItem}
                     onClick={(e) =>
                       this.handleClickSubMenu(
                         e,

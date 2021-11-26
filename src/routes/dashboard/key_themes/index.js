@@ -184,7 +184,6 @@ const ReportKeyThemes = ({
         <TopNav
           history={history}
           menuTitle="Key Themes"
-          style={{ background: "#f5f5f5" }}
         >
           <div className={styles.section}>
             <h2 className={styles["page-title"]}>My Profile</h2>

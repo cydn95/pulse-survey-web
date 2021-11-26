@@ -83,13 +83,13 @@ function renderGraph(node, props) {
     .innerRadius(innerRadius)
     .outerRadius(radius)
     .padAngle(0.05)
-    .cornerRadius(4);
+    .cornerRadius(4)
 
   const path = root
     .selectAll("." + styles.pie)
     .data(pie(data), (pieDatum, i) => {
       return keySelector(pieDatum.data, i);
-    });
+    })
 
   path.exit().remove();
 
@@ -108,7 +108,22 @@ function renderGraph(node, props) {
     .attr("fill", (d, i) => `${fillColors[i]}`)
     .attr("d", arc)
     .attr("stroke", "none")
-    .attr("stroke-width", "2px");
+    .attr("stroke-width", "2px")
+  // .on("mouseover", function (d) {
+  //   console.log(d3.select("#value"))
+  //   console.log(d)
+  //   d3.select("#" + styles.tooltip)
+  //     .style("left", d3.event.pageX + "px")
+  //     .style("top", d3.event.pageY + "px")
+  //     .style("opacity", 1)
+  //     .select("#value")
+  //     .text(0);
+  // })
+  // .on("mouseout", function () {
+  //   // Hide the tooltip
+  //   d3.select("#" + styles.tooltip)
+  //     .style("opacity", 0);
+  // });
 }
 
 // ref_prop is used by ResponsiveComponent
@@ -124,6 +139,11 @@ const Smile = React.forwardRef((props, ref_prop) => {
   return (
     <div ref={ref_prop} className={classnames(className, styles.main)}>
       <svg ref={ref} />
+      <div id={styles.tooltip} className={styles.hidden}>
+        <p><strong>Important Label Heading</strong>
+        </p>
+        <p><span id="value">100</span>%</p>
+      </div>
     </div>
   );
 });
