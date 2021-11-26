@@ -364,7 +364,6 @@ const AdvisorInsights = ({
         <TopNav
           history={history}
           menuTitle="Advisor/Insights"
-          style={{ backgroundColor: "#f5f5f5" }}
         >
           <div className={styles.section}>
             <h2 className={styles["page-title"]}>My Profile</h2>

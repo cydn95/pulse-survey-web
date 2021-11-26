@@ -431,7 +431,6 @@ const ReportSummary = ({
         <TopNav
           history={history}
           menuTitle="Summary"
-          style={{ backgroundColor: "#f5f5f5" }}
         >
           <div className={styles.section}>
             <h2 className={styles["page-title"]}>My Profile</h2>
