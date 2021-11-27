@@ -143,10 +143,10 @@ const Smile = React.forwardRef((props, ref_prop) => {
   return (
     <div ref={ref_prop} className={classnames(className, styles.main)}>
       <svg ref={ref} />
-      {/* <div id={styles.tooltip} className={styles.hidden}>
+      <div id={styles.tooltip} className={styles.hidden}>
         <p><span id={styles.description}>Default</span></p>
         <p className={styles.count}><span id={styles.value}>100</span>%</p>
-      </div> */}
+      </div>
     </div>
   );
 });
