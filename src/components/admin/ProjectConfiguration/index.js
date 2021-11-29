@@ -36,10 +36,6 @@ const ProjectConfiguration = ({
           <MappingCategory styles={styles} setMyMapReorder={setMyMapReorder} setProjectMapReorder={setProjectMapReorder} />
           <Drivers styles={styles} drviers={currentProject.driverList} setDriverReorder={setDriverReorder} />
           <UserGrouping shgroup={shgroup} setSHGroup={setSHGroup} styles={styles} />
-          <div className={styles.dashboard_threshold}>
-            <span className={styles.tag}>Dashboard Threshold</span>
-            <Input className={styles.threshold} />
-          </div>
         </div>}
     </React.Fragment>
   )
