@@ -101,6 +101,10 @@ const UserGrouping = ({
           </div>
           <Input type="number" className={styles.threshold} value={currentProject.anonymityThreshold} onChange={(value, e) => setProjectField('anonymityThreshold', value)} />
         </div>
+        <div className={styles.anonymity}>
+          <span>Dashboard Threshold&nbsp;</span>
+          <Input type="number" className={styles.threshold} />
+        </div>
       </div>
       <div className={styles.detailed}>
         <div className={styles.column}>
