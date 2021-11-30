@@ -42,7 +42,7 @@ class Tooltip extends Component {
             disableOverlayClose: true,
             hideCloseButton: true,
             hideFooter: true,
-            placement: "bottom",
+            placement: "right",
             spotlightClicks: true,
             styles: {
               options: {

@@ -8,7 +8,7 @@ import Select from 'Components/Select'
 import Input from 'Components/Input'
 import Button from 'Components/Button'
 import AddButton from 'Components/AddButton'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { adminDeleteQuestion } from 'Redux/actions'
 import {
@@ -22,8 +22,15 @@ import QMark from '../../../../assets/img/admin/QMark.svg'
 import DeleteIcon from '../../../../assets/img/admin/delete.svg'
 
 const Tag = styled.span`
-  padding: 3px 6px 1px;
-  border-radius: 4px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  min-width: 12px;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: ${props => props.borderRadius ? props.borderRadius : '4px'};
   font-family: Poppins;
   font-size: 11px;
   font-weight: 500;
@@ -36,7 +43,19 @@ const Tag = styled.span`
   background-color: ${props => `${props.color}50`};
 `
 
-const Question = ({ question, shgroupList, skipQuestionList, drivers, index, setQuestionByField, filter, driverList, setQuestionList, deleteQuestion }) => {
+const Question = ({
+  question,
+  shgroupList,
+  skipQuestionList,
+  drivers,
+  index,
+  setQuestionByField,
+  filter,
+  driverList,
+  setQuestionList,
+  deleteQuestion,
+  currentProject
+}) => {
   const headerRef = useRef(null)
   const spanRef = useRef(null)
   const subRef = useRef(null)
@@ -44,6 +63,8 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
   const [edit, setEdit] = useState(false)
   const [width, setWidth] = useState()
   const [open, setOpen] = useState(false)
+  const [addTag, setAddTag] = useState(false)
+  const [newTag, setNewTag] = useState()
   const [subDriver, setSubDriver] = useState(question.subdriver)
   const [newSkip, setNewSkip] = useState({})
 
@@ -99,7 +120,37 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
               </div>
               <div className={styles.input}>
                 <span className={styles.label}>SH Group:</span>
-                {question.shGroup.map((sh, idx) => <Tag color={getColorFromValue((idx + 4) % 5 + 5)} key={`${idx}-${sh}`} text={(shgroupList.filter(s => s.id === sh)[0] || {}).SHGroupName}>{(shgroupList.filter(s => s.id === sh)[0] || {}).SHGroupName}</Tag>)}
+                {question.shGroup.map((sh, idx) =>
+                  <Tag
+                    color={getColorFromValue((idx + 4) % 5 + 5)}
+                    key={`${idx}-${sh}`}
+                    text={(shgroupList.filter(s => s.id === sh)[0] || {}).SHGroupName}
+                  >
+                    {(shgroupList.filter(s => s.id === sh)[0] || {}).SHGroupName}
+                    <FontAwesomeIcon
+                      icon={faTimes}
+                      color={getColorFromValue((idx + 4) % 5 + 5)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setQuestionByField(filter, index, 'shGroup', question.shGroup.filter((sh, i) => i !== idx))
+                      }
+                      }
+                    />
+                  </Tag>
+                )}
+                {currentProject.shGroup.length > question.shGroup.length && <Tag
+                  color={getColorFromValue((question.shGroup.length + 4) % 5 + 5)}
+                  key={`plus`}
+                  borderRadius={'100%'}
+                >
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    color={getColorFromValue((question.shGroup.length + 4) % 5 + 5)}
+                    onClick={() =>
+                      console.log('add')
+                    }
+                  />
+                </Tag>}
               </div>
               <Button onClick={() => setDetailed(true)} className={styles.viewDetails}>View Details</Button>
             </div>
@@ -263,9 +314,11 @@ const Question = ({ question, shgroupList, skipQuestionList, drivers, index, set
   )
 }
 
-const mapStateToProps = ({ common }) => {
+const mapStateToProps = ({ common, admin }) => {
+  const { currentProject } = admin
   const { shgroupList, skipQuestionList } = common;
   return {
+    currentProject,
     shgroupList,
     skipQuestionList,
   }

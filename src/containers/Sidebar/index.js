@@ -314,10 +314,12 @@ class Sidebar extends Component {
 
   handleJoyrideCallback = (data) => {
     const { status } = data;
+    const { user, guide, actionUpdateGuideStatus } = this.props;
     const finishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED];
 
     if (finishedStatuses.includes(status)) {
       this.setState({ run: false });
+      actionUpdateGuideStatus(user.accessToken, !guide);
     }
   };
 
@@ -363,6 +365,7 @@ class Sidebar extends Component {
             showProgress={true}
             showSkipButton={true}
             steps={steps}
+            disableOverlayClose={true}
             skipBeacon={true}
             tooltipComponent={DesktopGuide}
             styles={{
