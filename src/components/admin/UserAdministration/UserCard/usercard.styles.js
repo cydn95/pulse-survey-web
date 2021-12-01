@@ -52,7 +52,6 @@ export const Basic = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 15px 35px;
-  border-bottom: 1px solid #dfe0eb;
   flex-wrap: wrap;
   gap: 10px;
   .left-part {
@@ -163,6 +162,7 @@ export const Detailed = styled.div`
 `
 
 export const EditPart = styled.div`
+  border-top: 1px solid #dfe0eb;
   display: flex;
   flex-wrap: wrap;
   padding: 18px 35px 23px 35px;
