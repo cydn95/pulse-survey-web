@@ -29,9 +29,11 @@ const SurveyConfiguration = ({
   getShGroupList,
   getSkipQuestionList,
   setQuestionByField,
-  setQuestionList
+  setQuestionList,
+  surveyId
 }) => {
   let temp = [];
+  const [qChanged, setQChanged] = useState(false)
   const [questions, setQuestions] = useState([])
   const [filter, setFilter] = useState('About Me')
   const [drivers, setDrivers] = useState((currentProject.driverList || []).map(d => d.driverName))
@@ -43,8 +45,8 @@ const SurveyConfiguration = ({
 
   useEffect(() => {
     getSkipQuestionList();
-    getShGroupList(currentProject.surveyId);
-  }, [currentProject.surveyId])
+    getShGroupList(surveyId);
+  }, [surveyId])
 
   useEffect(() => {
     let tempQuestion
@@ -66,6 +68,7 @@ const SurveyConfiguration = ({
     // setDrivers(temp)
     // setCurrentDriver(temp[0])
     setQuestions(tempQuestion)
+    setQChanged(!qChanged)
   }, [amQuestionList, aoQuestionList, filter])
 
   // const modalContent = () => <div>
@@ -187,7 +190,7 @@ const SurveyConfiguration = ({
             if (question.driver && question.driver.driverName !== currentDriver)
               return null;
             return (
-              <Question surveyId={currentProject.id} question={question} index={idx} filter={filter} setQuestionByField={setQuestionByField} setQuestionList={setQuestionList} drivers={drivers} key={`${idx}-${question.controlType}`} />
+              <Question qChanged={qChanged} surveyId={currentProject.id} question={question} index={idx} filter={filter} setQuestionByField={setQuestionByField} setQuestionList={setQuestionList} drivers={drivers} key={`${idx}-${question.controlType}`} />
             )
           }) : <h3>No Question</h3>}
           {open && <ModalWrapper onClick={() => setOpen(false)}>
@@ -210,12 +213,13 @@ const SurveyConfiguration = ({
 }
 
 const mapStateToProps = ({ admin }) => {
-  const { aoQuestionList, amQuestionList, loading, currentProject, driverList } = admin;
+  const { aoQuestionList, amQuestionList, loading, currentProject, surveyId } = admin;
   return {
     aoQuestionList,
     amQuestionList,
     loading,
     currentProject,
+    surveyId,
   }
 }
 

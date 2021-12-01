@@ -54,7 +54,8 @@ const Question = ({
   driverList,
   setQuestionList,
   deleteQuestion,
-  currentProject
+  currentProject,
+  qChanged,
 }) => {
   const headerRef = useRef(null)
   const spanRef = useRef(null)
@@ -76,6 +77,10 @@ const Question = ({
       className={styles.skipSelect}
     />
   </div>
+
+  useEffect(() => {
+    console.log("changed")
+  }, [qChanged])
 
   useEffect(() => {
     setWidth(spanRef.current.offsetWidth)
@@ -128,13 +133,13 @@ const Question = ({
                   >
                     {(shgroupList.filter(s => s.id === sh)[0] || {}).SHGroupName}
                     <FontAwesomeIcon
+                      style={{ cursor: 'pointer' }}
                       icon={faTimes}
                       color={getColorFromValue((idx + 4) % 5 + 5)}
                       onClick={(e) => {
                         e.stopPropagation()
                         setQuestionByField(filter, index, 'shGroup', question.shGroup.filter((sh, i) => i !== idx))
-                      }
-                      }
+                      }}
                     />
                   </Tag>
                 )}
@@ -144,11 +149,14 @@ const Question = ({
                   borderRadius={'100%'}
                 >
                   <FontAwesomeIcon
+                    style={{ cursor: 'pointer' }}
                     icon={faPlus}
                     color={getColorFromValue((question.shGroup.length + 4) % 5 + 5)}
-                    onClick={() =>
+                    onClick={(e) => {
                       console.log('add')
-                    }
+                      e.stopPropagation();
+                      setAddTag(true);
+                    }}
                   />
                 </Tag>}
               </div>
@@ -306,6 +314,27 @@ const Question = ({
             <ModalFooter>
               <span onClick={() => setDetailed(false)}>Cancel</span>
               <Button className="btn">Save</Button>
+            </ModalFooter>
+          </DetailModal>
+        </ModalWrapper>
+      }
+      {addTag &&
+        <ModalWrapper onClick={() => setAddTag(false)}>
+          <DetailModal onClick={(e) => e.stopPropagation()}>
+            <ModalHeader>
+              <h2>Add SH Group</h2>
+              <span onClick={() => setAddTag(false)}><FontAwesomeIcon icon={faTimes} color="#6d6f94" /></span>
+            </ModalHeader>
+            <div className={styles.addModal}>
+              <Select
+                selected={newTag}
+                setSelected={(value) => setNewTag(value)}
+                items={shgroupList.filter(s => !question.shGroup.includes(s.id)).map(sh => sh.SHGroupName)}
+              />
+            </div>
+            <ModalFooter>
+              <span onClick={() => setAddTag(false)}>Cancel</span>
+              <Button className="btn" onClick={() => { }}>Add</Button>
             </ModalFooter>
           </DetailModal>
         </ModalWrapper>

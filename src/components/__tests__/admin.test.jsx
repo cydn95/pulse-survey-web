@@ -1119,7 +1119,12 @@ describe('admin components works properly', () => {
         }
         expect(screen.getByText('No User')).toBeInTheDocument()
         rerender(<UserAdministration userList={mockData} />)
-        expect(screen.getByText('No User')).not.toBeInTheDocument()
+        expect(screen.getByText('Identified Team Members')).toBeInTheDocument()
+        expect(screen.getByText('Identified Stakeholder')).toBeInTheDocument()
+        expect(screen.getByText('Invited Team Members')).toBeInTheDocument()
+        expect(screen.getByText('Invited Stakeholder')).toBeInTheDocument()
+        expect(screen.getByText('Total Identified')).toBeInTheDocument()
+        expect(screen.getByText('Total Invited')).toBeInTheDocument()
     })
     test('survey configuration page works properly', () => {
         render(<SurveyConfiguration />)

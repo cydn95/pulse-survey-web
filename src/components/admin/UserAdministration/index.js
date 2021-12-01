@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useCallback } from 'react'
+import React, { Fragment, useState, useEffect, useCallback, useMemo } from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
 import { teamList, shgroupList, adminSetUserField, adminAddNewUSer, adminSendBulkInvitation, adminBulkArchiveUser } from 'Redux/actions'
@@ -26,7 +26,36 @@ import Counter from './Counter'
 import UserCard from './UserCard'
 import styles from './styles.scss'
 
-const UserAdministration = ({ userList, currentProject, loading, getTeamList, getShGroupList, shgroupList, teamList, setUserField, addNewUser, profile, sendBulkInvitation, sendBulkArchiveUser }) => {
+
+const UserAdministration = ({
+  userList,
+  currentProject,
+  loading,
+  getTeamList,
+  getShGroupList,
+  shgroupList,
+  teamList,
+  setUserField,
+  addNewUser,
+  profile,
+  sendBulkInvitation,
+  sendBulkArchiveUser,
+  surveyId
+}) => {
+  const shTypes = useMemo(() => {
+    return [
+      {
+        "id": 55,
+        "shTypeName": "Team Member",
+        "survey": 59
+      },
+      {
+        "id": 56,
+        "shTypeName": "Stakeholder",
+        "survey": 59
+      },
+    ]
+  }, [surveyId])
   const [order, setOrder] = useState([0, 0])
   const [config, setConfig] = useState(false)
   const [filter, setFilter] = useState(['', '', '', '', '', ''])
@@ -41,25 +70,25 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
     getShGroupList(currentProject.id)
   }, [currentProject])
 
-  const teamListManual = useCallback(() => {
-    let temp = [];
-    (userList.projectUser ? userList.projectUser : []).map(user => {
-      if (valueByField(user, 'team') && !temp.includes(valueByField(user, 'team'))) {
-        temp.push(valueByField(user, 'team'))
-      }
-    })
-    return temp
-  }, [userList])
+  // const teamListManual = useCallback(() => {
+  //   let temp = [];
+  //   (userList.projectUser ? userList.projectUser : []).map(user => {
+  //     if (valueByField(user, 'team') && !temp.includes(valueByField(user, 'team'))) {
+  //       temp.push(valueByField(user, 'team'))
+  //     }
+  //   })
+  //   return temp
+  // }, [userList])
 
-  const shGroupListManual = useCallback(() => {
-    let temp = [];
-    (userList.projectUser ? userList.projectUser : []).map(user => {
-      if (valueByField(user, 'shGroup') && !temp.includes(valueByField(user, 'shGroup'))) {
-        temp.push(valueByField(user, 'shGroup'))
-      }
-    })
-    return temp
-  }, [userList])
+  // const shGroupListManual = useCallback(() => {
+  //   let temp = [];
+  //   (userList.projectUser ? userList.projectUser : []).map(user => {
+  //     if (valueByField(user, 'shGroup') && !temp.includes(valueByField(user, 'shGroup'))) {
+  //       temp.push(valueByField(user, 'shGroup'))
+  //     }
+  //   })
+  //   return temp
+  // }, [userList])
 
   const valueByField = (user, field) => {
     switch (field) {
@@ -316,220 +345,264 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
               content={modalContent}
             />
           </div>
-          {(userList.projectUser ? userList.projectUser : []).length !== 0 ? <table style={{ textAlign: 'left' }} className={styles.dataTable}>
-            <thead>
-              <tr>
-                <th>
-                  <CheckBoxComponent
-                    checked={(userList.projectUser ? userList.projectUser : []).length === selected.length}
-                    indeterminate={list.length !== selected.length && selected.length !== 0}
-                    onChange={() => setSelected(() => {
-                      if (selected.length !== list.length) {
-                        return list.map((user, idx) => user.id)
-                      } else {
-                        return []
-                      }
-                    })}
-                  />
-                </th>
-                <th onClick={() => thClicked(0, 'firstName')}>
-                  <div className={styles.arrow}>
-                    <span>First name</span>
-                    {order[0] !== 0 && <span><FontAwesomeIcon icon={order[0] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
-                  </div>
-                </th>
-                <th
-                  onClick={() => thClicked(1, 'lastName')}
-                >
-                  <div className={styles.arrow}>
-                    <span>Last name</span>
-                    {order[1] !== 0 && <span><FontAwesomeIcon icon={order[1] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
-                  </div>
-                </th>
-                <th>
-                  <Select selected={filter[0]}
-                    noSelected="Project title"
-                    setSelected={(item) => {
-                      let temp = [...filter]
-                      temp[0] = item
-                      setFilter(temp)
-                    }}
-                    items={(() => {
-                      let temp = [];
-                      (userList.projectUser ? userList.projectUser : []).map(user => {
-                        if (valueByField(user, 'projectTitle') && !temp.includes(valueByField(user, 'projectTitle'))) {
-                          temp.push(valueByField(user, 'projectTitle'))
-                        }
-                      })
-                      return temp
-                    })()}
-                  />
-                </th>
-                <th>
-                  <Select selected={filter[1]}
-                    noSelected="Project Org"
-                    setSelected={(item) => {
-                      let temp = [...filter]
-                      temp[1] = item
-                      setFilter(temp)
-                    }}
-                    items={(() => {
-                      let temp = [];
-                      (userList.projectUser ? userList.projectUser : []).map(user => {
-                        if (valueByField(user, 'projectOrg') && !temp.includes(valueByField(user, 'projectOrg'))) {
-                          temp.push(valueByField(user, 'projectOrg'))
-                        }
-                      })
-                      return temp
-                    })()}
-                  />
-                </th>
-                <th>
-                  <Select selected={filter[2]}
-                    noSelected="Team"
-                    setSelected={(item) => {
-                      let temp = [...filter]
-                      temp[2] = item
-                      setFilter(temp)
-                    }}
-                    items={teamList.map(team => team.name)}
-                  />
-                </th>
-                <th>
-                  <Select selected={filter[3]}
-                    noSelected="SH Group"
-                    setSelected={(item) => {
-                      let temp = [...filter]
-                      temp[3] = item
-                      setFilter(temp)
-                    }}
-                    items={(() => {
-                      let temp = [];
-                      (userList.projectUser ? userList.projectUser : []).map(user => {
-                        if (valueByField(user, 'shGroup') && !temp.includes(valueByField(user, 'shGroup'))) {
-                          temp.push(valueByField(user, 'shGroup'))
-                        }
-                      })
-                      return temp
-                    })()}
-                  />
-                </th>
-                <th>
-                  <Select selected={filter[4]}
-                    noSelected="SH Type"
-                    setSelected={(item) => {
-                      let temp = [...filter]
-                      temp[4] = item
-                      setFilter(temp)
-                    }}
-                    items={(() => {
-                      let temp = [];
-                      (userList.projectUser ? userList.projectUser : []).map(user => {
-                        if (valueByField(user, 'shType') && !temp.includes(valueByField(user, 'shType'))) {
-                          temp.push(valueByField(user, 'shType'))
-                        }
-                      })
-                      return temp
-                    })()}
-                  />
-                </th>
-                <th>
-                  <Select selected={filter[5]}
-                    noSelected="Status"
-                    setSelected={(item) => {
-                      let temp = [...filter]
-                      temp[5] = item
-                      setFilter(temp)
-                    }}
-                    items={(() => {
-                      let temp = [];
-                      (userList.projectUser ? userList.projectUser : []).map(user => {
-                        if (valueByField(user, 'status') && !temp.includes(valueByField(user, 'status'))) {
-                          temp.push(valueByField(user, 'status'))
-                        }
-                      })
-                      return temp
-                    })()}
-                  />
-                </th>
-              </tr>
-              <tr style={{ background: 'white' }} onClick={() => setConfig(true)}>
-                <td colSpan={9}>
-                  <div className={styles.config}>
-                    <FontAwesomeIcon icon={faCog} className={styles.icon} color={'rgb(109, 111, 148)'} />
-                    <div className={styles.content}>
-                      <span>{`Filters: ${filter.filter(f => f !== '').join(', ')}`}</span>
-                      <span>{`Sort by: ${order.map((o, idx) => (o !== 0 && idx === 0) ? 'First Name' : (o !== 0 && idx === 1) ? 'Last Name' : '').filter(o => o !== '')[0] || ''}`}</span>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </thead>
-            {list.length > 0 ? <tbody>
-              {list.map((user, idx) =>
-                <Fragment key={idx}>
-                  <tr className={styles.desktop} onClick={() => {
-                    if (detail === user.id) {
-                      setDetail(null)
-                    } else {
-                      setDetail(user.id)
-                    }
-                    // let temp = toggle(detail, idx)
-                  }}>
-                    <td>
+          {(userList.projectUser ? userList.projectUser : []).length !== 0 ?
+            <div className={styles.tableWrapper}>
+              <table className={styles.dataTable}>
+                <thead>
+                  <tr>
+                    <th>
                       <CheckBoxComponent
-                        checked={selected.includes(user.id)}
-                        onChange={(e) => {
-                          let temp = toggle(selected, user.id)
-                          setSelected(temp)
-                        }}
+                        checked={(userList.projectUser ? userList.projectUser : []).length === selected.length}
+                        indeterminate={list.length !== selected.length && selected.length !== 0}
+                        onChange={() => setSelected(() => {
+                          if (selected.length !== list.length) {
+                            return list.map((user, idx) => user.id)
+                          } else {
+                            return []
+                          }
+                        })}
                       />
-                    </td>
-                    <td>{user.user.first_name}</td>
-                    <td>{user.user.last_name}</td>
-                    <td>{user.projectUserTitle}</td>
-                    <td>{user.projectOrganization}</td>
-                    <td>{(user.team || {}).name}</td>
-                    <td>{(user.shGroup || {}).SHGroupName}</td>
-                    <td>{(user.shType || {}).shTypeName}</td>
-                    <td><div className={styles.arrow}>{getStatus(user).text}<span><FontAwesomeIcon icon={detail === user.id ? faAngleDown : faAngleRight} color="#6d6f94" /></span></div></td>
-                  </tr>
-                  <tr className={styles.mobile} onClick={() => {
-                    if (detail === user.id) {
-                      setDetail(null)
-                    } else {
-                      setDetail(user.id)
-                    }
-                    // let temp = toggle(detail, idx)
-                  }}>
-                    <td>
-                      <span
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          let temp = toggle(selected, user.id)
-                          setSelected(temp)
+                    </th>
+                    <th onClick={() => thClicked(0, 'firstName')}>
+                      <div className={styles.arrow}>
+                        <span>First name</span>
+                        {order[0] !== 0 && <span><FontAwesomeIcon icon={order[0] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
+                      </div>
+                    </th>
+                    <th
+                      onClick={() => thClicked(1, 'lastName')}
+                    >
+                      <div className={styles.arrow}>
+                        <span>Last name</span>
+                        {order[1] !== 0 && <span><FontAwesomeIcon icon={order[1] === 1 ? faAngleDown : faAngleUp} color="#6d6f94" /></span>}
+                      </div>
+                    </th>
+                    <th>
+                      <Select selected={filter[0]}
+                        noSelected="Project title"
+                        setSelected={(item) => {
+                          let temp = [...filter]
+                          temp[0] = item
+                          setFilter(temp)
                         }}
-                        className={classnames(styles.check, styles[selected.includes(user.id) ? 'visible' : 'hidden'])}>
-                        <FontAwesomeIcon icon={faCheck} color="white" />
-                      </span>
-                    </td>
-                    <td colSpan={7} style={{ padding: '8px 20px' }}>
-                      <div>
-                        <h3>{user.user.first_name} {user.user.last_name}</h3>
-                        <span>{`${user.projectUserTitle} ${user.projectOrganization ? ', ' + user.projectOrganization : ''} ${(user.shType || {}).shTypeName ? ' / ' + (user.shType || {}).shTypeName : ''}`}</span>
+                        items={(() => {
+                          let temp = [];
+                          (userList.projectUser ? userList.projectUser : []).map(user => {
+                            if (valueByField(user, 'projectTitle') && !temp.includes(valueByField(user, 'projectTitle'))) {
+                              temp.push(valueByField(user, 'projectTitle'))
+                            }
+                          })
+                          return temp
+                        })()}
+                      />
+                    </th>
+                    <th>
+                      <Select selected={filter[1]}
+                        noSelected="Project Org"
+                        setSelected={(item) => {
+                          let temp = [...filter]
+                          temp[1] = item
+                          setFilter(temp)
+                        }}
+                        items={(() => {
+                          let temp = [];
+                          (userList.projectUser ? userList.projectUser : []).map(user => {
+                            if (valueByField(user, 'projectOrg') && !temp.includes(valueByField(user, 'projectOrg'))) {
+                              temp.push(valueByField(user, 'projectOrg'))
+                            }
+                          })
+                          return temp
+                        })()}
+                      />
+                    </th>
+                    <th>
+                      <Select selected={filter[2]}
+                        noSelected="Team"
+                        setSelected={(item) => {
+                          let temp = [...filter]
+                          temp[2] = item
+                          setFilter(temp)
+                        }}
+                        items={teamList.map(team => team.name)}
+                      />
+                    </th>
+                    <th>
+                      <Select selected={filter[3]}
+                        noSelected="SH Group"
+                        setSelected={(item) => {
+                          let temp = [...filter]
+                          temp[3] = item
+                          setFilter(temp)
+                        }}
+                        items={(() => {
+                          let temp = [];
+                          (userList.projectUser ? userList.projectUser : []).map(user => {
+                            if (valueByField(user, 'shGroup') && !temp.includes(valueByField(user, 'shGroup'))) {
+                              temp.push(valueByField(user, 'shGroup'))
+                            }
+                          })
+                          return temp
+                        })()}
+                      />
+                    </th>
+                    <th>
+                      <Select selected={filter[4]}
+                        noSelected="SH Type"
+                        setSelected={(item) => {
+                          let temp = [...filter]
+                          temp[4] = item
+                          setFilter(temp)
+                        }}
+                        items={(() => {
+                          let temp = [];
+                          (userList.projectUser ? userList.projectUser : []).map(user => {
+                            if (valueByField(user, 'shType') && !temp.includes(valueByField(user, 'shType'))) {
+                              temp.push(valueByField(user, 'shType'))
+                            }
+                          })
+                          return temp
+                        })()}
+                      />
+                    </th>
+                    <th>
+                      <Select selected={filter[5]}
+                        noSelected="Status"
+                        setSelected={(item) => {
+                          let temp = [...filter]
+                          temp[5] = item
+                          setFilter(temp)
+                        }}
+                        items={(() => {
+                          let temp = [];
+                          (userList.projectUser ? userList.projectUser : []).map(user => {
+                            if (valueByField(user, 'status') && !temp.includes(valueByField(user, 'status'))) {
+                              temp.push(valueByField(user, 'status'))
+                            }
+                          })
+                          return temp
+                        })()}
+                      />
+                    </th>
+                  </tr>
+                  <tr style={{ background: 'white' }} onClick={() => setConfig(true)}>
+                    <td colSpan={9}>
+                      <div className={styles.config}>
+                        <FontAwesomeIcon icon={faCog} className={styles.icon} color={'rgb(109, 111, 148)'} />
+                        <div className={styles.content}>
+                          <span>{`Filters: ${filter.filter(f => f !== '').join(', ')}`}</span>
+                          <span>{`Sort by: ${order.map((o, idx) => (o !== 0 && idx === 0) ? 'First Name' : (o !== 0 && idx === 1) ? 'Last Name' : '').filter(o => o !== '')[0] || ''}`}</span>
+                        </div>
                       </div>
                     </td>
-                    <td style={{ textAlign: 'right' }}><FontAwesomeIcon icon={detail === user.id ? faAngleDown : faAngleRight} color="#6d6f94" /></td>
                   </tr>
-                  {detail === user.id && <tr>
-                    <td colSpan={9} style={{ padding: '0px' }}>
-                      <UserCard key={`${idx}-${idx}`} user={user} idx={idx} setUserField={setUserField} open={detail} setOpen={setDetail} />
+                </thead>
+                {list.length > 0 ? <tbody>
+                  {list.map((user, idx) =>
+                    <Fragment key={idx}>
+                      <tr className={styles.desktop} onClick={() => {
+                        if (detail === user.id) {
+                          setDetail(null)
+                        } else {
+                          setDetail(user.id)
+                        }
+                        // let temp = toggle(detail, idx)
+                      }}>
+                        <td>
+                          <CheckBoxComponent
+                            checked={selected.includes(user.id)}
+                            onChange={(e) => {
+                              let temp = toggle(selected, user.id)
+                              setSelected(temp)
+                            }}
+                          />
+                        </td>
+                        <td>{user.user.first_name}</td>
+                        <td>{user.user.last_name}</td>
+                        <td>
+                          <Input
+                            value={user.projectUserTitle}
+                            onChange={(value, e) => setUserField(idx, 'projectUserTitle', value)}
+                            className={styles.basicInput}
+                          />
+                        </td>
+                        <td>
+                          <Input
+                            value={user.projectOrganization}
+                            className={styles.basicInput}
+                            onChange={(value, e) => setUserField(idx, 'projectOrganization', value)}
+                          />
+                        </td>
+                        <td>
+                          <Select
+                            selected={(user.team || {}).name}
+                            setSelected={(item) => setUserField(idx, 'team', teamList.filter(team => team.name === item)[0])}
+                            className={styles.basicInput}
+                            items={teamList.map(team => team.name)}
+                          />
+                        </td>
+                        <td>
+                          <Select
+                            selected={(user.shGroup || {}).SHGroupName}
+                            setSelected={(item) => setUserField(idx, 'shGroup', shgroupList.filter(sh => sh.SHGroupName === item)[0])}
+                            className={styles.basicInput}
+                            items={shgroupList.map(sh => sh.SHGroupName)}
+                          />
+                        </td>
+                        <td>
+                          <Select
+                            selected={(user.shType || {}).shTypeName}
+                            setSelected={(value) => setUserField(idx, 'shType', shTypes.filter(sh => value === sh.shTypeName)[0])}
+                            className={styles.basicInput}
+                            items={shTypes.map(sh => sh.shTypeName)}
+                          />
+                        </td>
+                        <td><div className={styles.arrow}>{getStatus(user).text}<span><FontAwesomeIcon icon={detail === user.id ? faAngleDown : faAngleRight} color="#6d6f94" /></span></div></td>
+                      </tr>
+                      <tr className={styles.mobile} onClick={() => {
+                        if (detail === user.id) {
+                          setDetail(null)
+                        } else {
+                          setDetail(user.id)
+                        }
+                        // let temp = toggle(detail, idx)
+                      }}>
+                        <td>
+                          <span
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              let temp = toggle(selected, user.id)
+                              setSelected(temp)
+                            }}
+                            className={classnames(styles.check, styles[selected.includes(user.id) ? 'visible' : 'hidden'])}>
+                            <FontAwesomeIcon icon={faCheck} color="white" />
+                          </span>
+                        </td>
+                        <td colSpan={7} style={{ padding: '8px 20px' }}>
+                          <div>
+                            <h3>{user.user.first_name} {user.user.last_name}</h3>
+                            <span>{`${user.projectUserTitle} ${user.projectOrganization ? ', ' + user.projectOrganization : ''} ${(user.shType || {}).shTypeName ? ' / ' + (user.shType || {}).shTypeName : ''}`}</span>
+                          </div>
+                        </td>
+                        <td style={{ textAlign: 'right' }}><FontAwesomeIcon icon={detail === user.id ? faAngleDown : faAngleRight} color="#6d6f94" /></td>
+                      </tr>
+                      {detail === user.id && <tr>
+                        <td colSpan={9} style={{ padding: '0px' }}>
+                          <UserCard key={`${idx}-${idx}`} user={user} idx={idx} setUserField={setUserField} open={detail} setOpen={setDetail} />
+                        </td>
+                      </tr>}
+                    </Fragment>
+                  )}
+                </tbody>
+                  : <tr>
+                    <td colSpan={9}>
+                      <h3 style={{ padding: '16px 24px' }}>
+                        No User
+                      </h3>
                     </td>
                   </tr>}
-                </Fragment>
-              )}
-            </tbody> : <tr><td colSpan={9}><h3 style={{ padding: '16px 24px' }}>No User</h3></td></tr>}
-          </table> : <h3>No User</h3>}
+              </table>
+            </div> :
+            <h3>No User</h3>}
           {selected.length > 0 && <div className={styles.toolbar}>
             <span className={styles.selected}>
               <CheckBoxComponent
@@ -706,7 +779,7 @@ const UserAdministration = ({ userList, currentProject, loading, getTeamList, ge
 }
 
 const mapStateToProps = ({ admin, common, account }) => {
-  const { userList, loading, currentProject } = admin;
+  const { userList, loading, currentProject, surveyId } = admin;
   const { teamList, shgroupList } = common;
   const { profile } = account;
   return {
@@ -716,6 +789,7 @@ const mapStateToProps = ({ admin, common, account }) => {
     shgroupList,
     currentProject,
     profile,
+    surveyId,
   }
 }
 
