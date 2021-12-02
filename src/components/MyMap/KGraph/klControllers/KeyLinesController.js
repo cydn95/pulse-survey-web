@@ -506,31 +506,56 @@ class BaseController {
     this.enableLayoutOptions();
   };
 
-  handleDblClick = (id) => {
-    let clickedElement = this.chart.getItem(id);
-    if (
-      clickedElement.d.coreEntity &&
-      !clickedElement.d.expanded &&
-      clickedElement.d.individualCount > 0
-    ) {
-      this.expandChart(id);
-    } else if (clickedElement.d.coreEntity && clickedElement.d.expanded) {
-      this.toggleChart(id);
+  // handleDblClick = (id) => {
+  //   let clickedElement = this.chart.getItem(id);
+  //   if (
+  //     clickedElement.d.coreEntity &&
+  //     !clickedElement.d.expanded &&
+  //     clickedElement.d.individualCount > 0
+  //   ) {
+  //     this.expandChart(id);
+  //   } else if (clickedElement.d.coreEntity && clickedElement.d.expanded) {
+  //     this.toggleChart(id);
 
-    }
+  //   }
 
-    //  
-  };
+  //   //  
+  // };
 
   handleClick = (id) => {
-    if (id != null) {
-      this.clickNodeListener(id);
+    console.log('thsi', Date.now())
+    if (
+      this.lastClick && Date.now() - this.lastClick < 250 &&
+      this.watingClick
+    ) {
+      this.lastClick = 0;
+      clearTimeout(this.watingClick);
+      let clickedElement = this.chart.getItem(id);
+      if (
+        clickedElement.d.coreEntity &&
+        !clickedElement.d.expanded &&
+        clickedElement.d.individualCount > 0
+      ) {
+        this.expandChart(id);
+      } else if (clickedElement.d.coreEntity && clickedElement.d.expanded) {
+        this.toggleChart(id);
+      }
+      this.watingClick = null;
+    } else {
+      this.lastClick = Date.now();
+      this.watingClick = setTimeout(() => {
+        this.watingClick = null;
+        if (id != null) {
+          this.clickNodeListener(id);
+        }
+      }, 251);
     }
   };
 
   setupUI() {
     this.container = document.getElementById("kl");
-    this.chart.bind("dblclick", this.handleDblClick);
+    // this.chart.bind("dblclick", this.handleDblClick);
+    // this.chart.bind("tapStart ", this.handleDblClick);
     this.chart.bind("click", this.handleClick);
   }
 
