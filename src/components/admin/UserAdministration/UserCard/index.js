@@ -21,7 +21,7 @@ import {
   ModalFooter,
 } from './usercard.styles'
 
-const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpen }) => {
+const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpen, shTypes }) => {
   // const [isActive, setIsActive] = useState(false)
   // const [shGroup, setShGroup] = useState(user.shGroup.SHGroupName)
   // const [team, setTeam] = useState(user.team.name)
@@ -213,7 +213,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpe
             </div>
           </div>
           <div className="editPart">
-            <div>
+            <div style={{ marginTop: '15px' }}>
               <span className="bgTag">First Name</span>
               <Input
                 value={user.user.first_name}
@@ -238,6 +238,42 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpe
                 onChange={(value, e) =>
                   setUserField(idx, 'user', { ...user.user, email: value })
                 }
+              />
+            </div>
+            <div>
+              <span className="bgTag">Project Title</span>
+              <Input
+                value={user.projectUserTitle}
+                onChange={(value, e) =>
+                  setUserField(idx, 'projectUserTitle', value)
+                }
+              />
+            </div>
+            <div>
+              <span className="bgTag">SH Group:&nbsp;</span>
+              <Select
+                selected={(user.shGroup || {}).SHGroupName}
+                setSelected={(item) => setUserField(idx, 'shGroup', shgroupList.filter(sh => sh.SHGroupName === item)[0])}
+                items={shgroupList.map(sh => sh.SHGroupName)}
+                className="select"
+              />
+            </div>
+            <div>
+              <span className="bgTag">SH Type</span>
+              <Select
+                selected={(user.shType || {}).shTypeName}
+                setSelected={(value) => setUserField(idx, 'shType', shTypes.filter(sh => value === sh.shTypeName)[0])}
+                className="select"
+                items={shTypes.map(sh => sh.shTypeName)}
+              />
+            </div>
+            <div>
+              <span className="bgTag">Team</span>
+              <Select
+                selected={(user.team || {}).name}
+                setSelected={(item) => setUserField(idx, 'team', teamList.filter(team => team === item)[0])}
+                className="select"
+                items={teamList.map(team => team.name)}
               />
             </div>
             <div>

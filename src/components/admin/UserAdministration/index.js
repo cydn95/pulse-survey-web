@@ -587,7 +587,14 @@ const UserAdministration = ({
                       </tr>
                       {detail === user.id && <tr>
                         <td colSpan={9} style={{ padding: '0px' }}>
-                          <UserCard key={`${idx}-${idx}`} user={user} idx={idx} setUserField={setUserField} open={detail} setOpen={setDetail} />
+                          <UserCard
+                            key={`${idx}-${idx}`}
+                            user={user} idx={idx}
+                            setUserField={setUserField}
+                            open={detail}
+                            setOpen={setDetail}
+                            shTypes={shTypes}
+                          />
                         </td>
                       </tr>}
                     </Fragment>
