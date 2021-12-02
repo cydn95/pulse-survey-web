@@ -24,8 +24,6 @@ export const ModalBody = styled.div`
   padding: 20px;
   border-top: 1px solid #cacaca;
   max-height: 60vh;
-  min-height: 100px;
-  overflow: auto;
   .error {
     color: red;
   }

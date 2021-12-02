@@ -1,11 +1,11 @@
-import React, { Fragment, useState, useEffect, useCallback, useMemo } from 'react'
+import React, { Fragment, useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
 import { teamList, shgroupList, adminSetUserField, adminAddNewUSer, adminSendBulkInvitation, adminBulkArchiveUser } from 'Redux/actions'
 import { CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
 import "@syncfusion/ej2-base/styles/material.css";
 import "@syncfusion/ej2-buttons/styles/material.css";
-import { faAngleRight, faAngleDown, faAngleUp, faPaperPlane, faArchive, faCog, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faAngleRight, faAngleDown, faAngleLeft, faAngleUp, faPaperPlane, faArchive, faCog, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddButton from 'Components/AddButton'
 import Loading from 'Components/Loading'
@@ -56,6 +56,8 @@ const UserAdministration = ({
       },
     ]
   }, [surveyId])
+  const tableRef = useRef(null)
+  const tableWrapperRef = useRef(null)
   const [order, setOrder] = useState([0, 0])
   const [config, setConfig] = useState(false)
   const [filter, setFilter] = useState(['', '', '', '', '', ''])
@@ -65,6 +67,9 @@ const UserAdministration = ({
   const [list, setList] = useState([])
   const [newUser, setNewUser] = useState({})
   const [confirm, setConfirm] = useState(false)
+  const [isScrolling, setIsScrolling] = useState(false)
+  const [scrollX, setScrollX] = useState(0)
+  const [clientX, setClientX] = useState(0)
   useEffect(() => {
     getTeamList(currentProject.project, currentProject.id)
     getShGroupList(currentProject.id)
@@ -89,6 +94,29 @@ const UserAdministration = ({
   //   })
   //   return temp
   // }, [userList])
+
+  const onMouseDown = e => {
+    setIsScrolling(true)
+    setClientX(e.clientX)
+  };
+
+  const onMouseUp = () => {
+    setIsScrolling(false)
+  };
+
+  const onMouseMove = e => {
+    if (isScrolling) {
+      if (scrollX + e.clientX - clientX <= 0) {
+        setScrollX(0)
+        setClientX(e.clientX)
+        tableWrapperRef.current.scrollLeft = 0;
+        return;
+      }
+      tableWrapperRef.current.scrollLeft = scrollX + e.clientX - clientX;
+      setScrollX(scrollX + e.clientX - clientX);
+      setClientX(e.clientX);
+    }
+  };
 
   const valueByField = (user, field) => {
     switch (field) {
@@ -270,7 +298,7 @@ const UserAdministration = ({
         <Input className={styles.input} value={(newUser.projectOrganization)} onChange={(value, e) => setNewUserField('projectOrganization', value)} />
       </div>
       <div>
-        <p>Job Title</p>
+        <p>Project Title</p>
         <Input className={styles.input} value={newUser.projectUserTitle} onChange={(value, e) => setNewUserField('projectUserTitle', value)} />
       </div>
       <div>
@@ -346,8 +374,15 @@ const UserAdministration = ({
             />
           </div>
           {(userList.projectUser ? userList.projectUser : []).length !== 0 ?
-            <div className={styles.tableWrapper}>
-              <table className={styles.dataTable}>
+            <div
+              className={styles.tableWrapper}
+              ref={tableWrapperRef}
+              style={{ height: tableRef.current && tableRef.current.scrollHeight + 20 }}
+              onMouseDown={onMouseDown}
+              onMouseUp={onMouseUp}
+              onMouseMove={onMouseMove}
+            >
+              <table className={styles.dataTable} ref={tableRef}>
                 <thead>
                   <tr>
                     <th>
@@ -807,4 +842,4 @@ export default connect(mapStateToProps, {
   addNewUser: adminAddNewUSer,
   sendBulkInvitation: adminSendBulkInvitation,
   sendBulkArchiveUser: adminBulkArchiveUser,
-})(UserAdministration)
+}, null, { forwardRef: true })(UserAdministration)

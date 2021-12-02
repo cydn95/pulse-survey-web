@@ -39,10 +39,20 @@
 }
 
 .tableWrapper {
-  overflow: auto;
-  border: solid 1px #dfe0eb;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  user-select: none;
+  &::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+  }
   .dataTable {
-    min-width: 100%;
+    min-width: 1190px;
+    border: solid 1px #dfe0eb;
+    width: 100%;
+    @media (max-width: 426px) {
+      min-width: unset;
+    }
     display: table;
     background-color: white;
     text-align: left;
@@ -58,7 +68,7 @@
         &:last-child {
           display: none;
         }
-        @media (max-width: 767px) {
+        @media (max-width: 426px) {
           &:first-child {
             display: none;
           }
@@ -83,7 +93,6 @@
             padding-right: 36px;
           }
           &:nth-child(n+4) div {
-            justify-content: unset;
             font-family: Montserrat;
             font-size: 14px;
             font-weight: 600;
@@ -124,7 +133,7 @@
             }
           }
         }
-        @media (max-width: 767px) {
+        @media (max-width: 426px) {
           &:first-child {
             display: none;
           }
@@ -141,7 +150,7 @@
           border-bottom: 1px solid #dfe0eb;
           display: none;
         }
-        @media (max-width: 767px) {
+        @media (max-width: 426px) {
           &.desktop {
             display: none;
           }
@@ -209,6 +218,7 @@
               letter-spacing: normal;
               text-align: left;
               color: #6d6f94;
+              padding: 0px;
             }
           }
           @media (max-width: 767px) {

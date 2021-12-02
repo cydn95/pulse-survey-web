@@ -123,7 +123,7 @@ const Question = ({
                 <span className={classnames(styles.label, styles.subdriver)}>Subdriver:</span>
                 <Input refVal={subRef} className={styles.sub} value={question.subdriver} onChange={(value, e) => { setQuestionByField(filter, index, 'subdriver', value); setSubDriver(value) }} />
               </div>
-              <div className={styles.input}>
+              <div className={classnames(styles.shGroups, styles.input)}>
                 <span className={styles.label}>SH Group:</span>
                 {question.shGroup.map((sh, idx) =>
                   <Tag
