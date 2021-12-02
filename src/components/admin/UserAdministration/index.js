@@ -106,9 +106,6 @@ const UserAdministration = ({
 
   const onMouseMove = e => {
     if (isScrolling) {
-      console.log('table', tableWrapperRef.current.scrollLeft)
-      console.log('tableeeeeeeeeeeeeeeeee', scrollX)
-      console.log('table1111111111111111111', clientX)
       if (scrollX + e.clientX - clientX <= 0) {
         setScrollX(0)
         setClientX(e.clientX)
