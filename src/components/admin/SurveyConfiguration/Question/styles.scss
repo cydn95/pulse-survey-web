@@ -96,8 +96,10 @@
           display: none;
         }
         .input {
+          &.shGroups {
+            flex-wrap: wrap;
+          }
           display: flex;
-          flex-wrap: wrap;
           align-items: center;
           gap: 8px;
           .label {
@@ -244,8 +246,6 @@
     padding: 20px;
     border-top: 1px solid #cacaca;
     max-height: 60vh;
-    min-height: 100px;
-    overflow: auto;
   }
 }
 

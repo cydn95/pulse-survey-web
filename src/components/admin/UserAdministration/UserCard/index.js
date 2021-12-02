@@ -132,7 +132,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpe
         </div>
         <div className="quatar">
           <span className="bgTag">User Org</span>
-          <Input value={user.user.organization.name} />
+          <Input value={((user.user || {}).organization || {}).name} />
         </div>
         <div className="full">
           <RoleDescription>
@@ -189,7 +189,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpe
           <div className="detailed">
             <div>
               <span className="tag">Submitted By</span>
-              <span className="bgTag">{`${user.addByProjectUser.user.first_name} ${user.addByProjectUser.user.last_name}`}</span>
+              <span className="bgTag">{`${((user.addByProjectUser || {}).user || {}).first_name} ${((user.addByProjectUser || {}).user || {}).last_name}`}</span>
             </div>
             <div>
               <span className="tag">Submitted Date</span>
@@ -279,7 +279,7 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpe
             <div>
               <span className="bgTag">User Org</span>
               <Input
-                value={user.user.organization.name}
+                value={((user.user || {}).organization || {}).name}
               />
             </div>
             <RoleDescription>
