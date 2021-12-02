@@ -272,7 +272,6 @@ export const DetailModal = styled.div`
     flex-direction: column;
     gap: 8px;
     div {
-      width: 100%;
       .bgTag {
         font-family: Montserrat;
         font-size: 12px;
@@ -297,6 +296,11 @@ export const DetailModal = styled.div`
         letter-spacing: normal;
         text-align: left;
         color: #6d6f94;
+      }
+      .select {
+        background: #eff0f6;
+        padding: 10px 6px;
+        border-radius: 8px;
       }
     }
     ${RoleDescription} {
