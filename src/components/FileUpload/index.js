@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
-import UploadImage from '../../assets/img/admin/image_upload.png'
-import UploadVideo from '../../assets/img/admin/video_upload.png'
+import UploadImage from 'Assets/img/admin/image_upload.png'
+import UploadVideo from 'Assets/img/admin/video_upload.png'
 import {
   FileUploadContainer,
   FormField,

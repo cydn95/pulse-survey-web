@@ -36,7 +36,6 @@ import {
 } from "Redux/actions";
 
 import styles from "./styles.scss";
-import classnames from "classnames";
 
 const MENU_REPORT = [
   "Summary",
@@ -128,7 +127,7 @@ class Sidebar extends Component {
       user,
     } = props;
 
-    const { pageContent } = this.props;
+    // const { pageContent } = this.props;
 
     const oldSurveyId = this.props.surveyId ? this.props.surveyId : "";
     const oldSurveyUserId = this.props.surveyUserId
@@ -340,17 +339,14 @@ class Sidebar extends Component {
 
   render() {
     const {
-      mainMenuClassName,
-      subMenuClassName,
       projectList,
       pageContent,
       guide,
       projectId,
       surveyId,
-      user,
       isProjectManager
     } = this.props;
-    const { subMenuOpen, run, steps } = this.state;
+    const { run, steps } = this.state;
 
     return (
       <div className={styles.root}>
@@ -448,7 +444,7 @@ class Sidebar extends Component {
           <div className={styles.link}>
             <ProSidebar width="220px">
               {isProjectManager && <Menu iconShape="square">
-                <SubMenu title="Administration" icon={<FontAwesomeIcon icon={faCog} color="#bababa" />}>
+                <SubMenu title="Administration" icon={<FontAwesomeIcon icon={faCog} />}>
                   {MENU_ADMIN.map((menu) => {
                     return (
                       <MenuItem
@@ -474,7 +470,7 @@ class Sidebar extends Component {
               </Menu>}
               {pageContent.length > 0 && (
                 <Menu iconShape="square">
-                  <SubMenu title="More Info" icon={<FontAwesomeIcon icon={faInfoCircle} color="#bababa" />}>
+                  <SubMenu title="More Info" icon={<FontAwesomeIcon icon={faInfoCircle} />}>
                     {pageContent.map((menu) => (
                       <MenuItem
                         key={`submenu-configpage-${menu.id}`}
@@ -501,7 +497,7 @@ class Sidebar extends Component {
                 </MenuItem>
               </Menu> */}
               <Menu iconShape="square">
-                <SubMenu title="Help" icon={<FontAwesomeIcon icon={faLightbulb} color="#bababa" />}>
+                <SubMenu title="Help" icon={<FontAwesomeIcon icon={faLightbulb} />}>
                   {projectId && surveyId && (
                     <MenuItem
                       className={"take-the-tour" === this.state.subMenuSelected && styles.menuItem}
@@ -558,7 +554,7 @@ class Sidebar extends Component {
               <Menu iconShape="square">
                 <MenuItem
                   onClick={(e) => this.handleClickMainMenu(e, "logout", false)}
-                  icon={<FontAwesomeIcon icon={faSignOutAlt} color="#bababa" />}
+                  icon={<FontAwesomeIcon icon={faSignOutAlt} />}
                 >
                   Log Out
                 </MenuItem>

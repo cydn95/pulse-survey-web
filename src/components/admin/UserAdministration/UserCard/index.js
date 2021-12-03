@@ -1,20 +1,16 @@
-import React, { useState, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { connect } from 'react-redux'
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
-import { faTimes, faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Select from 'Components/Select'
 import Input from 'Components/Input'
 import Button from 'Components/Button'
 import {
-  Tag,
-  Basic,
-  BasicContent,
   Wrapper,
   Detailed,
   EditPart,
   RoleDescription,
-  Arrow,
   DetailModal,
   ModalWrapper,
   ModalHeader,
@@ -22,15 +18,6 @@ import {
 } from './usercard.styles'
 
 const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpen, shTypes }) => {
-  // const [isActive, setIsActive] = useState(false)
-  // const [shGroup, setShGroup] = useState(user.shGroup.SHGroupName)
-  // const [team, setTeam] = useState(user.team.name)
-  // const [shType, setShType] = useState((user.shType || {}).shTypeName)
-  // const [firstName, setFirstName] = useState(user.user.first_name)
-  // const [lastName, setLastName] = useState(user.user.last_name)
-  // const [email, setEmail] = useState(user.user.email)
-  // const [jobTitle, setJobTitle] = useState(user.projectUserTitle)
-  // const [org, setOrg] = useState(user.projectOrganization)
   const last_login = useMemo(() => {
     let now = new Date().getTime();
     const diffTime = Math.abs(now - Date.parse(user.user.last_login));
@@ -43,65 +30,6 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpe
   }, [user])
   return (
     <Wrapper>
-      {/* <Basic onClick={() => setIsActive(!isActive)}>
-        <div className="left-part">
-          <div className="header">
-            <h2>{`${user.user.first_name} ${user.user.last_name}`}</h2>
-            <Tag isActive={isActive}>Self Submited</Tag>
-          </div>
-          <BasicContent>
-            <div>
-              <span className="tag">SH Group:&nbsp;</span>
-              <Select
-                selected={(user.shGroup || {}).SHGroupName}
-                setSelected={(item) => setUserField(idx, 'shGroup', shgroupList.filter(sh => sh.SHGroupName === item)[0])}
-                items={shgroupList.map(sh => sh.SHGroupName)}
-              />
-            </div>
-            <div>
-              <span className="tag">SH Type:&nbsp;</span>
-              <Select
-                selected={shType}
-                setSelected={setShType}
-                items={['Team member', 'Stakeholder']}
-              />
-            </div>
-            <div>
-              <span className="tag">Team:&nbsp;</span>
-              <Select
-                selected={(user.team || {}).name}
-                setSelected={(item) => setUserField(idx, 'team', teamList.filter(team => team === item)[0])}
-                items={teamList.map(team => team.name)}
-              />
-            </div>
-            <div>
-              <span className="tag">Job Title:&nbsp;</span>
-              <Input
-                className="input"
-                value={user.projectUserTitle}
-                onChange={(value, e) =>
-                  setUserField(idx, 'projectUserTitle', value)
-                }
-              />
-            </div>
-            <div>
-              <span className="tag">Project Org:&nbsp;</span>
-              <Input
-                className="input"
-                value={user.projectOrganization}
-                onChange={(value, e) =>
-                  setUserField(idx, 'projectOrganization', value)
-                }
-              />
-            </div>
-            <Button onClick={() => setOpen(true)} className="btnViewDetails">View details</Button>
-          </BasicContent>
-        </div>
-        <div className="right-part">
-          <Tag isActive={isActive}>Self Submited</Tag>
-          <FontAwesomeIcon icon={isActive ? faAngleUp : faAngleDown} color="#6d6f94" />
-        </div>
-      </Basic> */}
       {<EditPart>
         <div className="quatar">
           <span className="bgTag">First Name</span>

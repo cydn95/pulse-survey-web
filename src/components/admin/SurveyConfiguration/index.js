@@ -4,7 +4,7 @@ import { shgroupList, skipQuestionList, adminSetQuestionListByField, adminSetQue
 import classnames from 'classnames'
 import Select from 'Components/Select'
 import Loading from 'Components/Loading'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faTimes, faCog, faSort } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ReorderModal from '../ProjectConfiguration/ReorderModal'
 import Question from './Question'
@@ -14,12 +14,10 @@ import {
   ModalHeader,
 } from '../UserAdministration/UserCard/usercard.styles'
 import AddButton from 'Components/AddButton'
-// import Input from 'Components/Input'
 import styles from './styles.scss'
 import AboutOthers from 'Assets/img/admin/AboutOthers.svg'
 import AboutMe from 'Assets/img/admin/AboutMe.svg'
-import Setting from 'Assets/img/admin/Setting_filled.png'
-import Reorder from '../../../assets/img/admin/reorder.png'
+import Reorder from 'Assets/img/admin/reorder.png'
 
 const SurveyConfiguration = ({
   currentProject,
@@ -184,7 +182,7 @@ const SurveyConfiguration = ({
           </div>
           <div className={styles.filter_for_mobile}>
             <Select className={styles.select} selected={filter} setSelected={setFilter} items={['About Me', 'About Others']} />
-            <span onClick={() => setOpen(true)}>{currentDriver}<img src={Setting} alt="drivers" /></span>
+            <span onClick={() => setOpen(true)}>{currentDriver}<FontAwesomeIcon icon={faCog} color="#6d6f94" /></span>
           </div>
           {questions.length > 0 ? questions.map((question, idx) => {
             if (question.driver && question.driver.driverName !== currentDriver)
