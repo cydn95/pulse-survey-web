@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import "react-notifications/lib/notifications.css";
 import {
-  NotificationContainer,
   NotificationManager,
 } from "react-notifications";
 import Button from 'Components/Button'
@@ -16,13 +15,13 @@ import {
   ModalFooter,
 } from '../UserAdministration/UserCard/usercard.styles'
 import styles from './styles.scss'
-import ProjectAvatar from '../../../assets/img/admin/Work.svg'
-import Show from '../../../assets/img/admin/Show.svg'
-import Calendar from '../../../assets/img/admin/Calendar.svg'
-import User from '../../../assets/img/admin/3 User.svg'
-import Folder from '../../../assets/img/admin/Folder.svg'
-import Heart from '../../../assets/img/admin/Heart.svg'
-import Send from '../../../assets/img/admin/Send.svg'
+import ProjectAvatar from 'Assets/img/admin/Work.svg'
+import Show from 'Assets/img/admin/Show.svg'
+import Calendar from 'Assets/img/admin/Calendar.svg'
+import User from 'Assets/img/admin/3 User.svg'
+import Folder from 'Assets/img/admin/Folder.svg'
+import Heart from 'Assets/img/admin/Heart.svg'
+import Send from 'Assets/img/admin/Send.svg'
 
 const ProjectCard = ({ project, setEditing, setActive, loading, error }) => {
   const [open, setOpen] = useState(false)
@@ -35,7 +34,7 @@ const ProjectCard = ({ project, setEditing, setActive, loading, error }) => {
   const callbackActive = (result) => {
     if (error === '') {
       NotificationManager.success("Response saved successfully", "");
-      setSurvey({ ...project, isActive: !project.isActive })
+      setSurvey({ ...project, isActive: result.isActive })
     } else {
       NotificationManager.error("Something went wrong", "");
     }
@@ -124,7 +123,6 @@ const ProjectCard = ({ project, setEditing, setActive, loading, error }) => {
           </ModalFooter>
         </div>
       </ModalWrapper>}
-      <NotificationContainer />
     </div>
   )
 }

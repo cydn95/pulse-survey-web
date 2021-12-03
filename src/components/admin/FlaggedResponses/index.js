@@ -1,9 +1,8 @@
 import React, { Fragment, useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faEye } from "@fortawesome/free-solid-svg-icons";
 import classnames from 'classnames'
 import styles from './styles.scss'
-import ShowIcon from 'Assets/img/admin/Show.png'
 import Individual from 'Assets/img/admin/individual-can-be-identified.svg'
 import Commenter from 'Assets/img/admin/commenter-can-be-identified.svg'
 
@@ -40,7 +39,7 @@ const FlaggedResponses = ({ project }) => {
   return (
     <Fragment>
       <div className={styles.tags}>
-        <span className={classnames(styles.col_1, styles.tag)}><img src={ShowIcon} alt="show" />SELECT TO MAKE FLAGGED REPONSE VISIBLE</span>
+        <span className={classnames(styles.col_1, styles.tag)}><FontAwesomeIcon size="lg" icon={faEye} color="rgb(180,180,180)" />SELECT TO MAKE FLAGGED REPONSE VISIBLE</span>
         <span className={classnames(styles.col_2, styles.tag)}>FLAGGED BY</span>
         <span className={classnames(styles.col_3, styles.tag)}>DATE</span>
         <span className={classnames(styles.col_4, styles.tag)}>FLAG TYPE</span>

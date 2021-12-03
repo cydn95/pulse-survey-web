@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef, Fragment } from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
 import "react-notifications/lib/notifications.css";
+import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   NotificationContainer,
   NotificationManager,
@@ -17,13 +19,10 @@ import {
   adminSetQuestionListBlank
 } from 'Redux/admin/actions'
 import TopNav from "Containers/TopNav";
-import Loading from 'Components/Loading'
 import ProjectCard from 'Components/admin/ProjectCard'
 import ProjectEdit from 'Components/admin/ProjectEdit'
 import AdminStepBar from 'Components/admin/AdminStepBar'
 import Button from 'Components/Button'
-import CancelImage from '../../../assets/img/admin/Cancel.png'
-import SaveImage from '../../../assets/img/admin/Save.png'
 import styles from './styles.scss'
 
 const Projects = ({
@@ -136,10 +135,10 @@ const Projects = ({
     <Button autofocus className={classnames(styles.button, styles.actions)} onClick={() => handleEdit(-1)}>Create new project</Button> :
     <div className={classnames(styles.btnGroup, styles.actions)}>
       <span className={styles.forMobile} onClick={() => handleEdit(-2)}>
-        <img src={CancelImage} alt="cancel" />
+        <FontAwesomeIcon icon={faTimes} size="lg" color="rgb(180, 180, 180)" />
       </span>
       <span className={styles.forMobile} onClick={onSave}>
-        <img src={SaveImage} alt="save" />
+        <FontAwesomeIcon icon={faCheck} size="lg" color="rgb(98, 181,166)" />
       </span>
       <Button className={styles.cancelBtn} onClick={() => { handleEdit(-2); setCurrentProject({}) }}>Cancel</Button>
       <Button className={styles.button} onClick={onSave}>{`Save ${editing !== -1 ? 'changes' : ''}`}</Button>

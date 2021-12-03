@@ -1,5 +1,5 @@
-import { render, screen, rerender } from "@testing-library/react";
-import React from 'rewct'
+import { render, screen, rerender, fireEvent } from "@testing-library/react";
+import React from 'react'
 import AdminStepBar from "../admin/AdminStepBar";
 import ProjectSetup from "../admin/ProjectSetup";
 import UserGrouping from "../admin/ProjectConfiguration/UserGrouping";
@@ -1125,6 +1125,10 @@ describe('admin components works properly', () => {
         expect(screen.getByText('Invited Stakeholder')).toBeInTheDocument()
         expect(screen.getByText('Total Identified')).toBeInTheDocument()
         expect(screen.getByText('Total Invited')).toBeInTheDocument()
+        const button = screen.getByText('Add New member')
+
+        fireEvent.click(button)
+        expect(screen.getByText('Add')).toBeInTheDocument()
     })
     test('survey configuration page works properly', () => {
         render(<SurveyConfiguration />)

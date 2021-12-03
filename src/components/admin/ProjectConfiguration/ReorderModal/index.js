@@ -5,7 +5,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classnames from 'classnames'
 import styles from './styles.scss'
-import Reorder from '../../../../assets/img/admin/reorder.png'
+import Reorder from 'Assets/img/admin/reorder.png'
 
 const Item = ({ item, index, current }) =>
   <Draggable draggableId={`${index}`} index={index}>
