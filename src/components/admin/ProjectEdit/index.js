@@ -15,6 +15,7 @@ import ProjectConfiguration from '../ProjectConfiguration'
 import SurveyConfiguration from '../SurveyConfiguration'
 import Reporting from '../Reporting'
 import FlaggedResponses from '../FlaggedResponses'
+import Subscription from '../Subscription'
 import styles from './styles.scss'
 
 const ProjectEdit = ({
@@ -58,6 +59,7 @@ const ProjectEdit = ({
       {currentStep === 3 && <SurveyConfiguration />}
       {currentStep === 4 && <Reporting project={currentProject} />}
       {currentStep === 5 && <FlaggedResponses project={currentProject} />}
+      {currentStep === 6 && <Subscription />}
     </div>
   )
 }
