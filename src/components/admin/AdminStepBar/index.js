@@ -47,6 +47,11 @@ const steps = [
     icon: Flag,
     active: FlagActive,
     text: 'Flagged Responses'
+  },
+  {
+    icon: null,
+    active: null,
+    text: 'Subscription'
   }
 ]
 
