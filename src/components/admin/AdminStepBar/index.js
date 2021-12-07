@@ -16,6 +16,8 @@ import Reporting from 'Assets/img/admin/Reporting.svg'
 import ReportingActive from 'Assets/img/admin/Reporting_active.svg'
 import Flag from 'Assets/img/admin/Flag.svg'
 import FlagActive from 'Assets/img/admin/Flag_active.svg'
+import Payment from 'Assets/img/admin/Payment.svg'
+import PaymentActive from 'Assets/img/admin/Payment_active.svg'
 
 const steps = [
   {
@@ -49,8 +51,8 @@ const steps = [
     text: 'Flagged Responses'
   },
   {
-    icon: null,
-    active: null,
+    icon: Payment,
+    active: PaymentActive,
     text: 'Subscription'
   }
 ]

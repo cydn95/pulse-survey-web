@@ -4,7 +4,6 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 19px;
-  padding: 26px 44px;
   .headerPart {
 
     h2 {
