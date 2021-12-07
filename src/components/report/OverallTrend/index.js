@@ -73,7 +73,7 @@ class OverallTrend extends SampleBase {
               maximum: 10,
               maximumLabels: 5
             }}
-            tooltip={{ enable: false }}
+            tooltip={{ enable: true }}
             title=""
             loaded={this.onChartLoad.bind(this)}
             animationComplete={this.animationComplete.bind(this)}
