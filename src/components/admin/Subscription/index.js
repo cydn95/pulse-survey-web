@@ -92,6 +92,7 @@ const pages = [
 
 const Subscription = () => {
   const [page, setPage] = useState(0)
+  const [payment, setPayment] = useState(null)
   return (
     <Wrapper>
       {page === 0 && <div className="cards">
@@ -129,7 +130,8 @@ const Subscription = () => {
           </div>
           <span className="description">10/10 seats used</span>
           <div className="btn_group">
-            <Button>Remove/Add</Button>
+            <Button>Add</Button>
+            <Button>Remove</Button>
           </div>
         </Card>
       </div>}
