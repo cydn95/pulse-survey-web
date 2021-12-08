@@ -106,7 +106,7 @@ class OverallTrend extends SampleBase {
                     yName="y"
                     width={2}
                     name=""
-                    type="Line"
+                    type="Spline"
                     marker={{ visible: true, width: 10, height: 10 }}
                   ></SeriesDirective>
                 );
