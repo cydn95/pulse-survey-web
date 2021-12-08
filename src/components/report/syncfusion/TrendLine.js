@@ -25,7 +25,7 @@ export let data1 = [
 class TrendLine extends SampleBase {
   render() {
     const { data, num, width } = this.props;
-    // console.log(data);
+    console.log(data);
     return (
       <div className="control-pane">
         <div className="control-section trend-line-chart">
@@ -33,12 +33,13 @@ class TrendLine extends SampleBase {
             id={`charts_${num}`}
             style={{ textAlign: "center", height: 100, width: width }}
             primaryXAxis={{
+              labelPlacement: 'onTicks',
               valueType: "Category",
               // labelFormat: "y",
               // intervalType: "Years",
-              // edgeLabelPlacement: "Shift",
+              edgeLabelPlacement: "Shift",
               interval: 1,
-              majorGridLines: { width: 0 },
+              // majorGridLines: { width: 1 },
             }}
             // load={this.load.bind(this)}
             primaryYAxis={{
@@ -76,7 +77,7 @@ class TrendLine extends SampleBase {
       </div>
     );
   }
-  onChartLoad(args) {}
+  onChartLoad(args) { }
 }
 
 export default TrendLine;
