@@ -272,7 +272,12 @@ const HeatMap = ({
                         ((data['Response Rate'][index].stakeholders.length >= thresholdCnt) ||
                           admin) && (
                           <TrendLine
-                            data={d.trend}
+                            data={(() => d.trend.map(value => {
+                              return {
+                                ...value,
+                                x: value.x.split(' ')[0],
+                              }
+                            }))()}
                             num={`${keyValue}-${index}`}
                             width={chartWidth}
                           />
