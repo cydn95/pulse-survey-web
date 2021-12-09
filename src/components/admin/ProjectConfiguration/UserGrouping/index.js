@@ -22,6 +22,7 @@ const UserGrouping = ({
   const [openTeam, setOpenTeam] = useState(false)
   const [newCG, setNewCG] = useState('')
   const [openCG, setOpenCG] = useState(false)
+  const [dashboardThreshold, setDashboardThreshold] = useState(3)
   React.useEffect(() => {
     console.log(currentProject)
   })
@@ -103,7 +104,7 @@ const UserGrouping = ({
         </div>
         <div className={styles.anonymity}>
           <span>Dashboard Threshold&nbsp;</span>
-          <Input type="number" className={styles.threshold} />
+          <Input type="number" className={styles.threshold} value={parseInt(dashboardThreshold)} onChange={(value, e) => setDashboardThreshold(value)} />
         </div>
       </div>
       <div className={styles.detailed}>
@@ -121,6 +122,7 @@ const UserGrouping = ({
           {(currentProject.shGroup || []).filter(sh => sh.SHGroupName === shgroup).length > 0 && <div className={styles.completion}>
             <span className={styles.text}>Completion Threshold(%)</span>
             <Input
+              type="number"
               className={styles.completion_input}
               value={((currentProject.shGroup || []).filter(sh => sh.SHGroupName === shgroup)[0] || {}).responsePercent || 0}
               onChange={(value, e) => {
@@ -165,6 +167,7 @@ const UserGrouping = ({
             Object.keys(currentProject).filter(key => key.includes('customGroup')).map((key, idx) =>
               currentProject[key] !== '' && <Input
                 type="text"
+                key={`shGroup-${idx}`}
                 className={styles.customGroup}
                 value={currentProject[key]}
                 onChange={(value, e) => {

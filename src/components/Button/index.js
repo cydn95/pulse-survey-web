@@ -14,7 +14,7 @@ function Button(props) {
       )}
       type={type}
       onClick={onClick}
-      {...{ autoFocus: isDefault }}
+      // {...{ autoFocus: isDefault }}
       style={{ ...style }}
       disabled={disabled}
     >
