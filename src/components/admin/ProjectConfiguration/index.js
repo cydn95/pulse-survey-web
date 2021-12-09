@@ -19,12 +19,6 @@ const ProjectConfiguration = ({
   const [myMapReorder, setMyMapReorder] = useState(false)
   const [projectMapReorder, setProjectMapReorder] = useState(false)
 
-  useEffect(() => {
-    if (!loading) {
-      window.scrollTo(0, 0)
-    }
-  }, [loading])
-
   return (
     <React.Fragment>
       {loading ?

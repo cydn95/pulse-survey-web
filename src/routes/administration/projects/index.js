@@ -18,12 +18,18 @@ import {
   adminSetUserList,
   adminSetQuestionListBlank
 } from 'Redux/admin/actions'
-import TopNav from "Containers/TopNav";
-import ProjectCard from 'Components/admin/ProjectCard'
-import ProjectEdit from 'Components/admin/ProjectEdit'
-import AdminStepBar from 'Components/admin/AdminStepBar'
+// import TopNav from "Containers/TopNav";
+// import ProjectCard from 'Components/admin/ProjectCard'
+// import ProjectEdit from 'Components/admin/ProjectEdit'
+// import AdminStepBar from 'Components/admin/AdminStepBar'
+import Loading from 'Components/Loading'
 import Button from 'Components/Button'
 import styles from './styles.scss'
+
+const TopNav = React.lazy(() => import("Containers/TopNav"));
+const ProjectCard = React.lazy(() => import('Components/admin/ProjectCard'));
+const AdminStepBar = React.lazy(() => import('Components/admin/AdminStepBar'));
+const ProjectEdit = React.lazy(() => import('Components/admin/ProjectEdit'));
 
 const Projects = ({
   history,
@@ -50,12 +56,6 @@ const Projects = ({
   useEffect(() => {
     getProjectList(user.userId)
   }, [user])
-
-  useEffect(() => {
-    if (!loading) {
-      window.scrollTo(0, 0)
-    }
-  }, [loading, editing])
 
 
   const handleEdit = (projectId) => {
@@ -132,7 +132,7 @@ const Projects = ({
   }
 
   const actions = editing < - 1 ?
-    <Button autofocus className={classnames(styles.button, styles.actions)} onClick={() => handleEdit(-1)}>Create new project</Button> :
+    <Button autoFocus className={classnames(styles.button, styles.actions)} onClick={() => handleEdit(-1)}>Create new project</Button> :
     <div className={classnames(styles.btnGroup, styles.actions)}>
       <span className={styles.forMobile} onClick={() => handleEdit(-2)}>
         <FontAwesomeIcon icon={faTimes} size="lg" color="rgb(180, 180, 180)" />
@@ -145,34 +145,36 @@ const Projects = ({
     </div>
 
   return (
-    <div className={styles.main}>
-      <div className={styles.header} id="header">
-        <div className={styles.topbar}>
-          <TopNav history={history} withProfile={false} actions={actions} menuTitle={editing < 0 ? 'Projects' : currentProject.surveyTitle}>
-            <div className={styles.section}>
-              <h2 className={styles.breadcrumb}>{breadcrumb}</h2>
-            </div>
-          </TopNav>
-        </div>
-        {/* <div>
+    <React.Suspense fallback={<Loading description="" />}>
+      <div className={styles.main}>
+        <div className={styles.header} id="header">
+          <div className={styles.topbar}>
+            <TopNav history={history} withProfile={false} actions={actions} menuTitle={editing < 0 ? 'Projects' : currentProject.surveyTitle}>
+              <div className={styles.section}>
+                <h2 className={styles.breadcrumb}>{breadcrumb}</h2>
+              </div>
+            </TopNav>
+          </div>
+          {/* <div>
           <h2 className={styles.title}>{editing < 0 ? 'Projects' : currentProject.surveyTitle}</h2>
           <h3 className={styles.breadcrumb}>{breadcrumb}</h3>
         </div> */}
 
-      </div>
-      {editing < -1 ?
-        <div className={styles.projectCards}>
-          {projectList.length > 0 && projectList.map((project, index) =>
-            <ProjectCard key={`${project.code}-${index}`} project={project} setEditing={(projectId) => handleEdit(projectId)} />
-          )}
-        </div> :
-        <div>
-          <AdminStepBar currentStep={currentStep} setCurrentStep={(i) => setCurrentStep(i)} />
-          <ProjectEdit project={currentProject} currentStep={currentStep} setBreadcrumb={setBreadcrumb} />
         </div>
-      }
-      <NotificationContainer />
-    </div>
+        {editing < -1 ?
+          <div className={styles.projectCards}>
+            {projectList.length > 0 && projectList.map((project, index) =>
+              <ProjectCard key={`${project.code}-${index}`} project={project} setEditing={(projectId) => handleEdit(projectId)} />
+            )}
+          </div> :
+          <div>
+            <AdminStepBar currentStep={currentStep} setCurrentStep={(i) => setCurrentStep(i)} />
+            <ProjectEdit project={currentProject} currentStep={currentStep} setBreadcrumb={setBreadcrumb} />
+          </div>
+        }
+        <NotificationContainer />
+      </div>
+    </React.Suspense>
   )
 }
 

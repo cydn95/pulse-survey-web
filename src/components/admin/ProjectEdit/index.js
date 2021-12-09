@@ -9,14 +9,23 @@ import {
   driverList,
   adminSetProjectField
 } from 'Redux/actions'
-import ProjectSetup from '../ProjectSetup'
-import UserAdministration from '../UserAdministration'
-import ProjectConfiguration from '../ProjectConfiguration'
-import SurveyConfiguration from '../SurveyConfiguration'
-import Reporting from '../Reporting'
-import FlaggedResponses from '../FlaggedResponses'
-import Subscription from '../Subscription'
+import Loading from 'Components/Loading'
+// import ProjectSetup from '../ProjectSetup'
+// import UserAdministration from '../UserAdministration'
+// import ProjectConfiguration from '../ProjectConfiguration'
+// import SurveyConfiguration from '../SurveyConfiguration'
+// import Reporting from '../Reporting'
+// import FlaggedResponses from '../FlaggedResponses'
+// import Subscription from '../Subscription'
 import styles from './styles.scss'
+
+const ProjectSetup = React.lazy(() => import('../ProjectSetup'))
+const UserAdministration = React.lazy(() => import('../UserAdministration'))
+const ProjectConfiguration = React.lazy(() => import('../ProjectConfiguration'))
+const SurveyConfiguration = React.lazy(() => import('../SurveyConfiguration'))
+const Reporting = React.lazy(() => import('../Reporting'))
+const FlaggedResponses = React.lazy(() => import('../FlaggedResponses'))
+const Subscription = React.lazy(() => import('../Subscription'))
 
 const ProjectEdit = ({
   currentStep,
@@ -50,17 +59,19 @@ const ProjectEdit = ({
   }, [driverList])
 
   return (
-    <div className={styles.wrapper}>
-      {currentStep === 0 && <ProjectSetup
-        setBreadcrumb={setBreadcrumb}
-      />}
-      {currentStep === 1 && <ProjectConfiguration />}
-      {currentStep === 2 && <UserAdministration />}
-      {currentStep === 3 && <SurveyConfiguration />}
-      {currentStep === 4 && <Reporting project={currentProject} />}
-      {currentStep === 5 && <FlaggedResponses project={currentProject} />}
-      {currentStep === 6 && <Subscription />}
-    </div>
+    <React.Suspense fallback={<Loading description="" />}>
+      <div className={styles.wrapper}>
+        {currentStep === 0 && <ProjectSetup
+          setBreadcrumb={setBreadcrumb}
+        />}
+        {currentStep === 1 && <ProjectConfiguration />}
+        {currentStep === 2 && <UserAdministration />}
+        {currentStep === 3 && <SurveyConfiguration />}
+        {currentStep === 4 && <Reporting project={currentProject} />}
+        {currentStep === 5 && <FlaggedResponses project={currentProject} />}
+        {currentStep === 6 && <Subscription />}
+      </div>
+    </React.Suspense>
   )
 }
 

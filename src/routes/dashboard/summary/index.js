@@ -6,11 +6,12 @@ import ReactLoading from "react-loading";
 
 import TopNav from "Containers/TopNav";
 import Emoji from "Components/report/Emoji";
-import Participation from "Components/report/Participation";
-import CultureResult from "Components/report/CultureResult";
-import OverallTrend from "Components/report/OverallTrend";
-import SummaryBarChart from "Components/report/SummaryBarChart";
+// import Participation from "Components/report/Participation";
+// import CultureResult from "Components/report/CultureResult";
+// import OverallTrend from "Components/report/OverallTrend";
+// import SummaryBarChart from "Components/report/SummaryBarChart";
 import NoDashboard from "Components/report/NoDashboard";
+
 
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -29,6 +30,12 @@ import { getColorFromValue } from "Util/Utils";
 
 import cn from "classnames";
 import styles from "./styles.scss";
+
+
+const OverallTrend = React.lazy(() => import("Components/report/OverallTrend"));
+const SummaryBarChart = React.lazy(() => import("Components/report/SummaryBarChart"));
+const Participation = React.lazy(() => import("Components/report/Participation"));
+const CultureResult = React.lazy(() => import("Components/report/CultureResult"));
 
 const FILTER_SHGROUP = "ShGroup";
 const FILTER_TEAM = "Team";
@@ -179,7 +186,11 @@ const ReportSummary = ({
     }
 
     return (
-      <Fragment>
+      <React.Suspense fallback={<ReactLoading
+        className={styles["summary-analysis-loading"]}
+        type={"bars"}
+        color={"grey"}
+      />}>
         {/** Filter section start */}
         <div className={styles["filter-bar"]}>
           {/* <div className={styles["filter-bar-datepicker"]}>
@@ -421,7 +432,7 @@ const ReportSummary = ({
             {/** Feedback Summary End */}
           </Fragment>
         )}
-      </Fragment>
+      </React.Suspense>
     );
   };
 

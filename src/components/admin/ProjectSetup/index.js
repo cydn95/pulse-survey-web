@@ -51,14 +51,11 @@ const ProjectSetup = ({
   const [error, setError] = useState('')
 
   useEffect(() => {
-    if (!loading) {
-      window.scrollTo(0, 0)
+    if (spanRef.current) {
+      console.log(spanRef.current.offsetWidth)
+      setWidth(spanRef.current.offsetWidth)
     }
-  }, [loading])
-
-  useEffect(() => {
-    setWidth(spanRef.current.offsetWidth + 10)
-  }, [])
+  }, [currentProject])
 
   const content = () => (
     <div className={styles.modalContent}>
@@ -127,7 +124,7 @@ const ProjectSetup = ({
                     temp[0] = {}
                   }
                   temp[0].tabName = value
-                  setWidth(spanRef.current.offsetWidth + 10)
+                  setWidth(spanRef.current.offsetWidth)
                   setProjectField('tour', temp)
                 }}
                 style={{ width }}
