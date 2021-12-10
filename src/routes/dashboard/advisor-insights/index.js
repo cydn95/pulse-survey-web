@@ -8,6 +8,7 @@ import { advisorReport } from "Redux/actions";
 import NoDashboard from "Components/report/NoDashboard";
 
 import styles from "./styles.scss";
+import { getColorFromValue } from "Util/Utils";
 import classnames from "classnames";
 
 const AdvisorInsights = ({
@@ -115,6 +116,7 @@ const AdvisorInsights = ({
                                   width: `${(item.score / 10) *
                                     100
                                     }%`,
+                                  background: `${getColorFromValue(item.score)}`
                                 }}
                               ></div>
                               <div className={styles["content-item-value"]}>
