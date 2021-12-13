@@ -443,30 +443,13 @@ class Sidebar extends Component {
           <div className={styles.space}></div>
           <div className={styles.link}>
             <ProSidebar width="220px">
-              {isProjectManager && <Menu iconShape="square">
-                <SubMenu title="Administration" icon={<FontAwesomeIcon icon={faCog} />}>
-                  {MENU_ADMIN.map((menu) => {
-                    return (
-                      <MenuItem
-                        key={`submenu-report-${menu
-                          .toLowerCase()
-                          .replace(" ", "-")}`}
-                        className={menu.toLocaleLowerCase() === this.state.subMenuSelected && styles.menuItem}
-                        onClick={(e) =>
-                          this.handleClickSubMenu(
-                            e,
-                            menu.toLocaleLowerCase(),
-                            `/app/admin/${menu
-                              .toLocaleLowerCase()
-                              .replace(" ", "-")}`
-                          )
-                        }
-                      >
-                        {menu}
-                      </MenuItem>
-                    );
-                  })}
-                </SubMenu>
+              {isProjectManager && <Menu iconShape="square" className="s-menu-about-me">
+                <MenuItem
+                  icon={<FontAwesomeIcon icon={faCog} />}
+                  onClick={(e) => this.handleClickMainMenu(e, `admin/projects`, true)}
+                >
+                  Administration
+                </MenuItem>
               </Menu>}
               {pageContent.length > 0 && (
                 <Menu iconShape="square">
