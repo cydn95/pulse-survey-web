@@ -67,6 +67,8 @@ const Question = ({
   const [newTag, setNewTag] = useState()
   const [subDriver, setSubDriver] = useState(question.subdriver)
   const [newSkip, setNewSkip] = useState({})
+  const [addOption, setAddOption] = useState(false)
+  const [newOption, setNewOption] = useState()
 
   const modalContent = () => <div>
     <Select
@@ -77,9 +79,13 @@ const Question = ({
     />
   </div>
 
-  useEffect(() => {
-    console.log("changed")
-  }, [qChanged])
+  const addOptionModal = () => <div>
+    <Input
+      value={newOption}
+      onChange={(value, e) => setNewOption(value)}
+      className={styles.newOption}
+    />
+  </div>
 
   useEffect(() => {
     setWidth(spanRef.current.offsetWidth)
@@ -262,26 +268,27 @@ const Question = ({
               {(controlTypeTag(question.controlType) === 'Multi Options'
                 || (controlTypeTag(question.controlType) === "Two Options"
                   && question.option.length < 2)) &&
-                <AddButton text="Option" style={{ flexBasis: '100%' }} />}
+                <AddButton
+                  text="Option"
+                  content={addOptionModal}
+                  open={addOption}
+                  setOpen={() => setAddOption(true)}
+                  setClose={() => setAddOption(false)}
+                  handleAdd={() => {
+                    setQuestionByField(filter, index, 'option', [...question.option, newOption])
+                    setAddOption(false)
+                    setNewOption('')
+                  }}
+                  style={{ flexBasis: '100%' }}
+                />}
             </Fragment>}
-          {controlTypeTag(question.controlType) === 'Multi-Topic' &&
-            <Fragment>
-              {question.topics.map((topic, idx) =>
-                <div key={`${idx}-${topic}`}>
-                  <label>Option {idx + 1}</label>
-                  <Input
-                    className={styles.input}
-                    value={topic}
-                    onChange={(value, e) => {
-                      let temp = [...question.topics]
-                      temp[idx] = value
-                      setQuestionByField(filter, index, 'topics', temp)
-                    }}
-                  />
-                </div>
-              )}
-              <AddButton text="Topic" style={{ flexBasis: '100%' }} />
-            </Fragment>}
+          {controlTypeTag(question.controlType) === 'Multi Topics' &&
+            <div className={styles.comment}>
+              <label>Topic Prompt</label>
+              <Input className={styles.input} value={question.topicPrompt} onChange={(value, e) => {
+                setQuestionByField(filter, index, 'topicPrompt', value)
+              }} />
+            </div>}
           <div className={styles.comment}>
             <label>Comment Prompt</label>
             <Input
@@ -364,22 +371,33 @@ const Question = ({
                     </div>
                   )}
                   {controlTypeTag(question.controlType) === 'Multi Options' &&
-                    <AddButton text="Option" style={{ flexBasis: '100%' }} />}
+                    <AddButton
+                      text="Option"
+                      content={addOptionModal}
+                      open={addOption}
+                      setOpen={() => setAddOption(true)}
+                      setClose={() => setAddOption(false)}
+                      handleAdd={() => {
+                        setQuestionByField(filter, index, 'option', [...question.option, newOption])
+                        setAddOption(false)
+                        setNewOption('')
+                      }}
+                      style={{ flexBasis: '100%' }}
+                    />
+                  }
                 </Fragment>}
-              {controlTypeTag(question.controlType) === 'Multi-Topic' &&
-                <Fragment>
-                  {question.topics.map((topic, idx) =>
-                    <div key={`${idx}-${topic}`}>
-                      <label>Option {idx + 1}</label>
-                      <Input className={styles.input} value={topic} onChange={(value, e) => {
-                        let temp = [...question.topics]
-                        temp[idx] = value
-                        setQuestionByField(filter, index, 'topics', temp)
-                      }} />
-                    </div>
-                  )}
-                  <AddButton text="Topic" style={{ flexBasis: '100%' }} />
-                </Fragment>}
+              {controlTypeTag(question.controlType) === 'Multi Topics' &&
+                <div className={styles.comment}>
+                  <label className="bgTag">Topic Prompt</label>
+                  <textarea
+                    row={3}
+                    value={question.topicPrompt}
+                    onChange={(value, e) =>
+                      setQuestionByField(filter, index, 'topicPrompt', value)
+                    }
+                    className={styles.input}
+                  />
+                </div>}
               <div className={styles.comment}>
                 <label className="bgTag">Comment Prompt</label>
                 <textarea
