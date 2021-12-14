@@ -583,12 +583,12 @@ const adminAMQuestionListAPI = (surveyId) => {
 
 const postAdminSurveyAddAPI = (data) => {
   console.log('data', data)
-  return getClient(true).post("/adminsurveyadd", data);
+  return getClient(true).post("/adminsurveyadd/", data);
 };
 
 const postAdminSurveyEditAPI = (data) => {
   console.log('data', data)
-  return getClient(true).post("/adminsurveyedit", data);
+  return getClient(true).post("/adminsurveyedit/", data);
 };
 
 const adminSurveySetupAPI = (surveyId) => {
