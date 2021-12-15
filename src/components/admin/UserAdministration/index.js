@@ -69,6 +69,7 @@ const UserAdministration = ({
   const [isScrolling, setIsScrolling] = useState(false)
   const [scrollX, setScrollX] = useState(0)
   const [clientX, setClientX] = useState(0)
+  const [validation, setValidation] = useState({})
   useEffect(() => {
     getTeamList(currentProject.project, currentProject.id)
     getShGroupList(currentProject.id)
@@ -231,9 +232,140 @@ const UserAdministration = ({
     setNewUser(temp)
   }
 
+  const validateWithLength = (value, max, min) => {
+    if (!value) return false
+    if (value.length > max || value.length < min) {
+      return false;
+    }
+    return true;
+  }
+
+  const validateFields = () => {
+    if (!newUser.user) {
+      setValidation({
+        all: 'All fields are required'
+      })
+      return false
+    } else {
+      setValidation({
+        all: ''
+      })
+    }
+    if (
+      (!validateWithLength(newUser.user.first_name, 50, 2))
+    ) {
+      setValidation({
+        first_name: 'Firstname must be a minimum of 2 characters and a maximum of 50 charactres.'
+      })
+      return false
+    } else {
+      setValidation({
+        first_name: ''
+      })
+    }
+    if (
+      (!validateWithLength(newUser.user.last_name, 50, 2))
+    ) {
+      setValidation({
+        last_name: 'Lastname must be a minimum of 2 characters and a maximum of 50 charactres.'
+      })
+      return false
+    } else {
+      setValidation({
+        last_name: ''
+      })
+    }
+    if (
+      (!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(newUser.user.email))
+    ) {
+      setValidation({
+        email: 'Email must be valid'
+      })
+      return false
+    } else {
+      setValidation({
+        email: ''
+      })
+    }
+    if (
+      (!validateWithLength((newUser.user.organization || {}).name, 100, 1))
+    ) {
+      setValidation({
+        userOrg: 'User Organization must be a maximum of 100 charactres.'
+      })
+      return false
+    } else {
+      setValidation({
+        userOrg: ''
+      })
+    }
+    if (
+      (!validateWithLength(newUser.projectOrganization, 100, 1))
+    ) {
+      setValidation({
+        pOrg: 'Project Organization must be a maximum of 100 charactres.'
+      })
+      return false
+    } else {
+      setValidation({
+        pOrg: ''
+      })
+    }
+    if (
+      (!validateWithLength(newUser.projectUserTitle, 100, 1))
+    ) {
+      setValidation({
+        pTitle: 'Project Title must be a maximum of 100 charactres.'
+      })
+      return false
+    } else {
+      setValidation({
+        pTitle: ''
+      })
+    }
+    if (
+      (!validateWithLength(newUser.projectUserRoleDesc, 255, 1))
+    ) {
+      setValidation({
+        roleDesc: 'Role Description must be a maximum of 255 charactres.'
+      })
+      return false
+    } else {
+      setValidation({
+        roleDesc: ''
+      })
+    }
+    if (
+      (newUser.team === undefined)
+    ) {
+      setValidation({
+        team: 'Team is required.'
+      })
+      return false
+    } else {
+      setValidation({
+        team: ''
+      })
+    }
+    if (
+      (newUser.shGroup === undefined)
+    ) {
+      setValidation({
+        shGroup: 'SHGroup is required.'
+      })
+      return false
+    } else {
+      setValidation({
+        shGroup: ''
+      })
+    }
+    return true;
+  }
+
   const modalContent = () =>
     <div className={styles.modal}>
       <div>
+        {validation.all && <p className={styles.error}>{validation.all}</p>}
         <p>First Name</p>
         <Input className={styles.input} value={(newUser.user || {}).first_name} onChange={(value, e) => {
           let temp = {
@@ -242,6 +374,7 @@ const UserAdministration = ({
           }
           setNewUserField('user', temp)
         }} />
+        <p className={styles.error}>{validation.first_name}</p>
       </div>
       <div>
         <p>Last Name</p>
@@ -252,6 +385,7 @@ const UserAdministration = ({
           }
           setNewUserField('user', temp)
         }} />
+        <p className={styles.error}>{validation.last_name}</p>
       </div>
       <div>
         <p>Email</p>
@@ -262,6 +396,7 @@ const UserAdministration = ({
           }
           setNewUserField('user', temp)
         }} />
+        <p className={styles.error}>{validation.email}</p>
       </div>
       <div>
         <p>User Org</p>
@@ -274,18 +409,22 @@ const UserAdministration = ({
           }
           setNewUserField('user', temp)
         }} />
+        <p className={styles.error}>{validation.userOrg}</p>
       </div>
       <div>
         <p>Project Org</p>
         <Input className={styles.input} value={(newUser.projectOrganization)} onChange={(value, e) => setNewUserField('projectOrganization', value)} />
+        <p className={styles.error}>{validation.pOrg}</p>
       </div>
       <div>
         <p>Project Title</p>
         <Input className={styles.input} value={newUser.projectUserTitle} onChange={(value, e) => setNewUserField('projectUserTitle', value)} />
+        <p className={styles.error}>{validation.pTitle}</p>
       </div>
       <div>
         <p>Role Description</p>
         <Input className={styles.input} value={newUser.projectUserRoleDesc} onChange={(value, e) => setNewUserField('projectUserRoleDesc', value)} />
+        <p className={styles.error}>{validation.roleDesc}</p>
       </div>
       <div>
         <p>Team</p>
@@ -297,6 +436,7 @@ const UserAdministration = ({
           console.log('temp', temp)
           setNewUser(temp)
         }} items={teamList.map(team => team.name)} />
+        <p className={styles.error}>{validation.team}</p>
       </div>
       <div>
         <p>SH Group</p>
@@ -309,6 +449,7 @@ const UserAdministration = ({
           }}
           items={shgroupList.map(sh => sh.SHGroupName)}
         />
+        <p className={styles.error}>{validation.shGroup}</p>
       </div>
       <CheckBoxComponent checked={newUser.sendInvite} label="Send Invite" onChange={(e) => {
         setNewUserField('sendInvite', e.target.checked)
@@ -343,16 +484,19 @@ const UserAdministration = ({
               setOpen={() => setOpen(true)}
               setClose={() => setOpen(false)}
               handleAdd={() => {
-                setOpen(false)
-                setNewUser({})
-                addNewUser({
-                  ...newUser,
-                  created_at: new Date(),
-                  updated_at: new Date(),
-                  addByProjectUser: {
-                    user: profile
-                  }
-                })
+                if (validateFields()) {
+                  setOpen(false)
+                  setNewUser({})
+                  addNewUser({
+                    ...newUser,
+                    created_at: new Date(),
+                    updated_at: new Date(),
+                    addByProjectUser: {
+                      user: profile
+                    },
+                    sendInvite: newUser.sendInvite && false
+                  })
+                }
               }}
               content={modalContent}
             />

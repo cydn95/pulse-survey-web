@@ -37,7 +37,9 @@ const toolbarSettings = {
 const ProjectSetup = ({
   currentProject,
   setProjectField,
-  loading
+  loading,
+  validateError,
+  setValidateError
 }) => {
   const tourTitle = useRef(null)
   const spanRef = useRef(null)
@@ -79,13 +81,49 @@ const ProjectSetup = ({
           <div className={styles.basicData}>
             <div className={styles.name}>
               <p className={styles.projectName}>Project Name <FontAwesomeIcon style={{ fontSize: '7px' }} fixedWidth icon={faAsterisk} color="#e30000" size="xs" /></p>
-              <Input type="text" value={currentProject.surveyTitle} onChange={(value, e) => setProjectField('surveyTitle', value)} className={styles.input} />
+              <Input
+                type="text"
+                value={currentProject.surveyTitle || ''}
+                onChange={(value, e) => setProjectField('surveyTitle', value)} className={styles.input}
+                onBlur={(e) => {
+                  if (e.target.value.length < 2 || e.target.value.length > 200) {
+                    setValidateError({
+                      ...validateError,
+                      pname: 'Project Name must be a minimum of 2 characters and a maximum of 200 charactres.'
+                    })
+                  } else {
+                    setValidateError({
+                      ...validateError,
+                      pname: ''
+                    })
+                  }
+                }}
+              />
+              {validateError.pname !== '' && <p style={{ color: 'red', fontSize: '10px' }}>{validateError.pname}</p>}
               {currentProject.code && <p className={styles.projectCode}>Project Code:<span>{` ${currentProject.code}`}</span></p>}
             </div>
             <div className={styles.projectManager}>
               <p className={styles.projectName}>Project Manager</p>
               {/* <Select selected={currentProject.manager} setSelected={(item) => setProjectField('manager', item)} items={managers} className={styles.withOutline} /> */}
-              <Input value={currentProject.projectManager} onChange={(value, e) => setProjectField('projectManager', value)} className={styles.input} />
+              <Input
+                value={currentProject.projectManager || ''}
+                onChange={(value, e) => setProjectField('projectManager', value)}
+                className={styles.input}
+                onBlur={(e) => {
+                  if ((e.target.value.length > 0) && (e.target.value.length < 2 || e.target.value.length > 50)) {
+                    setValidateError({
+                      ...validateError,
+                      pmanager: 'Project Manager must be a minimum of 2 characters and a maximum of 50 charactres.'
+                    })
+                  } else {
+                    setValidateError({
+                      ...validateError,
+                      pmanager: ''
+                    })
+                  }
+                }}
+              />
+              {validateError.pmanager !== '' && <p style={{ color: 'red', fontSize: '10px' }}>{validateError.pmanager}</p>}
             </div>
             <div className={styles.logos}>
               <FileUpload
@@ -111,7 +149,7 @@ const ProjectSetup = ({
                 refVal={tourTitle}
                 className={styles.input}
                 type="text"
-                value={((currentProject.tour || [])[0] || {}).tabName}
+                value={((currentProject.tour || [])[0] || {}).tabName || ''}
                 onBlur={() => setEdit(false)}
                 onChange={(value) => {
                   let temp
@@ -135,14 +173,19 @@ const ProjectSetup = ({
             <div className={styles.content}>
               <div className={styles.message}>
                 <p>Title</p>
-                <Input type="text" value={((currentProject.tour || [])[0] || {}).pageName} onChange={(value, e) => {
-                  let temp = [...currentProject.tour];
-                  if (!temp[0]) {
-                    temp[0] = {}
-                  }
-                  temp[0].pageName = value
-                  setProjectField('tour', temp)
-                }} className={styles.input} />
+                <Input
+                  type="text"
+                  value={((currentProject.tour || [])[0] || {}).pageName || ''}
+                  onChange={(value, e) => {
+                    let temp = [...(currentProject.tour || [])];
+                    if (!temp[0]) {
+                      temp[0] = {}
+                    }
+                    temp[0].pageName = value
+                    setProjectField('tour', temp)
+                  }}
+                  className={styles.input}
+                />
                 <p>Short text</p>
                 {<RichTextEditorComponent iframeSettings={{ enable: true }} height={150} toolbarSettings={toolbarSettings} valueTemplate={((currentProject.tour || [])[0] || {}).pageContent} saveInterval={0} change={(e) => {
                   let temp = [...currentProject.tour];

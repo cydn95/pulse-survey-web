@@ -40,6 +40,8 @@ const ProjectEdit = ({
   getDriverList,
   driverList,
   setProjectField,
+  validateError,
+  setValidateError
 }) => {
   useEffect(() => {
     if (surveyId) {
@@ -62,6 +64,8 @@ const ProjectEdit = ({
     <React.Suspense fallback={<Loading description="" />}>
       <div className={styles.wrapper}>
         {currentStep === 0 && <ProjectSetup
+          validateError={validateError}
+          setValidateError={setValidateError}
           setBreadcrumb={setBreadcrumb}
         />}
         {currentStep === 1 && <ProjectConfiguration />}
