@@ -311,12 +311,7 @@ const UserAdministration = ({
         />
       </div>
       <CheckBoxComponent checked={newUser.sendInvite} label="Send Invite" onChange={(e) => {
-        let temp = { ...newUser }
-        if (e.target.checked) {
-          temp.addByProjectUser = { user: profile }
-        }
-        temp.sendInvite = e.target.checked
-        setNewUser(temp)
+        setNewUserField('sendInvite', e.target.checked)
       }} />
     </div>
   return (
@@ -350,7 +345,14 @@ const UserAdministration = ({
               handleAdd={() => {
                 setOpen(false)
                 setNewUser({})
-                addNewUser({ ...newUser, created_at: new Date(), updated_at: new Date() })
+                addNewUser({
+                  ...newUser,
+                  created_at: new Date(),
+                  updated_at: new Date(),
+                  addByProjectUser: {
+                    user: profile
+                  }
+                })
               }}
               content={modalContent}
             />
