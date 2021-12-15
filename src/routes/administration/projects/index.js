@@ -52,6 +52,7 @@ const Projects = ({
   const [breadcrumb, setBreadcrumb] = useState('')
   const [editing, setEditing] = useState(-2)
   const [currentStep, setCurrentStep] = useState(0);
+  const [validateError, setValidateError] = useState({})
 
   useEffect(() => {
     getProjectList(user.userId)
@@ -90,7 +91,15 @@ const Projects = ({
     console.log('save button clicked')
     console.log('currentProject', currentProject)
     console.log('userList', userList)
-    if (!currentProject.surveyTitle || currentProject.surveyTitle === '') {
+    if ((currentProject.surveyTitle || '').length < 2 || (currentProject.surveyTitle || '').length > 200) {
+      setCurrentStep(0);
+      setValidateError({ pname: 'Project Name must be a minimum of 2 characters and a maximum of 200 charactres.' })
+      NotificationManager.error("Please fill out required fields", "");
+      return;
+    }
+    if ((currentProject.projectManager || '').length > 0 && ((currentProject.projectManager || '').length < 2 || (currentProject.projectManager || '').length > 50)) {
+      setCurrentStep(0);
+      setValidateError({ pmanager: 'Project Manager must be a minimum of 2 characters and a maximum of 50 charactres.' })
       NotificationManager.error("Please fill out required fields", "");
       return;
     }
@@ -169,7 +178,7 @@ const Projects = ({
           </div> :
           <div>
             <AdminStepBar currentStep={currentStep} setCurrentStep={(i) => setCurrentStep(i)} />
-            <ProjectEdit project={currentProject} currentStep={currentStep} setBreadcrumb={setBreadcrumb} />
+            <ProjectEdit project={currentProject} validateError={validateError} setValidateError={setValidateError} currentStep={currentStep} setBreadcrumb={setBreadcrumb} />
           </div>
         }
         <NotificationContainer />

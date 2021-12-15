@@ -306,6 +306,9 @@
   display: flex;
   flex-wrap: wrap;
   gap: 18px;
+  .error {
+    color: red;
+  }
   & > div {
     flex-basis: calc(50% - 18px);
     @media (max-width: 514px) {
