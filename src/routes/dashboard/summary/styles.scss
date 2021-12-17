@@ -134,6 +134,24 @@
       width: 52px !important;
       height: 52px !important;
     }
+    @media (max-width: 767px) {
+      flex-basis: 46%;
+      flex-direction: column;
+      justify-content: center;
+      &:first-child {
+        flex-basis: 100%;
+      }
+      &-text {
+        padding-left: 0 !important;
+        padding-top: 20px;
+        text-align: center;
+      }
+      &-progress {
+        width: 85px !important;
+        height: 85px !important;
+      }
+    }
+
   }
 
   .section-overall-trends {

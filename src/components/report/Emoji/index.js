@@ -30,8 +30,8 @@ const Emoji = ({ satisfaction }) => {
   }
 
   const rootStyle = {
-    width: 52,
-    height: 52,
+    // width: 52,
+    // height: 52,
     background: `url(${emoji}) center center / 100% 100% no-repeat`,
   };
 
