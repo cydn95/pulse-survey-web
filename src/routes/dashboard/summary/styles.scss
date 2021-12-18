@@ -82,6 +82,10 @@
   padding: 30px;
   box-sizing: border-box;
 
+  @media (max-width: 450px) {
+    padding: 10px;
+  }
+
   .section {
     border: 1px solid #dfe0eb;
     border-radius: 8px;
@@ -207,6 +211,10 @@
     box-sizing: border-box;
     border-left: 1px solid #dfe0eb;
     padding: 28px;
+
+    @media (max-width: 450px) {
+      padding: 15px;
+    }
   }
 
   .section-participation-container {
@@ -224,6 +232,18 @@
     font-size: 11px;
     height: 25px;
     margin-right: 10px;
+
+    @media (max-width: 450px) {
+      height: 20px;
+      flex: 2;
+      margin-right: 5px;
+      &:first-child {
+        flex: 3;
+      }
+      &:last-child {
+        flex: 3;
+      }
+    }
   }
 
   .section-feedback {
