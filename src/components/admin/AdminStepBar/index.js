@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import styles from './styles.scss'
 
 import Edit from 'Assets/img/admin/Edit.svg'
@@ -57,10 +56,92 @@ const steps = [
   }
 ]
 
+const useResize = () => {
+  const [dimensions, setDimensions] = useState({ width: null, height: null });
+  useEffect(() => {
+    const handleResize = () => {
+      setDimensions({
+        width: window.clientWidth,
+        height: window.clientHeight,
+      });
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  return dimensions;
+};
+
 const AdminStepBar = ({ currentStep, setCurrentStep, currentProject }) => {
+  // const dimensions = useResize();
+
+  const root = useRef(null);
+  const container = useRef(null);
+  const dragRef = useRef(null);
+
+  const [dragData] = useState({
+    dragStart: null,
+    dragEnd: null,
+    oldScroll: null,
+    dragStartTimestamp: null,
+  });
+
+  const [chevronScrollInfo] = useState({
+    chevronScrollAction: null,
+    scrollAmount: 0,
+  });
+
+  // debounced scroll
+  // const scrollPanel = (direction) => {
+  //   if (chevronScrollInfo.chevronScrollAction) {
+  //     clearTimeout(chevronScrollInfo.chevronScrollAction);
+  //   }
+  //   const sgn = direction === "left" ? -1 : 1;
+  //   chevronScrollInfo.scrollAmount =
+  //     2 * chevronScrollInfo.scrollAmount + root.current.clientWidth * 0.3 * sgn;
+  //   chevronScrollInfo.chevronScrollAction = setTimeout(() => {
+  //     root.current.scrollBy({
+  //       left: chevronScrollInfo.scrollAmount,
+  //       behavior: "smooth",
+  //     });
+  //     Object.assign(chevronScrollInfo, {
+  //       chevronScrollAction: null,
+  //       scrollAmount: 0,
+  //     });
+  //   }, 200);
+  // };
+
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.stepBar}>
+    <div
+      className={styles.wrapper}
+      ref={root}
+      draggable
+      onDragStart={(e) => {
+        e.dataTransfer.setDragImage(dragRef.current, 0, 0);
+        dragData.dragStart = e.pageX;
+        dragData.dragStartTimestamp = Date.now();
+        dragData.oldScroll = root.current.scrollLeft;
+      }}
+      onDragOver={(e) => {
+        const dragEnd = e.pageX;
+        const distance = dragEnd - dragData.dragStart;
+        root.current.scrollLeft = dragData.oldScroll - distance;
+      }}
+      onDragEnd={(e) => {
+        const dragEnd = e.pageX;
+        const distance = dragEnd - dragData.dragStart;
+        const dragEndTimestamp = Date.now();
+        const timeDelta = dragEndTimestamp - dragData.dragStartTimestamp;
+        const factor = timeDelta > 800 ? 1 : Math.min(2000 / timeDelta, 10);
+        const finalScroll = dragData.oldScroll - distance * factor;
+        root.current.scrollTo({
+          left: finalScroll,
+          behavior: "smooth",
+        });
+      }}
+    >
+      <div className={styles.stepBar} ref={dragRef}>
         <div className={styles.centerLine}></div>
         {
           steps.map((step, index) =>
