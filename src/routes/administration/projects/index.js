@@ -88,15 +88,14 @@ const Projects = ({
   }
 
   const onSave = () => {
-    console.log('save button clicked')
     console.log('currentProject', currentProject)
     console.log('userList', userList)
-    // if ((currentProject.surveyTitle || '').length < 2 || (currentProject.surveyTitle || '').length > 200) {
-    //   setCurrentStep(0);
-    //   setValidateError({ pname: 'Project Name must be a minimum of 2 characters and a maximum of 200 charactres.' })
-    //   NotificationManager.error("Please fill out required fields", "");
-    //   return;
-    // }
+    if ((currentProject.surveyTitle || '').length < 2 || (currentProject.surveyTitle || '').length > 200) {
+      setCurrentStep(0);
+      setValidateError({ pname: 'Project Name must be a minimum of 2 characters and a maximum of 200 charactres.' })
+      NotificationManager.error("Please fill out required fields", "");
+      return;
+    }
     // if ((currentProject.projectManager || '').length > 0 && ((currentProject.projectManager || '').length < 2 || (currentProject.projectManager || '').length > 50)) {
     //   setCurrentStep(0);
     //   setValidateError({ pmanager: 'Project Manager must be a minimum of 2 characters and a maximum of 50 charactres.' })
@@ -164,11 +163,6 @@ const Projects = ({
               </div>
             </TopNav>
           </div>
-          {/* <div>
-          <h2 className={styles.title}>{editing < 0 ? 'Projects' : currentProject.surveyTitle}</h2>
-          <h3 className={styles.breadcrumb}>{breadcrumb}</h3>
-        </div> */}
-
         </div>
         {editing < -1 ?
           <div className={styles.projectCards}>
