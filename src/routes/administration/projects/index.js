@@ -96,12 +96,12 @@ const Projects = ({
       NotificationManager.error("Please fill out required fields", "");
       return;
     }
-    // if ((currentProject.projectManager || '').length > 0 && ((currentProject.projectManager || '').length < 2 || (currentProject.projectManager || '').length > 50)) {
-    //   setCurrentStep(0);
-    //   setValidateError({ pmanager: 'Project Manager must be a minimum of 2 characters and a maximum of 50 charactres.' })
-    //   NotificationManager.error("Please fill out required fields", "");
-    //   return;
-    // }
+    if ((currentProject.projectManager || '').length > 0 && ((currentProject.projectManager || '').length < 2 || (currentProject.projectManager || '').length > 50)) {
+      setCurrentStep(0);
+      setValidateError({ pmanager: 'Project Manager must be a minimum of 2 characters and a maximum of 50 charactres.' })
+      NotificationManager.error("Please fill out required fields", "");
+      return;
+    }
     const data = {
       projectSetup: {
         surveyTitle: currentProject.surveyTitle,
