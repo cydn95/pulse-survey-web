@@ -1,4 +1,8 @@
 import React, { useState } from 'react'
+import {loadStripe} from '@stripe/stripe-js'
+import {
+  Elements
+} from '@stripe/react-stripe-js'
 import { faDownload, faStar, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from 'Components/Button'
@@ -7,8 +11,10 @@ import Select from 'Components/Select'
 import MasterCard from 'Assets/img/admin/Mastercard.svg'
 import Chair from 'Assets/img/admin/Chair.svg'
 import BestValue from 'Assets/img/admin/best_value_tag.png'
+import MoreSeats from './MoreSeats'
 import InvoiceAvatar from 'Assets/img/admin/File-invoice.svg'
 import { Wrapper, Card, InvoiceTable, Invoice, ValueTable, Item, PlanCard } from './subscription.styles';
+import CheckoutForm from './CheckoutForm'
 
 const items = [
   {
@@ -90,9 +96,19 @@ const pages = [
   }
 ]
 
+const stripePromise = loadStripe('pk_test_51K90BlAr7uUHD9JyhYkCJooOVpsWRpAKbMmDlas41DaBtZ2cEsgZp8MnItJ4AHWthz1V2sMwgcOejEEi4xX5kRRU00JcAtgN5O');
+
 const Subscription = () => {
   const [page, setPage] = useState(0)
   const [payment, setPayment] = useState(null)
+  const [seats, setSeats] = useState(1)
+  const [moreSeats, setMoreSeats] = useState(false)
+
+  const options = {
+    // passing the client secret obtained from the server
+    clientSecret: 'sk_test_51K90BlAr7uUHD9JyFIqIqTz7srDqdYE2bTkT81RR9xh6Pt9bivqEt6vLHQuOM2ZZ329TDbSTZ8Lc6yRF5UZG6wUf00CqLwO0Ts',
+  };
+
   return (
     <Wrapper>
       {page === 0 && <div className="cards">
@@ -130,7 +146,7 @@ const Subscription = () => {
           </div>
           <span className="description">10/10 seats used</span>
           <div className="btn_group">
-            <Button>Add</Button>
+            <Button onClick={() => setMoreSeats(true)}>Add</Button>
             <Button>Remove</Button>
           </div>
         </Card>
@@ -237,6 +253,7 @@ const Subscription = () => {
         </div>
         <Button>Save</Button>
       </div>}
+      {moreSeats && <MoreSeats setMoreSeats={setMoreSeats} seats={seats} setSeats={setSeats} />}
     </Wrapper>
   )
 }
