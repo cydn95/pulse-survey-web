@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import {connect} from 'react-redux'
 import {loadStripe} from '@stripe/stripe-js'
 import {
   Elements
@@ -12,6 +13,7 @@ import MasterCard from 'Assets/img/admin/Mastercard.svg'
 import Chair from 'Assets/img/admin/Chair.svg'
 import BestValue from 'Assets/img/admin/best_value_tag.png'
 import MoreSeats from './MoreSeats'
+import RemoveSeats from './RemoveSeats'
 import InvoiceAvatar from 'Assets/img/admin/File-invoice.svg'
 import { Wrapper, Card, InvoiceTable, Invoice, ValueTable, Item, PlanCard } from './subscription.styles';
 import CheckoutForm from './CheckoutForm'
@@ -98,11 +100,12 @@ const pages = [
 
 const stripePromise = loadStripe('pk_test_51K90BlAr7uUHD9JyhYkCJooOVpsWRpAKbMmDlas41DaBtZ2cEsgZp8MnItJ4AHWthz1V2sMwgcOejEEi4xX5kRRU00JcAtgN5O');
 
-const Subscription = () => {
+const Subscription = ({usedSeats, totalSeats}) => {
   const [page, setPage] = useState(0)
   const [payment, setPayment] = useState(null)
-  const [seats, setSeats] = useState(1)
+  const [seats, setSeats] = useState(100)
   const [moreSeats, setMoreSeats] = useState(false)
+  const [removeSeats, setRemoveSeats] = useState(false)
 
   const options = {
     // passing the client secret obtained from the server
@@ -144,10 +147,10 @@ const Subscription = () => {
             <span className="bgDescription">$14.99</span>
             <span className="smDescription">per seat/month</span>
           </div>
-          <span className="description">10/10 seats used</span>
+          <span className="description">{usedSeats || '0'} / {totalSeats || '0'} seats used</span>
           <div className="btn_group">
             <Button onClick={() => setMoreSeats(true)}>Add</Button>
-            <Button>Remove</Button>
+            <Button onClick={() => setRemoveSeats(true)}>Remove</Button>
           </div>
         </Card>
       </div>}
@@ -254,8 +257,16 @@ const Subscription = () => {
         <Button>Save</Button>
       </div>}
       {moreSeats && <MoreSeats setMoreSeats={setMoreSeats} seats={seats} setSeats={setSeats} />}
+      {removeSeats && <RemoveSeats setRemoveSeats={setRemoveSeats} seats={seats} setSeats={setSeats} />}
     </Wrapper>
   )
 }
 
-export default Subscription
+const mapStateToProps = ({admin}) => {
+  return {
+    totalSeats: (admin.currentProject || {}).seatsPurchased,
+    usedSeats: (admin.currentProject || {}).totalInvited
+  }
+}
+
+export default connect(mapStateToProps, null)(Subscription)
