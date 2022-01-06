@@ -15,6 +15,7 @@ import BestValue from 'Assets/img/admin/best_value_tag.png'
 import MoreSeats from './MoreSeats'
 import RemoveSeats from './RemoveSeats'
 import InvoiceAvatar from 'Assets/img/admin/File-invoice.svg'
+import TrialAvatar from 'Assets/img/admin/trial-icon.jpg'
 import { Wrapper, Card, InvoiceTable, Invoice, ValueTable, Item, PlanCard } from './subscription.styles';
 import CheckoutForm from './CheckoutForm'
 
@@ -68,6 +69,7 @@ const items = [
 
 const plans = [
   {
+    id: 0,
     bestValue: true,
     period: 12,
     price: 7.49,
@@ -75,11 +77,11 @@ const plans = [
     tax: true,
   },
   {
+    id: 1,
     period: 1,
     price: 9.99,
     total: 9.99,
     tax: true,
-    subscribed: true,
   }
 ]
 
@@ -102,14 +104,16 @@ const stripePromise = loadStripe('pk_test_51K90BlAr7uUHD9JyhYkCJooOVpsWRpAKbMmDl
 
 const Subscription = ({usedSeats, totalSeats}) => {
   const [page, setPage] = useState(0)
+  const [plan, setPlan] = useState(1)
   const [payment, setPayment] = useState(null)
   const [seats, setSeats] = useState(100)
   const [moreSeats, setMoreSeats] = useState(false)
   const [removeSeats, setRemoveSeats] = useState(false)
+  const [method, setMethod] = useState(false)
 
   const options = {
     // passing the client secret obtained from the server
-    clientSecret: 'sk_test_51K90BlAr7uUHD9JyFIqIqTz7srDqdYE2bTkT81RR9xh6Pt9bivqEt6vLHQuOM2ZZ329TDbSTZ8Lc6yRF5UZG6wUf00CqLwO0Ts',
+    clientSecret: 'sk_secret_51K90BlAr7uUHD9JyFIqIqTz7srDqdYE2bTkT81RR9xh6Pt9bivqEt6vLHQuOM2ZZ329TDbSTZ8Lc6yRF5UZG6wUf00CqLwO0Ts',
   };
 
   return (
@@ -118,13 +122,13 @@ const Subscription = ({usedSeats, totalSeats}) => {
         <Card>
           <span className="title">Current Plan</span>
           <div className="basic">
-            <span className="star"><FontAwesomeIcon icon={faStar} color="white" /></span>
-            <span className="bgDescription">Enterprise</span>
-            <span className="smDescription">$9.99/month billed monthly</span>
+            {plan < 0 ?<img src={TrialAvatar} alt="trial" width={25} height={25} />:<span className="star"><FontAwesomeIcon icon={faStar} color="white" /></span>}
+            <span className="bgDescription">{plan < 0 ? "Free" : "Enterprise"}</span>
+            {plan >= 0 && <span className="smDescription">${plans.filter(p => p.id === plan)[0].price}/month billed {plan===0 ? "yearly" : "monthly"}</span>}
           </div>
-          <span className="description">Your subscription willl auto-renew on August 21,2022</span>
+          <span className="description">{plan < 0 ? "Please subscribe enterprise plan for professional use" : "Your subscription willl auto-renew on August 21,2022"}</span>
           <div className="btn_group">
-            <span>Cancel subscription</span>
+            {plan >= 0 && <span onClick={() => setPlan(-1)} style={{cursor: 'pointer'}}>Cancel subscription</span>}
             <Button onClick={() => setPage(1)}>Change plan</Button>
           </div>
         </Card>
@@ -137,7 +141,7 @@ const Subscription = ({usedSeats, totalSeats}) => {
           </div>
           <span className="description">This is the cards currently registered with us</span>
           <div className="btn_group">
-            <Button>Edit</Button>
+            <Button onClick={() => setMethod(true)}>Edit</Button>
           </div>
         </Card>
         <Card>
@@ -150,7 +154,7 @@ const Subscription = ({usedSeats, totalSeats}) => {
           <span className="description">{usedSeats || '0'} / {totalSeats || '0'} seats used</span>
           <div className="btn_group">
             <Button onClick={() => setMoreSeats(true)}>Add</Button>
-            <Button onClick={() => setRemoveSeats(true)}>Remove</Button>
+            <Button disabled={totalSeats===usedSeats} onClick={() => setRemoveSeats(true)}>Remove</Button>
           </div>
         </Card>
       </div>}
@@ -196,22 +200,28 @@ const Subscription = ({usedSeats, totalSeats}) => {
           </div>
         </ValueTable>
         <div className="plans">
-          {plans.map((plan, idx) =>
+          {plans.map((p, idx) =>
             <PlanCard key={`${idx}-plan`}>
-              {plan.bestValue && <div className="bestTag">
+              {p.bestValue && <div className="bestTag">
                 <span className="text">Best Value</span>
                 <img src={BestValue} alt="plan" />
               </div>}
-              <span className="period">{`${plan.period} MONTH${plan.period === 1 ? '' : 'S'}`}</span>
+              <span className="period">{`${p.period} MONTH${p.period === 1 ? '' : 'S'}`}</span>
               <div className="basicdata">
                 <div className="data">
-                  <span className="price description"><b>${plan.price}*</b>/month</span>
-                  <span className="description"><b>${plan.total}</b>{` every 12 months`}</span>
-                  {plan.tax && <span className="description">{`* VAT & local taxes may apply`}</span>}
+                  <span className="price description"><b>${p.price}*</b>/month</span>
+                  <span className="description"><b>${p.total}</b>{` every 12 months`}</span>
+                  {p.tax && <span className="description">{`* VAT & local taxes may apply`}</span>}
                 </div>
                 <div className="btns">
-                  <Button disabled={plan.subscribed}>{`${plan.subscribed ? 'Subscribed' : 'Subscribe now'}`}</Button>
-                  {plan.subscribed && <span className="cancel">Cancel subscription</span>}
+                  <Button disabled={p.id === plan} onClick={() => {
+                    setPlan(p.id)
+                    setPage(0)
+                  }}>{`${p.id === plan ? 'Subscribed' : 'Subscribe now'}`}</Button>
+                  {p.id === plan && <span className="cancel" onClick={() => {
+                    setPlan(-1)
+                    setPage(0)
+                  }}>Cancel subscription</span>}
                 </div>
               </div>
             </PlanCard>
@@ -258,6 +268,7 @@ const Subscription = ({usedSeats, totalSeats}) => {
       </div>}
       {moreSeats && <MoreSeats setMoreSeats={setMoreSeats} seats={seats} setSeats={setSeats} />}
       {removeSeats && <RemoveSeats setRemoveSeats={setRemoveSeats} seats={seats} setSeats={setSeats} />}
+      {method && <CheckoutForm setMethod={setMethod} />}
     </Wrapper>
   )
 }
