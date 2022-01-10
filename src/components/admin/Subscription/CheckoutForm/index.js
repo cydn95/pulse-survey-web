@@ -1,11 +1,16 @@
 // import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
-import React from 'react'
+import React, {useState} from 'react'
 import styles from './index.scss'
 import Input from 'Components/Input'
+import {useStripe, useElements, CardElement} from '@stripe/react-stripe-js';
 import { faTimes, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import CreditCardInput from 'react-credit-card-input';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const CheckoutForm = ({setMethod}) => {
+  const [cardNumber, setCardNumber] = useState('')
+  const [cvc, setCVC] = useState('')
+  const [expiry, setExpiery] = useState('')
   // const stripe = useStripe();
   // const elements = useElements();
 
@@ -51,17 +56,30 @@ const CheckoutForm = ({setMethod}) => {
         </div>
         <div className={styles.content}>
           <div className={styles.inputWrapper}>
-            <span className={`${styles.primary} ${styles.description}`}>Card number (required)</span>
-            <Input />
+            <CreditCardInput
+              cardNumberInputProps={{ value: cardNumber, onChange: (e) => setCardNumber(e.target.value) }}
+              cardExpiryInputProps={{ value: expiry, onChange: (e) => setExpiery(e.target.value) }}
+              cardCVCInputProps={{ value: cvc, onChange: (e) => setCVC(e.target.value) }}
+              fieldClassName={styles.infoWrapper}
+              customTextLabels={{
+                cardNumberPlaceholder: '1234 1234 1234 1234',
+                expiryPlaceholder: 'MM/YY',
+                cvcPlaceholder: 'CVC',
+              }}
+            />
           </div>
-          <div className={styles.inputWrapper}>
+          {/* <div className={styles.inputWrapper}>
+            <span className={`${styles.primary} ${styles.description}`}>Card number (required)</span>
+            <Input value={(cardNumber.match(/.{1,4}/g) || []).join(' ')} onChange={(value) => setCardNumber(value.split(' ').join(''))} />
+          </div> */}
+          {/* <div className={styles.inputWrapper}>
             <span className={`${styles.primary} ${styles.description}`}>Expiration date (required)</span>
             <Input />
           </div>
           <div className={styles.inputWrapper}>
             <span className={`${styles.primary} ${styles.description}`}>CVC (required)</span>
             <Input />
-          </div>
+          </div> */}
           <div className={styles.inputWrapper}>
             <span className={`${styles.primary} ${styles.description}`}>Cardholder name (required)</span>
             <Input />

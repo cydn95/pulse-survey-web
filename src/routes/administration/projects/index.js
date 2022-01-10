@@ -23,6 +23,7 @@ import {
 // import ProjectEdit from 'Components/admin/ProjectEdit'
 // import AdminStepBar from 'Components/admin/AdminStepBar'
 import Loading from 'Components/Loading'
+// import CheckoutForm from 'Components/admin/Subscription/CheckoutForm'
 import Button from 'Components/Button'
 import styles from './styles.scss'
 
@@ -175,6 +176,7 @@ const Projects = ({
             <ProjectEdit project={currentProject} validateError={validateError} setValidateError={setValidateError} currentStep={currentStep} setBreadcrumb={setBreadcrumb} />
           </div>
         }
+        {/* <CheckoutForm /> */}
         <NotificationContainer />
       </div>
     </React.Suspense>

@@ -443,7 +443,7 @@ class Sidebar extends Component {
           <div className={styles.space}></div>
           <div className={styles.link}>
             <ProSidebar width="220px">
-              {isProjectManager && <Menu iconShape="square" className="s-menu-about-me">
+              {(isProjectManager) && <Menu iconShape="square" className="s-menu-about-me">
                 <MenuItem
                   icon={<FontAwesomeIcon icon={faCog} />}
                   onClick={(e) => this.handleClickMainMenu(e, `admin/projects`, true)}
