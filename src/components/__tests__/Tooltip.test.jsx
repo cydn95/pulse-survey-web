@@ -1,13 +1,13 @@
 import React from 'react'
-import Accordion from '../accordion'
+import Tooltip from '../Tooltip'
 import { render, screen } from '@testing-library/react'
 
 describe('work properly', () => {
     test('adds 1 + 2 to equal 3', () => {
         expect(1 + 2).toBe(3);
     });
-    test('accordion works correctly', () => {
-        render(<Accordion headerSelector={(d) => { return "Header" }} data={[1, 2, 3]} />)
+    test('Tooltip works correctly', () => {
+        render(<Tooltip headerSelector={(d) => { return "Header" }} data={[1, 2, 3]} />)
         expect(screen.getByText('Header')).toBeInTheDocument();
     })
 })

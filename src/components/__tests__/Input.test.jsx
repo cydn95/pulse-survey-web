@@ -1,14 +1,16 @@
 import React from 'react'
-import Accordion from '../accordion'
+import Input from '../Input'
 import { render, screen } from '@testing-library/react'
 
 describe('work properly', () => {
     test('adds 1 + 2 to equal 3', () => {
         expect(1 + 2).toBe(3);
     });
-    test('accordion works correctly', () => {
-        render(<Accordion headerSelector={(d) => { return "Header" }} data={[1, 2, 3]} />)
-        expect(screen.getByText('Header')).toBeInTheDocument();
+    test('Input works correctly', () => {
+        const handleClick = jest.fn()
+        render(<Input onChange={handleClick} />)
+        fireEvent.change(input, {target: {value: '24/05/2020'}})
+        expect(handleClick).toHaveBeenCalledTimes(1)
     })
 })
 
