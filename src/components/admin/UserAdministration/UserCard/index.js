@@ -71,13 +71,13 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpe
             <div className="selectGroup">
               <span className="tag">Select Group</span>
               {(user.survey || {}).customGroup1 && <TooltipComponent content={(user.survey || {}).customGroup1}>
-                <input checked={user.isCGroup1} onChange={(e) => setUserField(idx, 'isCGroup1', e.target.checked)} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
+                <input checked={user.isCGroup1} onChange={(e) => setUserField(idx, 'isCGroup1', e.target.checked)} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">{(user.survey || {}).customGroup1}</label>
               </TooltipComponent>}
               {(user.survey || {}).customGroup2 && <TooltipComponent content={(user.survey || {}).customGroup2}>
-                <input checked={user.isCGroup2} onChange={(e) => setUserField(idx, 'isCGroup2', e.target.checked)} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
+                <input checked={user.isCGroup2} onChange={(e) => setUserField(idx, 'isCGroup2', e.target.checked)} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">{(user.survey || {}).customGroup2}</label>
               </TooltipComponent>}
               {(user.survey || {}).customGroup3 && <TooltipComponent content={(user.survey || {}).customGroup3}>
-                <input checked={user.isCGroup3} onChange={(e) => setUserField(idx, 'isCGroup3', e.target.checked)} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
+                <input checked={user.isCGroup3} onChange={(e) => setUserField(idx, 'isCGroup3', e.target.checked)} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">{(user.survey || {}).customGroup3}</label>
               </TooltipComponent>}
             </div>}
         </div>
