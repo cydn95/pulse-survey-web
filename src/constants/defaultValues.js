@@ -162,3 +162,10 @@ export const TOPIC_LIMIT = 10;
 //       "There’s no finger-pointing here. ​We explore key themes and concepts ​while keeping your feedback anonymous. ​.​",
 //   },
 // ];
+
+export const HELP_HEADER = "Pulse is more than a survey"
+export const HELP_DESC = "This platform has been taught many of the important concepts​ involved in this project. This questionnaire is not designed to point fingers or find people to blame - but only to improve how we communicate and collaborate. ​Your responses will be anonymised and combined with others to guide managers on new focus areas to improve team/stakeholder engagement and project performance.​"
+export const ABOUT_ME = "About Me"
+export const ABOUT_ME_DESC = "What you think / feel about the project.​"
+export const ABOUT_OTHERS = "About Others"
+export const ABOUT_OTHERS_DESC = "What you assume other people are thinking​ or feeling about the project.​​"
