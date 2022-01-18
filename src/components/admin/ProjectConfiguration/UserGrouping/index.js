@@ -1,11 +1,22 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { adminSetProjectField, setTeamList } from 'Redux/actions';
+import { faTimesCircle, faEdit, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import Help from 'Assets/img/admin/help.svg'
 import Input from 'Components/Input'
+import Button from 'Components/Button'
 import Select from 'Components/Select'
 import AddButton from 'Components/AddButton'
+import {
+  ModalWrapper,
+  ModalFooter,
+  ModalHeader,
+  ModalBody,
+  ModalContent,
+} from '../../../AddButton/addButton.styles'
+import './index.scss'
 
 const UserGrouping = ({
   shgroup,
@@ -23,6 +34,7 @@ const UserGrouping = ({
   const [newCG, setNewCG] = useState('')
   const [openCG, setOpenCG] = useState(false)
   const [dashboardThreshold, setDashboardThreshold] = useState(3)
+  const [edit, setEdit] = useState(-1)
   React.useEffect(() => {
     console.log(currentProject)
   })
@@ -112,13 +124,71 @@ const UserGrouping = ({
           <span className={styles.header}>Stakeholder Groups / Segments</span>
           <span className={styles.description}>Create meaningful groupings to specify which
             questions the users are asked.</span>
-          <Select
+          {/* <Select
             selected={shgroup}
             noSelected="Choose Group"
             setSelected={setSHGroup}
             items={(() => (currentProject.shGroup || []).map(sh => sh.SHGroupName))()}
             className={styles.withOutline}
-          />
+          /> */}
+          <div className="container-table100">
+            <div className="wrap-table100">
+              <div className="table100">
+                <table>
+                  <thead>
+                    <tr className="table100-head">
+                      <th className="column1 c">No</th>
+                      <th className="column2 c">SH Group Name</th>
+                      <th className="column3 c">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(currentProject.shGroup || []).map((sh, idx) => 
+                      <tr>
+                        <td className="column1 r">{idx+1}</td>
+                        <td className="column2 r">{sh.SHGroupName}</td>
+                        <td className="column3 r">
+                          <FontAwesomeIcon 
+                            icon={faEdit}
+                            color="#7fcdc1" 
+                            style={{marginRight: '10px'}}
+                            onClick={() => {
+                              setEdit(idx)
+                            }}
+                          />
+                          <FontAwesomeIcon 
+                            icon={faTimesCircle} 
+                            color="#DC143C"
+                            onClick={(e) => {
+                              let temp = (currentProject.shGroup || []).filter(s => s.SHGroupName !== sh.SHGroupName)
+                              setProjectField('shGroup', temp)
+                            }}
+                          />
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          {/* {(currentProject.shGroup || []).map((sh, idx) => 
+            <Input
+              key={`${idx}-input`}
+              keyValue={`${idx}-input`}
+              value={sh.shGroupName}
+              onChange={(value) => {
+                let temp = [...(currentProject.shGroup || [])]
+                temp[idx].shGroupName = value
+                setProjectField('shGroup', temp)
+              }}
+              className={styles.customGroup}
+              onClickClose={() => {
+                let temp = (currentProject.projectTeam || []).filter(p => p !== pt)
+                setProjectField('projectTeam', temp)
+              }}
+            />
+          )} */}
           {(currentProject.shGroup || []).filter(sh => sh.SHGroupName === shgroup).length > 0 && <div className={styles.completion}>
             <span className={styles.text}>Completion Threshold(%)</span>
             <Input
@@ -179,6 +249,47 @@ const UserGrouping = ({
             <AddButton content={newCGContent} handleAdd={addNewCG} open={openCG} setOpen={() => setOpenCG(true)} setClose={() => setOpenCG(false)} />
           }
         </div>
+        {edit >= 0 && <ModalWrapper onClick={() => setEdit(-1)}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <ModalHeader>
+              <h2>Edit</h2>
+              <span onClick={() => setEdit(-1)}><FontAwesomeIcon icon={faTimes} color="#6d6f94" /></span>
+            </ModalHeader>
+            <ModalBody>
+              <div className={styles.column}>
+                <Input
+                  value={((currentProject.shGroup || [])[edit] || {}).SHGroupName}
+                  onChange={(value) => {
+                    let temp = [...(currentProject.shGroup || [])]
+                    temp[edit].SHGroupName = value
+                    setProjectField('shGroup', temp)
+                  }}
+                  className={styles.customGroup}
+                />
+                <div className={styles.completion}>
+                  <span className={styles.text}>Completion Threshold(%)</span>
+                  <Input
+                    className={styles.completion_input}
+                    value={((currentProject.shGroup || [])[edit] || {}).responsePercent}
+                    onChange={(value, e) => {
+                      if(value > 100) return;
+                      let temp = [...(currentProject.shGroup || [])]
+                      temp[edit].responsePercent = value
+                      setProjectField('shGroup', temp)
+                    }}
+                  />
+                </div>
+              </div>
+            </ModalBody>
+            {/* <ModalFooter>
+              <span onClick={() => setEdit(-1)}>Cancel</span>
+              <Button className="btn"
+                onClick={() => {
+
+                }}>Save</Button>
+            </ModalFooter> */}
+          </ModalContent>
+        </ModalWrapper>}
       </div>
     </div>
   )
