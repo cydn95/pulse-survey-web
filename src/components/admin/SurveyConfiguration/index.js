@@ -165,24 +165,24 @@ const SurveyConfiguration = ({
           </div>
           <div>
             <div className={styles.filters}>
-              <div className={classnames(styles.filter, filter === 'About Me' && styles.active)} onClick={() => setFilter('About Me')}>
+              <div className={classnames(styles.filter, filter === 'About Me' && styles.active)} onClick={() => {setFilter('About Me'); setCurrentDriver((currentProject.driverList || []).map(d => d.driverName)[0])}}>
                 <img className={styles.icon} src={AboutMe} alt="About me" />
                 <span>About Me</span>
               </div>
-              <div className={classnames(styles.filter, filter === 'About Others' && styles.active)} onClick={() => setFilter('About Others')}>
+              <div className={classnames(styles.filter, filter === 'About Others' && styles.active)} onClick={() => {setFilter('About Others'); setCurrentDriver('About Others')}}>
                 <img className={styles.icon} src={AboutOthers} alt="About Others" />
                 <span>About Others</span>
               </div>
             </div>
           </div>
           <div className={styles.drivers}>
-            {drivers.length > 0 ? drivers.map((driver, idx) =>
-              <span key={`${idx}-${driver}`} className={driver === currentDriver ? styles.active : ''} onClick={() => setCurrentDriver(driver)}>{driver}</span>
+            {drivers.length > 0 ? filter === 'About Me' && drivers.map((driver, idx) =>
+              driver !== 'About Others' && <span key={`${idx}-${driver}`} className={driver === currentDriver ? styles.active : ''} onClick={() => setCurrentDriver(driver)}>{driver}</span>
             ) : <h3>No Drivers. Please add drivers on project configuration tab.</h3>}
           </div>
           <div className={styles.filter_for_mobile}>
-            <Select className={styles.select} selected={filter} setSelected={setFilter} items={['About Me', 'About Others']} />
-            <span onClick={() => setOpen(true)}>{currentDriver}<FontAwesomeIcon icon={faCog} color="#6d6f94" /></span>
+            <Select className={styles.select} selected={filter} setSelected={(s) => {setFilter(s); setCurrentDriver(s==='About Others'?'About Others':(currentProject.driverList || []).map(d => d.driverName)[0])}} items={['About Me', 'About Others']} />
+            {filter === 'About Me' && <span onClick={() => setOpen(true)}>{currentDriver}<FontAwesomeIcon icon={faCog} color="#6d6f94" /></span>}
           </div>
           {questions.length > 0 ? questions.map((question, idx) => {
             if (question.driver && question.driver.driverName !== currentDriver)
@@ -199,7 +199,7 @@ const SurveyConfiguration = ({
               </ModalHeader>
               <div className={styles.drivers_for_mobile}>
                 {drivers.map((driver, idx) =>
-                  <span key={`${idx}-${driver}`} className={driver === currentDriver ? styles.active : ''} onClick={() => setCurrentDriver(driver)}>{driver}</span>
+                  driver !== 'About Others' && <span key={`${idx}-${driver}`} className={driver === currentDriver ? styles.active : ''} onClick={() => setCurrentDriver(driver)}>{driver}</span>
                 )}
               </div>
             </DetailModal>
