@@ -140,19 +140,17 @@ const UserGrouping = ({
             categorise user responses. Users in different
             organisations can be in the same team.</span>
           {(currentProject.projectTeam || []).map((pt, idx) =>
-            <Select
+            <Input
               key={`${idx}-select`}
               keyValue={`${idx}-select`}
-              selected={pt.name}
-              noSelected="Choose Group"
-              setSelected={(value) => {
+              value={pt.name}
+              onChange={(value) => {
                 let temp = [...(currentProject.projectTeam || [])]
-                temp[idx] = teamList.filter(team => team.name === value)[0] || {}
+                temp[idx].name = value
                 setProjectField('projectTeam', temp)
               }}
-              items={(teamList || []).filter(team => !(currentProject.projectTeam || []).map(pt => pt.name).includes(team.name)).map(team => team.name)}
-              className={styles.withOutline}
-              onClose={() => {
+              className={styles.customGroup}
+              onClickClose={() => {
                 let temp = (currentProject.projectTeam || []).filter(p => p !== pt)
                 setProjectField('projectTeam', temp)
               }}
