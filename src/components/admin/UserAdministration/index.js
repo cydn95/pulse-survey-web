@@ -25,7 +25,6 @@ import Counter from './Counter'
 import UserCard from './UserCard'
 import styles from './styles.scss'
 
-
 const UserAdministration = ({
   userList,
   currentProject,
@@ -359,6 +358,18 @@ const UserAdministration = ({
         shGroup: ''
       })
     }
+    if (
+      (newUser.shType === undefined)
+    ) {
+      setValidation({
+        shType: 'SHType is required.'
+      })
+      return false
+    } else {
+      setValidation({
+        shType: ''
+      })
+    }
     return true;
   }
 
@@ -451,7 +462,20 @@ const UserAdministration = ({
         />
         <p className={styles.error}>{validation.shGroup}</p>
       </div>
-      <CheckBoxComponent checked={newUser.sendInvite} label="Send Invite" onChange={(e) => {
+      <div>
+        <p>SH Type</p>
+        <Select className={styles.input} selected={(newUser.shType || {}).shTypeName}
+          noSelected="SH Type"
+          setSelected={(item) => {
+            let temp = { ...newUser }
+            temp.shGroup = shTypes.filter(sh => sh.shTypeName === item)[0]
+            setNewUser(temp)
+          }}
+          items={shTypes.map(sh => sh.shTypeName)}
+        />
+        <p className={styles.error}>{validation.shType}</p>
+      </div>
+      <CheckBoxComponent checked={newUser.sendInvite} label="Invite" onChange={(e) => {
         setNewUserField('sendInvite', e.target.checked)
       }} />
     </div>
