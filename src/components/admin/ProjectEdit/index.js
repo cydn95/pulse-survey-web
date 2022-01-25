@@ -41,7 +41,8 @@ const ProjectEdit = ({
   driverList,
   setProjectField,
   validateError,
-  setValidateError
+  setValidateError,
+  editing
 }) => {
   useEffect(() => {
     if (surveyId) {
@@ -67,13 +68,14 @@ const ProjectEdit = ({
           validateError={validateError}
           setValidateError={setValidateError}
           setBreadcrumb={setBreadcrumb}
+          editing={editing}
         />}
-        {currentStep === 1 && <ProjectConfiguration />}
-        {currentStep === 2 && <UserAdministration />}
-        {currentStep === 3 && <SurveyConfiguration />}
-        {currentStep === 4 && <Reporting project={currentProject} />}
-        {currentStep === 5 && <FlaggedResponses project={currentProject} />}
-        {currentStep === 6 && <Subscription />}
+        {(currentStep === 1 && editing !== -1) && <ProjectConfiguration />}
+        {(currentStep === 2 && editing !== -1) && <UserAdministration />}
+        {(currentStep === 3 && editing !== -1) && <SurveyConfiguration />}
+        {(currentStep === 4 && editing !== -1) && <Reporting project={currentProject} />}
+        {(currentStep === 5 && editing !== -1) && <FlaggedResponses project={currentProject} />}
+        {(currentStep === 6 && editing !== -1) && <Subscription />}
       </div>
     </React.Suspense>
   )

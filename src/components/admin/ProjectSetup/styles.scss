@@ -1,15 +1,64 @@
 .basicData {
   background-color: white;
-  padding: 15px 66px 15px 34px;
+  padding: 30px 66px 15px 34px;
   border-radius: 8px;
   border: solid 1px #dfe0eb;
   display: flex;
   justify-content: space-between;
   gap: 15px;
   flex-wrap: wrap;
+  &.marginTop {
+    margin-top: 30px;
+    align-items: flex-start;
+  }
+  .column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    width: 100%;
+    .description {
+      font-family: Poppins;
+      font-size: 11px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #8b90a1;
+      width: 100%;
+    }
+    .header {
+      font-family: Poppins;
+      font-size: 12px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: center;
+      color: #000;
+    }
+    .customGroup {
+      padding: 10px 16px;
+      border-radius: 8px;
+      background-color: #eff0f6;
+      font-family: Poppins;
+      font-size: 12px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #6d6f94;
+      width: 80%;
+    }
+  }
   .name {
-    flex-grow: 1;
-    max-width: 386px;
+    flex: 2;
+    min-width: 260px;
     .projectName {
       font-family: Montserrat;
       font-size: 13px;
@@ -54,7 +103,8 @@
     }
   }
   .projectManager {
-    width: 320px;
+    flex: 2;
+    min-width: 260px;
     .input {
       margin-bottom: 10px;
       padding: 10px 16px;
@@ -82,6 +132,8 @@
     }
   }
   .logos {
+    flex: 1;
+    min-width: 260px;
     display: flex;
     gap: 15px;
   }

@@ -131,13 +131,30 @@ const Projects = ({
         amQuestionList,
       }
     }
-    console.log('data', data)
+    const create = {
+      surveyTitle: currentProject.surveyTitle,
+      projectManager: currentProject.projectManager,
+      projectLogo: currentProject.projectLogo,
+      companyLogo: currentProject.companyLogo,
+      customGroup1: currentProject.customGroup1,
+      customGroup2: currentProject.customGroup2,
+      customGroup3: currentProject.customGroup3,
+      anonymityThreshold: currentProject.anonymityThreshold,
+      projectCode: currentProject.projectCode,
+      seatsPurchased: currentProject.seatsPurchased
+    }
+    let form_data = new FormData();
+
+    for ( var key in create ) {
+        form_data.append(key, create[key]);
+    }
+    console.log('data', form_data)
     if (surveyId) {
       updateSurvey(surveyId, data, savedCallback)
     } else {
-      addSurvey(data, savedCallback)
+      addSurvey(form_data, savedCallback)
     }
-    // updateUserList(userList, savedCallback)
+    updateUserList(userList, savedCallback)
   }
 
   const actions = editing < - 1 ?
@@ -172,8 +189,8 @@ const Projects = ({
             )}
           </div> :
           <div>
-            <AdminStepBar currentStep={currentStep} setCurrentStep={(i) => setCurrentStep(i)} />
-            <ProjectEdit project={currentProject} validateError={validateError} setValidateError={setValidateError} currentStep={currentStep} setBreadcrumb={setBreadcrumb} />
+            {editing > -1 && <AdminStepBar currentStep={currentStep} setCurrentStep={(i) => setCurrentStep(i)} />}
+            <ProjectEdit project={currentProject} editing={editing} validateError={validateError} setValidateError={setValidateError} currentStep={currentStep} setBreadcrumb={setBreadcrumb} />
           </div>
         }
         {/* <CheckoutForm /> */}

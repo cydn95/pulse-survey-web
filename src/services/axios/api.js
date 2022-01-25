@@ -583,7 +583,9 @@ const adminAMQuestionListAPI = (surveyId) => {
 
 const postAdminSurveyAddAPI = (data) => {
   console.log('data', data)
-  return getClient(true).post("/adminsurveyadd/", data);
+  return getClient(true).post("/adminsurveyadd/", data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 };
 
 const postAdminSurveyEditAPI = (data) => {

@@ -47,7 +47,6 @@ const Question = ({
   question,
   skipQuestionList,
   drivers,
-  index,
   setQuestionByField,
   filter,
   driverList,
@@ -107,7 +106,7 @@ const Question = ({
                 onBlur={() => setEdit(false)}
                 onChange={
                   (value, e) => {
-                    setQuestionByField(filter, index, 'questionText', value); setWidth(spanRef.current.offsetWidth + 10)
+                    setQuestionByField(filter, question.id, 'questionText', value); setWidth(spanRef.current.offsetWidth + 10)
                   }}
                 className={styles.header}
                 style={{ width }}
@@ -116,7 +115,7 @@ const Question = ({
             </div>
             <div className={styles.function_for_mobile}>
               <span className={styles.label}>Control Type:</span>
-              <Select selected={controlTypeTag(question.controlType)} setSelected={(value) => setQuestionByField(filter, index, 'controlType', controlTypeByTag(value))} items={Object.keys(controlType).map(type => controlTypeTag(controlType[type]))} className={styles.controlType} />
+              <Select selected={controlTypeTag(question.controlType)} setSelected={(value) => setQuestionByField(filter, question.id, 'controlType', controlTypeByTag(value))} items={Object.keys(controlType).map(type => controlTypeTag(controlType[type]))} className={styles.controlType} />
               <span className={styles.delete} onClick={(e) => { e.stopPropagation(); deleteQuestion(filter, question.questionText) }}><img src={DeleteIcon} alt="delete" /></span>
             </div>
             <div className={styles.inputs}>
@@ -127,7 +126,7 @@ const Question = ({
                   setSelected={(value) =>
                     setQuestionByField(
                       filter,
-                      index,
+                      question.id,
                       'driver',
                       drivers.filter(d => d.driverName === value)[0]
                     )}
@@ -141,7 +140,7 @@ const Question = ({
                   className={styles.sub}
                   value={question.subdriver}
                   onChange={(value, e) => {
-                    setQuestionByField(filter, index, 'subdriver', value);
+                    setQuestionByField(filter, question.id, 'subdriver', value);
                     setSubDriver(value)
                   }}
                 />
@@ -161,7 +160,7 @@ const Question = ({
                       color={getColorFromValue((sh + 4) % 5 + 5)}
                       onClick={(e) => {
                         e.stopPropagation()
-                        setQuestionByField(filter, index, 'shGroup', question.shGroup.filter((sh, i) => i !== idx))
+                        setQuestionByField(filter, question.id, 'shGroup', question.shGroup.filter((sh, i) => i !== idx))
                       }}
                     />
                   </Tag>
@@ -194,7 +193,7 @@ const Question = ({
             setSelected={(value) =>
               setQuestionByField(
                 filter,
-                index,
+                question.id,
                 'controlType',
                 controlTypeByTag[value]
               )}
@@ -225,7 +224,7 @@ const Question = ({
                 onChange={(value, e) =>
                   setQuestionByField(
                     filter,
-                    index,
+                    question.id,
                     'sliderTextLeft',
                     value
                   )}
@@ -239,7 +238,7 @@ const Question = ({
                 onChange={(value, e) =>
                   setQuestionByField(
                     filter,
-                    index,
+                    question.id,
                     'sliderTextRight',
                     value
                   )}
@@ -275,7 +274,7 @@ const Question = ({
                   setOpen={() => setAddOption(true)}
                   setClose={() => setAddOption(false)}
                   handleAdd={() => {
-                    setQuestionByField(filter, index, 'option', [...question.option, newOption])
+                    setQuestionByField(filter, question.id, 'option', [...question.option, newOption])
                     setAddOption(false)
                     setNewOption('')
                   }}
@@ -286,7 +285,7 @@ const Question = ({
             <div className={styles.comment}>
               <label>Topic Prompt</label>
               <Input className={styles.input} value={question.topicPrompt} onChange={(value, e) => {
-                setQuestionByField(filter, index, 'topicPrompt', value)
+                setQuestionByField(filter, question.id, 'topicPrompt', value)
               }} />
             </div>}
           <div className={styles.comment}>
@@ -294,7 +293,7 @@ const Question = ({
             <Input
               value={question.commentPrompt}
               onChange={(value, e) =>
-                setQuestionByField(filter, index, 'commentPrompt', value)
+                setQuestionByField(filter, question.id, 'commentPrompt', value)
               }
               className={styles.input}
             />
@@ -309,11 +308,11 @@ const Question = ({
                 key={`${idx}-${option}`}
                 className={styles.input}
                 withClose={idx === question.skipOption.length - 1}
-                onClickClose={idx === question.skipOption.length - 1 ? (() => { let temp = [...question.skipOption]; temp.pop(); setQuestionByField(filter, index, 'skipOption', temp) }) : null}
+                onClickClose={idx === question.skipOption.length - 1 ? (() => { let temp = [...question.skipOption]; temp.pop(); setQuestionByField(filter, question.id, 'skipOption', temp) }) : null}
                 onChange={(value, e) => {
                   let temp = [...question.skipOption]
                   temp[idx] = value;
-                  setQuestionByField(filter, index, 'skipOption', temp)
+                  setQuestionByField(filter, question.id, 'skipOption', temp)
                 }}
                 readOnly="readonly"
               />
@@ -325,7 +324,7 @@ const Question = ({
               setOpen={() => setOpen(true)}
               setClose={() => setOpen(false)}
               handleAdd={() => {
-                setQuestionByField(filter, index, 'skipOption', [...question.skipOption, newSkip.id])
+                setQuestionByField(filter, question.id, 'skipOption', [...question.skipOption, newSkip.id])
                 setOpen(false)
                 setNewSkip({})
               }}
@@ -350,11 +349,11 @@ const Question = ({
                 <Fragment>
                   <div className={styles.left}>
                     <label className="bgTag">Slider Left (Red)</label>
-                    <Input value={question.sliderTextLeft} onChange={(value, e) => setQuestionByField(filter, index, 'sliderTextLeft', value)} className={styles.input} />
+                    <Input value={question.sliderTextLeft} onChange={(value, e) => setQuestionByField(filter, question.id, 'sliderTextLeft', value)} className={styles.input} />
                   </div>
                   <div className={styles.right}>
                     <label className="bgTag">Slider Right (Green)</label>
-                    <Input value={question.sliderTextRight} onChange={(value, e) => setQuestionByField(filter, index, 'sliderTextRight', value)} className={styles.input} />
+                    <Input value={question.sliderTextRight} onChange={(value, e) => setQuestionByField(filter, question.id, 'sliderTextRight', value)} className={styles.input} />
                   </div>
                 </Fragment>}
               {(controlTypeTag(question.controlType) === 'Two Options'
@@ -366,7 +365,7 @@ const Question = ({
                       <Input className={styles.input} value={option} onChange={(value, e) => {
                         let temp = [...question.option]
                         temp[idx] = value
-                        setQuestionByField(filter, index, 'option', temp)
+                        setQuestionByField(filter, question.id, 'option', temp)
                       }} />
                     </div>
                   )}
@@ -378,7 +377,7 @@ const Question = ({
                       setOpen={() => setAddOption(true)}
                       setClose={() => setAddOption(false)}
                       handleAdd={() => {
-                        setQuestionByField(filter, index, 'option', [...question.option, newOption])
+                        setQuestionByField(filter, question.id, 'option', [...question.option, newOption])
                         setAddOption(false)
                         setNewOption('')
                       }}
@@ -393,7 +392,7 @@ const Question = ({
                     row={3}
                     value={question.topicPrompt}
                     onChange={(value, e) =>
-                      setQuestionByField(filter, index, 'topicPrompt', value)
+                      setQuestionByField(filter, question.id, 'topicPrompt', value)
                     }
                     className={styles.input}
                   />
@@ -404,7 +403,7 @@ const Question = ({
                   row={3}
                   value={question.commentPrompt}
                   onChange={(value, e) =>
-                    setQuestionByField(filter, index, 'commentPrompt', value)
+                    setQuestionByField(filter, question.id, 'commentPrompt', value)
                   }
                   className={styles.input}
                 />
@@ -420,7 +419,7 @@ const Question = ({
                       withClose={idx === question.skipOption.length - 1}
                       onClickClose={idx === question.skipOption.length - 1 ? (() => {
                         let temp = [...question.skipOption]; temp.pop();
-                        setQuestionByField(filter, index, 'skipOption', temp)
+                        setQuestionByField(filter, question.id, 'skipOption', temp)
                       }) : null}
                     />
                   )}
@@ -438,7 +437,7 @@ const Question = ({
       {addTag &&
         <ModalWrapper onClick={() => setAddTag(false)}>
           <DetailModal
-            style={{ width: '330px' }}
+            style={{ width: '330px', overflow: 'unset' }}
             onClick={(e) => e.stopPropagation()}
           >
             <ModalHeader>
@@ -463,7 +462,7 @@ const Question = ({
                 onClick={() => {
                   setQuestionByField(
                     filter,
-                    index,
+                    question.id,
                     'shGroup',
                     [
                       ...question.shGroup,
