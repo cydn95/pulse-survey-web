@@ -145,9 +145,17 @@ export default (state = INIT_STATE, action) => {
       } else {
         filterText2 = 'aoQuestionList'
       }
-      let temp = [...state[filterText2]]
-      temp[index][field] = value;
+      let temp = state[filterText2].map(d => {
+        if (d.id === index) {
+          d[field] = value
+          return d
+        } else {
+          return d
+        }
+      })
       console.log('data', temp)
+      console.log('value', value)
+      console.log('index', index)
       return {
         ...state,
         [filterText2]: [

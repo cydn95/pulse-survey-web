@@ -39,7 +39,8 @@ const ProjectSetup = ({
   setProjectField,
   loading,
   validateError,
-  setValidateError
+  setValidateError,
+  editing
 }) => {
   const tourTitle = useRef(null)
   const spanRef = useRef(null)
@@ -51,6 +52,9 @@ const ProjectSetup = ({
   const [pageHeader, setPageHeader] = useState('')
   const [open, setOpen] = useState(false)
   const [error, setError] = useState('')
+  const [newCG, setNewCG] = useState('')
+  
+  const [openCG, setOpenCG] = useState(false)
 
   useEffect(() => {
     if (spanRef.current) {
@@ -66,6 +70,30 @@ const ProjectSetup = ({
     </div>
   )
 
+  const addNewCG = () => {
+    if (newCG) {
+      let keys = Object.keys(currentProject).filter((key, idx) => key.includes('customGroup') && currentProject[key] === '')
+      let field = 'customGroup1'
+      if (keys.length > 0) {
+        field = keys[0]
+      } else {
+        setProjectField('customGroup2', '')
+        setProjectField('customGroup3', '')
+      }
+      setProjectField(field, newCG)
+      setNewCG('')
+      setOpenCG(false)
+    }
+  }
+  const newCGContent = () =>
+    <div className={styles.column}>
+      <Input
+        className={styles.customGroup}
+        value={newCG}
+        onChange={(value, e) => setNewCG(value)}
+      />
+    </div>
+
   const updateCompanyLogo = (files) =>
     setProjectField('companyLogo', files[0]);
 
@@ -78,13 +106,27 @@ const ProjectSetup = ({
     <Fragment>
       {loading ? <Loading description="" /> :
         <Fragment>
-          <div className={styles.basicData}>
+          <div className={`${styles.basicData} ${editing === -1 && styles.marginTop}`}>
             <div className={styles.name}>
               <p className={styles.projectName}>Project Name <FontAwesomeIcon style={{ fontSize: '7px' }} fixedWidth icon={faAsterisk} color="#e30000" size="xs" /></p>
               <Input
                 type="text"
                 value={currentProject.surveyTitle || ''}
-                onChange={(value, e) => setProjectField('surveyTitle', value)} className={styles.input}
+                onChange={(value, e) => {
+                  setProjectField('surveyTitle', value)
+                  if (e.target.value.length < 2 || e.target.value.length > 200) {
+                    setValidateError({
+                      ...validateError,
+                      pname: 'Project Name must be a minimum of 2 characters and a maximum of 200 charactres.'
+                    })
+                  } else {
+                    setValidateError({
+                      ...validateError,
+                      pname: ''
+                    })
+                  }
+                }}
+                className={styles.input}
                 onBlur={(e) => {
                   if (e.target.value.length < 2 || e.target.value.length > 200) {
                     setValidateError({
@@ -101,13 +143,34 @@ const ProjectSetup = ({
               />
               {validateError.pname !== '' && <p style={{ color: 'red', fontSize: '10px' }}>{validateError.pname}</p>}
               {currentProject.code && <p className={styles.projectCode}>Project Code:<span>{` ${currentProject.code}`}</span></p>}
+              {editing === -1 && <div>
+                <p className={styles.projectName}>Project Code</p>
+                <Input
+                  type="text"
+                  value={currentProject.projectCode || ''}
+                  onChange={(value, e) => setProjectField('projectCode', value)} className={styles.input}
+                />
+              </div>}
             </div>
             <div className={styles.projectManager}>
               <p className={styles.projectName}>Project Manager</p>
               {/* <Select selected={currentProject.manager} setSelected={(item) => setProjectField('manager', item)} items={managers} className={styles.withOutline} /> */}
               <Input
                 value={currentProject.projectManager || ''}
-                onChange={(value, e) => setProjectField('projectManager', value)}
+                onChange={(value, e) => {
+                  if ((e.target.value.length > 0) && (e.target.value.length < 2 || e.target.value.length > 50)) {
+                    setValidateError({
+                      ...validateError,
+                      pmanager: 'Project Manager must be a minimum of 2 characters and a maximum of 50 charactres.'
+                    })
+                  } else {
+                    setValidateError({
+                      ...validateError,
+                      pmanager: ''
+                    })
+                  }
+                  setProjectField('projectManager', value)
+                }}
                 className={styles.input}
                 onBlur={(e) => {
                   if ((e.target.value.length > 0) && (e.target.value.length < 2 || e.target.value.length > 50)) {
@@ -124,6 +187,24 @@ const ProjectSetup = ({
                 }}
               />
               {validateError.pmanager !== '' && <p style={{ color: 'red', fontSize: '10px' }}>{validateError.pmanager}</p>}
+              {editing === -1 && <div style={{display: 'flex', width: 'calc(100% - 10px)'}}>
+                <div style={{width: '50%'}}>
+                  <p className={styles.projectName}>Anonymity Threshold</p>
+                  <Input
+                    type="number"
+                    value={currentProject.anonymityThreshold  || ''}
+                    onChange={(value, e) => setProjectField('anonymityThreshold', value)} className={styles.input}
+                  />
+                </div>
+                <div style={{marginLeft: '10px', width: '50%'}}>
+                  <p className={styles.projectName}>Seats Purchased</p>
+                  <Input
+                    type="number"
+                    value={currentProject.seatsPurchased || ''}
+                    onChange={(value, e) => setProjectField('seatsPurchased', value)} className={styles.input}
+                  />
+                </div>
+              </div>}
             </div>
             <div className={styles.logos}>
               <FileUpload
@@ -141,8 +222,29 @@ const ProjectSetup = ({
                 updateFilesCb={updateProjectLogo}
               />
             </div>
+            {editing === -1 && <div className={styles.column}>
+                <span className={styles.header}>Custom Groups</span>
+                <span className={styles.description}>Create up to three custom groups</span>
+                {Object.keys(currentProject).length > 0 &&
+                  Object.keys(currentProject).filter(key => key.includes('customGroup')).map((key, idx) =>
+                    currentProject[key] !== '' && <Input
+                      type="text"
+                      key={`shGroup-${idx}`}
+                      className={styles.customGroup}
+                      value={currentProject[key]}
+                      onChange={(value, e) => {
+                        setProjectField(`customGroup${idx + 1}`, value)
+                      }}
+                      onClickClose={() => {
+                        setProjectField(`customGroup${idx + 1}`, '')
+                      }} />
+                  )}
+                {Object.keys(currentProject || {}).filter(key => key.includes('customGroup') && currentProject[key] !== '').length < 3 &&
+                  <AddButton content={newCGContent} handleAdd={addNewCG} open={openCG} setOpen={() => setOpenCG(true)} setClose={() => setOpenCG(false)} />
+                }
+              </div>}
           </div>
-          <div className={styles.welcome}>
+          {editing !== -1 && <div className={styles.welcome}>
             <div className={styles.tourHeader}>
               <span className={styles.header}>Tour:&nbsp;</span>
               <Input
@@ -209,8 +311,8 @@ const ProjectSetup = ({
               />
             </div>
             <Button className={styles.viewButton}>View suggested scripts</Button>
-          </div>
-          <div className={styles.moreInfo}>
+          </div>}
+          {editing !== -1 && <div className={styles.moreInfo}>
             <div className={styles.left}>
               <h3>More Info</h3>
               <p>Provide additional context, links or web pages as required.</p>
@@ -253,7 +355,7 @@ const ProjectSetup = ({
                 <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
               </RichTextEditorComponent>}
             </div>
-          </div>
+          </div>}
           {currentProject.moreInfo && currentProject.moreInfo.length > 0 && show && <div className={styles.richTextMobile}>
             <h2 className={styles.header}>{currentProject.moreInfo[crrPage].pageName}</h2>
             <span className={styles.brandcrumb}>{`Projects > Edit Project > ${currentProject.moreInfo[crrPage].pageName}`}</span>
