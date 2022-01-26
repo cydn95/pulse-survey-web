@@ -132,6 +132,7 @@ const Projects = ({
       }
     }
     const create = {
+      projectId: '1',
       surveyTitle: currentProject.surveyTitle,
       projectManager: currentProject.projectManager,
       projectLogo: currentProject.projectLogo,
