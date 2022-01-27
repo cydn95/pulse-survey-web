@@ -25,7 +25,6 @@ export let data1 = [
 class TrendLine extends SampleBase {
   render() {
     const { data, num, width } = this.props;
-    console.log(data);
     return (
       <div className="control-pane">
         <div className="control-section trend-line-chart">

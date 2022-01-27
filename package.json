@@ -132,6 +132,7 @@
     "react": "^16.4.1",
     "react-beautiful-dnd": "^13.1.0",
     "react-circular-progressbar": "^2.0.2",
+    "react-cookie-consent": "^7.2.1",
     "react-credit-card-input": "^1.1.5",
     "react-datepicker": "^3.8.0",
     "react-debounce-input": "^3.2.4",

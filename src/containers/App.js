@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import { defaultStartPath } from 'Constants/defaultValues'
+import CookieConsent from "react-cookie-consent";
 
 import AppLocale from '../lang';
 import MainRoute from 'Routes';
@@ -104,6 +105,7 @@ class App extends Component {
 						</Switch>
 					</Fragment>
 				</IntlProvider>
+				<CookieConsent>This website uses cookies to enhance the user experience.</CookieConsent>
 			</Fragment>
 		);
 	}

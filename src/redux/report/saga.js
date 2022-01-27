@@ -546,32 +546,6 @@ function* getEngagementTrend({ payload }) {
       const shGroupList = [];
       const engagementRet = { [driverName]: [], "Response Rate": [] };
 
-      for (
-        let i = 0;
-        i < Object.keys(totalStakeholderCnt.shgroup).length;
-        i++
-      ) {
-        const key = Object.keys(totalStakeholderCnt.shgroup)[i];
-        shGroupList.push({
-          id: key,
-          SHGroupName: key,
-        });
-      }
-
-      shGroupList.sort(function (a, b) {
-        var nameA = a.SHGroupName.toUpperCase(); // ignore upper and lowercase
-        var nameB = b.SHGroupName.toUpperCase(); // ignore upper and lowercase
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-
-        // names must be equal
-        return 0;
-      });
-
       originShGroupList.sort(function (a, b) {
         var nameA = a.SHGroupName.toUpperCase(); // ignore upper and lowercase
         var nameB = b.SHGroupName.toUpperCase(); // ignore upper and lowercase
@@ -585,6 +559,17 @@ function* getEngagementTrend({ payload }) {
         // names must be equal
         return 0;
       })
+      for (
+        let i = 0;
+        i < Object.keys(totalStakeholderCnt.shgroup).length;
+        i++
+      ) {
+        const key = Object.keys(totalStakeholderCnt.shgroup)[i];
+        shGroupList.push({
+          id: key,
+          SHGroupName: key,
+        });
+      }
 
       console.log('participation', participationData)
 
@@ -596,12 +581,14 @@ function* getEngagementTrend({ payload }) {
           key: sg.SHGroupName,
           stakeholders: [],
           totalCnt:
-            participationData.data.filter(ptc => ptc.shGroup.SHGroupName === sg.SHGroupName).length
+            participationData.data.filter(ptc => (ptc.shGroup || {}).SHGroupName === sg.SHGroupName).length
           // sg.SHGroupName in totalStakeholderCnt.shgroup
           //   ? totalStakeholderCnt.shgroup[sg.SHGroupName]
           //   : 0,
         });
       });
+
+      console.log('engagementRet', engagementRet)
 
       const resultData = getResultForSHGroup(shGroupList, result);
 
@@ -611,7 +598,7 @@ function* getEngagementTrend({ payload }) {
 
       originShGroupList.map((sh, idx) => {
         participationData.data.map(ptc => {
-          if ((ptc.shGroup.SHGroupName === sh.SHGroupName) && ptc.sendInvite && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
+          if (((ptc.shGroup || {}).SHGroupName === sh.SHGroupName) && ptc.sendInvite && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
             engagementRet["Response Rate"][idx].stakeholders.push(ptc.id)
             if (!answered.includes(ptc.id)) {
               answered.push(ptc.id);
@@ -693,7 +680,7 @@ function* getEngagementTrend({ payload }) {
 
       originShGroupList.map((sh, idx) => {
         participationData.data.map(ptc => {
-          if ((ptc.shGroup.SHGroupName === sh.SHGroupName) && ptc.sendInvite && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
+          if (((ptc.shGroup || {}).SHGroupName === sh.SHGroupName) && ptc.sendInvite && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
             // engagementRet["Response Rate"][idx].stakeholders.push(ptc.id)
             engagementRet["Response Rate"].forEach((d, i) => {
               if (d.key === ptc.team.name)
@@ -771,7 +758,7 @@ function* getEngagementTrend({ payload }) {
 
       originShGroupList.map((sh, idx) => {
         participationData.data.map(ptc => {
-          if ((ptc.shGroup.SHGroupName === sh.SHGroupName) && ptc.sendInvite && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
+          if (((ptc.shGroup || {}).SHGroupName === sh.SHGroupName) && ptc.sendInvite && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
             // engagementRet["Response Rate"][idx].stakeholders.push(ptc.id)
             engagementRet["Response Rate"].forEach((d, i) => {
               if (d.key === ptc.projectOrganization)
