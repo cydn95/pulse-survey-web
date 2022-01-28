@@ -541,10 +541,42 @@ function* getEngagementTrend({ payload }) {
     const shGroupResult2 = yield call(getShGroupListAsync, surveyId);
     const originShGroupList = [...shGroupResult2.data];
 
+    originShGroupList.map(sh => sh.SHGroupName).map(sg => {
+      if(!Object.keys(totalStakeholderCnt.shgroup).includes(sg))
+        totalStakeholderCnt.shgroup[sg] = 0
+    })
+    console.log('total sh cnt', totalStakeholderCnt);
+
     if (chartType === "SHGroup") {
 
       const shGroupList = [];
       const engagementRet = { [driverName]: [], "Response Rate": [] };
+
+      for (
+        let i = 0;
+        i < Object.keys(totalStakeholderCnt.shgroup).length;
+        i++
+      ) {
+        const key = Object.keys(totalStakeholderCnt.shgroup)[i];
+        shGroupList.push({
+          id: key,
+          SHGroupName: key,
+        });
+      }
+
+      shGroupList.sort(function (a, b) {
+        var nameA = a.SHGroupName.toUpperCase(); // ignore upper and lowercase
+        var nameB = b.SHGroupName.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // names must be equal
+        return 0;
+      })
 
       originShGroupList.sort(function (a, b) {
         var nameA = a.SHGroupName.toUpperCase(); // ignore upper and lowercase
@@ -559,18 +591,7 @@ function* getEngagementTrend({ payload }) {
         // names must be equal
         return 0;
       })
-      for (
-        let i = 0;
-        i < Object.keys(totalStakeholderCnt.shgroup).length;
-        i++
-      ) {
-        const key = Object.keys(totalStakeholderCnt.shgroup)[i];
-        shGroupList.push({
-          id: key,
-          SHGroupName: key,
-        });
-      }
-
+      
       console.log('participation', participationData)
 
       shGroupList.forEach((sg) => {
@@ -592,7 +613,8 @@ function* getEngagementTrend({ payload }) {
 
       const resultData = getResultForSHGroup(shGroupList, result);
 
-      // console.log('resultData', resultData)
+      console.log('resultData', resultData)
+      console.log('originShGroupList', originShGroupList)
 
       const answered = []
 
@@ -608,6 +630,7 @@ function* getEngagementTrend({ payload }) {
         })
         return sh;
       })
+      console.log('answered', answered)
 
       // Object.keys(resultData).forEach((key) => {
       //   const data = resultData[key];
