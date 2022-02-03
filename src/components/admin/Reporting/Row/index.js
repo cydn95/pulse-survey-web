@@ -61,7 +61,7 @@ const Row = ({ title, avatar, project }) => {
           <AddButton />
         </div>
         <div className={styles.input}>
-          <label>Segments / SH Group</label>
+          <label>SH Group</label>
           {shGroups.length === 0 ?
             <Select
               key={`${-1}-shGroup`}
