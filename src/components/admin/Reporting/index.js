@@ -4,7 +4,8 @@ import SegmentAvatar from 'Assets/img/admin/Segments.svg'
 import TeamAvatar from 'Assets/img/admin/Teams.svg'
 import OrganizationAvatar from 'Assets/img/admin/Organizations.svg'
 import MessageBox from 'Components/MessageBox'
-import Row from './Row'
+
+const Row = React.lazy(() => import('./Row'))
 
 const Reporting = ({ project, currentProject }) => {
   return (
@@ -17,7 +18,7 @@ const Reporting = ({ project, currentProject }) => {
         We are currently working on a super exciting feature
       </MessageBox> */}
       {Object.keys(currentProject).length > 0 && <Fragment>
-        <Row title="Segments" avatar={SegmentAvatar} project={project} />
+        <Row title="Stakeholder Groups" avatar={SegmentAvatar} project={project} />
         <Row title="Teams" avatar={TeamAvatar} project={project} />
         <Row title="Organizations" avatar={OrganizationAvatar} project={project} />
       </Fragment>}

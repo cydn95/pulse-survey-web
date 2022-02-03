@@ -1,7 +1,7 @@
 .wrapper {
 	position: relative;
   color: gray;
-  font-family: Montserrat;
+  font-family: Poppins;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -42,7 +42,7 @@
   position: relative;
   user-select: none;
   color: gray;
-  font-family: Montserrat;
+  font-family: Poppins;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -67,6 +67,7 @@
       position: relative;
       display: flex;
       justify-content: space-between;
+      font-family: Poppins;
       gap: 8px;
       align-items: center;
       cursor: pointer;
@@ -113,6 +114,7 @@
       .custom_option {
         position: relative;
         display: block;
+        font-family: Poppins;
         padding: 10px 16px;
         cursor: pointer;
         transition: all 0.5s;
