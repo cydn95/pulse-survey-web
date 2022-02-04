@@ -145,9 +145,10 @@ const Projects = ({
       seatsPurchased: currentProject.seatsPurchased
     }
     let form_data = new FormData();
-
     for ( var key in create ) {
+      if((key !== "projectLogo" && key !== "companyLogo") || create[key]) {
         form_data.append(key, create[key]);
+      }
     }
     console.log('data', form_data)
     if (surveyId) {
