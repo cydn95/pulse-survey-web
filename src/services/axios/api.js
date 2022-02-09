@@ -670,7 +670,6 @@ export {
   adminProjectListAPI,
   postAdminSurveyAddAPI,
   postAdminSurveyEditAPI,
-  postAdminSurveyEditForImages,
   putAdminProjectListAPI,
   adminAOQuestionListAPI,
   adminAMQuestionListAPI,
