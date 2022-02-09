@@ -30,6 +30,7 @@ import {
   adminSurveyConfigurationAPI,
   postAdminSurveyAddAPI,
   postAdminSurveyEditAPI,
+  postAdminSurveyEditForImages,
   adminBulkInvitationSendAPI,
   adminBulkArchiveUserAPI,
 } from '../../services/axios/api'
@@ -132,11 +133,13 @@ function* adminAddSurvey({ payload }) {
 
 function* adminUpdateSurvey({ payload }) {
   try {
-    const { surveyId, data, callback } = payload
-    const result = yield call(adminUpdateSurveyAsync, {
+    const { surveyId, data, callback} = payload
+    const request = {
       ...data,
-      surveyId
-    })
+      survey: surveyId
+    }
+    console.log("heehe", request)
+    const result = yield call(adminUpdateSurveyAsync, request)
     console.log('result', result)
     callback(true)
   } catch (error) {

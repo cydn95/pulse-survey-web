@@ -156,7 +156,7 @@ export const Detailed = styled.div`
     display: flex;
     flex-direction: column;
   }
-  @media (max-width: 768px) {
+  @media (max-width: 426px) {
     display: none;
   }
 `
@@ -243,7 +243,7 @@ export const ModalWrapper = styled.div`
   z-index: 1000;
   &.detail {
     display: none;
-    @media (max-width: 767px) {
+    @media (max-width: 426px) {
       display: flex;
     }
   }
