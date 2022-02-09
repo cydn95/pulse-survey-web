@@ -103,12 +103,13 @@ const Projects = ({
       NotificationManager.error("Please fill out required fields", "");
       return;
     }
+    
     const data = {
       projectSetup: {
         surveyTitle: currentProject.surveyTitle,
         projectManager: currentProject.projectManager,
-        projectLogo: currentProject.projectLogo,
-        companyLogo: currentProject.companyLogo,
+        companyLogo: '',
+        projectLogo: '',
         tour: currentProject.tour,
         moreInfo: currentProject.moreInfo,
       },
@@ -129,8 +130,9 @@ const Projects = ({
       surveyConfiguration: {
         aoQuestionList,
         amQuestionList,
-      }
+      },
     }
+    
     const create = {
       project: '1',
       surveyTitle: currentProject.surveyTitle,
@@ -150,13 +152,12 @@ const Projects = ({
         form_data.append(key, create[key]);
       }
     }
-    console.log('data', form_data)
     if (surveyId) {
       updateSurvey(surveyId, data, savedCallback)
     } else {
       addSurvey(form_data, savedCallback)
     }
-    updateUserList(userList, savedCallback)
+    // updateUserList(userList, savedCallback)
   }
 
   const actions = editing < - 1 ?

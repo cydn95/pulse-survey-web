@@ -27,15 +27,13 @@ import {
   getFeedbackSummaryByTeamOrOrganization,
 } from "Redux/report/summaryFunctions";
 import { getColorFromValue } from "Util/Utils";
+import OverallTrend from "Components/report/OverallTrend"
+import SummaryBarChart from "Components/report/SummaryBarChart"
+import Participation from "Components/report/Participation"
+import CultureResult from "Components/report/CultureResult"
 
 import cn from "classnames";
 import styles from "./styles.scss";
-
-
-const OverallTrend = React.lazy(() => import("Components/report/OverallTrend"));
-const SummaryBarChart = React.lazy(() => import("Components/report/SummaryBarChart"));
-const Participation = React.lazy(() => import("Components/report/Participation"));
-const CultureResult = React.lazy(() => import("Components/report/CultureResult"));
 
 const FILTER_SHGROUP = "ShGroup";
 const FILTER_TEAM = "Team";
