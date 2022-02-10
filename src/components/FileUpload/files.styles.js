@@ -148,6 +148,7 @@ export const UploadFileBtn = styled.button`
 `;
 
 export const FilePreviewContainer = styled.article`
+  min-width: 100px;
   span {
     font-size: 14px;
   }
@@ -156,6 +157,7 @@ export const FilePreviewContainer = styled.article`
 export const PreviewList = styled.section`
   display: flex;
   flex-wrap: wrap;
+  height: 100%;
 
   @media only screen and (max-width: 400px) {
     flex-direction: column;
@@ -163,7 +165,6 @@ export const PreviewList = styled.section`
 `;
 
 export const FileMetaData = styled.div`
-  min-width: 100px; 
   display: ${(props) => (props.isImageFile ? "none" : "flex")};
   flex-direction: column;
   position: absolute;
@@ -196,6 +197,7 @@ export const PreviewContainer = styled.section`
   padding: 0.25rem;
   border-radius: 6px;
   box-sizing: border-box;
+  width: 100%;
 
   &:hover {
     opacity: 0.55;
