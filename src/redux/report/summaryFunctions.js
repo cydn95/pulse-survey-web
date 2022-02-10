@@ -9,10 +9,10 @@ export const getCultureResult = (resData) => {
     if (question.controlType !== "SLIDER") continue;
     const intValue = question.integerValue;
 
-    const questionData = question.amQuestionData;
+    const questionData = question.amQuestion;
 
-    for (let j = 0; j < questionData.length; j++) {
-      const driver = questionData[j].driver;
+    // for (let j = 0; j < questionData.length; j++) {
+      const driver = questionData.driver;
 
       if (!driver) {
         continue;
@@ -22,7 +22,7 @@ export const getCultureResult = (resData) => {
 
       /* Culture Result Start */
       if (driverName === "Culture") {
-        const subDriver = questionData[j].subdriver;
+        const subDriver = questionData.subdriver;
         if (subDriver in cultureRet) {
           cultureRet[subDriver].value += parseInt(intValue, 10);
           cultureRet[subDriver].count += 1;
@@ -34,7 +34,7 @@ export const getCultureResult = (resData) => {
         }
       }
       /* Culture Result End */
-    }
+    // }
   }
 
   const filteredCulture = [];
@@ -85,7 +85,7 @@ export const getOverallTrends = (resData, shGroupList, projectId) => {
   let handledData = questions.map(q => {
     return {
       key: `${MONTH(Number(q.updated_at.split("-")[1]))} ${q.updated_at.split("-")[0]}`,
-      user: q.projectUser.user.id,
+      user: q.projectUser,
       intValue: q.integerValue
     }
   })
@@ -226,10 +226,10 @@ export const getSentimentResult = (resData) => {
 
     const intValue = question.integerValue;
 
-    const questionData = question.amQuestionData;
+    const questionData = question.amQuestion;
 
-    for (let j = 0; j < questionData.length; j++) {
-      const driver = questionData[j].driver;
+    // for (let j = 0; j < questionData.length; j++) {
+      const driver = questionData.driver;
 
       if (!driver) {
         continue;
@@ -238,7 +238,7 @@ export const getSentimentResult = (resData) => {
       const driverName = driver.driverName;
 
       if (driverName === "Sentiment") {
-        const subDriver = questionData[j].subdriver;
+        const subDriver = questionData.subdriver;
         if (subDriver in sentimentRet) {
           sentimentRet[subDriver].value += parseInt(intValue, 10);
           sentimentRet[subDriver].count += 1;
@@ -249,7 +249,7 @@ export const getSentimentResult = (resData) => {
           };
         }
       }
-    }
+    // }
   }
 
   const filteredSentiment = [];
@@ -309,11 +309,11 @@ export const getFeedbackSummaryByShGroup = (resData) => {
 
     // console.log(question.projectUser.shGroup.SHGroupName);
 
-    const questionData = question.amQuestionData;
+    const questionData = question.amQuestion;
 
-    for (let j = 0; j < questionData.length; j++) {
-      const driver = questionData[j].driver;
-      const subdriver = questionData[j].subdriver;
+    // for (let j = 0; j < questionData.length; j++) {
+      const driver = questionData.driver;
+      const subdriver = questionData.subdriver;
 
       if (!driver || !subdriver) {
         continue;
@@ -377,7 +377,7 @@ export const getFeedbackSummaryByShGroup = (resData) => {
         };
       }
       // }
-    }
+    // }
   }
 
   const filteredRet = {
@@ -448,11 +448,11 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
       continue;
     }
 
-    const questionData = question.amQuestionData;
+    const questionData = question.amQuestion;
 
-    for (let j = 0; j < questionData.length; j++) {
-      const driver = questionData[j].driver;
-      const subdriver = questionData[j].subdriver;
+    // for (let j = 0; j < questionData.length; j++) {
+      const driver = questionData.driver;
+      const subdriver = questionData.subdriver;
 
       if (!driver || !subdriver) {
         continue;
@@ -507,7 +507,7 @@ export const getFeedbackSummaryByTeamOrOrganization = (resData, type) => {
           },
         };
       }
-    }
+    // }
   }
 
   const filteredRet = {
