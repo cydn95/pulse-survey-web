@@ -374,6 +374,7 @@ const UserAdministration = ({
   }
 
   const modalContent = () =>
+  <div style={{maxHeight: '60vh', overflow: 'auto'}}>
     <div className={styles.modal}>
       <div>
         {validation.all && <p className={styles.error}>{validation.all}</p>}
@@ -439,7 +440,7 @@ const UserAdministration = ({
       </div>
       <div>
         <p>Team</p>
-        <Select className={styles.input} selected={(newUser.team || {}).name} setSelected={(item) => {
+        <Select className={styles.select} selected={(newUser.team || {}).name} setSelected={(item) => {
           let temp = { ...newUser }
           console.log('temp', temp)
           console.log('item', item)
@@ -451,7 +452,7 @@ const UserAdministration = ({
       </div>
       <div>
         <p>SH Group</p>
-        <Select className={styles.input} selected={(newUser.shGroup || {}).SHGroupName}
+        <Select className={styles.select} selected={(newUser.shGroup || {}).SHGroupName}
           noSelected="SH Group"
           setSelected={(item) => {
             let temp = { ...newUser }
@@ -464,7 +465,7 @@ const UserAdministration = ({
       </div>
       <div>
         <p>SH Type</p>
-        <Select className={styles.input} selected={(newUser.shType || {}).shTypeName}
+        <Select className={styles.select} selected={(newUser.shType || {}).shTypeName}
           noSelected="SH Type"
           setSelected={(item) => {
             let temp = { ...newUser }
@@ -479,6 +480,7 @@ const UserAdministration = ({
         setNewUserField('sendInvite', e.target.checked)
       }} />
     </div>
+  </div>
   return (
     <Fragment>
       {loading ?

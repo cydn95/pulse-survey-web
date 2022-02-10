@@ -255,7 +255,7 @@ export const DetailModal = styled.div`
   overflow: auto;
   background: white;
   padding: 12.5px 20px;
-  border-radius: 20px;
+  border-radius: 10px;
   .detailed {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

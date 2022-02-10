@@ -47,12 +47,15 @@ const UserGrouping = ({
   }
   const newShGroupContent = () =>
     <div className={styles.column}>
-      <Input
-        className={styles.customGroup}
-        value={newShGroup.SHGroupName}
-        onChange={(value, e) => setNewShGroup({ ...newShGroup, SHGroupName: value })}
-      />
-      <div className={styles.completion}>
+      <div className={styles.input_data}>
+        <span className={styles.text}>SH Group Name</span>
+        <Input
+          className={styles.completion_input}
+          value={newShGroup.SHGroupName}
+          onChange={(value, e) => setNewShGroup({ ...newShGroup, SHGroupName: value })}
+        />
+      </div>
+      <div className={styles.input_data}>
         <span className={styles.text}>Completion Threshold(%)</span>
         <Input
           className={styles.completion_input}
@@ -257,16 +260,20 @@ const UserGrouping = ({
             </ModalHeader>
             <ModalBody>
               <div className={styles.column}>
-                <Input
-                  value={((currentProject.shGroup || [])[edit] || {}).SHGroupName}
-                  onChange={(value) => {
-                    let temp = [...(currentProject.shGroup || [])]
-                    temp[edit].SHGroupName = value
-                    setProjectField('shGroup', temp)
-                  }}
-                  className={styles.customGroup}
-                />
-                <div className={styles.completion}>
+                <div className={styles.input_data}>
+                  <span className={styles.text}>SH Group Name</span>
+                  <Input
+                    value={((currentProject.shGroup || [])[edit] || {}).SHGroupName}
+                    onChange={(value) => {
+                      let temp = [...(currentProject.shGroup || [])]
+                      temp[edit].SHGroupName = value
+                      setProjectField('shGroup', temp)
+                    }}
+                    className={styles.completion_input}
+                  />
+
+                </div>
+                <div className={styles.input_data}>
                   <span className={styles.text}>Completion Threshold(%)</span>
                   <Input
                     className={styles.completion_input}
