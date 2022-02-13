@@ -610,6 +610,10 @@ const adminBulkArchiveUserAPI = (ids) => {
   return getClient(true).post("/adminbulkarchive", { ids: `[${ids}]` })
 }
 
+const deleteMoreInfoPageAPI = (id) => {
+  return getClient(true).delete(`/admindelmorepage/${id}`)
+}
+
 const getKeyDataFromLambda = () => {
   return getLambdaClient().get(
     "https://gft6ixgrq7.execute-api.us-east-2.amazonaws.com/default/PulseLambda-NeptuneLambdaFunction-QI9VKCO1VXK1"
@@ -677,4 +681,5 @@ export {
   adminSurveyConfigurationAPI,
   adminBulkInvitationSendAPI,
   adminBulkArchiveUserAPI,
+  deleteMoreInfoPageAPI
 };
