@@ -26,6 +26,7 @@ import {
   ADMIN_BULK_ARCHIVE_USER,
   ADMIN_SET_QUESTION_LIST_BLANK,
   ADMIN_DELETE_QUESTION,
+  DEL_MORE_INFO_PAGE,
 } from 'Constants/actionTypes'
 
 export const adminProjectList = (userId) => ({
@@ -71,6 +72,11 @@ export const adminAddNewUSer = (user) => ({
 export const adminSetProjectField = (field, value) => ({
   type: ADMIN_SET_PROJECT_FIELD,
   payload: { field, value }
+})
+
+export const deleteMoreInfoPage = (id, index, callback) => ({
+  type: DEL_MORE_INFO_PAGE,
+  payload: {id, callback, index}
 })
 
 export const adminSetCurrentProject = (data) => ({

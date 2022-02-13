@@ -8,7 +8,8 @@ import {
   ADMIN_SURVEY_SETUP,
   ADMIN_SURVEY_CONFIGURATION,
   ADMIN_SEND_BULK_INVITATION,
-  ADMIN_BULK_ARCHIVE_USER
+  ADMIN_BULK_ARCHIVE_USER,
+  DEL_MORE_INFO_PAGE
 } from 'Constants/actionTypes'
 import {
   adminUserListSuccess,
@@ -18,6 +19,7 @@ import {
   adminAOQuestionListSuccess,
   adminSurveySetupSuccess,
   adminSurveyConfigurationSuccess,
+  deleteMoreInfoPage
 } from './actions'
 import {
   adminUserListAPI,
@@ -33,6 +35,7 @@ import {
   postAdminSurveyEditForImages,
   adminBulkInvitationSendAPI,
   adminBulkArchiveUserAPI,
+  deleteMoreInfoPageAPI,
 } from '../../services/axios/api'
 import { ADMIN_ADD_SURVEY, ADMIN_UPDATE_SURVEY } from '../../constants/actionTypes'
 
@@ -79,6 +82,10 @@ const adminBulkInvitationSendAsync = async (ids) =>
 
 const adminBulkArchiveUserAsync = async (ids) =>
   await adminBulkArchiveUserAPI(ids)
+    .then(data => data)
+
+const adminDeleteMoreInfoPageAsync = async (id) =>
+  await deleteMoreInfoPageAPI(id)
     .then(data => data)
 
 function* getAdminUserList({ payload }) {
@@ -226,6 +233,25 @@ function* adminBulkArchiveUser({ payload }) {
   }
 }
 
+function* adminDeleteMoreInfoPage({ payload }) {
+  const {id, callback, index} = payload
+  try {
+    const result = yield call(adminDeleteMoreInfoPageAsync, id)
+    console.log('result', result)
+    if(result.status === 204) {
+      callback(true, index)
+    } else {
+      callback(false, index)
+    }
+  } catch (error) {
+    if(error.response.status === 404) {
+      callback(true, index)
+    } else {
+      callback(false, index)
+    }
+  }
+}
+
 export function* watchAdminUserList() {
   yield takeEvery(ADMIN_USER_LIST, getAdminUserList)
 }
@@ -270,6 +296,10 @@ export function* watchAdminBulkArchiveUser() {
   yield takeEvery(ADMIN_BULK_ARCHIVE_USER, adminBulkArchiveUser)
 }
 
+export function* watchAdminDelMoreInfoPage() {
+  yield takeEvery(DEL_MORE_INFO_PAGE, adminDeleteMoreInfoPage)
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchAdminUserList),
@@ -283,5 +313,6 @@ export default function* rootSaga() {
     fork(watchAdminSurveyConfiguration),
     fork(watchAdminSendBulkInvitation),
     fork(watchAdminBulkArchiveUser),
+    fork(watchAdminDelMoreInfoPage),
   ]);
 }

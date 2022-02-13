@@ -23,6 +23,7 @@ import {
   ADMIN_UPDATE_SURVEY,
   ADMIN_SEND_BULK_INVITATION,
   ADMIN_BULK_ARCHIVE_USER,
+  DEL_MORE_INFO_PAGE,
   ADMIN_SET_USER_LIST,
   ADMIN_SET_QUESTION_LIST_BLANK,
   ADMIN_DELETE_QUESTION,
@@ -222,6 +223,11 @@ export default (state = INIT_STATE, action) => {
     case ADMIN_BULK_ARCHIVE_USER: {
       return {
         ...state,
+      }
+    }
+    case DEL_MORE_INFO_PAGE: {
+      return {
+        ...state
       }
     }
     default:

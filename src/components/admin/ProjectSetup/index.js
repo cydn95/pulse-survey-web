@@ -27,7 +27,7 @@ import '@syncfusion/ej2-navigations/styles/material.css';
 import '@syncfusion/ej2-popups/styles/material.css';
 import '@syncfusion/ej2-richtexteditor/styles/material.css';
 import styles from './styles.scss'
-import { adminSetProjectField } from 'Redux/admin/actions';
+import { adminSetProjectField, deleteMoreInfoPage } from 'Redux/admin/actions';
 
 const managers = ["Christopher Robin", "Mike Smith"]
 const toolbarSettings = {
@@ -40,7 +40,8 @@ const ProjectSetup = ({
   loading,
   validateError,
   setValidateError,
-  editing
+  editing,
+  deleteMoreInfoPage
 }) => {
   const tourTitle = useRef(null)
   const spanRef = useRef(null)
@@ -62,6 +63,19 @@ const ProjectSetup = ({
       setWidth(spanRef.current.offsetWidth)
     }
   }, [currentProject])
+
+  const callbackDel = (isDel, index) => {
+    if(isDel)
+    {
+      let temp = [...currentProject.moreInfo];
+      temp.splice(index, 1)
+      console.log('here', temp)
+      if (index <= crrPage && crrPage > 0) {
+        setCrrPage(crrPage - 1)
+      }
+      setProjectField('moreInfo', temp)
+    }
+  }
 
   const content = () => (
     <div className={styles.modalContent}>
@@ -319,12 +333,7 @@ const ProjectSetup = ({
               {currentProject.moreInfo && currentProject.moreInfo.length > 0 && (currentProject.moreInfo.map((t, index) => <div className={styles.page} key={`${currentProject.code}-${index}`}>
                 <a className={index === crrPage ? styles.underline : ''} onClick={(e) => { e.preventDefault(); setCrrPage(index); setShow(true); }}>{t.pageName}</a>
                 <span onClick={() => {
-                  let temp = [...currentProject.moreInfo];
-                  temp.splice(index, 1)
-                  if (index <= crrPage) {
-                    setCrrPage(crrPage - 1)
-                  }
-                  setProjectField('moreInfo', temp)
+                  deleteMoreInfoPage(currentProject.moreInfo[index].id, index, callbackDel)
                 }}><FontAwesomeIcon icon={faTimes} /></span>
               </div>))}
               <AddButton
@@ -383,5 +392,6 @@ const mapStateToProps = ({ admin }) => {
 }
 
 export default connect(mapStateToProps, {
-  setProjectField: adminSetProjectField
+  setProjectField: adminSetProjectField,
+  deleteMoreInfoPage: deleteMoreInfoPage
 })(ProjectSetup)
