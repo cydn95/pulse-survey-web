@@ -25,20 +25,20 @@ export const getResultForSHGroup = (shGroupList, result) => {
 
   resultData.forEach((data) => {
     let questionData = [];
-    if ("amQuestionData" in data) {
-      questionData = data.amQuestionData;
+    if ("amQuestion" in data) {
+      questionData = data.amQuestion;
     } else {
-      questionData = data.aoQuestionData;
+      questionData = data.aoQuestion;
     }
     // if ("aoQuestionData" in data) {
     //   questionData = data.aoQuestionData;
     // }
 
-    questionData.forEach((aq) => {
-      if (!(aq.subdriver in subDriverRet)) {
-        subDriverRet[aq.subdriver] = [];
+    // questionData.forEach((aq) => {
+      if (!(questionData.subdriver in subDriverRet)) {
+        subDriverRet[questionData.subdriver] = [];
       }
-    });
+    // });
   });
 
   // console.log(subDriverRet);
@@ -78,8 +78,8 @@ export const getResultForSHGroup = (shGroupList, result) => {
         }
 
         let questionData = [];
-        if ("amQuestionData" in data) {
-          questionData = data.amQuestionData;
+        if ("amQuestion" in data) {
+          questionData = data.amQuestion;
         } else {
           questionData = data.aoQuestionData;
         }
@@ -87,12 +87,12 @@ export const getResultForSHGroup = (shGroupList, result) => {
         //   questionData = data.aoQuestionData;
         // }
 
-        questionData.forEach((aq) => {
+        // questionData.forEach((aq) => {
           // if (
           //   aq.shGroup.includes(currentShGroup.id) &&
           //   aq.subdriver === currentKey
           // ) {
-          if (aq.subdriver === currentKey) {
+          if (questionData.subdriver === currentKey) {
             cnt++;
             sum += data.integerValue;
             const dateStr = data.created_at.split("-");
@@ -103,7 +103,7 @@ export const getResultForSHGroup = (shGroupList, result) => {
             // const dateKey = dateStr[0];
 
             if (question === "") {
-              question = aq.questionText;
+              question = questionData.questionText;
             }
 
             if (dateKey in trend) {
@@ -112,7 +112,7 @@ export const getResultForSHGroup = (shGroupList, result) => {
               trend[dateKey] = [data.integerValue];
             }
           }
-        });
+        // });
       }
 
       const newTrend = [];
@@ -176,20 +176,20 @@ export const getResultForTeam = (teamList, result) => {
 
   resultData.forEach((data) => {
     let questionData = [];
-    if ("amQuestionData" in data) {
-      questionData = data.amQuestionData;
+    if ("amQuestion" in data) {
+      questionData = data.amQuestion;
     } else {
-      questionData = data.aoQuestionData;
+      questionData = data.aoQuestion;
     }
     // if ("aoQuestionData" in data) {
     //   questionData = data.aoQuestionData;
     // }
 
-    questionData.forEach((aq) => {
-      if (!(aq.subdriver in subDriverRet)) {
-        subDriverRet[aq.subdriver] = [];
+    // questionData.forEach((aq) => {
+      if (!(questionData.subdriver in subDriverRet)) {
+        subDriverRet[questionData.subdriver] = [];
       }
-    });
+    // });
   });
 
   for (let i = 0; i < Object.keys(subDriverRet).length; i++) {
@@ -225,21 +225,21 @@ export const getResultForTeam = (teamList, result) => {
         }
 
         let questionData = [];
-        if ("amQuestionData" in data) {
-          questionData = data.amQuestionData;
+        if ("amQuestion" in data) {
+          questionData = data.amQuestion;
         } else {
-          questionData = data.aoQuestionData;
+          questionData = data.aoQuestion;
         }
         // if ("aoQuestionData" in data) {
         //   questionData = data.aoQuestionData;
         // }
 
-        questionData.forEach((aq) => {
+        // questionData.forEach((aq) => {
           // if (
           //   data.subProjectUser.team.id === currentTeam.id &&
           //   aq.subdriver === currentKey
           // ) {
-          if (aq.subdriver === currentKey) {
+          if (questionData.subdriver === currentKey) {
             cnt++;
             sum += data.integerValue;
             const dateStr = data.created_at.split("-");
@@ -248,7 +248,7 @@ export const getResultForTeam = (teamList, result) => {
             // const dateKey = dateStr[0];
 
             if (question === "") {
-              question = aq.questionText;
+              question = questionData.questionText;
             }
 
             if (dateKey in trend) {
@@ -257,7 +257,7 @@ export const getResultForTeam = (teamList, result) => {
               trend[dateKey] = [data.integerValue];
             }
           }
-        });
+        // });
       }
 
       const newTrend = [];
@@ -321,20 +321,20 @@ export const getResultForOrganization = (organizationList, result) => {
 
   resultData.forEach((data) => {
     let questionData = [];
-    if ("amQuestionData" in data) {
-      questionData = data.amQuestionData;
+    if ("amQuestion" in data) {
+      questionData = data.amQuestion;
     } else {
-      questionData = data.aoQuestionData;
+      questionData = data.aoQuestion;
     }
     // if ("aoQuestionData" in data) {
     //   questionData = data.aoQuestionData;
     // }
 
-    questionData.forEach((aq) => {
-      if (!(aq.subdriver in subDriverRet)) {
-        subDriverRet[aq.subdriver] = [];
+    // questionData.forEach((aq) => {
+      if (!(questionData.subdriver in subDriverRet)) {
+        subDriverRet[questionData.subdriver] = [];
       }
-    });
+    // });
   });
 
   for (let i = 0; i < Object.keys(subDriverRet).length; i++) {
@@ -370,21 +370,21 @@ export const getResultForOrganization = (organizationList, result) => {
         }
 
         let questionData = [];
-        if ("amQuestionData" in data) {
-          questionData = data.amQuestionData;
+        if ("amQuestion" in data) {
+          questionData = data.amQuestion;
         } else {
-          questionData = data.aoQuestionData;
+          questionData = data.aoQuestion;
         }
         // if ("aoQuestionData" in data) {
         //   questionData = data.aoQuestionData;
         // }
 
-        questionData.forEach((aq) => {
+        // questionData.forEach((aq) => {
           // if (
           //   data.subProjectUser.user.organization.id === currentOrganization.id &&
           //   aq.subdriver === currentKey
           // ) {
-          if (aq.subdriver === currentKey) {
+          if (questionData.subdriver === currentKey) {
             cnt++;
             sum += data.integerValue;
             const dateStr = data.created_at.split("-");
@@ -393,7 +393,7 @@ export const getResultForOrganization = (organizationList, result) => {
             // const dateKey = dateStr[0];
 
             if (question === "") {
-              question = aq.questionText;
+              question = questionData.questionText;
             }
 
             if (dateKey in trend) {
@@ -402,7 +402,7 @@ export const getResultForOrganization = (organizationList, result) => {
               trend[dateKey] = [data.integerValue];
             }
           }
-        });
+        // });
       }
 
       const newTrend = [];
