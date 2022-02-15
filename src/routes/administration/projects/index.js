@@ -120,7 +120,7 @@ const Projects = ({
         customGroup1: currentProject.customGroup1,
         customGroup2: currentProject.customGroup2,
         customGroup3: currentProject.customGroup3,
-        driverList: currentProject.driverList,
+        driverList: (() => currentProject.driverList.map((d, idx) => ({...d, driveOrder: idx})))(),
         myMap: currentProject.myMap,
         projectMap: currentProject.projectMap,
       },
@@ -152,11 +152,12 @@ const Projects = ({
         form_data.append(key, create[key]);
       }
     }
-    if (surveyId) {
-      updateSurvey(surveyId, data, savedCallback)
-    } else {
-      addSurvey(form_data, savedCallback)
-    }
+    console.log('data', data)
+    // if (surveyId) {
+    //   updateSurvey(surveyId, data, savedCallback)
+    // } else {
+    //   addSurvey(form_data, savedCallback)
+    // }
     // updateUserList(userList, savedCallback)
   }
 

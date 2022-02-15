@@ -6,7 +6,7 @@ import {
   adminAMQuestionList,
   adminSurveySetup,
   adminSurveyConfiguration,
-  driverList,
+  adminGetDriverList,
   adminSetProjectField
 } from 'Redux/actions'
 import Loading from 'Components/Loading'
@@ -55,11 +55,12 @@ const ProjectEdit = ({
     }
   }, [surveyId])
 
-  useEffect(() => {
-    if (driverList && Object.keys(currentProject).length > 0) {
-      setProjectField('driverList', driverList);
-    }
-  }, [driverList])
+  // useEffect(() => {
+  //   if (driverList && Object.keys(currentProject).length > 0) {
+  //     console.log('driver', driverList)
+  //     setProjectField('driverList', driverList);
+  //   }
+  // }, [driverList])
 
   return (
     <React.Suspense fallback={<Loading description="" />}>
@@ -93,7 +94,7 @@ const mapStateToProps = ({ admin, common }) => {
 
 export default connect(mapStateToProps, {
   getUserList: adminUserList,
-  getDriverList: driverList,
+  getDriverList: adminGetDriverList,
   getAOQuestionList: adminAOQuestionList,
   getAMQuestionList: adminAMQuestionList,
   getAdminSurveySetup: adminSurveySetup,

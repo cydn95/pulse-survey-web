@@ -27,6 +27,8 @@ import {
   ADMIN_SET_QUESTION_LIST_BLANK,
   ADMIN_DELETE_QUESTION,
   DEL_MORE_INFO_PAGE,
+  ADMIN_GET_DRIVER_LIST,
+  ADMIN_DRIVER_LIST_SUCCESS,
 } from 'Constants/actionTypes'
 
 export const adminProjectList = (userId) => ({
@@ -168,3 +170,13 @@ export const adminBulkArchiveUser = (data, callback) => ({
   type: ADMIN_BULK_ARCHIVE_USER,
   payload: { data, callback }
 })
+
+export const adminGetDriverList = (surveyId) => ({
+  type: ADMIN_GET_DRIVER_LIST,
+  payload: { surveyId }
+})
+
+export const adminDriverListSuccess = (driverList) => ({
+  type: ADMIN_DRIVER_LIST_SUCCESS,
+  payload: { driverList },
+});

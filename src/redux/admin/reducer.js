@@ -27,6 +27,7 @@ import {
   ADMIN_SET_USER_LIST,
   ADMIN_SET_QUESTION_LIST_BLANK,
   ADMIN_DELETE_QUESTION,
+  ADMIN_DRIVER_LIST_SUCCESS,
 } from 'Constants/actionTypes'
 
 const INIT_STATE = {
@@ -228,6 +229,15 @@ export default (state = INIT_STATE, action) => {
     case DEL_MORE_INFO_PAGE: {
       return {
         ...state
+      }
+    }
+    case ADMIN_DRIVER_LIST_SUCCESS: {
+      return {
+        ...state,
+        currentProject: {
+          ...state.currentProject,
+          driverList: action.payload.driverList
+        }
       }
     }
     default:

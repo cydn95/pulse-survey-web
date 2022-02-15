@@ -76,7 +76,7 @@ const UserGrouping = ({
       <Input
         className={styles.customGroup}
         value={newTeam.name}
-        onChange={(value, e) => setNewTeam({ ...newTeam, name: value })}
+        onChange={(value, e) => setNewTeam({ ...newTeam, name: value, project_id: currentProject.project })}
       />
     </div>
   const addNewCG = () => {

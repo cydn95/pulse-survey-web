@@ -469,7 +469,7 @@ const UserAdministration = ({
           noSelected="SH Type"
           setSelected={(item) => {
             let temp = { ...newUser }
-            temp.shGroup = shTypes.filter(sh => sh.shTypeName === item)[0]
+            temp.shType = shTypes.filter(sh => sh.shTypeName === item)[0]
             setNewUser(temp)
           }}
           items={shTypes.map(sh => sh.shTypeName)}

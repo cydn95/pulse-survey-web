@@ -10,6 +10,7 @@ const OrderComponent = ({ items, title, addText = "Add New", field = "", setProj
   const [open, setOpen] = useState(false)
   const [icon, setIcon] = useState('')
   const [name, setName] = useState('')
+  
   useEffect(() => {
     switch (field) {
       case 'myMap':
@@ -19,7 +20,7 @@ const OrderComponent = ({ items, title, addText = "Add New", field = "", setProj
         break;
       case 'driverList':
         setName('driverName')
-        setIcon('icon')
+        setIcon('iconPath')
         break;
       default:
         break;
@@ -59,12 +60,15 @@ const OrderComponent = ({ items, title, addText = "Add New", field = "", setProj
         {(items && items.length > 0) ? items.map((item, idx) => {
           return (
             <div className={styles.itemWrapper} key={`${idx}-order`}>
-              <span className={styles.image}><img src={`${item.icon.split(':')[0] !== 'blob' ? !title ?
-                item.icon.split('.').map((d, idx, list) => idx === list.length - 2 ? d + '-dark' : d).join('.')
-                : item.icon.split(':').length > 2 ?
-                  item.icon
-                  : `https://pulse.projectai.com/media/${item.icon}`
-                : item.icon}`} alt="item" /></span>
+              <span className={styles.image}>
+                <img src={`${!title ? item.iconPath.split(':')[0] !== 'blob' ? 
+                item.iconPath.split('.').map((d, idx, list) => idx === list.length - 2 ? d + '-dark' : d).join('.')
+                : item.iconPath
+                  : item.icon.split(':').length > 2 ?
+                    item.icon
+                    : `https://pulse.projectai.com/media/${item.icon}`
+                }`} alt="item" />
+                </span>
               <span className={styles.description}>{!title ? item.driverName : item.SHCategoryName}</span>
             </div>
           )

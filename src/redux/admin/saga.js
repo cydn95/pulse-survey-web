@@ -9,7 +9,8 @@ import {
   ADMIN_SURVEY_CONFIGURATION,
   ADMIN_SEND_BULK_INVITATION,
   ADMIN_BULK_ARCHIVE_USER,
-  DEL_MORE_INFO_PAGE
+  DEL_MORE_INFO_PAGE,
+  ADMIN_GET_DRIVER_LIST
 } from 'Constants/actionTypes'
 import {
   adminUserListSuccess,
@@ -19,7 +20,8 @@ import {
   adminAOQuestionListSuccess,
   adminSurveySetupSuccess,
   adminSurveyConfigurationSuccess,
-  deleteMoreInfoPage
+  deleteMoreInfoPage,
+  adminDriverListSuccess,
 } from './actions'
 import {
   adminUserListAPI,
@@ -36,6 +38,7 @@ import {
   adminBulkInvitationSendAPI,
   adminBulkArchiveUserAPI,
   deleteMoreInfoPageAPI,
+  driverListAPI,
 } from '../../services/axios/api'
 import { ADMIN_ADD_SURVEY, ADMIN_UPDATE_SURVEY } from '../../constants/actionTypes'
 
@@ -135,6 +138,24 @@ function* adminAddSurvey({ payload }) {
   } catch (error) {
     const { callback } = payload
     callback(false)
+  }
+}
+
+const getDriverListAysnc = async (surveyId) =>
+  await driverListAPI(surveyId)
+    .then((data) => data)
+    .catch((error) => error);
+
+function* adminGetDriverList({ payload }) {
+  try {
+    const { surveyId } = payload;
+    const result = yield call(getDriverListAysnc, surveyId);
+
+    if (result.status === 200) {
+      yield put(adminDriverListSuccess(result.data));
+    }
+  } catch (error) {
+    console.log("error : ", error);
   }
 }
 
@@ -300,6 +321,10 @@ export function* watchAdminDelMoreInfoPage() {
   yield takeEvery(DEL_MORE_INFO_PAGE, adminDeleteMoreInfoPage)
 }
 
+export function* watchAdminGetDriverList() {
+  yield takeEvery(ADMIN_GET_DRIVER_LIST, adminGetDriverList)
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchAdminUserList),
@@ -314,5 +339,6 @@ export default function* rootSaga() {
     fork(watchAdminSendBulkInvitation),
     fork(watchAdminBulkArchiveUser),
     fork(watchAdminDelMoreInfoPage),
+    fork(watchAdminGetDriverList),
   ]);
 }
