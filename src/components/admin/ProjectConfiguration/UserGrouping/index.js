@@ -40,7 +40,7 @@ const UserGrouping = ({
   })
   const addNewShGroup = () => {
     if (newShGroup.SHGroupName && newShGroup.responsePercent) {
-      setProjectField('shGroup', [...(currentProject.shGroup || []), newShGroup])
+      setProjectField('shGroup', [...(currentProject.shGroup || []), {...newShGroup, survey_id: currentProject.id}])
       setNewShGroup({})
       setOpenShGroup(false)
     }
@@ -66,7 +66,7 @@ const UserGrouping = ({
     </div>
   const addNewTeam = () => {
     if (newTeam.name) {
-      setProjectField('projectTeam', [...(currentProject.projectTeam || []), newTeam])
+      setProjectField('projectTeam', [...(currentProject.projectTeam || []), {...newTeam, project_id: currentProject.project}])
       setNewTeam({})
       setOpenTeam(false)
     }
@@ -76,7 +76,7 @@ const UserGrouping = ({
       <Input
         className={styles.customGroup}
         value={newTeam.name}
-        onChange={(value, e) => setNewTeam({ ...newTeam, name: value, project_id: currentProject.project })}
+        onChange={(value, e) => setNewTeam({ ...newTeam, name: value })}
       />
     </div>
   const addNewCG = () => {

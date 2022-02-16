@@ -184,7 +184,7 @@ const SurveyConfiguration = ({
             <Select className={styles.select} selected={filter} setSelected={(s) => {setFilter(s); setCurrentDriver(s==='About Others'?'About Others':(currentProject.driverList || []).map(d => d.driverName)[0])}} items={['About Me', 'About Others']} />
             {filter === 'About Me' && <span onClick={() => setOpen(true)}>{currentDriver}<FontAwesomeIcon icon={faCog} color="#6d6f94" /></span>}
           </div>
-          {questions.length > 0 ? questions.sort((a, b) => a.questionSequence - b.questionSequence).map((question, idx) => {
+          {questions.length > 0 ? questions.sort((a, b) => a.amqOrder - b.amqOrder).map((question, idx) => {
             if (question.driver && question.driver.driverName !== currentDriver)
               return null;
             return (

@@ -60,7 +60,12 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpe
         </div>
         <div className="quatar">
           <span className="bgTag">User Org</span>
-          <Input value={((user.user || {}).organization || {}).name} />
+          <Input 
+            value={((user.user || {}).organization || {}).name}
+            onChange={(value, e) =>
+              setUserField(idx, 'user', { ...user.user, organization: {...user.organization, name: value} })
+            } 
+          />
         </div>
         <div className="full">
           <RoleDescription>
@@ -208,6 +213,9 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpe
               <span className="bgTag">User Org</span>
               <Input
                 value={((user.user || {}).organization || {}).name}
+                onChange={(value, e) =>
+                  setUserField(idx, 'user', { ...user.user, organization: {...user.organization, name: value} })
+                }
               />
             </div>
             <RoleDescription>

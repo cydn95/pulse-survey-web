@@ -347,7 +347,7 @@ const ProjectSetup = ({
                     setError('Already exist')
                   } else {
                     setProjectField('moreInfo',
-                      [...(currentProject.moreInfo || []), { pageName: pageHeader, pageContent: '<p>Please type here</p>' }])
+                      [...(currentProject.moreInfo || []), { pageName: pageHeader, pageContent: '<p>Please type here</p>', survey: currentProject.id }])
                     setPageHeader('')
                     setError('')
                     setOpen(false)
