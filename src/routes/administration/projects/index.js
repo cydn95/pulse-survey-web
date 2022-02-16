@@ -153,11 +153,11 @@ const Projects = ({
       }
     }
     console.log('data', data)
-    // if (surveyId) {
-    //   updateSurvey(surveyId, data, savedCallback)
-    // } else {
-    //   addSurvey(form_data, savedCallback)
-    // }
+    if (surveyId) {
+      updateSurvey(surveyId, data, savedCallback)
+    } else {
+      addSurvey(form_data, savedCallback)
+    }
     // updateUserList(userList, savedCallback)
   }
 

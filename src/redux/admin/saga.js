@@ -152,7 +152,13 @@ function* adminGetDriverList({ payload }) {
     const result = yield call(getDriverListAysnc, surveyId);
 
     if (result.status === 200) {
-      yield put(adminDriverListSuccess(result.data));
+      const driverList = result.data.map(d => {
+        let temp = {...d}
+        temp.survey_id = temp.survey
+        delete temp.survey
+        return temp
+      })
+      yield put(adminDriverListSuccess(driverList));
     }
   } catch (error) {
     console.log("error : ", error);

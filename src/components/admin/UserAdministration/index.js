@@ -513,12 +513,14 @@ const UserAdministration = ({
                 if (validateFields()) {
                   setOpen(false)
                   setNewUser({})
+                  let admin = userList.projectUser.filter(u => u.user.id === profile.id)[0]
                   addNewUser({
                     ...newUser,
                     created_at: new Date(),
                     updated_at: new Date(),
                     addByProjectUser: {
-                      user: profile
+                      id: admin.id,
+                      user: admin.user
                     },
                     sendInvite: newUser.sendInvite && false
                   })
