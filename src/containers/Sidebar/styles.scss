@@ -20,25 +20,29 @@
 
 .main-menu {
   width: 224px;
-  display: flex;
-  flex-direction: column;
   padding-bottom: 30px;
   background-color: #212529;
   height: 100vh;
-  overflow: auto !important;
-  scrollbar-color: #77c8bb #aaa;
-  scrollbar-width: thin;
-  &::-webkit-scrollbar {
-    width: 5px;
-    background-color: #aaa;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #77c8bb;
-  }
-  .menuItem {
-    border-radius: 10px;
-    background-color: rgba(139, 144, 161, 0.13);
-    margin-right: 20px;
+  .main-menu-wrapper {
+    display: flex;
+    flex-direction: column;
+    scrollbar-color: #77c8bb #aaa;
+    height: 100vh;
+    scrollbar-width: thin;
+    overflow: auto !important;
+    overflow-x: hidden !important;
+    &::-webkit-scrollbar {
+      width: 5px;
+      background-color: #aaa;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #77c8bb;
+    }
+    .menuItem {
+      border-radius: 10px;
+      background-color: rgba(139, 144, 161, 0.13);
+      margin-right: 20px;
+    }
   }
 }
 
