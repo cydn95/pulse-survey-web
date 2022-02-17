@@ -167,6 +167,7 @@ export const PreviewList = styled.section`
 export const FileMetaData = styled.div`
   display: ${(props) => (props.isImageFile ? "none" : "flex")};
   flex-direction: column;
+  min-height: 100px;
   position: absolute;
   top: 0;
   left: 0;

@@ -116,6 +116,13 @@ const ProjectSetup = ({
 
   const updateVideo = (files) =>
     setProjectField('video', files[0])
+
+  const updateTourImage = (files) => {
+    let temp = [...currentProject.moreInfo]
+    temp[crrPage].img = files[0]
+    setProjectField('moreInfo', temp)
+  }
+
   return (
     <Fragment>
       {loading ? <Loading description="" /> :
@@ -319,6 +326,7 @@ const ProjectSetup = ({
                 label="Upload Video"
                 description="Record a custom video message to welcome new users and encourage their open and honest feedback."
                 accept="video"
+                style={{flex: '1', minWidth: '180px'}}
                 data={video}
                 updateFilesCb={updateVideo}
                 maxFileSizeInBytes={5000000000000000}
@@ -337,7 +345,7 @@ const ProjectSetup = ({
                 }}><FontAwesomeIcon icon={faTimes} /></span>
               </div>))}
               <AddButton
-                text="new page"
+                text="Page"
                 content={content}
                 open={open}
                 setOpen={() => setOpen(true)}
@@ -347,34 +355,56 @@ const ProjectSetup = ({
                     setError('Already exist')
                   } else {
                     setProjectField('moreInfo',
-                      [...(currentProject.moreInfo || []), { pageName: pageHeader, pageContent: '<p>Please type here</p>', survey: currentProject.id }])
+                      [...(currentProject.moreInfo || []), { pageName: pageHeader, pageContent: '<p>Please type here</p>', survey: currentProject.id, img: undefined }])
                     setPageHeader('')
                     setError('')
                     setOpen(false)
                     setCrrPage((currentProject.moreInfo || []).length)
+                    console.log('dd', currentProject.moreInfo)
                   }
                 }} />
             </div>
-            <div className={styles.richText}>
-              {currentProject.moreInfo && currentProject.moreInfo.length > 0 && <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={currentProject.moreInfo[crrPage].pageContent} saveInterval={0} change={(e) => {
-                let temp = [...currentProject.moreInfo]
-                temp[crrPage].pageContent = e.value
-                setProjectField('moreInfo', temp)
-              }}>
-                <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
-              </RichTextEditorComponent>}
+            <div className={styles.richText} style={{display: 'flex', alignItems: 'start'}}>
+              <div style={{flex: '1'}}>
+                <p>Page Content:</p>
+                {currentProject.moreInfo && currentProject.moreInfo.length > 0 && <RichTextEditorComponent height={200} iframeSettings={{ enable: true }} toolbarSettings={toolbarSettings} valueTemplate={currentProject.moreInfo[crrPage].pageContent} saveInterval={0} change={(e) => {
+                  let temp = [...currentProject.moreInfo]
+                  temp[crrPage].pageContent = e.value
+                  setProjectField('moreInfo', temp)
+                }}>
+                  <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
+                </RichTextEditorComponent>}
+              </div>
+              <div style={{marginLeft: '20px'}}>
+                <p>Image:</p>
+                <FileUpload
+                  label="Upload Image"
+                  accept="image"
+                  type="file"
+                  data={((currentProject.moreInfo || [])[crrPage] || {}).img}
+                  updateFilesCb={updateTourImage}
+                />
+              </div>
             </div>
           </div>}
           {currentProject.moreInfo && currentProject.moreInfo.length > 0 && show && <div className={styles.richTextMobile}>
             <h2 className={styles.header}>{currentProject.moreInfo[crrPage].pageName}</h2>
             <span className={styles.brandcrumb}>{`Projects > Edit Project > ${currentProject.moreInfo[crrPage].pageName}`}</span>
-            <RichTextEditorComponent iframeSettings={{ enable: true }} height={570} toolbarSettings={toolbarSettings} valueTemplate={currentProject.moreInfo[crrPage].pageContent} saveInterval={0} change={(e) => {
+            <RichTextEditorComponent iframeSettings={{ enable: true }} height={200} toolbarSettings={toolbarSettings} valueTemplate={currentProject.moreInfo[crrPage].pageContent} saveInterval={0} change={(e) => {
               let temp = [...currentProject.moreInfo]
               temp[crrPage].pageContent = e.value
               setProjectField('moreInfo', temp)
             }}>
               <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
             </RichTextEditorComponent>
+            <p>Image:</p>
+            <FileUpload
+                label="Upload Image"
+                accept="image"
+                type="file"
+                data={((currentProject.moreInfo || [])[crrPage] || {}).img}
+                updateFilesCb={updateTourImage}
+              />
             <Button className={styles.btn} onClick={() => setShow(false)}>Save and go back</Button>
           </div>}
         </Fragment>

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "Assets/css/sass/common.scss";
+import "./index.scss"
 
 const rootEl = document.getElementById("root");
 
