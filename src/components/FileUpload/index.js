@@ -1,4 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import UploadImage from 'Assets/img/admin/image_upload.png'
 import UploadVideo from 'Assets/img/admin/video_upload.png'
 import {
@@ -63,6 +65,8 @@ const FileUpload = ({
           data[otherProps.data.name] = otherProps.data
           setFiles(data)
         }
+      } else {
+        setFiles({})
       }
     })()
     return () => {
@@ -147,9 +151,9 @@ const FileUpload = ({
                       <aside>
                         <span>{convertBytesToKB(file.size)} kb</span>
                         <span onClick={() => removeFile(fileName)}>
-                          <RemoveFileIcon
-                            className="fas fa-trash-alt"
-                          />
+                          <RemoveFileIcon>
+                            <FontAwesomeIcon fixedWidth icon={faTrashAlt} size="sm" />
+                          </RemoveFileIcon>
                         </span>
                       </aside>
                     </FileMetaData>
