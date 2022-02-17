@@ -120,9 +120,12 @@ const Projects = ({
         customGroup1: currentProject.customGroup1,
         customGroup2: currentProject.customGroup2,
         customGroup3: currentProject.customGroup3,
-        driverList: (() => currentProject.driverList.map((d, idx) => ({...d, driveOrder: idx})))(),
-        myMap: currentProject.myMap,
-        projectMap: currentProject.projectMap,
+        // driverList: (() => currentProject.driverList.map((d, idx) => ({...d, driveOrder: idx})))(),
+        // myMap: currentProject.myMap,
+        // projectMap: currentProject.projectMap,
+        driverList: [],
+        myMap: [],
+        projectMap: []
       },
       userAdministration: {
         ...userList
