@@ -188,7 +188,7 @@ class Sidebar extends Component {
       for (let i = 0; i < tooltipContent.menu.length; i++) {
         steps.push({
           content: <DesktopTooltip tooltip={tooltipContent.menu[i]} />,
-          placement: "right",
+          placement: "right-start",
           target: `.s-menu-${tooltipContent.menu[i].place.toLowerCase()}`,
           disableBeacon: true,
         });
@@ -372,177 +372,179 @@ class Sidebar extends Component {
           />
         )}
         <div className={styles["main-menu"]}>
-          <div className={styles.logo}></div>
-          <div className={styles.link}>
-            <ProSidebar width="220px">
-              <Menu iconShape="square" className={"s-menu-my-projects"}>
-                <SubMenu
-                  icon={<IconMyProject />}
-                  title="My Projects"
-                >
-                  {projectList.map((project) => (
-                    <MenuItem
-                      key={`project-submenu-${project.id}`}
-                      className={this.state.subMenuSelected === project.id && styles.menuItem}
-                      onClick={(e) => this.handleClickProject(e, project.id)}
-                    >
-                      {project.projectName}
-                    </MenuItem>
-                  ))}
-                </SubMenu>
-              </Menu>
-              <Menu iconShape="square" className="s-menu-about-me">
-                <MenuItem
-                  icon={<IconAboutMe />}
-                  onClick={(e) => this.handleClickMainMenu(e, "about-me", true)}
-                >
-                  About Me
-                </MenuItem>
-              </Menu>
-              <Menu iconShape="square" className="s-menu-about-others">
-                <MenuItem
-                  icon={<IconAboutOthers />}
-                  onClick={(e) =>
-                    this.handleClickMainMenu(e, "about-others", true)
-                  }
-                >
-                  About Others
-                </MenuItem>
-              </Menu>
-              <Menu iconShape="square">
-                <SubMenu icon={<IconDashboard />} title="Dashboard">
-                  {MENU_REPORT.map((menu) => {
-                    if (menu === "Matrix" && this.state.isAdmin === false) {
-                      return null;
-                    }
-
-                    return (
+          <div className={styles["main-menu-wrapper"]}>
+            <div className={styles.logo}></div>
+            <div className={styles.link}>
+              <ProSidebar width="220px">
+                <Menu iconShape="square" className={"s-menu-my-projects"}>
+                  <SubMenu
+                    icon={<IconMyProject />}
+                    title="My Projects"
+                  >
+                    {projectList.map((project) => (
                       <MenuItem
-                        key={`submenu-report-${menu
-                          .toLowerCase()
-                          .replace(" ", "-")}`}
-                        className={menu.toLocaleLowerCase() === this.state.subMenuSelected && styles.menuItem}
-                        onClick={(e) =>
-                          this.handleClickSubMenu(
-                            e,
-                            menu.toLocaleLowerCase(),
-                            `/app/dashboard/${menu
-                              .toLocaleLowerCase()
-                              .replace(" ", "-")}`
-                          )
-                        }
+                        key={`project-submenu-${project.id}`}
+                        className={this.state.subMenuSelected === project.id && styles.menuItem}
+                        onClick={(e) => this.handleClickProject(e, project.id)}
                       >
-                        {menu}
-                      </MenuItem>
-                    );
-                  })}
-                </SubMenu>
-              </Menu>
-            </ProSidebar>
-          </div>
-          <div className={styles.space}></div>
-          <div className={styles.link}>
-            <ProSidebar width="220px">
-              {(isProjectManager) && <Menu iconShape="square" className="s-menu-about-me">
-                <MenuItem
-                  icon={<FontAwesomeIcon icon={faCog} />}
-                  onClick={(e) => this.handleClickMainMenu(e, `admin/projects`, true)}
-                >
-                  Administration
-                </MenuItem>
-              </Menu>}
-              {pageContent.length > 0 && (
-                <Menu iconShape="square">
-                  <SubMenu title="More Info" icon={<FontAwesomeIcon icon={faInfoCircle} />}>
-                    {pageContent.map((menu) => (
-                      <MenuItem
-                        key={`submenu-configpage-${menu.id}`}
-                        className={`config-page-${menu.id}` === this.state.subMenuSelected && styles.menuItem}
-                        onClick={(e) =>
-                          this.handleClickSubMenu(
-                            e,
-                            `config-page-${menu.id}`,
-                            `/app/moreinfo/config/${menu.id}`
-                          )
-                        }
-                      >
-                        {menu.tabName}
+                        {project.projectName}
                       </MenuItem>
                     ))}
                   </SubMenu>
                 </Menu>
-              )}
-              {/* <Menu iconShape="square">
-                <MenuItem
-                  onClick={(e) => this.handleClickMainMenu(e, "settings", true)}
-                >
-                  More Info
-                </MenuItem>
-              </Menu> */}
-              <Menu iconShape="square">
-                <SubMenu title="Help" icon={<FontAwesomeIcon icon={faLightbulb} />}>
-                  {projectId && surveyId && (
+                <Menu iconShape="square" className="s-menu-about-me">
+                  <MenuItem
+                    icon={<IconAboutMe />}
+                    onClick={(e) => this.handleClickMainMenu(e, "about-me", true)}
+                  >
+                    About Me
+                  </MenuItem>
+                </Menu>
+                <Menu iconShape="square" className="s-menu-about-others">
+                  <MenuItem
+                    icon={<IconAboutOthers />}
+                    onClick={(e) =>
+                      this.handleClickMainMenu(e, "about-others", true)
+                    }
+                  >
+                    About Others
+                  </MenuItem>
+                </Menu>
+                <Menu iconShape="square">
+                  <SubMenu icon={<IconDashboard />} title="Dashboard">
+                    {MENU_REPORT.map((menu) => {
+                      if (menu === "Matrix" && this.state.isAdmin === false) {
+                        return null;
+                      }
+
+                      return (
+                        <MenuItem
+                          key={`submenu-report-${menu
+                            .toLowerCase()
+                            .replace(" ", "-")}`}
+                          className={menu.toLocaleLowerCase() === this.state.subMenuSelected && styles.menuItem}
+                          onClick={(e) =>
+                            this.handleClickSubMenu(
+                              e,
+                              menu.toLocaleLowerCase(),
+                              `/app/dashboard/${menu
+                                .toLocaleLowerCase()
+                                .replace(" ", "-")}`
+                            )
+                          }
+                        >
+                          {menu}
+                        </MenuItem>
+                      );
+                    })}
+                  </SubMenu>
+                </Menu>
+              </ProSidebar>
+            </div>
+            <div className={styles.space}></div>
+            <div className={styles.link}>
+              <ProSidebar width="220px">
+                {(isProjectManager) && <Menu iconShape="square" className="s-menu-about-me">
+                  <MenuItem
+                    icon={<FontAwesomeIcon icon={faCog} />}
+                    onClick={(e) => this.handleClickMainMenu(e, `admin/projects`, true)}
+                  >
+                    Administration
+                  </MenuItem>
+                </Menu>}
+                {pageContent.length > 0 && (
+                  <Menu iconShape="square">
+                    <SubMenu title="More Info" icon={<FontAwesomeIcon icon={faInfoCircle} />}>
+                      {pageContent.map((menu) => (
+                        <MenuItem
+                          key={`submenu-configpage-${menu.id}`}
+                          className={`config-page-${menu.id}` === this.state.subMenuSelected && styles.menuItem}
+                          onClick={(e) =>
+                            this.handleClickSubMenu(
+                              e,
+                              `config-page-${menu.id}`,
+                              `/app/moreinfo/config/${menu.id}`
+                            )
+                          }
+                        >
+                          {menu.tabName}
+                        </MenuItem>
+                      ))}
+                    </SubMenu>
+                  </Menu>
+                )}
+                {/* <Menu iconShape="square">
+                  <MenuItem
+                    onClick={(e) => this.handleClickMainMenu(e, "settings", true)}
+                  >
+                    More Info
+                  </MenuItem>
+                </Menu> */}
+                <Menu iconShape="square">
+                  <SubMenu title="Help" icon={<FontAwesomeIcon icon={faLightbulb} />}>
+                    {projectId && surveyId && (
+                      <MenuItem
+                        className={"take-the-tour" === this.state.subMenuSelected && styles.menuItem}
+                        onClick={(e) =>
+                          this.handleClickSubMenu(e, "take-the-tour", `/app/tour`)
+                        }
+                      >
+                        Take the tour
+                      </MenuItem>
+                    )}
                     <MenuItem
-                      className={"take-the-tour" === this.state.subMenuSelected && styles.menuItem}
+                      className={"how-to-use-pulse" === this.state.subMenuSelected && styles.menuItem}
                       onClick={(e) =>
-                        this.handleClickSubMenu(e, "take-the-tour", `/app/tour`)
+                        this.handleClickSubMenu(
+                          e,
+                          "how-to-use-pulse",
+                          `/app/help/how-to-use-pulse`
+                        )
                       }
                     >
-                      Take the tour
+                      How to use Pulse
                     </MenuItem>
-                  )}
+                    <MenuItem
+                      className={"turn-on-guide-mode" === this.state.subMenuSelected && styles.menuItem}
+                      onClick={(e) =>
+                        this.handleClickSubMenu(
+                          e,
+                          "turn-on-guide-mode",
+                          "/app/help/turn-on-guide-mode"
+                        )
+                      }
+                    >
+                      <span>{`Turn On Guide Mode `}</span>
+                      <br />
+                      {guide !== undefined && (
+                        <Switch
+                          checked={guide}
+                          onChange={(e) => this.handleSetGuideShowStatus()}
+                          onColor="#7fcdc1"
+                          onHandleColor="#4cb9a8"
+                          handleDiameter={20}
+                          uncheckedIcon={false}
+                          checkedIcon={false}
+                          boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                          activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                          height={20}
+                          width={38}
+                          className="react-switch"
+                        />
+                      )}
+                    </MenuItem>
+                  </SubMenu>
+                </Menu>
+                <Menu iconShape="square">
                   <MenuItem
-                    className={"how-to-use-pulse" === this.state.subMenuSelected && styles.menuItem}
-                    onClick={(e) =>
-                      this.handleClickSubMenu(
-                        e,
-                        "how-to-use-pulse",
-                        `/app/help/how-to-use-pulse`
-                      )
-                    }
+                    onClick={(e) => this.handleClickMainMenu(e, "logout", false)}
+                    icon={<FontAwesomeIcon icon={faSignOutAlt} />}
                   >
-                    How to use Pulse
+                    Log Out
                   </MenuItem>
-                  <MenuItem
-                    className={"turn-on-guide-mode" === this.state.subMenuSelected && styles.menuItem}
-                    onClick={(e) =>
-                      this.handleClickSubMenu(
-                        e,
-                        "turn-on-guide-mode",
-                        "/app/help/turn-on-guide-mode"
-                      )
-                    }
-                  >
-                    <span>{`Turn On Guide Mode `}</span>
-                    <br />
-                    {guide !== undefined && (
-                      <Switch
-                        checked={guide}
-                        onChange={(e) => this.handleSetGuideShowStatus()}
-                        onColor="#7fcdc1"
-                        onHandleColor="#4cb9a8"
-                        handleDiameter={20}
-                        uncheckedIcon={false}
-                        checkedIcon={false}
-                        boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-                        activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-                        height={20}
-                        width={38}
-                        className="react-switch"
-                      />
-                    )}
-                  </MenuItem>
-                </SubMenu>
-              </Menu>
-              <Menu iconShape="square">
-                <MenuItem
-                  onClick={(e) => this.handleClickMainMenu(e, "logout", false)}
-                  icon={<FontAwesomeIcon icon={faSignOutAlt} />}
-                >
-                  Log Out
-                </MenuItem>
-              </Menu>
-            </ProSidebar>
+                </Menu>
+              </ProSidebar>
+            </div>
           </div>
         </div>
         {surveyId !== null && surveyId.toString() !== "" && (
