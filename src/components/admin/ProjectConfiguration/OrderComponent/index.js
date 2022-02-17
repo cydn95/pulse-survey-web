@@ -28,7 +28,7 @@ const OrderComponent = ({ items, title, addText = "Add New", field = "", setProj
   }, [field])
   const handleAdd = () => {
     if (newOne[icon] && newOne[name]) {
-      setProjectField(field, [...(currentProject[field] || []), field === 'driverList' ? {...newOne, survey: currentProject.id}: {...newOne, survey_id: currentProject.id}])
+      setProjectField(field, [...(currentProject[field] || []), {...newOne, survey_id: currentProject.id}])
       setOpen(false)
       setNewOne({})
     }
