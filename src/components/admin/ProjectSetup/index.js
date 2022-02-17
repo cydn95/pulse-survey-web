@@ -260,7 +260,7 @@ const ProjectSetup = ({
           </div>
           {editing !== -1 && <div className={styles.welcome}>
             <div className={styles.tourHeader}>
-              <span className={styles.header}>Tour:&nbsp;</span>
+              <span className={styles.header}>More Info:&nbsp;</span>
               <Input
                 refVal={tourTitle}
                 className={styles.input}
@@ -328,7 +328,7 @@ const ProjectSetup = ({
           </div>}
           {editing !== -1 && <div className={styles.moreInfo}>
             <div className={styles.left}>
-              <h3>More Info</h3>
+              <h3>Tour</h3>
               <p>Provide additional context, links or web pages as required.</p>
               {currentProject.moreInfo && currentProject.moreInfo.length > 0 && (currentProject.moreInfo.map((t, index) => <div className={styles.page} key={`${currentProject.code}-${index}`}>
                 <a className={index === crrPage ? styles.underline : ''} onClick={(e) => { e.preventDefault(); setCrrPage(index); setShow(true); }}>{t.pageName}</a>
