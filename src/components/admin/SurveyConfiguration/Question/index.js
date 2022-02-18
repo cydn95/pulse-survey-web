@@ -116,7 +116,14 @@ const Question = ({
             <div className={styles.function_for_mobile}>
               <span className={styles.label}>Control Type:</span>
               <Select selected={controlTypeTag(question.controlType)} setSelected={(value) => setQuestionByField(filter, question.id, 'controlType', controlTypeByTag(value))} items={Object.keys(controlType).map(type => controlTypeTag(controlType[type]))} className={styles.controlType} />
-              <span className={styles.delete} onClick={(e) => { e.stopPropagation(); deleteQuestion(filter, question.questionText) }}><img src={DeleteIcon} alt="delete" /></span>
+              <span 
+                className={styles.delete} 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteQuestion(filter, question.questionText, question.id)
+                }}>
+                  <img src={DeleteIcon} alt="delete" />
+                </span>
             </div>
             <div className={styles.inputs}>
               <div className={styles.input}>
@@ -207,7 +214,7 @@ const Question = ({
             className={styles.delete}
             onClick={(e) => {
               e.stopPropagation();
-              deleteQuestion(filter, question.questionText)
+              deleteQuestion(filter, question.questionText, question.id)
             }}>
             <img src={DeleteIcon} alt="delete" />
           </span>

@@ -34,7 +34,7 @@ const SurveyConfiguration = ({
   const [qChanged, setQChanged] = useState(false)
   const [questions, setQuestions] = useState([])
   const [filter, setFilter] = useState('About Me')
-  const [drivers, setDrivers] = useState((currentProject.driverList || []).map(d => d.driverName))
+  const [drivers, setDrivers] = useState((currentProject.driverList || []).filter(d => d.id).map(d => d.driverName))
   const [currentDriver, setCurrentDriver] = useState((currentProject.driverList || []).map(d => d.driverName)[0])
   const [open, setOpen] = useState(false)
   // const [addNew, setAddNew] = useState(false)
@@ -133,7 +133,6 @@ const SurveyConfiguration = ({
                 className={styles.alignRight}
                 setOpen={() => {
                   setQuestionList(filter, {
-                    "id": 4901,
                     "subdriver": "",
                     "questionText": "",
                     "sliderTextLeft": "",
@@ -184,7 +183,7 @@ const SurveyConfiguration = ({
             <Select className={styles.select} selected={filter} setSelected={(s) => {setFilter(s); setCurrentDriver(s==='About Others'?'About Others':(currentProject.driverList || []).map(d => d.driverName)[0])}} items={['About Me', 'About Others']} />
             {filter === 'About Me' && <span onClick={() => setOpen(true)}>{currentDriver}<FontAwesomeIcon icon={faCog} color="#6d6f94" /></span>}
           </div>
-          {questions.length > 0 ? questions.sort((a, b) => a.amqOrder - b.amqOrder).map((question, idx) => {
+          {questions.length > 0 ? questions.sort((a, b) => (a.amqOrder - b.amqOrder) || (a.aoqOrder - b.aoqOrder)).map((question, idx) => {
             if (question.driver && question.driver.driverName !== currentDriver)
               return null;
             return (

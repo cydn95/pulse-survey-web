@@ -5,6 +5,12 @@ import AddButton from 'Components/AddButton'
 import Input from 'Components/Input'
 import styles from './styles.scss'
 
+const defaultSVGs = [
+  'https://projectaipulses3.s3.us-east-2.amazonaws.com/assets/img/drivers/sentiment.svg',
+  'https://projectaipulses3.s3.us-east-2.amazonaws.com/assets/img/drivers/engagement.svg',
+  'https://projectaipulses3.s3.us-east-2.amazonaws.com/assets/img/drivers/influence.svg'
+]
+
 const OrderComponent = ({ items, title, addText = "Add New", field = "", setProjectField, currentProject }) => {
   const [newOne, setNewOne] = useState({})
   const [open, setOpen] = useState(false)
@@ -27,8 +33,13 @@ const OrderComponent = ({ items, title, addText = "Add New", field = "", setProj
     }
   }, [field])
   const handleAdd = () => {
-    if (newOne[icon] && newOne[name]) {
-      setProjectField(field, [...(currentProject[field] || []), {...newOne, survey_id: currentProject.id}])
+    if (newOne[name]) {
+      let temp
+      if(field==='driverList')
+        temp = [...(currentProject[field] || []), {...newOne, survey_id: currentProject.id, iconPath: defaultSVGs[(currentProject.driverList || []).length % 3], driveOrder: (currentProject.driverList || []).length - 1}]
+      else 
+        temp = [...(currentProject[field] || []), {...newOne, survey_id: currentProject.id}]
+      setProjectField(field, temp)
       setOpen(false)
       setNewOne({})
     }
