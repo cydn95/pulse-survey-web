@@ -212,16 +212,7 @@ function* adminSurveySetup({ payload }) {
     const { surveyId } = payload
     const result = yield call(getAdminSurveySetupAsync, surveyId)
     if (result.status === 200) {
-      let temp = {
-        ...result.data, 
-        moreInfo: result.data.moreInfo.map(d => {
-          return {
-            ...d,
-            img: 'https://pulse.projectai.com/media/' + d.img
-          }
-        })
-      }
-      yield put(adminSurveySetupSuccess(temp))
+      yield put(adminSurveySetupSuccess(result.data))
     }
   } catch (error) {
     console.log(error)
