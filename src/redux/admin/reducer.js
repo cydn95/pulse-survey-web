@@ -27,7 +27,9 @@ import {
   ADMIN_SET_USER_LIST,
   ADMIN_SET_QUESTION_LIST_BLANK,
   ADMIN_DELETE_QUESTION,
+  ADMIN_DELETE_QUESTION_SUCCESS,
   ADMIN_DRIVER_LIST_SUCCESS,
+  ADMIN_UPLOAD_IMAGES,
 } from 'Constants/actionTypes'
 
 const INIT_STATE = {
@@ -165,6 +167,13 @@ export default (state = INIT_STATE, action) => {
         ]
       }
     case ADMIN_DELETE_QUESTION:
+      const { questionId } = action.payload
+      console.log('quse', questionId)
+      if(questionId) {
+        return {
+          ...state
+        }
+      }
       let filterText3
       if (action.payload.filter === "About Me") {
         filterText3 = 'amQuestionList'
@@ -178,6 +187,23 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         [filterText3]: [
+          ...temp2
+        ]
+      }
+    case ADMIN_DELETE_QUESTION_SUCCESS:
+      let filterText4
+      if (action.payload.filter === "About Me") {
+        filterText4 = 'amQuestionList'
+      } else {
+        filterText4 = 'aoQuestionList'
+      }
+      temp2 = [...state[filterText4]].filter(q => q.id !== action.payload.questionId)
+      console.log('temp2', temp2)
+      console.log('filterText4', filterText4)
+      console.log('questionId', action.payload.questionId)
+      return {
+        ...state,
+        [filterText4]: [
           ...temp2
         ]
       }
@@ -216,6 +242,10 @@ export default (state = INIT_STATE, action) => {
     case ADMIN_UPDATE_SURVEY:
       return {
         ...state,
+      }
+    case ADMIN_UPLOAD_IMAGES:
+      return {
+        ...state
       }
     case ADMIN_SEND_BULK_INVITATION:
       return {

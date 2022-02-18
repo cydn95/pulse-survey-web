@@ -16,7 +16,8 @@ import {
   adminAddSurvey,
   adminUpdateSurvey,
   adminSetUserList,
-  adminSetQuestionListBlank
+  adminSetQuestionListBlank,
+  adminUploadImages
 } from 'Redux/admin/actions'
 // import TopNav from "Containers/TopNav";
 // import ProjectCard from 'Components/admin/ProjectCard'
@@ -47,6 +48,7 @@ const Projects = ({
   surveyId,
   addSurvey,
   updateSurvey,
+  uploadImages,
   setUserList,
   setQuestionListBlank,
 }) => {
@@ -88,6 +90,14 @@ const Projects = ({
     handleEdit(-2)
   }
 
+  const savedCallback2 = (status) => {
+    if (status) {
+      NotificationManager.success("Images Uploaded", "");
+    } else {
+      NotificationManager.error("There was a problem uploading the image.", "");
+    }
+  }
+
   const onSave = () => {
     console.log('currentProject', currentProject)
     console.log('userList', userList)
@@ -108,8 +118,6 @@ const Projects = ({
       projectSetup: {
         surveyTitle: currentProject.surveyTitle,
         projectManager: currentProject.projectManager,
-        companyLogo: '',
-        projectLogo: '',
         tour: currentProject.tour,
         moreInfo: currentProject.moreInfo,
       },
@@ -120,19 +128,27 @@ const Projects = ({
         customGroup1: currentProject.customGroup1,
         customGroup2: currentProject.customGroup2,
         customGroup3: currentProject.customGroup3,
-        // driverList: (() => currentProject.driverList.map((d, idx) => ({...d, driveOrder: idx})))(),
-        // myMap: currentProject.myMap,
-        // projectMap: currentProject.projectMap,
-        driverList: [],
-        myMap: [],
-        projectMap: []
+        driverList: (() => currentProject.driverList.map((d, idx) => ({...d, driveOrder: idx})))(),
       },
       userAdministration: {
         ...userList
       },
       surveyConfiguration: {
-        aoQuestionList,
-        amQuestionList,
+        aoQuestionList: aoQuestionList.map((d, idx) => {
+          let temp = ({...d, aoqOrder: idx, controlType_id:d.controlType, survey_id: currentProject.id})
+          delete temp['controlType']
+          if('survey' in temp)
+            delete temp['survey']
+          return temp
+        }),
+        amQuestionList: amQuestionList.map((d, idx) => {
+          let temp = ({...d, amqOrder: idx, controlType_id:d.controlType, survey_id: currentProject.id, driver_id: (d.driver || {}).id})
+          delete temp['controlType']
+          delete temp['driver']
+          if('survey' in temp)
+            delete temp['survey']
+          return temp
+        }),
       },
     }
     
@@ -140,8 +156,8 @@ const Projects = ({
       project: '1',
       surveyTitle: currentProject.surveyTitle,
       projectManager: currentProject.projectManager,
-      projectLogo: currentProject.projectLogo,
-      companyLogo: currentProject.companyLogo,
+      // projectLogo: currentProject.projectLogo,
+      // companyLogo: currentProject.companyLogo,
       customGroup1: currentProject.customGroup1,
       customGroup2: currentProject.customGroup2,
       customGroup3: currentProject.customGroup3,
@@ -150,14 +166,25 @@ const Projects = ({
       seatsPurchased: currentProject.seatsPurchased
     }
     let form_data = new FormData();
-    for ( var key in create ) {
+    for ( let key in create ) {
       if((key !== "projectLogo" && key !== "companyLogo") || create[key]) {
         form_data.append(key, create[key]);
       }
     }
+    // let upload_data = new FormData();
+    // upload_data.append("survey", currentProject.id)
+    // upload_data.append("projectLogo", currentProject.projectLogo)
+    // upload_data.append("companyLogo", currentProject.companyLogo)
+    // (currentProject.myMap || []).map(d => {
+    //   upload_data.append(d.id, d.icon)
+    // })
+    // (currentProject.projectMap || []).map(d => {
+    //   upload_data.append(d.id, d.icon)
+    // })
     console.log('data', data)
     if (surveyId) {
       updateSurvey(surveyId, data, savedCallback)
+      // uploadImages(upload_data, savedCallback2)
     } else {
       addSurvey(form_data, savedCallback)
     }
@@ -231,4 +258,5 @@ export default connect(mapStateToProps, {
   updateSurvey: adminUpdateSurvey,
   setUserList: adminSetUserList,
   setQuestionListBlank: adminSetQuestionListBlank,
+  uploadImages: adminUploadImages,
 })(Projects)

@@ -588,6 +588,12 @@ const postAdminSurveyAddAPI = (data) => {
   });
 };
 
+const adminUploadImagesAPI = (data) => {
+  return getClient.apply(true).post("/adminuploadimages", data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  })
+}
+
 const postAdminSurveyEditAPI = (data) => {
   console.log('data', data)
   return getClient(true).post("/adminsurveyedit/", data);
@@ -612,6 +618,14 @@ const adminBulkArchiveUserAPI = (ids) => {
 
 const deleteMoreInfoPageAPI = (id) => {
   return getClient(true).delete(`/admindelmorepage/${id}`)
+}
+
+const deleteQuestionAPI = (id, filter) => {
+  if(filter === 'About Me') {
+    return getClient(true).delete(`/admindelamquestion/${id}`)
+  } else {
+    return getClient(true).delete(`/admindelaoquestion/${id}`)
+  }
 }
 
 const getKeyDataFromLambda = () => {
@@ -681,5 +695,7 @@ export {
   adminSurveyConfigurationAPI,
   adminBulkInvitationSendAPI,
   adminBulkArchiveUserAPI,
-  deleteMoreInfoPageAPI
+  deleteMoreInfoPageAPI,
+  deleteQuestionAPI,
+  adminUploadImagesAPI
 };

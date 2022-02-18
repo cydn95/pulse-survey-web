@@ -26,9 +26,11 @@ import {
   ADMIN_BULK_ARCHIVE_USER,
   ADMIN_SET_QUESTION_LIST_BLANK,
   ADMIN_DELETE_QUESTION,
+  ADMIN_DELETE_QUESTION_SUCCESS,
   DEL_MORE_INFO_PAGE,
   ADMIN_GET_DRIVER_LIST,
   ADMIN_DRIVER_LIST_SUCCESS,
+  ADMIN_UPLOAD_IMAGES,
 } from 'Constants/actionTypes'
 
 export const adminProjectList = (userId) => ({
@@ -101,9 +103,14 @@ export const adminSetActive = (surveyId, data, callback) => ({
   payload: { surveyId, data, callback }
 })
 
-export const adminDeleteQuestion = (filter, questionText) => ({
+export const adminDeleteQuestion = (filter, questionText, questionId) => ({
   type: ADMIN_DELETE_QUESTION,
-  payload: { filter, questionText }
+  payload: { filter, questionText, questionId }
+})
+
+export const adminDeleteQuestionSuccess = (filter, questionId) => ({
+  type: ADMIN_DELETE_QUESTION_SUCCESS,
+  payload: { filter, questionId }
 })
 
 export const adminSetQuestionListBlank = () => ({
@@ -180,3 +187,8 @@ export const adminDriverListSuccess = (driverList) => ({
   type: ADMIN_DRIVER_LIST_SUCCESS,
   payload: { driverList },
 });
+
+export const adminUploadImages = (data, callback) => ({
+  type: ADMIN_UPLOAD_IMAGES,
+  payload: {data, callback},
+})

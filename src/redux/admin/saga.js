@@ -10,7 +10,11 @@ import {
   ADMIN_SEND_BULK_INVITATION,
   ADMIN_BULK_ARCHIVE_USER,
   DEL_MORE_INFO_PAGE,
-  ADMIN_GET_DRIVER_LIST
+  ADMIN_GET_DRIVER_LIST,
+  ADMIN_UPLOAD_IMAGES,
+  ADMIN_ADD_SURVEY, 
+  ADMIN_DELETE_QUESTION, 
+  ADMIN_UPDATE_SURVEY
 } from 'Constants/actionTypes'
 import {
   adminUserListSuccess,
@@ -22,6 +26,7 @@ import {
   adminSurveyConfigurationSuccess,
   deleteMoreInfoPage,
   adminDriverListSuccess,
+  adminDeleteQuestionSuccess
 } from './actions'
 import {
   adminUserListAPI,
@@ -39,8 +44,9 @@ import {
   adminBulkArchiveUserAPI,
   deleteMoreInfoPageAPI,
   driverListAPI,
+  deleteQuestionAPI,
+  adminUploadImagesAPI,
 } from '../../services/axios/api'
-import { ADMIN_ADD_SURVEY, ADMIN_UPDATE_SURVEY } from '../../constants/actionTypes'
 
 const getAdminUserListAsync = async (surveyId) =>
   await adminUserListAPI(surveyId)
@@ -89,6 +95,14 @@ const adminBulkArchiveUserAsync = async (ids) =>
 
 const adminDeleteMoreInfoPageAsync = async (id) =>
   await deleteMoreInfoPageAPI(id)
+    .then(data => data)
+
+const adminDeleteQuestionAsync = async (id, filter) =>
+  await deleteQuestionAPI(id, filter)
+    .then(data => data)
+
+const adminUploadImagesAsync = async (data) =>
+  await adminUploadImagesAPI(data)
     .then(data => data)
 
 function* getAdminUserList({ payload }) {
@@ -260,6 +274,19 @@ function* adminBulkArchiveUser({ payload }) {
   }
 }
 
+function* adminUploadImages({ payload }) {
+  try {
+    const {data, callback} = payload
+    const result = yield call(adminUploadImagesAsync, data)
+    if (result.status === 200) {
+      callback(true)
+    }
+  } catch (error) {
+    const { callback } = payload
+    callback(false)
+  }
+}
+
 function* adminDeleteMoreInfoPage({ payload }) {
   const {id, callback, index} = payload
   try {
@@ -276,6 +303,19 @@ function* adminDeleteMoreInfoPage({ payload }) {
     } else {
       callback(false, index)
     }
+  }
+}
+
+function* adminDeleteQuestion({ payload }) {
+  const {filter, questionId} = payload
+  try {
+    const result = yield call(adminDeleteQuestionAsync, questionId, filter)
+    console.log('result', result)
+    if(result.status === 204) {
+      yield put(adminDeleteQuestionSuccess(filter, questionId))
+    }
+  } catch (error) {
+    console.log(error)
   }
 }
 
@@ -327,8 +367,16 @@ export function* watchAdminDelMoreInfoPage() {
   yield takeEvery(DEL_MORE_INFO_PAGE, adminDeleteMoreInfoPage)
 }
 
+export function* watchAdminDelQuestion() {
+  yield takeEvery(ADMIN_DELETE_QUESTION, adminDeleteQuestion)
+}
+
 export function* watchAdminGetDriverList() {
   yield takeEvery(ADMIN_GET_DRIVER_LIST, adminGetDriverList)
+}
+
+export function* watchAdminUploadImages() {
+  yield takeEvery(ADMIN_UPLOAD_IMAGES, adminUploadImages)
 }
 
 export default function* rootSaga() {
@@ -346,5 +394,7 @@ export default function* rootSaga() {
     fork(watchAdminBulkArchiveUser),
     fork(watchAdminDelMoreInfoPage),
     fork(watchAdminGetDriverList),
+    fork(watchAdminDelQuestion),
+    fork(watchAdminUploadImages),
   ]);
 }
