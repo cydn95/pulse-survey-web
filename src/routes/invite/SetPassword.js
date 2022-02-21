@@ -33,6 +33,7 @@ class SetPassword extends Component {
 
   componentDidMount() {
     const params = queryString.parse(this.props.location.search);
+    console.log('params', params)
     const { checkPasswordStatus } = this.props;
 
     checkPasswordStatus(params.email, (result) => {
