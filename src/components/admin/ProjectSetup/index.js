@@ -364,16 +364,16 @@ const ProjectSetup = ({
                   }
                 }} />
             </div>
-            <div className={styles.richText} style={{display: 'flex', alignItems: 'start'}}>
+            {currentProject.moreInfo && currentProject.moreInfo.length > 0 && <div className={styles.richText} style={{display: 'flex', alignItems: 'start'}}>
               <div style={{flex: '1'}}>
                 <p>Page Content:</p>
-                {currentProject.moreInfo && currentProject.moreInfo.length > 0 && <RichTextEditorComponent height={200} iframeSettings={{ enable: true }} toolbarSettings={toolbarSettings} valueTemplate={currentProject.moreInfo[crrPage].pageContent} saveInterval={0} change={(e) => {
+                <RichTextEditorComponent height={200} iframeSettings={{ enable: true }} toolbarSettings={toolbarSettings} valueTemplate={currentProject.moreInfo[crrPage].pageContent} saveInterval={0} change={(e) => {
                   let temp = [...currentProject.moreInfo]
                   temp[crrPage].pageContent = e.value
                   setProjectField('moreInfo', temp)
                 }}>
                   <Inject services={[Toolbar, Image, Link, HtmlEditor, QuickToolbar, Table]} />
-                </RichTextEditorComponent>}
+                </RichTextEditorComponent>
               </div>
               <div style={{marginLeft: '20px'}}>
                 <p>Image:</p>
@@ -385,7 +385,7 @@ const ProjectSetup = ({
                   updateFilesCb={updateTourImage}
                 />
               </div>
-            </div>
+            </div>}
           </div>}
           {currentProject.moreInfo && currentProject.moreInfo.length > 0 && show && <div className={styles.richTextMobile}>
             <h2 className={styles.header}>{currentProject.moreInfo[crrPage].pageName}</h2>

@@ -24,6 +24,7 @@ import {
 // import ProjectEdit from 'Components/admin/ProjectEdit'
 // import AdminStepBar from 'Components/admin/AdminStepBar'
 import Loading from 'Components/Loading'
+import {serverUrl} from 'Constants/defaultValues'
 // import CheckoutForm from 'Components/admin/Subscription/CheckoutForm'
 import Button from 'Components/Button'
 import styles from './styles.scss'
@@ -156,8 +157,8 @@ const Projects = ({
       project: '1',
       surveyTitle: currentProject.surveyTitle,
       projectManager: currentProject.projectManager,
-      // projectLogo: currentProject.projectLogo,
-      // companyLogo: currentProject.companyLogo,
+      projectLogo: currentProject.projectLogo,
+      companyLogo: currentProject.companyLogo,
       customGroup1: currentProject.customGroup1,
       customGroup2: currentProject.customGroup2,
       customGroup3: currentProject.customGroup3,
@@ -166,26 +167,35 @@ const Projects = ({
       seatsPurchased: currentProject.seatsPurchased
     }
     let form_data = new FormData();
-    for ( let key in create ) {
-      if((key !== "projectLogo" && key !== "companyLogo") || create[key]) {
-        form_data.append(key, create[key]);
-      }
-    }
-    // let upload_data = new FormData();
-    // upload_data.append("survey", currentProject.id)
-    // upload_data.append("projectLogo", currentProject.projectLogo)
-    // upload_data.append("companyLogo", currentProject.companyLogo)
-    // (currentProject.myMap || []).map(d => {
-    //   upload_data.append(d.id, d.icon)
-    // })
-    // (currentProject.projectMap || []).map(d => {
-    //   upload_data.append(d.id, d.icon)
-    // })
     console.log('data', data)
     if (surveyId) {
+      console.log('server_url', serverUrl)
+      form_data.append("survey", currentProject.id)
+      if(currentProject.companyLogo)
+        form_data.append("companyLogo", typeof currentProject.companyLogo === 'string' ? currentProject.companyLogo.replace(`${serverUrl}/media/`, ''): currentProject.companyLogo)
+      if(currentProject.projectLogo)
+        form_data.append("projectLogo", typeof currentProject.projectLogo === 'string' ? currentProject.projectLogo.replace(`${serverUrl}/media/`, ''): currentProject.projectLogo)
+      form_data.append("video", currentProject.video)
+      for ( let d in (currentProject.myMap || [])) {
+        console.log(d)
+        if(currentProject.myMap[d].id) {
+          form_data.append(currentProject.myMap[d].id, currentProject.myMap[d].icon)
+        }
+        
+      }
+      for ( let d in (currentProject.myMap || [])) {
+        if(currentProject.myMap[d].id)
+          form_data.append(currentProject.myMap[d].id, currentProject.myMap[d].icon)
+      }
+      console.log('form_data', form_data)
       updateSurvey(surveyId, data, savedCallback)
-      // uploadImages(upload_data, savedCallback2)
+      uploadImages(form_data, savedCallback2)
     } else {
+      for ( let key in create ) {
+        if((key !== "projectLogo" && key !== "companyLogo") || create[key]) {
+          form_data.append(key, create[key]);
+        }
+      }
       addSurvey(form_data, savedCallback)
     }
     // updateUserList(userList, savedCallback)
