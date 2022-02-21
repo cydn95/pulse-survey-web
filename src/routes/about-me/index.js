@@ -44,6 +44,7 @@ const AboutMeSurvey = ({
   surveyTitle,
   surveyUserId,
   surveyId,
+  loading,
   history,
 
   getPageList,
@@ -132,7 +133,6 @@ const AboutMeSurvey = ({
           driverListTemp.push(driver);
         }
       }
-
       setDriverList([...driverListTemp]);
     }
   }, [pageIndex, surveyList]);
@@ -241,7 +241,7 @@ const AboutMeSurvey = ({
           </div>
         </TopNav>
       </div>
-      {surveyList.length > 0 && (
+      {!loading && (
         <div className={styles["main-content"]}>
           {driverList.length > 0 && skipQuestionList.length > 0 && (
             <Fragment>
@@ -392,13 +392,13 @@ const AboutMeSurvey = ({
           )}
         </div>
       )}
-      {surveyList.length === 0 && <Loading description="" />}
+      {loading && <Loading description="" />}
     </div>
   );
 };
 
 const mapStateToProps = ({ survey, common, authUser }) => {
-  const { pageList, pageIndex, optionList, aboutMe } = survey;
+  const { pageList, pageIndex, optionList, aboutMe, loading } = survey;
   const { skipQuestionList } = common;
   const {
     projectId,
@@ -419,6 +419,7 @@ const mapStateToProps = ({ survey, common, authUser }) => {
     surveyTitle,
     surveyUserId,
     surveyId,
+    loading
   };
 };
 
