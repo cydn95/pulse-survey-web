@@ -138,7 +138,13 @@ const UserAdministration = ({
       }
     }
 
-    if (!user.shGroup || !user.id) {
+    if (!user.id) {
+      return {
+        text: 'Unsaved'
+      }
+    }
+
+    if (!user.shGroup) {
       return {
         text: 'Not Started'
       }
@@ -704,7 +710,7 @@ const UserAdministration = ({
                           }
                           // let temp = toggle(detail, idx)
                         }}>
-                          <td>
+                          <td onClick={(e) => e.stopPropagation()}>
                             <CheckBoxComponent
                               checked={selected.includes(user.id)}
                               onChange={(e) => {
@@ -819,16 +825,20 @@ const UserAdministration = ({
                   }
                 })}
               />
-              {`${selected.length} members selected`}
+              {`${selected.length} member${selected.length > 1 ? 's':''} selected`}
             </span>
             <div className={styles.actions}>
-              <span style={{ cursor: 'pointer' }} onClick={() => {
-                sendBulkInvitation(selected, callbackSendInvte)
-              }}><FontAwesomeIcon icon={faPaperPlane} className={styles.icon} />Send invite</span>
-              <span style={{ cursor: 'pointer' }} onClick={() => {
-                setConfirm(true)
-              }}><FontAwesomeIcon icon={faArchive} className={styles.icon} />Archive</span>
+              <span style={{ cursor: 'pointer', color: selected.includes(undefined) && 'gray' }} onClick={() => {
+                if(!selected.includes(undefined))
+                  sendBulkInvitation(selected, callbackSendInvte)
+              }}><FontAwesomeIcon icon={faPaperPlane} className={styles.icon} color={selected.includes(undefined) && 'gray'} />Send invite</span>
+              <span style={{ cursor: 'pointer', color: selected.includes(undefined) && 'gray' }} onClick={() => {
+                if(!selected.includes(undefined))
+                  setConfirm(true)
+              }}><FontAwesomeIcon icon={faArchive} className={styles.icon} color={selected.includes(undefined) && 'gray'} />Archive</span>
             </div>
+            {console.log('selected', selected)}
+            {selected.includes(undefined) && <div className={styles.selectError}>You selected unsaved members</div>}
           </div>}
         </Fragment>
       }

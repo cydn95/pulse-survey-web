@@ -250,6 +250,7 @@
 
 .toolbar {
   display: flex;
+  flex-wrap: wrap;
   box-shadow: 0 -4px 32px 0 rgba(0, 0, 0, 0.08);
   background-color: #fff;
   padding: 24px 36px;
@@ -290,6 +291,21 @@
       letter-spacing: normal;
       text-align: left;
       color: #273645;
+    }
+  }
+  .selectError {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: red;
+    @media (max-width: 540px) {
+      flex-basis: 100%;
+    }
+  }
+  @media (max-width: 1023px) {
+    width: calc(100% - 72px);
+    .actions {
+      gap: 10px;
     }
   }
   @media (max-width: 767px) {
@@ -348,8 +364,5 @@
     .total {
       width: 100%;
     }
-  }
-  .toolbar {
-    width: calc(100% - 20px);
   }
 }
