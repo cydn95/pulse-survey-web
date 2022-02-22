@@ -1,3 +1,13 @@
+export const prevMonth = (str) => {
+  let month = new Date(Date.parse(str.split(' ')[0] +" 1, 2012")).getMonth()
+  let year = str.split(' ')[1]
+  if (month === 0) {
+    month = 12;
+    year = parseInt(year) - 1
+  }
+  return `${MONTH(month)} ${year}`
+}
+
 export const mapOrder = (array, order, key) => {
   array.sort(function (a, b) {
     var A = a[key],
