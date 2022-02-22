@@ -93,9 +93,9 @@ const Projects = ({
 
   const savedCallback2 = (status) => {
     if (status) {
-      NotificationManager.success("Images Uploaded", "");
+      console.log("Images Uploaded");
     } else {
-      NotificationManager.error("There was a problem uploading the image.", "");
+      console.log("There was a problem uploading the image.");
     }
   }
 
