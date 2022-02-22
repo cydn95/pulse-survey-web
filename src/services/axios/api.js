@@ -589,7 +589,7 @@ const postAdminSurveyAddAPI = (data) => {
 };
 
 const adminUploadImagesAPI = (data) => {
-  return getClient.apply(true).post("/adminuploadimages", data, {
+  return getClient(true).post("/adminuploadimages", data, {
     headers: { "Content-Type": "multipart/form-data" },
   })
 }
