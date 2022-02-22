@@ -81,7 +81,7 @@ export const getResultForSHGroup = (shGroupList, result) => {
         if ("amQuestion" in data) {
           questionData = data.amQuestion;
         } else {
-          questionData = data.aoQuestionData;
+          questionData = data.aoQuestion;
         }
         // if ("aoQuestionData" in data) {
         //   questionData = data.aoQuestionData;
