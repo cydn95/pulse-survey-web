@@ -8,6 +8,17 @@ export const prevMonth = (str) => {
   return `${MONTH(month)} ${year}`
 }
 
+export const getPrevMonthData = (trend, key) => {
+  let data = []
+  let newKey = key
+  newKey = prevMonth(newKey)
+  if(!trend[newKey] || arrayAverage([...trend[newKey]]) === 0) {
+    data = getPrevMonthData(trend, newKey)
+  } else {
+    return trend[newKey];
+  }
+}
+
 export const mapOrder = (array, order, key) => {
   array.sort(function (a, b) {
     var A = a[key],

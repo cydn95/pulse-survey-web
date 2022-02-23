@@ -1,4 +1,4 @@
-import { getCurrentYear, getCurrentMonth, MONTH, arrayAverage } from "Util/Utils";
+import { getCurrentYear, getCurrentMonth, MONTH, arrayAverage, getPrevMonthData } from "Util/Utils";
 
 // const MONTH = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -137,10 +137,23 @@ export const getResultForSHGroup = (shGroupList, result) => {
 
       const reverseKeys = [...keys.reverse()];
       let prevYValue = [];
-      reverseKeys.map(d => {
+      reverseKeys.map((d, idx) => {
+        console.log('trend', trend)
         if (trend[d.key]) {
-          prevYValue = [...trend[d.key]]
+          if(arrayAverage([...trend[d.key]]) === 0) {
+            if(idx === 0) {
+              prevYValue = getPrevMonthData(trend, d.key)
+            }
+          } else {
+            prevYValue = [...trend[d.key]]
+          }
+        } else {
+          if(idx === 0) {
+            prevYValue = getPrevMonthData(trend, d.key)
+          }
         }
+
+
         newTrend.push({
           x: d.key,
           y: arrayAverage(prevYValue) / 10,
@@ -282,9 +295,19 @@ export const getResultForTeam = (teamList, result) => {
 
       const reverseKeys = [...keys.reverse()];
       let prevYValue = [];
-      reverseKeys.map(d => {
+      reverseKeys.map((d, idx) => {
         if (trend[d.key]) {
-          prevYValue = [...trend[d.key]]
+          if(arrayAverage([...trend[d.key]]) === 0) {
+            if(idx === 0) {
+              prevYValue = getPrevMonthData(trend, d.key)
+            }
+          } else {
+            prevYValue = [...trend[d.key]]
+          }
+        } else {
+          if(idx === 0) {
+            prevYValue = getPrevMonthData(trend, d.key)
+          }
         }
         newTrend.push({
           x: d.key,
@@ -427,9 +450,20 @@ export const getResultForOrganization = (organizationList, result) => {
 
       const reverseKeys = [...keys.reverse()];
       let prevYValue = [];
-      reverseKeys.map(d => {
+      reverseKeys.map((d, idx) => {
+        console.log('trend', trend)
         if (trend[d.key]) {
-          prevYValue = [...trend[d.key]]
+          if(arrayAverage([...trend[d.key]]) === 0) {
+            if(idx === 0) {
+              prevYValue = getPrevMonthData(trend, d.key)
+            }
+          } else {
+            prevYValue = [...trend[d.key]]
+          }
+        } else {
+          if(idx === 0) {
+            prevYValue = getPrevMonthData(trend, d.key)
+          }
         }
         newTrend.push({
           x: d.key,
