@@ -452,6 +452,9 @@ export const getResultForOrganization = (organizationList, result) => {
       let prevYValue = [];
       reverseKeys.map((d, idx) => {
         console.log('trend', trend)
+        if(Object.keys(trend).length === 0) {
+          return d
+        }
         if (trend[d.key]) {
           if(arrayAverage([...trend[d.key]]) === 0) {
             if(idx === 0) {
