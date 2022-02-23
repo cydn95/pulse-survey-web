@@ -30,7 +30,7 @@ class TrendLine extends SampleBase {
         <div className="control-section trend-line-chart">
           <ChartComponent
             id={`charts_${num}`}
-            style={{ textAlign: "center", height: 100, width: width }}
+            style={{ textAlign: "center", height: 140, width: width }}
             primaryXAxis={{
               labelPlacement: 'onTicks',
               valueType: "Category",

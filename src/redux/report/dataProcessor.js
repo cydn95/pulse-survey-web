@@ -295,6 +295,8 @@ export const getResultForTeam = (teamList, result) => {
 
       const reverseKeys = [...keys.reverse()];
       let prevYValue = [];
+      console.log('trendteam', trend)
+      console.log('currentKey', currentKey)
       reverseKeys.map((d, idx) => {
         if (trend[d.key]) {
           if(arrayAverage([...trend[d.key]]) === 0) {

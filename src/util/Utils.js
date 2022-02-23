@@ -10,10 +10,10 @@ export const prevMonth = (str) => {
 
 export const getPrevMonthData = (trend, key) => {
   let data = []
-  let newKey = key
-  newKey = prevMonth(newKey)
+  let newKey = prevMonth(key)
   if(!trend[newKey] || arrayAverage([...trend[newKey]]) === 0) {
     data = getPrevMonthData(trend, newKey)
+    return data
   } else {
     return trend[newKey];
   }
