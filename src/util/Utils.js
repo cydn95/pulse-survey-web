@@ -1,3 +1,12 @@
+export const compareDate = (str1, str2) => {
+  let date1 = Date.parse(str1.split(' ')[0] + "1, " + str1.split(' ')[0])
+  let date2 = Date.parse(str2.split(' ')[0] + "1, " + str2.split(' ')[0])
+  console.log(date1)
+  console.log(date2)
+  console.log(date1 > date2)
+  return date1 > date2
+}
+
 export const prevMonth = (str) => {
   let month = new Date(Date.parse(str.split(' ')[0] +" 1, 2012")).getMonth()
   let year = str.split(' ')[1]

@@ -1,4 +1,4 @@
-import { getCurrentYear, getCurrentMonth, MONTH, arrayAverage, getPrevMonthData } from "Util/Utils";
+import { getCurrentYear, getCurrentMonth, MONTH, arrayAverage, getPrevMonthData, compareDate } from "Util/Utils";
 
 // const MONTH = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -139,20 +139,22 @@ export const getResultForSHGroup = (shGroupList, result) => {
       let prevYValue = [];
       reverseKeys.map((d, idx) => {
         console.log('trend', trend)
+        console.log('date', d.key)
+        if(Object.keys(trend).length === 0) {
+          return d
+        }
         if (trend[d.key]) {
-          if(arrayAverage([...trend[d.key]]) === 0) {
-            if(idx === 0) {
-              prevYValue = getPrevMonthData(trend, d.key)
-            }
-          } else {
-            prevYValue = [...trend[d.key]]
-          }
+          prevYValue = [...trend[d.key]]
         } else {
           if(idx === 0) {
+            if(compareDate(Object.keys(trend)[0], d.key)) {
+              return d
+            }
             prevYValue = getPrevMonthData(trend, d.key)
           }
         }
-
+        
+        console.log('here')
 
         newTrend.push({
           x: d.key,
@@ -167,7 +169,6 @@ export const getResultForSHGroup = (shGroupList, result) => {
       //     y: arrayAverage(trend[t]) / 10,
       //   });
       // });
-
       subDriverRet[currentKey].push({
         value: cnt > 0 ? ((sum / cnt / 10).toFixed(1) > 100 ? 100 : (sum / cnt / 10).toFixed(1)) : 0,
         question,
@@ -295,22 +296,22 @@ export const getResultForTeam = (teamList, result) => {
 
       const reverseKeys = [...keys.reverse()];
       let prevYValue = [];
-      console.log('trendteam', trend)
-      console.log('currentKey', currentKey)
       reverseKeys.map((d, idx) => {
+        console.log('trend', trend)
+        if(Object.keys(trend).length === 0) {
+          return d
+        }
         if (trend[d.key]) {
-          if(arrayAverage([...trend[d.key]]) === 0) {
-            if(idx === 0) {
-              prevYValue = getPrevMonthData(trend, d.key)
-            }
-          } else {
-            prevYValue = [...trend[d.key]]
-          }
+          prevYValue = [...trend[d.key]]
         } else {
           if(idx === 0) {
+            if(compareDate(Object.keys(trend)[0], d.key)) {
+              return d
+            }
             prevYValue = getPrevMonthData(trend, d.key)
           }
         }
+
         newTrend.push({
           x: d.key,
           y: arrayAverage(prevYValue) / 10,
@@ -458,18 +459,16 @@ export const getResultForOrganization = (organizationList, result) => {
           return d
         }
         if (trend[d.key]) {
-          if(arrayAverage([...trend[d.key]]) === 0) {
-            if(idx === 0) {
-              prevYValue = getPrevMonthData(trend, d.key)
-            }
-          } else {
-            prevYValue = [...trend[d.key]]
-          }
+          prevYValue = [...trend[d.key]]
         } else {
           if(idx === 0) {
+            if(compareDate(Object.keys(trend)[0], d.key)) {
+              return d
+            }
             prevYValue = getPrevMonthData(trend, d.key)
           }
         }
+        
         newTrend.push({
           x: d.key,
           y: arrayAverage(prevYValue) / 10,
