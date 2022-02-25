@@ -1,6 +1,6 @@
 import React, { useState, Fragment, useMemo, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { shgroupList, skipQuestionList, adminSetQuestionListByField, adminSetQuestionList, } from 'Redux/actions'
+import { skipQuestionList, adminSetQuestionListByField, adminSetQuestionList, } from 'Redux/actions'
 import classnames from 'classnames'
 import Select from 'Components/Select'
 import Loading from 'Components/Loading'
@@ -24,7 +24,6 @@ const SurveyConfiguration = ({
   amQuestionList,
   aoQuestionList,
   loading,
-  getShGroupList,
   getSkipQuestionList,
   setQuestionByField,
   setQuestionList,
@@ -43,7 +42,6 @@ const SurveyConfiguration = ({
 
   useEffect(() => {
     getSkipQuestionList();
-    getShGroupList(surveyId);
   }, [surveyId])
 
   useEffect(() => {
@@ -221,7 +219,6 @@ const mapStateToProps = ({ admin }) => {
 }
 
 export default connect(mapStateToProps, {
-  getShGroupList: shgroupList,
   getSkipQuestionList: skipQuestionList,
   setQuestionByField: adminSetQuestionListByField,
   setQuestionList: adminSetQuestionList,

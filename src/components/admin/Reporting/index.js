@@ -18,9 +18,9 @@ const Reporting = ({ project, currentProject }) => {
         We are currently working on a super exciting feature
       </MessageBox> */}
       {Object.keys(currentProject).length > 0 && <Fragment>
-        <Row title="Stakeholder Groups" avatar={SegmentAvatar} project={project} />
-        <Row title="Teams" avatar={TeamAvatar} project={project} />
-        <Row title="Organizations" avatar={OrganizationAvatar} project={project} />
+        <Row type={0} title="Stakeholder Groups" avatar={SegmentAvatar} project={project} />
+        <Row type={1} title="Teams" avatar={TeamAvatar} project={project} />
+        <Row type={2} title="Organizations" avatar={OrganizationAvatar} project={project} />
       </Fragment>}
     </Fragment>
   )
