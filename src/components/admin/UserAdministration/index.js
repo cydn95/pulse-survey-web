@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
-import { teamList, shgroupList, adminSetUserField, adminAddNewUSer, adminSendBulkInvitation, adminBulkArchiveUser } from 'Redux/actions'
+import { adminSetUserField, adminAddNewUSer, adminSendBulkInvitation, adminBulkArchiveUser } from 'Redux/actions'
 import { CheckBoxComponent } from '@syncfusion/ej2-react-buttons';
 import "@syncfusion/ej2-base/styles/material.css";
 import "@syncfusion/ej2-buttons/styles/material.css";
@@ -29,8 +29,6 @@ const UserAdministration = ({
   userList,
   currentProject,
   loading,
-  getTeamList,
-  getShGroupList,
   shgroupList,
   teamList,
   setUserField,
@@ -69,10 +67,6 @@ const UserAdministration = ({
   const [scrollX, setScrollX] = useState(0)
   const [clientX, setClientX] = useState(0)
   const [validation, setValidation] = useState({})
-  useEffect(() => {
-    getTeamList(currentProject.project, currentProject.id)
-    getShGroupList(currentProject.id)
-  }, [currentProject])
 
   const onMouseDown = e => {
     setIsScrolling(true)
@@ -1011,8 +1005,6 @@ const mapStateToProps = ({ admin, common, account }) => {
 }
 
 export default connect(mapStateToProps, {
-  getTeamList: teamList,
-  getShGroupList: shgroupList,
   setUserField: adminSetUserField,
   addNewUser: adminAddNewUSer,
   sendBulkInvitation: adminSendBulkInvitation,

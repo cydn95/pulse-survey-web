@@ -17,8 +17,12 @@ import {
   adminUpdateSurvey,
   adminSetUserList,
   adminSetQuestionListBlank,
-  adminUploadImages
+  adminUploadImages,
 } from 'Redux/admin/actions'
+import {
+  shgroupList,
+  teamList,
+} from 'Redux/actions'
 // import TopNav from "Containers/TopNav";
 // import ProjectCard from 'Components/admin/ProjectCard'
 // import ProjectEdit from 'Components/admin/ProjectEdit'
@@ -52,6 +56,8 @@ const Projects = ({
   uploadImages,
   setUserList,
   setQuestionListBlank,
+  getShGroupList,
+  getTeamList
 }) => {
   const [breadcrumb, setBreadcrumb] = useState('')
   const [editing, setEditing] = useState(-2)
@@ -61,6 +67,13 @@ const Projects = ({
   useEffect(() => {
     getProjectList(user.userId)
   }, [user])
+
+  useEffect(() => {
+    if(surveyId > 0) {
+      getShGroupList(surveyId);
+      getTeamList(surveyId);
+    }
+  }, [surveyId])
 
 
   const handleEdit = (projectId) => {
@@ -269,4 +282,6 @@ export default connect(mapStateToProps, {
   setUserList: adminSetUserList,
   setQuestionListBlank: adminSetQuestionListBlank,
   uploadImages: adminUploadImages,
+  getTeamList: teamList,
+  getShGroupList: shgroupList,
 })(Projects)

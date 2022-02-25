@@ -1,15 +1,51 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import {connect} from 'react-redux'
 import Select from 'Components/Select'
+import {
+  adminSetCurrentProject,
+} from 'Redux/admin/actions'
 import AddButton from 'Components/AddButton'
 import styles from './styles.scss'
 
-const Row = ({ title, avatar, project }) => {
-  const [segmentName, setSegmentName] = useState('Internal')
-  const [permissionType, setPermissionType] = useState('All Exception')
-  const [dashboards, setDashboards] = useState(['Summary', 'Timeline'])
-  const [shGroups, setSHGroups] = useState([])
-  const [teams, setTeams] = useState([])
-  const [organizations, setOrganizations] = useState([])
+const Row = ({ 
+  title, 
+  avatar, 
+  project, 
+  type, 
+  shgroupList, 
+  teamList,
+  currentProject,
+  setCurrentProject
+}) => {
+  useEffect(() => {
+    if (type === 0) {
+      setFilter('shgroup')
+      setList(shgroupList.map(d => d.SHGroupName))
+    } else if (type === 1) {
+      setFilter('team')
+      setList(teamList.map(d => d.name))
+    } else {
+      setFilter('organization')
+    }
+    console.log('currentProject', currentProject)
+    setSegments((currentProject.segments || {})[filter] || [])
+  }, [type, currentProject, setCurrentProject])
+
+  const [filter, setFilter] = useState('shgroup')
+  const [segments, setSegments] = useState([])
+  const [list, setList] = useState([])
+  const setOpen = () => {
+    let temp = [...segments]
+    temp.push({})
+    setSegments(temp)
+    setCurrentProject({
+      ...currentProject,
+      segments: {
+        ...currentProject.segments,
+        [filter] : temp
+      }
+    })
+  }
 
   const setSelected = (items, setItems, idx = 0) => (d) => {
     let temp = [...items];
@@ -23,111 +59,103 @@ const Row = ({ title, avatar, project }) => {
         <span><img src={avatar} alt={title} /></span>
         <h2>{title}</h2>
       </div>
-      <div className={styles.inputs}>
-        <div className={styles.input}>
-          <label>Segment name</label>
-          <Select
-            selected={segmentName}
-            setSelected={setSegmentName}
-            items={['Internal', 'External']}
-            className={styles.select}
-          />
-        </div>
-        <div className={styles.input}>
-          <label>Permission Type</label>
-          <Select
-            selected={permissionType}
-            setSelected={setPermissionType}
-            className={styles.select}
-            items={['All Exception']}
-          />
-        </div>
-        <div className={styles.input}>
-          <label>Dashbaords</label>
-          {dashboards.map((dashboard, idx) =>
+      {segments.map((segment, idx) => (
+        <div className={styles.inputs}>
+          <div className={styles.input}>
+            <label>Segment name</label>
             <Select
-              key={`${idx}-${dashboard}`}
-              className={styles.select}
-              selected={dashboard}
-              setSelected={(d) => {
-                let temp = [...dashboards];
-                temp[idx] = d;
-                setDashboards(temp);
+              selected={segment.segmentName}
+              setSelected={(value) => {
+                let temp = {...segment}
+                temp.segmentName = value
+                segments[idx] = temp
+                setSegments(segments)
               }}
-              onClose={() => console.log('close')}
-              items={['Summary', 'Timeline']}
-            />
-          )}
-          <AddButton />
-        </div>
-        <div className={styles.input}>
-          <label>SH Group</label>
-          {shGroups.length === 0 ?
-            <Select
-              key={`${-1}-shGroup`}
-              setSelected={setSelected(shGroups, setSHGroups.length)}
+              items={list}
               className={styles.select}
-              onClose={() => console.log('close')}
-              items={['Internal', 'External']}
-            /> :
-            shGroups.map((shGroup, idx) =>
+            />
+          </div>
+          <div className={styles.input}>
+            <label>Permission Type</label>
+            <Select
+              selected={segment.permissionType}
+              className={styles.select}
+              items={['All Exception', 'Only']}
+            />
+          </div>
+          <div className={styles.input}>
+            <label>Dashbaords</label>
+            {(segment.dashboards || []).map((dashboard, idx) =>
               <Select
-                key={`${idx}-${shGroup}`}
-                selected={shGroup}
+                key={`${idx}-${dashboard}`}
                 className={styles.select}
+                selected={dashboard}
                 onClose={() => console.log('close')}
-                items={['Internal', 'External']}
-                setSelected={setSelected(shGroups, setSHGroups.length, idx)}
+                items={['Summary', 'Driver Analysis', 'Matrix', 'Key Themes', 'Advisor Insights']}
               />
             )}
-          <AddButton />
+            <AddButton />
+          </div>
+          <div className={styles.input}>
+            <label>SH Group</label>
+            {(segment.shGroups || []).map((shGroup, idx) =>
+                <Select
+                  key={`${idx}-${shGroup}`}
+                  selected={shGroup}
+                  className={styles.select}
+                  onClose={() => console.log('close')}
+                  items={list}
+                />
+            )}
+            <AddButton />
+          </div>
+          <div className={styles.input}>
+            <label>Teams</label>
+            {(segment.teams || []).map((team, idx) =>
+                <Select
+                  className={styles.select}
+                  key={`${idx}-${team}`}
+                  onClose={() => console.log('close')}
+                  selected={team}
+                  items={list}
+                />
+              )
+            }
+            <AddButton />
+          </div>
+          <div className={styles.input}>
+            <label>Organizations</label>
+            {(segment.organizations || []).map((organization, idx) =>
+                <Select
+                  className={styles.select}
+                  key={`${idx}-${organization}`}
+                  onClose={() => console.log('close')}
+                  selected={organization}
+                />
+              )
+            }
+            <AddButton />
+          </div>
         </div>
-        <div className={styles.input}>
-          <label>Teams</label>
-          {teams.length === 0 ?
-            <Select
-              className={styles.select}
-              key={`${-1}-team`}
-              onClose={() => console.log('close')}
-              setSelected={setSelected(teams, setTeams)}
-            /> :
-            teams.map((team, idx) =>
-              <Select
-                className={styles.select}
-                key={`${idx}-${team}`}
-                onClose={() => console.log('close')}
-                selected={team}
-                setSelected={setSelected(teams, setTeams, idx)}
-              />
-            )
-          }
-          <AddButton />
-        </div>
-        <div className={styles.input}>
-          <label>Organizations</label>
-          {organizations.length === 0 ?
-            <Select
-              className={styles.select}
-              onClose={() => console.log('close')}
-              key={`${-1}-organization`}
-              setSelected={setSelected(organizations, setOrganizations)}
-            /> :
-            organizations.map((organization, idx) =>
-              <Select
-                className={styles.select}
-                key={`${idx}-${organization}`}
-                onClose={() => console.log('close')}
-                selected={organization}
-                setSelected={setSelected(organizations, setOrganizations, idx)}
-              />
-            )
-          }
-          <AddButton />
-        </div>
-      </div>
-      <AddButton className={styles.add} />
+      ))}
+      <AddButton 
+        setOpen={setOpen}
+        className={styles.add}
+      />
     </div>
   )
 }
 
-export default Row;
+const mapStateToProps = ({ admin, common }) => {
+  const { currentProject } = admin
+  const { teamList, shgroupList } = common;
+  return {
+    currentProject,
+    shgroupList,
+    teamList
+  }
+}
+
+export default connect(mapStateToProps, {
+  setCurrentProject: adminSetCurrentProject,
+})(Row);
