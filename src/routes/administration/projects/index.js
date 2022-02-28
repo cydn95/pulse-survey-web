@@ -71,9 +71,9 @@ const Projects = ({
   useEffect(() => {
     if(surveyId > 0) {
       getShGroupList(surveyId);
-      getTeamList(surveyId);
+      getTeamList(currentProject.project, currentProject.id);
     }
-  }, [surveyId])
+  }, [currentProject.id, currentProject.project])
 
 
   const handleEdit = (projectId) => {
