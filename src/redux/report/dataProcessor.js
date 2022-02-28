@@ -107,13 +107,19 @@ export const getResultForSHGroup = (shGroupList, result) => {
             }
 
             if (dateKey in trend) {
-              trend[dateKey].push(data.integerValue);
+              trend[dateKey][data.projectUser] = data.integerValue;
             } else {
-              trend[dateKey] = [data.integerValue];
+              trend[dateKey] = {[data.projectUser]: data.integerValue};
             }
           }
         // });
       }
+
+      Object.keys(trend).map((d, idx, self) => {
+        for (let i=0; i <= idx; i++) {
+          trend[d] = {...trend[d], ...trend[self[i]]}
+        }
+      })
 
       const newTrend = [];
       const currentYear = getCurrentYear();
@@ -136,15 +142,13 @@ export const getResultForSHGroup = (shGroupList, result) => {
       }
 
       const reverseKeys = [...keys.reverse()];
-      let prevYValue = [];
+      let prevYValue = {};
       reverseKeys.map((d, idx) => {
-        console.log('trend', trend)
-        console.log('date', d.key)
         if(Object.keys(trend).length === 0) {
           return d
         }
         if (trend[d.key]) {
-          prevYValue = [...trend[d.key]]
+          prevYValue = {...trend[d.key]}
         } else {
           if(idx === 0) {
             if(compareDate(Object.keys(trend)[0], d.key)) {
@@ -153,12 +157,15 @@ export const getResultForSHGroup = (shGroupList, result) => {
             prevYValue = getPrevMonthData(trend, d.key)
           }
         }
-        
-        console.log('here')
+
+        let sum2 = 0
+        Object.keys(prevYValue).map(key => {
+          sum2 += prevYValue[key]
+        })
 
         newTrend.push({
           x: d.key,
-          y: arrayAverage(prevYValue) / 10,
+          y: sum2 / (10 * Object.keys(prevYValue).length),
         })
         return d;
       })
@@ -266,13 +273,19 @@ export const getResultForTeam = (teamList, result) => {
             }
 
             if (dateKey in trend) {
-              trend[dateKey].push(data.integerValue);
+              trend[dateKey][data.projectUser] = data.integerValue;
             } else {
-              trend[dateKey] = [data.integerValue];
+              trend[dateKey] = {[data.projectUser]: data.integerValue};
             }
           }
         // });
       }
+
+      Object.keys(trend).map((d, idx, self) => {
+        for (let i=0; i <= idx; i++) {
+          trend[d] = {...trend[d], ...trend[self[i]]}
+        }
+      })
 
       const newTrend = [];
       const currentYear = getCurrentYear();
@@ -295,14 +308,15 @@ export const getResultForTeam = (teamList, result) => {
       }
 
       const reverseKeys = [...keys.reverse()];
-      let prevYValue = [];
+      let prevYValue = {};
       reverseKeys.map((d, idx) => {
         console.log('trend', trend)
+        console.log('prevYValue', prevYValue)
         if(Object.keys(trend).length === 0) {
           return d
         }
         if (trend[d.key]) {
-          prevYValue = [...trend[d.key]]
+          prevYValue = {...trend[d.key]}
         } else {
           if(idx === 0) {
             if(compareDate(Object.keys(trend)[0], d.key)) {
@@ -311,10 +325,14 @@ export const getResultForTeam = (teamList, result) => {
             prevYValue = getPrevMonthData(trend, d.key)
           }
         }
+        let sum2 = 0
+        Object.keys(prevYValue).map(key => {
+          sum2 += prevYValue[key]
+        })
 
         newTrend.push({
           x: d.key,
-          y: arrayAverage(prevYValue) / 10,
+          y: sum2 / (10 * Object.keys(prevYValue).length),
         })
         return d;
       })
@@ -423,13 +441,19 @@ export const getResultForOrganization = (organizationList, result) => {
             }
 
             if (dateKey in trend) {
-              trend[dateKey].push(data.integerValue);
+              trend[dateKey][data.projectUser] = data.integerValue;
             } else {
-              trend[dateKey] = [data.integerValue];
+              trend[dateKey] = {[data.projectUser]: data.integerValue};
             }
           }
         // });
       }
+
+      Object.keys(trend).map((d, idx, self) => {
+        for (let i=0; i <= idx; i++) {
+          trend[d] = {...trend[d], ...trend[self[i]]}
+        }
+      })
 
       const newTrend = [];
       const currentYear = getCurrentYear();
@@ -452,14 +476,14 @@ export const getResultForOrganization = (organizationList, result) => {
       }
 
       const reverseKeys = [...keys.reverse()];
-      let prevYValue = [];
+      let prevYValue = {};
       reverseKeys.map((d, idx) => {
         console.log('trend', trend)
         if(Object.keys(trend).length === 0) {
           return d
         }
         if (trend[d.key]) {
-          prevYValue = [...trend[d.key]]
+          prevYValue = {...trend[d.key]}
         } else {
           if(idx === 0) {
             if(compareDate(Object.keys(trend)[0], d.key)) {
@@ -469,9 +493,14 @@ export const getResultForOrganization = (organizationList, result) => {
           }
         }
         
+        let sum2 = 0
+        Object.keys(prevYValue).map(key => {
+          sum2 += prevYValue[key]
+        })
+
         newTrend.push({
           x: d.key,
-          y: arrayAverage(prevYValue) / 10,
+          y: sum2 / (10 * Object.keys(prevYValue).length),
         })
         return d;
       })

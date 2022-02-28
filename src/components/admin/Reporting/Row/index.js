@@ -37,7 +37,6 @@ const Row = ({
   const setOpen = () => {
     let temp = [...segments]
     temp.push({})
-    setSegments(temp)
     setCurrentProject({
       ...currentProject,
       segments: {
@@ -45,12 +44,6 @@ const Row = ({
         [filter] : temp
       }
     })
-  }
-
-  const setSelected = (items, setItems, idx = 0) => (d) => {
-    let temp = [...items];
-    temp[idx] = d
-    setItems(temp);
   }
 
   return (
@@ -66,10 +59,15 @@ const Row = ({
             <Select
               selected={segment.segmentName}
               setSelected={(value) => {
-                let temp = {...segment}
-                temp.segmentName = value
-                segments[idx] = temp
-                setSegments(segments)
+                let temp = [...segments]
+                temp[idx].segmentName = value
+                setCurrentProject({
+                  ...currentProject,
+                  segments: {
+                    ...currentProject.segments,
+                    [filter] : temp
+                  }
+                })
               }}
               items={list}
               className={styles.select}
@@ -81,43 +79,114 @@ const Row = ({
               selected={segment.permissionType}
               className={styles.select}
               items={['All Exception', 'Only']}
+              setSelected={(value) => {
+                let temp = [...segments]
+                temp[idx].permissionType = value
+                setCurrentProject({
+                  ...currentProject,
+                  segments: {
+                    ...currentProject.segments,
+                    [filter] : temp
+                  }
+                })
+              }}
             />
           </div>
           <div className={styles.input}>
             <label>Dashbaords</label>
-            {(segment.dashboards || []).map((dashboard, idx) =>
+            {(segment.dashboards || []).map((dashboard, index) =>
               <Select
                 key={`${idx}-${dashboard}`}
                 className={styles.select}
                 selected={dashboard}
-                onClose={() => console.log('close')}
+                onClose={() => {
+                  let temp = [...segments]
+                  delete temp[idx].dashboards[index]
+                  setCurrentProject({
+                    ...currentProject,
+                    segments: {
+                      ...currentProject.segments,
+                      [filter] : temp
+                    }
+                  })
+                }}
                 items={['Summary', 'Driver Analysis', 'Matrix', 'Key Themes', 'Advisor Insights']}
+                setSelected={(value) => {
+                  let temp = [...segments]
+                  temp[idx].dashboards[index] = value
+                  setCurrentProject({
+                    ...currentProject,
+                    segments: {
+                      ...currentProject.segments,
+                      [filter] : temp
+                    }
+                  })
+                }}
               />
             )}
-            <AddButton />
+            <AddButton
+             setOpen={() => {
+                let temp = [...segments]
+                if(temp[idx].dashboards) {
+                  temp[idx].dashboards.push('')
+                } else {
+                  let temp2 = ['']
+                  temp[idx].dashboards = temp2
+                }
+                setCurrentProject({
+                  ...currentProject,
+                  segments: {
+                    ...currentProject.segments,
+                    [filter] : temp
+                  }
+                })
+              }} 
+            />
           </div>
           <div className={styles.input}>
             <label>SH Group</label>
-            {(segment.shGroups || []).map((shGroup, idx) =>
+            {(segment.shGroups || []).map((shGroup, index) =>
                 <Select
                   key={`${idx}-${shGroup}`}
                   selected={shGroup}
                   className={styles.select}
                   onClose={() => console.log('close')}
                   items={list}
+                  setSelected={(value) => {
+                    let temp = [...segments]
+                    temp[idx].shGroups[index] = value
+                    setCurrentProject({
+                      ...currentProject,
+                      segments: {
+                        ...currentProject.segments,
+                        [filter] : temp
+                      }
+                    })
+                  }}
                 />
             )}
             <AddButton />
           </div>
           <div className={styles.input}>
             <label>Teams</label>
-            {(segment.teams || []).map((team, idx) =>
+            {(segment.teams || []).map((team, index) =>
                 <Select
                   className={styles.select}
                   key={`${idx}-${team}`}
                   onClose={() => console.log('close')}
                   selected={team}
                   items={list}
+                  setSelected={(value) => {
+                    let temp = [...segments]
+                    temp[idx].teams[index] = value
+                    setCurrentProject({
+                      ...currentProject,
+                      segments: {
+                        ...currentProject.segments,
+                        [filter] : temp
+                      }
+                    })
+                  }}
                 />
               )
             }
@@ -125,12 +194,23 @@ const Row = ({
           </div>
           <div className={styles.input}>
             <label>Organizations</label>
-            {(segment.organizations || []).map((organization, idx) =>
+            {(segment.organizations || []).map((organization, index) =>
                 <Select
                   className={styles.select}
                   key={`${idx}-${organization}`}
                   onClose={() => console.log('close')}
                   selected={organization}
+                  setSelected={(value) => {
+                    let temp = [...segments]
+                    temp[idx].organizations[index] = value
+                    setCurrentProject({
+                      ...currentProject,
+                      segments: {
+                        ...currentProject.segments,
+                        [filter] : temp
+                      }
+                    })
+                  }}
                 />
               )
             }
