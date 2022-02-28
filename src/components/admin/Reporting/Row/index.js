@@ -26,6 +26,7 @@ const Row = ({
       setList(teamList.map(d => d.name))
     } else {
       setFilter('organization')
+      setList([])
     }
     console.log('currentProject', currentProject)
     setSegments((currentProject.segments || {})[filter] || [])
@@ -36,6 +37,12 @@ const Row = ({
   const [list, setList] = useState([])
   const setOpen = () => {
     let temp = [...segments]
+    console.log(temp.length, list.length)
+    console.log(temp, list)
+    console.log(temp.length >= list.length)
+    if (temp.length >= list.length || (temp.length !== 0 && (!temp[temp.length - 1].segmentName || temp[temp.length - 1].segmentName === ''))) {
+      return;
+    }
     temp.push({})
     setCurrentProject({
       ...currentProject,
@@ -151,7 +158,7 @@ const Row = ({
                   selected={shGroup}
                   className={styles.select}
                   onClose={() => console.log('close')}
-                  items={list}
+                  items={shgroupList.map(d => d.name)}
                   setSelected={(value) => {
                     let temp = [...segments]
                     temp[idx].shGroups[index] = value
@@ -165,7 +172,24 @@ const Row = ({
                   }}
                 />
             )}
-            <AddButton />
+            <AddButton
+              setOpen={() => {
+                let temp = [...segments]
+                if(temp[idx].shGroups) {
+                  temp[idx].shGroups.push('')
+                } else {
+                  let temp2 = ['']
+                  temp[idx].shGroups = temp2
+                }
+                setCurrentProject({
+                  ...currentProject,
+                  segments: {
+                    ...currentProject.segments,
+                    [filter] : temp
+                  }
+                })
+              }} 
+            />
           </div>
           <div className={styles.input}>
             <label>Teams</label>
@@ -175,7 +199,7 @@ const Row = ({
                   key={`${idx}-${team}`}
                   onClose={() => console.log('close')}
                   selected={team}
-                  items={list}
+                  items={teamList.map(d => d.name)}
                   setSelected={(value) => {
                     let temp = [...segments]
                     temp[idx].teams[index] = value
@@ -190,7 +214,24 @@ const Row = ({
                 />
               )
             }
-            <AddButton />
+            <AddButton
+              setOpen={() => {
+                let temp = [...segments]
+                if(temp[idx].teams) {
+                  temp[idx].teams.push('')
+                } else {
+                  let temp2 = ['']
+                  temp[idx].teams = temp2
+                }
+                setCurrentProject({
+                  ...currentProject,
+                  segments: {
+                    ...currentProject.segments,
+                    [filter] : temp
+                  }
+                })
+              }}
+            />
           </div>
           <div className={styles.input}>
             <label>Organizations</label>
@@ -214,7 +255,24 @@ const Row = ({
                 />
               )
             }
-            <AddButton />
+            <AddButton
+              setOpen={() => {
+                let temp = [...segments]
+                if(temp[idx].organizations) {
+                  temp[idx].organizations.push('')
+                } else {
+                  let temp2 = ['']
+                  temp[idx].organizations = temp2
+                }
+                setCurrentProject({
+                  ...currentProject,
+                  segments: {
+                    ...currentProject.segments,
+                    [filter] : temp
+                  }
+                })
+              }}
+            />
           </div>
         </div>
       ))}
