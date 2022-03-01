@@ -143,6 +143,11 @@ const teamListAPI = (projectId = 0, surveyId = 0) => {
   return getClient(true).get(url);
 };
 
+const organizationListAPI = (surveyId = 0) => {
+  let url = `/organization/?format=json&survey=${surveyId}`;
+  return getClient(true).get(url);
+};
+
 const shgroupListAPI = (surveyId = 1) => {
   let url = "/shgroup/?format=json";
   if (parseInt(surveyId, 10) > 0) {
@@ -697,5 +702,6 @@ export {
   adminBulkArchiveUserAPI,
   deleteMoreInfoPageAPI,
   deleteQuestionAPI,
-  adminUploadImagesAPI
+  adminUploadImagesAPI,
+  organizationListAPI
 };

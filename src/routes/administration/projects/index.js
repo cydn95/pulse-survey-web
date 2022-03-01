@@ -22,6 +22,7 @@ import {
 import {
   shgroupList,
   teamList,
+  organizationList,
 } from 'Redux/actions'
 // import TopNav from "Containers/TopNav";
 // import ProjectCard from 'Components/admin/ProjectCard'
@@ -57,7 +58,8 @@ const Projects = ({
   setUserList,
   setQuestionListBlank,
   getShGroupList,
-  getTeamList
+  getTeamList,
+  getOrganizationList
 }) => {
   const [breadcrumb, setBreadcrumb] = useState('')
   const [editing, setEditing] = useState(-2)
@@ -69,9 +71,10 @@ const Projects = ({
   }, [user])
 
   useEffect(() => {
-    if(surveyId > 0) {
-      getShGroupList(surveyId);
+    if(currentProject.id) {
+      getShGroupList(currentProject.id);
       getTeamList(currentProject.project, currentProject.id);
+      getOrganizationList(currentProject.id)
     }
   }, [currentProject.id, currentProject.project])
 
@@ -283,5 +286,6 @@ export default connect(mapStateToProps, {
   setQuestionListBlank: adminSetQuestionListBlank,
   uploadImages: adminUploadImages,
   getTeamList: teamList,
+  getOrganizationList: organizationList,
   getShGroupList: shgroupList,
 })(Projects)

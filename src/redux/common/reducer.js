@@ -1,4 +1,6 @@
 import {
+  ORGANIZATION_LIST,
+  ORGANIZATION_LIST_SUCCESS,
   TEAM_LIST,
   TEAM_LIST_SUCCESS,
   SHGROUP_LIST,
@@ -25,6 +27,7 @@ import {
 import { SH_CATEGORY_TYPE } from "Constants/defaultValues";
 
 const INIT_STATE = {
+  organizationList: [],
   teamList: [],
   shgroupList: [],
   optionList: [],
@@ -39,6 +42,10 @@ const INIT_STATE = {
 
 export default (state = INIT_STATE, action) => {
   switch (action.type) {
+    case ORGANIZATION_LIST:
+      return { ...state };
+    case ORGANIZATION_LIST_SUCCESS:
+      return { ...state, organizationList: action.payload.data };
     case TEAM_LIST:
       return { ...state };
     case SET_TEAM_LIST:
