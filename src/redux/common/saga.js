@@ -2,6 +2,7 @@ import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import {
   userListAPI,
   teamListAPI,
+  organizationListAPI,
   shgroupListAPI,
   optionListAPI,
   driverListAPI,
@@ -14,6 +15,7 @@ import {
 } from "../../services/axios/api";
 
 import {
+  ORGANIZATION_LIST,
   TEAM_LIST,
   SHGROUP_LIST,
   OPTION_LIST,
@@ -28,6 +30,7 @@ import {
 import { defaultPassword } from "Constants/defaultValues";
 
 import {
+  organizationListSuccess,
   teamListSuccess,
   shgroupListSuccess,
   optionListSuccess,
@@ -37,6 +40,24 @@ import {
   stakeholderListSuccess,
   shCategoryListSuccess,
 } from "./actions";
+
+const getOrganizationListAysnc = async (surveyId) =>
+  await organizationListAPI(surveyId)
+    .then((data) => data)
+    .catch((error) => error);
+
+function* getOrganizationList({payload}) {
+  try {
+    const {surveyId} = payload;
+
+    const result = yield call(getOrganizationListAysnc, surveyId);
+    if (result.status === 200) {
+      yield put(organizationListSuccess(result.data));
+    }
+  } catch(error) {
+    console.log('error', error)
+  }
+}
 
 const getTeamListAysnc = async (projectId, surveyId) =>
   await teamListAPI(projectId, surveyId)
@@ -348,6 +369,10 @@ function* updateStakeholder({ payload }) {
   }
 }
 
+export function* watchOrganizationList() {
+  yield takeEvery(ORGANIZATION_LIST, getOrganizationList);
+}
+
 export function* watchTeamList() {
   yield takeEvery(TEAM_LIST, getTeamList);
 }
@@ -386,6 +411,7 @@ export function* watchUpdateStakeholder() {
 
 export default function* rootSaga() {
   yield all([
+    fork(watchOrganizationList),
     fork(watchTeamList),
     fork(watchShgroupList),
     fork(watchDriverList),

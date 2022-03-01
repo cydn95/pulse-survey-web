@@ -1,4 +1,6 @@
 import {
+  ORGANIZATION_LIST,
+  ORGANIZATION_LIST_SUCCESS,
   TEAM_LIST,
   TEAM_LIST_SUCCESS,
   SHGROUP_LIST,
@@ -23,6 +25,16 @@ import {
   CLEAR_COMMON,
   SET_TEAM_LIST,
 } from "Constants/actionTypes";
+
+export const organizationList = (surveyId = 0) => ({
+  type: ORGANIZATION_LIST,
+  payload: { surveyId },
+});
+
+export const organizationListSuccess = (data) => ({
+  type: ORGANIZATION_LIST_SUCCESS,
+  payload: { data },
+});
 
 export const teamList = (projectId = 0, surveyId = 0) => ({
   type: TEAM_LIST,

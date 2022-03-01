@@ -14,6 +14,7 @@ const Row = ({
   type, 
   shgroupList, 
   teamList,
+  organizationList,
   currentProject,
   setCurrentProject
 }) => {
@@ -26,7 +27,7 @@ const Row = ({
       setList(teamList.map(d => d.name))
     } else {
       setFilter('organization')
-      setList([])
+      setList(organizationList.map(d => d.name))
     }
     console.log('currentProject', currentProject)
     setSegments((currentProject.segments || {})[filter] || [])
@@ -238,6 +239,7 @@ const Row = ({
             {(segment.organizations || []).map((organization, index) =>
                 <Select
                   className={styles.select}
+                  items={organizationList.map(d => d.name)}
                   key={`${idx}-${organization}`}
                   onClose={() => console.log('close')}
                   selected={organization}
@@ -286,11 +288,12 @@ const Row = ({
 
 const mapStateToProps = ({ admin, common }) => {
   const { currentProject } = admin
-  const { teamList, shgroupList } = common;
+  const { teamList, shgroupList, organizationList } = common;
   return {
     currentProject,
     shgroupList,
-    teamList
+    teamList,
+    organizationList
   }
 }
 
