@@ -109,7 +109,7 @@ const Row = ({
                 selected={dashboard}
                 onClose={() => {
                   let temp = [...segments]
-                  delete temp[idx].dashboards[index]
+                  temp[idx] = {...segment, dashboards: segment.dashboards.filter((d, i) => i !== index)}
                   setCurrentProject({
                     ...currentProject,
                     segments: {
@@ -118,7 +118,8 @@ const Row = ({
                     }
                   })
                 }}
-                items={['Summary', 'Driver Analysis', 'Matrix', 'Key Themes', 'Advisor Insights']}
+                items={['Summary', 'Driver Analysis', 'Matrix', 'Key Themes', 'Advisor Insights'].filter(d => !segment.dashboards.includes(d))}
+                org_items={['Summary', 'Driver Analysis', 'Matrix', 'Key Themes', 'Advisor Insights']}
                 setSelected={(value) => {
                   let temp = [...segments]
                   temp[idx].dashboards[index] = value
@@ -132,7 +133,7 @@ const Row = ({
                 }}
               />
             )}
-            <AddButton
+            {(segment.dashboards || []).length !== 5 && <AddButton
              setOpen={() => {
                 let temp = [...segments]
                 if(temp[idx].dashboards) {
@@ -149,7 +150,7 @@ const Row = ({
                   }
                 })
               }} 
-            />
+            />}
           </div>
           <div className={styles.input}>
             <label>SH Group</label>
@@ -158,8 +159,20 @@ const Row = ({
                   key={`${idx}-${shGroup}`}
                   selected={shGroup}
                   className={styles.select}
-                  onClose={() => console.log('close')}
-                  items={shgroupList.map(d => d.name)}
+                  onClose={() => {
+                    let temp = [...segments]
+                    temp[idx] = {...segment, shGroups: segment.shGroups.filter((d, i) => i !== index)}
+                    setCurrentProject({
+                      ...currentProject,
+                      segments: {
+                        ...currentProject.segments,
+                        [filter] : temp
+                      }
+                    })
+                  }}
+                  items={shgroupList.filter(d => !segment.shGroups.includes(d.id))}
+                  org_items={shgroupList}
+                  field_name="SHGroupName"
                   setSelected={(value) => {
                     let temp = [...segments]
                     temp[idx].shGroups[index] = value
@@ -173,7 +186,7 @@ const Row = ({
                   }}
                 />
             )}
-            <AddButton
+            {(segment.shGroups || []).length !== shgroupList.length && <AddButton
               setOpen={() => {
                 let temp = [...segments]
                 if(temp[idx].shGroups) {
@@ -190,7 +203,7 @@ const Row = ({
                   }
                 })
               }} 
-            />
+            />}
           </div>
           <div className={styles.input}>
             <label>Teams</label>
@@ -198,9 +211,21 @@ const Row = ({
                 <Select
                   className={styles.select}
                   key={`${idx}-${team}`}
-                  onClose={() => console.log('close')}
+                  onClose={() => {
+                    let temp = [...segments]
+                    temp[idx] = {...segment, teams: segment.teams.filter((d, i) => i !== index)}
+                    setCurrentProject({
+                      ...currentProject,
+                      segments: {
+                        ...currentProject.segments,
+                        [filter] : temp
+                      }
+                    })
+                  }}
                   selected={team}
-                  items={teamList.map(d => d.name)}
+                  items={teamList.filter(d => !segment.teams.includes(d.id))}
+                  org_items={teamList}
+                  field_name="name"
                   setSelected={(value) => {
                     let temp = [...segments]
                     temp[idx].teams[index] = value
@@ -215,7 +240,7 @@ const Row = ({
                 />
               )
             }
-            <AddButton
+            {(segment.teams || []).length !== teamList.length && <AddButton
               setOpen={() => {
                 let temp = [...segments]
                 if(temp[idx].teams) {
@@ -232,17 +257,29 @@ const Row = ({
                   }
                 })
               }}
-            />
+            />}
           </div>
           <div className={styles.input}>
             <label>Organizations</label>
             {(segment.organizations || []).map((organization, index) =>
                 <Select
                   className={styles.select}
-                  items={organizationList.map(d => d.name)}
+                  items={organizationList.filter(d => !segment.organizations.includes(d.id))}
+                  org_items={organizationList}
                   key={`${idx}-${organization}`}
-                  onClose={() => console.log('close')}
+                  onClose={() => {
+                    let temp = [...segments]
+                    temp[idx] = {...segment, organizations: segment.organizations.filter((d, i) => i !== index)}
+                    setCurrentProject({
+                      ...currentProject,
+                      segments: {
+                        ...currentProject.segments,
+                        [filter] : [...temp]
+                      }
+                    })
+                  }}
                   selected={organization}
+                  field_name="name"
                   setSelected={(value) => {
                     let temp = [...segments]
                     temp[idx].organizations[index] = value
@@ -257,7 +294,7 @@ const Row = ({
                 />
               )
             }
-            <AddButton
+            {(segment.organizations || []).length !== organizationList.length && <AddButton
               setOpen={() => {
                 let temp = [...segments]
                 if(temp[idx].organizations) {
@@ -274,7 +311,7 @@ const Row = ({
                   }
                 })
               }}
-            />
+            />}
           </div>
         </div>
       ))}
