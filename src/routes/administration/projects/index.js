@@ -167,6 +167,7 @@ const Projects = ({
           return temp
         }),
       },
+      segments: currentProject.segments
     }
     
     const create = {

@@ -21,13 +21,13 @@ const Row = ({
   useEffect(() => {
     if (type === 0) {
       setFilter('shgroup')
-      setList(shgroupList.map(d => d.SHGroupName))
+      setList(shgroupList)
     } else if (type === 1) {
       setFilter('team')
-      setList(teamList.map(d => d.name))
+      setList(teamList)
     } else {
       setFilter('organization')
-      setList(organizationList.map(d => d.name))
+      setList(organizationList)
     }
     console.log('currentProject', currentProject)
     setSegments((currentProject.segments || {})[filter] || [])
@@ -66,6 +66,7 @@ const Row = ({
             <label>Segment name</label>
             <Select
               selected={segment.segmentName}
+              field_name={type===0?'SHGroupName':'name'}
               setSelected={(value) => {
                 let temp = [...segments]
                 temp[idx].segmentName = value
