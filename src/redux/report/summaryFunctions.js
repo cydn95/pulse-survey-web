@@ -99,6 +99,7 @@ export const getOverallTrends = (resData, shGroupList, projectId) => {
     for (let i = 0; i < length - index; i++) {
       temp[handledData[i].user] = handledData[i].intValue
     }
+    console.log('temp', temp)
     Object.keys(temp).map(key => {
       r.value.push(temp[key])
       return key
