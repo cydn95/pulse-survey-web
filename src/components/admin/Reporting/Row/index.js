@@ -20,20 +20,20 @@ const Row = ({
 }) => {
   useEffect(() => {
     if (type === 0) {
-      setFilter('shgroup')
+      setFilter('shgroups')
       setList(shgroupList)
     } else if (type === 1) {
-      setFilter('team')
+      setFilter('teams')
       setList(teamList)
     } else {
-      setFilter('organization')
+      setFilter('organizations')
       setList(organizationList)
     }
     console.log('currentProject', currentProject)
     setSegments((currentProject.segments || {})[filter] || [])
   }, [type, currentProject, setCurrentProject])
 
-  const [filter, setFilter] = useState('shgroup')
+  const [filter, setFilter] = useState('shgroups')
   const [segments, setSegments] = useState([])
   const [list, setList] = useState([])
   const setOpen = () => {
