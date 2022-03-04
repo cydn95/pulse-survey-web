@@ -99,17 +99,18 @@ export const getOverallTrends = (resData, shGroupList, projectId) => {
     for (let i = 0; i < length - index; i++) {
       temp[handledData[i].user] = handledData[i].intValue
     }
-    console.log('temp', temp)
     Object.keys(temp).map(key => {
       r.value.push(temp[key])
       return key
     })
+    console.log('r', r)
     return r
   })
-  reverseKeys.map(r => {
+  let prevValue
+  reverseKeys.map((r, idx) => {
     overallTrendsRet.push({
       x: r.key,
-      y: Math.round(r.value.length ? r.value.reduce((pre, crr) => pre + crr, 0) / r.value.length : 0).toFixed(2),
+      y: Math.round(r.value.length ? r.value.reduce((pre, crr) => pre + crr, 0) / r.value.length : (idx === 0 ? 0 : overallTrendsRet[idx - 1].y)).toFixed(2),
     })
     return r;
   })
