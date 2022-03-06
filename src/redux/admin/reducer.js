@@ -13,6 +13,8 @@ import {
   ADMIN_AO_QUESTION_LIST_SUCCESS,
   ADMIN_AM_QUESTION_LIST,
   ADMIN_AM_QUESTION_LIST_SUCCESS,
+  ADMIN_REPORT_ACCESS_LIST,
+  ADMIN_REPORT_ACCESS_LIST_SUCCESS,
   ADMIN_SET_QUESTION_LIST,
   ADMIN_SET_QUESTION_LIST_BY_FIELD,
   ADMIN_SURVEY_SETUP,
@@ -125,6 +127,17 @@ export default (state = INIT_STATE, action) => {
       return {
         ...state,
         amQuestionList: action.payload.data,
+        loading: false,
+      }
+    case ADMIN_REPORT_ACCESS_LIST:
+      return {
+        ...state,
+        loading: true
+      }
+    case ADMIN_REPORT_ACCESS_LIST_SUCCESS:
+      return {
+        ...state,
+        currentProject: {...state.currentProject, segments: action.payload.data[0]},
         loading: false,
       }
     case ADMIN_SET_QUESTION_LIST:

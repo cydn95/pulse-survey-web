@@ -4,10 +4,11 @@ import {
   adminUserList,
   adminAOQuestionList,
   adminAMQuestionList,
+  adminReportAccessList,
   adminSurveySetup,
   adminSurveyConfiguration,
   adminGetDriverList,
-  adminSetProjectField
+  adminSetProjectField,
 } from 'Redux/actions'
 import Loading from 'Components/Loading'
 // import ProjectSetup from '../ProjectSetup'
@@ -34,6 +35,7 @@ const ProjectEdit = ({
   surveyId,
   getAOQuestionList,
   getAMQuestionList,
+  getAdminReportAccessList,
   getAdminSurveySetup,
   currentProject,
   getAdminSurveyConfiguration,
@@ -52,6 +54,7 @@ const ProjectEdit = ({
       getAMQuestionList(surveyId)
       getAdminSurveySetup(surveyId)
       getAdminSurveyConfiguration(surveyId)
+      getAdminReportAccessList(surveyId)
     }
   }, [surveyId])
 
@@ -97,6 +100,7 @@ export default connect(mapStateToProps, {
   getDriverList: adminGetDriverList,
   getAOQuestionList: adminAOQuestionList,
   getAMQuestionList: adminAMQuestionList,
+  getAdminReportAccessList: adminReportAccessList,
   getAdminSurveySetup: adminSurveySetup,
   setProjectField: adminSetProjectField,
   getAdminSurveyConfiguration: adminSurveyConfiguration,

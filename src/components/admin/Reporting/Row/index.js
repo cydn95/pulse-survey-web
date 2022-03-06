@@ -22,16 +22,18 @@ const Row = ({
     if (type === 0) {
       setFilter('shgroups')
       setList(shgroupList)
+      setSegments((currentProject.segments || {})['shgroups'] || [])
     } else if (type === 1) {
       setFilter('teams')
       setList(teamList)
+      setSegments((currentProject.segments || {})['teams'] || [])
     } else {
       setFilter('organizations')
       setList(organizationList)
+      setSegments((currentProject.segments || {})['organizations'] || [])
     }
     console.log('currentProject', currentProject)
-    setSegments((currentProject.segments || {})[filter] || [])
-  }, [type, currentProject, setCurrentProject])
+  }, [type, currentProject])
 
   const [filter, setFilter] = useState('shgroups')
   const [segments, setSegments] = useState([])

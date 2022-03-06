@@ -4,6 +4,7 @@ import {
   ADMIN_PROJECT_LIST,
   ADMIN_ACTIVE_PROJECT_REQUEST,
   ADMIN_AM_QUESTION_LIST,
+  ADMIN_REPORT_ACCESS_LIST,
   ADMIN_AO_QUESTION_LIST,
   ADMIN_SURVEY_SETUP,
   ADMIN_SURVEY_CONFIGURATION,
@@ -22,6 +23,7 @@ import {
   adminUserListFailure,
   adminAMQuestionListSuccess,
   adminAOQuestionListSuccess,
+  adminReportAccessListSuccess,
   adminSurveySetupSuccess,
   adminSurveyConfigurationSuccess,
   deleteMoreInfoPage,
@@ -46,6 +48,7 @@ import {
   driverListAPI,
   deleteQuestionAPI,
   adminUploadImagesAPI,
+  adminReportAccessListAPI,
 } from '../../services/axios/api'
 
 const getAdminUserListAsync = async (surveyId) =>
@@ -73,8 +76,13 @@ const putAdminProjectListAsync = async (surveyId, data) =>
 const getAdminAOQuestionListAsync = async (surveyId) =>
   await adminAOQuestionListAPI(surveyId)
     .then(data => data)
+
 const getAdminAMQuestionListAsync = async (surveyId) =>
   await adminAMQuestionListAPI(surveyId)
+    .then(data => data)
+    
+const getAdminReportAccessListAsync = async (surveyId) =>
+  await adminReportAccessListAPI(surveyId)
     .then(data => data)
 
 const getAdminSurveySetupAsync = async (surveyId) =>
@@ -221,6 +229,18 @@ function* adminAOQuestionList({ payload }) {
   }
 }
 
+function* adminReportAccessList({ payload }) {
+  try {
+    const { surveyId } = payload
+    const result = yield call(getAdminReportAccessListAsync, surveyId)
+    if (result.status === 200) {
+      yield put(adminReportAccessListSuccess(result.data))
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 function* adminSurveySetup({ payload }) {
   try {
     const { surveyId } = payload
@@ -347,6 +367,10 @@ export function* watchAdminAOQuestionList() {
   yield takeEvery(ADMIN_AO_QUESTION_LIST, adminAOQuestionList)
 }
 
+export function* watchAdminReportAccessList() {
+  yield takeEvery(ADMIN_REPORT_ACCESS_LIST, adminReportAccessList)
+}
+
 export function* watchAdminSurveySetup() {
   yield takeEvery(ADMIN_SURVEY_SETUP, adminSurveySetup)
 }
@@ -388,6 +412,7 @@ export default function* rootSaga() {
     fork(watchAdminSetActive),
     fork(watchAdminAMQuestionList),
     fork(watchAdminAOQuestionList),
+    fork(watchAdminReportAccessList),
     fork(watchAdminSurveySetup),
     fork(watchAdminSurveyConfiguration),
     fork(watchAdminSendBulkInvitation),
