@@ -586,6 +586,10 @@ const adminAMQuestionListAPI = (surveyId) => {
   return getClient(true).get(`/adminamquestion/?survey=${surveyId}`);
 };
 
+const adminReportAccessListAPI = (surveyId) => {
+  return getClient(true).get(`/adminreportacess/?survey=${surveyId}`);
+};
+
 const postAdminSurveyAddAPI = (data) => {
   console.log('data', data)
   return getClient(true).post("/adminsurveyadd/", data, {
@@ -696,6 +700,7 @@ export {
   putAdminProjectListAPI,
   adminAOQuestionListAPI,
   adminAMQuestionListAPI,
+  adminReportAccessListAPI,
   adminSurveySetupAPI,
   adminSurveyConfigurationAPI,
   adminBulkInvitationSendAPI,
