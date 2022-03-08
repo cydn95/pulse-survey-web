@@ -163,6 +163,7 @@ function* logout({ payload }) {
     localStorage.removeItem("surveyTitle");
     localStorage.removeItem("accessToken");
     localStorage.removeItem("surveyUserId");
+    localStorage.removeItem("shGroupId");
     localStorage.removeItem("surveyId");
     localStorage.removeItem("userId");
     // yield call(logoutUser, history);
@@ -209,17 +210,20 @@ function* setSurveyID({ payload }) {
   try {
     if (surveyId > 0) {
       const result = yield call(setSurveyIDAsync, userId, surveyId);
-
+      
       if (result.data && result.data.length > 0) {
+        console.log('result.data', result.data)
         localStorage.setItem("surveyId", surveyId);
         localStorage.setItem("surveyTitle", result.data[0].survey.surveyTitle);
         localStorage.setItem("surveyUserId", result.data[0].id);
+        localStorage.setItem("shGroupId", result.data[0].shGroup.id);
 
         yield put(
           setSurveyIDSuccess(
             surveyId,
             result.data[0].survey.surveyTitle,
-            result.data[0].id
+            result.data[0].id,
+            result.data[0].shGroup.id,
           )
         );
 
@@ -231,6 +235,7 @@ function* setSurveyID({ payload }) {
       localStorage.setItem("surveyId", 0);
       localStorage.setItem("surveyTitle", "");
       localStorage.setItem("surveyUserId", 0);
+      localStorage.setItem("shGroupId", 0);
 
       yield put(setSurveyIDSuccess(0, "", 0));
     }

@@ -33,6 +33,7 @@ import {
   tooltipTourContent,
   pageContent,
   checkDashboard,
+  adminReportAccessList
 } from "Redux/actions";
 
 import styles from "./styles.scss";
@@ -124,11 +125,11 @@ class Sidebar extends Component {
       actionSetProjectID,
       actionSetSurveyID,
       actionCheckDashboard,
+      getReportAccessList,
       user,
     } = props;
 
     // const { pageContent } = this.props;
-
     const oldSurveyId = this.props.surveyId ? this.props.surveyId : "";
     const oldSurveyUserId = this.props.surveyUserId
       ? this.props.surveyUserId
@@ -174,6 +175,7 @@ class Sidebar extends Component {
         run: false,
       });
     }
+    console.log('surveyId', surveyId)
 
     if (
       surveyId &&
@@ -181,6 +183,7 @@ class Sidebar extends Component {
       surveyId.toString() !== oldSurveyId.toString()
     ) {
       getPageContent(surveyId);
+      getReportAccessList(surveyId)
     }
 
     if (tooltipContent.menu && tooltipContent.menu.length > 0) {
@@ -344,7 +347,10 @@ class Sidebar extends Component {
       guide,
       projectId,
       surveyId,
-      isProjectManager
+      isProjectManager,
+      segments,
+      profile,
+      shGroupId,
     } = this.props;
     const { run, steps } = this.state;
 
@@ -415,6 +421,47 @@ class Sidebar extends Component {
                     {MENU_REPORT.map((menu) => {
                       if (menu === "Matrix" && this.state.isAdmin === false) {
                         return null;
+                      }
+
+                      console.log('segments', segments)
+
+                      if(segments) {
+                        if (segments.shgroups.length > 0) {
+                          let data = (segments.shgroups.filter(shgroup => shgroup.segmentName === shGroupId)[0] || {})
+                          if (data.permissionType === 'All Exception') {
+                            if (data.dashboards.includes(menu)) {
+                              return null;
+                            }
+                          } else if (data.permissionType === 'Only') {
+                            if (!data.dashboards.includes(menu)) {
+                              return null;
+                            }
+                          }
+                        }
+                        if (segments.teams.length > 0) {
+                          let data = (segments.teams.filter(team => team.segmentName === profile.team.id)[0] || {})
+                          if (data.permissionType === 'All Exception') {
+                            if (data.dashboards.includes(menu)) {
+                              return null;
+                            }
+                          } else if (data.permissionType === 'Only') {
+                            if (!data.dashboards.includes(menu)) {
+                              return null;
+                            }
+                          }
+                        }
+                        if (segments.organizations.length > 0) {
+                          let data = (segments.organizations.filter(org => org.segmentName === profile.organization.id)[0] || {})
+                          if (data.permissionType === 'All Exception') {
+                            if (data.dashboards.includes(menu)) {
+                              return null;
+                            }
+                          } else if (data.permissionType === 'Only') {
+                            if (!data.dashboards.includes(menu)) {
+                              return null;
+                            }
+                          }
+                        }
                       }
 
                       return (
@@ -559,24 +606,28 @@ class Sidebar extends Component {
   }
 }
 
-const mapStateToProps = ({ menu, settings, authUser, tour, account }) => {
+const mapStateToProps = ({ menu, settings, authUser, tour, account, admin }) => {
   const { mainMenuClassName, subMenuClassName } = menu;
   const { projectList } = settings;
-  const { user, surveyId, surveyUserId, projectId } = authUser;
+  const { user, surveyId, surveyUserId, projectId, shGroupId } = authUser;
   const { pageContent, tooltipContent } = tour;
   const { profile } = account;
+  const { currentProject } = admin
 
   return {
     user,
     surveyId,
     surveyUserId,
+    shGroupId,
     projectId,
     projectList,
     mainMenuClassName,
     subMenuClassName,
     guide: profile.guide,
+    profile,
     pageContent,
     tooltipContent,
+    segments: currentProject.segments,
     // isSuperUser: profile.is_superuser,
     isProjectManager: projectList.filter(p => p.projectAdmin).length > 0
   };
@@ -595,5 +646,6 @@ export default withRouter(
     getPageContent: pageContent,
     getTooltipTourContent: tooltipTourContent,
     actionCheckDashboard: checkDashboard,
+    getReportAccessList: adminReportAccessList
   })(Sidebar)
 );

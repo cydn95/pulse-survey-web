@@ -26,6 +26,7 @@ const INIT_STATE = {
   projectId: localStorage.getItem("projectId"),
   projectTitle: localStorage.getItem("projectTitle"),
   surveyId: localStorage.getItem("surveyId"),
+  shGroupId: localStorage.getItem("shGroupId"),
   surveyTitle: localStorage.getItem("surveyTitle"),
   surveyUserId: localStorage.getItem("surveyUserId"),
   loading: false,
@@ -47,6 +48,7 @@ export default (state = INIT_STATE, action) => {
         surveyId: action.payload.surveyId,
         surveyTitle: action.payload.surveyTitle,
         surveyUserId: action.payload.surveyUserId,
+        shGroupId: action.payload.shGroupId,
       };
     case LOGIN_USER:
       return { ...state, loading: true };
