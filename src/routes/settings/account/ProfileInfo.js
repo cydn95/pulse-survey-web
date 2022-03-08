@@ -18,8 +18,8 @@ const ProfileInfo = ({ profile, onChangeProfile }) => {
     setFirstName(profile ? profile.firstName : "");
     setLastName(profile ? profile.lastName : "");
     setEmail(profile ? profile.email : "");
-    setTeam(profile ? profile.team : "");
-    setOrganization(profile ? profile.organization : "");
+    setTeam(profile ? profile.team.name : "");
+    setOrganization(profile ? profile.organization.name : {});
   }, [profile]);
 
   const handleReset = (e) => {
@@ -27,8 +27,8 @@ const ProfileInfo = ({ profile, onChangeProfile }) => {
     setFirstName(profile ? profile.firstName : "");
     setLastName(profile ? profile.lastName : "");
     setEmail(profile ? profile.email : "");
-    setTeam(profile ? profile.team : "");
-    setOrganization(profile ? profile.organization : "");
+    setTeam(profile ? profile.team.name : "");
+    setOrganization(profile ? profile.organization.name : "");
   };
 
   const handleSubmit = () => {

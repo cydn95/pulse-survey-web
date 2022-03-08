@@ -47,15 +47,15 @@ function* getProfile({ payload }) {
     }
 
     const result = yield call(getProfileAsync, userId);
-
+    // console.log('result', result)
     if (result.data) {
       const profile = {
         id: result.data.id,
         firstName: result.data.first_name,
         lastName: result.data.last_name,
         email: result.data.email,
-        team: result.data.userteam ? result.data.userteam.name : "",
-        organization: result.data.organization.name,
+        team: result.data.userteam ? result.data.userteam : {},
+        organization: result.data.organization,
         avatarId: result.data.avatar ? result.data.avatar.id : 0,
         avatar: result.data.avatar ? result.data.avatar.name : "",
         guide: result.data.guide,
