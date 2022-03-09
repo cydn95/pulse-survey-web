@@ -1,6 +1,6 @@
 export const compareDate = (str1, str2) => {
-  let date1 = Date.parse(str1.split(' ')[0] + "1, " + str1.split(' ')[0])
-  let date2 = Date.parse(str2.split(' ')[0] + "1, " + str2.split(' ')[0])
+  let date1 = Date.parse(str1.split(' ')[0] + "1, " + str1.split(' ')[1])
+  let date2 = Date.parse(str2.split(' ')[0] + "1, " + str2.split(' ')[1])
   return date1 > date2
 }
 

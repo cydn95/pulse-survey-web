@@ -101,6 +101,7 @@ class Sidebar extends Component {
       user,
       getTooltipTourContent,
       getPageContent,
+      getReportAccessList,
       surveyId,
     } = this.props;
 
@@ -109,6 +110,7 @@ class Sidebar extends Component {
 
     if (surveyId) {
       getPageContent(surveyId);
+      getReportAccessList(surveyId)
     }
   }
 
@@ -128,9 +130,8 @@ class Sidebar extends Component {
       getReportAccessList,
       user,
     } = props;
-
     // const { pageContent } = this.props;
-    const oldSurveyId = this.props.surveyId ? this.props.surveyId : "";
+    const oldSurveyId = this.props.surveyId ? this.props.surveyId : ""
     const oldSurveyUserId = this.props.surveyUserId
       ? this.props.surveyUserId
       : "";
@@ -175,7 +176,6 @@ class Sidebar extends Component {
         run: false,
       });
     }
-    console.log('surveyId', surveyId)
 
     if (
       surveyId &&
@@ -290,7 +290,8 @@ class Sidebar extends Component {
 
     this.setState({
       subMenuOpen: false,
-      subMenuSelected: projectId
+      subMenuSelected: projectId,
+      oldSurveyId: this.props.surveyId
     });
 
     const { getSurveyListByProject } = this.props;
@@ -423,11 +424,9 @@ class Sidebar extends Component {
                         return null;
                       }
 
-                      console.log('segments', segments)
-
                       if(segments) {
                         if (segments.shgroups.length > 0) {
-                          let data = (segments.shgroups.filter(shgroup => shgroup.segmentName === shGroupId)[0] || {})
+                          let data = (segments.shgroups.filter(shgroup => shgroup.segmentName.toString() === shGroupId.toString())[0] || {})
                           if (data.permissionType === 'All Exception') {
                             if (data.dashboards.includes(menu)) {
                               return null;
