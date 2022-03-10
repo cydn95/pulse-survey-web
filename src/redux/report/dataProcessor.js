@@ -115,14 +115,14 @@ export const getResultForSHGroup = (shGroupList, result) => {
         // });
       }
 
-      console.log('step1')
+      // console.log('step1')
 
       Object.keys(trend).map((d, idx, self) => {
         for (let i=0; i <= idx; i++) {
           trend[d] = {...trend[d], ...trend[self[i]]}
         }
       })
-      console.log('step2')
+      // console.log('step2')
 
       const newTrend = [];
       const currentYear = getCurrentYear();
@@ -143,25 +143,25 @@ export const getResultForSHGroup = (shGroupList, result) => {
           value: 0,
         });
       }
-      console.log('step3', trend)
+      // console.log('step3', trend)
       
       const reverseKeys = [...keys.reverse()];
-      console.log('step3', reverseKeys)
+      // console.log('step3', reverseKeys)
       let prevYValue = {};
       reverseKeys.map((d, idx) => {
         if(Object.keys(trend).length === 0) {
           return d
         }
-        console.log('step4-0', d.key)
+        // console.log('step4-0', d.key)
         if (trend[d.key]) {
           prevYValue = {...trend[d.key]}
         } else {
           if(idx === 0) {
-            console.log('step4-1')
+            // console.log('step4-1')
             if(compareDate(Object.keys(trend)[0], d.key)) {
               return d
             }
-            console.log('step4-2')
+            // console.log('step4-2')
             prevYValue = getPrevMonthData(trend, d.key)
           }
         }
@@ -178,7 +178,7 @@ export const getResultForSHGroup = (shGroupList, result) => {
         return d;
       })
 
-      console.log('step5')
+      // console.log('step5')
 
 
       // Object.keys(trend).forEach((t, index) => {

@@ -81,7 +81,7 @@ const getAdminAMQuestionListAsync = async (surveyId) =>
   await adminAMQuestionListAPI(surveyId)
     .then(data => data)
     
-const getAdminReportAccessListAsync = async (surveyId) =>
+export const getAdminReportAccessListAsync = async (surveyId) =>
   await adminReportAccessListAPI(surveyId)
     .then(data => data)
 
@@ -194,13 +194,10 @@ function* adminUpdateSurvey({ payload }) {
       ...data,
       survey: surveyId
     }
-    console.log("heehe", request)
     const result = yield call(adminUpdateSurveyAsync, request)
-    console.log('result', result)
     callback(true)
   } catch (error) {
     const { callback } = payload
-    console.log('error', error)
     callback(false)
   }
 }

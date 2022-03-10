@@ -522,7 +522,7 @@ const UserAdministration = ({
                       id: admin.id,
                       user: admin.user
                     },
-                    sendInvite: newUser.sendInvite && false
+                    sendInvite: newUser.sendInvite || false
                   })
                 }
               }}
