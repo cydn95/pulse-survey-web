@@ -387,8 +387,8 @@ export const getAmQuestionCntAPI = (
   );
 };
 
-export const getTotalStakeholderCntAPI = (surveyId) => {
-  return getClient(true).get(`/totalshcnt/?survey=${surveyId}`);
+export const getTotalStakeholderCntAPI = (surveyId, shGroupId, teamId, orgId) => {
+  return getClient(true).get(`/totalshcnt/?survey=${surveyId}&shGroup=${shGroupId}&team=${teamId}&org=${orgId}`);
 };
 
 export const getAoResponseReportAPI = (

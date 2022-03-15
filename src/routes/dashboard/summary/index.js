@@ -49,6 +49,9 @@ const ReportSummary = ({
   actionParticipation,
   actionFeedbackSummary,
   status,
+  shGroupId,
+  segments,
+  profile
 }) => {
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [filter, setFilter] = useState(FILTER_SHGROUP);
@@ -98,11 +101,40 @@ const ReportSummary = ({
     overallTrendKey,
   ) => {
     setFeedbackSummaryLoading(false);
-    const feedbackSummaryRet = getFeedbackSummaryByShGroup(feedbackSummaryResultData,);
+    let temp = [...feedbackSummaryResultData]
+    console.log('temp', temp)
+    if(segments) {
+      if ((segments.shgroups || []).length > 0) {
+        let data = ((segments.shgroups || []).filter(shgroup => shgroup.segmentName.toString() === shGroupId.toString())[0] || {})
+        if (data.permissionType === 'All Exception') {
+          temp = temp.filter(q => !(data.shGroups || []).includes((q.subProjectUser.shGroup || {}).id) && !(data.teams || []).includes((q.subProjectUser.team || {}).name) && !(data.organizations || []).includes(q.subProjectUser.projectOrganization))
+        } else if (data.permissionType === 'Only') {
+          temp = temp.filter(q => (data.shGroups || []).includes((q.subProjectUser.shGroup || {}).id) && (data.teams || []).includes((q.subProjectUser.team || {}).name) && (data.organizations || []).includes(q.subProjectUser.projectOrganization))
+        }
+      }
+      if ((segments.teams || []).length > 0) {
+        let data = ((segments.teams || []).filter(team => team.segmentName === profile.team.name)[0] || {})
+        if (data.permissionType === 'All Exception') {
+          temp = temp.filter(q => !(data.shGroups || []).includes((q.subProjectUser.shGroup || {}).id) && !(data.teams || []).includes((q.subProjectUser.team || {}).name) && !(data.organizations || []).includes(q.subProjectUser.projectOrganization))
+        } else if (data.permissionType === 'Only') {
+          temp = temp.filter(q => (data.shGroups || []).includes((q.subProjectUser.shGroup || {}).id) && (data.teams || []).includes((q.subProjectUser.team || {}).name) && (data.organizations || []).includes(q.subProjectUser.projectOrganization))
+        }
+      }
+      if ((segments.organizations || []).length > 0) {
+        let data = ((segments.organizations || []).filter(org => org.segmentName === profile.organization.name)[0] || {})
+        if (data.permissionType === 'All Exception') {
+          temp = temp.filter(q => !(data.shGroups || [ ]).includes((q.subProjectUser.shGroup || {}).id) && !(data.teams || []).includes((q.subProjectUser.team || {}).name) && !(data.organizations || []).includes(q.subProjectUser.projectOrganization))
+        } else if (data.permissionType === 'Only') {
+          temp = temp.filter(q => (data.shGroups || []).includes((q.subProjectUser.shGroup || {}).id) && (data.teams || []).includes((q.subProjectUser.team || {}).name) && (data.organizations || []).includes(q.subProjectUser.projectOrganization))
+        }
+      }
+    }
+    console.log('temp', temp)
+    const feedbackSummaryRet = getFeedbackSummaryByShGroup(temp,);
     // console.log('overallTrendRet', overallTrendRet)
     // console.log('overallTrendKey', overallTrendKey)
     // setOverallSentiment(Math.round(overallTrendRet.reduce((pre, crr) => pre + crr[crr.length - 1].y, 0) / 2));
-    setAllData(feedbackSummaryResultData);
+    setAllData(temp);
     setFeedbackSummary(feedbackSummaryRet);
     setCultureResult(cultureRet);
     setSentimentKey(sentimentKey);
@@ -452,13 +484,18 @@ const ReportSummary = ({
   );
 };
 
-const mapStateToProps = ({ authUser }) => {
-  const { projectTitle, projectId, surveyId, surveyUserId } = authUser;
+const mapStateToProps = ({ authUser, admin, account }) => {
+  const { projectTitle, projectId, surveyId, surveyUserId, shGroupId } = authUser;
+  const { currentProject } = admin
+  const { profile } = account;
 
   return {
     projectTitle,
     projectId,
     surveyId,
+    profile,
+    segments: currentProject.segments,
+    shGroupId,
     surveyUserId,
   };
 };

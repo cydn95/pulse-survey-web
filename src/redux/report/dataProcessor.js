@@ -321,8 +321,8 @@ export const getResultForTeam = (teamList, result) => {
       const reverseKeys = [...keys.reverse()];
       let prevYValue = {};
       reverseKeys.map((d, idx) => {
-        console.log('trend', trend)
-        console.log('prevYValue', prevYValue)
+        // console.log('trend', trend)
+        // console.log('prevYValue', prevYValue)
         if(Object.keys(trend).length === 0) {
           return d
         }
@@ -489,7 +489,7 @@ export const getResultForOrganization = (organizationList, result) => {
       const reverseKeys = [...keys.reverse()];
       let prevYValue = {};
       reverseKeys.map((d, idx) => {
-        console.log('trend', trend)
+        // console.log('trend', trend)
         if(Object.keys(trend).length === 0) {
           return d
         }

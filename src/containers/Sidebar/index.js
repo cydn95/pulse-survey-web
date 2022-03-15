@@ -438,7 +438,7 @@ class Sidebar extends Component {
                           }
                         }
                         if (segments.teams.length > 0) {
-                          let data = (segments.teams.filter(team => team.segmentName === profile.team.id)[0] || {})
+                          let data = (segments.teams.filter(team => team.segmentName === profile.team.name)[0] || {})
                           if (data.permissionType === 'All Exception') {
                             if ((data.dashboards || []).includes(menu)) {
                               return null;
@@ -450,7 +450,7 @@ class Sidebar extends Component {
                           }
                         }
                         if (segments.organizations.length > 0) {
-                          let data = (segments.organizations.filter(org => org.segmentName === profile.organization.id)[0] || {})
+                          let data = (segments.organizations.filter(org => org.segmentName === profile.organization.name)[0] || {})
                           if (data.permissionType === 'All Exception') {
                             if ((data.dashboards || []).includes(menu)) {
                               return null;
