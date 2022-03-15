@@ -52,7 +52,9 @@ function* getOrganizationList({payload}) {
 
     const result = yield call(getOrganizationListAysnc, surveyId);
     if (result.status === 200) {
-      yield put(organizationListSuccess(result.data));
+      let temp = result.data.map(d => d.name)
+      temp = [...new Set(temp)]
+      yield put(organizationListSuccess(temp));
     }
   } catch(error) {
     console.log('error', error)

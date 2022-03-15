@@ -12,7 +12,7 @@ import ReportKeyThemes from "./key_themes";
 import ReportMatrix from "./matrix";
 import AdvisorInsights from "./advisor-insights";
 
-import { checkDashboard } from "Redux/actions";
+import { checkDashboard, adminReportAccessList } from "Redux/actions";
 
 import styles from "./styles.scss";
 
@@ -21,6 +21,7 @@ const Dashboard = ({
   surveyId,
   surveyUserId,
   actionCheckDashboard,
+  getReportAccessList,
   history,
 }) => {
   const [dashboardStatus, setDashboardStatus] = useState(null);
@@ -38,7 +39,7 @@ const Dashboard = ({
     }
 
     setLoading(true);
-
+    getReportAccessList(surveyId)
     actionCheckDashboard(surveyId, surveyUserId, callbackCheckDashboard);
   }, [surveyId, surveyUserId, actionCheckDashboard, history]);
 
@@ -106,5 +107,7 @@ const mapStateToProps = ({ authUser }) => {
 export default withRouter(
   connect(mapStateToProps, {
     actionCheckDashboard: checkDashboard,
+    getReportAccessList: adminReportAccessList,
+    
   })(Dashboard)
 );

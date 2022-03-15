@@ -117,8 +117,8 @@ const getAMQuestionCntAsync = async (surveyId, driverName, projectId, userId) =>
     .then((result) => result)
     .catch((error) => error);
 
-const getTotalStakeholderCntAsync = async (surveyId) =>
-  await getTotalStakeholderCntAPI(surveyId)
+const getTotalStakeholderCntAsync = async (surveyId, shGroupId, teamId, orgId) =>
+  await getTotalStakeholderCntAPI(surveyId, shGroupId, teamId, orgId)
     .then((result) => result)
     .catch((error) => error);
 
@@ -517,6 +517,10 @@ function* getEngagementTrend({ payload }) {
       userId,
       startDate,
       endDate,
+      segments,
+      shGroupId,
+      teamId,
+      orgId,
       callback,
     } = payload;
 
@@ -524,7 +528,7 @@ function* getEngagementTrend({ payload }) {
 
     const stakeholderCntResult = yield call(
       getTotalStakeholderCntAsync,
-      surveyId
+      surveyId,
     );
     const totalStakeholderCnt = stakeholderCntResult.data;
     // console.log('total sh cnt', totalStakeholderCnt);
@@ -547,6 +551,106 @@ function* getEngagementTrend({ payload }) {
       if(!Object.keys(totalStakeholderCnt.shgroup).includes(sg))
         totalStakeholderCnt.shgroup[sg] = 0
     })
+    
+    console.log('shgroupsId', shGroupId)
+    console.log('teamId', teamId)
+    console.log('orgId', orgId)
+    console.log('segments', segments)
+    if ((segments.shgroups || []).filter(d => d.segmentName.toString() === shGroupId.toString()).length > 0) {
+      let data = (segments.shgroups || []).filter(d => d.segmentName.toString() === shGroupId.toString())[0]
+      console.log('data.teams', data)
+      if (data.permissionType === 'All Exception') {
+        Object.keys(totalStakeholderCnt.shgroup).map(ts => {
+          if (data.shGroups.includes(originShGroupList.filter(os => os.SHGroupName === ts)[0].id))
+          delete totalStakeholderCnt.shgroup[ts]
+        })
+        Object.keys(totalStakeholderCnt.team).map(tt => {
+          console.log(tt, data.teams.includes(tt))
+          if (data.teams.includes(tt))
+            delete totalStakeholderCnt.team[tt]
+        })
+        Object.keys(totalStakeholderCnt.org).map(to => {
+          if (data.organizations.includes(to))
+            delete totalStakeholderCnt.org[to]
+        })
+      }
+      if (data.permissionType === 'Only') {
+        Object.keys(totalStakeholderCnt.shgroup).map(ts => {
+          if (!data.shGroups.includes(originShGroupList.filter(os => os.SHGroupName === ts)[0].id))
+            delete totalStakeholderCnt.shgroup[ts]
+        })
+        Object.keys(totalStakeholderCnt.team).map(tt => {
+          if (!data.teams.includes(tt))
+            delete totalStakeholderCnt.team[tt]
+        })
+        Object.keys(totalStakeholderCnt.org).map(to => {
+          if (!data.organizations.includes(to))
+            delete totalStakeholderCnt.org[to]
+        })
+      }
+    }
+    if ((segments.teams || []).filter(d => d.segmentName === teamId).length > 0) {
+      let data = (segments.teams || []).filter(d => d.segmentName === teamId)[0]
+      if (data.permissionType === 'All Exception') {
+        Object.keys(totalStakeholderCnt.shgroup).map(ts => {
+          if (data.shGroups.includes(originShGroupList.filter(os => os.SHGroupName === ts)[0].id))
+            delete totalStakeholderCnt.shgroup[ts]
+        })
+        Object.keys(totalStakeholderCnt.team).map(tt => {
+          if (data.teams.includes(tt))
+            delete totalStakeholderCnt.team[tt]
+        })
+        Object.keys(totalStakeholderCnt.org).map(to => {
+          if (data.organizations.includes(to))
+            delete totalStakeholderCnt.org[to]
+        })
+      }
+      if (data.permissionType === 'Only') {
+        Object.keys(totalStakeholderCnt.shgroup).map(ts => {
+          if (!data.shGroups.includes(originShGroupList.filter(os => os.SHGroupName === ts)[0].id))
+            delete totalStakeholderCnt.shgroup[ts]
+        })
+        Object.keys(totalStakeholderCnt.team).map(tt => {
+          if (!data.teams.includes(tt))
+            delete totalStakeholderCnt.team[tt]
+        })
+        Object.keys(totalStakeholderCnt.org).map(to => {
+          if (!data.organizations.includes(to))
+            delete totalStakeholderCnt.org[to]
+        })
+      }
+    }
+    if ((segments.organizations || []).filter(d => d.segmentName === orgId).length > 0) {
+      let data = (segments.organizations || []).filter(d => d.segmentName === orgId)[0]
+      if (data.permissionType === 'All Exception') {
+        Object.keys(totalStakeholderCnt.shgroup).map(ts => {
+          if (data.shGroups.includes(originShGroupList.filter(os => os.SHGroupName === ts)[0].id))
+            delete totalStakeholderCnt.shgroup[ts]
+        })
+        Object.keys(totalStakeholderCnt.team).map(tt => {
+          if (data.teams.includes(tt))
+            delete totalStakeholderCnt.team[tt]
+        })
+        Object.keys(totalStakeholderCnt.org).map(to => {
+          if (data.organizations.includes(to))
+            delete totalStakeholderCnt.org[to]
+        })
+      }
+      if (data.permissionType === 'Only') {
+        Object.keys(totalStakeholderCnt.shgroup).map(ts => {
+          if (!data.shGroups.includes(originShGroupList.filter(os => os.SHGroupName === ts)[0].id))
+            delete totalStakeholderCnt.shgroup[ts]
+        })
+        Object.keys(totalStakeholderCnt.team).map(tt => {
+          if (!data.teams.includes(tt))
+            delete totalStakeholderCnt.team[tt]
+        })
+        Object.keys(totalStakeholderCnt.org).map(to => {
+          if (!data.organizations.includes(to))
+            delete totalStakeholderCnt.org[to]
+        })
+      }
+    }
     console.log('total sh cnt', totalStakeholderCnt);
 
     if (chartType === "SHGroup") {
@@ -594,7 +698,7 @@ function* getEngagementTrend({ payload }) {
         return 0;
       })
       
-      console.log('participation', participationData)
+      // console.log('participation', participationData)
 
       shGroupList.forEach((sg) => {
         engagementRet[driverName].push({
@@ -611,18 +715,18 @@ function* getEngagementTrend({ payload }) {
         });
       });
 
-      console.log('engagementRet', engagementRet)
+      // console.log('engagementRet', engagementRet)
 
       const resultData = getResultForSHGroup(shGroupList, result);
 
-      console.log('resultData', resultData)
-      console.log('originShGroupList', originShGroupList)
+      // console.log('resultData', resultData)
+      // console.log('originShGroupList', originShGroupList)
 
       const answered = []
 
-      originShGroupList.map((sh, idx) => {
+      shGroupList.map((sh, idx) => {
         participationData.data.map(ptc => {
-          if (((ptc.shGroup || {}).SHGroupName === sh.SHGroupName) && ptc.sendInvite && ((sh.responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
+          if (((ptc.shGroup || {}).SHGroupName === sh.id) && ptc.sendInvite && ((originShGroupList.filter(os => os.SHGroupName === sh.id)[0].responsePercent * ptc.am_total / 100) < ptc.am_answered)) {
             engagementRet["Response Rate"][idx].stakeholders.push(ptc.id)
             if (!answered.includes(ptc.id)) {
               answered.push(ptc.id);
@@ -632,7 +736,7 @@ function* getEngagementTrend({ payload }) {
         })
         return sh;
       })
-      console.log('answered', answered)
+      // console.log('answered', answered)
 
       // Object.keys(resultData).forEach((key) => {
       //   const data = resultData[key];

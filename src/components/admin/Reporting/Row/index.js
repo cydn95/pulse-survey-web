@@ -25,10 +25,11 @@ const Row = ({
       setSegments((currentProject.segments || {})['shgroups'] || [])
     } else if (type === 1) {
       setFilter('teams')
-      setList(teamList)
+      setList(teamList.map(t => t.name))
       setSegments((currentProject.segments || {})['teams'] || [])
     } else {
       setFilter('organizations')
+      console.log('orgadfdafd', organizationList)
       setList(organizationList)
       setSegments((currentProject.segments || {})['organizations'] || [])
     }
@@ -68,7 +69,7 @@ const Row = ({
             <label>Segment name</label>
             <Select
               selected={segment.segmentName}
-              field_name={type===0?'SHGroupName':'name'}
+              field_name={type===0?'SHGroupName':''}
               setSelected={(value) => {
                 let temp = [...segments]
                 temp[idx].segmentName = value
@@ -226,9 +227,7 @@ const Row = ({
                     })
                   }}
                   selected={team}
-                  items={teamList.filter(d => !segment.teams.includes(d.id))}
-                  org_items={teamList}
-                  field_name="name"
+                  items={teamList.map(t => t.name).filter(d => !segment.teams.includes(d))}
                   setSelected={(value) => {
                     let temp = [...segments]
                     temp[idx].teams[index] = value
@@ -267,8 +266,7 @@ const Row = ({
             {(segment.organizations || []).map((organization, index) =>
                 <Select
                   className={styles.select}
-                  items={organizationList.filter(d => !segment.organizations.includes(d.id))}
-                  org_items={organizationList}
+                  items={organizationList.filter(d => !segment.organizations.includes(d))}
                   key={`${idx}-${organization}`}
                   onClose={() => {
                     let temp = [...segments]
@@ -282,7 +280,6 @@ const Row = ({
                     })
                   }}
                   selected={organization}
-                  field_name="name"
                   setSelected={(value) => {
                     let temp = [...segments]
                     temp[idx].organizations[index] = value
