@@ -97,7 +97,7 @@ export default (state = INIT_STATE, action) => {
       return { ...state, loading: false };
     case SUBMIT_SURVEY_SUCCESS:
       // return { ...state, loading: true, surveyId: action.payload.surveyId, pageIndex: 0 };
-      return { ...state, loading: true, surveyId: action.payload.surveyId };
+      return { ...state, loading: false, surveyId: action.payload.surveyId };
     case ABOUTME:
       return { ...state, aboutMe: action.payload.data };
     case CLEAR_ABOUTME:
