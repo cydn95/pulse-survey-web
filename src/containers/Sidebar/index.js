@@ -425,8 +425,8 @@ class Sidebar extends Component {
                       }
 
                       if(segments) {
-                        if (segments.shgroups.length > 0) {
-                          let data = (segments.shgroups.filter(shgroup => shgroup.segmentName.toString() === shGroupId.toString())[0] || {})
+                        if (segments.shgroups && segments.shgroups.length > 0) {
+                          let data = (segments.shgroups.filter(shgroup => (shgroup.segmentName || '').toString() === shGroupId.toString())[0] || {})
                           if (data.permissionType === 'All Exception') {
                             if ((data.dashboards || []).includes(menu)) {
                               return null;
@@ -437,8 +437,8 @@ class Sidebar extends Component {
                             }
                           }
                         }
-                        if (segments.teams.length > 0) {
-                          let data = (segments.teams.filter(team => team.segmentName === profile.team.name)[0] || {})
+                        if (segments.teams && segments.teams.length > 0) {
+                          let data = (segments.teams.filter(team => (team.segmentName || '') === profile.team.name)[0] || {})
                           if (data.permissionType === 'All Exception') {
                             if ((data.dashboards || []).includes(menu)) {
                               return null;
@@ -449,8 +449,8 @@ class Sidebar extends Component {
                             }
                           }
                         }
-                        if (segments.organizations.length > 0) {
-                          let data = (segments.organizations.filter(org => org.segmentName === profile.organization.name)[0] || {})
+                        if (segments.organizations && segments.organizations.length > 0) {
+                          let data = (segments.organizations.filter(org => (org.segmentName || '') === profile.organization.name)[0] || {})
                           if (data.permissionType === 'All Exception') {
                             if ((data.dashboards || []).includes(menu)) {
                               return null;
