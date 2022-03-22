@@ -120,6 +120,12 @@ const pageListAPI = (surveyId, surveyUserId) => {
   );
 };
 
+const isFlaggedAPI = (id) => {
+  return getClient(true).get(
+    `/isFlagged/${id}/?format=json`
+  )
+}
+
 const optionListAPI = () => {
   return getClient(true).get("/option/?format=json");
 };
@@ -708,5 +714,6 @@ export {
   deleteMoreInfoPageAPI,
   deleteQuestionAPI,
   adminUploadImagesAPI,
-  organizationListAPI
+  organizationListAPI,
+  isFlaggedAPI
 };

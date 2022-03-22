@@ -10,7 +10,8 @@ import {
   ADD_ABOUT_ME_TOPIC_SUCCESS,
   UPDATE_ABOUT_ME_TOPIC_SUCCESS,
   DELETE_ABOUT_ME_TOPIC_SUCCESS,
-  CLEAR_ABOUTME
+  CLEAR_ABOUTME,
+  IS_FLAGGED
 } from "Constants/actionTypes";
 
 const INIT_STATE = {
@@ -102,6 +103,10 @@ export default (state = INIT_STATE, action) => {
       return { ...state, aboutMe: action.payload.data };
     case CLEAR_ABOUTME:
       return { ...INIT_STATE }
+    case IS_FLAGGED:
+      return {
+        ...state
+      }
     default:
       return { ...state };
   }
