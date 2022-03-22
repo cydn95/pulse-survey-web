@@ -14,8 +14,14 @@ import {
   UPDATE_ABOUT_ME_TOPIC_SUCCESS,
   DELETE_ABOUT_ME_TOPIC,
   DELETE_ABOUT_ME_TOPIC_SUCCESS,
-  CLEAR_ABOUTME
+  CLEAR_ABOUTME,
+  IS_FLAGGED
 } from "Constants/actionTypes";
+
+export const isFlagged = (id, callback) => ({
+  type: IS_FLAGGED,
+  payload: {id, callback}
+})
 
 export const pageList = (surveyId, surveyUserId) => ({
   type: PAGE_LIST,

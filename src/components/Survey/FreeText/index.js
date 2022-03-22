@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import SkipQuestion from "../SkipQuestion";
 import { replaceQuestionTextKeyWord } from "Constants/defaultValues";
 
+import {isFlagged} from 'Redux/actions'
 import styles from "./styles.scss";
 
 class FreeText extends Component {
@@ -14,11 +15,22 @@ class FreeText extends Component {
     const { surveyType } = props;
     const answer = surveyType === "me" ? props.question.answer : props.answer;
 
+    if (props.question.id) {
+      isFlagged(props.question.id, this.callback)
+    } 
     this.state = {
       answer: {
         ...answer,
       },
+      isFlagged: false
     };
+  }
+
+  callback = (isFlagged) => {
+    console.log('isFlagged', isFlagged)
+    this.setState({
+      isFlagged: isFlagged
+    })
   }
 
   componentWillReceiveProps(props) {
@@ -38,6 +50,7 @@ class FreeText extends Component {
 
     this.setState(
       (state) => ({
+        isFlagged: false,
         answer: {
           ...state.answer,
           topicValue: topicValue,
@@ -96,7 +109,7 @@ class FreeText extends Component {
             element={TextField}
             multiline
             className={styles["answer-field"]}
-            value={this.state.answer.topicValue}
+            value={!isFlagged ? this.state.answer.topicValue : 'Your response has been flagged for moderation. Please revise your response.'}
             debounceTimeout={500}
             onChange={(e) => this.onInputAnswer(e)}
             placeholder={question.topicPrompt}

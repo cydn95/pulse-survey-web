@@ -7,6 +7,7 @@ import {
   addNewTopicAboutMeAPI,
   updateTopicAboutMeAPI,
   deleteTopicAboutMeAPI,
+  isFlaggedAPI,
 } from "../../services/axios/api";
 
 import {
@@ -15,6 +16,7 @@ import {
   ADD_ABOUT_ME_TOPIC,
   UPDATE_ABOUT_ME_TOPIC,
   DELETE_ABOUT_ME_TOPIC,
+  IS_FLAGGED,
 } from "Constants/actionTypes";
 
 import { controlType, controlTypeText } from "Constants/defaultValues";
@@ -28,6 +30,11 @@ import {
   deleteAboutMeTopicSuccess,
 } from "../actions";
 
+const getIsFlaggedAsync = async (id) => 
+  await isFlaggedAPI(id)
+    .then(result => result)
+    .catch(error => error)
+
 const getPageListAsync = async (surveyId, surveyUserId) =>
   await pageListAPI(surveyId, surveyUserId)
     .then((result) => result)
@@ -37,6 +44,21 @@ const getOptionListAsync = async () =>
   await optionListAPI()
     .then((result) => result)
     .catch((error) => error);
+
+
+
+function* getIsFlagged({payload}) {
+  const {id, callback} = payload
+  try {
+    const result = yield call(getIsFlaggedAsync, id);
+    if (result.status === 200) {
+      const isFlagged = result.data;
+      callback(isFlagged)
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 function* getPageList({ payload }) {
   const { surveyId, surveyUserId } = payload;
@@ -377,6 +399,10 @@ export function* watchDeleteAboutMeTopic() {
   yield takeEvery(DELETE_ABOUT_ME_TOPIC, deleteAboutMeTopic);
 }
 
+export function* watchIsAcknowledged() {
+  yield takeEvery(IS_FLAGGED, getIsFlagged);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchPageList),
@@ -384,5 +410,6 @@ export default function* rootSaga() {
     fork(watchAddAboutMeTopic),
     fork(watchUpdateAboutMeTopic),
     fork(watchDeleteAboutMeTopic),
+    fork(watchIsAcknowledged),
   ]);
 }
