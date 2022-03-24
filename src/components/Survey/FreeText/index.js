@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { DebounceInput } from 'react-debounce-input';
+import { connect } from "react-redux";
 
 import TextField from "@material-ui/core/TextField";
 import SkipQuestion from "../SkipQuestion";
@@ -16,7 +17,7 @@ class FreeText extends Component {
     const answer = surveyType === "me" ? props.question.answer : props.answer;
 
     if (props.question.id) {
-      isFlagged(props.question.id, this.callback)
+      this.props.isFlagged(props.question.id, props.user, this.callback)
     } 
     this.state = {
       answer: {
@@ -109,7 +110,7 @@ class FreeText extends Component {
             element={TextField}
             multiline
             className={styles["answer-field"]}
-            value={!isFlagged ? this.state.answer.topicValue : 'Your response has been flagged for moderation. Please revise your response.'}
+            value={!this.state.isFlagged ? this.state.answer.topicValue : 'Your response has been flagged for moderation. Please revise your response.'}
             debounceTimeout={500}
             onChange={(e) => this.onInputAnswer(e)}
             placeholder={question.topicPrompt}
@@ -130,4 +131,6 @@ class FreeText extends Component {
   }
 }
 
-export default FreeText;
+export default connect(null, {
+  isFlagged,
+})(FreeText);

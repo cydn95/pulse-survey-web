@@ -30,8 +30,8 @@ import {
   deleteAboutMeTopicSuccess,
 } from "../actions";
 
-const getIsFlaggedAsync = async (id) => 
-  await isFlaggedAPI(id)
+const getIsFlaggedAsync = async (id, user) => 
+  await isFlaggedAPI(id, user)
     .then(result => result)
     .catch(error => error)
 
@@ -48,9 +48,9 @@ const getOptionListAsync = async () =>
 
 
 function* getIsFlagged({payload}) {
-  const {id, callback} = payload
+  const {id, callback, user} = payload
   try {
-    const result = yield call(getIsFlaggedAsync, id);
+    const result = yield call(getIsFlaggedAsync, id, user);
     if (result.status === 200) {
       const isFlagged = result.data;
       callback(isFlagged)

@@ -120,9 +120,10 @@ const pageListAPI = (surveyId, surveyUserId) => {
   );
 };
 
-const isFlaggedAPI = (id) => {
+const isFlaggedAPI = (id, user) => {
+  let userId = localStorage.getItem("userId")
   return getClient(true).get(
-    `/isFlagged/${id}/?format=json`
+    `/isFlagged/${id}/?format=json&user=${userId}`
   )
 }
 
