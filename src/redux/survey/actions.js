@@ -18,9 +18,9 @@ import {
   IS_FLAGGED
 } from "Constants/actionTypes";
 
-export const isFlagged = (id, callback) => ({
+export const isFlagged = (id, user, callback) => ({
   type: IS_FLAGGED,
-  payload: {id, callback}
+  payload: {id, user, callback}
 })
 
 export const pageList = (surveyId, surveyUserId) => ({
