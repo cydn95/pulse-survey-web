@@ -138,6 +138,13 @@ const UserAdministration = ({
       }
     }
 
+    if (!user.sendInvite) {
+      return {
+        text: 'Not Invited',
+        color: 'gray',
+      }
+    }
+    
     if (!user.shGroup) {
       return {
         text: 'Not Started'
