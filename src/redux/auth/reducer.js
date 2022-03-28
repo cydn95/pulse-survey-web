@@ -27,6 +27,8 @@ const INIT_STATE = {
   projectTitle: localStorage.getItem("projectTitle"),
   surveyId: localStorage.getItem("surveyId"),
   shGroupId: localStorage.getItem("shGroupId"),
+  team: (!localStorage.getItem("team") || localStorage.getItem("team") === '') ? {name: ''} : JSON.parse(localStorage.getItem("team")),
+  organization: localStorage.getItem("organization"),
   surveyTitle: localStorage.getItem("surveyTitle"),
   surveyUserId: localStorage.getItem("surveyUserId"),
   loading: false,
@@ -49,6 +51,8 @@ export default (state = INIT_STATE, action) => {
         surveyTitle: action.payload.surveyTitle,
         surveyUserId: action.payload.surveyUserId,
         shGroupId: action.payload.shGroupId,
+        team: action.payload.team,
+        organization: action.payload.organization
       };
     case LOGIN_USER:
       return { ...state, loading: true };

@@ -50,7 +50,9 @@ const ReportDriverAnalysis = ({
   getAllDrivers,
   shGroupId,
   segments,
-  profile
+  profile,
+  userteam, 
+  userorg
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -119,8 +121,8 @@ const ReportDriverAnalysis = ({
       "2022-12-31",
       segments,
       shGroupId,
-      profile.team.name,
-      profile.organization.name,
+      (userteam || {}).name,
+      userorg,
       callback
     );
   }, [surveyId, surveyUserId, actionEngagementTrend, driverName, filterValue]);
@@ -290,7 +292,7 @@ const ReportDriverAnalysis = ({
 };
 
 const mapStateToProps = ({ authUser, common, admin, account }) => {
-  const { projectTitle, surveyId, surveyUserId, projectId, user, shGroupId } = authUser;
+  const { projectTitle, surveyId, surveyUserId, projectId, user, shGroupId, team, organization } = authUser;
   const { driverList } = common
   const { currentProject } = admin
   const { profile } = account;
@@ -305,6 +307,8 @@ const mapStateToProps = ({ authUser, common, admin, account }) => {
     profile,
     segments: currentProject.segments,
     shGroupId,
+    userteam: team,
+    userorg: organization
   };
 };
 

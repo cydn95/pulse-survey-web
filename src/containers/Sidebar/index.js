@@ -352,6 +352,8 @@ class Sidebar extends Component {
       segments,
       profile,
       shGroupId,
+      userteam,
+      userorg
     } = this.props;
     const { run, steps } = this.state;
 
@@ -438,7 +440,7 @@ class Sidebar extends Component {
                           }
                         }
                         if (segments.teams && segments.teams.length > 0) {
-                          let data = (segments.teams.filter(team => (team.segmentName || '') === profile.team.name)[0] || {})
+                          let data = (segments.teams.filter(team => (team.segmentName || '') === userteam.name)[0] || {})
                           if (data.permissionType === 'All Exception') {
                             if ((data.dashboards || []).includes(menu)) {
                               return null;
@@ -450,7 +452,7 @@ class Sidebar extends Component {
                           }
                         }
                         if (segments.organizations && segments.organizations.length > 0) {
-                          let data = (segments.organizations.filter(org => (org.segmentName || '') === profile.organization.name)[0] || {})
+                          let data = (segments.organizations.filter(org => (org.segmentName || '') === userorg)[0] || {})
                           if (data.permissionType === 'All Exception') {
                             if ((data.dashboards || []).includes(menu)) {
                               return null;
@@ -608,7 +610,7 @@ class Sidebar extends Component {
 const mapStateToProps = ({ menu, settings, authUser, tour, account, admin }) => {
   const { mainMenuClassName, subMenuClassName } = menu;
   const { projectList } = settings;
-  const { user, surveyId, surveyUserId, projectId, shGroupId } = authUser;
+  const { user, surveyId, surveyUserId, projectId, shGroupId, team, organization } = authUser;
   const { pageContent, tooltipContent } = tour;
   const { profile } = account;
   const { currentProject } = admin
@@ -618,6 +620,8 @@ const mapStateToProps = ({ menu, settings, authUser, tour, account, admin }) => 
     surveyId,
     surveyUserId,
     shGroupId,
+    userteam: team,
+    userorg: organization,
     projectId,
     projectList,
     mainMenuClassName,

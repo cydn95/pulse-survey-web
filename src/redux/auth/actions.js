@@ -34,9 +34,9 @@ export const setSurveyID = (userId, surveyId, callback) => ({
   payload: { userId, surveyId, callback },
 });
 
-export const setSurveyIDSuccess = (surveyId, surveyTitle, surveyUserId, shGroupId) => ({
+export const setSurveyIDSuccess = (surveyId, surveyTitle, surveyUserId, shGroupId, team, organization) => ({
   type: SURVEY_ID_SUCCESS,
-  payload: { surveyId, surveyTitle, surveyUserId, shGroupId },
+  payload: { surveyId, surveyTitle, surveyUserId, shGroupId, team, organization },
 });
 
 export const loginUser = (user, history) => ({
