@@ -164,6 +164,8 @@ function* logout({ payload }) {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("surveyUserId");
     localStorage.removeItem("shGroupId");
+    localStorage.removeItem("team");
+    localStorage.removeItem("organization");
     localStorage.removeItem("surveyId");
     localStorage.removeItem("userId");
     // yield call(logoutUser, history);
@@ -217,6 +219,8 @@ function* setSurveyID({ payload }) {
         localStorage.setItem("surveyTitle", result.data[0].survey.surveyTitle);
         localStorage.setItem("surveyUserId", result.data[0].id);
         localStorage.setItem("shGroupId", result.data[0].shGroup.id);
+        localStorage.setItem("userteam", JSON.stringify(result.data[0].team));
+        localStorage.setItem("organization", result.data[0].projectOrganization);
 
         yield put(
           setSurveyIDSuccess(
@@ -224,6 +228,8 @@ function* setSurveyID({ payload }) {
             result.data[0].survey.surveyTitle,
             result.data[0].id,
             result.data[0].shGroup.id,
+            result.data[0].team,
+            result.data[0].projectOrganization,
           )
         );
 
@@ -236,6 +242,8 @@ function* setSurveyID({ payload }) {
       localStorage.setItem("surveyTitle", "");
       localStorage.setItem("surveyUserId", 0);
       localStorage.setItem("shGroupId", 0);
+      localStorage.setItem("team", "");
+      localStorage.setItem("organization", "");
 
       yield put(setSurveyIDSuccess(0, "", 0));
     }

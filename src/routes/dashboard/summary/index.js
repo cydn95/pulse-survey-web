@@ -50,6 +50,8 @@ const ReportSummary = ({
   actionFeedbackSummary,
   status,
   shGroupId,
+  userteam,
+  userorg,
   segments,
   profile
 }) => {
@@ -113,15 +115,18 @@ const ReportSummary = ({
         }
       }
       if ((segments.teams || []).length > 0) {
-        let data = ((segments.teams || []).filter(team => team.segmentName === profile.team.name)[0] || {})
+        let data = ((segments.teams || []).filter(team => team.segmentName === (userteam || {}).name)[0] || {})
         if (data.permissionType === 'All Exception') {
           temp = temp.filter(q => !(data.shGroups || []).includes((q.subProjectUser.shGroup || {}).id) && !(data.teams || []).includes((q.subProjectUser.team || {}).name) && !(data.organizations || []).includes(q.subProjectUser.projectOrganization))
         } else if (data.permissionType === 'Only') {
           temp = temp.filter(q => (data.shGroups || []).includes((q.subProjectUser.shGroup || {}).id) && (data.teams || []).includes((q.subProjectUser.team || {}).name) && (data.organizations || []).includes(q.subProjectUser.projectOrganization))
         }
+        console.log('data', data)
+        console.log('data', userteam)
+        console.log('data', segments.teams)
       }
       if ((segments.organizations || []).length > 0) {
-        let data = ((segments.organizations || []).filter(org => org.segmentName === profile.organization.name)[0] || {})
+        let data = ((segments.organizations || []).filter(org => org.segmentName === userorg)[0] || {})
         if (data.permissionType === 'All Exception') {
           temp = temp.filter(q => !(data.shGroups || [ ]).includes((q.subProjectUser.shGroup || {}).id) && !(data.teams || []).includes((q.subProjectUser.team || {}).name) && !(data.organizations || []).includes(q.subProjectUser.projectOrganization))
         } else if (data.permissionType === 'Only') {
@@ -485,7 +490,7 @@ const ReportSummary = ({
 };
 
 const mapStateToProps = ({ authUser, admin, account }) => {
-  const { projectTitle, projectId, surveyId, surveyUserId, shGroupId } = authUser;
+  const { projectTitle, projectId, surveyId, surveyUserId, shGroupId, team, organization } = authUser;
   const { currentProject } = admin
   const { profile } = account;
 
@@ -497,6 +502,8 @@ const mapStateToProps = ({ authUser, admin, account }) => {
     segments: currentProject.segments,
     shGroupId,
     surveyUserId,
+    userteam : team,
+    userorg : organization
   };
 };
 
