@@ -33,6 +33,7 @@ import {
   ADMIN_GET_DRIVER_LIST,
   ADMIN_DRIVER_LIST_SUCCESS,
   ADMIN_UPLOAD_IMAGES,
+  FLAGGED_RESPONSE_LIST,
 } from 'Constants/actionTypes'
 
 export const adminProjectList = (userId) => ({
@@ -203,4 +204,9 @@ export const adminDriverListSuccess = (driverList) => ({
 export const adminUploadImages = (data, callback) => ({
   type: ADMIN_UPLOAD_IMAGES,
   payload: {data, callback},
+})
+
+export const flaggedResponseList = (surveyId, callback) => ({
+  type: FLAGGED_RESPONSE_LIST,
+  payload: {surveyId, callback},
 })

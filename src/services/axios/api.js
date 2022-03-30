@@ -632,6 +632,10 @@ const adminBulkArchiveUserAPI = (ids) => {
   return getClient(true).post("/adminbulkarchive", { ids: `[${ids}]` })
 }
 
+const flaggedResponseListAPI = (surveyId) => {
+  return getClient(true).get(`/flaggedResponses?survey=${surveyId}`)
+}
+
 const deleteMoreInfoPageAPI = (id) => {
   return getClient(true).delete(`/admindelmorepage/${id}`)
 }
@@ -716,5 +720,6 @@ export {
   deleteQuestionAPI,
   adminUploadImagesAPI,
   organizationListAPI,
-  isFlaggedAPI
+  isFlaggedAPI,
+  flaggedResponseListAPI,
 };

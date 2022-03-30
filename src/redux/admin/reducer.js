@@ -33,6 +33,7 @@ import {
   ADMIN_DRIVER_LIST_SUCCESS,
   ADMIN_UPLOAD_IMAGES,
 } from 'Constants/actionTypes'
+import { FLAGGED_RESPONSE_LIST } from '../../constants/actionTypes'
 
 const INIT_STATE = {
   userList: {},
@@ -281,6 +282,11 @@ export default (state = INIT_STATE, action) => {
           ...state.currentProject,
           driverList: action.payload.driverList
         }
+      }
+    }
+    case FLAGGED_RESPONSE_LIST: {
+      return {
+        ...state,
       }
     }
     default:
