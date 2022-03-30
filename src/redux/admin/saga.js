@@ -15,7 +15,8 @@ import {
   ADMIN_UPLOAD_IMAGES,
   ADMIN_ADD_SURVEY, 
   ADMIN_DELETE_QUESTION, 
-  ADMIN_UPDATE_SURVEY
+  ADMIN_UPDATE_SURVEY,
+  FLAGGED_RESPONSE_LIST
 } from 'Constants/actionTypes'
 import {
   adminUserListSuccess,
@@ -49,6 +50,7 @@ import {
   deleteQuestionAPI,
   adminUploadImagesAPI,
   adminReportAccessListAPI,
+  flaggedResponseListAPI,
 } from '../../services/axios/api'
 
 const getAdminUserListAsync = async (surveyId) =>
@@ -167,6 +169,11 @@ const getDriverListAysnc = async (surveyId) =>
   await driverListAPI(surveyId)
     .then((data) => data)
     .catch((error) => error);
+
+const flaggedResponseListAsync = async (surveyId) =>
+  await flaggedResponseListAPI(surveyId)
+    .then((data) => data)
+    .catch((error) => error)
 
 function* adminGetDriverList({ payload }) {
   try {
@@ -336,6 +343,18 @@ function* adminDeleteQuestion({ payload }) {
   }
 }
 
+function* flaggedResponseList({ payload }) {
+  const {surveyId, callback} = payload
+  try {
+    const result = yield call(flaggedResponseListAsync, surveyId)
+    if(result.status === 200) {
+      callback(result.data)
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export function* watchAdminUserList() {
   yield takeEvery(ADMIN_USER_LIST, getAdminUserList)
 }
@@ -400,6 +419,10 @@ export function* watchAdminUploadImages() {
   yield takeEvery(ADMIN_UPLOAD_IMAGES, adminUploadImages)
 }
 
+export function* watchFlaggedResponseList() {
+  yield takeEvery(FLAGGED_RESPONSE_LIST, flaggedResponseList)
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchAdminUserList),
@@ -418,5 +441,6 @@ export default function* rootSaga() {
     fork(watchAdminGetDriverList),
     fork(watchAdminDelQuestion),
     fork(watchAdminUploadImages),
+    fork(watchFlaggedResponseList),
   ]);
 }
