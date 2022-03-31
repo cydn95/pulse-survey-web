@@ -320,9 +320,9 @@
 
 .bodyWrapper {
   max-height: 60vh;
-  overflow: auto;
-  // @media (max-width: 514px) {
-  // }
+  @media (max-width: 514px) {
+    overflow: auto;
+  }
 }
 
 .modal {
