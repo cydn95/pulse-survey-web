@@ -282,7 +282,7 @@ const UserAdministration = ({
       })
     }
     if (
-      (!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(newUser.user.email))
+      (!/^[a-zA-Z0-9\.]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(newUser.user.email))
     ) {
       setValidation({
         email: 'Email must be valid'
@@ -381,7 +381,7 @@ const UserAdministration = ({
   }
 
   const modalContent = () =>
-  <div style={{maxHeight: '60vh', overflow: 'auto'}}>
+  <div className={styles.bodyWrapper}>
     <div className={styles.modal}>
       <div>
         {validation.all && <p className={styles.error}>{validation.all}</p>}

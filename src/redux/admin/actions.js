@@ -34,6 +34,7 @@ import {
   ADMIN_DRIVER_LIST_SUCCESS,
   ADMIN_UPLOAD_IMAGES,
   FLAGGED_RESPONSE_LIST,
+  SET_VISIBLE,
 } from 'Constants/actionTypes'
 
 export const adminProjectList = (userId) => ({
@@ -209,4 +210,9 @@ export const adminUploadImages = (data, callback) => ({
 export const flaggedResponseList = (surveyId, callback) => ({
   type: FLAGGED_RESPONSE_LIST,
   payload: {surveyId, callback},
+})
+
+export const setVisible = (id) => ({
+  type: SET_VISIBLE,
+  payload: {id}
 })

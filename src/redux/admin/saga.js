@@ -352,6 +352,7 @@ function* flaggedResponseList({ payload }) {
     }
   } catch (error) {
     console.log(error)
+    callback([])
   }
 }
 

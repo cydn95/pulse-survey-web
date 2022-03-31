@@ -52,6 +52,7 @@ const Projects = ({
   amQuestionList,
   aoQuestionList,
   surveyId,
+  flaggedResponses,
   addSurvey,
   updateSurvey,
   uploadImages,
@@ -167,7 +168,8 @@ const Projects = ({
           return temp
         }),
       },
-      segments: currentProject.segments
+      segments: currentProject.segments,
+      flaggedResponses: flaggedResponses
     }
     
     const create = {
@@ -262,7 +264,7 @@ const Projects = ({
 }
 
 const mapStateToProps = ({ admin, authUser }) => {
-  const { userList, projectList, currentProject, loading, aoQuestionList, amQuestionList, surveyId } = admin
+  const { userList, projectList, currentProject, loading, aoQuestionList, amQuestionList, surveyId, flaggedResponses } = admin
   const { user } = authUser
   return {
     userList,
@@ -272,7 +274,8 @@ const mapStateToProps = ({ admin, authUser }) => {
     loading,
     aoQuestionList,
     amQuestionList,
-    surveyId
+    surveyId,
+    flaggedResponses
   }
 }
 

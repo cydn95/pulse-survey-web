@@ -32,6 +32,7 @@ import {
   ADMIN_DELETE_QUESTION_SUCCESS,
   ADMIN_DRIVER_LIST_SUCCESS,
   ADMIN_UPLOAD_IMAGES,
+  SET_VISIBLE,
 } from 'Constants/actionTypes'
 import { FLAGGED_RESPONSE_LIST } from '../../constants/actionTypes'
 
@@ -41,6 +42,7 @@ const INIT_STATE = {
   aoQuestionList: [],
   amQuestionList: [],
   currentProject: {},
+  flaggedResponses: [],
   surveyId: '',
   loading: false,
   error: '',
@@ -287,6 +289,24 @@ export default (state = INIT_STATE, action) => {
     case FLAGGED_RESPONSE_LIST: {
       return {
         ...state,
+      }
+    }
+    case SET_VISIBLE: {
+      if (state.flaggedResponses.includes(action.payload.id)) {
+        return {
+          ...state,
+          flaggedResponses: [
+            ...state.flaggedResponses.filter(d => d !== action.payload.id)
+          ]
+        }
+      } else {
+        return {
+          ...state,
+          flaggedResponses: [
+            ...state.flaggedResponses,
+            action.payload.id
+          ]
+        }
       }
     }
     default:
