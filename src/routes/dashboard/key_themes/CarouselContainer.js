@@ -83,6 +83,7 @@ const CarouselContainer = ({
     const oldValue = d.myStatus.length > 0 ? d.myStatus[0].flagStatus : 0;
     const param = {
       amResponse: d.id,
+      orgAmResponse: d.id,
       projectUser: surveyUserId,
       flagStatus: Number(oldValue) === Number(value) ? 0 : Number(value),
     };

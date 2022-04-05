@@ -57,11 +57,12 @@ const FlaggedResponses = ({ project, surveyId, flaggedResponseList, setVisible, 
   return (
     <Fragment>
       <div className={styles.tags}>
-        <span className={classnames(styles.col_1, styles.tag)}><FontAwesomeIcon size="lg" icon={faEye} color="rgb(180,180,180)" />SELECT TO MAKE FLAGGED REPONSE VISIBLE</span>
-        <span className={classnames(styles.col_2, styles.tag)}>FLAGGED BY</span>
-        <span className={classnames(styles.col_3, styles.tag)}>DATE</span>
-        <span className={classnames(styles.col_4, styles.tag)}>FLAG TYPE</span>
-        <span className={classnames(styles.col_5, styles.tag)}>STATUS</span>
+        <span className={classnames(styles.col_1, styles.tag)}><FontAwesomeIcon size="lg" icon={faEye} color="rgb(180,180,180)" />FLAGGED RESPONSE</span>
+        <span className={classnames(styles.col_2, styles.tag)}>CURRENT RESPONSE</span>
+        <span className={classnames(styles.col_3, styles.tag)}>FLAGGED BY</span>
+        <span className={classnames(styles.col_4, styles.tag)}>DATE</span>
+        <span className={classnames(styles.col_5, styles.tag)}>FLAG TYPE</span>
+        <span className={classnames(styles.col_6, styles.tag)}>STATUS</span>
       </div>
       {loading ? 
         <Loading description="" /> : 
@@ -74,9 +75,11 @@ const FlaggedResponses = ({ project, surveyId, flaggedResponseList, setVisible, 
                 <FontAwesomeIcon icon={faCheck} color="white" />
               </span>
               <div className={styles.data}>
-                <span className={styles.bgText} style={{paddingRight: '10px'}}>{response.amResponse.topicValue}</span>
+                <span className={styles.bgText} style={{paddingRight: '10px'}}>{((response.orgAmResponse || {}).topicValue || response.amResponse.topicValue)}</span>
+                <span className={styles.tag}>CURRENT RESPONSE</span>
+                <span className={styles.bgText}>{((response.orgAmResponse || {}).topicValue === response.amResponse.topicValue || !(response.orgAmResponse || {}).topicValue) ? '' : response.amResponse.topicValue}</span>
                 <span className={styles.tag}>FLAGGED BY</span>
-                <span className={styles.smText}>{response.flaggedBy}</span>
+                <span className={styles.smText}>{response.projectUser.user.first_name} {response.projectUser.user.last_name}</span>
                 <span className={styles.tag}>DATE</span>
                 <span className={styles.smText}>{response.updated_at}</span>
                 <span className={styles.tag}>FLAG TYPE</span>
@@ -85,15 +88,18 @@ const FlaggedResponses = ({ project, surveyId, flaggedResponseList, setVisible, 
                 <span className={styles.smText}><div className={styles[`${flaggedResponses.includes(response.id) ? 'visible' : 'hidden' }`]}></div>{flaggedResponses.includes(response.id) ? 'Visible' : 'Hidden'}</span>
               </div>
             </div>
-            <span className={classnames(styles.col_2, styles.smText)}>
+            <span className={classnames(styles.col_2, styles.bgText)}>
+              {((response.orgAmResponse || {}).topicValue === response.amResponse.topicValue || !(response.orgAmResponse || {}).topicValue) ? '' : response.amResponse.topicValue}
+            </span>
+            <span className={classnames(styles.col_3, styles.smText)}>
               {response.projectUser.user.first_name} {response.projectUser.user.last_name}
             </span>
-            <span className={classnames(styles.col_3, styles.smText)}>{(new Date(response.updated_at).toLocaleString('default', { month: 'short' })) + "-" + new Date(response.updated_at).getDate()  + "-" + new Date(response.updated_at).getFullYear()}</span>
-            <span className={classnames(styles.col_4, styles.smText)} style={{paddingRight: '10px'}}>
+            <span className={classnames(styles.col_4, styles.smText)}>{(new Date(response.updated_at).toLocaleString('default', { month: 'short' })) + "-" + new Date(response.updated_at).getDate()  + "-" + new Date(response.updated_at).getFullYear()}</span>
+            <span className={classnames(styles.col_5, styles.smText)} style={{paddingRight: '10px'}}>
               <img src={flag[response.flagStatus].img} alt="avatar" style={{width: '18px', height: '17px'}} />
               {flag[response.flagStatus].title}
             </span>
-            <span className={classnames(styles.col_5, styles.smText)}><div className={styles[`${flaggedResponses.includes(response.id) ? 'visible' : 'hidden' }`]}></div>{flaggedResponses.includes(response.id) ? 'Visible' : 'Hidden'}</span>
+            <span className={classnames(styles.col_6, styles.smText)}><div className={styles[`${flaggedResponses.includes(response.id) ? 'visible' : 'hidden' }`]}></div>{flaggedResponses.includes(response.id) ? 'Visible' : 'Hidden'}</span>
           </div>
         ) : <h4 style={{padding: '0px 21px'}}>No Flagged Response</h4>
       }
