@@ -101,6 +101,7 @@ const Projects = ({
 
   const savedCallback = (status) => {
     if (status) {
+      getProjectList(user.userId)
       NotificationManager.success("Response saved successfully", "");
     } else {
       NotificationManager.error("Something went wrong", "");
@@ -146,7 +147,7 @@ const Projects = ({
         customGroup1: currentProject.customGroup1,
         customGroup2: currentProject.customGroup2,
         customGroup3: currentProject.customGroup3,
-        driverList: (() => currentProject.driverList.map((d, idx) => ({...d, driveOrder: idx})))(),
+        driverList: (() => (currentProject.driverList || []).map((d, idx) => ({...d, driveOrder: idx})))(),
       },
       userAdministration: {
         ...userList

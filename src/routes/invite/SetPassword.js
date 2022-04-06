@@ -141,7 +141,7 @@ class SetPassword extends Component {
           <h2 className="set-password__content--subtitle">What is Pulse? ​</h2>
           <p className="set-password__content--description_2">
             Pulse is an easy to use web application designed to understand the sentiment and
-            perspectives of team members in real-time_ by <strong>anonymously</strong> measuring
+            perspectives of team members in real-time, by <strong>anonymously</strong> measuring
             <ul>
               <li>
                 <strong>About Me</strong>: <u>How you feel</u> about the project
@@ -150,7 +150,7 @@ class SetPassword extends Component {
                 <strong>About Others</strong>: How you think <u>other people feel</u> about the project
               </li>
             </ul>
-            There are no wrong answers. You can cheange your feedback as often as you'd like and your responses will be kept anonymous!
+            There are no wrong answers. You can change your feedback as often as you'd like and your responses will be kept anonymous!
           </p>
           <h2 className="set-password__content--subtitle">To Get Started​​</h2>
           {/* <p className="set-password__content--description">

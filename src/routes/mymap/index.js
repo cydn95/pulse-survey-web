@@ -160,7 +160,7 @@ class MyMap extends React.Component {
     this.myMapProjectUserList = []
     // console.log('--------------------------------------');
     // console.log("StakeholderList:=", stakeholderList);
-    // console.log(userList);
+    console.log(userList);
     // console.log(kMapData);
     // console.log(aoQuestionList);
     // console.log("--------------------------------------");
@@ -223,14 +223,13 @@ class MyMap extends React.Component {
       organisations: [],
     };
 
-    // console.log("shCategoryList:=", shCategoryList);
-
     if (
       teamList.length > 0 &&
       userList.length > 0 &&
       (shCategoryList.length > 0 || projectMapShCategoryList.length > 0) &&
       aoQuestionList.length > 0
     ) {
+      console.log('here')
 
       // const totalQuestions = aoQuestionList.length;
       // console.log(aoQuestionList);
@@ -502,6 +501,7 @@ class MyMap extends React.Component {
             if (userList[i].id === mapUser.projectUserId) {
               for (let j = 0; j < userList[i].shCategory.length; j++) {
                 if (userList[i].shCategory[j] === mapUser.shCategory) {
+                  console.log(userList[i].projectOrganization && userList[i].projectOrganization !== '')
                   const organizationName = (userList[i].projectOrganization && userList[i].projectOrganization !== '') ? userList[i].projectOrganization : userList[i].user.organization.name;
 
                   individualUser.id = `S_${userList[i].user.id}_SHC_${userList[i].shCategory[j]}`;
@@ -613,6 +613,9 @@ class MyMap extends React.Component {
           }
         }
       }
+
+      console.log('myMapStakeholderList', myMapStakeholderList)
+      console.log('projectMapStakeholderList', projectMapStakeholderList)
 
       this.setState({
         aoQuestionList,

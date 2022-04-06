@@ -254,7 +254,9 @@ class MapStakeholderList extends Component {
                         ? d.userTitle
                         : d.projectUserTitle;
                     let description =
-                      d.organisation +
+                    (d.projectOrganization
+                      ? d.projectOrganization
+                      : d.organisation)  +
                       " / " +
                       (d.team === "" ? d.userTeam : d.team);
                     // let percentage = (d.aoAnswered / d.aoTotal) * 100;
