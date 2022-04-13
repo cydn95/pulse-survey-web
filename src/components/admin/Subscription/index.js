@@ -102,7 +102,7 @@ const pages = [
 
 const stripePromise = loadStripe('pk_test_51K90BlAr7uUHD9JyhYkCJooOVpsWRpAKbMmDlas41DaBtZ2cEsgZp8MnItJ4AHWthz1V2sMwgcOejEEi4xX5kRRU00JcAtgN5O');
 
-const Subscription = ({usedSeats, totalSeats}) => {
+const Subscription = ({usedSeats, totalSeats, purchasePrice}) => {
   const [page, setPage] = useState(0)
   const [plan, setPlan] = useState(1)
   const [payment, setPayment] = useState(null)
@@ -124,7 +124,7 @@ const Subscription = ({usedSeats, totalSeats}) => {
           <div className="basic">
             {plan < 0 ?<img src={TrialAvatar} alt="trial" width={25} height={25} />:<span className="star"><FontAwesomeIcon icon={faStar} color="white" /></span>}
             <span className="bgDescription">{plan < 0 ? "Free" : "Enterprise"}</span>
-            {plan >= 0 && <span className="smDescription">${plans.filter(p => p.id === plan)[0].price}/month billed {plan===0 ? "yearly" : "monthly"}</span>}
+            {/* {plan >= 0 && <span className="smDescription">${plans.filter(p => p.id === plan)[0].price}/month billed {plan===0 ? "yearly" : "monthly"}</span>} */}
           </div>
           <span className="description">{plan < 0 ? "Please subscribe enterprise plan for professional use" : "Your subscription willl auto-renew on August 21,2022"}</span>
           <div className="btn_group">
@@ -139,7 +139,7 @@ const Subscription = ({usedSeats, totalSeats}) => {
             <span className="bgDescription">Mastercard</span>
             <span className="smDescription">***4578</span>
           </div>
-          <span className="description">This is the cards currently registered with us</span>
+          <span className="description">This is the card currently registered with us</span>
           <div className="btn_group">
             <Button onClick={() => setMethod(true)}>Edit</Button>
           </div>
@@ -148,7 +148,7 @@ const Subscription = ({usedSeats, totalSeats}) => {
           <span className="title">Plan summary</span>
           <div className="basic">
             <span className="chair"><img src={Chair} alt="chair" /></span>
-            <span className="bgDescription">$14.99</span>
+            <span className="bgDescription">${purchasePrice}</span>
             <span className="smDescription">per seat/month</span>
           </div>
           <span className="description">{usedSeats || '0'} / {totalSeats || '0'} seats used</span>
@@ -276,7 +276,8 @@ const Subscription = ({usedSeats, totalSeats}) => {
 const mapStateToProps = ({admin}) => {
   return {
     totalSeats: (admin.currentProject || {}).seatsPurchased,
-    usedSeats: (admin.currentProject || {}).totalInvited
+    purchasePrice: (admin.currentProject || {}).purchasePrice,
+    usedSeats: (admin.currentProject || {}).totalIdentified,
   }
 }
 

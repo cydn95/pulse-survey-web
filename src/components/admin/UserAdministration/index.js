@@ -282,7 +282,7 @@ const UserAdministration = ({
       })
     }
     if (
-      (!/^[a-zA-Z0-9\.]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(newUser.user.email))
+      (!/^([a-zA-Z0-9]+\.)+@[a-zA-Z0-9]+(\.[A-Za-z]+)+$/.test(newUser.user.email))
     ) {
       setValidation({
         email: 'Email must be valid'
