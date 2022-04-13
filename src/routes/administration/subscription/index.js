@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { faDownload, faStar, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { connect } from 'react-redux'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from 'Components/Button'
 import Input from 'Components/Input'
@@ -90,7 +91,7 @@ const pages = [
   }
 ]
 
-const Subscription = () => {
+const Subscription = ({currentProject}) => {
   const [page, setPage] = useState(0)
   return (
     <Wrapper>
@@ -104,7 +105,7 @@ const Subscription = () => {
           <div className="basic">
             <span className="star"><FontAwesomeIcon icon={faStar} color="white" /></span>
             <span className="bgDescription">Enterprise</span>
-            <span className="smDescription">$9.99/month billed monthly</span>
+            {/* <span className="smDescription">$9.99/month billed monthly</span> */}
           </div>
           <span className="description">Your subscription willl auto-renew on August 21,2022</span>
           <div className="btn_group">
@@ -119,7 +120,7 @@ const Subscription = () => {
             <span className="bgDescription">Mastercard</span>
             <span className="smDescription">***4578</span>
           </div>
-          <span className="description">This is the cards currently registered with us</span>
+          <span className="description">This is the card currently registered with us</span>
           <div className="btn_group">
             <Button>Edit</Button>
           </div>
@@ -243,4 +244,11 @@ const Subscription = () => {
   )
 }
 
-export default Subscription
+const mapStateToProps = ({ admin }) => {
+  const { currentProject } = admin
+  return {
+    currentProject,
+  }
+}
+
+export default connect(mapStateToProps, null)(Subscription)
