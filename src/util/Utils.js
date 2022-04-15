@@ -1,3 +1,5 @@
+import DOMPurify from "dompurify";
+
 export const compareDate = (str1, str2) => {
   let date1 = Date.parse(str1.split(' ')[0] + "1, " + str1.split(' ')[1])
   let date2 = Date.parse(str2.split(' ')[0] + "1, " + str2.split(' ')[1])
@@ -81,7 +83,7 @@ export const addCommas = (nStr) => {
 };
 
 export const createMarkup = (html) => {
-  return { __html: html };
+  return { __html: DOMPurify.sanitize(html) };
 };
 
 export const MONTH = (month) => {
