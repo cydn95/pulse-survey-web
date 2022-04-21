@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Input, Button } from "reactstrap";
 import queryString from "query-string";
 import ReactLoading from "react-loading";
-
+import PasswordStrengthBar from "react-password-strength-bar";
 import { setPassword, checkPasswordStatus } from "Redux/actions";
 
 import classnames from "classnames";
@@ -28,6 +28,7 @@ class SetPassword extends Component {
       privacyValidator: "",
       loading: true,
       privacy: false,
+      passwordScore: 0,
     };
   }
 
@@ -65,7 +66,7 @@ class SetPassword extends Component {
   };
 
   handleSetPassword = (e) => {
-    const { email, password, confirmPassword, token, privacy } = this.state;
+    const { email, password, confirmPassword, token, privacy, passwordScore } = this.state;
     const { setPassword, history } = this.props;
 
     if (!privacy) {
@@ -82,7 +83,7 @@ class SetPassword extends Component {
       return;
     }
 
-    if (password === "") {
+    if (password === "" || passwordScore < 4) {
       this.setState({
         passwordValidator: "error",
       });
@@ -175,24 +176,30 @@ class SetPassword extends Component {
             Create a password. You can log back in and change your answers at
             any time!
           </p>
-          <Input
-            type="password"
-            className={classnames(
-              "set-password__content--input",
-              "round-text-field",
-              passwordValidator
-            )}
-            style={{ marginBottom: 20 }}
-            name="password"
-            value={password}
-            placeholder="Password"
-            onChange={(e) => this.handleInput(e)}
-          />
-          {passwordValidator !== "" && (
+          <div style={{maxWidth: '458px', marginBottom: 20}}>
+            <Input
+              type="password"
+              className={classnames(
+                "set-password__content--input",
+                "round-text-field",
+                passwordValidator
+              )}
+              style={{ marginBottom: 5, width: '100%' }}
+              name="password"
+              value={password}
+              placeholder="Password"
+              onChange={(e) => this.handleInput(e)}
+            />
+            <PasswordStrengthBar
+                password={password}
+                onChangeScore={(score) => this.setState({passwordScore: score})}
+            />
+          </div>
+          {/* {passwordValidator !== "" && (
             <span class="set-password__content--error">
               Password is required
             </span>
-          )}
+          )} */}
           <Input
             type="password"
             className={classnames(

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Input, Button } from "reactstrap";
+import PasswordStrengthBar from "react-password-strength-bar";
 import validator from "validator";
 import queryString from "query-string";
 
@@ -29,6 +30,7 @@ const ResetPasswordLayout = ({
         resetPasswordConfirm
     }) => {
     const [password, setPassword] = useState('')
+    const [passwordScore, setPasswordScore] = useState(0)
     const [confirmPassword, setConfirmPassword] = useState('')
 
     const [passwordError, setPasswordError] = useState('')
@@ -57,13 +59,13 @@ const ResetPasswordLayout = ({
                 setConfirmPasswordError('Confirm password should be matched with password')
             }
 
-            if (password.length < 8) {
+            if (password.length < 8 || passwordScore < 4) {
                 setPasswordError('The minimum password length is 8')
             }
 
-            if (confirmPassword.length < 8) {
-                setConfirmPasswordError('The minimum confirm password length is 8')
-            }
+            // if (confirmPassword.length < 8) {
+            //     setConfirmPasswordError('The minimum confirm password length is 8')
+            // }
         }
     }
 
@@ -75,8 +77,12 @@ const ResetPasswordLayout = ({
                 </p>
                 <span className={styles.error}> {error} </span>
                 <label>Password</label>
-                <Input type="password" name="new_password" onChange={(e) => setPassword(e.target.value)} />
-                <span className={styles.error}> {passwordError} </span>
+                <Input style={{marginBottom: '5px', border: '1px solid #ff0000'}} type="password" name="new_password" onChange={(e) => setPassword(e.target.value)} />
+                <PasswordStrengthBar
+                    password={password}
+                    onChangeScore={setPasswordScore}
+                />
+                {/* <span className={styles.error}> {passwordError} </span> */}
                 <label>Confirm Password</label>
                 <Input type="password" name="confirm_new_password" onChange={(e) => setConfirmPassword(e.target.value)} />
                 <span className={styles.error}> {confirmPasswordError} </span>
