@@ -72,8 +72,13 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpe
             <span className="bgTag">Role Description</span>
             <Input value={user.projectUserRoleDesc} onChange={(value) => setUserField(idx, 'projectUserRoleDesc', value)} />
           </RoleDescription>
+          <div className="selectGroup">
+              {<TooltipComponent content="Invite a user">
+                <input checked={user.sendInvite} onChange={(e) => setUserField(idx, 'sendInvite', e.target.checked)} type="checkbox" id="invite" /><label htmlFor="invite" className="tag">Invite</label>
+              </TooltipComponent>}
+          </div>
           {((user.survey || {}).customGroup1 || (user.survey || {}).customGroup2 || (user.survey || {}).customGroup3) &&
-            <div className="selectGroup">
+            <div className="selectGroup" style={{borderLeft: '1px solid', paddingLeft: '10px'}}>
               <span className="tag">Select Group</span>
               {(user.survey || {}).customGroup1 && <TooltipComponent content={(user.survey || {}).customGroup1}>
                 <input checked={user.isCGroup1} onChange={(e) => setUserField(idx, 'isCGroup1', e.target.checked)} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">{(user.survey || {}).customGroup1}</label>
@@ -222,18 +227,22 @@ const UserCard = ({ user, teamList, shgroupList, setUserField, idx, open, setOpe
               <span className="bgTag">Role Description</span>
               <Input value={user.projectUserRoleDesc} onChange={(value) => setUserField(idx, 'projectUserRoleDesc', value)} />
             </RoleDescription>
+            {((user.survey || {}).customGroup1 || (user.survey || {}).customGroup2 || (user.survey || {}).customGroup3) &&
             <div className="selectGroup">
               <span className="tag">Select Group</span>
-              <TooltipComponent content={(user.survey || {}).customGroup1}>
-                <input checked={user.isCGroup1} onChange={(e) => setUserField(idx, 'isCGroup1', e.target.checked)} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">CG1</label>
-              </TooltipComponent>
-              <TooltipComponent content={(user.survey || {}).customGroup2}>
-                <input checked={user.isCGroup2} onChange={(e) => setUserField(idx, 'isCGroup2', e.target.checked)} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">CG2</label>
-              </TooltipComponent>
-              <TooltipComponent content={(user.survey || {}).customGroup3}>
-                <input checked={user.isCGroup3} onChange={(e) => setUserField(idx, 'isCGroup3', e.target.checked)} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">CG3</label>
-              </TooltipComponent>
-            </div>
+              {(user.survey || {}).customGroup1 && <TooltipComponent content={(user.survey || {}).customGroup1}>
+                <input checked={user.isCGroup1} onChange={(e) => setUserField(idx, 'isCGroup1', e.target.checked)} type="checkbox" id="cg1" /><label htmlFor="cg1" className="tag">{(user.survey || {}).customGroup1}</label>
+              </TooltipComponent>}
+              {(user.survey || {}).customGroup2 && <TooltipComponent content={(user.survey || {}).customGroup2}>
+                <input checked={user.isCGroup2} onChange={(e) => setUserField(idx, 'isCGroup2', e.target.checked)} type="checkbox" id="cg2" /><label htmlFor="cg2" className="tag">{(user.survey || {}).customGroup2}</label>
+              </TooltipComponent>}
+              {(user.survey || {}).customGroup3 && <TooltipComponent content={(user.survey || {}).customGroup3}>
+                <input checked={user.isCGroup3} onChange={(e) => setUserField(idx, 'isCGroup3', e.target.checked)} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">{(user.survey || {}).customGroup3}</label>
+              </TooltipComponent>}
+            </div>}
+            <TooltipComponent content="Invite a user">
+              <input checked={user.sendInvite} onChange={(e) => setUserField(idx, 'sendInvite', e.target.checked)} type="checkbox" id="cg3" /><label htmlFor="cg3" className="tag">Invite</label>
+            </TooltipComponent>
           </div>
           <ModalFooter>
             <span onClick={() => setOpen(null)}>Cancel</span>
