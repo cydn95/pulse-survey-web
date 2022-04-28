@@ -513,6 +513,18 @@ export const getTextValueAPI = (survey, tab, projectUser) => {
   );
 };
 
+export const setTagsAPI = (key, tags) => {
+  return getClient(true).post(
+    `/keytags?key=${key}`, tags
+  );
+};
+
+export const getAllTagsBySurveyAPI = (survey) => {
+  return getClient(true).get(
+    `/keytags?survey=${survey}`
+  );
+};
+
 export const getKeyThemeMenuCntAPI = (survey, projectUser) => {
   return getClient(true).get(
     `/keymenucnt?survey=${survey}&projectuser=${projectUser}`

@@ -18,7 +18,9 @@ import {
   REPORT_ADVISOR,
   REPORT_CHECK_DASHBOARD,
   REPORT_DRIVER_ANALYSIS_CNT,
-  REPORT_KEYTHEME_MENU_CNT
+  REPORT_KEYTHEME_MENU_CNT,
+  SET_KEYTHEME_TAGS,
+  GET_ALL_TAGS_BY_SURVEY,
 } from "Constants/actionTypes";
 
 export const overallSentiment = (surveyId, callback) => ({
@@ -119,4 +121,14 @@ export const driverAnalysisCnt = (surveyId, subProjectUser, startDate, endDate, 
 export const getKeyThemeMenuCnt = (surveyId, projectUserId, callback) => ({
   type: REPORT_KEYTHEME_MENU_CNT,
   payload: { surveyId, projectUserId, callback }
+})
+
+export const setKeyThemeTags = (key, tags, callback) => ({
+  type: SET_KEYTHEME_TAGS,
+  payload: { key, tags, callback }
+})
+
+export const getAllTagsBySurvey = (survey, callback) => ({
+  type: GET_ALL_TAGS_BY_SURVEY,
+  payload: { survey, callback }
 })

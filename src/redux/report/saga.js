@@ -27,6 +27,8 @@ import {
   getDriverAnalysisCntAPI,
   getKeyThemeMenuCntAPI,
   userListAPI,
+  setTagsAPI,
+  getAllTagsBySurveyAPI
 } from "../../services/axios/api";
 
 // import {} from 'Redux/admin/'
@@ -52,6 +54,8 @@ import {
   REPORT_CHECK_DASHBOARD,
   REPORT_DRIVER_ANALYSIS_CNT,
   REPORT_KEYTHEME_MENU_CNT,
+  SET_KEYTHEME_TAGS,
+  GET_ALL_TAGS_BY_SURVEY,
 } from "Constants/actionTypes";
 
 import {
@@ -241,6 +245,38 @@ const advisorAsync = async (surveyId, projectUserId) =>
   await advisorAPI(surveyId, projectUserId)
     .then((result) => result)
     .catch((error) => error);
+
+const setTagsAsync = async (key, tags) =>
+  await setTagsAPI(key, tags)
+    .then((result) => result)
+    .catch((error) => error);
+    
+const getAllTagsBySurveyAsync = async (survey) =>
+  await getAllTagsBySurveyAPI(survey)
+    .then((result) => result)
+    .catch((error) => error);
+
+function* setKeyThemeTags({ payload }) {
+  try {
+    const { key, tags, callback } = payload;
+    const result = yield call(setTagsAsync, key, tags);
+
+    if (result.status === 200) {
+      callback(true);
+    }
+  } catch (error) { }
+}
+
+function* getAllTagsBySurvey({ payload }) {
+  try {
+    const { survey, callback } = payload;
+    const result = yield call(getAllTagsBySurveyAsync, survey);
+
+    if (result.status === 200) {
+      callback(true, result.data);
+    }
+  } catch (error) { }
+}
 
 function* getOverallSentiment({ payload }) {
   try {
@@ -1240,6 +1276,14 @@ export function* watchKeyThemeMenuCnt() {
   yield takeEvery(REPORT_KEYTHEME_MENU_CNT, getKeyThemeMenuCnt);
 }
 
+export function* watchSetKeyThemTags() {
+  yield takeEvery(SET_KEYTHEME_TAGS, setKeyThemeTags);
+}
+
+export function* watchGetAllTagsBySurvey() {
+  yield takeEvery(GET_ALL_TAGS_BY_SURVEY, getAllTagsBySurvey);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetOverallSentiment),
@@ -1261,5 +1305,7 @@ export default function* rootSaga() {
     fork(watchAdvisorReport),
     fork(watchCheckDashboard),
     fork(watchKeyThemeMenuCnt),
+    fork(watchSetKeyThemTags),
+    fork(watchGetAllTagsBySurvey),
   ]);
 }

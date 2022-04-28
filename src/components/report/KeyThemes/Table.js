@@ -1,9 +1,12 @@
-import React, {useState, useRef, useCallback} from "react";
+import React, {useState, useRef, useCallback, useEffect} from "react";
 import { connect } from "react-redux";
 import ReactTags from 'react-tag-autocomplete';
+import Button from 'Components/Button'
+import { setKeyThemeTags } from 'Redux/actions'
 
 import classnames from "classnames";
 import styles from "./styles_table.scss";
+import { getAllTagsBySurvey } from "../../../redux/report/actions";
 
 const PercentBar = ({ value, className = "" }) => {
   return (
@@ -21,9 +24,8 @@ const PercentBar = ({ value, className = "" }) => {
   );
 };
 
-const KeyThemesTable = ({ title = "", data = [], onVote, className, projectId, projectList }) => {
-  const total = data.reduce((a, b) => ({ freq: a.freq + b.freq }));
-  const totalFreq = total ? total.freq : 0;
+const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, projectId, projectList, setKeyThemeTags, getAllTagsBySurvey, surveyId }) => {
+  const [totalFreq, setTotalFreq] = useState(0)
   const [open, setOpen] = useState(-1)
   const [tags, setTags] = useState([])
   const [suggestions, setSuggestions] = useState([
@@ -34,6 +36,15 @@ const KeyThemesTable = ({ title = "", data = [], onVote, className, projectId, p
     { id: 5, name: "Lemons" },
     { id: 6, name: "Apricots" }
   ])
+  
+  useEffect(() => {
+    const total = data.reduce((a, b) => ({ freq: a.freq + b.freq }));
+    setTotalFreq(total ? total.freq : 0);
+    getAllTagsBySurvey(surveyId, callback1)
+  }, [data])
+  useEffect(() => {
+    setTags((data[open] || {}).tags || [])
+  }, [open])
   const reactTags = useRef()
 
   const onDelete = useCallback((tagIndex) => {
@@ -43,6 +54,24 @@ const KeyThemesTable = ({ title = "", data = [], onVote, className, projectId, p
   const onAddition = useCallback((newTag) => {
     setTags([...tags, newTag])
   }, [tags])
+
+  const callback1 = useCallback((success, data) => {
+    console.log(data)
+   if (success) {
+     setSuggestions(data)
+   } 
+  })
+
+  const callback = useCallback((success) => {
+    if (success) {
+      let temp = [...data]
+      temp[open].tags = tags
+      setData(temp)
+      setOpen(-1)
+    }
+    else
+      console.log('something went wrong')
+  })
 
   return (
     <div className={classnames(styles["keythemes-table-root"], className)}>
@@ -188,7 +217,7 @@ const KeyThemesTable = ({ title = "", data = [], onVote, className, projectId, p
                   <span>{d.downvoteCount}</span>
                 </div>
                 {projectList.filter(p => p.id.toString() === projectId)[0].projectAdmin && <div
-                  style={{ width: "12%", justifyContent: 'center', position: 'relative', zIndex: '2' }}
+                  style={{ width: "12%", justifyContent: 'center', position: 'relative', cursor: 'pointer' }}
                   className={styles["keythemes-table-content-col"]}
                   onClick={() => setOpen(index)}
                 >
@@ -200,7 +229,7 @@ const KeyThemesTable = ({ title = "", data = [], onVote, className, projectId, p
                       </g>
                     </g>
                   </svg>
-                  <span>{d.downvoteCount}</span>
+                  <span>{(d.tags || []).length}</span>
                 </div>}
               </div>
             </React.Fragment>
@@ -210,6 +239,7 @@ const KeyThemesTable = ({ title = "", data = [], onVote, className, projectId, p
           <div
             style={{
               position: 'absolute', 
+              zIndex: '100',
               width: '100%', 
               height: '100%', 
               background: 'rgba(0,0,0,0.3)', 
@@ -228,27 +258,42 @@ const KeyThemesTable = ({ title = "", data = [], onVote, className, projectId, p
                 width: '80%',
                 maxWidth: '400px',
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}
               onClick={(e) => e.stopPropagation()}
             >
+              <h3 style={{width: '100%', marginBottom: '16px'}}>Response: {data[open].key}</h3>
               <ReactTags
                 ref={reactTags}
                 tags={tags}
                 suggestions={suggestions}
                 // suggestionsFilter={(suggestion, query) => {
                 //   console.log(tags)
-                //   return suggestion.name.includes(query) && !(tags.length > 0 && tags.filter(tag => tag.name === suggestion.name))
+                //   return suggestion.name.includes(query) && !tags.filter(tag => tag.name === suggestion.name)
                 // }}
-                suggestionComponent={({ item, query }) =>
-                  <span id={item.id} className={item.name === query ? 'match' : 'no-match'} onClick={() => onAddition(item)}>
-                    {item.name}
-                  </span>}
                 onDelete={onDelete}
                 onAddition={onAddition}
                 allowNew={true}
               />  
+              <div
+                style={{
+                  width: '100%',
+                  marginTop: '10px',
+                  paddingTop: '10px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  gap: '20px',
+                }}
+              >
+                <span onClick={() => setOpen(-1)} style={{cursor: 'pointer'}}>Cancel</span>
+                <Button className="btn"
+                  onClick={() => {
+                    setKeyThemeTags(data[open].key, tags, callback)
+                  }}>Save</Button>
+              </div>
             </div>
           </div>
           }
@@ -259,12 +304,16 @@ const KeyThemesTable = ({ title = "", data = [], onVote, className, projectId, p
 
 const mapStateToProps = ({ settings, authUser }) => {
   const { projectList } = settings;
-  const { projectId } = authUser;
+  const { projectId, surveyId } = authUser;
 
   return {
     projectId,
     projectList,
+    surveyId,
   };
 };
 
-export default connect(mapStateToProps, null)(KeyThemesTable);
+export default connect(mapStateToProps, {
+  setKeyThemeTags,
+  getAllTagsBySurvey
+})(KeyThemesTable);

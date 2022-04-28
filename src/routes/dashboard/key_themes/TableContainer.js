@@ -48,7 +48,7 @@ const TableContainer = ({
             color={"grey"}
           />
         ) : data.length > 0 ? (
-          <KeyThemesTable data={data} onVote={handleVote} />
+          <KeyThemesTable data={data} onVote={handleVote} setData={setData} />
         ) : (
           <h2 className={styles["keythemes-content-nodata"]}>No Data</h2>
         )}
