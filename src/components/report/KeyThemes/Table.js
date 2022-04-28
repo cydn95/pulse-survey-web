@@ -28,14 +28,7 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
   const [totalFreq, setTotalFreq] = useState(0)
   const [open, setOpen] = useState(-1)
   const [tags, setTags] = useState([])
-  const [suggestions, setSuggestions] = useState([
-    { id: 1, name: "Apples" },
-    { id: 2, name: "Pears" },
-    { id: 3, name: "Bananas" },
-    { id: 4, name: "Mangos" },
-    { id: 5, name: "Lemons" },
-    { id: 6, name: "Apricots" }
-  ])
+  const [suggestions, setSuggestions] = useState([])
   
   useEffect(() => {
     const total = data.reduce((a, b) => ({ freq: a.freq + b.freq }));
@@ -56,7 +49,6 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
   }, [tags])
 
   const callback1 = useCallback((success, data) => {
-    console.log(data)
    if (success) {
      setSuggestions(data)
    } 
@@ -100,7 +92,9 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
         >
           DISLIKE(DOWNVOTE)
         </div>
-        {projectList.filter(p => p.id.toString() === projectId)[0].projectAdmin && <div
+        {console.log('projectList', projectList)}
+        {console.log('projectId', projectId)}
+        {(projectList.filter(p => p.id.toString() === projectId.toString())[0] || {}).projectAdmin && <div
           className={styles["keythemes-table-header-item"]}
           style={{ width: "12%", justifyContent: 'center' }}
         >
@@ -216,7 +210,9 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
                   />
                   <span>{d.downvoteCount}</span>
                 </div>
-                {projectList.filter(p => p.id.toString() === projectId)[0].projectAdmin && <div
+                {console.log('projectList', projectList)}
+                {console.log('projectId', projectId)}
+                {(projectList.filter(p => p.id.toString() === projectId.toString())[0] || {}).projectAdmin && <div
                   style={{ width: "12%", justifyContent: 'center', position: 'relative', cursor: 'pointer' }}
                   className={styles["keythemes-table-content-col"]}
                   onClick={() => setOpen(index)}
