@@ -148,7 +148,7 @@ const Subscription = ({usedSeats, totalSeats, purchasePrice}) => {
           <span className="title">Plan summary</span>
           <div className="basic">
             <span className="chair"><img src={Chair} alt="chair" /></span>
-            <span className="bgDescription">${purchasePrice}</span>
+            <span className="bgDescription">${purchasePrice || "14.99"}</span>
             <span className="smDescription">per seat/month</span>
           </div>
           <span className="description">{usedSeats || '0'} / {totalSeats || '0'} seats used</span>
