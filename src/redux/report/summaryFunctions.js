@@ -103,7 +103,7 @@ export const getOverallTrends = (resData, shGroupList, projectId) => {
       r.value.push(temp[key])
       return key
     })
-    console.log('r', r)
+    // console.log('r', r)
     return r
   })
   let prevValue

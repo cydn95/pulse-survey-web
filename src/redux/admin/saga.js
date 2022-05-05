@@ -131,7 +131,7 @@ function* adminSetActive({ payload }) {
   try {
     const { surveyId, data, callback } = payload
     const result = yield call(putAdminProjectListAsync, surveyId, data)
-    console.log("result", result)
+    // console.log("result", result)
     if (result.status === 200) {
       callback(result.data)
     }
@@ -157,7 +157,7 @@ function* adminAddSurvey({ payload }) {
   try {
     const { data, callback } = payload
     const result = yield call(adminAddSurveyAsync, data)
-    console.log('result', result)
+    // console.log('result', result)
     callback(true)
   } catch (error) {
     const { callback } = payload
@@ -261,7 +261,7 @@ function* adminSurveyConfiguration({ payload }) {
   try {
     const { surveyId } = payload
     const result = yield call(getAdminSurveyConfigurationAsync, surveyId)
-    console.log('result', result)
+    // console.log('result', result)
     if (result.status === 200) {
       yield put(adminSurveyConfigurationSuccess(result.data))
     }
@@ -274,7 +274,7 @@ function* adminSendBulkInvitation({ payload }) {
   try {
     const { data, callback } = payload
     const result = yield call(adminBulkInvitationSendAsync, data)
-    console.log('result', result)
+    // console.log('result', result)
     if (result.status === 201) {
       callback(true)
     }
@@ -288,7 +288,7 @@ function* adminBulkArchiveUser({ payload }) {
   try {
     const { data, callback } = payload
     const result = yield call(adminBulkArchiveUserAsync, data)
-    console.log('result', result)
+    // console.log('result', result)
     if (result.status === 201) {
       callback(true)
     }
@@ -315,7 +315,7 @@ function* adminDeleteMoreInfoPage({ payload }) {
   const {id, callback, index} = payload
   try {
     const result = yield call(adminDeleteMoreInfoPageAsync, id)
-    console.log('result', result)
+    // console.log('result', result)
     if(result.status === 204) {
       callback(true, index)
     } else {
@@ -334,7 +334,7 @@ function* adminDeleteQuestion({ payload }) {
   const {filter, questionId} = payload
   try {
     const result = yield call(adminDeleteQuestionAsync, questionId, filter)
-    console.log('result', result)
+    // console.log('result', result)
     if(result.status === 204) {
       yield put(adminDeleteQuestionSuccess(filter, questionId))
     }

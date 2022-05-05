@@ -838,7 +838,7 @@ const UserAdministration = ({
                   setConfirm(true)
               }}><FontAwesomeIcon icon={faArchive} className={styles.icon} color={selected.includes(undefined) && 'gray'} />Archive</span>
             </div>
-            {console.log('selected', selected)}
+            {/* {console.log('selected', selected)} */}
             {selected.includes(undefined) && <div className={styles.selectError}>You selected unsaved members</div>}
           </div>}
         </Fragment>

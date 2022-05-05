@@ -118,8 +118,8 @@ const Projects = ({
   }
 
   const onSave = () => {
-    console.log('currentProject', currentProject)
-    console.log('userList', userList)
+    // console.log('currentProject', currentProject)
+    // console.log('userList', userList)
     if ((currentProject.surveyTitle || '').length < 2 || (currentProject.surveyTitle || '').length > 200) {
       setCurrentStep(0);
       setValidateError({ pname: 'Project Name must be a minimum of 2 characters and a maximum of 200 charactres.' })

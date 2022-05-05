@@ -173,9 +173,9 @@ export default (state = INIT_STATE, action) => {
           return d
         }
       })
-      console.log('data', temp)
-      console.log('value', value)
-      console.log('index', index)
+      // console.log('data', temp)
+      // console.log('value', value)
+      // console.log('index', index)
       return {
         ...state,
         [filterText2]: [
@@ -184,7 +184,7 @@ export default (state = INIT_STATE, action) => {
       }
     case ADMIN_DELETE_QUESTION:
       const { questionId } = action.payload
-      console.log('quse', questionId)
+      // console.log('quse', questionId)
       if(questionId) {
         return {
           ...state
@@ -196,10 +196,10 @@ export default (state = INIT_STATE, action) => {
       } else {
         filterText3 = 'aoQuestionList'
       }
-      console.log(filterText3, action.payload.questionText)
-      console.log('filterText3', state[filterText3])
+      // console.log(filterText3, action.payload.questionText)
+      // console.log('filterText3', state[filterText3])
       let temp2 = [...state[filterText3]].filter(q => q.questionText !== action.payload.questionText)
-      console.log('temp2', temp2)
+      // console.log('temp2', temp2)
       return {
         ...state,
         [filterText3]: [
@@ -214,9 +214,9 @@ export default (state = INIT_STATE, action) => {
         filterText4 = 'aoQuestionList'
       }
       temp2 = [...state[filterText4]].filter(q => q.id !== action.payload.questionId)
-      console.log('temp2', temp2)
-      console.log('filterText4', filterText4)
-      console.log('questionId', action.payload.questionId)
+      // console.log('temp2', temp2)
+      // console.log('filterText4', filterText4)
+      // console.log('questionId', action.payload.questionId)
       return {
         ...state,
         [filterText4]: [

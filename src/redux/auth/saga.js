@@ -214,7 +214,7 @@ function* setSurveyID({ payload }) {
       const result = yield call(setSurveyIDAsync, userId, surveyId);
       
       if (result.data && result.data.length > 0) {
-        console.log('result.data', result.data)
+        // console.log('result.data', result.data)
         localStorage.setItem("surveyId", surveyId);
         localStorage.setItem("surveyTitle", result.data[0].survey.surveyTitle);
         localStorage.setItem("surveyUserId", result.data[0].id);

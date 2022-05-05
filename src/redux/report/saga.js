@@ -588,20 +588,20 @@ function* getEngagementTrend({ payload }) {
         totalStakeholderCnt.shgroup[sg] = 0
     })
     
-    console.log('shgroupsId', shGroupId)
-    console.log('teamId', teamId)
-    console.log('orgId', orgId)
-    console.log('segments', segments)
+    // console.log('shgroupsId', shGroupId)
+    // console.log('teamId', teamId)
+    // console.log('orgId', orgId)
+    // console.log('segments', segments)
     if ((segments.shgroups || []).filter(d => d.segmentName.toString() === shGroupId.toString()).length > 0) {
       let data = (segments.shgroups || []).filter(d => d.segmentName.toString() === shGroupId.toString())[0]
-      console.log('data.teams', data)
+      // console.log('data.teams', data)
       if (data.permissionType === 'All Exception') {
         Object.keys(totalStakeholderCnt.shgroup).map(ts => {
           if (data.shGroups.includes(originShGroupList.filter(os => os.SHGroupName === ts)[0].id))
           delete totalStakeholderCnt.shgroup[ts]
         })
         Object.keys(totalStakeholderCnt.team).map(tt => {
-          console.log(tt, data.teams.includes(tt))
+          // console.log(tt, data.teams.includes(tt))
           if (data.teams.includes(tt))
             delete totalStakeholderCnt.team[tt]
         })
@@ -687,7 +687,7 @@ function* getEngagementTrend({ payload }) {
         })
       }
     }
-    console.log('total sh cnt', totalStakeholderCnt);
+    // console.log('total sh cnt', totalStakeholderCnt);
 
     if (chartType === "SHGroup") {
 

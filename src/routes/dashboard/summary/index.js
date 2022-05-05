@@ -121,9 +121,9 @@ const ReportSummary = ({
         } else if (data.permissionType === 'Only') {
           temp = temp.filter(q => (data.shGroups || []).includes((q.subProjectUser.shGroup || {}).id) && (data.teams || []).includes((q.subProjectUser.team || {}).name) && (data.organizations || []).includes(q.subProjectUser.projectOrganization))
         }
-        console.log('data', data)
-        console.log('data', userteam)
-        console.log('data', segments.teams)
+        // console.log('data', data)
+        // console.log('data', userteam)
+        // console.log('data', segments.teams)
       }
       if ((segments.organizations || []).length > 0) {
         let data = ((segments.organizations || []).filter(org => org.segmentName === userorg)[0] || {})
@@ -134,7 +134,7 @@ const ReportSummary = ({
         }
       }
     }
-    console.log('temp', temp)
+    // console.log('temp', temp)
     const feedbackSummaryRet = getFeedbackSummaryByShGroup(temp,);
     // console.log('overallTrendRet', overallTrendRet)
     // console.log('overallTrendKey', overallTrendKey)

@@ -610,7 +610,7 @@ const adminReportAccessListAPI = (surveyId) => {
 };
 
 const postAdminSurveyAddAPI = (data) => {
-  console.log('data', data)
+  // console.log('data', data)
   return getClient(true).post("/adminsurveyadd/", data, {
     headers: { "Content-Type": "multipart/form-data" },
   });
@@ -623,7 +623,7 @@ const adminUploadImagesAPI = (data) => {
 }
 
 const postAdminSurveyEditAPI = (data) => {
-  console.log('data', data)
+  // console.log('data', data)
   return getClient(true).post("/adminsurveyedit/", data);
 };
 
@@ -636,7 +636,7 @@ const adminSurveyConfigurationAPI = (surveyId) => {
 }
 
 const adminBulkInvitationSendAPI = (ids) => {
-  console.log('ids', `[${ids}]`)
+  // console.log('ids', `[${ids}]`)
   return getClient(true).post("/adminbulkinvitationsend", { ids: `[${ids}]` })
 }
 

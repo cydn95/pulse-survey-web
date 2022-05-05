@@ -29,11 +29,11 @@ const Row = ({
       setSegments((currentProject.segments || {})['teams'] || [])
     } else {
       setFilter('organizations')
-      console.log('orgadfdafd', organizationList)
+      // console.log('orgadfdafd', organizationList)
       setList(organizationList)
       setSegments((currentProject.segments || {})['organizations'] || [])
     }
-    console.log('currentProject', currentProject)
+    // console.log('currentProject', currentProject)
   }, [type, currentProject])
 
   const [filter, setFilter] = useState('shgroups')
@@ -41,9 +41,9 @@ const Row = ({
   const [list, setList] = useState([])
   const setOpen = () => {
     let temp = [...segments]
-    console.log(temp.length, list.length)
-    console.log(temp, list)
-    console.log(temp.length >= list.length)
+    // console.log(temp.length, list.length)
+    // console.log(temp, list)
+    // console.log(temp.length >= list.length)
     if (temp.length >= list.length || (temp.length !== 0 && (!temp[temp.length - 1].segmentName || temp[temp.length - 1].segmentName === ''))) {
       return;
     }

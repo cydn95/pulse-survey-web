@@ -360,7 +360,7 @@ const ProjectSetup = ({
                     setError('')
                     setOpen(false)
                     setCrrPage((currentProject.moreInfo || []).length)
-                    console.log('dd', currentProject.moreInfo)
+                    // console.log('dd', currentProject.moreInfo)
                   }
                 }} />
             </div>

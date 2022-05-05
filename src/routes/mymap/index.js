@@ -229,7 +229,7 @@ class MyMap extends React.Component {
       (shCategoryList.length > 0 || projectMapShCategoryList.length > 0) &&
       aoQuestionList.length > 0
     ) {
-      console.log('here')
+      // console.log('here')
 
       // const totalQuestions = aoQuestionList.length;
       // console.log(aoQuestionList);
@@ -501,7 +501,7 @@ class MyMap extends React.Component {
             if (userList[i].id === mapUser.projectUserId) {
               for (let j = 0; j < userList[i].shCategory.length; j++) {
                 if (userList[i].shCategory[j] === mapUser.shCategory) {
-                  console.log(userList[i].projectOrganization && userList[i].projectOrganization !== '')
+                  // console.log(userList[i].projectOrganization && userList[i].projectOrganization !== '')
                   const organizationName = (userList[i].projectOrganization && userList[i].projectOrganization !== '') ? userList[i].projectOrganization : userList[i].user.organization.name;
 
                   individualUser.id = `S_${userList[i].user.id}_SHC_${userList[i].shCategory[j]}`;
@@ -614,8 +614,8 @@ class MyMap extends React.Component {
         }
       }
 
-      console.log('myMapStakeholderList', myMapStakeholderList)
-      console.log('projectMapStakeholderList', projectMapStakeholderList)
+      // console.log('myMapStakeholderList', myMapStakeholderList)
+      // console.log('projectMapStakeholderList', projectMapStakeholderList)
 
       this.setState({
         aoQuestionList,
@@ -650,7 +650,7 @@ class MyMap extends React.Component {
   };
 
   callbackAddNewStakeholder = (code) => {
-    console.log('code', code);
+    // console.log('code', code);
     if (code === 400) {
       NotificationManager.error(
         "Stakeholder is already existed",
@@ -745,7 +745,7 @@ class MyMap extends React.Component {
             break;
           }
         }
-        console.log('new', newShCategory);
+        // console.log('new', newShCategory);
         if (!bExist) {
           this.myMapProjectUserList.push({
             projectUserId: newProjectUserId,

@@ -50,7 +50,7 @@ const CarouselContainer = ({
   const callback = (res) => {
     setLoading(false);
     setData(res);
-    console.log('res', res)
+    // console.log('res', res)
   };
 
   useEffect(() => {
