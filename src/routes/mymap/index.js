@@ -1268,9 +1268,9 @@ class MyMap extends React.Component {
             <TopNav history={history} menuTitle="My Map">
               {screen === "aosurvey" && (
                 <div className={styles.section}>
-                  <div className={styles["graph-toggle"]}>
+                  {/* <div className={styles["graph-toggle"]}> */}
                     <h2 className={styles["project-name"]}>{projectTitle}</h2>
-                  </div>
+                  {/* </div> */}
                 </div>
               )}
               {screen !== "aosurvey" && (

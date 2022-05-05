@@ -50,7 +50,7 @@ const FlaggedResponses = ({ project, surveyId, flaggedResponseList, setVisible, 
   }, [surveyId])
 
   const callback = (data) => {
-    console.log(data)
+    // console.log(data)
     setLoading(false)
     setResponses(data)
   }

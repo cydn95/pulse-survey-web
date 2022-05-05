@@ -449,10 +449,10 @@ const UserAdministration = ({
         <p>Team</p>
         <Select className={styles.select} selected={(newUser.team || {}).name} setSelected={(item) => {
           let temp = { ...newUser }
-          console.log('temp', temp)
-          console.log('item', item)
+          // console.log('temp', temp)
+          // console.log('item', item)
           temp.team = teamList.filter(team => team.name === item)[0]
-          console.log('temp', temp)
+          // console.log('temp', temp)
           setNewUser(temp)
         }} items={teamList.map(team => team.name)} />
         <p className={styles.error}>{validation.team}</p>

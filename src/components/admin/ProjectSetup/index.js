@@ -59,7 +59,7 @@ const ProjectSetup = ({
 
   useEffect(() => {
     if (spanRef.current) {
-      console.log(spanRef.current.offsetWidth)
+      // console.log(spanRef.current.offsetWidth)
       setWidth(spanRef.current.offsetWidth)
     }
   }, [currentProject])
@@ -69,7 +69,7 @@ const ProjectSetup = ({
     {
       let temp = [...currentProject.moreInfo];
       temp.splice(index, 1)
-      console.log('here', temp)
+      // console.log('here', temp)
       if (index <= crrPage && crrPage > 0) {
         setCrrPage(crrPage - 1)
       }

@@ -104,7 +104,7 @@ const ReportSummary = ({
   ) => {
     setFeedbackSummaryLoading(false);
     let temp = [...feedbackSummaryResultData]
-    console.log('temp', temp)
+    // console.log('temp', temp)
     if(segments) {
       if ((segments.shgroups || []).length > 0) {
         let data = ((segments.shgroups || []).filter(shgroup => shgroup.segmentName.toString() === shGroupId.toString())[0] || {})

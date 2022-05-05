@@ -36,7 +36,7 @@ const UserGrouping = ({
   const [dashboardThreshold, setDashboardThreshold] = useState(3)
   const [edit, setEdit] = useState(-1)
   React.useEffect(() => {
-    console.log(currentProject)
+    // console.log(currentProject)
   })
   const addNewShGroup = () => {
     if (newShGroup.SHGroupName && newShGroup.responsePercent) {
