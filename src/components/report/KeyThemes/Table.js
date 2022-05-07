@@ -40,12 +40,16 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
   }, [open])
   const reactTags = useRef()
 
-  const onDelete = useCallback((tagIndex) => {
-    setTags(tags.filter((_, i) => i !== tagIndex))
+  const onDelete = useCallback((tagIndex, idx) => {
+    let temp = [...tags]
+    temp[idx].tags = temp[idx].tags.filter((_, i) => i !== tagIndex)
+    setTags(temp)
   }, [tags])
 
-  const onAddition = useCallback((newTag) => {
-    setTags([...tags, newTag])
+  const onAddition = useCallback((newTag, idx) => {
+    let temp = [...tags]
+    temp[idx].tags = [...temp[idx].tags, newTag]
+    setTags(temp)
   }, [tags])
 
   const callback1 = useCallback((success, data) => {
@@ -92,8 +96,8 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
         >
           DISLIKE(DOWNVOTE)
         </div>
-        {console.log('projectList', projectList)}
-        {console.log('projectId', projectId)}
+        {/* {console.log('projectList', projectList)}
+        {console.log('projectId', projectId)} */}
         {(projectList.filter(p => p.id.toString() === projectId.toString())[0] || {}).projectAdmin && <div
           className={styles["keythemes-table-header-item"]}
           style={{ width: "12%", justifyContent: 'center' }}
@@ -210,8 +214,6 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
                   />
                   <span>{d.downvoteCount}</span>
                 </div>
-                {console.log('projectList', projectList)}
-                {console.log('projectId', projectId)}
                 {(projectList.filter(p => p.id.toString() === projectId.toString())[0] || {}).projectAdmin && <div
                   style={{ width: "12%", justifyContent: 'center', position: 'relative', cursor: 'pointer' }}
                   className={styles["keythemes-table-content-col"]}
@@ -225,7 +227,7 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
                       </g>
                     </g>
                   </svg>
-                  <span>{(d.tags || []).length}</span>
+                  <span>{(d.tags.filter(tag => (tag.tags || []).length > 0) || []).length}</span>
                 </div>}
               </div>
             </React.Fragment>
@@ -234,8 +236,8 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
         {open >= 0 &&
           <div
             style={{
-              position: 'absolute', 
-              zIndex: '100',
+              position: 'fixed', 
+              zIndex: '1000',
               width: '100%', 
               height: '100%', 
               background: 'rgba(0,0,0,0.3)', 
@@ -251,16 +253,45 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
               style={{
                 background: 'white',
                 padding: '20px',
-                width: '80%',
-                maxWidth: '400px',
+                width: '60%',
+                minWidth: '300px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                height: '80%'
               }}
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 style={{width: '100%', marginBottom: '16px'}}>Response: {data[open].key}</h3>
+              {tags.length > 0 ? 
+              <div style={{width: '100%', display: 'flex', flexDirection: 'column', gap: '15px', overflow: 'hidden'}}>
+                <div style={{display: 'flex', gap: '15px'}}>
+                  <h5 style={{flex: '1', maxWidth: '140px'}}>Response</h5>
+                  <h5 style={{flex: '2'}}>Tags</h5>
+                </div>
+                <div style={{overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '5px'}}>
+                  {tags.map((tag, idx) => 
+                    <div style={{display: 'flex', gap: '15px', alignItems: 'center'}}>
+                      <span style={{flex: '1', maxWidth: '140px'}}>{tag.topicName}</span>
+                      <span style={{flex: '2'}}>
+                        <ReactTags
+                          ref={reactTags}
+                          tags={(tag.tags || [])}
+                          suggestions={suggestions}
+                          // suggestionsFilter={(suggestion, query) => {
+                          //   console.log(tags)
+                          //   return suggestion.name.includes(query) && !tags.filter(tag => tag.name === suggestion.name)
+                          // }}
+                          onDelete={(tagIndex) => onDelete(tagIndex, idx)}
+                          onAddition={(newTag) => onAddition(newTag, idx)}
+                          allowNew={true}
+                        />  
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div> : <h2>No data</h2>}
+              {/* <h3 style={{width: '100%', marginBottom: '16px'}}>Response: {data[open].key}</h3>
               <ReactTags
                 ref={reactTags}
                 tags={tags}
@@ -272,7 +303,7 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
                 onDelete={onDelete}
                 onAddition={onAddition}
                 allowNew={true}
-              />  
+              />   */}
               <div
                 style={{
                   width: '100%',

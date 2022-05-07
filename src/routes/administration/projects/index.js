@@ -187,9 +187,9 @@ const Projects = ({
       seatsPurchased: currentProject.seatsPurchased
     }
     let form_data = new FormData();
-    console.log('data', data)
+    // console.log('data', data)
     if (surveyId) {
-      console.log('server_url', serverUrl)
+      // console.log('server_url', serverUrl)
       form_data.append("survey", currentProject.id)
       if(currentProject.companyLogo)
         form_data.append("companyLogo", typeof currentProject.companyLogo === 'string' ? currentProject.companyLogo.replace(`${serverUrl}/media/`, ''): currentProject.companyLogo)
@@ -197,7 +197,7 @@ const Projects = ({
         form_data.append("projectLogo", typeof currentProject.projectLogo === 'string' ? currentProject.projectLogo.replace(`${serverUrl}/media/`, ''): currentProject.projectLogo)
       form_data.append("video", currentProject.video)
       for ( let d in (currentProject.myMap || [])) {
-        console.log(d)
+        // console.log(d)
         if(currentProject.myMap[d].id) {
           form_data.append(currentProject.myMap[d].id, currentProject.myMap[d].icon)
         }
@@ -207,7 +207,7 @@ const Projects = ({
         if(currentProject.myMap[d].id)
           form_data.append(currentProject.myMap[d].id, currentProject.myMap[d].icon)
       }
-      console.log('form_data', form_data)
+      // console.log('form_data', form_data)
       updateSurvey(surveyId, data, savedCallback)
       uploadImages(form_data, savedCallback2)
     } else {
