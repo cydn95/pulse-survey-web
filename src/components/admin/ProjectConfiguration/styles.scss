@@ -198,6 +198,11 @@
             letter-spacing: normal;
             text-align: center;
             color: #000;
+            &.label {
+              display: flex;
+              width: 153px;
+              // justify-content: flex-end;
+            }
           }
           .completion_input {
             width: 82px;

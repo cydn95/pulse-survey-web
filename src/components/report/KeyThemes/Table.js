@@ -42,13 +42,35 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
 
   const onDelete = useCallback((tagIndex, idx) => {
     let temp = [...tags]
-    temp[idx].tags = temp[idx].tags.filter((_, i) => i !== tagIndex)
+    temp = temp.map(d => {
+      if (d.topicName === temp[idx].topicName)
+      {
+        return {
+          ...d,
+          tags: d.tags.filter((_, i) => i !== tagIndex)
+        }
+      } else {
+        return d
+      }
+    })
+    // temp[idx].tags = temp[idx].tags.filter((_, i) => i !== tagIndex)
     setTags(temp)
   }, [tags])
 
   const onAddition = useCallback((newTag, idx) => {
     let temp = [...tags]
-    temp[idx].tags = [...temp[idx].tags, newTag]
+    temp = temp.map(d => {
+      if (d.topicName === temp[idx].topicName)
+      {
+        return {
+          ...d,
+          tags: [...d.tags, newTag]
+        }
+      } else {
+        return d
+      }
+    })
+    // temp[idx].tags = [...temp[idx].tags, newTag]
     setTags(temp)
   }, [tags])
 
@@ -160,6 +182,20 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
                     />
                     <span>{d.downvoteCount}</span>
                   </div>
+                  {(projectList.filter(p => p.id.toString() === projectId.toString())[0] || {}).projectAdmin && <div
+                    className={styles["keythemes-table-content-mobile-vote"]}
+                    onClick={() => setOpen(index)}
+                  >
+                    <svg style={{marginRight: '10px'}} width={20} version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" enableBackground="new 0 0 512 512">
+                      <g>
+                        <g>
+                          <path d="m121.5,64.2c-31.7,0-57.3,25.7-57.3,57.3 0,31.7 25.7,57.3 57.3,57.3 31.7,0 57.3-25.7 57.3-57.3 0.1-31.7-25.6-57.3-57.3-57.3zm0,94.3c-20.4,0-37-16.6-37-37s16.6-37 37-37c20.4,0 37,16.6 37,37s-16.5,37-37,37z"/>
+                          <path d="m244.5,29.8c-10.4-11.5-25-17.7-40.7-17.7l-107.3-1.1c-22.9,0-44.8,8.3-60.5,25-16.7,15.7-25,37.6-25,60.5l1,107.4c1,14.6 6.3,29.2 17.7,40.7l256.5,256.4 214.8-214.8-256.5-256.4zm40.7,442l-241.9-241.9c-7.3-7.3-11.5-16.7-11.5-27.1l-1-106.3c0-16.7 7.3-33.4 18.8-45.9 12.5-12.5 29.2-19.8 46.9-19.8l106.3,1c10.4,0 19.8,4.2 27.1,11.5l241.9,241.9-186.6,186.6z"/>
+                        </g>
+                      </g>
+                    </svg>
+                    <span>{(d.tags.filter(tag => (tag.tags || []).length > 0) || []).length}</span>
+                  </div>}
                 </div>
               </div>
               {/* Mobile View end */}
@@ -259,7 +295,7 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                height: '80%'
+                maxHeight: '80%'
               }}
               onClick={(e) => e.stopPropagation()}
             >

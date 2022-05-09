@@ -48,7 +48,7 @@ const UserGrouping = ({
   const newShGroupContent = () =>
     <div className={styles.column}>
       <div className={styles.input_data}>
-        <span className={styles.text}>SH Group Name</span>
+        <span className={`${styles.text} ${styles.label}`}>SH Group Name</span>
         <Input
           className={styles.completion_input}
           value={newShGroup.SHGroupName}
@@ -56,7 +56,7 @@ const UserGrouping = ({
         />
       </div>
       <div className={styles.input_data}>
-        <span className={styles.text}>Completion Threshold(%)</span>
+        <span className={`${styles.text} ${styles.label}`}>Completion Threshold(%)</span>
         <Input
           className={styles.completion_input}
           value={newShGroup.responsePercent}
