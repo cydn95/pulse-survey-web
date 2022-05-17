@@ -66,7 +66,7 @@ const MainApp = ({ history, location, match, surveyId }) => {
   useEffect(() => {
     const handleResize = () => {
       setTimeout(() => {
-        if (window.innerWidth > 880) {
+        if (window.innerWidth > 880) { // responsive endpoint is 880
           setScreenMode("desktop");
         } else {
           setScreenMode("mobile");
@@ -85,12 +85,12 @@ const MainApp = ({ history, location, match, surveyId }) => {
 
   return (
     <div className={styles.root}>
-      {showSideBar && (
+      {showSideBar && (                                                       // sidebar
         <div className={styles.sidebar}>
           <Sidebar screenMode={screenMode} />
         </div>
       )}
-      {/* {showBottomBar && (
+      {/* {showBottomBar && (                                                 // bottom bar
         <div className={styles.bottombar}>
           <BottomBar screenMode={screenMode} />
         </div>

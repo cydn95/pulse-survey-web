@@ -23,7 +23,7 @@ import {
 	adminProjectList,
 } from "Redux/actions";
 
-const InitialPath = ({ component: Component, ...rest, authUser }) =>
+const InitialPath = ({ component: Component, authUser, ...rest }) =>
 	<Route
 		{...rest}
 		render={props =>
