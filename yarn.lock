@@ -9042,7 +9042,7 @@ just-diff@^5.0.1:
 
 "keylines@file:keylines-6.9.2-2264518215.tar.gz":
   version "6.9.2"
-  resolved "file:keylines-6.9.2-2264518215.tar.gz#ec06ba12ad4822d1df798fc0ff15fdd75f1a29d2"
+  resolved "file:keylines-6.9.2-2264518215.tar.gz#9740857fcdb83ae006fa4ff7d0d4d2874d00e622"
 
 killable@^1.0.1:
   version "1.0.1"
