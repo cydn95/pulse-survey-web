@@ -589,11 +589,12 @@ class BaseController {
     let {
       newItems /* highLevelNodes */
     } = await this.dataStore.getCoreStructure();
-    this.chart = await KeyLines.create([{
+    const charts = await KeyLines.create([{
       container: chartContainer,
       options: chartOptions,
       type: "chart"
     },]);
+    this.chart = charts[0];
     this.chart.load({
       type: "LinkChart",
       items: newItems
