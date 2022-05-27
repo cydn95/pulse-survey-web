@@ -99,8 +99,10 @@ class BaseController {
   };
 
   recalculateGlyphs = async (baseId, newItems, action = "add") => {
+    console.log("detail", baseId, this.chart);
     // if a new element has been added
     let selectedSH = this.chart.getItem(baseId);
+    console.log("getItem", this.chart.getItem);
     let propsToUpdate = [];
     if (action === "add") {
       // increate the value of the glyph of the baseId node
@@ -137,8 +139,9 @@ class BaseController {
       }
       await this.chart.animateProperties(propsToUpdate);
     }
+    console.log("selectedSH", selectedSH);
     // if the chart has expanded or
-    if (selectedSH.d.expanded) {
+    if (selectedSH && selectedSH.d.expanded) {
       newItems.forEach((item) => {
         if (this.chart.combo().isCombo(item.id)) {
           let currentComboGlyph = this.chart.getItem(item.id).g;
@@ -595,6 +598,7 @@ class BaseController {
       type: "chart"
     },]);
     this.chart = charts[0];
+    console.log("chart", this.chart);
     this.chart.load({
       type: "LinkChart",
       items: newItems
