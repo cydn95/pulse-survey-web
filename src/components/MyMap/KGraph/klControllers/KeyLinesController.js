@@ -396,6 +396,7 @@ class BaseController {
     let clickedElement = this.chart.getItem(clickedId);
     let elementsToMove = [];
     let props = [];
+    console.log("graph", this.chart, clickedId);
     let neighbours = this.chart.graph().neighbours(clickedId, {
       all: true
     });
