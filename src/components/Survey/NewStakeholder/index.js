@@ -41,7 +41,7 @@ class NewStakeholder extends Component {
       this.state = {
         stakeholder: {
           projectUserId: props.stakeholder.projectUserId,
-          projectId: props.stakeholder.projectId.id,
+          projectId: props.stakeholder.projectId,
           userId: props.stakeholder.userId.split("_")[1],
           fullName: props.stakeholder.fullName,
           teamId: props.stakeholder.teamId.split("_")[1],
@@ -159,6 +159,8 @@ class NewStakeholder extends Component {
           ...stakeholder,
           show: true,
         };
+
+        // console.log(data);
 
         this.props.onAddStakeholder(data);
       }

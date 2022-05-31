@@ -39,6 +39,31 @@ export const controlTypeText = (type) => {
   }
 };
 
+export const controlTypeTag = (type) => {
+  if (type === 1) {
+    return "Text";
+  } else if (type === 2) {
+    return "Slider";
+  } else if (type === 3) {
+    return "Two Options";
+  } else if (type === 4) {
+    return "Multi Options";
+  } else if (type === 5) {
+    return "Smart Text";
+  } else if (type === 6) {
+    return "Multi Topics";
+  }
+};
+
+export const controlTypeByTag = {
+  "Text": 1,
+  "Slider": 2,
+  "Two Options": 3,
+  "Multi Options": 4,
+  "Smart Text": 5,
+  "Multi Topics": 6,
+}
+
 export const loginErrorType = {
   AUTH_SUCCESS: 9999,
   USERNAME: 1,
@@ -137,3 +162,10 @@ export const TOPIC_LIMIT = 10;
 //       "There’s no finger-pointing here. ​We explore key themes and concepts ​while keeping your feedback anonymous. ​.​",
 //   },
 // ];
+
+export const HELP_HEADER = "Pulse is more than a survey"
+export const HELP_DESC = "This platform has been taught many of the important concepts​ involved in this project. This questionnaire is not designed to point fingers or find people to blame - but only to improve how we communicate and collaborate. ​Your responses will be anonymised and combined with others to guide managers on new focus areas to improve team/stakeholder engagement and project performance.​"
+export const ABOUT_ME = "About Me"
+export const ABOUT_ME_DESC = "What you think / feel about the project.​"
+export const ABOUT_OTHERS = "About Others"
+export const ABOUT_OTHERS_DESC = "What you assume other people are thinking​ or feeling about the project.​​"

@@ -73,7 +73,6 @@ function AvatarComponent(props) {
 AvatarComponent.defaultProps = {
   onClick: () => null,
   // conic gradient vs discrete progress
-  progressStyle: "smooth",
   userProgress: 0
 };
 
@@ -83,7 +82,6 @@ AvatarComponent.propTypes = {
   profilePicUrl: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   userProgress: PropTypes.number.isRequired,
-  progressStyle: PropTypes.oneOf(["smooth", "discrete"]),
 };
 
 export default AvatarComponent;

@@ -1,4 +1,6 @@
 import {
+  ORGANIZATION_LIST,
+  ORGANIZATION_LIST_SUCCESS,
   TEAM_LIST,
   TEAM_LIST_SUCCESS,
   SHGROUP_LIST,
@@ -20,12 +22,29 @@ import {
   UPDATE_STAKEHOLDER,
   UPDATE_STAKEHOLDER_SUCCESS,
   STAKEHOLDER_ANSWER,
+  CLEAR_COMMON,
+  SET_TEAM_LIST,
 } from "Constants/actionTypes";
+
+export const organizationList = (surveyId = 0) => ({
+  type: ORGANIZATION_LIST,
+  payload: { surveyId },
+});
+
+export const organizationListSuccess = (data) => ({
+  type: ORGANIZATION_LIST_SUCCESS,
+  payload: { data },
+});
 
 export const teamList = (projectId = 0, surveyId = 0) => ({
   type: TEAM_LIST,
   payload: { projectId, surveyId },
 });
+
+export const setTeamList = (data) => ({
+  type: SET_TEAM_LIST,
+  payload: { data }
+})
 
 export const teamListSuccess = (teamList) => ({
   type: TEAM_LIST_SUCCESS,
@@ -100,18 +119,18 @@ export const addUserSuccess = (insertedUserId) => ({
   payload: { insertedUserId },
 });
 
-export const addStakeholder = (projectId, surveyId, stakeholder, callback) => ({
+export const addStakeholder = (userId, projectId, surveyId, stakeholder, callback) => ({
   type: ADD_STAKEHOLDER,
-  payload: { projectId, surveyId, stakeholder, callback },
+  payload: { addByProjectUser_id: userId, projectId, surveyId, stakeholder, callback },
 });
 
 export const addStakeholderSuccess = () => ({
   type: ADD_STAKEHOLDER_SUCCESS,
 });
 
-export const updateStakeholder = (projectId, surveyId, stakeholder) => ({
+export const updateStakeholder = (projectId, surveyId, stakeholder, callback = null) => ({
   type: UPDATE_STAKEHOLDER,
-  payload: { projectId, surveyId, stakeholder },
+  payload: { projectId, surveyId, stakeholder, callback },
 });
 
 export const updateStakeholderSuccess = () => ({
@@ -122,3 +141,8 @@ export const stakeholderAnswer = (projectUserId, questionId) => ({
   type: STAKEHOLDER_ANSWER,
   payload: { projectUserId, questionId },
 });
+
+export const clearCommon = () => ({
+  type: CLEAR_COMMON
+});
+

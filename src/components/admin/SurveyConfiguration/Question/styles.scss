@@ -1,0 +1,381 @@
+.wrapper {
+  background-color: white;
+  border-radius: 8px;
+  border: solid 1px #dfe0eb;
+  .basic {
+    padding: 20px 25px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
+    align-items: flex-start;
+    .data {
+      .qmark {
+        width: 57px;
+        height: 57px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #62b5a6;
+        border-radius: 10px;
+      }
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: flex-start;
+      .header_mobile {
+        display: none;
+        font-family: Poppins;
+        font-size: 18px;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #000;
+      }
+      .headerPart {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        gap: 8px;
+        .hide {
+          font-family: Poppins;
+          font-size: 18px;
+          font-weight: bold;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: normal;
+          letter-spacing: normal;
+          text-align: left;
+          color: #000;
+          position: absolute;
+          opacity: 0;
+        }
+        span {
+          font-family: Montserrat;
+          font-size: 13px;
+          font-weight: 500;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: 1.38;
+          letter-spacing: normal;
+          text-align: left;
+          color: #6d6f94;
+        }
+        .header {
+          input {
+            &:focus {
+              border-bottom: solid 1px black;
+            }
+            font-family: Poppins;
+            font-size: 18px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: left;
+            color: #000;
+          }
+        }
+      }
+      .survey {
+        display: none;
+      }
+      .function_for_mobile {
+        display: none;
+      }
+      .inputs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 38px;
+        align-items: center;
+        .viewDetails {
+          display: none;
+        }
+        .input {
+          &.shGroups {
+            flex-wrap: wrap;
+          }
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          .label {
+            font-family: Montserrat;
+            font-size: 12px;
+            font-weight: 500;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.38;
+            letter-spacing: normal;
+            text-align: left;
+            color: #6d6f94;
+          }
+          .sub {
+            padding: 4px 16px;
+            border-radius: 5px;
+            background-color: #eff0f6;
+            input {
+              width: 140px;
+              font-family: Poppins;
+              font-size: 12px;
+              font-weight: 600;
+              font-stretch: normal;
+              font-style: normal;
+              line-height: normal;
+              letter-spacing: normal;
+              text-align: left;
+              color: #6d6f94;
+            }
+          }
+        }
+      }
+    }
+    .function {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      .label {
+        font-family: Poppins;
+        font-size: 13px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: right;
+        color: #5a5b5b;
+      }
+      .controlType {
+        padding: 11px 13px;
+        border-radius: 7px;
+        border: solid 1px #62b5a6;
+        color: #62b5a6;
+      }
+      .delete {
+        width: 17px;
+        height: 17px;
+        cursor: pointer;
+      }
+      .toggle {
+        transform: rotate(90deg);
+        font-size: 20px;
+        color: #6d6f94;
+        cursor: pointer;
+        &.active {
+          transform: rotate(-90deg);
+        }
+      }
+    }
+  }
+  .others {
+    padding: 25px;
+    border-top: solid 1px #dfe0eb;
+    label {
+      font-family: Montserrat;
+      font-size: 13px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.38;
+      letter-spacing: normal;
+      text-align: left;
+      color: #000;
+    }
+    .slider {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      .input {
+        width: 192px;
+        padding: 10px 16px;
+        border-radius: 8px;
+        background-color: #eff0f6;
+        input {
+          font-family: Poppins;
+          font-size: 12px;
+          font-weight: 600;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: normal;
+          letter-spacing: normal;
+          text-align: left;
+          color: #6d6f94;
+        }
+      }
+      .comment {
+        flex-grow: 1;
+        max-width: 726px;
+        .input {
+          width: unset;
+        }
+      }
+    }
+    .skipOptions {
+      .inputs {
+        display: flex;
+        gap: 22px;
+        flex-wrap: wrap;
+        .input {
+          width: 192px;
+          color: #6d6f94;
+          border-radius: 8px;
+          padding: 10px 16px;
+          background-color: #eff0f6;
+          input {
+            font-family: Poppins;
+            font-size: 12px;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: left;
+            color: #6d6f94;
+          }
+        }
+      }
+    }
+  }
+  .modal {
+    display: none;
+  }
+  .addModal {
+    padding: 20px;
+    border-top: 1px solid #cacaca;
+    max-height: 60vh;
+    .addTag {
+      padding: 10px 6px;
+      background: #eff0f6;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    .basic {
+      padding: 20px 22px;
+      .data {
+        .qmark {
+          width: 35px;
+          height: 35px;
+          img {
+            width: 17px;
+            height: 17px;
+          }
+        }
+        .header_mobile {
+          display: block;
+        }
+        .headerPart {
+          display: none;
+        }
+        .survey {
+          display: block;
+          font-size: 20px;
+          color: rgb( 39, 54, 69);
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+        .function_for_mobile {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          border-bottom: solid 1px #dfe0eb;
+          margin-bottom: 18px;
+          padding-bottom: 18px;
+          .label {
+            font-family: Poppins;
+            font-size: 13px;
+            font-weight: 600;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: right;
+            color: #5a5b5b;
+          }
+          .controlType {
+            padding: 11px 13px;
+            border-radius: 7px;
+            border: solid 1px #62b5a6;
+            color: #62b5a6;
+          }
+          .delete {
+            width: 17px;
+            height: 17px;
+          }
+        }
+        .inputs {
+          gap: 16px;
+          .viewDetails {
+            display: block;
+          }
+          .input {
+            flex-wrap: wrap;
+            flex-basis: 100%;
+            .label {
+              &.subdriver {
+                flex-basis: 100%;
+              }
+            }
+          }
+        }
+      }
+      .function {
+        display: none;
+      }
+    }
+    .others {
+      display: none;
+    }
+    .modal {
+      display: flex;
+    }
+  }
+}
+
+.editPart {
+  .comment {
+    display: flex;
+    flex-direction: column;
+    textarea {
+      background: #eff0f6;
+      border: none;
+      padding: 10px 16px;
+      font-family: Poppins;
+      font-size: 12px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #6d6f94;
+    }
+  }
+  
+  .skipOptions {
+    .inputs {
+      .input {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+.skipSelect {
+  padding: 10px 16px;
+  border-radius: 8px;
+  background-color: #eff0f6;
+}
+.newOption {
+  padding: 10px 16px;
+  border-radius: 8px;
+  background-color: #eff0f6;
+  input {
+    color: #6d6f94;
+    font-weight: 600;
+  }
+}

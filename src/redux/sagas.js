@@ -8,6 +8,7 @@ import settingSagas from "./settings/saga";
 import accountSagas from "./account/saga";
 import tourSagas from "./tour/saga";
 import reportSagas from "./report/saga";
+import adminSagas from "./admin/saga";
 
 export default function* rootSaga(getState) {
   yield all([
@@ -20,5 +21,6 @@ export default function* rootSaga(getState) {
     accountSagas(),
     tourSagas(),
     reportSagas(),
+    adminSagas(),
   ]);
 }

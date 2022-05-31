@@ -19,10 +19,11 @@ import {
   teamList,
   shCategoryList,
   addStakeholder,
+  updateStakeholder,
 } from "Redux/actions";
 
 import {
-  KGraph,
+  KGraphContainer,
   AoSurvey,
   KGraphNavControls,
   StakeholderManager,
@@ -84,10 +85,14 @@ class MyMap extends React.Component {
 
       myMapStakeholderList: [],
       projectMapStakeholderList: [],
+      aoQuestionList: [],
 
       lastAddedShCategory: null,
 
-      aoSurveySubmitLoading: false
+      aoSurveySubmitLoading: false,
+      mapRefresh: false,
+      expandedElements: [],
+      toggledElements: [],
     };
 
     this.defaultStakeholder = {
@@ -113,7 +118,6 @@ class MyMap extends React.Component {
 
   componentWillMount() {
     const { userId, surveyId, surveyUserId, projectId, history } = this.props;
-
     if (
       surveyId == undefined ||
       surveyId == null ||
@@ -151,13 +155,26 @@ class MyMap extends React.Component {
       mapGetLoading,
       aoQuestionList
     } = props;
+
+    this.projectMapProjectUserList = []
+    this.myMapProjectUserList = []
     // console.log('--------------------------------------');
     // console.log("StakeholderList:=", stakeholderList);
-    // console.log(userList);
+    console.log(userList);
     // console.log(kMapData);
     // console.log(aoQuestionList);
     // console.log("--------------------------------------");
-    
+
+    // console.log('here1', aoQuestionList === this.props.aoQuestionList)
+    // console.log('here2', stakeholderList === this.props.stakeholderList)
+    // console.log('here2', userList === this.props.userList)
+    // console.log('here3', stakeholderList)
+    // console.log('here4', this.props.stakeholderList)
+    // console.log('here3', shCategoryList === this.props.shCategoryList)
+    // console.log('here4', mapGetLoading === this.props.mapGetLoading)
+    // console.log('here5', mapSaveLoading === this.props.mapSaveLoading)
+    // console.log('here6', teamList === this.props.teamList)
+
     const kMapDataForCurrentProject =
       kMapData.length > 0
         ? kMapData.filter((map) => map.project.toString() === projectId.toString())
@@ -206,14 +223,13 @@ class MyMap extends React.Component {
       organisations: [],
     };
 
-    // console.log("shCategoryList:=", shCategoryList);
-
     if (
       teamList.length > 0 &&
       userList.length > 0 &&
       (shCategoryList.length > 0 || projectMapShCategoryList.length > 0) &&
       aoQuestionList.length > 0
     ) {
+      // console.log('here')
 
       // const totalQuestions = aoQuestionList.length;
       // console.log(aoQuestionList);
@@ -260,24 +276,25 @@ class MyMap extends React.Component {
       // Individual -> Organization
       let organizationList = [];
       userList.forEach((user) => {
+        const organizationName = (user.projectOrganization && user.projectOrganization !== '') ? user.projectOrganization : user.user.organization.name;
         if (organizationList.length === 0) {
           organizationList.push({
-            id: "O_" + user.user.organization.name,
+            id: "O_" + organizationName,
             icon: "fa-sitemap",
-            name: user.user.organization.name,
+            name: organizationName,
           });
         } else {
           let bExist = false;
           organizationList.forEach((o) => {
-            if (o.id === "O_" + user.user.organization.name) {
+            if (o.id === "O_" + organizationName) {
               bExist = true;
             }
           });
           if (bExist === false) {
             organizationList.push({
-              id: "O_" + user.user.organization.name,
+              id: "O_" + organizationName,
               icon: "fa-sitemap",
-              name: user.user.organization.name,
+              name: organizationName,
             });
           }
         }
@@ -315,7 +332,7 @@ class MyMap extends React.Component {
           for (let i = 0; i < this.myMapProjectUserList.length; i++) {
             if (
               this.myMapProjectUserList[i].projectUserId ===
-                mapUser.projectUserId &&
+              mapUser.projectUserId &&
               this.myMapProjectUserList[i].shCategory === mapUser.shCategory
             ) {
               bExist = true;
@@ -334,6 +351,7 @@ class MyMap extends React.Component {
             name: "",
             icon: "fa-user",
             survey_completion: 0,
+            survey_sentiment: 0,
             team: {
               current: "",
               changeable: false,
@@ -355,33 +373,46 @@ class MyMap extends React.Component {
                   continue;
                 }
                 if (userList[i].shCategory[j] === mapUser.shCategory) {
+
+                  const organizationName = (userList[i].projectOrganization && userList[i].projectOrganization !== '') ? userList[i].projectOrganization : userList[i].user.organization.name;
+
                   individualUser.id = `S_${userList[i].user.id}_SHC_${userList[i].shCategory[j]}`;
+                  individualUser.projectUserId = userList[i].id;
                   individualUser.avatar =
                     userList[i].user.avatar == null
                       ? ""
                       : userList[i].user.avatar.name;
                   individualUser.name = `${userList[i].user.first_name} ${userList[i].user.last_name}`;
                   individualUser.team.current = `T_${userList[i].team.id}`;
-                  individualUser.organisation.current = `O_${userList[i].user.organization.name}`;
+                  individualUser.organisation.current = `O_${organizationName}`;
                   individualUser.sh_category.current = `SHC_${userList[i].shCategory[j]}`;
-                  
+
                   // Calculate Survey Completion - MyMap (Sentiment Answer should be completion rate)
                   let sentimentAnswer = 0;
+                  let sentimentAnswerCnt = 0;
+
+                  let totalAnswer = 0;
+                  let totalQuestion = 0;
+
                   for (let k = 0; k < aoQuestionList.length; k++) {
-                    if (aoQuestionList[k].driver.driverName !== "Sentiment") {
-                      continue;
-                    }
+                    totalQuestion++;
+
                     const answer = aoQuestionList[k].response.filter(
                       (resp) =>
                         /*resp.shCategory.toString() === userList[i].shCategory[j].toString() &&*/
                         resp.subProjectUser.toString() === userList[i].id.toString()
                     );
                     if (answer.length > 0) {
-                      sentimentAnswer = answer[0].integerValue;
+                      totalAnswer++;
+                      if (aoQuestionList[k].subdriver === "Overall Sentiment") {
+                        sentimentAnswer += answer[0].integerValue;
+                        sentimentAnswerCnt++;
+                      }
                     }
                   }
 
-                  individualUser.survey_completion = sentimentAnswer.toFixed(2);
+                  individualUser.survey_completion = (totalAnswer / totalQuestion).toFixed(2) * 100;
+                  individualUser.survey_sentiment = (sentimentAnswer / sentimentAnswerCnt).toFixed(2);
 
                   bAdd = true;
 
@@ -390,8 +421,10 @@ class MyMap extends React.Component {
               }
             }
           }
+
           // console.log("---individual list----------");
           // console.log(individualList);
+
           if (bAdd) {
             individualList.push(individualUser);
             // update SHCategory individual Count
@@ -432,9 +465,9 @@ class MyMap extends React.Component {
           for (let i = 0; i < this.projectMapProjectUserList.length; i++) {
             if (
               this.projectMapProjectUserList[i].projectUserId ===
-                mapUser.projectUserId &&
+              mapUser.projectUserId &&
               this.projectMapProjectUserList[i].shCategory ===
-                mapUser.shCategory
+              mapUser.shCategory
             ) {
               bExist = true;
               break;
@@ -449,6 +482,7 @@ class MyMap extends React.Component {
             name: "",
             icon: "fa-user",
             survey_completion: 0,
+            survey_sentiment: 0,
             team: {
               current: "",
               changeable: false,
@@ -467,34 +501,45 @@ class MyMap extends React.Component {
             if (userList[i].id === mapUser.projectUserId) {
               for (let j = 0; j < userList[i].shCategory.length; j++) {
                 if (userList[i].shCategory[j] === mapUser.shCategory) {
+                  // console.log(userList[i].projectOrganization && userList[i].projectOrganization !== '')
+                  const organizationName = (userList[i].projectOrganization && userList[i].projectOrganization !== '') ? userList[i].projectOrganization : userList[i].user.organization.name;
+
                   individualUser.id = `S_${userList[i].user.id}_SHC_${userList[i].shCategory[j]}`;
+                  individualUser.projectUserId = userList[i].id;
                   individualUser.avatar =
                     userList[i].user.avatar == null
                       ? ""
                       : userList[i].user.avatar.name;
                   individualUser.name = `${userList[i].user.first_name} ${userList[i].user.last_name}`;
                   individualUser.team.current = `T_${userList[i].team.id}`;
-                  individualUser.organisation.current = `O_${userList[i].user.organization.name}`;
+                  individualUser.organisation.current = `O_${organizationName}`;
                   individualUser.sh_category.current = `SHC_${userList[i].shCategory[j]}`;
-                  
+
                   // Calculate Survey Completion - ProjectMap (Sentiment answer should be completion rate)
                   let sentimentAnswer = 0;
+                  let sentimentAnswerCnt = 0;
+
+                  let totalQuestion = 0;
+                  let totalAnswer = 0;
                   for (let k = 0; k < aoQuestionList.length; k++) {
-                    if (aoQuestionList[k].driver.driverName !== 'Sentiment') {
-                      continue;
-                    }
+                    totalQuestion++;
                     const answer = aoQuestionList[k].response.filter(
                       (resp) =>
                         /*resp.shCategory.toString() === userList[i].shCategory[j].toString() &&*/
                         resp.subProjectUser.toString() === userList[i].id.toString()
                     );
-                    if (answer > 0) {
-                      sentimentAnswer = answer[0].integerValue;
+                    if (answer.length > 0) {
+                      totalAnswer++;
+                      if (aoQuestionList[k].subdriver === "Overall Sentiment") {
+                        sentimentAnswer += answer[0].integerValue;
+                        sentimentAnswerCnt++;
+                      }
                     }
                   }
 
-                  individualUser.survey_completion = sentimentAnswer.toFixed(2);
-                  
+                  individualUser.survey_completion = (totalAnswer / totalQuestion).toFixed(2) * 100;
+                  individualUser.survey_sentiment = (sentimentAnswer / sentimentAnswerCnt).toFixed(2);
+
                   bAdd = true;
 
                   break;
@@ -569,7 +614,11 @@ class MyMap extends React.Component {
         }
       }
 
+      // console.log('myMapStakeholderList', myMapStakeholderList)
+      // console.log('projectMapStakeholderList', projectMapStakeholderList)
+
       this.setState({
+        aoQuestionList,
         stakeholderList,
         decisionMakerList,
         teamList,
@@ -590,8 +639,9 @@ class MyMap extends React.Component {
   }
 
   handleAddNewStakeholder = (stakeholder) => {
-    const { projectId, surveyId } = this.props;
+    const { projectId, surveyId, userId } = this.props;
     this.props.addStakeholder(
+      userId,
       projectId,
       surveyId,
       stakeholder,
@@ -600,7 +650,7 @@ class MyMap extends React.Component {
   };
 
   callbackAddNewStakeholder = (code) => {
-    console.log('code', code);
+    // console.log('code', code);
     if (code === 400) {
       NotificationManager.error(
         "Stakeholder is already existed",
@@ -631,10 +681,11 @@ class MyMap extends React.Component {
           color: "transparent",
           icon: "fa-user",
           avatar: projectUser.userAvatar,
-          survey_completion: (
-            (projectUser.aoAnswered / projectUser.aoTotal) *
-            100
-          ).toFixed(2),
+          // survey_completion: (
+          //   (projectUser.aoAnswered / projectUser.aoTotal) *
+          //   100
+          // ).toFixed(2),
+          survey_completion: 0,
           iconColor: "rgb(0, 0, 0)",
           team: {
             current: projectUser.teamId,
@@ -647,9 +698,9 @@ class MyMap extends React.Component {
           viewCoordinates:
             Object.keys(e).length > 0
               ? {
-                  clientX: e.clientX,
-                  clientY: e.clientY,
-                }
+                clientX: e.clientX,
+                clientY: e.clientY,
+              }
               : {},
         },
       ],
@@ -672,37 +723,39 @@ class MyMap extends React.Component {
     //       console.log(newElem);
     //       console.log(this.myMapProjectUserList);
     // console.log("*********************************");
-    this.setState({ newStakeholder: newElem }, () => {
-      if (!newElem.individuals[0].sh_category) return;
-      const newProjectUserId = projectUser.projectUserId;
-      const newShCategory = newElem.individuals[0].sh_category.current.split(
-        "_"
-      )[1];
+    this.setState({ newStakeholder: newElem }, () => setTimeout(
+      () => {
+        // console.log(newElem.individuals[0].sh_category)
+        if (!newElem.individuals[0].sh_category) return;
+        const newProjectUserId = projectUser.projectUserId;
+        const newShCategory = newElem.individuals[0].sh_category.current.split(
+          "_"
+        )[1];
 
-      let bExist = false;
+        let bExist = false;
 
-      for (let i = 0; i < this.myMapProjectUserList.length; i++) {
-        if (
-          parseInt(this.myMapProjectUserList[i].projectUserId, 10) ===
+        for (let i = 0; i < this.myMapProjectUserList.length; i++) {
+          if (
+            parseInt(this.myMapProjectUserList[i].projectUserId, 10) ===
             parseInt(newProjectUserId, 10) &&
-          parseInt(this.myMapProjectUserList[i].shCategory, 10) ===
+            parseInt(this.myMapProjectUserList[i].shCategory, 10) ===
             parseInt(newShCategory, 10)
-        ) {
-          bExist = true;
-          break;
+          ) {
+            bExist = true;
+            break;
+          }
         }
-      }
-      console.log('new', newShCategory);
-      if (!bExist) {
-        this.myMapProjectUserList.push({
-          projectUserId: newProjectUserId,
-          shCategory: parseInt(newShCategory, 10),
+        // console.log('new', newShCategory);
+        if (!bExist) {
+          this.myMapProjectUserList.push({
+            projectUserId: newProjectUserId,
+            shCategory: parseInt(newShCategory, 10),
+          });
+        }
+        this.setState({
+          lastAddedShCategory: parseInt(newShCategory, 10)
         });
-      }
-      this.setState({
-        lastAddedShCategory: parseInt(newShCategory, 10)
-      });
-    });
+      }, 2000));
   };
 
   handleShowAddPage = () => {
@@ -730,10 +783,11 @@ class MyMap extends React.Component {
           color: "transparent",
           icon: "fa-user",
           avatar: projectUser.userAvatar,
-          survey_completion: (
-            (projectUser.aoAnswered / projectUser.aoTotal) *
-            100
-          ).toFixed(2),
+          // survey_completion: (
+          //   (projectUser.aoAnswered / projectUser.aoTotal) *
+          //   100
+          // ).toFixed(2),
+          survey_completion: 0,
           iconColor: "rgb(0, 0, 0)",
           team: {
             current: projectUser.teamId,
@@ -746,9 +800,9 @@ class MyMap extends React.Component {
           viewCoordinates:
             Object.keys(e).length > 0
               ? {
-                  clientX: e.clientX,
-                  clientY: e.clientY,
-                }
+                clientX: e.clientX,
+                clientY: e.clientY,
+              }
               : {},
         },
       ],
@@ -780,7 +834,7 @@ class MyMap extends React.Component {
       for (let i = 0; i < this.projectMapProjectUserList.length; i++) {
         if (
           this.projectMapProjectUserList[i].projectUserId ===
-            newProjectUserId &&
+          newProjectUserId &&
           this.projectMapProjectUserList[i].shCategory === newShCategory
         ) {
           bExist = true;
@@ -823,8 +877,9 @@ class MyMap extends React.Component {
     });
   };
 
-  handleSubmitSurvey = (e, answerData) => {
+  handleSubmitSurvey = (e, answerData, isRefresh = true) => {
     const { lastAddedShCategory } = this.state;
+
     // console.log(lastAddedShCategory);
     for (let i = 0; i < answerData.length; i++) {
       if (answerData[i].shCategory == undefined) {
@@ -832,8 +887,102 @@ class MyMap extends React.Component {
       }
     }
 
-    this.setState({
-      aoSurveySubmitLoading: true
+    const updatedTemp = this.state.aoQuestionList.map(ao => {
+      let response = ao.response.map((resp, idx) => {
+        let temp = answerData.filter(q => q.amQuestion === resp.aoQuestion && q.subjectUser === resp.subProjectUser)
+        if (temp.length === 0) {
+          return resp
+        }
+        return {
+          ...resp,
+          integerValue: temp[0].integerValue,
+          topicValue: temp[0].topicValue,
+          commentValue: temp[0].commentValue,
+          skipValue: temp[0].skipValue,
+          topicTags: temp[0].topicValue,
+          commentTags: temp[0].commentTags,
+        }
+      })
+      return { ...ao, response }
+    })
+
+    // console.log('esList', this.state.esList)
+
+    let esListTemp = this.state.esList.individuals.map(es => {
+      let sentimentAnswer = 0;
+      let sentimentAnswerCnt = 0;
+
+      let totalQuestion = 0;
+      let totalAnswer = 0;
+      for (let k = 0; k < updatedTemp.length; k++) {
+        totalQuestion++;
+        const answer = updatedTemp[k].response.filter(
+          (resp) =>
+            /*resp.shCategory.toString() === userList[i].shCategory[j].toString() &&*/
+            resp.subProjectUser.toString() === es.projectUserId.toString()
+        );
+        if (answer.length > 0) {
+          totalAnswer++;
+          if (updatedTemp[k].subdriver === "Overall Sentiment") {
+            sentimentAnswer += answer[0].integerValue;
+            sentimentAnswerCnt++;
+          }
+        }
+      }
+
+      return {
+        ...es,
+        survey_completion: (totalAnswer / totalQuestion).toFixed(2) * 100,
+        survey_sentiment: (sentimentAnswer / sentimentAnswerCnt).toFixed(2)
+      }
+    })
+
+    let projectEsListTemp = this.state.projectEsList.individuals.map(es => {
+      let sentimentAnswer = 0;
+      let sentimentAnswerCnt = 0;
+
+      let totalQuestion = 0;
+      let totalAnswer = 0;
+      for (let k = 0; k < updatedTemp.length; k++) {
+        totalQuestion++;
+        const answer = updatedTemp[k].response.filter(
+          (resp) =>
+            /*resp.shCategory.toString() === userList[i].shCategory[j].toString() &&*/
+            resp.subProjectUser.toString() === es.projectUserId.toString()
+        );
+        if (answer.length > 0) {
+          totalAnswer++;
+          if (updatedTemp[k].subdriver === "Overall Sentiment") {
+            sentimentAnswer += answer[0].integerValue;
+            sentimentAnswerCnt++;
+          }
+        }
+      }
+
+      return {
+        ...es,
+        survey_completion: (totalAnswer / totalQuestion).toFixed(2) * 100,
+        survey_sentiment: (sentimentAnswer / sentimentAnswerCnt).toFixed(2)
+      }
+    })
+
+    this.setState(state => {
+      if (!state.categoryChanged) {
+        return {
+          aoSurveySubmitLoading: true,
+          aoQuestionList: updatedTemp,
+          esList: { ...this.state.esList, individuals: esListTemp },
+          projectEsList: { ...this.state.projectEsList, individuals: projectEsListTemp },
+        }
+      } else {
+        return {
+          mapRefresh: true,
+          aoSurveySubmitLoading: true,
+          aoQuestionList: updatedTemp,
+          esList: { ...this.state.esList, individuals: esListTemp },
+          projectEsList: { ...this.state.projectEsList, individuals: projectEsListTemp },
+        }
+      }
     });
 
     this.props.submitAoQuestion(
@@ -841,21 +990,46 @@ class MyMap extends React.Component {
       this.state.currentSurveyUser,
       this.props.surveyUserId,
       this.props.surveyId,
-      this.callbackSubmitSurvey
+      this.callbackSubmitSurvey,
+      isRefresh
     );
   };
 
-  callbackSubmitSurvey = () => {
+  callbackSubmitSurvey = (isRefresh = true) => {
     // this.setState({
     //   screen: "list",
     //   currentSurveyUserId: 0,
     //   currentSurveyUser: {},
     // });
+
+    if (isRefresh) {
+      const { userId, surveyId, surveyUserId, projectId, history } = this.props;
+      NotificationManager.success("Response saved successfully", "");
+      if (this.state.categoryChanged) {
+        Promise.all([
+          this.props.getKMapData(surveyUserId, userId),
+          this.props.getProjectMapData(surveyUserId, userId),
+          this.props.getShCategoryList(surveyId, 0),
+          this.props.getStakeholderList(surveyUserId, surveyId),
+          this.props.getTeamList(projectId),
+          this.props.getAoQuestionList(surveyUserId, surveyId),
+          this.props.getDriverList(surveyId),
+          this.props.getSkipQuestionList(),
+        ]).then(setTimeout(() => {
+          this.setState({
+            mapRefresh: false,
+            categoryChanged: false,
+          })
+        }, 1500))
+      } else {
+        this.handleSaveGraph(null, isRefresh);
+      }
+      // window.location.reload(false);
+    }
     this.setState({
       aoSurveySubmitLoading: false
     });
-    NotificationManager.success("Response submitted successfully", "");
-    this.handleSaveGraph(null);
+
     // window.location.reload(false);
   };
 
@@ -910,7 +1084,7 @@ class MyMap extends React.Component {
     });
   };
 
-  handleSaveGraph = (e) => {
+  handleSaveGraph = (e, isRefresh = true) => {
     const { userId, projectId, surveyUserId } = this.props;
     const { mapStyle } = this.state;
 
@@ -931,7 +1105,6 @@ class MyMap extends React.Component {
         });
       }
     }
-
     const newMapData = {
       user: userId,
       project: projectId,
@@ -941,38 +1114,45 @@ class MyMap extends React.Component {
     };
 
     // console.log(newMapData); return;
-
+    this.setState({ mapRefresh: true })
     if (mapStyle === "my-map") {
       this.props.saveKMapData(
         newMapData,
         surveyUserId,
         userId,
-        this.callbackSaveGraph
+        isRefresh === true ? this.callbackSaveGraph : null
       );
     } else {
       this.props.saveProjectMapData(
         newMapData,
         surveyUserId,
         userId,
-        this.callbackSaveGraph
+        isRefresh === true ? this.callbackSaveGraph : null
       );
     }
   };
 
   callbackSaveGraph = () => {
-    window.location.reload(false);
-    // const { userId, surveyId, surveyUserId, projectId } = this.props;
+    // window.location.reload(false);
+    const { userId, surveyId, surveyUserId, projectId } = this.props;
 
-    // this.props.getKMapData(surveyUserId, userId);
-    // this.props.getProjectMapData(surveyUserId, userId);
-    // this.props.getShCategoryList(surveyId, 0);
-    // this.props.getStakeholderList(surveyUserId, surveyId);
-    // this.props.getTeamList(projectId);
-    // this.props.getAoQuestionList(surveyUserId, surveyId);
-    // this.props.getDriverList(surveyId);
-    // this.props.getSkipQuestionList();
+    Promise.all([
+      this.props.getKMapData(surveyUserId, userId),
+      this.props.getProjectMapData(surveyUserId, userId),
+      this.props.getShCategoryList(surveyId, 0),
+      this.props.getStakeholderList(surveyUserId, surveyId),
+      this.props.getTeamList(projectId),
+      this.props.getAoQuestionList(surveyUserId, surveyId),
+      this.props.getDriverList(surveyId),
+      this.props.getSkipQuestionList(),
+    ]).then(setTimeout(() => {
+      this.setState({
+        categoryChanged: false,
+        mapRefresh: false,
+      })
+    }, 1500))
 
-    // NotificationManager.success("Map has been saved successfully", "");
+    NotificationManager.success("Map has been saved successfully", "");
   }
 
   toggleGraph = (e) => {
@@ -999,10 +1179,37 @@ class MyMap extends React.Component {
     });
   };
 
+  handleCategoryChanged = () => {
+    this.setState({
+      categoryChanged: true,
+    })
+  }
+
+  handleUpdateStakeholder = (pId, sId, stakeholder) => {
+    this.setState({ mapRefresh: true })
+    this.props.updateStakeholder(pId, sId, stakeholder, () => {
+      const { userId, surveyId, surveyUserId, projectId } = this.props;
+      Promise.all([
+        this.props.getKMapData(surveyUserId, userId),
+        this.props.getProjectMapData(surveyUserId, userId),
+        this.props.getShCategoryList(surveyId, 0),
+        this.props.getStakeholderList(surveyUserId, surveyId),
+        this.props.getTeamList(projectId),
+        this.props.getAoQuestionList(surveyUserId, surveyId),
+        this.props.getDriverList(surveyId),
+        this.props.getSkipQuestionList(),
+      ]).then(setTimeout(() => {
+        this.setState({
+          mapRefresh: false,
+          categoryChanged: false,
+        })
+      }, 1500))
+    })
+  }
+
   render() {
     const {
       projectTitle,
-      aoQuestionList,
       optionList,
       driverList,
       skipQuestionList,
@@ -1010,6 +1217,7 @@ class MyMap extends React.Component {
     } = this.props;
 
     const {
+      aoQuestionList,
       enableLayout,
       viewDropDownOpen,
       layoutDropDownOpen,
@@ -1037,7 +1245,10 @@ class MyMap extends React.Component {
       myMapStakeholderList,
       projectMapStakeholderList,
       currentSurveyUserId,
-      lastAddedShCategory
+      lastAddedShCategory,
+      mapRefresh,
+      expandedElements,
+      toggledElements,
     } = this.state;
 
     const mapHeaderVisible = toggleGraph
@@ -1057,16 +1268,16 @@ class MyMap extends React.Component {
             <TopNav history={history} menuTitle="My Map">
               {screen === "aosurvey" && (
                 <div className={styles.section}>
-                  <div className={styles["graph-toggle"]}>
+                  {/* <div className={styles["graph-toggle"]}> */}
                     <h2 className={styles["project-name"]}>{projectTitle}</h2>
-                  </div>
+                  {/* </div> */}
                 </div>
               )}
               {screen !== "aosurvey" && (
                 <div className={styles.section}>
                   <h2 className={styles["project-name"]}>{projectTitle}</h2>
                   <div className={styles["graph-toggle"]}>
-                    <Button onClick={(e) => this.toggleGraph(e)} style={{width: 160}}>
+                    <Button onClick={(e) => this.toggleGraph(e)} style={{ width: 160 }}>
                       {!toggleGraph ? "Map View" : "List View"}
                     </Button>
                   </div>
@@ -1172,8 +1383,9 @@ class MyMap extends React.Component {
                 {userList.length > 0 &&
                   teamList.length > 0 &&
                   shCategoryList.length > 0 &&
-                  mapGetLoading === false && (
-                    <KGraph
+                  mapGetLoading === false &&
+                  !mapRefresh && (
+                    <KGraphContainer
                       setParentState={this.setState.bind(this)}
                       apList={apList}
                       esList={esList}
@@ -1181,6 +1393,8 @@ class MyMap extends React.Component {
                       onClickNode={(id) => this.handleStartOtherSurvey(id)}
                       layout={layout.toLowerCase()}
                       viewMode={viewMode}
+                      expandedElements={expandedElements}
+                      toggledElements={toggledElements}
                       layoutUpdated={layoutUpdated}
                     />
                   )}
@@ -1197,8 +1411,8 @@ class MyMap extends React.Component {
                 {userList.length > 0 &&
                   teamList.length > 0 &&
                   projectMapShCategoryList.length > 0 &&
-                  mapGetLoading === false && (
-                    <KGraph
+                  mapGetLoading === false && !mapRefresh && (
+                    <KGraphContainer
                       setParentState={this.setState.bind(this)}
                       apList={projectApList}
                       esList={projectEsList}
@@ -1207,6 +1421,8 @@ class MyMap extends React.Component {
                       layout={layout.toLowerCase()}
                       viewMode={viewMode}
                       layoutUpdated={layoutUpdated}
+                      expandedElements={expandedElements}
+                      toggledElements={toggledElements}
                     />
                   )}
               </Droppable>
@@ -1231,6 +1447,7 @@ class MyMap extends React.Component {
                   projectMapStakeholderList={projectMapStakeholderList}
                   myMapES={esList}
                   projectMapES={projectEsList}
+                  handleUpdateStakeholder={this.handleUpdateStakeholder}
                 />
               )}
               {screen === "add" && shCategoryList.length > 0 && (
@@ -1262,13 +1479,14 @@ class MyMap extends React.Component {
                     currentSurveyUserId={currentSurveyUserId}
                     lastAddedShCategory={lastAddedShCategory}
                     allStakeholders={stakeholderList}
-                    onSubmit={(e, answerData) =>
-                      this.handleSubmitSurvey(e, answerData) 
+                    onSubmit={(e, answerData, isRefresh = true) =>
+                      this.handleSubmitSurvey(e, answerData, isRefresh)
                     }
                     myMapES={esList}
                     projectMapES={projectEsList}
                     mapStyle={mapStyle}
                     onCancel={(e) => this.handleCancelSurvey()}
+                    handleCategoryChanged={this.handleCategoryChanged}
                   />
                 )}
             </div>
@@ -1348,4 +1566,5 @@ export default connect(mapStateToProps, {
   getTeamList: teamList,
   submitAoQuestion,
   addStakeholder,
+  updateStakeholder,
 })(MyMap);

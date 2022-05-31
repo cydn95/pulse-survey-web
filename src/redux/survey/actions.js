@@ -14,7 +14,14 @@ import {
   UPDATE_ABOUT_ME_TOPIC_SUCCESS,
   DELETE_ABOUT_ME_TOPIC,
   DELETE_ABOUT_ME_TOPIC_SUCCESS,
+  CLEAR_ABOUTME,
+  IS_FLAGGED
 } from "Constants/actionTypes";
+
+export const isFlagged = (id, user, callback) => ({
+  type: IS_FLAGGED,
+  payload: {id, user, callback}
+})
 
 export const pageList = (surveyId, surveyUserId) => ({
   type: PAGE_LIST,
@@ -48,10 +55,11 @@ export const submitSurvey = (
   surveyUserId,
   surveyId,
   history,
-  navigateToNext
+  navigateToNext,
+  callback=null
 ) => ({
   type: SUBMIT_SURVEY,
-  payload: { surveyList, aboutMe, projectId, surveyUserId, surveyId, history, navigateToNext },
+  payload: { surveyList, aboutMe, projectId, surveyUserId, surveyId, history, navigateToNext, callback },
 });
 
 export const submitSurveySuccess = (surveyId) => ({
@@ -146,3 +154,7 @@ export const deleteAboutMeTopicSuccess = (
   type: DELETE_ABOUT_ME_TOPIC_SUCCESS,
   payload: { topicId, pageIndex, questionIndex },
 });
+
+export const clearAboutMe = () => ({
+  type: CLEAR_ABOUTME
+})

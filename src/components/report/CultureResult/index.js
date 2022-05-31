@@ -2,6 +2,8 @@ import React from "react";
 
 import styles from "./styles.scss";
 
+import { getColorFromValue } from "Util/Utils";
+
 const CultureResult = ({ data }) => {
   return (
     <div className={styles["top-culture-result-root"]}>
@@ -18,7 +20,7 @@ const CultureResult = ({ data }) => {
                 className={styles.progress}
                 style={{
                   width: `${d.result > 100 ? 100 : d.result}%`,
-                  background: (d.result = 70 ? "#15bb59" : "#e50909"),
+                  background: getColorFromValue(d.result / 10),
                 }}
               ></div>
             </div>

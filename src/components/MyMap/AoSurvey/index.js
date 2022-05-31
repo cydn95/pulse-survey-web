@@ -24,10 +24,11 @@ import {
   controlTypeText,
 } from "Constants/defaultValues";
 
+import { getColorFromValue } from "Util/Utils";
+
 import styles from "./styles.scss";
 
 import { selectPage, stakeholderAnswer, stakeholderList } from "Redux/actions";
-import StakeholderUpdateModal from "../StakeholderUpdateModal";
 import StakeholderUpdatePanel from "../StakeholderUpdatePanel";
 
 class AoSurvey extends React.Component {
@@ -44,7 +45,7 @@ class AoSurvey extends React.Component {
       lastAddedShCategory,
       myMapES,
       projectMapES,
-      mapStyle
+      mapStyle,
     } = this.props;
 
     let totalQuestions = 0;
@@ -136,22 +137,40 @@ class AoSurvey extends React.Component {
       options,
       drivers: orderedDrivers,
       pageIndex,
-      currentUser: user,
+      currentUser: { ...user },
       answers,
       totalAnswers,
       totalQuestions,
-      editModal: false
+      editModal: false,
     };
   }
 
   componentWillReceiveProps(props) {
-    const { pageIndex, currentSurveyUserId, user } = props;
+    const { pageIndex, currentSurveyUserId, user, drivers, questions } = props;
 
     if (
       currentSurveyUserId.toString() !==
       this.props.currentSurveyUserId.toString()
     ) {
-      const { drivers } = this.state;
+      for (let i = 0; i < drivers.length; i++) {
+        drivers[i] = {
+          ...drivers[i],
+          questions: [],
+        };
+      }
+
+      for (let i = 0; i < questions.length; i++) {
+        for (let j = 0; j < drivers.length; j++) {
+          if (questions[i].driver.id === drivers[j].driverId) {
+            drivers[j].questions.push(questions[i]);
+            break;
+          }
+        }
+      }
+
+      const orderedDrivers = drivers.filter((item) => {
+        return item.questions.length > 0 ? true : false;
+      });
 
       const shCategoryId = currentSurveyUserId.split("_SHC_")[1];
 
@@ -159,11 +178,11 @@ class AoSurvey extends React.Component {
       let totalAnswers = 0;
 
       const answers = [];
-      for (let i = 0; i < drivers.length; i++) {
-        for (let j = 0; j < drivers[i].questions.length; j++) {
+      for (let i = 0; i < orderedDrivers.length; i++) {
+        for (let j = 0; j < orderedDrivers[i].questions.length; j++) {
           totalQuestions++;
 
-          const temp = drivers[i].questions[j].response.filter(
+          const temp = orderedDrivers[i].questions[j].response.filter(
             (resp) =>
               /*resp.shCategory.toString() === shCategoryId.toString() &&*/
               resp.subProjectUser.toString() === user.projectUserId.toString()
@@ -183,15 +202,15 @@ class AoSurvey extends React.Component {
               commentTags: "",
               user: 0,
               subjectUser: 0,
-              survey: drivers[i].questions[j].survey,
-              amQuestion: drivers[i].questions[j].id,
+              survey: orderedDrivers[i].questions[j].survey,
+              amQuestion: orderedDrivers[i].questions[j].id,
               type: "other",
-              controlType: controlTypeText(drivers[i].questions[j].controlType),
+              controlType: controlTypeText(orderedDrivers[i].questions[j].controlType),
               shCategory: shCategoryId,
             });
           } else {
             answers.push({
-              amQuestion: drivers[i].questions[j].id,
+              amQuestion: orderedDrivers[i].questions[j].id,
               pageIndex: i,
               questionIndex: j,
               integerValue: temp[0].integerValue,
@@ -202,9 +221,9 @@ class AoSurvey extends React.Component {
               commentTags: temp[0].commentTags,
               user: temp[0].projectUser,
               subjectUser: temp[0].subProjectUser,
-              survey: drivers[i].questions[j].survey,
+              survey: orderedDrivers[i].questions[j].survey,
               type: "other",
-              controlType: controlTypeText(drivers[i].questions[j].controlType),
+              controlType: controlTypeText(orderedDrivers[i].questions[j].controlType),
               shCategory: shCategoryId,
             });
           }
@@ -248,6 +267,8 @@ class AoSurvey extends React.Component {
 
     this.setState({
       totalAnswers,
+    }, () => {
+      this.props.onSubmit(null, this.state.answers, false);
     });
   };
 
@@ -270,15 +291,17 @@ class AoSurvey extends React.Component {
   };
 
   handleOpenEditModal = () => {
-
-    const { surveyId, surveyUserId, user, currentSurveyUserId, actionStakeholderList } = this.props;
+    const {
+      surveyId,
+      surveyUserId,
+      user,
+      currentSurveyUserId,
+      actionStakeholderList,
+    } = this.props;
 
     const { editModal } = this.state;
     if (editModal) {
       actionStakeholderList(surveyUserId, surveyId, (shList) => {
-        console.log(currentSurveyUserId);
-        console.log(shList);
-
         let cUser = null;
         for (let i = 0; i < shList.length; i++) {
           if (currentSurveyUserId.includes(`${shList[i].userId}_`)) {
@@ -288,15 +311,14 @@ class AoSurvey extends React.Component {
         }
 
         this.setState((state) => ({
-          currentUser: cUser ? { ...cUser } : { ...user }
+          currentUser: cUser ? { ...cUser } : { ...user },
         }));
       });
     }
 
     this.setState((state) => ({
-      editModal: !state.editModal
+      editModal: !state.editModal,
     }));
-    
   };
 
   handleCloseEditModal = () => {
@@ -326,9 +348,8 @@ class AoSurvey extends React.Component {
       mapStyle,
       myMapES,
       projectMapES,
-      currentSurveyUserId
+      currentSurveyUserId,
     } = this.props;
-
 
     // console.log(myMapCategory);
     // console.log(projectMapCategory);
@@ -364,10 +385,21 @@ class AoSurvey extends React.Component {
     // console.log(currentSurveyUserId);
     const mapES = mapStyle === "my-map" ? myMapES : projectMapES;
     let surveyCompletion = 0;
+    let surveySentiment = 0;
     for (let i = 0; i < mapES.individuals.length; i++) {
-      // console.log(mapES.individuals[i].id);
-      if (mapES.individuals[i].id === currentSurveyUserId) {
+      // console.log(mapES.individuals[i].id, currentSurveyUserId);
+      const individualIds = mapES.individuals[i].id.split("_");
+      const currents = currentSurveyUserId.split("_");
+      if (individualIds.length < 4 || currents.length < 4) {
+        continue;
+      }
+      // if (mapES.individuals[i].id === currentSurveyUserId) {
+      if (
+        individualIds[1] === currents[1] &&
+        individualIds[3] === currents[3]
+      ) {
         surveyCompletion = mapES.individuals[i].survey_completion;
+        surveySentiment = mapES.individuals[i].survey_sentiment;
       }
     }
 
@@ -376,43 +408,60 @@ class AoSurvey extends React.Component {
         <div className={styles.user}>
           <div className={styles.title}>
             <span>About Others:</span>
-            <div
-              role="button"
-              className={styles.edit}
-            >
+            <div role="button" className={styles.edit}>
               <div onClick={(e) => this.handleOpenEditModal()}>Edit</div>
-              {editModal && <div className={styles["stakeholder-update-panel-container"]}>
-                <StakeholderUpdatePanel
-                  open={editModal}
-                  currentUser={currentUser}
-                  myMapCategory={myMapCategory}
-                  projectMapCategory={projectMapCategory}
-                  onClose={(e) => this.handleCloseEditModal()}
-                />
-              </div>}
+              {editModal && (
+                <div className={styles["stakeholder-update-panel-container"]}>
+                  <StakeholderUpdatePanel
+                    open={editModal}
+                    currentUser={currentUser}
+                    myMapCategory={myMapCategory}
+                    projectMapCategory={projectMapCategory}
+                    onClose={(e) => this.handleCloseEditModal()}
+                    handleCategoryChanged={this.props.handleCategoryChanged}
+                  />
+                </div>
+              )}
             </div>
           </div>
           <AvatarComponent
             className={styles["avatar-comp"]}
             userId={user.id}
-            title={user.projectUserTitle === "" ? user.userTitle : user.projectUserTitle}
+            title={
+              user.projectUserTitle === ""
+                ? user.userTitle
+                : user.projectUserTitle
+            }
             username={user.fullName}
-            description={(user.projectOrganization ? user.projectOrganization : user.organisation) + " / " + user.team}
+            description={
+              (user.projectOrganization
+                ? user.projectOrganization
+                : user.organisation) +
+              " / " +
+              user.team
+            }
             profilePicUrl={user.userAvatar}
             userProgress={Number(surveyCompletion)}
+            progressStyle={{
+              background: `${getColorFromValue(Number(surveySentiment) / 10)}`,
+            }}
             donut={true}
           />
         </div>
 
         <div className={styles["driver-section"]}>
           <hr />
-          <DriverPanel
-            defaultDriverId={defaultDrvierId}
-            data={drivers}
-            color="black"
-            onClick={(e, driverId) => this.handleClickDriver(driverId)}
-          />
-          <hr />
+          {drivers.length > 1 && (
+            <React.Fragment>
+              <DriverPanel
+                defaultDriverId={defaultDrvierId}
+                data={drivers}
+                color="black"
+                onClick={(e, driverId) => this.handleClickDriver(driverId)}
+              />
+              <hr />
+            </React.Fragment>
+          )}
         </div>
         <div className={styles.questions}>
           {driver.questions.map((control, index) => {
@@ -526,7 +575,7 @@ class AoSurvey extends React.Component {
             onClick={(e) => this.handleSubmit(e)}
             disabled={submitLoading}
           >
-            {submitLoading ? "In progress..." : "Submit"}
+            {submitLoading ? "In progress..." : "Save"}
           </Button>
         </div>
       </div>
@@ -552,5 +601,5 @@ const mapStateToProps = ({ survey, common, authUser }) => {
 export default connect(mapStateToProps, {
   setSurveyPage: selectPage,
   stakeholderAnswer,
-  actionStakeholderList: stakeholderList
+  actionStakeholderList: stakeholderList,
 })(AoSurvey);

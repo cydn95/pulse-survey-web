@@ -1,0 +1,200 @@
+.main {
+  padding: 20px;
+  border-radius: 8px;
+  border: solid 1px #dfe0eb;
+  background-color: #fff;
+  .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 26px;
+    .avatar {
+      margin-right: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      border-radius: 10px;
+      background-color: #eff0f6;
+      img {
+        width: 34px;
+        height: 35px;
+        flex-grow: 0;
+      }
+    }
+    .description {
+      h3 {
+        font-size: 18px;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        color: #000;
+      }
+      .h6 {
+        font-size: 13px;
+        font-weight: 500;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #000;
+      }
+    }
+  }
+  .descriptions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 26px;
+    .description {
+      display: flex;
+      align-items: flex-start;
+      img {
+        width: 15px;
+        height: 15px;
+        object-fit: contain;
+        margin-right: 11.8px;
+      }
+      .data {
+        .title {
+          font-family: Poppins;
+          margin: 0;
+          font-size: 11px;
+          font-weight: normal;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: normal;
+          letter-spacing: normal;
+          text-align: left;
+          color: #6d6f94;
+        }
+        .value {
+          font-family: Poppins;
+          margin: 0;
+          margin-top: 1px;
+          font-size: 13px;
+          font-weight: 600;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: normal;
+          letter-spacing: normal;
+          text-align: left;
+          color: #000;
+        }
+      }
+    }
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 26px;
+    gap: 12px;
+    font-family: Poppins;
+    .edit {
+      min-width: 180px;
+      font-size: 13px;
+      font-weight: 500;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: center;
+      color: #fff;
+    }
+    .btn {
+      font-size: 13px;
+      font-weight: 500;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: center;
+      color: #fff;
+      padding: 10px 20px;
+      &.deactivate {
+        background-color: #cacaca;
+      }
+    }
+    .plus {
+      padding: 5px 18px 6px;
+      border-radius: 5px;
+      background-color: #eff0f6;
+      font-size: 21px;
+      font-weight: 500;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: center;
+      color: #62b5a6;
+    }
+    p {
+      font-family: Poppins;
+      font-size: 13px;
+      font-weight: 500;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #62b5a6;
+    }
+    div {
+      display: flex;
+      gap: 15px;
+    }
+  }
+  .modalBody {
+    background-color: white;
+    width: 450px;
+    border-radius: 10px;
+    margin: 10px;
+    .header {
+      padding: 20px 20px;
+      margin: 0;
+    }
+    .content {
+      margin: 0;
+      padding: 20px;
+      border-top: 1px solid #cacaca;
+    }
+    .footer {
+      padding: 10px;
+    }
+  }
+}
+
+@media (max-width: 1400px) {
+  .main {
+    .descriptions {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .main {
+    .descriptions {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
+
+@media (max-width: 720px) {
+  .main {
+    .descriptions {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .main {
+    .descriptions {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}

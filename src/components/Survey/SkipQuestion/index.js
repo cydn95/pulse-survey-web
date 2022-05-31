@@ -1,10 +1,9 @@
 import React, { Component } from "react";
+import { DebounceInput } from 'react-debounce-input';
 
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
 import SelectableButton from "Components/SelectableButton";
-
 import TextField from "@material-ui/core/TextField";
 
 import styles from "./styles.scss";
@@ -72,8 +71,18 @@ class SkipQuestion extends Component {
     });
   };
 
+  onCancelSkipQuestion = (e) => {
+    e.preventDefault();
+
+    this.setState({
+      skipToogle: !this.state.skipToogle,
+    }, () => {
+      this.props.onSkip("");
+    });
+  }
+
   onSelectSkipReason = (answer) => {
-    console.log(answer);
+    // console.log(answer);
     this.setState(
       {
         reason: answer,
@@ -154,7 +163,7 @@ class SkipQuestion extends Component {
         btnsToDraw.push(
           <div key="skip" className="skip">
             Why are you skipping this question?{" "}
-            <a href="/" onClick={(e) => this.onSkipQuestion(e)}>
+            <a href="/" onClick={(e) => this.onCancelSkipQuestion(e)}>
               <strong>Cancel skip</strong>
             </a>
           </div>
@@ -189,8 +198,10 @@ class SkipQuestion extends Component {
         )}
         {this.state.commentToggle && (
           <div className={styles["comment-section"]}>
-            <TextField
+            <DebounceInput
               id="comment"
+              element={TextField}
+              debounceTimeout={500}
               className={styles.comment}
               value={this.state.comment}
               onChange={(e) => this.onInputComment(e)}

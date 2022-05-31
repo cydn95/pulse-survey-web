@@ -1,3 +1,32 @@
+import DOMPurify from "dompurify";
+
+export const compareDate = (str1, str2) => {
+  let date1 = Date.parse(str1.split(' ')[0] + "1, " + str1.split(' ')[1])
+  let date2 = Date.parse(str2.split(' ')[0] + "1, " + str2.split(' ')[1])
+  return date1 > date2
+}
+
+export const prevMonth = (str) => {
+  let month = new Date(Date.parse(str.split(' ')[0] +" 1, 2012")).getMonth()
+  let year = str.split(' ')[1]
+  if (month === 0) {
+    month = 12;
+    year = parseInt(year) - 1
+  }
+  return `${MONTH(month)} ${year}`
+}
+
+export const getPrevMonthData = (trend, key) => {
+  let data = []
+  let newKey = prevMonth(key)
+  if(!trend[newKey]) {
+    data = getPrevMonthData(trend, newKey)
+    return data
+  } else {
+    return trend[newKey];
+  }
+}
+
 export const mapOrder = (array, order, key) => {
   array.sort(function (a, b) {
     var A = a[key],
@@ -54,7 +83,7 @@ export const addCommas = (nStr) => {
 };
 
 export const createMarkup = (html) => {
-  return { __html: html };
+  return { __html: DOMPurify.sanitize(html) };
 };
 
 export const MONTH = (month) => {
@@ -143,23 +172,81 @@ export const getRandomSubArray = (arr, n) => {
 // }
 
 export const getColorFromValue = (val) => {
-  if (val < 2.5) {
-    return '#a9709c';
-  } else if (val < 4) {
-    return '#8a86b8';
-  } else if (val < 5) {
-    return '#838db8';
-  } else if (val < 6) {
-    return '#2b5770';
-  } else if (val < 7) {
-    return '#a0409d';
-  } else if (val < 8) {
-    return '#aa984b';
-  } else if (val < 9) {
-    return '#66931f';
-  } else {
-    return '#14b0bf';
+  // if (val < 2.5) {
+  //   return '#a9709c';
+  // } else if (val < 4) {
+  //   return '#8a86b8';
+  // } else if (val < 5) {
+  //   return '#838db8';
+  // } else if (val < 6) {
+  //   return '#2b5770';
+  // } else if (val < 7) {
+  //   return '#a0409d';
+  // } else if (val < 8) {
+  //   return '#aa984b';
+  // } else if (val < 9) {
+  //   return '#66931f';
+  // } else {
+  //   return '#14b0bf';
+  // }
+
+  // if (val < 4) {
+  //   return "#c00000"; // dark red
+  // }
+
+  // if (val < 5) {
+  //   return "#e56965"; // lighter red
+  // }
+
+  // if (val < 7) {
+  //   return "#4da9ef"; // blue
+  // }
+
+  // if (val < 8) {
+  //   return "#8acbc1"; // lighter green
+  // }
+
+  if (val <= 1) {
+    return "#e56965";
   }
+
+  if (val <= 2) {
+    return "#c0788a";
+  }
+
+  if (val <= 3) {
+    return "#a185a8";
+  }
+
+  if (val <=4) {
+    return "#8296c6";
+  }
+
+  if (val <= 5) {
+    return "#659fe2";
+  }
+
+  if (val <= 6) {
+    return "#4ba8ed";
+  }
+
+  if (val <= 7) {
+    return "#3bacdd";
+  }
+
+  if (val <= 8) {
+    return "#2aaecc";
+  }
+
+  if (val <= 9) {
+    return "#19b2bb";
+  }
+
+  if (val <= 10) {
+    return "#24beb3";
+  }
+
+  return "#24beb3"; // solid green
 }
 
 export const isJSONObject = (obj) => {

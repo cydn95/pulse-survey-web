@@ -307,6 +307,161 @@ const ReportMatrix = ({
     setFilterOrganization(tempList);
   };
 
+  const renderReport = () => {
+    if (status.code.toString() !== "200" && status.code.toString() !== "201") {
+      return (
+        <div className={styles["main-content"]}>
+          <NoDashboard code={status.code.toString()} threshold={status.thresholdCnt} />
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles["main-content"]}>
+        <div className={styles["content-chart"]}>
+          <div className={styles["content-chart-tab"]}>
+            <div
+              role="button"
+              className={classnames(styles["content-chart-tab-item"], {
+                [styles.active]: tab === TAB_MY_MATRIX,
+              })}
+              onClick={(e) => setTab(TAB_MY_MATRIX)}
+            >
+              My Matrix
+            </div>
+            <div
+              role="button"
+              className={classnames(styles["content-chart-tab-item"], {
+                [styles.active]: tab === TAB_PROJECT_MATRIX,
+              })}
+              onClick={(e) => setTab(TAB_PROJECT_MATRIX)}
+            >
+              Project Matrix
+            </div>
+          </div>
+          <div className={styles["content-chart-content"]}>
+            {loading ? (
+              <ReactLoading
+                className={styles["content-chart-loading"]}
+                type={"bars"}
+                color={"grey"}
+              />
+            ) : (
+              filteredReportData && (
+                <BubbleChart
+                  data={filteredReportData}
+                  x={horizontal}
+                  y={vertical}
+                />
+              )
+            )}
+          </div>
+        </div>
+        <div className={styles["content-control"]}>
+          <GraphInfoSelector
+            className={styles["content-control-item"]}
+            label="Horizontal Axis"
+            data={driverList}
+            value={horizontal}
+            onChange={(e) => setHorizontal(e.target.value)}
+          />
+          <GraphInfoSelector
+            className={styles["content-control-item"]}
+            label="Vertical Axis"
+            data={driverList}
+            value={vertical}
+            onChange={(e) => setVertical(e.target.value)}
+          />
+          <GraphInfoSelector
+            className={styles["content-control-item"]}
+            label="Bubble Size"
+            data={driverList}
+            value={size}
+            onChange={(e) => setSize(e.target.value)}
+          />
+          <GraphInfoSelector
+            className={styles["content-control-item"]}
+            label="Color"
+            data={driverList}
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+          />
+          <br />
+          <br />
+          <GraphInfoSelector
+            className={styles["content-control-item"]}
+            label="Group"
+            data={GROUP_BY}
+            value={groupBy}
+            onChange={(e) => setGroupBy(e.target.value)}
+          />
+          <div className={styles["content-control-item"]}>
+            <span className={styles["content-control-item-label"]}>
+              Filters
+            </span>
+            <div className={styles["content-control-filter"]}>
+              <div className={styles["content-control-filter-title"]}>
+                Group:
+              </div>
+              <div className={styles["content-control-filter-content"]}>
+                {shgroupList.map((sh) => {
+                  const selected = filterGroup.includes(sh.id);
+                  return (
+                    <Chip
+                      className={styles["filter-chipset"]}
+                      label={sh.SHGroupName}
+                      key={`filter_shgroup_${sh.id}`}
+                      color={selected ? "secondary" : "default"}
+                      onClick={(e) => handleSelectFilterGroup(sh.id)}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+            <div className={styles["content-control-filter"]}>
+              <div className={styles["content-control-filter-title"]}>
+                Team:
+              </div>
+              <div className={styles["content-control-filter-content"]}>
+                {teamList.map((t) => {
+                  const selected = filterTeam.includes(t.id);
+                  return (
+                    <Chip
+                      className={styles["filter-chipset"]}
+                      label={t.name}
+                      key={`filter_team_${t.id}`}
+                      color={selected ? "secondary" : "default"}
+                      onClick={(e) => handleSelectFilterTeam(t.id)}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+            <div className={styles["content-control-filter"]}>
+              <div className={styles["content-control-filter-title"]}>
+                Organization:
+              </div>
+              <div className={styles["content-control-filter-content"]}>
+                {organizationList.map((t) => {
+                  const selected = filterOrganization.includes(t.id);
+                  return (
+                    <Chip
+                      className={styles["filter-chipset"]}
+                      label={t.name}
+                      key={`filter_organization_${t.id}`}
+                      color={selected ? "secondary" : "default"}
+                      onClick={(e) => handleSelectFilterOrganization(t.id)}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className={styles.root}>
       <div className={styles.topbar}>
@@ -317,154 +472,7 @@ const ReportMatrix = ({
           </div>
         </TopNav>
       </div>
-      {status ? (
-        <div className={styles["main-content"]}>
-          <div className={styles["content-chart"]}>
-            <div className={styles["content-chart-tab"]}>
-              <div
-                role="button"
-                className={classnames(styles["content-chart-tab-item"], {
-                  [styles.active]: tab === TAB_MY_MATRIX,
-                })}
-                onClick={(e) => setTab(TAB_MY_MATRIX)}
-              >
-                My Matrix
-              </div>
-              <div
-                role="button"
-                className={classnames(styles["content-chart-tab-item"], {
-                  [styles.active]: tab === TAB_PROJECT_MATRIX,
-                })}
-                onClick={(e) => setTab(TAB_PROJECT_MATRIX)}
-              >
-                Project Matrix
-              </div>
-            </div>
-            <div className={styles["content-chart-content"]}>
-              {loading ? (
-                <ReactLoading
-                  className={styles["content-chart-loading"]}
-                  type={"bars"}
-                  color={"grey"}
-                />
-              ) : (
-                filteredReportData && (
-                  <BubbleChart
-                    data={filteredReportData}
-                    x={horizontal}
-                    y={vertical}
-                  />
-                )
-              )}
-            </div>
-          </div>
-          <div className={styles["content-control"]}>
-            <GraphInfoSelector
-              className={styles["content-control-item"]}
-              label="Horizontal Axis"
-              data={driverList}
-              value={horizontal}
-              onChange={(e) => setHorizontal(e.target.value)}
-            />
-            <GraphInfoSelector
-              className={styles["content-control-item"]}
-              label="Vertical Axis"
-              data={driverList}
-              value={vertical}
-              onChange={(e) => setVertical(e.target.value)}
-            />
-            <GraphInfoSelector
-              className={styles["content-control-item"]}
-              label="Bubble Size"
-              data={driverList}
-              value={size}
-              onChange={(e) => setSize(e.target.value)}
-            />
-            <GraphInfoSelector
-              className={styles["content-control-item"]}
-              label="Color"
-              data={driverList}
-              value={color}
-              onChange={(e) => setColor(e.target.value)}
-            />
-            <br />
-            <br />
-            <GraphInfoSelector
-              className={styles["content-control-item"]}
-              label="Group"
-              data={GROUP_BY}
-              value={groupBy}
-              onChange={(e) => setGroupBy(e.target.value)}
-            />
-            <div className={styles["content-control-item"]}>
-              <span className={styles["content-control-item-label"]}>
-                Filters
-              </span>
-              <div className={styles["content-control-filter"]}>
-                <div className={styles["content-control-filter-title"]}>
-                  Group:
-                </div>
-                <div className={styles["content-control-filter-content"]}>
-                  {shgroupList.map((sh) => {
-                    const selected = filterGroup.includes(sh.id);
-                    return (
-                      <Chip
-                        className={styles["filter-chipset"]}
-                        label={sh.SHGroupName}
-                        key={`filter_shgroup_${sh.id}`}
-                        color={selected ? "secondary" : "default"}
-                        onClick={(e) => handleSelectFilterGroup(sh.id)}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-              <div className={styles["content-control-filter"]}>
-                <div className={styles["content-control-filter-title"]}>
-                  Team:
-                </div>
-                <div className={styles["content-control-filter-content"]}>
-                  {teamList.map((t) => {
-                    const selected = filterTeam.includes(t.id);
-                    return (
-                      <Chip
-                        className={styles["filter-chipset"]}
-                        label={t.name}
-                        key={`filter_team_${t.id}`}
-                        color={selected ? "secondary" : "default"}
-                        onClick={(e) => handleSelectFilterTeam(t.id)}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-              <div className={styles["content-control-filter"]}>
-                <div className={styles["content-control-filter-title"]}>
-                  Organization:
-                </div>
-                <div className={styles["content-control-filter-content"]}>
-                  {organizationList.map((t) => {
-                    const selected = filterOrganization.includes(t.id);
-                    return (
-                      <Chip
-                        className={styles["filter-chipset"]}
-                        label={t.name}
-                        key={`filter_organization_${t.id}`}
-                        color={selected ? "secondary" : "default"}
-                        onClick={(e) => handleSelectFilterOrganization(t.id)}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className={styles["main-content"]}>
-          <NoDashboard />
-        </div>
-      )}
+      {renderReport()}
     </div>
   );
 };

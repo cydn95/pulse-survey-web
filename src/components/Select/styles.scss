@@ -1,0 +1,132 @@
+.wrapper {
+	position: relative;
+  color: gray;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+	.select {
+		display: flex;
+		justify-content: space-between;
+    gap: 8px;
+    align-items: center;
+	}
+	.dropdown {
+		position: absolute;
+		top: 95%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+	  border-radius: 8px;
+    min-width: 140px;
+    z-index: 10;
+    height: 78px;
+    overflow: auto;
+		.item {
+			padding: 10px 16px;
+			border: solid #eee;
+      border-width: 0px 2px 2px 2px;
+      position: absolute;
+      background-color: DodgerBlue;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      &:first-child {
+        border-width: 2px 2px 2px 2px;
+      }
+		}
+	}
+}
+.select_wrapper {
+  position: relative;
+  user-select: none;
+  color: gray;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  .select {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    &.open {
+      .select__trigger {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      .custom_options {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+        border: 1px solid #6d6f94;
+      }
+    }
+    .select__trigger {
+      padding: 0px 16px;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      font-family: Poppins;
+      gap: 8px;
+      align-items: center;
+      cursor: pointer;
+      .sign {
+        display: flex;
+        gap: 13px;
+        align-items: center;
+        .cross {
+          border-radius: 19px;
+          background: #e2e2e2;
+          width: 19px;
+          height: 19px;
+          color: black;
+          font-weight: bolder;
+          font-family: cursive;
+          justify-content: center;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+        }
+        .open {
+          transform: rotate(-90deg);
+          font-family: Poppins;
+        }
+        .close {
+          transform: rotate(90deg);
+          font-family: Poppins;
+        }
+      }
+    }
+    .custom_options {
+      position: absolute;
+      display: block;
+      top: 100%;
+      left: 0;
+      right: 0;
+      border-top: 0;
+      background: #fff;
+      transition: all 0.5s;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      z-index: 2;
+      .custom_option {
+        position: relative;
+        display: block;
+        font-family: Poppins;
+        padding: 10px 16px;
+        cursor: pointer;
+        transition: all 0.5s;
+        &:hover {
+          cursor: pointer;
+          background-color: #b2b2b2;
+        }
+        &.selected {
+          color: #ffffff;
+          background-color: #305c91;
+        }
+      }
+    }
+  }
+}

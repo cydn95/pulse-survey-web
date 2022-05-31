@@ -50,6 +50,7 @@ const CarouselContainer = ({
   const callback = (res) => {
     setLoading(false);
     setData(res);
+    // console.log('res', res)
   };
 
   useEffect(() => {
@@ -82,6 +83,7 @@ const CarouselContainer = ({
     const oldValue = d.myStatus.length > 0 ? d.myStatus[0].flagStatus : 0;
     const param = {
       amResponse: d.id,
+      orgAmResponse: d.id,
       projectUser: surveyUserId,
       flagStatus: Number(oldValue) === Number(value) ? 0 : Number(value),
     };
@@ -122,6 +124,11 @@ const CarouselContainer = ({
           {data.length > 0 ? (
             data.map((d) => {
               if (d.topicValue === "") return null;
+              if (d.myStatus.length > 0) {
+                if (d.myStatus[0].flagStatus > 0) {
+                  return null;
+                }
+              }
 
               return (
                 <KeyThemesCarousel

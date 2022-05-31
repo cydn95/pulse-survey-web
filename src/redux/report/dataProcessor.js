@@ -1,13 +1,11 @@
-import {
-  arrayAverage,
-} from "Util/Utils";
+import { getCurrentYear, getCurrentMonth, MONTH, arrayAverage, getPrevMonthData, compareDate } from "Util/Utils";
 
-const MONTH = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+// const MONTH = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 const compare = (a, b) => {
   if (a.created_at > b.created_at) {
     return 1;
-  } 
+  }
 
   if (a.created_at < b.created_at) {
     return -1;
@@ -17,6 +15,9 @@ const compare = (a, b) => {
 }
 
 export const getResultForSHGroup = (shGroupList, result) => {
+  // console.log(shGroupList);
+  // console.log(result);
+
   const subDriverRet = {};
 
   const resultData = [...result.data];
@@ -24,18 +25,20 @@ export const getResultForSHGroup = (shGroupList, result) => {
 
   resultData.forEach((data) => {
     let questionData = [];
-    if ("amQuestionData" in data) {
-      questionData = data.amQuestionData;
+    if ("amQuestion" in data) {
+      questionData = data.amQuestion;
+    } else {
+      questionData = data.aoQuestion;
     }
-    if ("aoQuestionData" in data) {
-      questionData = data.aoQuestionData;
-    }
+    // if ("aoQuestionData" in data) {
+    //   questionData = data.aoQuestionData;
+    // }
 
-    questionData.forEach((aq) => {
-      if (!(aq.subdriver in subDriverRet)) {
-        subDriverRet[aq.subdriver] = [];
+    // questionData.forEach((aq) => {
+      if (!(questionData.subdriver in subDriverRet)) {
+        subDriverRet[questionData.subdriver] = [];
       }
-    });
+    // });
   });
 
   // console.log(subDriverRet);
@@ -58,63 +61,132 @@ export const getResultForSHGroup = (shGroupList, result) => {
 
         const data = resultData[k];
 
-        if (!("projectUser" in data)) {
+        if (!("subProjectUser" in data)) {
           continue
         }
 
-        if (data.projectUser.shGroup === null || data.projectUser.shGroup.id !== currentShGroup.id) {
+        // if (!(data.subProjectUser.shType && data.subProjectUser.shType.shTypeName === "Stakeholder")) {
+        //   continue;
+        // }
+
+        if (data.subProjectUser.shGroup === null || data.subProjectUser.shGroup.SHGroupName !== currentShGroup.SHGroupName) {
           continue;
         }
 
-        if (!stakeholders.includes(data.projectUser.id)) {
-          stakeholders.push(data.projectUser.id)
+        if (!stakeholders.includes(data.subProjectUser.id)) {
+          stakeholders.push(data.subProjectUser.id)
         }
 
         let questionData = [];
-        if ("amQuestionData" in data) {
-          questionData = data.amQuestionData;
+        if ("amQuestion" in data) {
+          questionData = data.amQuestion;
+        } else {
+          questionData = data.aoQuestion;
         }
-        if ("aoQuestionData" in data) {
-          questionData = data.aoQuestionData;
-        }
-        
-        questionData.forEach((aq) => {
+        // if ("aoQuestionData" in data) {
+        //   questionData = data.aoQuestionData;
+        // }
+
+        // questionData.forEach((aq) => {
           // if (
           //   aq.shGroup.includes(currentShGroup.id) &&
           //   aq.subdriver === currentKey
           // ) {
-          if (aq.subdriver === currentKey) {
+          if (questionData.subdriver === currentKey) {
             cnt++;
             sum += data.integerValue;
             const dateStr = data.created_at.split("-");
             // const dateKey = dateStr[0] + "-" + dateStr[1];  // Year - Month
-            const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
+            const dateKey = MONTH(Number(dateStr[1])) + " " + dateStr[0];
             // const dateKey = dateStr[1];    // Only Month
             // const dateStr = data.created_at.split("T");
             // const dateKey = dateStr[0];
 
             if (question === "") {
-              question = aq.questionText;
+              question = questionData.questionText;
             }
-            
+
             if (dateKey in trend) {
-              trend[dateKey].push(data.integerValue);
+              trend[dateKey][data.projectUser] = data.integerValue;
             } else {
-              trend[dateKey] = [data.integerValue];
+              trend[dateKey] = {[data.projectUser]: data.integerValue};
             }
           }
-        });
+        // });
       }
 
+      // console.log('step1')
+
+      Object.keys(trend).map((d, idx, self) => {
+        for (let i=0; i <= idx; i++) {
+          trend[d] = {...trend[d], ...trend[self[i]]}
+        }
+      })
+      // console.log('step2')
+
       const newTrend = [];
+      const currentYear = getCurrentYear();
+      const currentMonth = getCurrentMonth();
+      const keys = [];
+      for (let i = 0; i < 5; i++) {
+        let month = currentMonth - i;
+        let year = currentYear;
+        if (month <= 0) {
+          month += 12;
+          year = currentYear - 1;
+        }
 
-      Object.keys(trend).forEach((t, index) => {
-        newTrend.push({
-          x: t,
-          y: arrayAverage(trend[t]) / 10,
+        const key = `${MONTH(month)} ${year}`;
+
+        keys.push({
+          key,
+          value: 0,
         });
-      });
+      }
+      // console.log('step3', trend)
+      
+      const reverseKeys = [...keys.reverse()];
+      // console.log('step3', reverseKeys)
+      let prevYValue = {};
+      reverseKeys.map((d, idx) => {
+        if(Object.keys(trend).length === 0) {
+          return d
+        }
+        // console.log('step4-0', d.key)
+        if (trend[d.key]) {
+          prevYValue = {...trend[d.key]}
+        } else {
+          if(idx === 0) {
+            // console.log('step4-1')
+            if(compareDate(Object.keys(trend)[0], d.key)) {
+              return d
+            }
+            // console.log('step4-2')
+            prevYValue = getPrevMonthData(trend, d.key)
+          }
+        }
 
+        let sum2 = 0
+        Object.keys(prevYValue).map(key => {
+          sum2 += prevYValue[key]
+        })
+
+        newTrend.push({
+          x: d.key,
+          y: sum2 / (10 * Object.keys(prevYValue).length),
+        })
+        return d;
+      })
+
+      // console.log('step5')
+
+
+      // Object.keys(trend).forEach((t, index) => {
+      //   newTrend.push({
+      //     x: t,
+      //     y: arrayAverage(trend[t]) / 10,
+      //   });
+      // });
       subDriverRet[currentKey].push({
         value: cnt > 0 ? ((sum / cnt / 10).toFixed(1) > 100 ? 100 : (sum / cnt / 10).toFixed(1)) : 0,
         question,
@@ -136,18 +208,20 @@ export const getResultForTeam = (teamList, result) => {
 
   resultData.forEach((data) => {
     let questionData = [];
-    if ("amQuestionData" in data) {
-      questionData = data.amQuestionData;
+    if ("amQuestion" in data) {
+      questionData = data.amQuestion;
+    } else {
+      questionData = data.aoQuestion;
     }
-    if ("aoQuestionData" in data) {
-      questionData = data.aoQuestionData;
-    }
+    // if ("aoQuestionData" in data) {
+    //   questionData = data.aoQuestionData;
+    // }
 
-    questionData.forEach((aq) => {
-      if (!(aq.subdriver in subDriverRet)) {
-        subDriverRet[aq.subdriver] = [];
+    // questionData.forEach((aq) => {
+      if (!(questionData.subdriver in subDriverRet)) {
+        subDriverRet[questionData.subdriver] = [];
       }
-    });
+    // });
   });
 
   for (let i = 0; i < Object.keys(subDriverRet).length; i++) {
@@ -166,60 +240,120 @@ export const getResultForTeam = (teamList, result) => {
 
         const data = resultData[k];
 
-        if (!("projectUser" in data)) {
+        if (!("subProjectUser" in data)) {
           continue
         }
 
-        if (data.projectUser.team === null || data.projectUser.team.id !== currentTeam.id) {
+        // if (!(data.subProjectUser.shType && data.subProjectUser.shType.shTypeName === "Team Member")) {
+        //   continue;
+        // }
+
+        if (data.subProjectUser.team === null || data.subProjectUser.team.name !== currentTeam.name) {
           continue;
         }
 
-        if (!stakeholders.includes(data.projectUser.id)) {
-          stakeholders.push(data.projectUser.id)
+        if (!stakeholders.includes(data.subProjectUser.id)) {
+          stakeholders.push(data.subProjectUser.id)
         }
 
         let questionData = [];
-        if ("amQuestionData" in data) {
-          questionData = data.amQuestionData;
+        if ("amQuestion" in data) {
+          questionData = data.amQuestion;
+        } else {
+          questionData = data.aoQuestion;
         }
-        if ("aoQuestionData" in data) {
-          questionData = data.aoQuestionData;
-        }
+        // if ("aoQuestionData" in data) {
+        //   questionData = data.aoQuestionData;
+        // }
 
-        questionData.forEach((aq) => {
+        // questionData.forEach((aq) => {
           // if (
           //   data.subProjectUser.team.id === currentTeam.id &&
           //   aq.subdriver === currentKey
           // ) {
-          if (aq.subdriver === currentKey) {
+          if (questionData.subdriver === currentKey) {
             cnt++;
             sum += data.integerValue;
             const dateStr = data.created_at.split("-");
-            const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
+            const dateKey = MONTH(Number(dateStr[1])) + " " + dateStr[0];
             // const dateStr = data.created_at.split("T");
             // const dateKey = dateStr[0];
 
             if (question === "") {
-              question = aq.questionText;
+              question = questionData.questionText;
             }
 
             if (dateKey in trend) {
-              trend[dateKey].push(data.integerValue);
+              trend[dateKey][data.projectUser] = data.integerValue;
             } else {
-              trend[dateKey] = [data.integerValue];
+              trend[dateKey] = {[data.projectUser]: data.integerValue};
             }
           }
+        // });
+      }
+
+      Object.keys(trend).map((d, idx, self) => {
+        for (let i=0; i <= idx; i++) {
+          trend[d] = {...trend[d], ...trend[self[i]]}
+        }
+      })
+
+      const newTrend = [];
+      const currentYear = getCurrentYear();
+      const currentMonth = getCurrentMonth();
+      const keys = [];
+      for (let i = 0; i < 5; i++) {
+        let month = currentMonth - i;
+        let year = currentYear;
+        if (month <= 0) {
+          month += 12;
+          year = currentYear - 1;
+        }
+
+        const key = `${MONTH(month)} ${year}`;
+
+        keys.push({
+          key,
+          value: 0,
         });
       }
 
-      const newTrend = [];
+      const reverseKeys = [...keys.reverse()];
+      let prevYValue = {};
+      reverseKeys.map((d, idx) => {
+        // console.log('trend', trend)
+        // console.log('prevYValue', prevYValue)
+        if(Object.keys(trend).length === 0) {
+          return d
+        }
+        if (trend[d.key]) {
+          prevYValue = {...trend[d.key]}
+        } else {
+          if(idx === 0) {
+            if(compareDate(Object.keys(trend)[0], d.key)) {
+              return d
+            }
+            prevYValue = getPrevMonthData(trend, d.key)
+          }
+        }
+        let sum2 = 0
+        Object.keys(prevYValue).map(key => {
+          sum2 += prevYValue[key]
+        })
 
-      Object.keys(trend).forEach((t, index) => {
         newTrend.push({
-          x: t,
-          y: arrayAverage(trend[t]) / 10,
-        });
-      });
+          x: d.key,
+          y: sum2 / (10 * Object.keys(prevYValue).length),
+        })
+        return d;
+      })
+
+      // Object.keys(trend).forEach((t, index) => {
+      //   newTrend.push({
+      //     x: t,
+      //     y: arrayAverage(trend[t]) / 10,
+      //   });
+      // });
 
       subDriverRet[currentKey].push({
         value: cnt > 0 ? ((sum / cnt / 10).toFixed(1) > 100 ? 100 : (sum / cnt / 10).toFixed(1)) : 0,
@@ -242,18 +376,20 @@ export const getResultForOrganization = (organizationList, result) => {
 
   resultData.forEach((data) => {
     let questionData = [];
-    if ("amQuestionData" in data) {
-      questionData = data.amQuestionData;
+    if ("amQuestion" in data) {
+      questionData = data.amQuestion;
+    } else {
+      questionData = data.aoQuestion;
     }
-    if ("aoQuestionData" in data) {
-      questionData = data.aoQuestionData;
-    }
+    // if ("aoQuestionData" in data) {
+    //   questionData = data.aoQuestionData;
+    // }
 
-    questionData.forEach((aq) => {
-      if (!(aq.subdriver in subDriverRet)) {
-        subDriverRet[aq.subdriver] = [];
+    // questionData.forEach((aq) => {
+      if (!(questionData.subdriver in subDriverRet)) {
+        subDriverRet[questionData.subdriver] = [];
       }
-    });
+    // });
   });
 
   for (let i = 0; i < Object.keys(subDriverRet).length; i++) {
@@ -269,69 +405,123 @@ export const getResultForOrganization = (organizationList, result) => {
       let question = "";
 
       for (let k = 0; k < resultData.length; k++) {
-      
+
         const data = resultData[k];
 
-        if (!("projectUser" in data)) {
+        if (!("subProjectUser" in data)) {
           continue
         }
 
-        if (data.projectUser.user === null || data.projectUser.user.organization === null || data.projectUser.user.organization.id !== currentOrganization.id) {
+        if (!("projectOrganization" in data.subProjectUser && data.subProjectUser.projectOrganization !== "")) {
           continue;
         }
 
-        if (!stakeholders.includes(data.projectUser.id)) {
-          stakeholders.push(data.projectUser.id)
+        if (data.subProjectUser.projectOrganization !== currentOrganization.id) {
+          continue;
+        }
+
+        if (!stakeholders.includes(data.subProjectUser.id)) {
+          stakeholders.push(data.subProjectUser.id)
         }
 
         let questionData = [];
-        if ("amQuestionData" in data) {
-          questionData = data.amQuestionData;
+        if ("amQuestion" in data) {
+          questionData = data.amQuestion;
+        } else {
+          questionData = data.aoQuestion;
         }
-        if ("aoQuestionData" in data) {
-          questionData = data.aoQuestionData;
-        }
+        // if ("aoQuestionData" in data) {
+        //   questionData = data.aoQuestionData;
+        // }
 
-        if ("projectUser" in data) {
-          if (!(stakeholders.includes(data.projectUser.id)) && data.projectUser.user.organization.id === currentOrganization.id) {
-            stakeholders.push(data.projectUser.id)
-          }
-        }
-
-        questionData.forEach((aq) => {
+        // questionData.forEach((aq) => {
           // if (
           //   data.subProjectUser.user.organization.id === currentOrganization.id &&
           //   aq.subdriver === currentKey
           // ) {
-          if (aq.subdriver === currentKey) {
+          if (questionData.subdriver === currentKey) {
             cnt++;
             sum += data.integerValue;
             const dateStr = data.created_at.split("-");
-            const dateKey = MONTH[Number(dateStr[1]) - 1] + " " + dateStr[0];
+            const dateKey = MONTH(Number(dateStr[1])) + " " + dateStr[0];
             // const dateStr = data.created_at.split("T");
             // const dateKey = dateStr[0];
 
             if (question === "") {
-              question = aq.questionText;
+              question = questionData.questionText;
             }
 
             if (dateKey in trend) {
-              trend[dateKey].push(data.integerValue);
+              trend[dateKey][data.projectUser] = data.integerValue;
             } else {
-              trend[dateKey] = [data.integerValue];
+              trend[dateKey] = {[data.projectUser]: data.integerValue};
             }
           }
+        // });
+      }
+
+      Object.keys(trend).map((d, idx, self) => {
+        for (let i=0; i <= idx; i++) {
+          trend[d] = {...trend[d], ...trend[self[i]]}
+        }
+      })
+
+      const newTrend = [];
+      const currentYear = getCurrentYear();
+      const currentMonth = getCurrentMonth();
+      const keys = [];
+      for (let i = 0; i < 5; i++) {
+        let month = currentMonth - i;
+        let year = currentYear;
+        if (month <= 0) {
+          month += 12;
+          year = currentYear - 1;
+        }
+
+        const key = `${MONTH(month)} ${year}`;
+
+        keys.push({
+          key,
+          value: 0,
         });
       }
 
-      const newTrend = [];
+      const reverseKeys = [...keys.reverse()];
+      let prevYValue = {};
+      reverseKeys.map((d, idx) => {
+        // console.log('trend', trend)
+        if(Object.keys(trend).length === 0) {
+          return d
+        }
+        if (trend[d.key]) {
+          prevYValue = {...trend[d.key]}
+        } else {
+          if(idx === 0) {
+            if(compareDate(Object.keys(trend)[0], d.key)) {
+              return d
+            }
+            prevYValue = getPrevMonthData(trend, d.key)
+          }
+        }
+        
+        let sum2 = 0
+        Object.keys(prevYValue).map(key => {
+          sum2 += prevYValue[key]
+        })
 
-      Object.keys(trend).forEach((t, index) => {
         newTrend.push({
-          x: t,
-          y: arrayAverage(trend[t]) / 10,
-        });
-      });
+          x: d.key,
+          y: sum2 / (10 * Object.keys(prevYValue).length),
+        })
+        return d;
+      })
+
+      // Object.keys(trend).forEach((t, index) => {
+      //   newTrend.push({
+      //     x: t,
+      //     y: arrayAverage(trend[t]) / 10,
+      //   });
+      // });
 
       subDriverRet[currentKey].push({
         value: cnt > 0 ? ((sum / cnt / 10).toFixed(1) > 100 ? 100 : (sum / cnt / 10).toFixed(1)) : 0,

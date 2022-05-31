@@ -6,11 +6,12 @@ import ReactLoading from "react-loading";
 
 import TopNav from "Containers/TopNav";
 import Emoji from "Components/report/Emoji";
-import Participation from "Components/report/Participation";
-import CultureResult from "Components/report/CultureResult";
-import OverallTrend from "Components/report/OverallTrend";
-import SummaryBarChart from "Components/report/SummaryBarChart";
+// import Participation from "Components/report/Participation";
+// import CultureResult from "Components/report/CultureResult";
+// import OverallTrend from "Components/report/OverallTrend";
+// import SummaryBarChart from "Components/report/SummaryBarChart";
 import NoDashboard from "Components/report/NoDashboard";
+
 
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
@@ -25,6 +26,11 @@ import {
   getFeedbackSummaryByShGroup,
   getFeedbackSummaryByTeamOrOrganization,
 } from "Redux/report/summaryFunctions";
+import { getColorFromValue } from "Util/Utils";
+import OverallTrend from "Components/report/OverallTrend"
+import SummaryBarChart from "Components/report/SummaryBarChart"
+import Participation from "Components/report/Participation"
+import CultureResult from "Components/report/CultureResult"
 
 import cn from "classnames";
 import styles from "./styles.scss";
@@ -35,6 +41,7 @@ const FILTER_ORGANIZATION = "Organization";
 
 const ReportSummary = ({
   projectTitle,
+  projectId,
   surveyId,
   surveyUserId,
   actionOverallSentiment,
@@ -42,6 +49,11 @@ const ReportSummary = ({
   actionParticipation,
   actionFeedbackSummary,
   status,
+  shGroupId,
+  userteam,
+  userorg,
+  segments,
+  profile
 }) => {
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [filter, setFilter] = useState(FILTER_SHGROUP);
@@ -73,9 +85,9 @@ const ReportSummary = ({
   const [participationCount, setParticipationCount] = useState(0);
   const [teamParticipationCount, setTeamParticipationCount] = useState(0);
 
-  const [teamList, setTeamList] = useState([]);
-  const [organizationList, setOrganizationList] = useState([]);
-  const [shGroupList, setShGroupList] = useState([]);
+  // const [teamList, setTeamList] = useState([]);
+  // const [organizationList, setOrganizationList] = useState([]);
+  // const [shGroupList, setShGroupList] = useState([]);
 
   const [topPositives, setTopPositives] = useState([]);
   const [topNegatives, setTopNegatives] = useState([]);
@@ -89,26 +101,54 @@ const ReportSummary = ({
     sentimentKey,
     overallTrendRet,
     overallTrendKey,
-    teamList,
-    organizationList,
-    shGroupList
   ) => {
     setFeedbackSummaryLoading(false);
-    const feedbackSummaryRet = getFeedbackSummaryByShGroup(
-      feedbackSummaryResultData,
-      shGroupList
-    );
-
-    setAllData(feedbackSummaryResultData);
+    let temp = [...feedbackSummaryResultData]
+    // console.log('temp', temp)
+    if(segments) {
+      if ((segments.shgroups || []).length > 0) {
+        let data = ((segments.shgroups || []).filter(shgroup => shgroup.segmentName.toString() === shGroupId.toString())[0] || {})
+        if (data.permissionType === 'All Exception') {
+          temp = temp.filter(q => !(data.shGroups || []).includes((q.subProjectUser.shGroup || {}).id) && !(data.teams || []).includes((q.subProjectUser.team || {}).name) && !(data.organizations || []).includes(q.subProjectUser.projectOrganization))
+        } else if (data.permissionType === 'Only') {
+          temp = temp.filter(q => (data.shGroups || []).includes((q.subProjectUser.shGroup || {}).id) && (data.teams || []).includes((q.subProjectUser.team || {}).name) && (data.organizations || []).includes(q.subProjectUser.projectOrganization))
+        }
+      }
+      if ((segments.teams || []).length > 0) {
+        let data = ((segments.teams || []).filter(team => team.segmentName === (userteam || {}).name)[0] || {})
+        if (data.permissionType === 'All Exception') {
+          temp = temp.filter(q => !(data.shGroups || []).includes((q.subProjectUser.shGroup || {}).id) && !(data.teams || []).includes((q.subProjectUser.team || {}).name) && !(data.organizations || []).includes(q.subProjectUser.projectOrganization))
+        } else if (data.permissionType === 'Only') {
+          temp = temp.filter(q => (data.shGroups || []).includes((q.subProjectUser.shGroup || {}).id) && (data.teams || []).includes((q.subProjectUser.team || {}).name) && (data.organizations || []).includes(q.subProjectUser.projectOrganization))
+        }
+        // console.log('data', data)
+        // console.log('data', userteam)
+        // console.log('data', segments.teams)
+      }
+      if ((segments.organizations || []).length > 0) {
+        let data = ((segments.organizations || []).filter(org => org.segmentName === userorg)[0] || {})
+        if (data.permissionType === 'All Exception') {
+          temp = temp.filter(q => !(data.shGroups || [ ]).includes((q.subProjectUser.shGroup || {}).id) && !(data.teams || []).includes((q.subProjectUser.team || {}).name) && !(data.organizations || []).includes(q.subProjectUser.projectOrganization))
+        } else if (data.permissionType === 'Only') {
+          temp = temp.filter(q => (data.shGroups || []).includes((q.subProjectUser.shGroup || {}).id) && (data.teams || []).includes((q.subProjectUser.team || {}).name) && (data.organizations || []).includes(q.subProjectUser.projectOrganization))
+        }
+      }
+    }
+    // console.log('temp', temp)
+    const feedbackSummaryRet = getFeedbackSummaryByShGroup(temp,);
+    // console.log('overallTrendRet', overallTrendRet)
+    // console.log('overallTrendKey', overallTrendKey)
+    // setOverallSentiment(Math.round(overallTrendRet.reduce((pre, crr) => pre + crr[crr.length - 1].y, 0) / 2));
+    setAllData(temp);
     setFeedbackSummary(feedbackSummaryRet);
     setCultureResult(cultureRet);
     setSentimentKey(sentimentKey);
     setSentimentResult(sentimentRet);
     setOverallTrendResult(overallTrendRet);
     setOverallTrendKey(overallTrendKey);
-    setTeamList(teamList);
-    setOrganizationList(organizationList);
-    setShGroupList(shGroupList);
+    // setTeamList(teamList);
+    // setOrganizationList(organizationList);
+    // setShGroupList(shGroupList);
   };
 
   const callbackOverallSentiment = (data) => {
@@ -154,6 +194,7 @@ const ReportSummary = ({
   useEffect(() => {
     setFeedbackSummaryLoading(true);
     actionFeedbackSummary(
+      projectId,
       surveyId,
       surveyUserId,
       FILTER_SHGROUP,
@@ -164,32 +205,30 @@ const ReportSummary = ({
   const hanleChangeFeedbackSummaryGraph = (type) => {
     const feedbackSummaryRet =
       type === "ShGroup"
-        ? getFeedbackSummaryByShGroup(allData, shGroupList)
+        ? getFeedbackSummaryByShGroup(allData)
         : getFeedbackSummaryByTeamOrOrganization(allData, type);
 
     setFeedbackSummary(feedbackSummaryRet);
   };
 
-  return (
-    <div className={styles.root}>
-      <div className={styles.topbar}>
-        <TopNav
-          history={history}
-          menuTitle="Summary"
-          style={{ backgroundColor: "#f5f5f5" }}
-        >
-          <div className={styles.section}>
-            <h2 className={styles["page-title"]}>My Profile</h2>
-            <h2 className={styles["project-name"]}>{projectTitle}</h2>
-          </div>
-        </TopNav>
-      </div>
-      <div className={styles["main-content"]}>
-        {status ? (
-          <Fragment>
-            {/** Filter section start */}
-            <div className={styles["filter-bar"]}>
-              {/* <div className={styles["filter-bar-datepicker"]}>
+  const renderReport = () => {
+    if (status.code.toString() !== "200" && status.code.toString() !== "201") {
+      return (
+        <div className={styles["main-content"]}>
+          <NoDashboard code={status.code.toString()} threshold={status.thresholdCnt} />
+        </div>
+      );
+    }
+
+    return (
+      <React.Suspense fallback={<ReactLoading
+        className={styles["summary-analysis-loading"]}
+        type={"bars"}
+        color={"grey"}
+      />}>
+        {/** Filter section start */}
+        <div className={styles["filter-bar"]}>
+          {/* <div className={styles["filter-bar-datepicker"]}>
             <img
               role="button"
               className={styles["filter-bar-icon"]}
@@ -212,255 +251,259 @@ const ReportSummary = ({
               </div>
             )}
           </div> */}
-              <button
-                className={cn(styles["filter-bar-button"], {
-                  [styles.active]: filter === FILTER_SHGROUP,
-                })}
-                onClick={(e) => {
-                  setFilter(FILTER_SHGROUP);
-                  hanleChangeFeedbackSummaryGraph(FILTER_SHGROUP);
-                }}
-              >
-                SH Group
-              </button>
-              <button
-                className={cn(styles["filter-bar-button"], {
-                  [styles.active]: filter === FILTER_TEAM,
-                })}
-                onClick={(e) => {
-                  setFilter(FILTER_TEAM);
-                  hanleChangeFeedbackSummaryGraph(FILTER_TEAM);
-                }}
-              >
-                Team
-              </button>
-              <button
-                className={cn(styles["filter-bar-button"], {
-                  [styles.active]: filter === FILTER_ORGANIZATION,
-                })}
-                onClick={(e) => {
-                  setFilter(FILTER_ORGANIZATION);
-                  hanleChangeFeedbackSummaryGraph(FILTER_ORGANIZATION);
-                }}
-              >
-                Organization
-              </button>
-            </div>
-            {/** Filter section end */}
-            {overallSentimentLoading ||
-            feedbackSummaryLoading ||
-            participationLoading ||
-            topPositiveNegativeLoading ? (
-              <ReactLoading
-                className={styles["summary-analysis-loading"]}
-                type={"bars"}
-                color={"grey"}
-              />
-            ) : (
-              <Fragment>
-                {/** Sentiment Result start */}
-                <div className={cn(styles.section, "flex-row-flow")}>
-                  <div className={styles["section-sentiment"]}>
-                    <Emoji satisfaction={overallSentiment} />
-                    <div className={styles["section-sentiment-text"]}>
-                      <div>
-                        Overall
-                        <br />
-                        Sentiment
-                      </div>
-                    </div>
-                  </div>
-                  {sentimentKey.map((item, index) => {
-                    let value = sentimentResult[index]
-                      ? sentimentResult[index][0].count
-                      : 0;
-
-                    let text = `${
-                      sentimentResult[index]
-                        ? sentimentResult[index][0].count % 10 === 0
-                          ? sentimentResult[index][0].count / 10
-                          : (sentimentResult[index][0].count / 10).toFixed(1)
-                        : ""
-                    }`;
-
-                    if (item === "Overall Sentiment") {
-                      value = overallSentiment;
-                      text = overallSentiment / 10;
-                    }
-
-                    if (
-                      !sentimentResult[index] ||
-                      sentimentResult[index][0].count <= 0
-                    ) {
-                      return null;
-                    }
-
-                    return (
-                      <div
-                        key={`sentiment-result-${item}`}
-                        className={styles["section-sentiment"]}
-                      >
-                        <CircularProgressbar
-                          className={styles["section-sentiment-progress"]}
-                          value={value}
-                          text={text}
-                          styles={buildStyles({
-                            trailColor: "#ccc",
-                            pathColor: "#18a0fb",
-                            textSize: "32px",
-                          })}
-                        />
-                        <div
-                          className={styles["section-sentiment-text"]}
-                          style={{ paddingLeft: 10 }}
-                        >
-                          <div>{item}</div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                {/** Sentiment Result end */}
-
-                {/** Overall Trends Start */}
-                <div
-                  className={cn(styles.section, styles["section-middle"])}
-                  style={{ padding: 0, width: "100%" }}
-                >
-                  <div className={styles["section-overall-trends"]}>
-                    <div className={styles["section-title"]}>
-                      Overall Trends
-                    </div>
-                    <OverallTrend
-                      key="linechart"
-                      shGroups={overallTrendKey}
-                      data={overallTrendResult}
-                      xRange={[1, 12]}
-                      yRange={[0, 10]}
-                      width={400}
-                      height={220}
-                      margin={30}
-                    />
-                  </div>
-                  <div className={styles["section-top-pos-neg"]}>
-                    <div className={styles["section-top-pos"]}>
-                      <div className={styles.title}>Top positive:</div>
-                      {topPositives.map((item, index) => (
-                        <div
-                          className={styles.text}
-                          key={`top-positive-${index}`}
-                        >
-                          {item.topicValue}
-                        </div>
-                      ))}
-                    </div>
-                    <div className={styles["section-top-neg"]}>
-                      <div className={styles.title}>Top negative:</div>
-                      {topNegatives.map((item, index) => (
-                        <div
-                          className={styles.text}
-                          key={`top-negative-${index}`}
-                        >
-                          {item.topicValue}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className={styles["section-participation"]}>
-                    <div className={styles["section-title"]}>Participation</div>
-                    <div className={styles["section-participation-container"]}>
-                      <div
-                        className={styles["section-participation-item"]}
-                        style={{
-                          background: "#f5f5f5",
-                          border: "solid 1px #b9b9b9",
-                          color: "#757f88",
-                        }}
-                      >
-                        Not issue
-                      </div>
-                      <div
-                        className={styles["section-participation-item"]}
-                        style={{
-                          background: "#fdeeee",
-                          border: "solid 1px #f16868",
-                          color: "#f16868",
-                        }}
-                      >
-                        Rejected
-                      </div>
-                      <div
-                        className={styles["section-participation-item"]}
-                        style={{
-                          background: "#fff6e7",
-                          border: "solid 1px #d18200",
-                          color: "#d18200",
-                        }}
-                      >
-                        Awaiting
-                      </div>
-                      <div
-                        className={styles["section-participation-item"]}
-                        style={{
-                          background: "#e9f7f1",
-                          border: "solid 1px #03bdaf",
-                          color: "#03bdaf",
-                        }}
-                      >
-                        Completed
-                      </div>
-                    </div>
-                    {participationResult.length > 0 &&
-                      teamParticipationResult.length > 0 && (
-                        <Participation
-                          allData={participationResult}
-                          allCount={participationCount}
-                          teamData={teamParticipationResult}
-                          teamCount={teamParticipationCount}
-                        />
-                      )}
-                  </div>
-                </div>
-                {/** Overall Trends End */}
-
-                {/** Feedback Summary Start */}
-                <div className={styles["section-bottom"]}>
-                  <div
-                    className={cn(styles.section, styles["section-feedback"])}
-                  >
-                    <div className={styles["section-title"]}>
-                      Feedback Summary
-                    </div>
-                    <SummaryBarChart data={feedbackSummary} />
-                  </div>
-                  <div
-                    className={cn(styles.section, styles["section-culture"])}
-                  >
-                    <div className={styles["section-title"]}>
-                      Culture Results
-                    </div>
-                    <CultureResult data={cultureResult} />
-                  </div>
-                </div>
-                {/** Feedback Summary End */}
-              </Fragment>
-            )}{" "}
-          </Fragment>
+          <button
+            className={cn(styles["filter-bar-button"], {
+              [styles.active]: filter === FILTER_SHGROUP,
+            })}
+            onClick={(e) => {
+              setFilter(FILTER_SHGROUP);
+              hanleChangeFeedbackSummaryGraph(FILTER_SHGROUP);
+            }}
+          >
+            SH Group
+          </button>
+          <button
+            className={cn(styles["filter-bar-button"], {
+              [styles.active]: filter === FILTER_TEAM,
+            })}
+            onClick={(e) => {
+              setFilter(FILTER_TEAM);
+              hanleChangeFeedbackSummaryGraph(FILTER_TEAM);
+            }}
+          >
+            Team
+          </button>
+          <button
+            className={cn(styles["filter-bar-button"], {
+              [styles.active]: filter === FILTER_ORGANIZATION,
+            })}
+            onClick={(e) => {
+              setFilter(FILTER_ORGANIZATION);
+              hanleChangeFeedbackSummaryGraph(FILTER_ORGANIZATION);
+            }}
+          >
+            Organization
+          </button>
+        </div>
+        {/** Filter section end */}
+        {overallSentimentLoading ||
+          feedbackSummaryLoading ||
+          participationLoading ||
+          topPositiveNegativeLoading ? (
+          <ReactLoading
+            className={styles["summary-analysis-loading"]}
+            type={"bars"}
+            color={"grey"}
+          />
         ) : (
-          <NoDashboard />
+          <Fragment>
+            {/** Sentiment Result start */}
+            <div className={cn(styles.section, "flex-row-flow")}>
+              <div className={styles["section-sentiment"]}>
+                <Emoji satisfaction={overallSentiment} />
+                <div className={styles["section-sentiment-text"]}>
+                  <div>
+                    Overall
+                    <br />
+                    Sentiment
+                  </div>
+                </div>
+              </div>
+              {sentimentKey.map((item, index) => {
+                let value = sentimentResult[index]
+                  ? sentimentResult[index][0].count
+                  : 0;
+
+                let text = `${sentimentResult[index]
+                  ? sentimentResult[index][0].count % 10 === 0
+                    ? sentimentResult[index][0].count / 10
+                    : (sentimentResult[index][0].count / 10).toFixed(1)
+                  : ""
+                  }`;
+
+                if (item === "Overall Sentiment") {
+                  value = overallSentiment;
+                  text = overallSentiment / 10;
+                  return null;
+                }
+
+                if (
+                  !sentimentResult[index] ||
+                  sentimentResult[index][0].count <= 0
+                ) {
+                  return null;
+                }
+
+                return (
+                  <div
+                    key={`sentiment-result-${item}`}
+                    className={styles["section-sentiment"]}
+                  >
+                    <CircularProgressbar
+                      className={styles["section-sentiment-progress"]}
+                      value={value}
+                      text={text}
+                      styles={buildStyles({
+                        trailColor: "#ccc",
+                        pathColor: getColorFromValue(Number(text)),
+                        textSize: "32px",
+                      })}
+                    />
+                    <div
+                      className={styles["section-sentiment-text"]}
+                      style={{ paddingLeft: 10 }}
+                    >
+                      <div>{item}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            {/** Sentiment Result end */}
+
+            {/** Overall Trends Start */}
+            <div
+              className={cn(styles.section, styles["section-middle"])}
+              style={{ padding: 0, width: "100%" }}
+            >
+              <div className={styles["section-overall-trends"]}>
+                <div className={styles["section-title"]}>Overall Trends</div>
+                <OverallTrend
+                  key="linechart"
+                  data={overallTrendResult}
+                  xRange={[1, 12]}
+                  yRange={[0, 10]}
+                  width={400}
+                  height={220}
+                  margin={30}
+                />
+              </div>
+              <div className={styles["section-top-pos-neg"]}>
+                <div className={styles["section-top-pos"]}>
+                  <div className={styles.title}>Top positive:</div>
+                  {topPositives.map((item, index) => (
+                    <div className={styles.text} key={`top-positive-${index}`}>
+                      {item.topicValue}
+                    </div>
+                  ))}
+                </div>
+                <div className={styles["section-top-neg"]}>
+                  <div className={styles.title}>Top negative:</div>
+                  {topNegatives.map((item, index) => (
+                    <div className={styles.text} key={`top-negative-${index}`}>
+                      {item.topicValue}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className={styles["section-participation"]}>
+                <div className={styles["section-title"]}>Participation</div>
+                <div className={styles["section-participation-container"]}>
+                  <div
+                    className={styles["section-participation-item"]}
+                    style={{
+                      background: "#f5f5f5",
+                      border: "solid 1px #b9b9b9",
+                      color: "#757f88",
+                    }}
+                  >
+                    Not issued
+                  </div>
+                  <div
+                    className={styles["section-participation-item"]}
+                    style={{
+                      background: "#fdeeee",
+                      border: "solid 1px #f16868",
+                      color: "#f16868",
+                    }}
+                  >
+                    Rejected
+                  </div>
+                  <div
+                    className={styles["section-participation-item"]}
+                    style={{
+                      background: "#fff6e7",
+                      border: "solid 1px #d18200",
+                      color: "#d18200",
+                    }}
+                  >
+                    Awaiting
+                  </div>
+                  <div
+                    className={styles["section-participation-item"]}
+                    style={{
+                      background: "#e9f7f1",
+                      border: "solid 1px #03bdaf",
+                      color: "#03bdaf",
+                    }}
+                  >
+                    Completed
+                  </div>
+                </div>
+                {participationResult.length > 0 &&
+                  teamParticipationResult.length > 0 && (
+                    <Participation
+                      allData={participationResult}
+                      allCount={participationCount}
+                      teamData={teamParticipationResult}
+                      teamCount={teamParticipationCount}
+                    />
+                  )}
+              </div>
+            </div>
+            {/** Overall Trends End */}
+
+            {/** Feedback Summary Start */}
+            <div className={styles["section-bottom"]}>
+              <div className={cn(styles.section, styles["section-feedback"])}>
+                <div className={styles["section-title"]}>Feedback Summary</div>
+                <SummaryBarChart data={feedbackSummary} />
+              </div>
+              <div className={cn(styles.section, styles["section-culture"])}>
+                <div className={styles["section-title"]}>Culture Results</div>
+                <CultureResult data={cultureResult} />
+              </div>
+            </div>
+            {/** Feedback Summary End */}
+          </Fragment>
         )}
+      </React.Suspense>
+    );
+  };
+
+  return (
+    <div className={styles.root}>
+      <div className={styles.topbar}>
+        <TopNav
+          history={history}
+          menuTitle="Summary"
+        >
+          <div className={styles.section}>
+            <h2 className={styles["page-title"]}>My Profile</h2>
+            <h2 className={styles["project-name"]}>{projectTitle}</h2>
+          </div>
+        </TopNav>
       </div>
+      <div className={styles["main-content"]}>{renderReport()}</div>
     </div>
   );
 };
 
-const mapStateToProps = ({ authUser }) => {
-  const { projectTitle, surveyId, surveyUserId } = authUser;
+const mapStateToProps = ({ authUser, admin, account }) => {
+  const { projectTitle, projectId, surveyId, surveyUserId, shGroupId, team, organization } = authUser;
+  const { currentProject } = admin
+  const { profile } = account;
 
   return {
     projectTitle,
+    projectId,
     surveyId,
+    profile,
+    segments: currentProject.segments,
+    shGroupId,
     surveyUserId,
+    userteam : team,
+    userorg : organization
   };
 };
 

@@ -6,6 +6,7 @@
 
 .topbar {
   width: 100%;
+  background-color: white;
   height: 80px;
 
   .section {
@@ -22,6 +23,11 @@
       font-weight: 500;
       line-height: 1.19;
       color: rgb(126, 204, 191);
+
+      @media only screen and (max-width: 880px) {
+        text-align: right;
+        margin-top: -27px;
+      }
     }
   }
 }

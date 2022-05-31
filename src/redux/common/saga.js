@@ -2,6 +2,7 @@ import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import {
   userListAPI,
   teamListAPI,
+  organizationListAPI,
   shgroupListAPI,
   optionListAPI,
   driverListAPI,
@@ -14,6 +15,7 @@ import {
 } from "../../services/axios/api";
 
 import {
+  ORGANIZATION_LIST,
   TEAM_LIST,
   SHGROUP_LIST,
   OPTION_LIST,
@@ -28,6 +30,7 @@ import {
 import { defaultPassword } from "Constants/defaultValues";
 
 import {
+  organizationListSuccess,
   teamListSuccess,
   shgroupListSuccess,
   optionListSuccess,
@@ -37,6 +40,26 @@ import {
   stakeholderListSuccess,
   shCategoryListSuccess,
 } from "./actions";
+
+const getOrganizationListAysnc = async (surveyId) =>
+  await organizationListAPI(surveyId)
+    .then((data) => data)
+    .catch((error) => error);
+
+function* getOrganizationList({payload}) {
+  try {
+    const {surveyId} = payload;
+
+    const result = yield call(getOrganizationListAysnc, surveyId);
+    if (result.status === 200) {
+      let temp = result.data.map(d => d.name)
+      temp = [...new Set(temp)]
+      yield put(organizationListSuccess(temp));
+    }
+  } catch(error) {
+    console.log('error', error)
+  }
+}
 
 const getTeamListAysnc = async (projectId, surveyId) =>
   await teamListAPI(projectId, surveyId)
@@ -175,7 +198,7 @@ function* getStakeholderList({ payload }) {
         stakeholderList.push({
           projectUserId: sh.id,
           projectUserTitle: sh.projectUserTitle,
-          // projectUserRoleDesc: sh.projectUserRoleDesc,
+          projectUserRoleDesc: sh.projectUserRoleDesc,
           projectId: sh.survey.project,
           userId: "S_" + sh.user.id,
           userAvatar: sh.user.avatar === null ? "" : sh.user.avatar.name,
@@ -246,7 +269,7 @@ const getUserListAsync = async (email) =>
 
 function* addStakeholder({ payload }) {
   try {
-    const { projectId, surveyId, stakeholder, callback } = payload;
+    const { addByProjectUser_id, projectId, surveyId, stakeholder, callback } = payload;
 
     let userId = 0;
 
@@ -287,10 +310,14 @@ function* addStakeholder({ payload }) {
         shMyCategory: stakeholder.myCategoryList,
         shProjectCategory: stakeholder.projectCategoryList,
         projectUserTitle: stakeholder.projectUserTitle,
+        projectUserRoleDesc: stakeholder.projectUserRoleDesc,
+        projectOrganization: stakeholder.organisationId,
         shGroup: null,
         myProjectUser: stakeholder.myProjectUser,
+        addByProjectUser: stakeholder.myProjectUser,
+        projectAdmin: false,
       };
-      
+
       const result2 = yield call(addStakeholderAsync, projectUser);
       console.log(result2);
 
@@ -309,7 +336,8 @@ const updateStakeholderAsync = async (projectUserId, projectUser) =>
 
 function* updateStakeholder({ payload }) {
   try {
-    const { projectId, surveyId, stakeholder } = payload;
+    const { projectId, surveyId, stakeholder, callback } = payload;
+    console.log('updated')
 
     const projectUser = {
       project: parseInt(projectId, 10),
@@ -320,9 +348,10 @@ function* updateStakeholder({ payload }) {
       shMyCategory: stakeholder.myCategoryList,
       shProjectCategory: stakeholder.projectCategoryList,
       projectUserTitle: stakeholder.projectUserTitle,
-      shGroup: null,
+      // shGroup: null,
       myProjectUser: stakeholder.myProjectUser,
     };
+
 
     const result = yield call(
       updateStakeholderAsync,
@@ -330,12 +359,20 @@ function* updateStakeholder({ payload }) {
       projectUser
     );
 
-    if (result.status === 200) {
+
+    if (result.status.toString() === "200") {
       yield put(stakeholderList(stakeholder.myProjectUser, surveyId));
+      if (callback) {
+        callback();
+      }
     }
   } catch (error) {
     console.log("error : ", error);
   }
+}
+
+export function* watchOrganizationList() {
+  yield takeEvery(ORGANIZATION_LIST, getOrganizationList);
 }
 
 export function* watchTeamList() {
@@ -376,6 +413,7 @@ export function* watchUpdateStakeholder() {
 
 export default function* rootSaga() {
   yield all([
+    fork(watchOrganizationList),
     fork(watchTeamList),
     fork(watchShgroupList),
     fork(watchDriverList),

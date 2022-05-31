@@ -137,7 +137,7 @@ const StakeholderUpdateModal = ({
       shMyCategory: selectedMyCategory,
       shProjectCategory: selectedProjectCategory,
       projectUserTitle: currentUser.projectUserTitle,
-      shGroup: null,
+      // shGroup: null,
       myProjectUser: surveyUserId,
     };
 

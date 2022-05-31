@@ -10,15 +10,34 @@
     font-size: 14px;
   }
 
-  input {
-    padding: 4px 0;
-    font-size: 14px;
-    min-width: 0;
-    border: none;
-    background: none;
-    flex: 1;
-    &:focus {
-      outline: none;
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    input {
+      padding: 4px 0;
+      font-size: 14px;
+      min-width: 0;
+      border: none;
+      background: none;
+      flex: 1;
+      &:focus {
+        outline: none;
+      }
+    }
+    .close {
+      border-radius: 19px;
+      background: #e2e2e2;
+      width: 19px;
+      height: 19px;
+      color: black;
+      font-weight: bolder;
+      font-family: cursive;
+      justify-content: center;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
     }
   }
+
 }

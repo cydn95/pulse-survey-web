@@ -154,6 +154,7 @@ function* submitAoQuestion({ payload }) {
     projectUserId,
     surveyId,
     callback,
+    isRefresh
   } = payload;
 
   let answerList = [];
@@ -210,12 +211,14 @@ function* submitAoQuestion({ payload }) {
       // yield put(submitAoQuestionSuccess());
       // yield put(stakeholderList(projectUserId, surveyId));
       // yield put(aoQuestionList(currentSurveyUser.projectUserId, surveyId));
-      callback();
+      callback(isRefresh);
     } else {
       console.log("submit failed");
+      callback(isRefresh, false)
     }
   } catch (error) {
     console.log("survey error : ", error);
+    callback(isRefresh, false)
   }
 }
 

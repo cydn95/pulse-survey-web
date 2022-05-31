@@ -1,12 +1,13 @@
 import React, { Component } from "react";
+import { DebounceInput } from 'react-debounce-input';
+import { connect } from "react-redux";
 
 import TextField from "@material-ui/core/TextField";
-
 import SkipQuestion from "../SkipQuestion";
-
-import styles from "./styles.scss";
-
 import { replaceQuestionTextKeyWord } from "Constants/defaultValues";
+
+import {isFlagged} from 'Redux/actions'
+import styles from "./styles.scss";
 
 class FreeText extends Component {
   constructor(props) {
@@ -15,11 +16,22 @@ class FreeText extends Component {
     const { surveyType } = props;
     const answer = surveyType === "me" ? props.question.answer : props.answer;
 
+    if (props.question.id) {
+      this.props.isFlagged(props.question.id, props.user, this.callback)
+    } 
     this.state = {
       answer: {
         ...answer,
       },
+      isFlagged: false
     };
+  }
+
+  callback = (isFlagged) => {
+    console.log('isFlagged', isFlagged)
+    this.setState({
+      isFlagged: isFlagged
+    })
   }
 
   componentWillReceiveProps(props) {
@@ -39,6 +51,7 @@ class FreeText extends Component {
 
     this.setState(
       (state) => ({
+        isFlagged: false,
         answer: {
           ...state.answer,
           topicValue: topicValue,
@@ -93,17 +106,20 @@ class FreeText extends Component {
           )}
         </h2>
         <div className={styles["answer-section"]}>
-          <TextField
+          <DebounceInput
+            element={TextField}
+            multiline
             className={styles["answer-field"]}
-            value={this.state.answer.topicValue}
+            value={!this.state.isFlagged ? this.state.answer.topicValue : 'Your response has been flagged for moderation. Please revise your response.'}
+            debounceTimeout={500}
             onChange={(e) => this.onInputAnswer(e)}
-            placeholder='Topic prompt'
+            placeholder={question.topicPrompt}
           />
         </div>
         <SkipQuestion
           answer={this.state.answer.topicValue}
           comment={this.state.answer.commentValue}
-          commentPrompt='Comment prompt'
+          commentPrompt={question.commentPrompt}
           skipValue={this.state.answer.skipValue}
           skipQuestionList={skipQuestionList}
           skipOption={question.skipOption}
@@ -115,4 +131,6 @@ class FreeText extends Component {
   }
 }
 
-export default FreeText;
+export default connect(null, {
+  isFlagged,
+})(FreeText);

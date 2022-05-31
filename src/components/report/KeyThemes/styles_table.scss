@@ -11,6 +11,7 @@
       font-weight: bold;
       font-size: 12px;
       margin: 2px;
+      letter-spacing: 0.84px;
       display: flex;
       align-items: center;
     }
@@ -88,7 +89,8 @@
     }
 
     &-col {
-      color: rgba(0, 0, 0, 0.7);
+      color: rgba(0, 0, 0, 0.8);
+      opacity: 0.7;
       height: 77px;
       display: flex;
       align-items: center;

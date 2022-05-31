@@ -3,6 +3,8 @@
   flex-direction: row;
   justify-content: flex-end;
   box-sizing: border-box;
+  width: 52px;
+  height: 52px;
 
   .percentage {
     width: 32px;
@@ -18,5 +20,18 @@
     align-items: center;
     margin-top: -10px;
     margin-right: -18px;
+  }
+  
+
+  @media (max-width: 540px) {
+    width: 86px;
+    height: 86px;
+    .percentage {
+      width: 53px;
+      height: 53px;
+      border-radius: 100%;
+      margin-top: -25px;
+      margin-right: -25px;
+    }
   }
 }

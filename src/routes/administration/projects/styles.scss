@@ -1,0 +1,135 @@
+.main {
+  padding: 26px 22px 44px 17px;
+  margin-top: 45px;
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    .topbar {
+      background-color: #eff1f4;
+      position: fixed;
+      top: 0px;
+      left: 225px;
+      width: calc(100% - 224px);
+      height: 80px;
+      z-index: 400;
+
+      .actions {
+        position: absolute;
+        right: 8px
+      }
+
+      @media only screen and (max-width: 880px) {
+        height: 100px;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        z-index: 300;
+        width: 100%;
+      }
+
+      .section {
+        .page-title {
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 1.19;
+          color: #7eccbf;
+          display: none;
+        }
+
+        .project-name {
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 1.19;
+          color: rgb(126, 204, 191);
+        }
+      }
+    }
+    .title {
+      font-size: 20px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.6;
+      letter-spacing: -0.64px;
+      color: #273645;
+    }
+    .breadcrumb {
+      font-family: Poppins;
+      font-size: 13px;
+      font-weight: 500;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #62b5a6;
+    }
+    .btnGroup {
+      display: flex;
+      gap: 16px;
+      top: 45px;
+      @media (min-width: 768px) {
+        top: 20px;
+      }
+      .forMobile {
+        display: none;
+      }
+      .cancelBtn {
+        font-size: 13px;
+        padding: 12px 38px;
+        background-color: #eff0f6;
+        border: 1px solid #333;
+        color: #333;
+      }
+    }
+    .button {
+      top: 20px;
+      font-size: 13px;
+      padding: 12px 19.5px 14px;
+      @media (min-width: 768px) {
+        top: 25px;
+      }
+    }
+  }
+  .projectCards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-top: 23px;
+    grid-gap: 20px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .main {
+    .projectCards {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    .header {
+      .btnGroup{
+        .button {
+          display: none;
+        }
+        .cancelBtn {
+          display: none;
+        }
+        .forMobile {
+          display: block;
+          height: 26px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 540px) {
+  .main {
+    padding: 45px 10px 85px;;
+  }
+}

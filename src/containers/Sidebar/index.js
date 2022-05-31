@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
+import { faCog, faInfoCircle, faLightbulb, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import Switch from "react-switch";
 
 import Joyride, { STATUS } from "react-joyride";
@@ -30,10 +33,10 @@ import {
   tooltipTourContent,
   pageContent,
   checkDashboard,
+  adminReportAccessList
 } from "Redux/actions";
 
 import styles from "./styles.scss";
-import classnames from "classnames";
 
 const MENU_REPORT = [
   "Summary",
@@ -50,6 +53,11 @@ const MENU_REPORT = [
   "Advisor Insights",
 ];
 
+const MENU_ADMIN = [
+  "Projects",
+  "Subscription"
+];
+
 class Sidebar extends Component {
   constructor(props) {
     super(props);
@@ -62,6 +70,7 @@ class Sidebar extends Component {
       stepIndex: 0,
       steps: [],
       isAdmin: false,
+      subMenuSelected: null,
     };
   }
 
@@ -87,10 +96,22 @@ class Sidebar extends Component {
   };
 
   componentDidMount() {
-    const { getProjectListByUser, user, getTooltipTourContent } = this.props;
+    const {
+      getProjectListByUser,
+      user,
+      getTooltipTourContent,
+      getPageContent,
+      getReportAccessList,
+      surveyId,
+    } = this.props;
 
     getProjectListByUser(user.userId);
     getTooltipTourContent();
+
+    if (surveyId) {
+      getPageContent(surveyId);
+      getReportAccessList(surveyId)
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -106,16 +127,19 @@ class Sidebar extends Component {
       actionSetProjectID,
       actionSetSurveyID,
       actionCheckDashboard,
+      getReportAccessList,
       user,
     } = props;
-
-    const { pageContent } = this.props;
-
-    const oldSurveyId = this.props.surveyId;
-    const oldSurveyUserId = this.props.surveyUserId;
+    // const { pageContent } = this.props;
+    const oldSurveyId = this.props.surveyId ? this.props.surveyId : ""
+    const oldSurveyUserId = this.props.surveyUserId
+      ? this.props.surveyUserId
+      : "";
 
     if (
+      surveyId &&
       surveyId > 0 &&
+      surveyUserId &&
       surveyUserId > 0 &&
       (surveyId.toString() !== oldSurveyId.toString() ||
         surveyUserId.toString() !== oldSurveyUserId.toString())
@@ -143,7 +167,7 @@ class Sidebar extends Component {
 
       if (findIndex < 0) {
         actionSetProjectID(0);
-        actionSetSurveyID(user.userId, 0, () => {});
+        actionSetSurveyID(user.userId, 0, () => { });
       }
     }
 
@@ -154,10 +178,12 @@ class Sidebar extends Component {
     }
 
     if (
-      (surveyId > 0 &&
-        surveyId.toString() !== this.props.surveyId.toString())
+      surveyId &&
+      surveyId > 0 &&
+      surveyId.toString() !== oldSurveyId.toString()
     ) {
       getPageContent(surveyId);
+      getReportAccessList(surveyId)
     }
 
     if (tooltipContent.menu && tooltipContent.menu.length > 0) {
@@ -165,7 +191,7 @@ class Sidebar extends Component {
       for (let i = 0; i < tooltipContent.menu.length; i++) {
         steps.push({
           content: <DesktopTooltip tooltip={tooltipContent.menu[i]} />,
-          placement: "right",
+          placement: "right-start",
           target: `.s-menu-${tooltipContent.menu[i].place.toLowerCase()}`,
           disableBeacon: true,
         });
@@ -253,6 +279,7 @@ class Sidebar extends Component {
 
     this.setState({
       subMenuOpen: false,
+      subMenuSelected: menu
     });
 
     history.push(to);
@@ -263,6 +290,8 @@ class Sidebar extends Component {
 
     this.setState({
       subMenuOpen: false,
+      subMenuSelected: projectId,
+      oldSurveyId: this.props.surveyId
     });
 
     const { getSurveyListByProject } = this.props;
@@ -288,10 +317,12 @@ class Sidebar extends Component {
 
   handleJoyrideCallback = (data) => {
     const { status } = data;
+    const { user, guide, actionUpdateGuideStatus } = this.props;
     const finishedStatuses = [STATUS.FINISHED, STATUS.SKIPPED];
 
     if (finishedStatuses.includes(status)) {
       this.setState({ run: false });
+      actionUpdateGuideStatus(user.accessToken, !guide);
     }
   };
 
@@ -312,14 +343,19 @@ class Sidebar extends Component {
 
   render() {
     const {
-      mainMenuClassName,
-      subMenuClassName,
       projectList,
       pageContent,
       guide,
+      projectId,
       surveyId,
+      isProjectManager,
+      segments,
+      profile,
+      shGroupId,
+      userteam,
+      userorg
     } = this.props;
-    const { subMenuOpen, run, steps } = this.state;
+    const { run, steps } = this.state;
 
     return (
       <div className={styles.root}>
@@ -334,6 +370,7 @@ class Sidebar extends Component {
             showProgress={true}
             showSkipButton={true}
             steps={steps}
+            disableOverlayClose={true}
             skipBeacon={true}
             tooltipComponent={DesktopGuide}
             styles={{
@@ -344,157 +381,218 @@ class Sidebar extends Component {
           />
         )}
         <div className={styles["main-menu"]}>
-          <div className={styles.logo}></div>
-          <div className={styles.link}>
-            <ProSidebar width="220px">
-              <Menu iconShape="square" className="s-menu-my-projects">
-                <SubMenu icon={<IconMyProject />} title="My Projects">
-                  {projectList.map((project) => (
-                    <MenuItem
-                      key={`project-submenu-${project.id}`}
-                      onClick={(e) => this.handleClickProject(e, project.id)}
-                    >
-                      {project.projectName}
-                    </MenuItem>
-                  ))}
-                </SubMenu>
-              </Menu>
-              <Menu iconShape="square" className="s-menu-about-me">
-                <MenuItem
-                  icon={<IconAboutMe />}
-                  onClick={(e) => this.handleClickMainMenu(e, "about-me", true)}
-                >
-                  About Me
-                </MenuItem>
-              </Menu>
-              <Menu iconShape="square" className="s-menu-about-others">
-                <MenuItem
-                  icon={<IconAboutOthers />}
-                  onClick={(e) =>
-                    this.handleClickMainMenu(e, "about-others", true)
-                  }
-                >
-                  About Others
-                </MenuItem>
-              </Menu>
-              <Menu iconShape="square">
-                <SubMenu icon={<IconDashboard />} title="Dashboard">
-                  {MENU_REPORT.map((menu) => {
-                    if (menu === "Matrix" && this.state.isAdmin === false) {
-                      return null;
-                    }
-
-                    return (
+          <div className={styles["main-menu-wrapper"]}>
+            <div className={styles.logo}></div>
+            <div className={styles.link}>
+              <ProSidebar width="220px">
+                <Menu iconShape="square" className={"s-menu-my-projects"}>
+                  <SubMenu
+                    icon={<IconMyProject />}
+                    title="My Projects"
+                  >
+                    {projectList.map((project) => (
                       <MenuItem
-                        key={`submenu-report-${menu
-                          .toLowerCase()
-                          .replace(" ", "-")}`}
-                        onClick={(e) =>
-                          this.handleClickSubMenu(
-                            e,
-                            menu.toLocaleLowerCase(),
-                            `/app/dashboard/${menu
-                              .toLocaleLowerCase()
-                              .replace(" ", "-")}`
-                          )
-                        }
+                        key={`project-submenu-${project.id}`}
+                        className={this.state.subMenuSelected === project.id && styles.menuItem}
+                        onClick={(e) => this.handleClickProject(e, project.id)}
                       >
-                        {menu}
-                      </MenuItem>
-                    );
-                  })}
-                </SubMenu>
-              </Menu>
-            </ProSidebar>
-          </div>
-          <div className={styles.space}></div>
-          <div className={styles.link}>
-            <ProSidebar width="220px">
-              {pageContent.length > 0 && (
-                <Menu iconShape="square">
-                  <SubMenu title="More Info">
-                    {pageContent.map((menu) => (
-                      <MenuItem
-                        key={`submenu-configpage-${menu.id}`}
-                        onClick={(e) =>
-                          this.handleClickSubMenu(
-                            e,
-                            `config-page-${menu.id}`,
-                            `/app/moreinfo/config/${menu.id}`
-                          )
-                        }
-                      >
-                        {menu.pageName}
+                        {project.projectName}
                       </MenuItem>
                     ))}
                   </SubMenu>
                 </Menu>
-              )}
-              {/* <Menu iconShape="square">
-                <MenuItem
-                  onClick={(e) => this.handleClickMainMenu(e, "settings", true)}
-                >
-                  More Info
-                </MenuItem>
-              </Menu> */}
-              <Menu iconShape="square">
-                <SubMenu title="Help">
+                <Menu iconShape="square" className="s-menu-about-me">
                   <MenuItem
-                    onClick={(e) =>
-                      this.handleClickSubMenu(e, "take-the-tour", `/app/tour`)
-                    }
+                    icon={<IconAboutMe />}
+                    onClick={(e) => this.handleClickMainMenu(e, "about-me", true)}
                   >
-                    Take the tour
+                    About Me
                   </MenuItem>
+                </Menu>
+                <Menu iconShape="square" className="s-menu-about-others">
                   <MenuItem
+                    icon={<IconAboutOthers />}
                     onClick={(e) =>
-                      this.handleClickSubMenu(
-                        e,
-                        "how-to-use-pulse",
-                        `/app/help/how-to-use-pulse`
-                      )
+                      this.handleClickMainMenu(e, "about-others", true)
                     }
                   >
-                    How to use Pulse
+                    About Others
                   </MenuItem>
+                </Menu>
+                <Menu iconShape="square">
+                  <SubMenu icon={<IconDashboard />} title="Dashboard">
+                    {MENU_REPORT.map((menu) => {
+                      if (menu === "Matrix" && this.state.isAdmin === false) {
+                        return null;
+                      }
+
+                      if(segments) {
+                        if (segments.shgroups && segments.shgroups.length > 0) {
+                          let data = (segments.shgroups.filter(shgroup => (shgroup.segmentName || '').toString() === shGroupId.toString())[0] || {})
+                          if (data.permissionType === 'All Exception') {
+                            if ((data.dashboards || []).includes(menu)) {
+                              return null;
+                            }
+                          } else if (data.permissionType === 'Only') {
+                            if (!(data.dashboards || []).includes(menu)) {
+                              return null;
+                            }
+                          }
+                        }
+                        if (segments.teams && segments.teams.length > 0) {
+                          let data = (segments.teams.filter(team => (team.segmentName || '') === userteam.name)[0] || {})
+                          if (data.permissionType === 'All Exception') {
+                            if ((data.dashboards || []).includes(menu)) {
+                              return null;
+                            }
+                          } else if (data.permissionType === 'Only') {
+                            if (!(data.dashboards || []).includes(menu)) {
+                              return null;
+                            }
+                          }
+                        }
+                        if (segments.organizations && segments.organizations.length > 0) {
+                          let data = (segments.organizations.filter(org => (org.segmentName || '') === userorg)[0] || {})
+                          if (data.permissionType === 'All Exception') {
+                            if ((data.dashboards || []).includes(menu)) {
+                              return null;
+                            }
+                          } else if (data.permissionType === 'Only') {
+                            if (!(data.dashboards || []).includes(menu)) {
+                              return null;
+                            }
+                          }
+                        }
+                      }
+
+                      return (
+                        <MenuItem
+                          key={`submenu-report-${menu
+                            .toLowerCase()
+                            .replace(" ", "-")}`}
+                          className={menu.toLocaleLowerCase() === this.state.subMenuSelected && styles.menuItem}
+                          onClick={(e) =>
+                            this.handleClickSubMenu(
+                              e,
+                              menu.toLocaleLowerCase(),
+                              `/app/dashboard/${menu
+                                .toLocaleLowerCase()
+                                .replace(" ", "-")}`
+                            )
+                          }
+                        >
+                          {menu}
+                        </MenuItem>
+                      );
+                    })}
+                  </SubMenu>
+                </Menu>
+              </ProSidebar>
+            </div>
+            <div className={styles.space}></div>
+            <div className={styles.link}>
+              <ProSidebar width="220px">
+                {(isProjectManager) && <Menu iconShape="square" className="s-menu-about-me">
                   <MenuItem
-                    onClick={(e) =>
-                      this.handleClickSubMenu(
-                        e,
-                        "turn-on-guide-mode",
-                        "/app/help/turn-on-guide-mode"
-                      )
-                    }
+                    icon={<FontAwesomeIcon icon={faCog} />}
+                    onClick={(e) => this.handleClickMainMenu(e, `admin/projects`, true)}
                   >
-                    <span>{`Turn On Guide Mode `}</span>
-                    <br />
-                    {guide !== undefined && (
-                      <Switch
-                        checked={guide}
-                        onChange={(e) => this.handleSetGuideShowStatus()}
-                        onColor="#7fcdc1"
-                        onHandleColor="#4cb9a8"
-                        handleDiameter={20}
-                        uncheckedIcon={false}
-                        checkedIcon={false}
-                        boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-                        activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-                        height={20}
-                        width={38}
-                        className="react-switch"
-                      />
+                    Administration
+                  </MenuItem>
+                </Menu>}
+                {pageContent.length > 0 && (
+                  <Menu iconShape="square">
+                    <SubMenu title="More Info" icon={<FontAwesomeIcon icon={faInfoCircle} />}>
+                      {pageContent.map((menu) => (
+                        <MenuItem
+                          key={`submenu-configpage-${menu.id}`}
+                          className={`config-page-${menu.id}` === this.state.subMenuSelected && styles.menuItem}
+                          onClick={(e) =>
+                            this.handleClickSubMenu(
+                              e,
+                              `config-page-${menu.id}`,
+                              `/app/moreinfo/config/${menu.id}`
+                            )
+                          }
+                        >
+                          {menu.tabName}
+                        </MenuItem>
+                      ))}
+                    </SubMenu>
+                  </Menu>
+                )}
+                {/* <Menu iconShape="square">
+                  <MenuItem
+                    onClick={(e) => this.handleClickMainMenu(e, "settings", true)}
+                  >
+                    More Info
+                  </MenuItem>
+                </Menu> */}
+                <Menu iconShape="square">
+                  <SubMenu title="Help" icon={<FontAwesomeIcon icon={faLightbulb} />}>
+                    {projectId && surveyId && (
+                      <MenuItem
+                        className={"take-the-tour" === this.state.subMenuSelected && styles.menuItem}
+                        onClick={(e) =>
+                          this.handleClickSubMenu(e, "take-the-tour", `/app/tour`)
+                        }
+                      >
+                        Take the tour
+                      </MenuItem>
                     )}
+                    <MenuItem
+                      className={"how-to-use-pulse" === this.state.subMenuSelected && styles.menuItem}
+                      onClick={(e) =>
+                        this.handleClickSubMenu(
+                          e,
+                          "how-to-use-pulse",
+                          `/app/help/how-to-use-pulse`
+                        )
+                      }
+                    >
+                      How to use Pulse
+                    </MenuItem>
+                    <MenuItem
+                      className={"turn-on-guide-mode" === this.state.subMenuSelected && styles.menuItem}
+                      onClick={(e) =>
+                        this.handleClickSubMenu(
+                          e,
+                          "turn-on-guide-mode",
+                          "/app/help/turn-on-guide-mode"
+                        )
+                      }
+                    >
+                      <span>{`Turn On Guide Mode `}</span>
+                      <br />
+                      {guide !== undefined && (
+                        <Switch
+                          checked={guide}
+                          onChange={(e) => this.handleSetGuideShowStatus()}
+                          onColor="#7fcdc1"
+                          onHandleColor="#4cb9a8"
+                          handleDiameter={20}
+                          uncheckedIcon={false}
+                          checkedIcon={false}
+                          boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                          activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                          height={20}
+                          width={38}
+                          className="react-switch"
+                        />
+                      )}
+                    </MenuItem>
+                  </SubMenu>
+                </Menu>
+                <Menu iconShape="square">
+                  <MenuItem
+                    onClick={(e) => this.handleClickMainMenu(e, "logout", false)}
+                    icon={<FontAwesomeIcon icon={faSignOutAlt} />}
+                  >
+                    Log Out
                   </MenuItem>
-                </SubMenu>
-              </Menu>
-              <Menu iconShape="square">
-                <MenuItem
-                  onClick={(e) => this.handleClickMainMenu(e, "logout", false)}
-                >
-                  Log Out
-                </MenuItem>
-              </Menu>
-            </ProSidebar>
+                </Menu>
+              </ProSidebar>
+            </div>
           </div>
         </div>
         {surveyId !== null && surveyId.toString() !== "" && (
@@ -509,24 +607,32 @@ class Sidebar extends Component {
   }
 }
 
-const mapStateToProps = ({ menu, settings, authUser, tour, account }) => {
+const mapStateToProps = ({ menu, settings, authUser, tour, account, admin }) => {
   const { mainMenuClassName, subMenuClassName } = menu;
   const { projectList } = settings;
-  const { user, surveyId, surveyUserId, projectId } = authUser;
+  const { user, surveyId, surveyUserId, projectId, shGroupId, team, organization } = authUser;
   const { pageContent, tooltipContent } = tour;
   const { profile } = account;
+  const { currentProject } = admin
 
   return {
     user,
     surveyId,
     surveyUserId,
+    shGroupId,
+    userteam: team,
+    userorg: organization,
     projectId,
     projectList,
     mainMenuClassName,
     subMenuClassName,
     guide: profile.guide,
+    profile,
     pageContent,
     tooltipContent,
+    segments: currentProject.segments,
+    // isSuperUser: profile.is_superuser,
+    isProjectManager: projectList.filter(p => p.projectAdmin).length > 0
   };
 };
 
@@ -543,5 +649,6 @@ export default withRouter(
     getPageContent: pageContent,
     getTooltipTourContent: tooltipTourContent,
     actionCheckDashboard: checkDashboard,
+    getReportAccessList: adminReportAccessList
   })(Sidebar)
 );

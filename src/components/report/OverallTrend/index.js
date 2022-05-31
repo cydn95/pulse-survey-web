@@ -73,7 +73,7 @@ class OverallTrend extends SampleBase {
               maximum: 10,
               maximumLabels: 5
             }}
-            tooltip={{ enable: false }}
+            tooltip={{ enable: true }}
             title=""
             loaded={this.onChartLoad.bind(this)}
             animationComplete={this.animationComplete.bind(this)}
@@ -106,7 +106,7 @@ class OverallTrend extends SampleBase {
                     yName="y"
                     width={2}
                     name=""
-                    type="Line"
+                    type="Spline"
                     marker={{ visible: true, width: 10, height: 10 }}
                   ></SeriesDirective>
                 );

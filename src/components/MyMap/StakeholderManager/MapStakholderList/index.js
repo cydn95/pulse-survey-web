@@ -1,10 +1,19 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 import AvatarComponent from "Components/avatar/Component";
+import { stakeholderList } from "Redux/actions";
+
+import { getColorFromValue } from "Util/Utils";
 
 import styles from "./styles.scss";
 
 class MapStakeholderList extends Component {
+  componentWillMount() {
+    const { surveyId, surveyUserId, actionStakeholderList } = this.props;
+    actionStakeholderList(surveyUserId, surveyId);
+  }
+
   render() {
     const {
       myMapStakeholderList,
@@ -16,7 +25,7 @@ class MapStakeholderList extends Component {
       onMapStakeholderClick,
       onShowSearchStakeholder,
       myMapES,
-      projectMapES
+      projectMapES,
     } = this.props;
 
     let userCount = 0;
@@ -39,24 +48,26 @@ class MapStakeholderList extends Component {
 
         if (bAdd) {
           const categoryId = shCategoryList[i].id;
-          const userId = myMapStakeholderList[j].userId
+          const userId = myMapStakeholderList[j].userId;
 
           let surveyCompletion = 0;
+          let surveySentiment = 0;
 
           for (let k = 0; k < myMapES.individuals.length; k++) {
             const myId = myMapES.individuals[k].id;
             if (myId === `${userId}_SHC_${categoryId}`) {
               surveyCompletion = myMapES.individuals[k].survey_completion;
+              surveySentiment = myMapES.individuals[k].survey_sentiment;
             }
           }
-
 
           if (`sh_${shCategoryList[i].id}` in groupedMyStakeholderList) {
             groupedMyStakeholderList[
               `sh_${shCategoryList[i].id}`
             ].stakeholders.push({
               ...myMapStakeholderList[j],
-              surveyCompletion
+              surveyCompletion,
+              surveySentiment,
             });
           } else {
             userCount++;
@@ -64,10 +75,13 @@ class MapStakeholderList extends Component {
               [`sh_${shCategoryList[i].id}`]: {
                 id: shCategoryList[i].id,
                 name: shCategoryList[i].SHCategoryName,
-                stakeholders: [{
-                  ...myMapStakeholderList[j],
-                  surveyCompletion
-                }],
+                stakeholders: [
+                  {
+                    ...myMapStakeholderList[j],
+                    surveyCompletion,
+                    surveySentiment,
+                  },
+                ],
               },
             };
             groupedMyStakeholderList = {
@@ -100,15 +114,17 @@ class MapStakeholderList extends Component {
         }
 
         if (bAdd) {
-          const categoryId = shCategoryList[i].id;
-          const userId = projectMapStakeholderList[j].userId
+          const categoryId = projectMapShCategoryList[i].id;
+          const userId = projectMapStakeholderList[j].userId;
 
           let surveyCompletion = 0;
+          let surveySentiment = 0;
 
           for (let k = 0; k < projectMapES.individuals.length; k++) {
             const myId = projectMapES.individuals[k].id;
             if (myId === `${userId}_SHC_${categoryId}`) {
               surveyCompletion = projectMapES.individuals[k].survey_completion;
+              surveySentiment = projectMapES.individuals[k].survey_sentiment;
             }
           }
 
@@ -120,7 +136,8 @@ class MapStakeholderList extends Component {
               `sh_${projectMapShCategoryList[i].id}`
             ].stakeholders.push({
               ...projectMapStakeholderList[j],
-              surveyCompletion
+              surveyCompletion,
+              surveySentiment,
             });
           } else {
             userCount++;
@@ -128,10 +145,13 @@ class MapStakeholderList extends Component {
               [`sh_${projectMapShCategoryList[i].id}`]: {
                 id: projectMapShCategoryList[i].id,
                 name: projectMapShCategoryList[i].SHCategoryName,
-                stakeholders: [{
-                  ...projectMapStakeholderList[j],
-                  surveyCompletion
-                }],
+                stakeholders: [
+                  {
+                    ...projectMapStakeholderList[j],
+                    surveyCompletion,
+                    surveySentiment,
+                  },
+                ],
               },
             };
             groupedProjectStakeholderList = {
@@ -157,9 +177,9 @@ class MapStakeholderList extends Component {
                 onClick={(e) => onShowSearchStakeholder()}
                 style={{ cursor: "pointer" }}
               >
-                Search Stakeholders
+                Search
               </strong>
-              ” to add your first one!
+              ” to add your first one.
             </span>
           </div>
         )}
@@ -188,7 +208,8 @@ class MapStakeholderList extends Component {
                       (d.team === "" ? d.userTeam : d.team);
 
                     // let percentage = (d.aoAnswered / d.aoTotal) * 100;
-                    let percentage = d.surveyCompletion;
+                    const percentage = d.surveyCompletion;
+                    const sentiment = d.surveySentiment;
 
                     return (
                       <AvatarComponent
@@ -204,6 +225,11 @@ class MapStakeholderList extends Component {
                         profilePicUrl={d.userAvatar}
                         userProgress={percentage ? Number(percentage) : 0}
                         donut={true}
+                        progressStyle={{
+                          background: `${getColorFromValue(
+                            Number(sentiment) / 10
+                          )}`,
+                        }}
                       />
                     );
                   })}
@@ -228,11 +254,14 @@ class MapStakeholderList extends Component {
                         ? d.userTitle
                         : d.projectUserTitle;
                     let description =
-                      d.organisation +
+                    (d.projectOrganization
+                      ? d.projectOrganization
+                      : d.organisation)  +
                       " / " +
                       (d.team === "" ? d.userTeam : d.team);
                     // let percentage = (d.aoAnswered / d.aoTotal) * 100;
-                    let percentage = d.surveyCompletion;
+                    const percentage = d.surveyCompletion;
+                    const sentiment = d.surveySentiment;
 
                     return (
                       <AvatarComponent
@@ -248,6 +277,11 @@ class MapStakeholderList extends Component {
                         profilePicUrl={d.userAvatar}
                         userProgress={percentage ? Number(percentage) : 0}
                         donut={true}
+                        progressStyle={{
+                          background: `${getColorFromValue(
+                            Number(sentiment) / 10
+                          )}`,
+                        }}
                       />
                     );
                   })}
@@ -261,4 +295,11 @@ class MapStakeholderList extends Component {
   }
 }
 
-export default MapStakeholderList;
+const mapStateToProps = ({ authUser }) => {
+  const { projectId, surveyId, surveyUserId } = authUser;
+  return { projectId, surveyUserId, surveyId };
+};
+
+export default connect(mapStateToProps, {
+  actionStakeholderList: stakeholderList,
+})(MapStakeholderList);

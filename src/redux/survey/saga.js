@@ -7,6 +7,7 @@ import {
   addNewTopicAboutMeAPI,
   updateTopicAboutMeAPI,
   deleteTopicAboutMeAPI,
+  isFlaggedAPI,
 } from "../../services/axios/api";
 
 import {
@@ -15,6 +16,7 @@ import {
   ADD_ABOUT_ME_TOPIC,
   UPDATE_ABOUT_ME_TOPIC,
   DELETE_ABOUT_ME_TOPIC,
+  IS_FLAGGED,
 } from "Constants/actionTypes";
 
 import { controlType, controlTypeText } from "Constants/defaultValues";
@@ -28,6 +30,11 @@ import {
   deleteAboutMeTopicSuccess,
 } from "../actions";
 
+const getIsFlaggedAsync = async (id, user) => 
+  await isFlaggedAPI(id, user)
+    .then(result => result)
+    .catch(error => error)
+
 const getPageListAsync = async (surveyId, surveyUserId) =>
   await pageListAPI(surveyId, surveyUserId)
     .then((result) => result)
@@ -37,6 +44,21 @@ const getOptionListAsync = async () =>
   await optionListAPI()
     .then((result) => result)
     .catch((error) => error);
+
+
+
+function* getIsFlagged({payload}) {
+  const {id, callback, user} = payload
+  try {
+    const result = yield call(getIsFlaggedAsync, id, user);
+    if (result.status === 200) {
+      const isFlagged = result.data;
+      callback(isFlagged)
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 function* getPageList({ payload }) {
   const { surveyId, surveyUserId } = payload;
@@ -158,22 +180,32 @@ const submitSurveyAsync = async (answerData) =>
   }]
 */
 function* submitSurvey({ payload }) {
-  const { surveyList, projectId, surveyUserId, surveyId, history, navigateToNext } = payload;
+  const { surveyList, projectId, surveyUserId, surveyId, history, navigateToNext, callback } = payload;
   let answerList = [];
-
+  // console.log(surveyList);
   for (let i = 0; i < surveyList.length; i++) {
     let amquestions = surveyList[i].amquestion;
 
     for (let j = 0; j < amquestions.length; j++) {
-      if (
-        (amquestions[j].answer.integerValue === "" ||
-          amquestions[j].answer.integerValue === 0) &&
-        amquestions[j].answer.topicValue === "" &&
-        amquestions[j].answer.commentValue === "" &&
-        amquestions[j].answer.skipValue === "" &&
-        !amquestions[j].responsestatus
-      ) {
-        continue;
+
+      if (amquestions[j].controlType === controlType.MULTI_TOPICS) {
+        if ((!amquestions[j].topic || amquestions[j].topic.length === 0) && amquestions[j].commentValue === "" && amquestions.skipValue === "") {
+          continue;
+        }
+        if (amquestions[j].topic && amquestions[j].topic.length > 0) {
+          amquestions[j].answer.integerValue = amquestions[j].topic[0].id;
+        }
+      } else {
+        if (
+          (amquestions[j].answer.integerValue === "" ||
+            amquestions[j].answer.integerValue === 0) &&
+          amquestions[j].answer.topicValue === "" &&
+          amquestions[j].answer.commentValue === "" &&
+          amquestions[j].answer.skipValue === "" &&
+          !amquestions[j].responsestatus
+        ) {
+          continue;
+        }
       }
 
       let integerValue = amquestions[j].answer.integerValue;
@@ -217,11 +249,14 @@ function* submitSurvey({ payload }) {
 
     if (result.status === 201) {
       localStorage.setItem("surveyId", surveyId);
+      yield put(submitSurveySuccess(surveyId));
       if (navigateToNext) {
-        yield put(submitSurveySuccess(surveyId));
         history.push("/app/about-others");
       }
     } else {
+      if (callback) {
+        callback(false)
+      }
       console.log("submit failed");
     }
   } catch (error) {
@@ -367,6 +402,10 @@ export function* watchDeleteAboutMeTopic() {
   yield takeEvery(DELETE_ABOUT_ME_TOPIC, deleteAboutMeTopic);
 }
 
+export function* watchIsAcknowledged() {
+  yield takeEvery(IS_FLAGGED, getIsFlagged);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchPageList),
@@ -374,5 +413,6 @@ export default function* rootSaga() {
     fork(watchAddAboutMeTopic),
     fork(watchUpdateAboutMeTopic),
     fork(watchDeleteAboutMeTopic),
+    fork(watchIsAcknowledged),
   ]);
 }

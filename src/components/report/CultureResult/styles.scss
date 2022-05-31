@@ -26,4 +26,11 @@
       border-radius: 2px;
     }
   }
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    .item {
+      width: 100%;
+    }
+  }
 }

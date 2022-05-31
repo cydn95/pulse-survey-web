@@ -5,8 +5,9 @@
 }
 
 .topbar {
+  background-color: white;
   width: 100%;
-  height: 70px;
+  min-height: 70px;
   // position: fixed;
   // top: 0px;
   border-bottom: 1px solid #eee;
@@ -31,7 +32,8 @@
 
 @media only screen and (max-width: 880px) {
   .topbar {
-    height: 80px;
+    min-height: 80px;
+    background: white;
     position: fixed;
     top: 0px;
     left: 0px;

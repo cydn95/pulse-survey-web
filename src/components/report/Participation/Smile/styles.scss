@@ -55,3 +55,52 @@ svg {
     stroke: #7fcdc1;
   }
 }
+
+#tooltip {
+    position: absolute;
+    width: 117px;
+    height: 66px;
+    flex-grow: 0;
+    padding: 13px 14px;
+    border-radius: 4px;
+    background-color: #273645;
+    pointer-events: none;
+    &.hidden {
+      opacity: 0;
+    }
+    p {
+      margin: 0px;
+      &.count {
+        font-family: Poppins;
+        font-size: 25px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.6;
+        letter-spacing: -0.64px;
+        color: white;
+        opacity: 1;
+      }
+    }
+    #value {
+      font-family: Poppins;
+      font-size: 25px;
+      font-weight: 600;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.6;
+      letter-spacing: -0.64px;
+      color: white;
+    }
+    #description {
+      font-family: Poppins;
+      font-size: 13px;
+      font-weight: 500;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #fff;
+    }
+}

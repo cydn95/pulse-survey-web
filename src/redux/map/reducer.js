@@ -7,6 +7,7 @@ import {
   PROJECTMAP_DATA_SUCCESS,
   PROJECTMAP_SAVE,
   PROJECTMAP_SAVE_SUCCESS,
+  CLEAR_MAP
 } from "Constants/actionTypes";
 
 const INIT_STATE = {
@@ -42,6 +43,8 @@ export default (state = INIT_STATE, action) => {
       return { ...state, mapSaveLoading: true };
     case PROJECTMAP_SAVE_SUCCESS:
       return { ...state, mapSaveLoading: false };
+    case CLEAR_MAP:
+      return { ... INIT_STATE }
     default:
       return { ...state };
   }

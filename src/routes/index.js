@@ -14,6 +14,7 @@ import AboutMeSurvey from "./about-me";
 import MyMap from "./mymap";
 import Dashboard from "./dashboard";
 import Settings from "./settings";
+import Administration from "./administration"
 import Help from "./help";
 import ComingSoon from "./coming";
 import ProjectNotFound from "./project-not-found";
@@ -65,7 +66,7 @@ const MainApp = ({ history, location, match, surveyId }) => {
   useEffect(() => {
     const handleResize = () => {
       setTimeout(() => {
-        if (window.innerWidth > 880) {
+        if (window.innerWidth > 880) { // responsive endpoint is 880
           setScreenMode("desktop");
         } else {
           setScreenMode("mobile");
@@ -84,12 +85,12 @@ const MainApp = ({ history, location, match, surveyId }) => {
 
   return (
     <div className={styles.root}>
-      {showSideBar && (
+      {showSideBar && (                                                       // sidebar
         <div className={styles.sidebar}>
           <Sidebar screenMode={screenMode} />
         </div>
       )}
-      {/* {showBottomBar && (
+      {/* {showBottomBar && (                                                 // bottom bar
         <div className={styles.bottombar}>
           <BottomBar screenMode={screenMode} />
         </div>
@@ -106,6 +107,7 @@ const MainApp = ({ history, location, match, surveyId }) => {
               path={`${match.url}/my-project/:projectUserId`}
               component={ComingSoon}
             />
+            <Route path={`${match.url}/admin`} component={Administration} />
             <Route path={`${match.url}/help`} component={Help} />
             <Route path={`${match.url}/tour`} component={MobileTour} />
             <Route path={`${match.url}/guide`} component={Tooltip} />

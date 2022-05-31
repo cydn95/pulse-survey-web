@@ -18,7 +18,9 @@ import {
   REPORT_ADVISOR,
   REPORT_CHECK_DASHBOARD,
   REPORT_DRIVER_ANALYSIS_CNT,
-  REPORT_KEYTHEME_MENU_CNT
+  REPORT_KEYTHEME_MENU_CNT,
+  SET_KEYTHEME_TAGS,
+  GET_ALL_TAGS_BY_SURVEY,
 } from "Constants/actionTypes";
 
 export const overallSentiment = (surveyId, callback) => ({
@@ -31,9 +33,9 @@ export const topPositiveNegative = (surveyId, callback) => ({
   payload: { surveyId, callback },
 });
 
-export const feedbackSummary = (surveyId, subProjectUser, graphType, callback) => ({
+export const feedbackSummary = (projectId, surveyId, subProjectUser, graphType, callback) => ({
   type: REPORT_FEEDBACK_SUMMARY,
-  payload: { surveyId, subProjectUser, graphType, callback },
+  payload: { projectId, surveyId, subProjectUser, graphType, callback },
 });
 
 export const participation = (surveyId, callback) => ({
@@ -41,9 +43,9 @@ export const participation = (surveyId, callback) => ({
   payload: { surveyId, callback },
 });
 
-export const engagementTrend = (chartType, driverName, surveyId, subProjectUser, projectId, userId, startDate, endDate, callback) => ({
+export const engagementTrend = (chartType, driverName, surveyId, subProjectUser, projectId, userId, startDate, endDate, segments, shGroupId, teamId, orgId, callback) => ({
   type: REPORT_ENGAGEMENT_TREND,
-  payload: { chartType, driverName, surveyId, subProjectUser, projectId, userId, startDate, endDate, callback },
+  payload: { chartType, driverName, surveyId, subProjectUser, projectId, userId, startDate, endDate, segments, shGroupId, teamId, orgId, callback },
 });
 
 export const wordcloud = (surveyId, projectUserId, callback) => ({
@@ -93,7 +95,7 @@ export const setAcknowledgementReport = (responseId, data, callback) => ({
 
 export const voteKeyThemeReport = (key, vote, projectUserId, voteId, surveyId, tab, callback) => ({
   type: REPORT_VOTE_KEYTHEME,
-  payload: {key, vote, projectUserId, voteId, surveyId, tab, callback}
+  payload: { key, vote, projectUserId, voteId, surveyId, tab, callback }
 });
 
 export const getAMQuestionCnt = (surveyId, driverName, projectId, userId, callback) => ({
@@ -119,4 +121,14 @@ export const driverAnalysisCnt = (surveyId, subProjectUser, startDate, endDate, 
 export const getKeyThemeMenuCnt = (surveyId, projectUserId, callback) => ({
   type: REPORT_KEYTHEME_MENU_CNT,
   payload: { surveyId, projectUserId, callback }
+})
+
+export const setKeyThemeTags = (key, tags, callback) => ({
+  type: SET_KEYTHEME_TAGS,
+  payload: { key, tags, callback }
+})
+
+export const getAllTagsBySurvey = (survey, callback) => ({
+  type: GET_ALL_TAGS_BY_SURVEY,
+  payload: { survey, callback }
 })

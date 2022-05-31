@@ -5,6 +5,7 @@ import { Button } from "reactstrap";
 
 import styles from "./styles.scss";
 import classnames from "classnames";
+import { ABOUT_ME, ABOUT_ME_DESC, ABOUT_OTHERS, ABOUT_OTHERS_DESC, HELP_HEADER, HELP_DESC } from "../../../constants/defaultValues";
 
 import { updateGuideStatusSuccess } from "Redux/actions";
 
@@ -33,15 +34,10 @@ const HowToUsePulse = ({
       <div className={styles["welcome"]}>
         <div className={styles["welcome__content"]}>
           <h1 className={styles["welcome__content--title"]}>
-            Pulse is more than a survey
+            {HELP_HEADER}
           </h1>
           <p className={styles["welcome__content--description"]}>
-            This platform has been taught many of the important concepts​
-            involved in this project. This questionnaire is not designed to
-            point fingers or find people to blame - but only to improve how we
-            communicate and collaborate. ​Your responses will be anonymised and
-            combined with others to guide managers on new focus areas to improve
-            team/stakeholder engagement and project performance.​
+            {HELP_DESC}
           </p>
           {/* <p className={styles["welcome__content--description"]}>
             The questions are divided into two parts:
@@ -58,14 +54,14 @@ const HowToUsePulse = ({
                   styles["welcome__content__about__section--subtitle2"]
                 }
               >
-                About You
+                {ABOUT_ME}
               </h2>
               <p
                 className={
                   styles["welcome__content__about__section--description"]
                 }
               >
-                What you think / feel about the project.​
+                {ABOUT_ME_DESC}
               </p>
             </div>
             <div className={styles["welcome__content__about__section"]}>
@@ -79,15 +75,14 @@ const HowToUsePulse = ({
                   styles["welcome__content__about__section--subtitle2"]
                 }
               >
-                About Others
+                {ABOUT_OTHERS}
               </h2>
               <p
                 className={
                   styles["welcome__content__about__section--description"]
                 }
               >
-                What you assume other people are thinking​ or feeling about the
-                project.​​
+                {ABOUT_OTHERS_DESC}
               </p>
               <Button
                 className={classnames(

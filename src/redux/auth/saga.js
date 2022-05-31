@@ -1,10 +1,13 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import {
   loginAPI,
+  resetPasswordAPI,
+  resetPasswordConfirmAPI,
   getCRSFTokenAPI,
   setPasswordAPI,
   getSurveyUserAPI,
   getProjectAPI,
+  checkUserPasswordAPI,
 } from "../../services/axios/api";
 
 import {
@@ -13,14 +16,23 @@ import {
   SET_PASSWORD,
   PROJECT_ID,
   SURVEY_ID,
+  RESET_PASSWORD,
+  RESET_PASSWORD_CONFIRM,
+  CHECK_PASSWORD_STATUS
 } from "Constants/actionTypes";
 
 import {
   loginUserSuccess,
-  logoutUser,
   loginUserFailed,
   setProjectIDSuccess,
   setSurveyIDSuccess,
+  resetPasswordSuccess,
+  resetPasswordFailed,
+  resetPasswordConfirmSuccess,
+  resetPasswordConfirmFailed,
+  clearAboutMe,
+  clearCommon,
+  clearMap
 } from "Redux/actions";
 
 import { loginErrorType } from "Constants/defaultValues";
@@ -33,6 +45,16 @@ const getCSRFTokenAsync = async () =>
 const loginWithUsernamePasswordAsync = async (username, password, csrf) =>
   await loginAPI(username, password, csrf)
     .then((authUser) => authUser)
+    .catch((error) => error);
+
+const resetPasswordWithEmailAsync = async (email, csrf) =>
+  await resetPasswordAPI(email, csrf)
+    .then((response) => response)
+    .catch((error) => error);
+
+const resetPasswordConfirmWithTokenAsync = async (password, token, csrf) =>
+  await resetPasswordConfirmAPI(password, token, csrf)
+    .then((response) => response)
     .catch((error) => error);
 
 function* loginWithUsernamePassword({ payload }) {
@@ -77,21 +99,79 @@ function* loginWithUsernamePassword({ payload }) {
   }
 }
 
+function* resetPasswordWithEmail({ payload }) {
+  const { email, callback } = payload;
+
+  // console.log('test email', email);
+  try {
+    const csrfTokenRes = yield call(getCSRFTokenAsync);
+    const csrfToken = csrfTokenRes.data;
+
+    const resetSendStatus = yield call(resetPasswordWithEmailAsync, email, csrfToken);
+
+    // console.log("reset send status", resetSendStatus);
+    if (resetSendStatus.status === 200) {
+      yield put(resetPasswordSuccess());
+      callback(true);
+      return;
+    } else {
+      yield put(resetPasswordFailed());
+      callback(false);
+      return;
+    }
+  } catch (error) {
+    // catch throw
+    console.log("reset password : ", error);
+  }
+}
+
+function* resetPasswordConfirmWithToken({ payload }) {
+  const { password, token, callback } = payload;
+
+  try {
+    const csrfTokenRes = yield call(getCSRFTokenAsync);
+    const csrfToken = csrfTokenRes.data;
+
+    const resetSendStatus = yield call(resetPasswordConfirmWithTokenAsync, password, token, csrfToken);
+
+    if (resetSendStatus.status === 200) {
+      yield put(resetPasswordConfirmSuccess());
+      callback(true);
+      return;
+    } else {
+      yield put(resetPasswordConfirmFailed());
+      callback(false);
+      return;
+    }
+  } catch (error) {
+    console.log('reset password confirm : ', error);
+  }
+}
+
 function* logout({ payload }) {
   const { history } = payload;
   try {
     // yield call(logoutAsync, history);
+
+    yield put(clearAboutMe());
+    yield put(clearCommon());
+    yield put(clearMap());
+
     localStorage.removeItem("tour");
     localStorage.removeItem("projectId");
     localStorage.removeItem("projectTitle");
     localStorage.removeItem("surveyTitle");
     localStorage.removeItem("accessToken");
     localStorage.removeItem("surveyUserId");
+    localStorage.removeItem("shGroupId");
+    localStorage.removeItem("team");
+    localStorage.removeItem("organization");
     localStorage.removeItem("surveyId");
     localStorage.removeItem("userId");
     // yield call(logoutUser, history);
-    history.push("/");
-  } catch (error) {}
+    // history.push("/");
+    window.location = "/";
+  } catch (error) { }
 }
 
 const setPasswordAsync = async (email, password, token, csrf) =>
@@ -110,7 +190,9 @@ function* setPassword({ payload }) {
 
     if (result.data) {
       localStorage.removeItem("accessToken");
-      history.push("/welcome");
+      // history.push("/welcome");
+      // suggested to go to login page instead of welcome page
+      history.push("login");
       return;
     }
   } catch (error) {
@@ -130,17 +212,24 @@ function* setSurveyID({ payload }) {
   try {
     if (surveyId > 0) {
       const result = yield call(setSurveyIDAsync, userId, surveyId);
-
+      
       if (result.data && result.data.length > 0) {
+        // console.log('result.data', result.data)
         localStorage.setItem("surveyId", surveyId);
         localStorage.setItem("surveyTitle", result.data[0].survey.surveyTitle);
         localStorage.setItem("surveyUserId", result.data[0].id);
+        localStorage.setItem("shGroupId", result.data[0].shGroup.id);
+        localStorage.setItem("userteam", JSON.stringify(result.data[0].team));
+        localStorage.setItem("organization", result.data[0].projectOrganization);
 
         yield put(
           setSurveyIDSuccess(
             surveyId,
             result.data[0].survey.surveyTitle,
-            result.data[0].id
+            result.data[0].id,
+            result.data[0].shGroup.id,
+            result.data[0].team,
+            result.data[0].projectOrganization,
           )
         );
 
@@ -152,6 +241,9 @@ function* setSurveyID({ payload }) {
       localStorage.setItem("surveyId", 0);
       localStorage.setItem("surveyTitle", "");
       localStorage.setItem("surveyUserId", 0);
+      localStorage.setItem("shGroupId", 0);
+      localStorage.setItem("team", "");
+      localStorage.setItem("organization", "");
 
       yield put(setSurveyIDSuccess(0, "", 0));
     }
@@ -180,11 +272,33 @@ function* setProjectID({ payload }) {
     localStorage.setItem("projectTitle", "");
     yield put(setProjectIDSuccess(0, ""));
   }
-  
+
+}
+
+
+const getCheckPasswordStatusAsync = async (email) =>
+  await checkUserPasswordAPI(email)
+    .then((res) => res)
+    .catch((error) => error);
+
+function* checkPasswordStatus({ payload }) {
+  const { email, callback } = payload;
+
+  const result = yield call(getCheckPasswordStatusAsync, email);
+
+  callback(result);
 }
 
 export function* watchLoginUser() {
   yield takeEvery(LOGIN_USER, loginWithUsernamePassword);
+}
+
+export function* watchResetPassword() {
+  yield takeEvery(RESET_PASSWORD, resetPasswordWithEmail);
+}
+
+export function* watchResetPasswordConfirm() {
+  yield takeEvery(RESET_PASSWORD_CONFIRM, resetPasswordConfirmWithToken);
 }
 
 export function* watchLogoutUser() {
@@ -203,12 +317,20 @@ export function* watchSetSurveyID() {
   yield takeEvery(SURVEY_ID, setSurveyID);
 }
 
+
+export function* watchCheckPasswordStatus() {
+  yield takeEvery(CHECK_PASSWORD_STATUS, checkPasswordStatus);
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchLoginUser),
+    fork(watchResetPassword),
+    fork(watchResetPasswordConfirm),
     fork(watchLogoutUser),
     fork(watchSetPassword),
     fork(watchSetProjectID),
     fork(watchSetSurveyID),
+    fork(watchCheckPasswordStatus)
   ]);
 }

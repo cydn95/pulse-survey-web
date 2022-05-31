@@ -238,6 +238,8 @@ class DesktopComponent extends Component {
     this.setState({
       topicList,
       btnDeleteDisable: false,
+    }, () => {
+      this.onSelectAnswer("T-" + id, "deleted");
     });
   };
 

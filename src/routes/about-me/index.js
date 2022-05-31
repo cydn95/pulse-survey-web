@@ -15,6 +15,11 @@ import {
 } from "Redux/actions";
 
 import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+
+import {
   SURVEY_NOT_STARTED,
   SURVEY_IN_PROGRESS,
   SURVEY_COMPLETED,
@@ -44,6 +49,7 @@ const AboutMeSurvey = ({
   surveyTitle,
   surveyUserId,
   surveyId,
+  loading,
   history,
 
   getPageList,
@@ -90,8 +96,25 @@ const AboutMeSurvey = ({
         let driverProgress = SURVEY_NOT_STARTED;
 
         for (let j = 0; j < surveyList[i].amquestion.length; j++) {
-          if (surveyList[i].amquestion[j].responsestatus === true) {
-            answeredCount++;
+          if (
+            surveyList[i].amquestion[j].controlType === controlType.MULTI_TOPICS
+          ) {
+            if (
+              (surveyList[i].amquestion[j].topic &&
+                surveyList[i].amquestion[j].topic.length > 0) ||
+              (surveyList[i].amquestion[j].answer.skipValue && surveyList[i].amquestion[j].answer.skipValue !== "") ||
+              (surveyList[i].amquestion[j].commentValue && surveyList[i].amquestion[j].commentValue !== "")
+            ) {
+              answeredCount++;
+            }
+          }
+
+          if (
+            surveyList[i].amquestion[j].controlType !== controlType.MULTI_TOPICS
+          ) {
+            if (surveyList[i].amquestion[j].responsestatus === true) {
+              answeredCount++;
+            }
           }
         }
 
@@ -115,7 +138,6 @@ const AboutMeSurvey = ({
           driverListTemp.push(driver);
         }
       }
-
       setDriverList([...driverListTemp]);
     }
   }, [pageIndex, surveyList]);
@@ -176,14 +198,37 @@ const AboutMeSurvey = ({
     setDriverList([...oldDriverList]);
 
     // Update Survey
-    submitSurvey(oldDriverList, aboutMe, projectId, surveyUserId, surveyId, history, false);
+    submitSurvey(
+      oldDriverList,
+      aboutMe,
+      projectId,
+      surveyUserId,
+      surveyId,
+      history,
+      false
+    );
   };
+
+  const callbackFunc = (status) => {
+    if (!status) {
+      NotificationManager.error("Please check your system time", "");
+    }
+  }
 
   const handleContinue = (e) => {
     e.preventDefault();
 
     if (pageIndex === driverList.length - 1) {
-      submitSurvey(driverList, aboutMe, projectId, surveyUserId, surveyId, history, true);
+      submitSurvey(
+        driverList,
+        aboutMe,
+        projectId,
+        surveyUserId,
+        surveyId,
+        history,
+        true,
+        callbackFunc
+      );
     }
 
     if (pageIndex < driverList.length - 1) {
@@ -208,7 +253,7 @@ const AboutMeSurvey = ({
           </div>
         </TopNav>
       </div>
-      {surveyList.length > 0 && (
+      {!loading && (
         <div className={styles["main-content"]}>
           {driverList.length > 0 && skipQuestionList.length > 0 && (
             <Fragment>
@@ -352,6 +397,7 @@ const AboutMeSurvey = ({
                   </div>
                 </div>
               </div>
+              <NotificationContainer />
             </Fragment>
           )}
           {driverList.length === 0 && (
@@ -359,13 +405,13 @@ const AboutMeSurvey = ({
           )}
         </div>
       )}
-      {surveyList.length === 0 && <Loading description="" />}
+      {loading && <Loading description="" />}
     </div>
   );
 };
 
 const mapStateToProps = ({ survey, common, authUser }) => {
-  const { pageList, pageIndex, optionList, aboutMe } = survey;
+  const { pageList, pageIndex, optionList, aboutMe, loading } = survey;
   const { skipQuestionList } = common;
   const {
     projectId,
@@ -386,6 +432,7 @@ const mapStateToProps = ({ survey, common, authUser }) => {
     surveyTitle,
     surveyUserId,
     surveyId,
+    loading
   };
 };
 

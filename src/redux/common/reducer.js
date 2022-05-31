@@ -1,4 +1,6 @@
 import {
+  ORGANIZATION_LIST,
+  ORGANIZATION_LIST_SUCCESS,
   TEAM_LIST,
   TEAM_LIST_SUCCESS,
   SHGROUP_LIST,
@@ -18,11 +20,14 @@ import {
   UPDATE_STAKEHOLDER,
   UPDATE_STAKEHOLDER_SUCCESS,
   STAKEHOLDER_ANSWER,
+  CLEAR_COMMON,
+  SET_TEAM_LIST
 } from "Constants/actionTypes";
 
 import { SH_CATEGORY_TYPE } from "Constants/defaultValues";
 
 const INIT_STATE = {
+  organizationList: [],
   teamList: [],
   shgroupList: [],
   optionList: [],
@@ -37,8 +42,14 @@ const INIT_STATE = {
 
 export default (state = INIT_STATE, action) => {
   switch (action.type) {
+    case ORGANIZATION_LIST:
+      return { ...state };
+    case ORGANIZATION_LIST_SUCCESS:
+      return { ...state, organizationList: action.payload.data };
     case TEAM_LIST:
       return { ...state };
+    case SET_TEAM_LIST:
+      return { ...state, teamList: action.payload.data }
     case TEAM_LIST_SUCCESS:
       return { ...state, teamList: action.payload.teamList };
     case SHGROUP_LIST:
@@ -110,6 +121,8 @@ export default (state = INIT_STATE, action) => {
       }
 
       return { ...state };
+    case CLEAR_COMMON:
+      return { ...INIT_STATE };
     default:
       return { ...state };
   }

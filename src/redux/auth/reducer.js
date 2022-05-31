@@ -8,6 +8,12 @@ import {
   PROJECT_ID_SUCCESS,
   SURVEY_ID_SUCCESS,
   SET_PASSWORD,
+  RESET_PASSWORD,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAILED,
+  RESET_PASSWORD_CONFIRM,
+  RESET_PASSWORD_CONFIRM_SUCCESS,
+  RESET_PASSWORD_CONFIRM_FAILED,
 } from "Constants/actionTypes";
 
 import { loginErrorType } from "Constants/defaultValues";
@@ -20,6 +26,9 @@ const INIT_STATE = {
   projectId: localStorage.getItem("projectId"),
   projectTitle: localStorage.getItem("projectTitle"),
   surveyId: localStorage.getItem("surveyId"),
+  shGroupId: localStorage.getItem("shGroupId"),
+  team: (!localStorage.getItem("team") || localStorage.getItem("team") === '') ? {name: ''} : JSON.parse(localStorage.getItem("team")),
+  organization: localStorage.getItem("organization"),
   surveyTitle: localStorage.getItem("surveyTitle"),
   surveyUserId: localStorage.getItem("surveyUserId"),
   loading: false,
@@ -27,6 +36,7 @@ const INIT_STATE = {
 };
 
 export default (state = INIT_STATE, action) => {
+  // console.log('action type => ', action.type);
   switch (action.type) {
     case PROJECT_ID_SUCCESS:
       return {
@@ -40,9 +50,24 @@ export default (state = INIT_STATE, action) => {
         surveyId: action.payload.surveyId,
         surveyTitle: action.payload.surveyTitle,
         surveyUserId: action.payload.surveyUserId,
+        shGroupId: action.payload.shGroupId,
+        team: action.payload.team,
+        organization: action.payload.organization
       };
     case LOGIN_USER:
       return { ...state, loading: true };
+    case RESET_PASSWORD:
+      return { ...state, loading: true };
+    case RESET_PASSWORD_SUCCESS:
+      return { ...state, loading: false };
+    case RESET_PASSWORD_FAILED:
+      return { ...state, loading: false };
+    case RESET_PASSWORD_CONFIRM:
+      return { ...state, loading: true };
+    case RESET_PASSWORD_CONFIRM_SUCCESS:
+      return { ...state, loading: false };
+    case RESET_PASSWORD_CONFIRM_FAILED:
+      return { ...state, loading: false };
     case LOGIN_USER_SUCCESS:
       return { ...state, loading: false, user: action.payload };
     case LOGIN_USER_FAILED:

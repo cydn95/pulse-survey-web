@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import Drawer from "@material-ui/core/Drawer";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -13,11 +13,13 @@ import { withRouter } from "react-router-dom";
 import { setMainMenuClassName, logoutUser } from "Redux/actions";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faEdit, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 
 import classnames from "classnames";
 
 const TopNav = ({
+  actions = null,
+  withProfile = true,
   menuTitle,
   profile,
   children,
@@ -26,6 +28,27 @@ const TopNav = ({
   history,
   style
 }) => {
+  function useOutsideAlerter(ref) {
+    useEffect(() => {
+      /**
+       * Alert if clicked on outside of element
+       */
+      function handleClickOutside(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setMenu(false)
+        }
+      }
+
+      // Bind the event listener
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        // Unbind the event listener on clean up
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  }
+  const wrapperRef = useRef(null)
+  useOutsideAlerter(wrapperRef)
   const [toggle, setToggle] = useState(false);
   const [menu, setMenu] = useState(false);
 
@@ -40,7 +63,7 @@ const TopNav = ({
       return;
     }
 
-    setToggle("open");
+    setToggle(open);
   };
 
   const logOut = (e) => {
@@ -48,20 +71,20 @@ const TopNav = ({
     logoutUser();
   };
 
-  const toggleMenu = (e) => {
-    if (!menu) {
-      // attach/remove event handler
-      document.addEventListener("click", handleOutsideClick, false);
-    } else {
-      document.removeEventListener("click", handleOutsideClick, false);
-    }
+  // const toggleMenu = (e) => {
+  //   if (!menu) {
+  //     // attach/remove event handler
+  //     document.addEventListener("click", handleOutsideClick, false);
+  //   } else {
+  //     document.removeEventListener("click", handleOutsideClick, false);
+  //   }
 
-    setMenu(!menu);
-  };
+  //   setMenu(!menu);
+  // };
 
-  const handleOutsideClick = (e) => {
-    toggleMenu(e);
-  };
+  // const handleOutsideClick = (e) => {
+  //   toggleMenu(e);
+  // };
 
   const navigateSetting = (e) => {
     e.preventDefault();
@@ -88,6 +111,7 @@ const TopNav = ({
             size="lg"
             color="#fff"
             icon={faTimes}
+            onClick={(e) => toggleDrawer(e, false)}
           />
         </div>
         <Sidebar />
@@ -103,8 +127,9 @@ const TopNav = ({
         </div>
         <div className={styles.section}>{children}</div>
       </div>
-      <div id="menu" className={styles.control}>
-        <div className={styles.dropdown} onClick={(e) => toggleMenu(e)}>
+      {actions}
+      <div id="menu" className={styles.control} ref={wrapperRef}>
+        {withProfile && <div className={styles.dropdown} onClick={(e) => setMenu(!menu)}>
           {profile.avatar && (
             <img className={styles.avatar} src={profile.avatar} alt="avatar" />
           )}
@@ -118,20 +143,33 @@ const TopNav = ({
           <span
             className={styles.username}
           >{`${profile.firstName} ${profile.lastName}`}</span>
-        </div>
+        </div>}
         {menu && (
           <div className={styles["dropdown-menu"]}>
             <div
               className={styles["dropdown-menu-item"]}
               onClick={(e) => navigateSetting(e)}
             >
-              <a href="">Edit Profile</a>
+              <a href="">
+                <FontAwesomeIcon
+                  size="md"
+                  color="#1d1d1d"
+                  icon={faEdit}
+                />
+                Edit Profile</a>
             </div>
             <div
               className={styles["dropdown-menu-item"]}
               onClick={(e) => logOut(e)}
             >
-              <a href="">Log Out</a>
+              <a href="">
+                <FontAwesomeIcon
+                  size="md"
+                  color="#1d1d1d"
+                  icon={faSignOutAlt}
+                />
+                Log Out
+              </a>
             </div>
           </div>
         )}
