@@ -194,7 +194,7 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
                         </g>
                       </g>
                     </svg>
-                    <span>{(d.tags.filter(tag => (tag.tags || []).length > 0) || []).length}</span>
+                    {/* <span>{(d.tags.filter(tag => (tag.tags || []).length > 0) || []).length}</span> */}
                   </div>}
                 </div>
               </div>
@@ -263,7 +263,7 @@ const KeyThemesTable = ({ title = "", data = [], setData, onVote, className, pro
                       </g>
                     </g>
                   </svg>
-                  <span>{(d.tags.filter(tag => (tag.tags || []).length > 0) || []).length}</span>
+                  {/* <span>{(d.tags.filter(tag => (tag.tags || []).length > 0) || []).length}</span> */}
                 </div>}
               </div>
             </React.Fragment>
