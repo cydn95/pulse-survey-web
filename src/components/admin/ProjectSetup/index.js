@@ -128,87 +128,93 @@ const ProjectSetup = ({
       {loading ? <Loading description="" /> :
         <Fragment>
           <div className={`${styles.basicData} ${editing === -1 && styles.marginTop}`}>
-            <div className={styles.name} style={{display: 'flex', flexDirection: 'column'}}>
-              <p className={styles.projectName}>Project Name <FontAwesomeIcon style={{ fontSize: '7px' }} fixedWidth icon={faAsterisk} color="#e30000" size="xs" /></p>
-              <Input
-                type="text"
-                value={currentProject.surveyTitle || ''}
-                // placeholder={validateError.pname}
-                onChange={(value, e) => {
-                  setProjectField('surveyTitle', value)
-                  if (e.target.value.length < 2 || e.target.value.length > 200) {
-                    setValidateError({
-                      ...validateError,
-                      pname: 'Project Name must be a minimum of 2 characters and a maximum of 200 charactres.'
-                    })
-                  } else {
-                    setValidateError({
-                      ...validateError,
-                      pname: ''
-                    })
-                  }
-                }}
-                className={`${styles.input} ${styles.validateText}`}
-                onBlur={(e) => {
-                  if (e.target.value.length < 2 || e.target.value.length > 200) {
-                    setValidateError({
-                      ...validateError,
-                      pname: 'Project Name must be a minimum of 2 characters and a maximum of 200 charactres.'
-                    })
-                  } else {
-                    setValidateError({
-                      ...validateError,
-                      pname: ''
-                    })
-                  }
-                }}
-              />
-              {(validateError.pmanager !== '' || validateError.pname !== '') && <p style={{ color: 'red', fontSize: '10px', padding: (validateError.pname === '' || !validateError.pname) && '0.5rem 0' }}>{(validateError.pname || ' ')}</p>}
-              {currentProject.code && <p className={styles.projectCode}>Project Code:<span>{` ${currentProject.code}`}</span></p>}
-              {editing === -1 && <div style={{display: 'flex', flexDirection: 'column'}}>
-                <p className={styles.projectName}>Project Code</p>
+            <div className={styles.name} style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
+              <div>
+                <p className={styles.projectName}>Project Name <FontAwesomeIcon style={{ fontSize: '7px' }} fixedWidth icon={faAsterisk} color="#e30000" size="xs" /></p>
                 <Input
                   type="text"
-                  value={currentProject.projectCode || ''}
-                  onChange={(value, e) => setProjectField('projectCode', value)} className={styles.input}
+                  value={currentProject.surveyTitle || ''}
+                  // placeholder={validateError.pname}
+                  onChange={(value, e) => {
+                    setProjectField('surveyTitle', value)
+                    if (e.target.value.length < 2 || e.target.value.length > 200) {
+                      setValidateError({
+                        ...validateError,
+                        pname: 'Project Name must be a minimum of 2 characters and a maximum of 200 charactres.'
+                      })
+                    } else {
+                      setValidateError({
+                        ...validateError,
+                        pname: ''
+                      })
+                    }
+                  }}
+                  className={`${styles.input} ${styles.validateText}`}
+                  onBlur={(e) => {
+                    if (e.target.value.length < 2 || e.target.value.length > 200) {
+                      setValidateError({
+                        ...validateError,
+                        pname: 'Project Name must be a minimum of 2 characters and a maximum of 200 charactres.'
+                      })
+                    } else {
+                      setValidateError({
+                        ...validateError,
+                        pname: ''
+                      })
+                    }
+                  }}
                 />
-              </div>}
+                {(validateError.pmanager !== '' || validateError.pname !== '') && <p style={{ color: 'red', fontSize: '10px', padding: (validateError.pname === '' || !validateError.pname) && '0.5rem 0' }}>{(validateError.pname || ' ')}</p>}
+              </div>
+              <div>
+                {currentProject.code && <p className={styles.projectCode}>Project Code:<span>{` ${currentProject.code}`}</span></p>}
+                {editing === -1 && <div style={{display: 'flex', flexDirection: 'column'}}>
+                  <p className={styles.projectName}>Project Code</p>
+                  <Input
+                    type="text"
+                    value={currentProject.projectCode || ''}
+                    onChange={(value, e) => setProjectField('projectCode', value)} className={styles.input}
+                  />
+                </div>}
+              </div>
             </div>
-            <div className={styles.projectManager}>
-              <p className={styles.projectName}>Project Manager</p>
-              {/* <Select selected={currentProject.manager} setSelected={(item) => setProjectField('manager', item)} items={managers} className={styles.withOutline} /> */}
-              <Input
-                value={currentProject.projectManager || ''}
-                onChange={(value, e) => {
-                  if ((e.target.value.length > 0) && (e.target.value.length < 2 || e.target.value.length > 50)) {
-                    setValidateError({
-                      ...validateError,
-                      pmanager: 'Project Manager must be a minimum of 2 characters and a maximum of 50 charactres.'
-                    })
-                  } else {
-                    setValidateError({
-                      ...validateError,
-                      pmanager: ''
-                    })
-                  }
-                  setProjectField('projectManager', value)
-                }}
-                className={styles.input}
-                onBlur={(e) => {
-                  if ((e.target.value.length > 0) && (e.target.value.length < 2 || e.target.value.length > 50)) {
-                    setValidateError({
-                      ...validateError,
-                      pmanager: 'Project Manager must be a minimum of 2 characters and a maximum of 50 charactres.'
-                    })
-                  } else {
-                    setValidateError({
-                      ...validateError,
-                      pmanager: ''
-                    })
-                  }
-                }}
-              />
-              {(validateError.pmanager !== '' || validateError.pname !== '') && <p style={{ color: 'red', fontSize: '10px', padding: (validateError.pmanager !== '' || !validateError.pmanager) && '0.5rem 0' }}>{validateError.pmanager || ' '}</p>}
+            <div className={styles.projectManager} style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
+              <div>
+                <p className={styles.projectName}>Project Manager</p>
+                {/* <Select selected={currentProject.manager} setSelected={(item) => setProjectField('manager', item)} items={managers} className={styles.withOutline} /> */}
+                <Input
+                  value={currentProject.projectManager || ''}
+                  onChange={(value, e) => {
+                    if ((e.target.value.length > 0) && (e.target.value.length < 2 || e.target.value.length > 50)) {
+                      setValidateError({
+                        ...validateError,
+                        pmanager: 'Project Manager must be a minimum of 2 characters and a maximum of 50 charactres.'
+                      })
+                    } else {
+                      setValidateError({
+                        ...validateError,
+                        pmanager: ''
+                      })
+                    }
+                    setProjectField('projectManager', value)
+                  }}
+                  className={styles.input}
+                  onBlur={(e) => {
+                    if ((e.target.value.length > 0) && (e.target.value.length < 2 || e.target.value.length > 50)) {
+                      setValidateError({
+                        ...validateError,
+                        pmanager: 'Project Manager must be a minimum of 2 characters and a maximum of 50 charactres.'
+                      })
+                    } else {
+                      setValidateError({
+                        ...validateError,
+                        pmanager: ''
+                      })
+                    }
+                  }}
+                />
+                {(validateError.pmanager !== '' || validateError.pname !== '') && <p style={{ color: 'red', fontSize: '10px', padding: (validateError.pmanager !== '' || !validateError.pmanager) && '0.5rem 0' }}>{validateError.pmanager || ' '}</p>}
+              </div>
               {editing === -1 && <div style={{display: 'flex', width: 'calc(100% - 10px)'}}>
                 <div style={{width: '50%'}}>
                   <p className={styles.projectName}>Anonymity Threshold</p>

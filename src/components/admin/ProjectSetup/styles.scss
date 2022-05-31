@@ -9,7 +9,6 @@
   flex-wrap: wrap;
   &.marginTop {
     margin-top: 30px;
-    align-items: flex-start;
   }
   .column {
     display: flex;
@@ -141,6 +140,7 @@
     flex: 1;
     min-width: 260px;
     display: flex;
+    align-items: flex-start;
     gap: 15px;
   }
 }
