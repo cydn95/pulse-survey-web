@@ -180,7 +180,7 @@ const submitSurveyAsync = async (answerData) =>
   }]
 */
 function* submitSurvey({ payload }) {
-  const { surveyList, projectId, surveyUserId, surveyId, history, navigateToNext } = payload;
+  const { surveyList, projectId, surveyUserId, surveyId, history, navigateToNext, callback } = payload;
   let answerList = [];
   // console.log(surveyList);
   for (let i = 0; i < surveyList.length; i++) {
@@ -254,6 +254,9 @@ function* submitSurvey({ payload }) {
         history.push("/app/about-others");
       }
     } else {
+      if (callback) {
+        callback(false)
+      }
       console.log("submit failed");
     }
   } catch (error) {

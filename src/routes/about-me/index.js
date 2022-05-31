@@ -15,6 +15,11 @@ import {
 } from "Redux/actions";
 
 import {
+  NotificationContainer,
+  NotificationManager,
+} from "react-notifications";
+
+import {
   SURVEY_NOT_STARTED,
   SURVEY_IN_PROGRESS,
   SURVEY_COMPLETED,
@@ -204,6 +209,12 @@ const AboutMeSurvey = ({
     );
   };
 
+  const callbackFunc = (status) => {
+    if (!status) {
+      NotificationManager.error("Please check your system time", "");
+    }
+  }
+
   const handleContinue = (e) => {
     e.preventDefault();
 
@@ -215,7 +226,8 @@ const AboutMeSurvey = ({
         surveyUserId,
         surveyId,
         history,
-        true
+        true,
+        callbackFunc
       );
     }
 
@@ -385,6 +397,7 @@ const AboutMeSurvey = ({
                   </div>
                 </div>
               </div>
+              <NotificationContainer />
             </Fragment>
           )}
           {driverList.length === 0 && (

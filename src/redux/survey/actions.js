@@ -55,10 +55,11 @@ export const submitSurvey = (
   surveyUserId,
   surveyId,
   history,
-  navigateToNext
+  navigateToNext,
+  callback=null
 ) => ({
   type: SUBMIT_SURVEY,
-  payload: { surveyList, aboutMe, projectId, surveyUserId, surveyId, history, navigateToNext },
+  payload: { surveyList, aboutMe, projectId, surveyUserId, surveyId, history, navigateToNext, callback },
 });
 
 export const submitSurveySuccess = (surveyId) => ({
