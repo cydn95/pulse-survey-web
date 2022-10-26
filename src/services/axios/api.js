@@ -18,7 +18,7 @@ const resetPasswordAPI = (email, csrf) => {
 
 const resetPasswordConfirmAPI = (password, token, csrf) => {
   return getClient(false).post(
-    "password_reset/confirm/?token=" + token,
+    "password_reset/confirm/",
     {
       password: password,
       token: token,
